@@ -34,6 +34,7 @@ import com.lptiyu.zxinglib.android.Contents;
 import com.lptiyu.zxinglib.android.Intents;
 import com.lptiyu.zxinglib.R;
 import com.lptiyu.zxinglib.android.clipboard.ClipboardInterface;
+import com.lptiyu.zxinglib.android.encode.EncodeActivity;
 import com.lptiyu.zxinglib.core.BarcodeFormat;
 
 /**
@@ -107,7 +108,7 @@ public final class ShareActivity extends Activity {
   };
 
   private void launchSearch(String text) {
-    Intent intent = new Intent(Intents.Encode.ACTION);
+    Intent intent = new Intent(this, EncodeActivity.class);
     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
     intent.putExtra(Intents.Encode.TYPE, Contents.Type.TEXT);
     intent.putExtra(Intents.Encode.DATA, text);
