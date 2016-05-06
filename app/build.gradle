@@ -1,4 +1,15 @@
 apply plugin: 'com.android.application'
+apply plugin: 'com.neenbedankt.android-apt'
+
+
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
+    }
+}
 
 android {
     compileSdkVersion 23
@@ -27,4 +38,8 @@ dependencies {
     compile 'com.github.bumptech.glide:glide:3.7.0'
     compile 'com.squareup.retrofit2:retrofit:2.0.2'
     compile 'com.squareup.okhttp3:okhttp:3.2.0'
+    compile 'com.jakewharton:butterknife:8.0.1'
+    apt 'com.jakewharton:butterknife-compiler:8.0.1'
+    compile project(path: ':zxinglib')
+    compile 'com.jakewharton.timber:timber:4.1.2'
 }
