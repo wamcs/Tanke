@@ -132,6 +132,7 @@ final class CameraConfigurationManager {
     if (isScreenPortrait == isPreviewSizePortrait) {
       previewSizeOnScreen = bestPreviewSize;
     } else {
+      //Here may be changed.
       previewSizeOnScreen = new Point(bestPreviewSize.y, bestPreviewSize.x);
     }
     Log.i(TAG, "Preview size on screen: " + previewSizeOnScreen);
@@ -184,7 +185,7 @@ final class CameraConfigurationManager {
 
     theCamera.setParameters(parameters);
 
-    theCamera.setDisplayOrientation(cwRotationFromDisplayToCamera);
+    theCamera.setDisplayOrientation(90);
 
     Camera.Parameters afterParameters = theCamera.getParameters();
     Camera.Size afterSize = afterParameters.getPreviewSize();
