@@ -3,6 +3,8 @@ package com.lptiyu.tanke;
 import android.app.Application;
 
 import com.baidu.mapapi.SDKInitializer;
+import com.lptiyu.tanke.trace.TraceHelper;
+import com.lptiyu.tanke.utils.AppData;
 import com.squareup.leakcanary.LeakCanary;
 
 import timber.log.Timber;
@@ -21,5 +23,6 @@ public class RunApplication extends Application {
     LeakCanary.install(this);
     SDKInitializer.initialize(this);
     Timber.plant(new Timber.DebugTree());
+    AppData.init(this);
   }
 }
