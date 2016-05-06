@@ -1,4 +1,15 @@
 apply plugin: 'com.android.application'
+apply plugin: 'com.neenbedankt.android-apt'
+
+
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
+    }
+}
 
 android {
     compileSdkVersion 23
@@ -62,4 +73,8 @@ dependencies {
     testCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.4-beta2'
     compile files('libs/BaiduLBS_Android.jar')
     compile files('libs/BaiduTraceSDK_v2_1_9.jar')
+    compile 'com.jakewharton:butterknife:8.0.1'
+    apt 'com.jakewharton:butterknife-compiler:8.0.1'
+    compile project(path: ':zxinglib')
+    compile 'com.jakewharton.timber:timber:4.1.2'
 }

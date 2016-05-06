@@ -1,3 +1,4 @@
 <resources>
-    <string name="app_name">Tanke</string>
+    <string name="app_name">探客天下</string>
+    <string name="scanner">扫一扫</string>
 </resources>
