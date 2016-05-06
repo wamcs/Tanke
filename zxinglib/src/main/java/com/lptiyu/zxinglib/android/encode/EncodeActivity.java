@@ -64,17 +64,7 @@ public final class EncodeActivity extends Activity {
   @Override
   public void onCreate(Bundle icicle) {
     super.onCreate(icicle);
-    Intent intent = getIntent();
-    if (intent == null) {
-      finish();
-    } else {
-      String action = intent.getAction();
-      if (Intents.Encode.ACTION.equals(action) || Intent.ACTION_SEND.equals(action)) {
-        setContentView(R.layout.encode);
-      } else {
-        finish();
-      }
-    }
+    setContentView(R.layout.encode);
   }
 
   @Override
@@ -113,7 +103,7 @@ public final class EncodeActivity extends Activity {
       return false;
     }
   }
-  
+
   private void share() {
     QRCodeEncoder encoder = qrCodeEncoder;
     if (encoder == null) { // Odd
