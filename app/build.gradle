@@ -27,4 +27,15 @@ dependencies {
     compile 'com.github.bumptech.glide:glide:3.7.0'
     compile 'com.squareup.retrofit2:retrofit:2.0.2'
     compile 'com.squareup.okhttp3:okhttp:3.2.0'
+    compile files('libs/MobCommons.jar')
+    compile files('libs/MobTools.jar')
+    compile files('libs/ShareSDK-Core-2.6.5.jar')
+    compile files('libs/ShareSDK-QQ-2.6.5.jar')
+    compile files('libs/ShareSDK-QZone-2.6.5.jar')
+    compile files('libs/ShareSDK-SinaWeibo-2.6.5.jar')
+    compile files('libs/ShareSDK-Wechat-2.6.5.jar')
+    compile files('libs/ShareSDK-Wechat-Core-2.6.5.jar')
+    compile files('libs/ShareSDK-Wechat-Favorite-2.6.5.jar')
+    compile files('libs/ShareSDK-Wechat-Moments-2.6.5.jar')
+    compile project(':number_picker')
 }
