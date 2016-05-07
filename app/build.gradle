@@ -1,4 +1,15 @@
 apply plugin: 'com.android.application'
+apply plugin: 'com.neenbedankt.android-apt'
+
+
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
+    }
+}
 
 android {
     compileSdkVersion 23
@@ -11,10 +22,39 @@ android {
         versionCode 1
         versionName "1.0"
     }
+
+    signingConfigs {
+        Release {
+            keyAlias 'QudongTY@126.com'
+            keyPassword 'qd123456'
+            storeFile file('../TankeRelease.jks')
+            storePassword 'qd123456'
+        }
+        Debug {
+            keyAlias 'QudongTY@126.com'
+            keyPassword 'qd123456'
+            storeFile file('../TankeDebug.jks')
+            storePassword 'qd123456'
+        }
+    }
+
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.Release
+        }
+        debug {
+            signingConfig signingConfigs.Debug
+        }
+    }
+
+    splits {
+        abi {
+            enable true
+            reset()
+            include "armeabi"
+            universalApk false
         }
     }
 }
@@ -22,8 +62,8 @@ android {
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     testCompile 'junit:junit:4.12'
-    compile 'com.android.support:appcompat-v7:23.3.0'
     compile 'io.reactivex:rxandroid:1.2.0'
+    compile 'com.android.support:appcompat-v7:23.3.0'
     compile 'com.github.bumptech.glide:glide:3.7.0'
     compile 'com.squareup.retrofit2:retrofit:2.0.2'
     compile 'com.squareup.okhttp3:okhttp:3.2.0'
@@ -38,4 +78,15 @@ dependencies {
     compile files('libs/ShareSDK-Wechat-Favorite-2.6.5.jar')
     compile files('libs/ShareSDK-Wechat-Moments-2.6.5.jar')
     compile project(':number_picker')
+    compile 'com.google.code.gson:gson:2.6.2'
+    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.4-beta2'
+    releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.4-beta2'
+    testCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.4-beta2'
+    compile files('libs/BaiduLBS_Android.jar')
+    compile files('libs/BaiduTraceSDK_v2_1_9.jar')
+    compile 'com.jakewharton:butterknife:8.0.1'
+    apt 'com.jakewharton:butterknife-compiler:8.0.1'
+    compile project(path: ':zxinglib')
+    compile 'com.jakewharton.timber:timber:4.1.2'
+
 }

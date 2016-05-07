@@ -1,2 +1,2 @@
-include ':app'
-include ':number_picker'
+
+include ':app', ':zxinglib', ':number_picker'

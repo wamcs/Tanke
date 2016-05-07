@@ -47,10 +47,14 @@
     <states>
       <state key="ScopeChooserConfigurable.UI">
         <settings>
+<<<<<<< HEAD
+=======
+          <last-edited>1.8</last-edited>
+>>>>>>> ldx
           <splitter-proportions>
             <option name="proportions">
               <list>
-                <option value="0.2" />
+                <option value="0.2321839" />
               </list>
             </option>
           </splitter-proportions>
