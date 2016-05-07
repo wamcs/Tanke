@@ -3,7 +3,9 @@ package com.lptiyu.tanke.utils;
 import android.content.Context;
 
 /**
- * @author ldx
+ * @author : xiaoxiaoda
+ *         date: 16-5-6
+ *         email: wonderfulifeel@gmail.com
  */
 public class AppData {
 
@@ -20,5 +22,4 @@ public class AppData {
   public static String getPackageName(){
     return sContext.getPackageName();
   }
-
 }

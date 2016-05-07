@@ -26,5 +26,6 @@ public class RunApplication extends Application {
     LeakCanary.install(this);
     SDKInitializer.initialize(this);
     Timber.plant(new Timber.DebugTree());
+    AppData.init(this);
   }
 }
