@@ -68,13 +68,14 @@ dependencies {
     compile 'com.squareup.retrofit2:retrofit:2.0.2'
     compile 'com.squareup.okhttp3:okhttp:3.2.0'
     compile 'com.google.code.gson:gson:2.6.2'
-    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.4-beta2'
-    releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.4-beta2'
-    testCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.4-beta2'
+//    Baidu Map
     compile files('libs/BaiduLBS_Android.jar')
     compile files('libs/BaiduTraceSDK_v2_1_9.jar')
+//    ButterKnife
     compile 'com.jakewharton:butterknife:8.0.1'
     apt 'com.jakewharton:butterknife-compiler:8.0.1'
+
+//    Zxing
     compile project(path: ':zxinglib')
     compile 'com.jakewharton.timber:timber:4.1.2'
 }

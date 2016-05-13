@@ -19,12 +19,10 @@ public class MainActivity extends AppCompatActivity {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
     ButterKnife.bind(this);
-    Timber.d("onCreate");
   }
 
   @OnClick(R.id.scanner)
   public void onClick() {
-    Timber.d("OnClick");
     startActivity(new Intent(this, CaptureActivity.class));
   }
 
