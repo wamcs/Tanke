@@ -7,9 +7,13 @@ import android.widget.EditText;
 
 import com.baidu.mapapi.map.BaiduMap;
 import com.baidu.mapapi.map.TextureMapView;
-import com.lptiyu.tanke.trace.ITraceHelper;
-import com.lptiyu.tanke.trace.TraceCallback;
-import com.lptiyu.tanke.trace.TraceHelper;
+import com.lptiyu.tanke.trace.bean.HistoryTrackData;
+import com.lptiyu.tanke.trace.realtime.IRealTimeTrackHelper;
+import com.lptiyu.tanke.trace.realtime.RealTimeTrackCallback;
+import com.lptiyu.tanke.trace.realtime.RealTimeTrackHelper;
+import com.lptiyu.tanke.trace.tracing.ITracingHelper;
+import com.lptiyu.tanke.trace.tracing.TracingCallback;
+import com.lptiyu.tanke.trace.tracing.TracingHelper;
 import com.lptiyu.tanke.utils.ToastUtil;
 import com.lptiyu.zxinglib.android.CaptureActivity;
 
@@ -18,9 +22,12 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import timber.log.Timber;
 
-public class MainActivity extends AppCompatActivity implements TraceCallback {
+public class MainActivity extends AppCompatActivity implements
+    TracingCallback,
+    RealTimeTrackCallback {
 
-  private ITraceHelper helper;
+  private ITracingHelper helper;
+  private IRealTimeTrackHelper realTimeTrackHelper;
 
   @BindView(R.id.entity_name)
   EditText entityName;
@@ -36,8 +43,10 @@ public class MainActivity extends AppCompatActivity implements TraceCallback {
     ButterKnife.bind(this);
     Timber.d("onCreate");
 
-    helper = new TraceHelper(getApplicationContext(), this);
+    helper = new TracingHelper(getApplicationContext(), this);
     helper.interval(2, 10);
+
+    realTimeTrackHelper = new RealTimeTrackHelper(getApplicationContext(), this);
 
     initMap();
 
@@ -60,6 +69,16 @@ public class MainActivity extends AppCompatActivity implements TraceCallback {
   @Override
   public void onTraceStop() {
     ToastUtil.TextToast("onTraceStop");
+  }
+
+  @Override
+  public void onRequestFailedCallback(String s) {
+    ToastUtil.TextToast(s);
+  }
+
+  @Override
+  public void onQueryEntityListCallback(HistoryTrackData trackDataList) {
+    Timber.e(trackDataList.toString());
   }
 
   @OnClick(R.id.scanner)
@@ -87,7 +106,10 @@ public class MainActivity extends AppCompatActivity implements TraceCallback {
 
   @OnClick(R.id.current_trace)
   public void onCurrentTraceClick() {
-
+    if (entityName.getText() == null || entityName.getText().length() == 0) {
+      return;
+    }
+    realTimeTrackHelper.queryEntityList(entityName.getText().toString());
   }
 
 }

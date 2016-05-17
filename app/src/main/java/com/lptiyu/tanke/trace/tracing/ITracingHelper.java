@@ -1,4 +1,4 @@
-package com.lptiyu.tanke.trace;
+package com.lptiyu.tanke.trace.tracing;
 
 
 /**
@@ -6,7 +6,7 @@ package com.lptiyu.tanke.trace;
  *         date: 16-5-6
  *         email: wonderfulifeel@gmail.com
  */
-public interface ITraceHelper {
+public interface ITracingHelper {
 
   void start();
 
