@@ -7,6 +7,8 @@ package com.lptiyu.tanke.trace.realtime;
  */
 public interface IRealTimeTrackHelper {
 
+  void onDestroy();
+
   void queryEntityList(String entityNames);
 
 }

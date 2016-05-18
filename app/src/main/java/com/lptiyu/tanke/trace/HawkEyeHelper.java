@@ -4,13 +4,8 @@ import android.content.Context;
 
 import com.baidu.trace.LBSTraceClient;
 import com.baidu.trace.LocationMode;
-import com.baidu.trace.OnStartTraceListener;
-import com.baidu.trace.OnStopTraceListener;
-import com.baidu.trace.Trace;
 
 import java.lang.ref.WeakReference;
-
-import timber.log.Timber;
 
 /**
  * @author : xiaoxiaoda
@@ -45,5 +40,12 @@ public abstract class HawkEyeHelper {
     mClient = new LBSTraceClient(contextWeakReference.get());
     mClient.setLocationMode(LocationMode.High_Accuracy);
     mClient.setProtocolType(PROTOCAL_TYPE.HTTP.type);
+  }
+
+  public void destroy() {
+    if (mClient != null) {
+
+      mClient.onDestroy();
+    }
   }
 }

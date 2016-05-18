@@ -7,6 +7,8 @@ import com.baidu.trace.OnStopTraceListener;
 import com.baidu.trace.Trace;
 import com.lptiyu.tanke.trace.HawkEyeHelper;
 
+import java.lang.ref.WeakReference;
+
 import timber.log.Timber;
 
 /**
@@ -21,7 +23,7 @@ public class TracingHelper extends HawkEyeHelper implements
 
   private Trace mTrace;
 
-  private TracingCallback mCallback;
+  private WeakReference<TracingCallback> mCallbackReference;
 
   private boolean isTracing = false;
 
@@ -29,11 +31,11 @@ public class TracingHelper extends HawkEyeHelper implements
   private final int DEFAULT_PACK_INTERVAL = 10;
   private final int DEFAULT_TRACE_TYPE = 2;
 
-  public TracingHelper(Context context, TracingCallback callback) {
+  public TracingHelper(Context context,TracingCallback callback) {
     super(context);
     mTrace = new Trace(contextWeakReference.get(), DEFAULT_SERVICE_ID, DEFAULT_ENTITY_NAME, DEFAULT_TRACE_TYPE);
     mClient.setInterval(DEFAULT_GATER_INTERVAL, DEFAULT_PACK_INTERVAL);
-    mCallback = callback;
+    mCallbackReference = new WeakReference<>(callback);
   }
 
 
@@ -49,20 +51,32 @@ public class TracingHelper extends HawkEyeHelper implements
   }
 
   @Override
+  public void onDestroy() {
+    stop();
+    super.destroy();
+  }
+
+  @Override
   public void onTraceCallback(int i, String s) {
     isTracing = true;
-    mCallback.onTraceStart();
+    if (mCallbackReference.get() != null) {
+      mCallbackReference.get().onTraceStart();
+    }
   }
 
   @Override
   public void onTracePushCallback(byte b, String s) {
-    mCallback.onTracePush(b, s);
+    if (mCallbackReference.get() != null) {
+      mCallbackReference.get().onTracePush(b, s);
+    }
   }
 
   @Override
   public void onStopTraceSuccess() {
     isTracing = false;
-    mCallback.onTraceStop();
+    if (mCallbackReference.get() != null) {
+      mCallbackReference.get().onTraceStop();
+    }
   }
 
   @Override

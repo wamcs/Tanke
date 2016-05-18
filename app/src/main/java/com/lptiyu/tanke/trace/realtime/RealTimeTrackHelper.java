@@ -1,11 +1,17 @@
 package com.lptiyu.tanke.trace.realtime;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.baidu.trace.OnEntityListener;
+import com.baidu.trace.TraceLocation;
 import com.lptiyu.tanke.trace.HawkEyeHelper;
 import com.lptiyu.tanke.trace.bean.HistoryTrackData;
 import com.lptiyu.tanke.utils.GsonUtil;
+
+import java.lang.ref.WeakReference;
+
+import timber.log.Timber;
 
 /**
  * @author : xiaoxiaoda
@@ -17,10 +23,10 @@ public class RealTimeTrackHelper extends HawkEyeHelper implements
 
   private OnEntityListener entityListener;
 
-  private RealTimeTrackCallback mCallback;
+  private WeakReference<RealTimeTrackCallback> mCallbackReference;
 
   private final String DEFAULT_COLUMN_KEY = "";
-  private final int DEFAULT_PAGE_SIZE = 1000;
+  private final int DEFAULT_PAGE_SIZE = 10;
   private final int DEFAULT_PAGE_INDEX = 1;
 
   enum RETURN_TYPE {
@@ -40,18 +46,27 @@ public class RealTimeTrackHelper extends HawkEyeHelper implements
 
   public RealTimeTrackHelper(Context context, RealTimeTrackCallback callback) {
     super(context);
-    mCallback = callback;
+    mCallbackReference = new WeakReference<>(callback);
     entityListener = new OnEntityListener() {
       @Override
       public void onRequestFailedCallback(String s) {
-        mCallback.onRequestFailedCallback(s);
+        if (mCallbackReference.get() != null) {
+          mCallbackReference.get().onRequestFailedCallback(s);
+        }
       }
 
       @Override
       public void onQueryEntityListCallback(String s) {
         HistoryTrackData historyTrackData = GsonUtil.parseJson(s,
             HistoryTrackData.class);
-        mCallback.onQueryEntityListCallback(historyTrackData);
+        if (mCallbackReference.get() != null) {
+          mCallbackReference.get().onQueryEntityListCallback(historyTrackData);
+        }
+      }
+
+      @Override
+      public void onReceiveLocation(TraceLocation traceLocation) {
+        Timber.e(traceLocation.toString());
       }
     };
   }
@@ -60,14 +75,21 @@ public class RealTimeTrackHelper extends HawkEyeHelper implements
     queryEntityList(entityNames, DEFAULT_COLUMN_KEY);
   }
 
+
+
   public void queryEntityList(String entityNames, String columnKey) {
-    int activeTime = (int) (System.currentTimeMillis() / 1000 - 12 * 60 * 60);
-    queryEntityList(DEFAULT_SERVICE_ID, entityNames, columnKey, RETURN_TYPE.ONLY_ENTITY.type, activeTime, DEFAULT_PAGE_SIZE, DEFAULT_PAGE_INDEX);
+    int activeTime = (int) (System.currentTimeMillis() / 1000 - 30 * 60);
+    queryEntityList(DEFAULT_SERVICE_ID, entityNames, columnKey, RETURN_TYPE.ALL_TARGET.type, activeTime, DEFAULT_PAGE_SIZE, DEFAULT_PAGE_INDEX);
   }
 
   private void queryEntityList(long serviceId, String entityNames, String columnKey, int returnType, int activeTime, int pageSize, int pageIndex) {
     mClient.queryEntityList(serviceId, entityNames, columnKey, returnType, activeTime, pageSize,
         pageIndex, entityListener);
+  }
+
+  @Override
+  public void onDestroy() {
+    super.destroy();
   }
 
 }

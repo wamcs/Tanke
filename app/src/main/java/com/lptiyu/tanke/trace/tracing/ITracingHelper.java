@@ -12,6 +12,8 @@ public interface ITracingHelper {
 
   void stop();
 
+  void onDestroy();
+
   void interval(int gatherInterval, int packInterval);
 
   void serviceId(long serviceId);
