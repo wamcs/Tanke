@@ -1,4 +1,4 @@
-package com.lptiyu.tanke.trace;
+package com.lptiyu.tanke.trace.bean;
 
 import com.baidu.mapapi.model.LatLng;
 

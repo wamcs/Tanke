@@ -1,11 +1,11 @@
-package com.lptiyu.tanke.trace;
+package com.lptiyu.tanke.trace.tracing;
 
 /**
  * @author : xiaoxiaoda
  *         date: 16-5-6
  *         email: wonderfulifeel@gmail.com
  */
-public interface TraceCallback {
+public interface TracingCallback {
 
   void onTraceStart();
 

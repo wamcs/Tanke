@@ -1,12 +1,11 @@
-package com.lptiyu.tanke.trace;
+package com.lptiyu.tanke.trace.tracing;
 
 import android.content.Context;
 
-import com.baidu.trace.LBSTraceClient;
-import com.baidu.trace.LocationMode;
 import com.baidu.trace.OnStartTraceListener;
 import com.baidu.trace.OnStopTraceListener;
 import com.baidu.trace.Trace;
+import com.lptiyu.tanke.trace.HawkEyeHelper;
 
 import java.lang.ref.WeakReference;
 
@@ -14,49 +13,31 @@ import timber.log.Timber;
 
 /**
  * @author : xiaoxiaoda
- *         date: 16-5-6
+ *         date: 16-5-17
  *         email: wonderfulifeel@gmail.com
  */
-public class TraceHelper implements
-    ITraceHelper,
+public class TracingHelper extends HawkEyeHelper implements
+    ITracingHelper,
     OnStartTraceListener,
     OnStopTraceListener {
 
-  private WeakReference<Context> contextWeakReference;
-  private LBSTraceClient mClient;
   private Trace mTrace;
+
+  private WeakReference<TracingCallback> mCallbackReference;
 
   private boolean isTracing = false;
 
+  private final int DEFAULT_GATER_INTERVAL = 2;
+  private final int DEFAULT_PACK_INTERVAL = 10;
   private final int DEFAULT_TRACE_TYPE = 2;
-  private final long DEFAULT_SERVICE_ID = 115944L;
-  private final String DEFAULT_ENTITY_NAME = "tanke";
 
-  private TraceCallback mCallback;
-
-  enum PROTOCAL_TYPE {
-    HTTP(0),
-    HTTPS(1);
-
-    int type;
-
-    PROTOCAL_TYPE(int type) {
-      this.type = type;
-    }
-
-    public void setType(int type) {
-      this.type = type;
-    }
-  }
-
-  public TraceHelper(Context context, TraceCallback callback) {
-    contextWeakReference = new WeakReference<>(context);
+  public TracingHelper(Context context,TracingCallback callback) {
+    super(context);
     mTrace = new Trace(contextWeakReference.get(), DEFAULT_SERVICE_ID, DEFAULT_ENTITY_NAME, DEFAULT_TRACE_TYPE);
-    mClient = new LBSTraceClient(contextWeakReference.get());
-    mClient.setLocationMode(LocationMode.High_Accuracy);
-    mClient.setProtocolType(PROTOCAL_TYPE.HTTP.type);
-    mCallback = callback;
+    mClient.setInterval(DEFAULT_GATER_INTERVAL, DEFAULT_PACK_INTERVAL);
+    mCallbackReference = new WeakReference<>(callback);
   }
+
 
   @Override
   public void start() {
@@ -70,20 +51,32 @@ public class TraceHelper implements
   }
 
   @Override
+  public void onDestroy() {
+    stop();
+    super.destroy();
+  }
+
+  @Override
   public void onTraceCallback(int i, String s) {
     isTracing = true;
-    mCallback.onTraceStart();
+    if (mCallbackReference.get() != null) {
+      mCallbackReference.get().onTraceStart();
+    }
   }
 
   @Override
   public void onTracePushCallback(byte b, String s) {
-    mCallback.onTracePush(b, s);
+    if (mCallbackReference.get() != null) {
+      mCallbackReference.get().onTracePush(b, s);
+    }
   }
 
   @Override
   public void onStopTraceSuccess() {
     isTracing = false;
-    mCallback.onTraceStop();
+    if (mCallbackReference.get() != null) {
+      mCallbackReference.get().onTraceStop();
+    }
   }
 
   @Override
