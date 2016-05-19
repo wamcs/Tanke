@@ -1,15 +1,12 @@
 package com.lptiyu.tanke;
 
-import android.Manifest;
-import android.annotation.TargetApi;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 
-import com.lptiyu.tanke.utils.PermissionUtil;
+import com.lptiyu.tanke.permission.PermissionDispatcher;
+import com.lptiyu.tanke.permission.TargetMethod;
 import com.lptiyu.tanke.utils.ToastUtil;
 import com.lptiyu.zxinglib.android.CaptureActivity;
 
@@ -19,7 +16,6 @@ import timber.log.Timber;
 
 public class MainActivity extends AppCompatActivity {
 
-  private static final int REQUEST_CODE_ASK_PERMISSIONS = 123;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -31,35 +27,30 @@ public class MainActivity extends AppCompatActivity {
 
   @OnClick(R.id.scanner)
   public void onClick() {
-    PermissionUtil.showCameraWithCheck(this);
+    PermissionDispatcher.showCameraWithCheck(this);
+  }
+
+  @OnClick(R.id.start_trace)
+  public void onStartTrace() {
+    PermissionDispatcher.startLocateWithCheck(this);
   }
 
   @Override
   public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-    switch (requestCode) {
-      case REQUEST_CODE_ASK_PERMISSIONS:
-        if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-          // Permission Granted
-          startActivity(new Intent(this, CaptureActivity.class));
-        } else {
-          // Permission Denied
-          ToastUtil.TextToast("Camera Denied");
-        }
-        break;
-      default:
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-    }
+    super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    // NOTE: delegate the permission handling to generated method
+    PermissionDispatcher.onRequestPermissionsResult(this, requestCode, grantResults);
   }
 
-  @TargetApi(23)
-  public void requestCameraPermission() {
-    int hasCameraPermission = checkSelfPermission(Manifest.permission.CAMERA);
-    if (hasCameraPermission != PackageManager.PERMISSION_GRANTED) {
-      requestPermissions(new String[]{Manifest.permission.CAMERA},
-          REQUEST_CODE_ASK_PERMISSIONS);
-    } else {
-      startActivity(new Intent(this, CaptureActivity.class));
-    }
+
+  @TargetMethod(requestCode = PermissionDispatcher.PERMISSION_REQUEST_CODE_CAMERA)
+  public void openCamera() {
+    startActivity(new Intent(this, CaptureActivity.class));
+  }
+
+  @TargetMethod(requestCode = PermissionDispatcher.PERMISSION_REQUEST_CODE_LOCATION)
+  public void startLocate() {
+    ToastUtil.TextToast("开始定位");
   }
 
 }
