@@ -3,7 +3,7 @@ package com.lptiyu.tanke;
 import android.app.Application;
 
 import com.baidu.mapapi.SDKInitializer;
-import com.lptiyu.tanke.utils.AppData;
+import com.lptiyu.tanke.global.AppData;
 
 import timber.log.Timber;
 
@@ -19,7 +19,6 @@ public class RunApplication extends Application {
   public void onCreate() {
     super.onCreate();
     AppData.init(this);
-//    LeakCanary.install(this);
     SDKInitializer.initialize(this);
     Timber.plant(new Timber.DebugTree());
   }

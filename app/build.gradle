@@ -62,20 +62,25 @@ android {
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     testCompile 'junit:junit:4.12'
+    compile 'com.jakewharton.timber:timber:4.1.2'
     compile 'io.reactivex:rxandroid:1.2.0'
-    compile 'com.android.support:appcompat-v7:23.3.0'
+    compile 'com.android.support:appcompat-v7:23.4.0'
     compile 'com.github.bumptech.glide:glide:3.7.0'
     compile 'com.squareup.retrofit2:retrofit:2.0.2'
     compile 'com.squareup.okhttp3:okhttp:3.2.0'
     compile 'com.google.code.gson:gson:2.6.2'
-//    Baidu Map
+    //    RecyclerView
+    compile 'com.android.support:recyclerview-v7:23.4.0'
+    //    CardView
+    compile 'com.android.support:cardview-v7:23.4.0'
+    //    Baidu Map
     compile files('libs/BaiduLBS_Android.jar')
     compile files('libs/BaiduTraceSDK_v2_1_9.jar')
-//    ButterKnife
+    //    ButterKnife
     compile 'com.jakewharton:butterknife:8.0.1'
     apt 'com.jakewharton:butterknife-compiler:8.0.1'
-
-//    Zxing
+    //    Zxing
     compile project(path: ':zxinglib')
-    compile 'com.jakewharton.timber:timber:4.1.2'
+    compile 'com.squareup.retrofit2:converter-gson:2.0.2'
+    compile 'com.squareup.retrofit2:adapter-rxjava:2.0.2'
 }
