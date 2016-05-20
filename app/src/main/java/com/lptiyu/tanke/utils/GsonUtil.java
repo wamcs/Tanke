@@ -9,10 +9,12 @@ import com.google.gson.Gson;
  */
 public class GsonUtil {
 
+  public static Gson sGson = new Gson();
+
   public static <T> T parseJson(String jsonString, Class<T> clazz) {
     T t = null;
     try {
-      Gson gson = new Gson();
+      Gson gson = sGson;
       t = gson.fromJson(jsonString, clazz);
     } catch (Exception e) {
       // TODO: handle exception

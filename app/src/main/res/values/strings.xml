@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">探客天下</string>
     <string name="scanner">扫一扫</string>
+    <string name="no_network">当前没有网络</string>
 </resources>
