@@ -5,9 +5,13 @@ import android.os.Bundle;
 import com.lptiyu.tanke.R;
 import com.lptiyu.tanke.base.controller.ActivityController;
 import com.lptiyu.tanke.base.ui.BaseActivity;
+import com.lptiyu.tanke.bean.GameEntry;
 import com.lptiyu.tanke.io.net.HttpService;
 import com.lptiyu.tanke.utils.NetworkUtil;
 import com.lptiyu.tanke.utils.ToastUtil;
+
+import rx.Observable;
+import rx.functions.Action0;
 
 
 /**
@@ -35,12 +39,16 @@ public class GameDisplayActivity extends BaseActivity {
       return;
     }
 
-    HttpService.getInstance().getGameService()
-        .getGamePage();
+    HttpService.getGameService()
+        .getGamePage().doOnSubscribe(new Action0() {
+      @Override
+      public void call() {
 
-  }
+      }
+    });
 
-  public void loading() {
+
+
 
   }
 

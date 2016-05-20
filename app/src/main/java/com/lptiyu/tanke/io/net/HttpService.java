@@ -18,17 +18,13 @@ public class HttpService {
 
   private static final int DEFAULT_TIMEOUT = 5;
 
-  private Retrofit retrofit;
+  private static GameService gameService;
 
-  private GameService gameService;
-
-  //构造方法私有
-  private HttpService() {
-    //手动创建一个OkHttpClient并设置超时时间
+  static {
     OkHttpClient.Builder httpClientBuilder = new OkHttpClient.Builder();
     httpClientBuilder.connectTimeout(DEFAULT_TIMEOUT, TimeUnit.SECONDS);
 
-    retrofit = new Retrofit.Builder()
+    Retrofit retrofit = new Retrofit.Builder()
         .client(httpClientBuilder.build())
         .addConverterFactory(GsonConverterFactory.create())
         .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
@@ -38,16 +34,10 @@ public class HttpService {
     gameService = retrofit.create(GameService.class);
   }
 
-  private static class SingletonHolder {
-    private static final HttpService INSTANCE = new HttpService();
+  private HttpService() {
   }
 
-  //获取单例
-  public static HttpService getInstance() {
-    return SingletonHolder.INSTANCE;
-  }
-
-  public GameService getGameService() {
+  public static GameService getGameService() {
     return gameService;
   }
 
