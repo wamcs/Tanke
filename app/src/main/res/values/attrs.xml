@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="LoginEditView">
+        <attr name="takSymbolDrawable" format="reference"/>
+        <attr name="takHintText" format="reference|string"/>
+        <attr name="takTextSize" format="reference|dimension"/>
+        <attr name="takPassWordType" format="boolean"/>
+        <attr name="takInnerHeight" format="reference|dimension"/>
+        <attr name="takBaseColor" format="color|reference"/>
+        <attr name="takStrokeWidth" format="reference|dimension"/>
+
+    </declare-styleable>
+</resources>

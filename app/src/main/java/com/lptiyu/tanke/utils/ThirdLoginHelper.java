@@ -3,6 +3,8 @@ package com.lptiyu.tanke.utils;
 import android.content.Context;
 import android.util.Log;
 
+import com.lptiyu.tanke.global.AppData;
+
 import java.util.HashMap;
 
 import cn.sharesdk.framework.Platform;

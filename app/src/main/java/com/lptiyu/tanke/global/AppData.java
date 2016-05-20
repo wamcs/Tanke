@@ -1,4 +1,4 @@
-package com.lptiyu.tanke.utils;
+package com.lptiyu.tanke.global;
 
 import android.content.Context;
 

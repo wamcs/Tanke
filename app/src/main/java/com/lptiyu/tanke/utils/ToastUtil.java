@@ -8,6 +8,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.lptiyu.tanke.global.AppData;
+
 /**
  * @author : xiaoxiaoda
  *         date: 16-5-6
@@ -28,6 +30,11 @@ public class ToastUtil {
    */
   public static void TextToast(CharSequence text) {
     toast = Toast.makeText(CONTEXT, text, LENGTH_SHORT);
+    toast.show();
+  }
+
+  public static void TextToast(int resId) {
+    toast = Toast.makeText(CONTEXT, resId, LENGTH_SHORT);
     toast.show();
   }
 
