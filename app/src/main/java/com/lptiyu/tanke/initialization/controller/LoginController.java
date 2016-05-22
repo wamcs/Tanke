@@ -68,12 +68,6 @@ public class LoginController extends ActivityController {
 
     }
 
-    private void initLogin(){
-        phoneNumber = Accounts.getPhoneNumber();
-        secret = Accounts.getSecret();
-
-    }
-
     private void initClickEvent(){
         mQqLogin.setOnTouchListener(new View.OnTouchListener() {
             @Override
