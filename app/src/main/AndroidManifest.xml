@@ -154,8 +154,6 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".gamedisplay.GameDisplayActivity"></activity>
-
     </application>
 
 </manifest>

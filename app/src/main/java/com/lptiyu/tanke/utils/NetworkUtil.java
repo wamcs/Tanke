@@ -14,7 +14,7 @@ import com.lptiyu.tanke.global.AppData;
 public class NetworkUtil {
 
   //TODO permission
-  public static boolean checkNetworkConnected() {
+  public static boolean checkIsNetworkConnected() {
     ConnectivityManager connMgr = (ConnectivityManager) AppData.getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
     return connMgr.getActiveNetworkInfo() != null;
   }

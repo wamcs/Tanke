@@ -1,6 +1,10 @@
 [
     {
-        "merged": "F:\\github\\Respositories\\Tanke\\number_picker\\build\\intermediates\\res\\merged\\androidTest\\debug\\layout\\number_picker_with_selector_wheel.xml",
-        "source": "F:\\github\\Respositories\\Tanke\\number_picker\\build\\intermediates\\bundles\\debug\\res\\layout\\number_picker_with_selector_wheel.xml"
+        "merged": "/Users/ldx/Development/AndroidStudio/Tanke/F:\\github\\Respositories\\Tanke\\number_picker\\build\\intermediates\\res\\merged\\androidTest\\debug\\layout\\number_picker_with_selector_wheel.xml",
+        "source": "/Users/ldx/Development/AndroidStudio/Tanke/F:\\github\\Respositories\\Tanke\\number_picker\\build\\intermediates\\bundles\\debug\\res\\layout\\number_picker_with_selector_wheel.xml"
+    },
+    {
+        "merged": "/Users/ldx/Development/AndroidStudio/Tanke/number_picker/build/intermediates/res/merged/androidTest/debug/layout/number_picker_with_selector_wheel.xml",
+        "source": "/Users/ldx/Development/AndroidStudio/Tanke/number_picker/build/intermediates/bundles/debug/res/layout/number_picker_with_selector_wheel.xml"
     }
 ]

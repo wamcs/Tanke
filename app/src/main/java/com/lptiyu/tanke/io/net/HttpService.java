@@ -1,7 +1,10 @@
 package com.lptiyu.tanke.io.net;
 
+import com.lptiyu.tanke.global.AppData;
+
 import java.util.concurrent.TimeUnit;
 
+import okhttp3.Cache;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
@@ -13,22 +16,20 @@ import retrofit2.converter.gson.GsonConverterFactory;
  *
  * @author ldx
  */
-public class HttpService {
+public final class HttpService {
   public static final String BASE_URL = "https://api.douban.com/v2/movie/";
 
   private static final int DEFAULT_TIMEOUT = 5;
 
-  private Retrofit retrofit;
+  private static GameService gameService;
 
-  private GameService gameService;
-
-  //构造方法私有
-  private HttpService() {
-    //手动创建一个OkHttpClient并设置超时时间
+  static {
     OkHttpClient.Builder httpClientBuilder = new OkHttpClient.Builder();
-    httpClientBuilder.connectTimeout(DEFAULT_TIMEOUT, TimeUnit.SECONDS);
 
-    retrofit = new Retrofit.Builder()
+    httpClientBuilder.connectTimeout(DEFAULT_TIMEOUT, TimeUnit.SECONDS);
+    httpClientBuilder.cache(new Cache(AppData.cacheDir("network"), 1024 * 1024 * 100));
+
+    Retrofit retrofit = new Retrofit.Builder()
         .client(httpClientBuilder.build())
         .addConverterFactory(GsonConverterFactory.create())
         .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
@@ -38,16 +39,10 @@ public class HttpService {
     gameService = retrofit.create(GameService.class);
   }
 
-  private static class SingletonHolder {
-    private static final HttpService INSTANCE = new HttpService();
+  private HttpService() {
   }
 
-  //获取单例
-  public static HttpService getInstance() {
-    return SingletonHolder.INSTANCE;
-  }
-
-  public GameService getGameService() {
+  public static GameService getGameService() {
     return gameService;
   }
 
