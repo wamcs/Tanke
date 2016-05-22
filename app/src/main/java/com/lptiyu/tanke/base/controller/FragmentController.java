@@ -2,6 +2,7 @@ package com.lptiyu.tanke.base.controller;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.view.View;
@@ -40,8 +41,24 @@ public abstract class FragmentController extends ContextController {
 
   }
 
+  public void onDetach() {
+
+  }
+
   public void onDestroyView() {
 
+  }
+
+  public Fragment getFragment() {
+    return mFragment;
+  }
+
+  public void startActivity(Intent intent) {
+    mFragment.startActivity(intent);
+  }
+
+  public void startActivity(Intent intent, @Nullable Bundle bundle) {
+    mFragment.startActivity(intent, bundle);
   }
 
   public void startActivityForResult(Intent intent, int requestCode) {

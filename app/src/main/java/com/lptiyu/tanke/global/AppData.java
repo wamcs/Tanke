@@ -2,6 +2,8 @@ package com.lptiyu.tanke.global;
 
 import android.content.Context;
 
+import java.io.File;
+
 /**
  * @author : xiaoxiaoda
  *         date: 16-5-6
@@ -19,7 +21,15 @@ public class AppData {
     sContext = context.getApplicationContext();
   }
 
-  public static String getPackageName(){
+  public static String getPackageName() {
     return sContext.getPackageName();
+  }
+
+  public static File cacheDir() {
+    return sContext.getCacheDir();
+  }
+
+  public static File cacheDir(String dir) {
+    return new File(sContext.getCacheDir(), dir);
   }
 }
