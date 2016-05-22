@@ -2,9 +2,17 @@ package com.lptiyu.tanke.permission;
 
 import android.Manifest;
 import android.annotation.TargetApi;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Build;
+import android.provider.Settings;
+import android.support.annotation.NonNull;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+
+import com.lptiyu.tanke.R;
 
 import java.lang.reflect.Method;
 import java.util.List;
@@ -29,24 +37,26 @@ public class PermissionDispatcher {
     nextStepWithCheck(activity, PERMISSION_REQUEST_CODE_LOCATION);
   }
 
-  public static void onRequestPermissionsResult(AppCompatActivity activity, int requestCode, int[] grantResults) {
-
-    //permission is granted
-    if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-      // Permission Granted
-      invokeTargetMethodWithRequestCode(activity, requestCode);
-    }
+  public static void onRequestPermissionsResult(final AppCompatActivity activity, int requestCode, @NonNull String[] permissions, int[] grantResults) {
 
     //permission is denied
     switch (requestCode) {
       case PERMISSION_REQUEST_CODE_CAMERA:
-        //TODO : intent to setting, open the camera permission
-        Timber.e("Camera Permission Denied");
+        if (permissions[0].equals(Manifest.permission.CAMERA) && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+          invokeTargetMethodWithRequestCode(activity, requestCode);
+          return;
+        }
+        showMessageOKCancel(activity, activity.getString(R.string.camera_permission_rationale));
         break;
 
       case PERMISSION_REQUEST_CODE_LOCATION:
+        if (permissions[0].equals(Manifest.permission.ACCESS_FINE_LOCATION) && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+          invokeTargetMethodWithRequestCode(activity, requestCode);
+          return;
+        }
         //TODO : intent to setting, open the camera permission
-        Timber.e("Location Permission Denied");
+        showMessageOKCancel(activity, activity.getString(R.string.camera_permission_rationale));
+        ;
         break;
     }
   }
@@ -69,34 +79,58 @@ public class PermissionDispatcher {
       invokeTargetMethodWithRequestCode(activity, requestCodeAskPermission);
       return;
     }
-
     switch (requestCodeAskPermission) {
       case PERMISSION_REQUEST_CODE_CAMERA:
         if (PermissionUtil.hasCameraPermission(activity)) {
           invokeTargetMethodWithRequestCode(activity, requestCodeAskPermission);
           return;
         } else {
-          if (PermissionUtil.shouldShowCameraRequestRationale(activity)) {
+          if (PermissionUtil.shouldShowLocateRequestRationale(activity)) {
             //TODO : show the rationale why you need this permission
-          } else {
-            activity.requestPermissions(new String[]{Manifest.permission.CAMERA}, requestCodeAskPermission);
+            showMessageOKCancel(activity, activity.getString(R.string.camera_permission_rationale));
+            return;
           }
+          activity.requestPermissions(new String[]{Manifest.permission.CAMERA}, requestCodeAskPermission);
         }
         break;
 
       case PERMISSION_REQUEST_CODE_LOCATION:
+        //TODO : 这里好迷阿，定位权限和相机权限默认状态根本就不同，定位权限处于一种半拒绝的状态，相机权限处于一种询问的状态
         if (PermissionUtil.hasLocatePermission(activity)) {
           invokeTargetMethodWithRequestCode(activity, requestCodeAskPermission);
           return;
         } else {
-          if (PermissionUtil.shouldShowLocateRequestRationale(activity)) {
+          if (!PermissionUtil.shouldShowLocateRequestRationale(activity)) {
             //TODO : show the rationale why you need this permission
-          } else {
-            activity.requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, requestCodeAskPermission);
+            showMessageOKCancel(activity, activity.getString(R.string.location_permission_rationale));
+            return;
           }
+          activity.requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, requestCodeAskPermission);
         }
         break;
     }
+  }
+
+  private static void showMessageOKCancel(AppCompatActivity activity, String message) {
+    final AppCompatActivity appCompatActivity = activity;
+    new AlertDialog.Builder(activity)
+        .setMessage(message)
+        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+          @Override
+          public void onClick(DialogInterface dialog, int which) {
+            startPermissionSettingActivity(appCompatActivity);
+          }
+        })
+        .setNegativeButton("Cancel", null)
+        .create()
+        .show();
+  }
+
+  private static void startPermissionSettingActivity(AppCompatActivity appCompatActivity) {
+    Intent intent = new Intent();
+    intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+    intent.setData(Uri.fromParts("package", appCompatActivity.getPackageName(), null));
+    appCompatActivity.startActivity(intent);
   }
 
 }

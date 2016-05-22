@@ -1,5 +1,6 @@
 package com.lptiyu.tanke;
 
+import android.annotation.TargetApi;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -37,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
   public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
     super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     // NOTE: delegate the permission handling to generated method
-    PermissionDispatcher.onRequestPermissionsResult(this, requestCode, grantResults);
+    PermissionDispatcher.onRequestPermissionsResult(this, requestCode, permissions, grantResults);
   }
 
 

@@ -2,4 +2,8 @@
     <string name="app_name">探客天下</string>
     <string name="scanner">扫一扫</string>
     <string name="no_network">当前没有网络</string>
+    <string name="no_camera_permission">请您打开相机权限</string>
+    <string name="no_location_permission">请您打开定位权限</string>
+    <string name="camera_permission_rationale">我们需要使用您的相机来进行扫描二维码的功能，请点击确认前往授权，谢谢^_^</string>
+    <string name="location_permission_rationale">我们需要使用您的位置信息，为了继续为您提供服务，清点击确认前往授权，谢谢^_^"，请点击确认前往授权，谢谢^_^</string>
 </resources>
