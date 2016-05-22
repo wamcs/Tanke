@@ -2,4 +2,30 @@
     <string name="app_name">探客天下</string>
     <string name="scanner">扫一扫</string>
     <string name="no_network">当前没有网络</string>
+
+    <string name="name">步 道 运 动</string>
+
+    <string name="please_input_secret">请输入密码</string>
+    <string name="please_input_phone">请输入手机号</string>
+    <string name="login_new_user">新用户注册 ></string>
+    <string name="login_forget_secret">忘记密码？</string>
+    <string name="login_other_method">使用其他账号登陆</string>
+    <string name="login">登录</string>
+
+    <!-- RegisterActivity Text Area-->
+    <!--SignUpActivity Text Area-->
+    <string name="user_sign_up">注册</string>
+    <string name="user_name">手机号</string>
+    <string name="password">密码</string>
+    <string name="none_user_phone">未输入手机号</string>
+    <string name="none_user_password">未输入密码</string>
+    <string name="none_user_code">未输入验证码</string>
+    <string name="error_user_code">验证码错误</string>
+    <string name="error_user_phone">手机号格式错误</string>
+    <string name="input_phone">请输入手机号</string>
+    <string name="input_password">请输入密码</string>
+    <string name="input_verify_code">请输入验证码</string>
+    <string name="get_verify_code">获取验证码</string>
+    <string name="signup">确认注册</string>
+
 </resources>

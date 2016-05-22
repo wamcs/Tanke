@@ -6,8 +6,17 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowBackground">@android:color/white</item>
     </style>
 
+    <!--Toolbar Theme Area-->
+    <style name="Toolbar">
+        <item name="android:layout_height">?attr/actionBarSize</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:background">?attr/colorPrimary</item>
+    </style>
 
     <!-- Number Picker Style -->
     <style name="numberPickerStyle" parent="NPWidget.Holo.Light.NumberPicker">
@@ -16,5 +25,18 @@
         <item name="android:layout_margin">@dimen/number_picker_margin</item>
 
     </style>
+    
+    <!-- Login Activity Style-->
+    <style name="loginActivityButton">
+        <item name="android:layout_height">@dimen/login_activity_edit_layout_button_height</item>
+        <item name="android:layout_width">@dimen/login_activity_edit_layout_button_width</item>
+        <item name="android:layout_marginTop">@dimen/login_activity_edit_layout_edit_to_button</item>
+        <item name="android:textSize">10sp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@color/white10</item>
+        <item name="android:background">@drawable/login_little_button_bg</item>
+
+    </style>
+
 
 </resources>

@@ -1,6 +1,151 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
 
-</LinearLayout>
+    >
+
+    <android.support.v7.widget.Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@id/tool_bar"
+        style="@style/Toolbar">
+
+    </android.support.v7.widget.Toolbar>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/login_activity_login_button"
+        android:background="@mipmap/img_login_backgroud"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/login_activity_title"
+            android:layout_width="@dimen/login_activity_title_size"
+            android:layout_height="0dp"
+            android:text="@string/name"
+            android:textSize="@dimen/login_activity_title_text_size"
+            android:gravity="center"
+            android:textColor="@color/login_activity_title_color"
+            android:layout_gravity="center"
+            android:layout_weight="194"/>
+
+        <RelativeLayout
+            android:layout_weight="180"
+            android:layout_width="match_parent"
+            android:id="@+id/relative_layout"
+            android:layout_height="0dp"
+            android:layout_marginLeft="@dimen/login_activity_edit_layout_margin"
+            android:layout_marginRight="@dimen/login_activity_edit_layout_margin"
+            >
+
+            <com.lptiyu.tanke.widget.LoginEditView
+                android:layout_width="match_parent"
+                android:layout_marginBottom="@dimen/login_activity_edit_layout_item_distance"
+                android:layout_height="@dimen/custom_edit_height"
+                android:id="@id/login_activity_input_phone"
+                android:gravity="center_vertical"
+                app:takHintText="@string/please_input_phone"
+                app:takSymbolDrawable="@mipmap/img_block"
+                app:takInnerHeight="@dimen/custom_edit_inner_height"
+                app:takTextSize="@dimen/custom_edit_text_size"
+                app:takBaseColor="@color/custom_edit_color"
+                app:takImageToText="@dimen/custom_edit_distance"
+                />
+
+            <com.lptiyu.tanke.widget.LoginEditView
+                android:layout_width="match_parent"
+                android:layout_below="@id/login_activity_input_phone"
+                android:layout_height="@dimen/custom_edit_height"
+                android:id="@id/login_activity_input_secret"
+                android:gravity="center_vertical"
+                app:takPassWordType="true"
+                app:takHintText="@string/please_input_secret"
+                app:takSymbolDrawable="@mipmap/img_block"
+                app:takInnerHeight="@dimen/custom_edit_inner_height"
+                app:takTextSize="@dimen/custom_edit_text_size"
+                app:takBaseColor="@color/custom_edit_color"
+                app:takImageToText="@dimen/custom_edit_distance"
+                />
+
+            <TextView
+                android:layout_below="@id/login_activity_input_secret"
+                android:id="@id/login_activity_sign_up_button"
+                style="@style/loginActivityButton"
+                android:text="@string/login_new_user"
+                />
+
+            <TextView
+                android:layout_below="@id/login_activity_input_secret"
+                android:id="@id/login_activity_forget_secret_button"
+                style="@style/loginActivityButton"
+                android:layout_alignParentRight="true"
+                android:layout="@id/login_activity_sign_up_button"
+                android:text="@string/login_forget_secret"
+                />
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_weight="151"
+            android:layout_height="0dp" />
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:orientation="vertical"
+            android:layout_weight="70">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="7sp"
+                android:textColor="@color/white10"
+                android:layout_gravity="center"
+                android:text="@string/login_other_method"
+                />
+            <LinearLayout
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="13dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center">
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@id/login_activity_weixin_button"
+                    android:layout_marginRight="16dp"
+                    android:background="@mipmap/img_weibo"/>
+                <ImageView
+                    android:layout_marginRight="16dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@id/login_activity_qq_button"
+                    android:background="@mipmap/img_weibo"/>
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@id/login_activity_weibo_button"
+                    android:background="@mipmap/img_weibo"/>
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+    
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@drawable/login_activity_login_button_bg"
+        android:text="@string/login"
+        android:textColor="@color/white10"
+        android:textSize="13sp"
+        android:id="@id/login_activity_login_button"
+        android:layout_alignParentBottom="true"/>
+</RelativeLayout>
+

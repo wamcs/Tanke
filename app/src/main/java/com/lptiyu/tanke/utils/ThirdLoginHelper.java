@@ -21,9 +21,9 @@ import cn.sharesdk.wechat.friends.Wechat;
  */
 public class ThirdLoginHelper implements PlatformActionListener {
 
-    private final String QZONE = QZone.NAME;
-    private final String WECHAT = Wechat.NAME;
-    private final String WEIBO = SinaWeibo.NAME;
+    public static final String QZONE = QZone.NAME;
+    public static final String WECHAT = Wechat.NAME;
+    public static final String WEIBO = SinaWeibo.NAME;
 
     private static Context context = AppData.getContext();
 
@@ -63,7 +63,7 @@ public class ThirdLoginHelper implements PlatformActionListener {
     }
 
     public void login(String id) {
-
+        //TODO:send message to server,turn activity
     }
 
 
