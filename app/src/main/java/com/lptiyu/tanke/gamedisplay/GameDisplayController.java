@@ -158,7 +158,6 @@ public class GameDisplayController extends FragmentController {
           @Override
           public void call(String s) {
             ShaPrefer.put(getString(R.string.main_page_location_key), s);
-            fragment.recyclerView
           }
         });
   }
