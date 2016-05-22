@@ -5,6 +5,7 @@ import android.app.Application;
 import com.baidu.mapapi.SDKInitializer;
 import com.lptiyu.tanke.global.AppData;
 
+import cn.sharesdk.framework.ShareSDK;
 import timber.log.Timber;
 
 /**
@@ -19,6 +20,7 @@ public class RunApplication extends Application {
   public void onCreate() {
     super.onCreate();
     AppData.init(this);
+    ShareSDK.initSDK(this, "1276c2d783264");
     SDKInitializer.initialize(this);
     Timber.plant(new Timber.DebugTree());
   }

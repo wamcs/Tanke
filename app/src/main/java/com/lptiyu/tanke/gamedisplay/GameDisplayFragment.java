@@ -61,12 +61,13 @@ public class GameDisplayFragment extends BaseFragment {
           public void onClick(DialogInterface dialog, int which) {
 
           }
-        }).setNegativeButton(R.string.dismiss, new DialogInterface.OnClickListener() {
-      @Override
-      public void onClick(DialogInterface dialog, int which) {
+        })
+        .setNegativeButton(R.string.dismiss, new DialogInterface.OnClickListener() {
+          @Override
+          public void onClick(DialogInterface dialog, int which) {
 
-      }
-    })
+          }
+        })
     ;
   }
 

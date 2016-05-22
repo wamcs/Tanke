@@ -1,4 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <item name="tool_bar" type="id"/>
+
+    <item name="login_activity_input_phone" type="id"/>
+    <item name="login_activity_input_secret" type="id"/>
+    <item name="login_activity_forget_secret_button" type="id"/>
+    <item name="login_activity_sign_up_button" type="id"/>
+    <item name="login_activity_weibo_button" type="id"/>
+    <item name="login_activity_weixin_button" type="id"/>
+    <item name="login_activity_qq_button" type="id"/>
+    <item name="login_activity_login_button" type="id"/>
+
+
 </resources>

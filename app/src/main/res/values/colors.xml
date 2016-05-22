@@ -3,4 +3,49 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+
+    <color name="black00">#00000000</color>
+    <color name="black01">#09000000</color>
+    <color name="black02">#32000000</color>
+    <color name="black03">#4b000000</color>
+    <color name="black04">#64000000</color>
+    <color name="black05">#7d000000</color>
+    <color name="black06">#96000000</color>
+    <color name="black07">#af000000</color>
+    <color name="black08">#c8000000</color>
+    <color name="black09">#e1000000</color>
+    <color name="black10">#FF000000</color>
+    <color name="pure_black">#000000</color>
+
+    <color name="white00">#00FFFFFF</color>
+    <color name="white01">#09FFFFFF</color>
+    <color name="white02">#32FFFFFF</color>
+    <color name="white03">#4bFFFFFF</color>
+    <color name="white04">#64FFFFFF</color>
+    <color name="white05">#7dFFFFFF</color>
+    <color name="white06">#96FFFFFF</color>
+    <color name="white07">#afFFFFFF</color>
+    <color name="white08">#c8FFFFFF</color>
+    <color name="white09">#e1FFFFFF</color>
+    <color name="white10">#FFFFFFFF</color>
+
+    <color name="grey10">#FFFFFFFF</color>
+    <color name="grey09">#e5e5e5</color>
+    <color name="grey08">#cccccc</color>
+    <color name="grey07">#b2b2b2</color>
+    <color name="grey06">#999999</color>
+    <color name="grey05">#7f7f7f</color>
+    <color name="grey04">#666666</color>
+    <color name="grey03">#4c4c4c</color>
+    <color name="grey02">#333333</color>
+    <color name="grey01">#191919</color>
+    <color name="grey00">#FF000000</color>
+
+    <!-- LoginEditText colors-->
+    <color name="custom_edit_color">#7c99d6</color>
+
+    <!-- LoginActivity colors-->
+    <color name="login_activity_title_color">#769df6</color>
+    <color name="login_activity_button_pressed">#4e4ebd</color>
+
 </resources>
