@@ -4,6 +4,7 @@ import android.app.Application;
 
 import com.baidu.mapapi.SDKInitializer;
 import com.lptiyu.tanke.global.AppData;
+import com.lptiyu.tanke.utils.DirUtils;
 
 import timber.log.Timber;
 
@@ -20,6 +21,7 @@ public class RunApplication extends Application {
     super.onCreate();
     AppData.init(this);
     SDKInitializer.initialize(this);
+    DirUtils.init(this);
     Timber.plant(new Timber.DebugTree());
   }
 }
