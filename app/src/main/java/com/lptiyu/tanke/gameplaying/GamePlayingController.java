@@ -17,8 +17,8 @@ import butterknife.ButterKnife;
  */
 public class GamePlayingController extends ActivityController {
 
-  @BindView(R.id.map_view)
-  TextureMapView mapView;
+//  @BindView(R.id.map_view)
+//  TextureMapView mapView;
 
   private MapHelper mapHelper;
 
@@ -29,31 +29,30 @@ public class GamePlayingController extends ActivityController {
   }
 
   private void init() {
-    mapHelper = new MapHelper(mapView);
+//    mapHelper = new MapHelper(mapView);
 
   }
 
   @Override
   public void onResume() {
     super.onResume();
-    mapHelper.onResume();
+//    mapHelper.onResume();
   }
 
   @Override
   public void onPause() {
     super.onPause();
-    mapHelper.onPause();
+//    mapHelper.onPause();
   }
 
   @Override
   public void onDestroy() {
     super.onDestroy();
-    mapHelper.onDestroy();
+//    mapHelper.onDestroy();
   }
 
   @Override
   protected boolean isToolbarEnable() {
     return false;
   }
-
 }

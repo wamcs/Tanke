@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <item name="tool_bar" type="id"/>
+    <item name="default_tool_bar_imageview" type="id"/>
+    <item name="default_tool_bar_textview" type="id"/>
 </resources>

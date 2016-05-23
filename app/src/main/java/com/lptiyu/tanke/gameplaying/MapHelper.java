@@ -34,7 +34,7 @@ public class MapHelper {
     uiSettings.setRotateGesturesEnabled(false);
     uiSettings.setOverlookingGesturesEnabled(false);
     baiduMap.setMyLocationEnabled(true);
-    baiduMap.setMyLocationConfigeration(initMyLocationConfigeration());
+    baiduMap.setMyLocationConfigeration(initMyLocationConfiguration());
   }
 
   private void initEvent() {
@@ -53,7 +53,7 @@ public class MapHelper {
     mapView.onDestroy();
   }
 
-  private MyLocationConfiguration initMyLocationConfigeration() {
+  private MyLocationConfiguration initMyLocationConfiguration() {
     BitmapDescriptor bitmapDescriptor = BitmapDescriptorFactory.fromResource(R.mipmap.ic_launcher);
     return new MyLocationConfiguration(null, true, bitmapDescriptor);
   }
