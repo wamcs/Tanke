@@ -10,9 +10,9 @@ import android.os.Build;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 
 import com.lptiyu.tanke.R;
+import com.lptiyu.tanke.base.ui.BaseActivity;
 
 import java.lang.reflect.Method;
 import java.util.List;
@@ -29,15 +29,15 @@ public class PermissionDispatcher {
   public static final int PERMISSION_REQUEST_CODE_CAMERA = 1;
   public static final int PERMISSION_REQUEST_CODE_LOCATION = 2;
 
-  public static void showCameraWithCheck(AppCompatActivity activity) {
+  public static void showCameraWithCheck(BaseActivity activity) {
     nextStepWithCheck(activity, PERMISSION_REQUEST_CODE_CAMERA);
   }
 
-  public static void startLocateWithCheck(AppCompatActivity activity) {
+  public static void startLocateWithCheck(BaseActivity activity) {
     nextStepWithCheck(activity, PERMISSION_REQUEST_CODE_LOCATION);
   }
 
-  public static void onRequestPermissionsResult(final AppCompatActivity activity, int requestCode, @NonNull String[] permissions, int[] grantResults) {
+  public static void onRequestPermissionsResult(final BaseActivity activity, int requestCode, @NonNull String[] permissions, int[] grantResults) {
 
     //permission is denied
     switch (requestCode) {
@@ -56,13 +56,15 @@ public class PermissionDispatcher {
         }
         //TODO : intent to setting, open the camera permission
         showMessageOKCancel(activity, activity.getString(R.string.camera_permission_rationale));
-        ;
         break;
     }
   }
 
-  private static void invokeTargetMethodWithRequestCode(AppCompatActivity activity, int requestCodeAskPermission) {
-    List<Method> targetMethods = PermissionUtil.findTargetMethodWithRequestCode(activity, requestCodeAskPermission);
+  private static void invokeTargetMethodWithRequestCode(BaseActivity activity, int requestCodeAskPermission) {
+    List<Method> targetMethods = PermissionUtil.findTargetMethodWithRequestCode(activity.getClass(), requestCodeAskPermission);
+    if (activity.getController() != null) {
+      targetMethods.addAll(PermissionUtil.findTargetMethodWithRequestCode(activity.getController().getClass(), requestCodeAskPermission));
+    }
     for (Method m : targetMethods) {
       Timber.e(m.getName());
       try {
@@ -74,7 +76,7 @@ public class PermissionDispatcher {
   }
 
   @TargetApi(Build.VERSION_CODES.M)
-  private static void nextStepWithCheck(AppCompatActivity activity, int requestCodeAskPermission) {
+  private static void nextStepWithCheck(BaseActivity activity, int requestCodeAskPermission) {
     if (Build.VERSION.SDK_INT < 23) {
       invokeTargetMethodWithRequestCode(activity, requestCodeAskPermission);
       return;
@@ -111,8 +113,8 @@ public class PermissionDispatcher {
     }
   }
 
-  private static void showMessageOKCancel(AppCompatActivity activity, String message) {
-    final AppCompatActivity appCompatActivity = activity;
+  private static void showMessageOKCancel(BaseActivity activity, String message) {
+    final BaseActivity appCompatActivity = activity;
     new AlertDialog.Builder(activity)
         .setMessage(message)
         .setPositiveButton("OK", new DialogInterface.OnClickListener() {
@@ -126,7 +128,7 @@ public class PermissionDispatcher {
         .show();
   }
 
-  private static void startPermissionSettingActivity(AppCompatActivity appCompatActivity) {
+  private static void startPermissionSettingActivity(BaseActivity appCompatActivity) {
     Intent intent = new Intent();
     intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
     intent.setData(Uri.fromParts("package", appCompatActivity.getPackageName(), null));

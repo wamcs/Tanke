@@ -51,9 +51,8 @@ class PermissionUtil {
     return shouldShowRequestRational(activity, Manifest.permission.ACCESS_FINE_LOCATION);
   }
 
-  public static List<Method> findTargetMethodWithRequestCode(AppCompatActivity activity, int requestCodeAskPermission) {
+  public static List<Method> findTargetMethodWithRequestCode(Class clazz, int requestCodeAskPermission) {
     List<Method> targetMethods = new ArrayList<>();
-    Class<?> clazz = activity.getClass();
     Method[] methods = clazz.getDeclaredMethods();
     for (Method m : methods) {
       Annotation annotation = m.getAnnotation(TargetMethod.class);

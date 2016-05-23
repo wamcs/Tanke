@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <item name="tool_bar" type="id"/>
-<<<<<<< HEAD
     <item name="default_tool_bar_imageview" type="id"/>
     <item name="default_tool_bar_textview" type="id"/>
-=======
 
     <item name="login_activity_input_phone" type="id"/>
     <item name="login_activity_input_secret" type="id"/>
@@ -16,5 +14,4 @@
     <item name="login_activity_login_button" type="id"/>
 
 
->>>>>>> 740d8a989766d04351e27f5b4445a9087d5bb5b6
 </resources>

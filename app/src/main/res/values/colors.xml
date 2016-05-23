@@ -4,9 +4,8 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
 
-<<<<<<< HEAD
     <color name="default_font_color">#fff</color>
-=======
+
     <color name="black00">#00000000</color>
     <color name="black01">#09000000</color>
     <color name="black02">#32000000</color>
@@ -50,6 +49,5 @@
     <!-- LoginActivity colors-->
     <color name="login_activity_title_color">#769df6</color>
     <color name="login_activity_button_pressed">#4e4ebd</color>
->>>>>>> 740d8a989766d04351e27f5b4445a9087d5bb5b6
 
 </resources>

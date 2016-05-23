@@ -7,19 +7,8 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:windowActionBar">false</item>
-<<<<<<< HEAD
-        <item name="android:windowNoTitle">true</item>
-    </style>
-
-    <!--Toolbar Theme Area-->
-    <style name="Toolbar">
-        <item name="android:layout_height">?attr/actionBarSize</item>
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:background">?attr/colorPrimary</item>
-=======
         <item name="windowNoTitle">true</item>
         <item name="android:windowBackground">@android:color/white</item>
->>>>>>> 740d8a989766d04351e27f5b4445a9087d5bb5b6
     </style>
 
     <!--Toolbar Theme Area-->
@@ -27,6 +16,7 @@
         <item name="android:layout_height">?attr/actionBarSize</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:background">?attr/colorPrimary</item>
+        <item name="contentInsetStart">0dp</item>
     </style>
 
     <!-- Number Picker Style -->

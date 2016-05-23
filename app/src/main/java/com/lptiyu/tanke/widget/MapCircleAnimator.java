@@ -1,4 +1,4 @@
-package com.lptiyu.tanke.gameplaying.widget;
+package com.lptiyu.tanke.widget;
 
 import android.animation.ValueAnimator;
 import android.graphics.Color;

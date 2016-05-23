@@ -1,4 +1,4 @@
-package com.lptiyu.tanke.gameplaying.widget;
+package com.lptiyu.tanke.widget;
 
 import android.content.Context;
 import android.graphics.Bitmap;
