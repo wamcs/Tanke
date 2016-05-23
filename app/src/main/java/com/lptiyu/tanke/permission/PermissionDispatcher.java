@@ -61,14 +61,20 @@ public class PermissionDispatcher {
   }
 
   private static void invokeTargetMethodWithRequestCode(BaseActivity activity, int requestCodeAskPermission) {
-    List<Method> targetMethods = PermissionUtil.findTargetMethodWithRequestCode(activity.getClass(), requestCodeAskPermission);
-    if (activity.getController() != null) {
-      targetMethods.addAll(PermissionUtil.findTargetMethodWithRequestCode(activity.getController().getClass(), requestCodeAskPermission));
-    }
-    for (Method m : targetMethods) {
+    List<Method> targetActivityMethods = PermissionUtil.findTargetMethodWithRequestCode(activity.getClass(), requestCodeAskPermission);
+    List<Method> targetControllerMethods = PermissionUtil.findTargetMethodWithRequestCode(activity.getController().getClass(), requestCodeAskPermission);
+    for (Method m : targetActivityMethods) {
       Timber.e(m.getName());
       try {
         m.invoke(activity);
+      } catch (Exception e) {
+        e.printStackTrace();
+      }
+    }
+    for (Method m : targetControllerMethods) {
+      Timber.e(m.getName());
+      try {
+        m.invoke(activity.getController());
       } catch (Exception e) {
         e.printStackTrace();
       }

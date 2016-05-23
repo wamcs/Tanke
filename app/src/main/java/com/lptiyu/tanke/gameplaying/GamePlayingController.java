@@ -1,15 +1,19 @@
 package com.lptiyu.tanke.gameplaying;
 
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 
+import com.baidu.location.BDLocation;
+import com.baidu.location.BDLocationListener;
+import com.baidu.location.Poi;
 import com.baidu.mapapi.map.TextureMapView;
 import com.lptiyu.tanke.R;
 import com.lptiyu.tanke.base.controller.ActivityController;
 import com.lptiyu.tanke.base.ui.BaseActivity;
 import com.lptiyu.tanke.permission.PermissionDispatcher;
 import com.lptiyu.tanke.permission.TargetMethod;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -21,13 +25,14 @@ import timber.log.Timber;
  *         date: 16-5-22
  *         email: wonderfulifeel@gmail.com
  */
-public class GamePlayingController extends ActivityController {
+public class GamePlayingController extends ActivityController implements
+    BDLocationListener {
 
   @BindView(R.id.map_view)
   TextureMapView mapView;
 
   private MapHelper mapHelper;
-
+  private LocateHelper locateHelper;
 
   public GamePlayingController(AppCompatActivity activity, View view) {
     super(activity, view);
@@ -37,6 +42,13 @@ public class GamePlayingController extends ActivityController {
 
   private void init() {
     mapHelper = new MapHelper(getActivity(), mapView);
+    locateHelper = new LocateHelper(getActivity().getApplicationContext());
+    locateHelper.registerLocationListener(this);
+  }
+
+  @Override
+  public void onReceiveLocation(BDLocation location) {
+    Timber.e(String.format("latitude : %f, longtitude : %f", location.getLatitude(), location.getLongitude()));
   }
 
   @OnClick(R.id.start_locate)
@@ -46,7 +58,7 @@ public class GamePlayingController extends ActivityController {
 
   @TargetMethod(requestCode = PermissionDispatcher.PERMISSION_REQUEST_CODE_LOCATION)
   void startLocateService() {
-    Timber.e("start locate");
+    locateHelper.startLocate();
   }
 
   @Override
@@ -63,8 +75,10 @@ public class GamePlayingController extends ActivityController {
 
   @Override
   public void onDestroy() {
-    super.onDestroy();
     mapHelper.onDestroy();
+    locateHelper.stopLocate();
+    locateHelper.unRegisterLocationListener(this);
+    super.onDestroy();
   }
 
   @Override
