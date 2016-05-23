@@ -8,6 +8,7 @@
     <string name="change_city_dialog_message">是否需要切换到当前城市(%s)?</string>
     <string name="ensure">确定</string>
     <string name="dismiss">取消</string>
+    <string name="exit">再按一次退出</string>
 
     <!--SharedPreference-->
     <string name="main_page_location_key">main_page_location</string>
@@ -22,7 +23,6 @@
     <string name="login">登录</string>
 
     <!-- RegisterActivity Text Area-->
-    <!--SignUpActivity Text Area-->
     <string name="user_sign_up">注册</string>
     <string name="user_name">手机号</string>
     <string name="password">密码</string>

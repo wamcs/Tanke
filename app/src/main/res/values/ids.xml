@@ -2,6 +2,7 @@
 <resources>
     <item name="tool_bar" type="id"/>
 
+    <!-- login Activity ids-->
     <item name="login_activity_input_phone" type="id"/>
     <item name="login_activity_input_secret" type="id"/>
     <item name="login_activity_forget_secret_button" type="id"/>
@@ -10,6 +11,9 @@
     <item name="login_activity_weixin_button" type="id"/>
     <item name="login_activity_qq_button" type="id"/>
     <item name="login_activity_login_button" type="id"/>
+
+    <!-- guide Activity ids-->
+    <item name="guide_activity_view_pager" type="id"/>
 
 
 </resources>

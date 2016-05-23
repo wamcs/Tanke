@@ -1,7 +1,9 @@
 package com.lptiyu.tanke.initialization.controller;
 
 import android.accounts.Account;
+import android.app.admin.SystemUpdatePolicy;
 import android.content.Intent;
+import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MotionEvent;
@@ -47,13 +49,11 @@ public class LoginController extends ActivityController {
     @BindView(R.id.login_activity_weibo_button)
     ImageView mWeiboLogin;
 
-    private String phoneNumber;
-    private String secret;
-
 
     private boolean isButtonEnable=true;
 
     private ThirdLoginHelper helper;
+    private long exitTime;
 
     public LoginController(AppCompatActivity activity, View view) {
         super(activity, view);
@@ -190,8 +190,8 @@ public class LoginController extends ActivityController {
             return;
         }
 
-        phoneNumber = mInputPhoneEditText.getText().toString();
-        secret = mInputSecretEditText.getText().toString();
+        String phoneNumber = mInputPhoneEditText.getText().toString();
+        String secret = mInputSecretEditText.getText().toString();
 
 
         //TODO:send message to server
@@ -210,5 +210,16 @@ public class LoginController extends ActivityController {
     @Override
     protected boolean isToolbarEnable() {
         return false;
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        if ((System.currentTimeMillis() - exitTime)>2000){
+            ToastUtil.TextToast(getString(R.string.exit));
+            exitTime = System.currentTimeMillis();
+        }else {
+            System.exit(0);
+        }
     }
 }
