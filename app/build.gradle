@@ -1,16 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'com.neenbedankt.android-apt'
 
-
-buildscript {
-    repositories {
-        mavenCentral()
-    }
-    dependencies {
-        classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
-    }
-}
-
 android {
     compileSdkVersion 23
     buildToolsVersion "23.0.3"
@@ -68,6 +58,9 @@ dependencies {
     compile 'com.github.bumptech.glide:glide:3.7.0'
     compile 'com.squareup.retrofit2:retrofit:2.0.2'
     compile 'com.squareup.okhttp3:okhttp:3.2.0'
+    compile 'com.squareup.retrofit2:converter-gson:2.0.2'
+    compile 'com.squareup.retrofit2:adapter-rxjava:2.0.2'
+    compile 'com.squareup.okhttp3:logging-interceptor:3.2.0'
     compile files('libs/MobCommons.jar')
     compile files('libs/MobTools.jar')
     compile files('libs/ShareSDK-Core-2.6.5.jar')
@@ -92,7 +85,4 @@ dependencies {
     apt 'com.jakewharton:butterknife-compiler:8.0.1'
     //    Zxing
     compile project(path: ':zxinglib')
-    compile 'com.squareup.retrofit2:converter-gson:2.0.2'
-    compile 'com.squareup.retrofit2:adapter-rxjava:2.0.2'
-
 }

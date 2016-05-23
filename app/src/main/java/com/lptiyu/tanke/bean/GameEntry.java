@@ -7,5 +7,7 @@ package com.lptiyu.tanke.bean;
  * @author ldx
  */
 public class GameEntry {
-
+  public int id;
+  public String url;
+  public String text;
 }

@@ -3,7 +3,6 @@ package com.lptiyu.tanke.base.ui;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 
 import com.lptiyu.tanke.base.controller.ActivityController;
@@ -48,13 +47,6 @@ public abstract class BaseFragment extends Fragment implements ControllerHolder 
     }
   }
 
-  @Override
-  public void onCreate(@Nullable Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
-    if (getArguments() != null) {
-      //get arguments
-    }
-  }
 
   @Override
   public void onResume() {
@@ -83,6 +75,9 @@ public abstract class BaseFragment extends Fragment implements ControllerHolder 
   @Override
   public void onDetach() {
     super.onDetach();
+    if (null != getController()) {
+      getController().onDetach();
+    }
   }
 
   @Override
