@@ -5,20 +5,18 @@ import android.view.View;
 
 import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
-import com.baidu.location.Poi;
 import com.baidu.mapapi.map.TextureMapView;
 import com.lptiyu.tanke.R;
 import com.lptiyu.tanke.base.controller.ActivityController;
 import com.lptiyu.tanke.base.ui.BaseActivity;
+import com.lptiyu.tanke.gameplaying.assist.LocateHelper;
+import com.lptiyu.tanke.gameplaying.assist.MapHelper;
 import com.lptiyu.tanke.permission.PermissionDispatcher;
 import com.lptiyu.tanke.permission.TargetMethod;
-
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import timber.log.Timber;
 
 /**
  * @author : xiaoxiaoda
@@ -48,7 +46,7 @@ public class GamePlayingController extends ActivityController implements
 
   @Override
   public void onReceiveLocation(BDLocation location) {
-    Timber.e(String.format("latitude : %f, longtitude : %f", location.getLatitude(), location.getLongitude()));
+    mapHelper.onReceiveLocation(location);
   }
 
   @OnClick(R.id.start_locate)
@@ -59,6 +57,7 @@ public class GamePlayingController extends ActivityController implements
   @TargetMethod(requestCode = PermissionDispatcher.PERMISSION_REQUEST_CODE_LOCATION)
   void startLocateService() {
     locateHelper.startLocate();
+    mapHelper.animateCameraToCurrentPosition();
   }
 
   @Override
