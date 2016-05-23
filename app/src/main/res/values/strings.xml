@@ -5,12 +5,14 @@
     <string name="loading_error">加载失败，请稍后再试</string>
     <string name="loading">加载中…</string>
     <string name="content_description">Image</string>
-    <string name="change_city_dialog_message">是否需要切换到当前城市(%s)?</string>
     <string name="ensure">确定</string>
     <string name="dismiss">取消</string>
+    <string name="has_downloaded_mask">has_downloaded_mask_%d</string>
 
-    <!--SharedPreference-->
+    <!--Game display page-->
+    <string name="change_city_dialog_message">是否需要切换到当前城市(%s)?</string>
     <string name="main_page_location_key">main_page_location</string>
+    <!--Game display page-->
 
     <string name="name">步 道 运 动</string>
 

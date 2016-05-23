@@ -27,7 +27,7 @@ import butterknife.ButterKnife;
  */
 public class GameDisplayFragment extends BaseFragment {
 
-  private FragmentController controller;
+  private GameDisplayController controller;
 
   @BindView(R.id.recycler_view)
   RecyclerView recyclerView;
@@ -82,7 +82,7 @@ public class GameDisplayFragment extends BaseFragment {
   }
 
   @Override
-  public FragmentController getController() {
+  public GameDisplayController getController() {
     return controller;
   }
 }

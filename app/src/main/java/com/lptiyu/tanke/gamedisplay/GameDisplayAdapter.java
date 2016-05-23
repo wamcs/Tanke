@@ -15,6 +15,8 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
+import timber.log.Timber;
 
 /**
  * EMAIL : danxionglei@foxmail.com
@@ -39,7 +41,7 @@ public class GameDisplayAdapter extends BaseAdapter<GameDisplayAdapter.ViewHolde
 
   @Override
   public void onBindViewHolder(ViewHolder holder, int position) {
-    holder.bind(dataList.get(position));
+    holder.bind(dataList.get(position), position);
   }
 
   @Override
@@ -61,14 +63,31 @@ public class GameDisplayAdapter extends BaseAdapter<GameDisplayAdapter.ViewHolde
     @BindView(R.id.text_view)
     TextView textView;
 
-    public ViewHolder(View itemView) {
+    int position = -1;
+
+    GameEntry gameEntry;
+
+    ViewHolder(View itemView) {
       super(itemView);
       ButterKnife.bind(this, itemView);
     }
 
-    public void bind(GameEntry entry) {
+    void bind(GameEntry entry, int position) {
       Glide.with(fragment).load(entry.url).asBitmap().into(imageView);
       textView.setText(entry.text);
+      this.position = position;
+      this.gameEntry = entry;
+    }
+
+    @OnClick(R.id.item_root)
+    void onItemClick() {
+      GameDisplayController controller = fragment.getController();
+      if (controller == null) {
+        Timber.e("GameDisplayFragment get Controller is null");
+        return;
+      }
+
+      controller.onItemClick(gameEntry, position);
     }
   }
 

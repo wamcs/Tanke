@@ -2,6 +2,7 @@ package com.lptiyu.tanke.gamedisplay;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.support.annotation.Nullable;
 import android.view.View;
 
 import com.baidu.location.BDLocation;
@@ -13,6 +14,7 @@ import com.lptiyu.tanke.R;
 import com.lptiyu.tanke.base.controller.FragmentController;
 import com.lptiyu.tanke.bean.GameEntry;
 import com.lptiyu.tanke.io.net.HttpService;
+import com.lptiyu.tanke.io.net.Response;
 import com.lptiyu.tanke.utils.NetworkUtil;
 import com.lptiyu.tanke.utils.ShaPrefer;
 import com.lptiyu.tanke.utils.ToastUtil;
@@ -67,18 +69,33 @@ public class GameDisplayController extends FragmentController {
       return;
     }
 
+    inflateRecyclerView(null);
+
+    initLocation();
+  }
+
+
+  private void inflateRecyclerView(@Nullable String loc) {
+
     fragment.loading(true);
 
-    String location = ShaPrefer.getString(getString(R.string.main_page_location_key), null);
+    if (loc == null) {
+      loc = ShaPrefer.getString(getString(R.string.main_page_location_key), null);
+    }
 
-    HttpService.getGameService().getGamePage(location)
+    HttpService.getGameService().getGamePage(loc)
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
-        .subscribe(new Action1<List<GameEntry>>() {
+        .subscribe(new Action1<Response<List<GameEntry>>>() {
           @Override
-          public void call(List<GameEntry> gameEntries) {
+          public void call(Response<List<GameEntry>> response) {
             fragment.loading(false);
-            updateList(gameEntries);
+            if (response.getStatus() == Response.RESPONSE_OK) {
+              updateList(response.getData());
+            } else {
+              ToastUtil.Exception(new Exception(
+                  String.format("%s(status:%d)", response.getInfo(), response.getStatus())));
+            }
           }
         }, new Action1<Throwable>() {
           @Override
@@ -88,7 +105,6 @@ public class GameDisplayController extends FragmentController {
           }
         });
 
-    initLocation();
   }
 
   private void initLocation() {
@@ -100,6 +116,7 @@ public class GameDisplayController extends FragmentController {
     option.setIsNeedLocationDescribe(true);//可选，默认false，设置是否需要位置语义化结果，可以在BDLocation.getLocationDescribe里得到，结果类似于“在北京天安门附近”
     option.setIsNeedLocationPoiList(true);//可选，默认false，设置是否需要POI结果，可以在BDLocation.getPoiList里得到
     option.setIgnoreKillProcess(false);//可选，默认true，定位SDK内部是一个SERVICE，并放到了独立进程，设置是否在stop的时候杀死这个进程，默认不杀死
+    locationClient = new LocationClient(getContext());
     locationClient.setLocOption(option);
 
 
@@ -180,6 +197,15 @@ public class GameDisplayController extends FragmentController {
     startActivityForResult(new Intent(getContext(), CaptureActivity.class), SCANNER_REQUEST_CODE);
   }
 
+  public void onItemClick(GameEntry gameEntry, int position) {
+    int id = ShaPrefer.getInt(String.format(getString(R.string.has_downloaded_mask), gameEntry.id), -1);
+    if (id == -1) {
+
+
+    }
+
+  }
+
   @Override
   public void onActivityResult(int requestCode, int resultCode, Intent data) {
     if (resultCode != Activity.RESULT_OK) {
@@ -187,9 +213,14 @@ public class GameDisplayController extends FragmentController {
     }
     switch (requestCode) {
       case LOCATION_REQUEST_CODE:
-        // request
+        String loc = data.getStringExtra(getString(R.string.main_page_location_key));
+        if (loc == null) {
+          break;
+        }
+        inflateRecyclerView(loc);
         break;
       case SCANNER_REQUEST_CODE:
+
         break;
       default:
     }
