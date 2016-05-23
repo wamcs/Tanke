@@ -23,6 +23,10 @@ public class ToastUtil {
   public static int LENGTH_SHORT = Toast.LENGTH_SHORT;
   private static Context CONTEXT = AppData.getContext();
 
+  public static void Exception(Exception e) {
+    ToastUtil.TextToast(e.getClass() + ": " + e.getMessage());
+  }
+
   /**
    * show toast with text
    *

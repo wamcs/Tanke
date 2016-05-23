@@ -1,7 +1,6 @@
 package com.lptiyu.tanke.trace.history;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.baidu.trace.OnTrackListener;
 import com.lptiyu.tanke.trace.HawkEyeHelper;

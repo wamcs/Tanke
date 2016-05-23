@@ -16,8 +16,8 @@ import rx.Observable;
 public interface GameService {
 
   @GET("all")
-  Observable<List<GameEntry>> getGamePage(String location);
+  Observable<Response<List<GameEntry>>> getGamePage(String location);
 
   @GET("location")
-  Observable<List<String>> getSupportLocations();
+  Observable<Response<List<String>>> getSupportLocations();
 }
