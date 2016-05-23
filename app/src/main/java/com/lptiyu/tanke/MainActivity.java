@@ -10,6 +10,10 @@ import butterknife.OnClick;
 public class MainActivity extends AppCompatActivity {
 
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 740d8a989766d04351e27f5b4445a9087d5bb5b6
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);

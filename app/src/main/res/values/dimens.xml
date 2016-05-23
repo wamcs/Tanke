@@ -3,11 +3,33 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
 
+<<<<<<< HEAD
     <!-- Default toolbar dimens-->
     <dimen name="default_toolbar_imageview_padding">10dp</dimen>
     <dimen name="default_toolbar_textview_margin_left">15dp</dimen>
     <dimen name="default_toolbar_textview_padding">5dp</dimen>
     <dimen name="default_toolbar_textview_text_size">20sp</dimen>
     <dimen name="default_toolbar_textview_menu_text_size">18sp</dimen>
+=======
+
+    <!-- Number Picker Dimens-->
+    <dimen name="number_picker_margin">10dp</dimen>
+
+    <!-- LoginEditText Dimens-->
+    <dimen name="custom_edit_height">40dp</dimen>
+    <dimen name="custom_edit_distance">16dp</dimen>
+    <dimen name="custom_edit_text_size">12sp</dimen>
+    <dimen name="custom_edit_inner_height">10dp</dimen>
+
+    <!-- Login Activity Dimens-->
+    <dimen name="login_activity_title_size">80dp</dimen>
+    <dimen name="login_activity_title_text_size">33sp</dimen>
+    <dimen name="login_activity_edit_layout_margin">38dp</dimen>
+    <dimen name="login_activity_edit_layout_item_distance">15dp</dimen>
+    <dimen name="login_activity_edit_layout_edit_to_button">20dp</dimen>
+    <dimen name="login_activity_edit_layout_button_width">85dp</dimen>
+    <dimen name="login_activity_edit_layout_button_height">20dp</dimen>
+
+>>>>>>> 740d8a989766d04351e27f5b4445a9087d5bb5b6
 
 </resources>

@@ -11,9 +11,33 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.lptiyu.tanke.MainActivity">
 
+<<<<<<< HEAD
     <Button
         android:id="@+id/scanner"
         android:layout_width="wrap_content"
+=======
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:id="@+id/scanner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/scanner"/>
+
+        <EditText
+            android:id="@+id/entity_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+>>>>>>> 740d8a989766d04351e27f5b4445a9087d5bb5b6
         android:layout_height="wrap_content"
         android:text="@string/scanner"/>
 
