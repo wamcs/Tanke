@@ -83,7 +83,7 @@ public class GameDisplayController extends FragmentController {
       loc = ShaPrefer.getString(getString(R.string.main_page_location_key), null);
     }
 
-    HttpService.getGameService().getGamePage(loc)
+    HttpService.getGameService().getGamePage(loc, 0)
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
         .subscribe(new Action1<Response<List<GameEntry>>>() {
@@ -151,7 +151,7 @@ public class GameDisplayController extends FragmentController {
           @Override
           public Observable<String> call(final BDLocation bdLocation) {
             return HttpService.getGameService()
-                .getSupportLocations()
+                .getSupportedCities()
                 .contains(bdLocation.getCity())
                 .map(new Func1<Boolean, String>() {
                   @Override
@@ -198,11 +198,7 @@ public class GameDisplayController extends FragmentController {
   }
 
   public void onItemClick(GameEntry gameEntry, int position) {
-    int id = ShaPrefer.getInt(String.format(getString(R.string.has_downloaded_mask), gameEntry.id), -1);
-    if (id == -1) {
-
-
-    }
+    int id = ShaPrefer.getInt(String.format(getString(R.string.has_downloaded_mask), gameEntry.getId()), -1);
 
   }
 

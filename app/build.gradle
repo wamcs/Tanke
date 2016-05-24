@@ -47,6 +47,7 @@ android {
             universalApk false
         }
     }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_7
         targetCompatibility JavaVersion.VERSION_1_7
@@ -89,4 +90,5 @@ dependencies {
     apt 'com.jakewharton:butterknife-compiler:8.0.1'
     //    Zxing
     compile project(path: ':zxinglib')
+    testCompile 'org.robolectric:robolectric:3.1-rc1'
 }

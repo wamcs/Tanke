@@ -73,8 +73,8 @@ public class GameDisplayAdapter extends BaseAdapter<GameDisplayAdapter.ViewHolde
     }
 
     void bind(GameEntry entry, int position) {
-      Glide.with(fragment).load(entry.url).asBitmap().into(imageView);
-      textView.setText(entry.text);
+      Glide.with(fragment).load(entry.getImg()).asBitmap().into(imageView);
+      textView.setText(entry.getTitle());
       this.position = position;
       this.gameEntry = entry;
     }
