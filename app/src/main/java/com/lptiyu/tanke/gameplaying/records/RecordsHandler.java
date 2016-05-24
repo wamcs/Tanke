@@ -1,4 +1,4 @@
-package com.lptiyu.tanke.records;
+package com.lptiyu.tanke.gameplaying.records;
 
 import android.os.Handler;
 import android.os.HandlerThread;

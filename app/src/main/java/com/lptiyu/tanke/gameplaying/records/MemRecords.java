@@ -1,4 +1,4 @@
-package com.lptiyu.tanke.records;
+package com.lptiyu.tanke.gameplaying.records;
 
 import android.os.Parcel;
 import android.os.Parcelable;
