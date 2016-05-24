@@ -20,10 +20,6 @@ public class DirUtils {
   private static final String FILES = "/files";
   private static final String TEMP = "/temp";
   private static final String GAME = "/game";
-  private static final String RES = "/res";
-  private static final String RAW = "/raw";
-  private static final String PHOTOS = "/photos";
-  private static final String SHARE = "/share";
   private static final String ANDROID_RESOURCE = "android.resource://";
 
   private static boolean hasSDCard() {
@@ -31,20 +27,22 @@ public class DirUtils {
     return status.equals(Environment.MEDIA_MOUNTED);
   }
 
-  public static void init(Context context) {
-    SDCARD_ROOT_DIR = context.getExternalFilesDir(null).getPath();
+  public static void init(Context context) throws Exception {
+    File file = context.getExternalFilesDir(null);
+    if (file != null) {
+      SDCARD_ROOT_DIR = file.getPath();
+    } else {
+      throw new Exception("GET SDCARD DIR ERROR");
+    }
     DATA_ROOT_DIR = context.getFilesDir().toString();
   }
 
-  public static File getDirectory(String s) {
+  public static File getDirectory(String rootDir, String type) {
     if (SDCARD_ROOT_DIR == null || DATA_ROOT_DIR == null) {
       Timber.e("you should invoke init() method before use DirUtils");
       return null;
     }
-    StringBuilder stringBuilder = new StringBuilder();
-    if (hasSDCard()) stringBuilder.append(SDCARD_ROOT_DIR).append(s);
-    else stringBuilder.append(DATA_ROOT_DIR).append(FILES).append(s);
-    File destDir = new File(stringBuilder.toString());
+    File destDir = new File(rootDir + type);
     if (!destDir.exists()) {
       if (destDir.mkdirs()) {
         Timber.d("=======create dir======== %s", destDir.getAbsolutePath());
@@ -56,23 +54,11 @@ public class DirUtils {
   }
 
   public static File getTempDirectory() {
-    return getDirectory(TEMP);
+    return getDirectory(SDCARD_ROOT_DIR, TEMP);
   }
 
   public static File getGameDirectory() {
-    return getDirectory(GAME);
-  }
-
-  public static File getResDirectory() {
-    return getDirectory(RES);
-  }
-
-  public static File getPhotosDirectory() {
-    return getDirectory(PHOTOS);
-  }
-
-  public static File getSharePhotosDirectory() {
-    return getDirectory(SHARE);
+    return getDirectory(DATA_ROOT_DIR, GAME);
   }
 
 }

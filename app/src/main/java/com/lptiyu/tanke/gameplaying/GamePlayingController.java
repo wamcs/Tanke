@@ -12,6 +12,7 @@ import com.lptiyu.tanke.base.ui.BaseActivity;
 import com.lptiyu.tanke.gameplaying.assist.LocateHelper;
 import com.lptiyu.tanke.gameplaying.assist.MapHelper;
 import com.lptiyu.tanke.gameplaying.assist.zip.GameZipHelper;
+import com.lptiyu.tanke.gameplaying.assist.zip.GameZipScanner;
 import com.lptiyu.tanke.permission.PermissionDispatcher;
 import com.lptiyu.tanke.permission.TargetMethod;
 
@@ -33,6 +34,7 @@ public class GamePlayingController extends ActivityController implements
   private MapHelper mapHelper;
   private LocateHelper locateHelper;
   private GameZipHelper gameZipHelper;
+
 
   public GamePlayingController(AppCompatActivity activity, View view) {
     super(activity, view);
@@ -60,6 +62,7 @@ public class GamePlayingController extends ActivityController implements
   @OnClick(R.id.start_animate)
   void startAnimateButtonClicked() {
     mapHelper.startAnimate();
+    gameZipHelper.checkAndParseGameZip(1111111111, 1111111111);
   }
 
   @TargetMethod(requestCode = PermissionDispatcher.PERMISSION_REQUEST_CODE_LOCATION)
