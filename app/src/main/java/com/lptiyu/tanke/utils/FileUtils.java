@@ -51,6 +51,7 @@ public class FileUtils {
     return builder.reverse().toString();
   }
 
+  //TODO : UTF-8 only, do not support GBK
   public static String unzipFile(String fileName, String filePath) {
     String dirPath = null;
     try {
