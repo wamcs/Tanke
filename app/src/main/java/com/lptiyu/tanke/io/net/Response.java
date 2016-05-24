@@ -40,4 +40,12 @@ public final class Response<T> {
     this.data = data;
   }
 
+  @Override
+  public String toString() {
+    return "Response{" +
+        "status=" + status +
+        ", info='" + info + '\'' +
+        ", data=" + data +
+        '}';
+  }
 }

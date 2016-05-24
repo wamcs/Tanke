@@ -20,8 +20,13 @@ public class RunApplication extends Application {
   public void onCreate() {
     super.onCreate();
     AppData.init(this);
-    ShareSDK.initSDK(this, "1276c2d783264");
-    SDKInitializer.initialize(this);
     Timber.plant(new Timber.DebugTree());
+    try {
+      ShareSDK.initSDK(this, "1276c2d783264");
+      SDKInitializer.initialize(this);
+    } catch (Exception e) {
+      // To test it automatically.
+      Timber.e(e, e.getMessage());
+    }
   }
 }

@@ -33,24 +33,24 @@ public interface UserService {
 
   public static final int USER_TYPE_WEIBO = 4;
 
-  @GET("/Login/Register")
+  @GET("Login/Register")
   Observable<Response<User>> register(@Query("phone") String phone, // 手机号
                                       @Query("pwd") String pwd, // 密码
                                       @Query("code") String code,
                                       @Query("type") @UserType int type); // 验证码
 
 
-  @GET("/Login/Login")
+  @GET("Login/Login")
   Observable<Response<User>> login(@Query("phone") String phone,
                                    @Query("pwd") String pwd,
                                    @Query("type") @UserType int type);
 
-  @GET("/Login/Login_san")
+  @GET("Login/Login_san")
   Observable<Response<User>> loginThirdParty(@Query("openid") String openId,
                                              @Query("name") String nickname,
                                              @Query("type") int type);
 
-  @GET("/Login/Forgetpwd")
+  @GET("Login/Forgetpwd")
   Observable<Response<Void>> forgetPassword(@Query("phone") String phone,
                                             @Query("newpwd") String newPwd,
                                             @Query("code") String code);
@@ -66,13 +66,13 @@ public interface UserService {
   public static final int VERIFY_CODE_FORGOT_PWD = 2;
 
 
-  @GET("/Login/GetCode")
+  @GET("Login/GetCode")
   Observable<Response<Void>> getVerifyCode(
       @Query("status") @VerifyCodeStatus int status,
       @Query("type") @UserType int type,
       @Query("phone") String phone);
 
-  @GET("/Login/Password")
+  @GET("Login/Password")
   Observable<Response<Void>> resetPassword(
       @Query("uid") String uid,
       @Query("token") String token,
@@ -80,13 +80,13 @@ public interface UserService {
       @Query("newpwd") String newPwd
   );
 
-  @GET("/User/User")
+  @GET("User/User")
   Observable<Response<User>> getUserDetail(
       @Query("uid") int uid,
       @Query("token") int token
   );
 
-  @GET("/User/Userphoto")
+  @GET("User/Userphoto")
   Observable<Response<String>> uploadUserAvatar(
       //TODO need to check
   );
@@ -108,7 +108,7 @@ public interface UserService {
   public static final int USER_DETAIL_WEIGHT = 5;
 
 
-  @GET("/User/Update_user")
+  @GET("User/Update_user")
   Observable<Response<Void>> resetUserDetails(
       @Query("uid") int uid,
       @Query("token") int token,
@@ -116,7 +116,7 @@ public interface UserService {
       @Query("content") String message);
 
 
-  @GET("/Login/User")
+  @GET("Login/User")
   Observable<Response<String>> userProtocol();
 
 }
