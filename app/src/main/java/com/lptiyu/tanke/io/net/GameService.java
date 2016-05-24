@@ -1,5 +1,6 @@
 package com.lptiyu.tanke.io.net;
 
+import com.lptiyu.tanke.bean.City;
 import com.lptiyu.tanke.bean.GameDetails;
 import com.lptiyu.tanke.bean.GameEntry;
 
@@ -7,6 +8,7 @@ import java.util.List;
 
 import retrofit2.http.GET;
 import retrofit2.http.Query;
+import retrofit2.http.QueryMap;
 import rx.Observable;
 
 /**
@@ -26,5 +28,8 @@ public interface GameService {
   Observable<Response<GameDetails>> getGameDetails(
       @Query("game_id") int gameId);
 
+
+  @GET("System/City?page=1")
+  Observable<List<City>> getSupportedCities();
 
 }
