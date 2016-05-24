@@ -11,6 +11,7 @@ import com.lptiyu.tanke.base.controller.ActivityController;
 import com.lptiyu.tanke.base.ui.BaseActivity;
 import com.lptiyu.tanke.gameplaying.assist.LocateHelper;
 import com.lptiyu.tanke.gameplaying.assist.MapHelper;
+import com.lptiyu.tanke.gameplaying.assist.zip.GameZipHelper;
 import com.lptiyu.tanke.permission.PermissionDispatcher;
 import com.lptiyu.tanke.permission.TargetMethod;
 
@@ -31,6 +32,7 @@ public class GamePlayingController extends ActivityController implements
 
   private MapHelper mapHelper;
   private LocateHelper locateHelper;
+  private GameZipHelper gameZipHelper;
 
   public GamePlayingController(AppCompatActivity activity, View view) {
     super(activity, view);
@@ -42,6 +44,7 @@ public class GamePlayingController extends ActivityController implements
     mapHelper = new MapHelper(getActivity(), mapView);
     locateHelper = new LocateHelper(getActivity().getApplicationContext());
     locateHelper.registerLocationListener(this);
+    gameZipHelper = new GameZipHelper();
   }
 
   @Override
