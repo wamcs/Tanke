@@ -54,6 +54,11 @@ public class GamePlayingController extends ActivityController implements
     PermissionDispatcher.startLocateWithCheck(((BaseActivity) getActivity()));
   }
 
+  @OnClick(R.id.start_animate)
+  void startAnimateButtonClicked() {
+    mapHelper.startAnimate();
+  }
+
   @TargetMethod(requestCode = PermissionDispatcher.PERMISSION_REQUEST_CODE_LOCATION)
   void startLocateService() {
     locateHelper.startLocate();

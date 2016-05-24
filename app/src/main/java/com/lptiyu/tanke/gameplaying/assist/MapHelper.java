@@ -9,6 +9,7 @@ import com.baidu.location.BDLocation;
 import com.baidu.mapapi.map.BaiduMap;
 import com.baidu.mapapi.map.BitmapDescriptor;
 import com.baidu.mapapi.map.BitmapDescriptorFactory;
+import com.baidu.mapapi.map.CircleOptions;
 import com.baidu.mapapi.map.LogoPosition;
 import com.baidu.mapapi.map.MapStatusUpdateFactory;
 import com.baidu.mapapi.map.MyLocationConfiguration;
@@ -33,8 +34,7 @@ public class MapHelper {
   private MyLocationData.Builder mLocationDataBuilder;
 
   private SensorHelper mSensorHelper;
-
-  private MapCircleAnimation circleAnimation;
+  private MapCircleAnimationHelper mapCircleAnimationHelper;
 
   private Context mContext;
 
@@ -50,8 +50,9 @@ public class MapHelper {
     mContext = context;
     mapView = view;
     mBaiduMap = mapView.getMap();
+
     mSensorHelper = new SensorHelper(mContext);
-    circleAnimation = new MapCircleAnimation(mContext, mBaiduMap);
+    mapCircleAnimationHelper = new MapCircleAnimationHelper(mContext, mBaiduMap);
 
     initMap();
     initEvent();
@@ -72,6 +73,10 @@ public class MapHelper {
   private void initEvent() {
   }
 
+  public void startAnimate() {
+
+  }
+
   /**
    * receive location info from LocateHelper
    * set the BDLocation to map as user's location
@@ -82,7 +87,6 @@ public class MapHelper {
     mBaiduMap.setMyLocationData(makeUpLocationData(location));
     if (animateToCurrentPositionOnce) {
       mBaiduMap.animateMapStatus(MapStatusUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 18));
-      circleAnimation.setAnimateCenter(new LatLng(location.getLatitude(), location.getLongitude()));
       animateToCurrentPositionOnce = false;
     }
   }
@@ -111,8 +115,9 @@ public class MapHelper {
     if (mLocationDataBuilder == null) {
       mLocationDataBuilder = new MyLocationData.Builder();
     }
-    mLocationDataBuilder.accuracy(location.getRadius())
-        .direction(mSensorHelper.getCurrentDegree()).latitude(location.getLatitude())
+    mLocationDataBuilder
+        .direction(mSensorHelper.getCurrentDegree())
+        .latitude(location.getLatitude())
         .longitude(location.getLongitude());
     return mLocationDataBuilder.build();
   }
@@ -126,18 +131,29 @@ public class MapHelper {
     return new MyLocationConfiguration(null, true, bitmapDescriptor);
   }
 
+  private CircleOptions generateCircleOption(LatLng latLng) {
+    CircleOptions circleOptions = new CircleOptions();
+    circleOptions
+        .center(latLng)
+        .fillColor(mContext.getResources().getColor(R.color.white07));
+    return circleOptions;
+  }
+
   public void onResume() {
     mapView.onResume();
     mSensorHelper.onResume();
+    mapCircleAnimationHelper.onResume();
   }
 
   public void onPause() {
     mapView.onPause();
     mSensorHelper.onPause();
+    mapCircleAnimationHelper.onPause();
   }
 
   public void onDestroy() {
     mapView.onDestroy();
     mSensorHelper.onDestroy();
+    mapCircleAnimationHelper.onDestroy();
   }
 }
