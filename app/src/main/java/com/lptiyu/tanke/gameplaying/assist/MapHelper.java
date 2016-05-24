@@ -34,6 +34,8 @@ public class MapHelper {
 
   private SensorHelper mSensorHelper;
 
+  private MapCircleAnimation circleAnimation;
+
   private Context mContext;
 
   private static final int paddingLeft = 0;
@@ -49,6 +51,8 @@ public class MapHelper {
     mapView = view;
     mBaiduMap = mapView.getMap();
     mSensorHelper = new SensorHelper(mContext);
+    circleAnimation = new MapCircleAnimation(mContext, mBaiduMap);
+
     initMap();
     initEvent();
   }
@@ -66,7 +70,6 @@ public class MapHelper {
   }
 
   private void initEvent() {
-
   }
 
   /**
@@ -79,23 +82,9 @@ public class MapHelper {
     mBaiduMap.setMyLocationData(makeUpLocationData(location));
     if (animateToCurrentPositionOnce) {
       mBaiduMap.animateMapStatus(MapStatusUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 18));
+      circleAnimation.setAnimateCenter(new LatLng(location.getLatitude(), location.getLongitude()));
       animateToCurrentPositionOnce = false;
     }
-  }
-
-  public void onResume() {
-    mapView.onResume();
-    mSensorHelper.onResume();
-  }
-
-  public void onPause() {
-    mapView.onPause();
-    mSensorHelper.onPause();
-  }
-
-  public void onDestroy() {
-    mapView.onDestroy();
-    mSensorHelper.onDestroy();
   }
 
   /**
@@ -135,5 +124,20 @@ public class MapHelper {
   private MyLocationConfiguration initMyLocationConfiguration() {
     BitmapDescriptor bitmapDescriptor = BitmapDescriptorFactory.fromResource(R.mipmap.img_user_position_arrow);
     return new MyLocationConfiguration(null, true, bitmapDescriptor);
+  }
+
+  public void onResume() {
+    mapView.onResume();
+    mSensorHelper.onResume();
+  }
+
+  public void onPause() {
+    mapView.onPause();
+    mSensorHelper.onPause();
+  }
+
+  public void onDestroy() {
+    mapView.onDestroy();
+    mSensorHelper.onDestroy();
   }
 }
