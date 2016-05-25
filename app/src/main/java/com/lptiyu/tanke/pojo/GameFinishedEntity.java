@@ -8,7 +8,7 @@ import com.google.gson.annotations.SerializedName;
  *
  * @author ldx
  */
-public class FinishedGameEntity {
+public class GameFinishedEntity {
   @SerializedName("game_id")
   long gameId;
 

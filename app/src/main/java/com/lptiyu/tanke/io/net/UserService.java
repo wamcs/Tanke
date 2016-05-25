@@ -8,7 +8,7 @@ import com.lptiyu.tanke.pojo.GamePlayingEntity;
 import com.lptiyu.tanke.pojo.Reward;
 import com.lptiyu.tanke.pojo.UserDetails;
 import com.lptiyu.tanke.pojo.UserEntity;
-import com.lptiyu.tanke.pojo.FinishedGameEntity;
+import com.lptiyu.tanke.pojo.GameFinishedEntity;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -91,7 +91,7 @@ public interface UserService {
    */
   @GET("Login/Password")
   Observable<Response<Void>> resetPassword(
-      @Query("uid") String uid,
+      @Query("uid") long uid,
       @Query("token") String token,
       @Query("pwd") String oldPwd,
       @Query("newpwd") String newPwd
@@ -103,7 +103,7 @@ public interface UserService {
    */
   @GET("User/User")
   Observable<Response<UserDetails>> getUserDetail(
-      @Query("uid") int uid,
+      @Query("uid") long uid,
       @Query("token") int token
   );
 
@@ -138,7 +138,7 @@ public interface UserService {
    */
   @GET("User/Update_user")
   Observable<Response<Void>> resetUserDetails(
-      @Query("uid") int uid,
+      @Query("uid") long uid,
       @Query("token") int token,
       @Query("type") @UserDetailType int type,
       @Query("content") String message);
@@ -151,7 +151,7 @@ public interface UserService {
 
   @GET("My/Nowranks?page=1")
   Observable<Response<GamePlayingEntity>> gamePlaying(
-      @Query("uid") int uid,
+      @Query("uid") long uid,
       @Query("token") String token
   );
 
@@ -162,7 +162,7 @@ public interface UserService {
    */
   @GET("My/Nowranks")
   Observable<Response<GamePlayingEntity>> gamePlaying(
-      @Query("uid") int uid,
+      @Query("uid") long uid,
       @Query("token") String token,
       @Query("page") int page
   );
@@ -171,8 +171,8 @@ public interface UserService {
    * 2.25 获取用户已完成的游戏 默认page = 1
    */
   @GET("My/Finishranks?page=1")
-  Observable<Response<FinishedGameEntity>> gameFinished(
-      @Query("uid") int uid,
+  Observable<Response<GameFinishedEntity>> gameFinished(
+      @Query("uid") long uid,
       @Query("token") String token
   );
 
@@ -180,8 +180,8 @@ public interface UserService {
    * 2.25 获取用户已完成的游戏
    */
   @GET("My/Finishranks")
-  Observable<Response<FinishedGameEntity>> gameFinished(
-      @Query("uid") int uid,
+  Observable<Response<GameFinishedEntity>> gameFinished(
+      @Query("uid") long uid,
       @Query("token") String token,
       @Query("page") int page
   );

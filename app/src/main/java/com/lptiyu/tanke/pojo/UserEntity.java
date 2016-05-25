@@ -10,7 +10,7 @@ import com.google.gson.annotations.SerializedName;
  */
 public class UserEntity {
 
-  private int uid;
+  private long uid;
 
   private String token;
 
@@ -27,11 +27,11 @@ public class UserEntity {
   @SerializedName("type")
   private int isNewUserThirdParty = 1;
 
-  public int getUid() {
+  public long getUid() {
     return uid;
   }
 
-  public void setUid(int uid) {
+  public void setUid(long uid) {
     this.uid = uid;
   }
 
