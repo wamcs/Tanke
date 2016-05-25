@@ -1,4 +1,4 @@
-package com.lptiyu.tanke.bean;
+package com.lptiyu.tanke.pojo;
 
 /**
  * EMAIL : danxionglei@foxmail.com

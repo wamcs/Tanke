@@ -1,4 +1,4 @@
-package com.lptiyu.tanke.bean;
+package com.lptiyu.tanke.pojo;
 
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
@@ -18,7 +18,7 @@ import java.lang.reflect.Type;
  *
  * @author ldx
  */
-public class GameEntry {
+public class GameDisplayEntity {
   protected int id;
 
   @SerializedName("pic")
