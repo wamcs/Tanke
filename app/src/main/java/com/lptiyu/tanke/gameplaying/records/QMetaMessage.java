@@ -62,11 +62,11 @@ public class QMetaMessage implements Serializable {
     updateSpotSite(record);
     updateSpotTime(record);
 
-    if (record.getType() == RunningRecord.Type.OnSpotCompleted.type) {
+    if (record.getType() == RunningRecord.RECORD_TYPE.ON_POINT_COMPLETED) {
       if (spotTime != 0) {
         store();
       }
-    } else if (record.getType() == RunningRecord.Type.OnFinish.type) {
+    } else if (record.getType() == RunningRecord.RECORD_TYPE.ON_FINISH) {
       if (spotTime != 0) {
         store();
       }
@@ -145,7 +145,7 @@ public class QMetaMessage implements Serializable {
   }
 
   private void updateSpotSite(RunningRecord record) {
-    if (record.getType() == RunningRecord.Type.Normal.type) {
+    if (record.getType() == RunningRecord.RECORD_TYPE.NORMAL) {
       double rX = Double.valueOf(record.getX());
       double rY = Double.valueOf(record.getY());
       spotDistance +=

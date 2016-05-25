@@ -3,7 +3,17 @@ package com.lptiyu.tanke.gameplaying.records;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonDeserializer;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParseException;
+import com.google.gson.JsonPrimitive;
+import com.google.gson.JsonSerializationContext;
+import com.google.gson.JsonSerializer;
 import com.google.gson.annotations.SerializedName;
+import com.lptiyu.tanke.BuildConfig;
+
+import java.lang.reflect.Type;
 
 /**
  * EMAIL : danxionglei@foxmail.com
@@ -13,13 +23,15 @@ import com.google.gson.annotations.SerializedName;
  */
 public class RunningRecord implements Parcelable {
 
+  int id;
+
   @SerializedName("index")
   int index;
 
   @SerializedName("team_id")
   int team_id;
 
-  @SerializedName("time")
+  @SerializedName("create_time")
   long time;
 
   @SerializedName("x")
@@ -29,24 +41,29 @@ public class RunningRecord implements Parcelable {
   String y = "0";
 
   @SerializedName("type")
-  int type;
+  RECORD_TYPE type;
 
-  @SerializedName("message")
-  String message = "";
-
-  @SerializedName("is_master")
-  boolean is_master;
+  @SerializedName("remark")
+  String remark = "";
 
   private RunningRecord(Builder builder) {
+    setId(builder.id);
+    setIndex(builder.index);
     setTeam_id(builder.team_id);
     setTime(builder.time);
     setX(builder.x);
     setY(builder.y);
     setType(builder.type);
-    setMessage(builder.message);
-    setIs_master(builder.is_master);
+    setRemark(builder.remark);
   }
 
+  public int getId() {
+    return id;
+  }
+
+  public void setId(int id) {
+    this.id = id;
+  }
 
   public int getIndex() {
     return index;
@@ -88,31 +105,119 @@ public class RunningRecord implements Parcelable {
     this.y = y;
   }
 
-  public int getType() {
+  public RECORD_TYPE getType() {
     return type;
   }
 
-  public void setType(Type type) {
-    this.type = type.type;
+  public void setType(RECORD_TYPE type) {
+    this.type = type;
   }
 
-  public String getMessage() {
-    return message;
+  public String getRemark() {
+    return remark;
   }
 
-  public void setMessage(String message) {
-    this.message = message;
+  public void setRemark(String remark) {
+    this.remark = remark;
   }
 
-  public boolean is_master() {
-    return is_master;
+  public enum RECORD_TYPE implements JsonSerializer<RECORD_TYPE>, JsonDeserializer<RECORD_TYPE> {
+    NORMAL(0),
+    ON_START(1),
+    ON_FINISH(2),
+    ON_FAILED(3),
+    ON_POINT_REACHED(4),
+    ON_POINT_COMPLETED(5);
+
+    final int type;
+
+    public int getType() {
+      return type;
+    }
+
+    RECORD_TYPE(int i) {
+      type = i;
+    }
+
+    @Override
+    public RECORD_TYPE deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+      final int item = json.getAsInt();
+      for (RECORD_TYPE state : RECORD_TYPE.values()) {
+        if (state.getType() == item) {
+          return state;
+        }
+      }
+
+      if (BuildConfig.DEBUG) {
+        throw new IllegalStateException(
+            String.format("The item (%d) for GAME_STATE is unexpected.",
+                item));
+      }
+      return NORMAL;
+    }
+
+    @Override
+    public JsonElement serialize(RECORD_TYPE src, Type typeOfSrc, JsonSerializationContext context) {
+      return new JsonPrimitive(src.type);
+    }
   }
 
-  public void setIs_master(boolean is_master) {
-    this.is_master = is_master;
-  }
+  public static final class Builder {
+    private int id;
+    private int index;
+    private int team_id;
+    private long time;
+    private String x;
+    private String y;
+    private RECORD_TYPE type;
+    private String remark;
 
-  public RunningRecord() {
+    public Builder() {
+    }
+
+    public Builder id(int val) {
+      id = val;
+      return this;
+    }
+
+    public Builder index(int val) {
+      index = val;
+      return this;
+    }
+
+    public Builder team_id(int val) {
+      team_id = val;
+      return this;
+    }
+
+    public Builder time(long val) {
+      time = val;
+      return this;
+    }
+
+    public Builder x(String val) {
+      x = val;
+      return this;
+    }
+
+    public Builder y(String val) {
+      y = val;
+      return this;
+    }
+
+    public Builder type(RECORD_TYPE val) {
+      type = val;
+      return this;
+    }
+
+    public Builder remark(String val) {
+      remark = val;
+      return this;
+    }
+
+    public RunningRecord build() {
+      return new RunningRecord(this);
+    }
   }
 
   @Override
@@ -122,105 +227,37 @@ public class RunningRecord implements Parcelable {
 
   @Override
   public void writeToParcel(Parcel dest, int flags) {
+    dest.writeInt(this.id);
     dest.writeInt(this.index);
     dest.writeInt(this.team_id);
     dest.writeLong(this.time);
     dest.writeString(this.x);
     dest.writeString(this.y);
-    dest.writeInt(this.type);
-    dest.writeString(this.message);
-    dest.writeByte(is_master ? (byte) 1 : (byte) 0);
+    dest.writeInt(this.type == null ? -1 : this.type.ordinal());
+    dest.writeString(this.remark);
   }
 
   protected RunningRecord(Parcel in) {
+    this.id = in.readInt();
     this.index = in.readInt();
     this.team_id = in.readInt();
     this.time = in.readLong();
     this.x = in.readString();
     this.y = in.readString();
-    this.type = in.readInt();
-    this.message = in.readString();
-    this.is_master = in.readByte() != 0;
+    int tmpType = in.readInt();
+    this.type = tmpType == -1 ? null : RECORD_TYPE.values()[tmpType];
+    this.remark = in.readString();
   }
 
   public static final Creator<RunningRecord> CREATOR = new Creator<RunningRecord>() {
+    @Override
     public RunningRecord createFromParcel(Parcel source) {
       return new RunningRecord(source);
     }
 
+    @Override
     public RunningRecord[] newArray(int size) {
       return new RunningRecord[size];
     }
   };
-
-  public static final class Builder {
-    private int team_id;
-    private long time;
-    private String x = "0";
-    private String y = "0";
-    private Type type;
-    private String message = "";
-    private boolean is_master = false;
-
-    public Builder() {
-    }
-
-    public Builder withTeam_id(int val) {
-      team_id = val;
-      return this;
-    }
-
-    public Builder withTime(long val) {
-      time = val;
-      return this;
-    }
-
-    public Builder withX(String val) {
-      x = val;
-      return this;
-    }
-
-    public Builder withY(String val) {
-      y = val;
-      return this;
-    }
-
-    public Builder withType(Type val) {
-      type = val;
-      return this;
-    }
-
-    public Builder withMessage(String val) {
-      message = val;
-      return this;
-    }
-
-    public Builder withIs_master(boolean val) {
-      is_master = val;
-      return this;
-    }
-
-    public RunningRecord build() {
-      return new RunningRecord(this);
-    }
-  }
-
-  public enum Type {
-    Normal(0),
-    OnStart(1),
-    OnFinish(2),
-    OnFailed(3),
-    OnSpotReached(4),
-    OnSpotCompleted(5);
-
-    final int type;
-
-    public int getType() {
-      return type;
-    }
-
-    Type(int i) {
-      type = i;
-    }
-  }
 }

@@ -17,37 +17,34 @@ public class RecordsUtils {
   private RecordsUtils() {
   }
 
-  public static RunningRecord generateTypeRecords(RecordsHandler handler, RunningRecord.Type type) {
+  public static RunningRecord generateTypeRecords(RecordsHandler handler, RunningRecord.RECORD_TYPE RECORDTYPE) {
     return new RunningRecord.Builder()
-        .withType(type)
-        .withIs_master(handler.isTeamMaster)
-        .withTime(System.currentTimeMillis())
+        .type(RECORDTYPE)
+        .time(System.currentTimeMillis())
         .build();
   }
 
-  public static void dispatchTypeRecords(RecordsHandler handler, RunningRecord.Type type) {
-    handler.dispatchRunningRecord(generateTypeRecords(handler, type));
+  public static void dispatchTypeRecords(RecordsHandler handler, RunningRecord.RECORD_TYPE RECORDTYPE) {
+    handler.dispatchRunningRecord(generateTypeRecords(handler, RECORDTYPE));
   }
 
   // 记录用户到达了某个点的信息，能够把对某一个点标示到达, 这个信息会被放在Message里，这是比较危险的，但是现在赶工期，暂时只能这样了。
   public static void dispatchTypeReachedSpot(RecordsHandler handler, int index) {
     RunningRecord record = new RunningRecord.Builder()
-        .withType(RunningRecord.Type.OnSpotReached)
-        .withIs_master(handler.isTeamMaster)
-        .withTime(System.currentTimeMillis())
-        .withMessage("" + index)
+        .type(RunningRecord.RECORD_TYPE.ON_POINT_REACHED)
+        .time(System.currentTimeMillis())
+        .remark("" + index)
         .build();
     handler.dispatchRunningRecord(record);
   }
 
   public static RunningRecord generateNormalRecords(RecordsHandler handler, String x, String y) {
     return new RunningRecord.Builder()
-        .withIs_master(handler.isTeamMaster)
-        .withTeam_id(handler.teamId)
-        .withX(x)
-        .withY(y)
-        .withType(RunningRecord.Type.Normal)
-        .withTime(System.currentTimeMillis())
+        .team_id(handler.teamId)
+        .x(x)
+        .y(y)
+        .type(RunningRecord.RECORD_TYPE.NORMAL)
+        .time(System.currentTimeMillis())
         .build();
   }
 
@@ -57,12 +54,12 @@ public class RecordsUtils {
 
   public static boolean isGameFinishedFromMemory(MemRecords memRecords) {
     RunningRecord record = memRecords.last();
-    return record != null && record.type == RunningRecord.Type.OnFinish.type;
+    return record != null && record.getType() == RunningRecord.RECORD_TYPE.ON_FINISH;
   }
 
   public static boolean isGameStartedFromMemory(MemRecords memRecords) {
     RunningRecord record = memRecords.first();
-    return record != null && record.type == RunningRecord.Type.OnStart.type;
+    return record != null && record.getType() == RunningRecord.RECORD_TYPE.ON_START;
   }
 
   /**
@@ -127,7 +124,7 @@ public class RecordsUtils {
       e.printStackTrace();
     }
 
-    return record != null && record.getType() == RunningRecord.Type.OnStart.type;
+    return record != null && record.getType() == RunningRecord.RECORD_TYPE.ON_START;
   }
 
   /**
@@ -155,8 +152,8 @@ public class RecordsUtils {
     }
 
     Timber.e("record : " + new Gson().toJson(record));
-    Timber.e("isfinished " + (record != null && (record.getType() == RunningRecord.Type.OnFinish.type)));
-    return ((record != null) && (record.getType() == RunningRecord.Type.OnFinish.type));
+    Timber.e("isfinished " + (record != null && (record.getType() == RunningRecord.RECORD_TYPE.ON_FINISH)));
+    return ((record != null) && (record.getType() == RunningRecord.RECORD_TYPE.ON_FINISH));
   }
 
 }

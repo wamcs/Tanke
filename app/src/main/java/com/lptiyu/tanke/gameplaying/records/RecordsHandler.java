@@ -36,9 +36,7 @@ public class RecordsHandler extends Handler {
 
   int temp = 1;
 
-  boolean isTeamMaster;
-
-  private RunningRecord mLastRecord = new RunningRecord.Builder().withType(RunningRecord.Type.OnFinish).build();
+  private RunningRecord mLastRecord = new RunningRecord.Builder().type(RunningRecord.RECORD_TYPE.ON_FINISH).build();
 
   private MemRecords memRecords;
 
@@ -58,7 +56,6 @@ public class RecordsHandler extends Handler {
 
   private RecordsHandler(Looper looper, Builder builder) {
     super(looper);
-    isTeamMaster = builder.isTeamMaster;
     teamId = builder.teamId;
     activityId = builder.activity_id;
     memRecords = builder.memRecords;
@@ -119,11 +116,10 @@ public class RecordsHandler extends Handler {
     }
     RunningRecord record = (RunningRecord) msg.obj;
     // get a new message, but we sometimes need not to handle it.
-    if (mLastRecord != null && mLastRecord.getType() == RunningRecord.Type.Normal.type && record.getX() != null && record.getY() != null &&
+    if (mLastRecord != null && mLastRecord.getType() == RunningRecord.RECORD_TYPE.NORMAL&& record.getX() != null && record.getY() != null &&
         DistanceUtil.getDistance(
             new LatLng(Double.valueOf(record.getX()), Double.valueOf(record.getY())),
             new LatLng(Double.valueOf(mLastRecord.getX()), Double.valueOf(mLastRecord.getY()))) < LOCATION_DISTANCE_THRESHOLD_BOTTOM) {
-      record.setIs_master(false);
 //      networkRecords.sendToNetwork(record, activityId, new FutureCallback<Response<List<RunningRecord>>>() {
 //        @Override
 //        public void onCompleted(final Exception e, final Response<List<RunningRecord>> result) {
@@ -170,7 +166,6 @@ public class RecordsHandler extends Handler {
 
   public static final class Builder {
     private String activity_id = null;
-    private boolean isTeamMaster = false;
     private int teamId = Integer.MIN_VALUE;
     private MemRecords memRecords;
     private DiskRecords diskRecords;
@@ -180,7 +175,6 @@ public class RecordsHandler extends Handler {
 
     public Builder(String activity_id, int teamId, boolean isTeamMaster) {
       withActivity_id(activity_id);
-      withIsTeamMaster(isTeamMaster);
       withTeamId(teamId);
     }
 
@@ -191,11 +185,6 @@ public class RecordsHandler extends Handler {
 
     public Builder withTeamId(int teamId) {
       this.teamId = teamId;
-      return this;
-    }
-
-    public Builder withIsTeamMaster(boolean val) {
-      isTeamMaster = val;
       return this;
     }
 
