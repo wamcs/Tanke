@@ -19,4 +19,5 @@ public class SplashActivityController extends ActivityController {
     public SplashActivityController(AppCompatActivity activity, View view) {
         super(activity, view);
     }
+
 }

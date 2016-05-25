@@ -20,13 +20,30 @@
     <dimen name="custom_edit_inner_height">10dp</dimen>
 
     <!-- Login Activity Dimens-->
-    <dimen name="login_activity_title_size">80dp</dimen>
-    <dimen name="login_activity_title_text_size">33sp</dimen>
-    <dimen name="login_activity_edit_layout_margin">38dp</dimen>
-    <dimen name="login_activity_edit_layout_item_distance">15dp</dimen>
-    <dimen name="login_activity_edit_layout_edit_to_button">20dp</dimen>
-    <dimen name="login_activity_edit_layout_button_width">85dp</dimen>
-    <dimen name="login_activity_edit_layout_button_height">20dp</dimen>
+    <dimen name="login_title_size">80dp</dimen>
+    <dimen name="login_title_text_size">33sp</dimen>
+    <dimen name="login_edit_layout_margin">38dp</dimen>
+    <dimen name="login_edit_layout_item_distance">15dp</dimen>
+    <dimen name="login_edit_layout_edit_to_button">20dp</dimen>
+    <dimen name="login_edit_layout_button_width">85dp</dimen>
+    <dimen name="login_edit_layout_button_height">20dp</dimen>
+
+    <!-- Register Activity Dimens-->
+    <dimen name="sign_up_toolbar_height">146dp</dimen>
+    <dimen name="sign_up_return_button_size">16dp</dimen>
+    <dimen name="sign_up_title_margin_top">35dp</dimen>
+    <dimen name="sign_up_return_button_margin_left">15dp</dimen>
+    <dimen name="sign_up_edit_margin_top">104dp</dimen>
+    <dimen name="sign_up_edit_margin">20dp</dimen>
+    <dimen name="sign_up_edit_height">40dp</dimen>
+    <dimen name="sign_up_edit_left_text_margin_left">24dp</dimen>
+    <dimen name="sign_up_edit_left_text_margin_right">37dp</dimen>
+    <dimen name="sign_up_edit_text_size">12sp</dimen>
+    <dimen name="sign_up_edit_hint_text_size">10sp</dimen>
+    <dimen name="sign_up_edit_margin_bottom">23dp</dimen>
+    <dimen name="sign_up_next_button_text_size">14sp</dimen>
+    <dimen name="sign_up_title_text_size">16sp</dimen>
+    <dimen name="sign_up_second_edit_margin_bottom">24dp</dimen>
 
 
 </resources>

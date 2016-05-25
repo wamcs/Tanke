@@ -64,12 +64,15 @@
         <activity android:name=".initialization.ui.LoginActivity">
         </activity>
         <activity android:name=".initialization.ui.GuideActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
         </activity>
         <activity android:name=".initialization.ui.CompleteInformationActivity" >
         </activity>
-        <activity android:name=".initialization.ui.RegisterActivity" >
-        </activity>
-        <activity android:name=".initialization.ui.ResetSecretActivity" >
+        <activity android:name=".initialization.ui.SignUpActivity" >
         </activity>
         <activity android:name=".initialization.ui.UserProtocolActivity">
         </activity>
@@ -140,11 +143,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".gameplaying.GamePlayingActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
 
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
         </activity>
 
     </application>

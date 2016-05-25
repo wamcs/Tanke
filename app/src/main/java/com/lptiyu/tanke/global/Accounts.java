@@ -19,12 +19,12 @@ public class Accounts {
     return ShaPrefer.getString("user_phone", "");
   }
 
-  public static void setSecret(String secret){
-    ShaPrefer.put("user_secret",secret);
+  public static void setPassword(String password){
+    ShaPrefer.put("user_password",password);
   }
 
-  public static String getSecret(){
-    return ShaPrefer.getString("user_secret","");
+  public static String getPassword(){
+    return ShaPrefer.getString("user_password","");
   }
 
   public static String getKey() {

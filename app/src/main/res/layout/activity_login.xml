@@ -19,52 +19,52 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/login_activity_login_button"
+        android:layout_above="@id/login_login_button"
         android:background="@mipmap/img_login_backgroud"
         android:orientation="vertical">
 
         <TextView
             android:id="@+id/login_activity_title"
-            android:layout_width="@dimen/login_activity_title_size"
+            android:layout_width="@dimen/login_title_size"
             android:layout_height="0dp"
             android:layout_gravity="center"
             android:layout_weight="194"
             android:gravity="center"
             android:text="@string/name"
             android:textColor="@color/login_activity_title_color"
-            android:textSize="@dimen/login_activity_title_text_size"/>
+            android:textSize="@dimen/login_title_text_size"/>
 
         <RelativeLayout
             android:id="@+id/relative_layout"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginLeft="@dimen/login_activity_edit_layout_margin"
-            android:layout_marginRight="@dimen/login_activity_edit_layout_margin"
+            android:layout_marginLeft="@dimen/login_edit_layout_margin"
+            android:layout_marginRight="@dimen/login_edit_layout_margin"
             android:layout_weight="180"
             >
 
             <com.lptiyu.tanke.widget.LoginEditView
-                android:id="@id/login_activity_input_phone"
+                android:id="@id/login_input_phone"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/custom_edit_height"
-                android:layout_marginBottom="@dimen/login_activity_edit_layout_item_distance"
+                android:layout_marginBottom="@dimen/login_edit_layout_item_distance"
                 android:gravity="center_vertical"
-                app:takBaseColor="@color/custom_edit_color"
+                app:takBaseColor="@color/base_text_color"
                 app:takHintText="@string/please_input_phone"
                 app:takImageToText="@dimen/custom_edit_distance"
                 app:takInnerHeight="@dimen/custom_edit_inner_height"
-                app:takSymbolDrawable="@mipmap/img_block"
+                app:takSymbolDrawable="@mipmap/img_profile"
                 app:takTextSize="@dimen/custom_edit_text_size"
                 />
 
             <com.lptiyu.tanke.widget.LoginEditView
-                android:id="@id/login_activity_input_secret"
+                android:id="@id/login_input_password"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/custom_edit_height"
-                android:layout_below="@id/login_activity_input_phone"
+                android:layout_below="@id/login_input_phone"
                 android:gravity="center_vertical"
-                app:takBaseColor="@color/custom_edit_color"
-                app:takHintText="@string/please_input_secret"
+                app:takBaseColor="@color/base_text_color"
+                app:takHintText="@string/please_input_password"
                 app:takImageToText="@dimen/custom_edit_distance"
                 app:takInnerHeight="@dimen/custom_edit_inner_height"
                 app:takPassWordType="true"
@@ -73,19 +73,19 @@
                 />
 
             <TextView
-                android:id="@id/login_activity_sign_up_button"
+                android:id="@id/login_sign_up_button"
                 style="@style/loginActivityButton"
-                android:layout_below="@id/login_activity_input_secret"
+                android:layout_below="@id/login_input_password"
                 android:text="@string/login_new_user"
                 />
 
             <TextView
-                android:id="@id/login_activity_forget_secret_button"
+                android:id="@id/login_forget_password_button"
                 style="@style/loginActivityButton"
                 android:layout_alignParentRight="true"
-                android:layout_below="@id/login_activity_input_secret"
-                android:layout="@id/login_activity_sign_up_button"
-                android:text="@string/login_forget_secret"
+                android:layout_below="@id/login_input_password"
+                android:layout="@id/login_sign_up_button"
+                android:text="@string/login_forget_password"
                 />
 
         </RelativeLayout>
@@ -119,21 +119,21 @@
                 android:layout_marginTop="8dp">
 
                 <ImageView
-                    android:id="@id/login_activity_weixin_button"
+                    android:id="@id/login_weixin_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="16dp"
                     android:background="@mipmap/img_weibo"/>
 
                 <ImageView
-                    android:id="@id/login_activity_qq_button"
+                    android:id="@id/login_qq_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="16dp"
                     android:background="@mipmap/img_weibo"/>
 
                 <ImageView
-                    android:id="@id/login_activity_weibo_button"
+                    android:id="@id/login_weibo_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@mipmap/img_weibo"/>
@@ -143,11 +143,11 @@
 
 
     <Button
-        android:id="@id/login_activity_login_button"
+        android:id="@id/login_login_button"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_alignParentBottom="true"
-        android:background="@drawable/login_activity_login_button_bg"
+        android:background="@drawable/gradient_rect_style"
         android:text="@string/login"
         android:textColor="@color/white10"
         android:textSize="13sp"/>
