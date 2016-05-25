@@ -10,7 +10,7 @@ import com.google.gson.annotations.SerializedName;
  */
 public class GamePlayingEntity {
   @SerializedName("game_id")
-  private int gameId;
+  private long gameId;
 
   @SerializedName("img")
   private String img;
@@ -30,11 +30,11 @@ public class GamePlayingEntity {
   @SerializedName("set")
   private float progress;
 
-  public int getGameId() {
+  public long getGameId() {
     return gameId;
   }
 
-  public void setGameId(int gameId) {
+  public void setGameId(long gameId) {
     this.gameId = gameId;
   }
 
