@@ -3,12 +3,15 @@ package com.lptiyu.tanke.io.net;
 
 import android.support.annotation.IntDef;
 
+import com.lptiyu.tanke.pojo.GameManageEntity;
 import com.lptiyu.tanke.pojo.GamePlayingEntity;
 import com.lptiyu.tanke.pojo.GameStatus;
+import com.lptiyu.tanke.pojo.Reward;
 import com.lptiyu.tanke.pojo.User;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
+import java.util.List;
 
 import retrofit2.http.GET;
 import retrofit2.http.Query;
@@ -122,14 +125,14 @@ public interface UserService {
   Observable<Response<String>> userProtocol();
 
   @GET("My/Finishranks?page=1")
-  //TODO GameStatus有一些问题
+    //TODO GameStatus有一些问题
   Observable<Response<GameStatus>> gameFinished(
       @Query("uid") int uid,
       @Query("token") String token
   );
 
   @GET("My/Finishranks")
-  //TODO GameStatus有一些问题
+    //TODO GameStatus有一些问题
   Observable<Response<GameStatus>> gameFinished(
       @Query("uid") int uid,
       @Query("token") String token,
@@ -149,5 +152,48 @@ public interface UserService {
       @Query("page") int page
   );
 
+  @GET("My/Reward")
+  Observable<Response<List<Reward>>> getRewards(
+      @Query("uid") long uid,
+      @Query("token") String token,
+      @Query("page") int page);
+
+  @GET("My/Reward?page=1")
+  Observable<Response<List<Reward>>> getRewards(
+      @Query("uid") long uid,
+      @Query("token") String token);
+
+  /**
+   * 获取我的裁判任务
+   */
+  @GET("My/Task")
+  Observable<Response<GameManageEntity>> getManagerTask(
+      @Query("uid") long ui,
+      @Query("token") String token,
+      @Query("page") int page
+  );
+
+  /**
+   * 获取我的裁判任务
+   */
+  @GET("My/Task?page=1")
+  Observable<Response<GameManageEntity>> getManagerTask(
+      @Query("uid") long uid,
+      @Query("token") String token);
+
+  @GET("System/InstallationId")
+  Observable<Response<Void>> registerInstallation(
+      @Query("uid") long uid,
+      @Query("token") String token,
+      @Query("installation_id") String installationId
+  );
+
+  /**
+   * 2.31 关于界面
+   *
+   * @return 关于界面的链接
+   */
+  @GET("System/About")
+  Observable<Response<String>> about();
 
 }
