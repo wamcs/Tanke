@@ -5,9 +5,10 @@ import android.support.annotation.IntDef;
 
 import com.lptiyu.tanke.pojo.GameManageEntity;
 import com.lptiyu.tanke.pojo.GamePlayingEntity;
-import com.lptiyu.tanke.pojo.GameStatus;
 import com.lptiyu.tanke.pojo.Reward;
-import com.lptiyu.tanke.pojo.User;
+import com.lptiyu.tanke.pojo.UserDetails;
+import com.lptiyu.tanke.pojo.UserEntity;
+import com.lptiyu.tanke.pojo.FinishedGameEntity;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -39,44 +40,55 @@ public interface UserService {
   public static final int USER_TYPE_WEIBO = 4;
 
   @GET("Login/Register")
-  Observable<Response<User>> register(@Query("phone") String phone, // 手机号
+  Observable<Response<UserEntity>> register(@Query("phone") String phone, // 手机号
                                       @Query("pwd") String pwd, // 密码
                                       @Query("code") String code,
                                       @Query("type") @UserType int type); // 验证码
 
-
+  /**
+   * 2.3 登录
+   */
   @GET("Login/Login")
-  Observable<Response<User>> login(@Query("phone") String phone,
-                                   @Query("pwd") String pwd,
-                                   @Query("type") @UserType int type);
+  Observable<Response<UserEntity>> login(@Query("phone") String phone,
+                                         @Query("pwd") String pwd);
 
+  /**
+   * 2.4 第三方登录
+   */
   @GET("Login/Login_san")
-  Observable<Response<User>> loginThirdParty(@Query("openid") String openId,
-                                             @Query("name") String nickname,
+  Observable<Response<UserEntity>> loginThirdParty(@Query("openid") String openId,
                                              @Query("type") int type);
 
+  /**
+   * 2.5 忘记密码
+   */
   @GET("Login/Forgetpwd")
   Observable<Response<Void>> forgetPassword(@Query("phone") String phone,
                                             @Query("newpwd") String newPwd,
                                             @Query("code") String code);
 
 
-  @IntDef({VERIFY_CODE_REGISTER, VERIFY_CODE_FORGOT_PWD})
-  @Retention(RetentionPolicy.SOURCE)
-  @interface VerifyCodeStatus {
-  }
-
-  public static final int VERIFY_CODE_REGISTER = 1;
-
-  public static final int VERIFY_CODE_FORGOT_PWD = 2;
-
-
-  @GET("Login/GetCode")
-  Observable<Response<Void>> getVerifyCode(
-      @Query("status") @VerifyCodeStatus int status,
+  /**
+   * 2.6 获取验证码 注册时
+   * @param type 注册时，后台缓存的有数据，需要上传type来确定
+   *             是通过哪种方式注册，1，
+   */
+  @GET("Login/GetCode?status=1")
+  Observable<Response<Void>> getVerifyCodeRegister(
       @Query("type") @UserType int type,
       @Query("phone") String phone);
 
+  /**
+   * 2.6 获取验证码 忘记密码时
+   */
+  @GET("Login/GetCode?status=1")
+  Observable<Response<Void>> getVerifyCodeForgetPassword(
+      @Query("phone") String phone);
+
+
+  /**
+   * 2.7 修改密码
+   */
   @GET("Login/Password")
   Observable<Response<Void>> resetPassword(
       @Query("uid") String uid,
@@ -85,15 +97,22 @@ public interface UserService {
       @Query("newpwd") String newPwd
   );
 
+  /**
+   * 2.8 获取用户信息
+   * //TODO 这样会不会有问题，正在问李凯
+   */
   @GET("User/User")
-  Observable<Response<User>> getUserDetail(
+  Observable<Response<UserDetails>> getUserDetail(
       @Query("uid") int uid,
       @Query("token") int token
   );
 
+  /**
+   * 2.9 个人信息上传图片
+   */
   @GET("User/Userphoto")
   Observable<Response<String>> uploadUserAvatar(
-      //TODO need to check
+      //TODO need to try
   );
 
   @IntDef({
@@ -113,6 +132,10 @@ public interface UserService {
   public static final int USER_DETAIL_WEIGHT = 5;
 
 
+  /**
+   * 2.11 修改用户信息
+   * @param type 类型  1：昵称 2：生日 3：性别 4：身高 5：体重
+   */
   @GET("User/Update_user")
   Observable<Response<Void>> resetUserDetails(
       @Query("uid") int uid,
@@ -120,24 +143,11 @@ public interface UserService {
       @Query("type") @UserDetailType int type,
       @Query("content") String message);
 
-
+  /**
+   * 2.2 获取用户协议
+   */
   @GET("Login/User")
   Observable<Response<String>> userProtocol();
-
-  @GET("My/Finishranks?page=1")
-    //TODO GameStatus有一些问题
-  Observable<Response<GameStatus>> gameFinished(
-      @Query("uid") int uid,
-      @Query("token") String token
-  );
-
-  @GET("My/Finishranks")
-    //TODO GameStatus有一些问题
-  Observable<Response<GameStatus>> gameFinished(
-      @Query("uid") int uid,
-      @Query("token") String token,
-      @Query("page") int page
-  );
 
   @GET("My/Nowranks?page=1")
   Observable<Response<GamePlayingEntity>> gamePlaying(
@@ -145,6 +155,11 @@ public interface UserService {
       @Query("token") String token
   );
 
+
+  /**
+   * 2.24 获取我正在玩儿的游戏
+   * //TODO 数据结构目前来看和FinishedGameEntity
+   */
   @GET("My/Nowranks")
   Observable<Response<GamePlayingEntity>> gamePlaying(
       @Query("uid") int uid,
@@ -152,19 +167,44 @@ public interface UserService {
       @Query("page") int page
   );
 
+  /**
+   * 2.25 获取用户已完成的游戏 默认page = 1
+   */
+  @GET("My/Finishranks?page=1")
+  Observable<Response<FinishedGameEntity>> gameFinished(
+      @Query("uid") int uid,
+      @Query("token") String token
+  );
+
+  /**
+   * 2.25 获取用户已完成的游戏
+   */
+  @GET("My/Finishranks")
+  Observable<Response<FinishedGameEntity>> gameFinished(
+      @Query("uid") int uid,
+      @Query("token") String token,
+      @Query("page") int page
+  );
+
+  /**
+   * 2.26 获取奖品信息
+   */
   @GET("My/Reward")
   Observable<Response<List<Reward>>> getRewards(
       @Query("uid") long uid,
       @Query("token") String token,
       @Query("page") int page);
 
+  /**
+   * 2.26 获取奖品信息 page 默认为 1
+   */
   @GET("My/Reward?page=1")
   Observable<Response<List<Reward>>> getRewards(
       @Query("uid") long uid,
       @Query("token") String token);
 
   /**
-   * 获取我的裁判任务
+   * 2.27 获取我的裁判任务, page默认为1
    */
   @GET("My/Task")
   Observable<Response<GameManageEntity>> getManagerTask(
@@ -174,13 +214,16 @@ public interface UserService {
   );
 
   /**
-   * 获取我的裁判任务
+   * 2.27 获取我的裁判任务, page默认为1
    */
   @GET("My/Task?page=1")
   Observable<Response<GameManageEntity>> getManagerTask(
       @Query("uid") long uid,
       @Query("token") String token);
 
+  /**
+   * 2.30 绑定设备的installationId，以便后台推送信息
+   */
   @GET("System/InstallationId")
   Observable<Response<Void>> registerInstallation(
       @Query("uid") long uid,

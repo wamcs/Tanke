@@ -49,7 +49,6 @@ public interface GameService {
   //TODO startGame的接口不知道干什么用的
   //TODO 游戏日志需要调整
 
-
   /**
    * 2.29 游戏结束后获取分享接口
    * @param uid 用户id

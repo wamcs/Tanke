@@ -11,6 +11,9 @@ import com.google.gson.annotations.SerializedName;
 public class GameManageEntity {
   long id;
 
+  /**
+   * Game的图片
+   */
   @SerializedName("pic")
   String img;
 
@@ -18,6 +21,9 @@ public class GameManageEntity {
 
   String content;
 
+  /**
+   * 二维码的内容，需要用此来生成二维码
+   */
   @SerializedName("img")
   String qrcode;
 

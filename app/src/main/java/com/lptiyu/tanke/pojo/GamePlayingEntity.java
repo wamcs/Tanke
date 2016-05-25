@@ -20,6 +20,7 @@ public class GamePlayingEntity {
 
   // 0: 上次玩的
   // 1: 正在进行的
+  //TODO 上次玩的和正在进行的，需不需要区分
   @SerializedName("type")
   private int type;
 
