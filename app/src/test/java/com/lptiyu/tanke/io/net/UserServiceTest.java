@@ -1,22 +1,17 @@
 package com.lptiyu.tanke.io.net;
 
 import com.lptiyu.tanke.BuildConfig;
-import com.lptiyu.tanke.bean.User;
-import com.lptiyu.tanke.global.AppData;
+import com.lptiyu.tanke.pojo.User;
 
 import junit.framework.Assert;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricGradleTestRunner;
 import org.robolectric.annotation.Config;
 
-import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action0;
 import rx.functions.Action1;
-import rx.schedulers.Schedulers;
 
 /**
  * EMAIL : danxionglei@foxmail.com

@@ -3,7 +3,9 @@ package com.lptiyu.tanke.io.net;
 
 import android.support.annotation.IntDef;
 
-import com.lptiyu.tanke.bean.User;
+import com.lptiyu.tanke.pojo.GamePlayingEntity;
+import com.lptiyu.tanke.pojo.GameStatus;
+import com.lptiyu.tanke.pojo.User;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -118,5 +120,34 @@ public interface UserService {
 
   @GET("Login/User")
   Observable<Response<String>> userProtocol();
+
+  @GET("My/Finishranks?page=1")
+  //TODO GameStatus有一些问题
+  Observable<Response<GameStatus>> gameFinished(
+      @Query("uid") int uid,
+      @Query("token") String token
+  );
+
+  @GET("My/Finishranks")
+  //TODO GameStatus有一些问题
+  Observable<Response<GameStatus>> gameFinished(
+      @Query("uid") int uid,
+      @Query("token") String token,
+      @Query("page") int page
+  );
+
+  @GET("My/Nowranks?page=1")
+  Observable<Response<GamePlayingEntity>> gamePlaying(
+      @Query("uid") int uid,
+      @Query("token") String token
+  );
+
+  @GET("My/Nowranks")
+  Observable<Response<GamePlayingEntity>> gamePlaying(
+      @Query("uid") int uid,
+      @Query("token") String token,
+      @Query("page") int page
+  );
+
 
 }

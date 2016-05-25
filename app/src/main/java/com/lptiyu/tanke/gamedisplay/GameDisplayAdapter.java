@@ -9,7 +9,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.lptiyu.tanke.R;
 import com.lptiyu.tanke.base.recyclerview.BaseAdapter;
-import com.lptiyu.tanke.bean.GameEntry;
+import com.lptiyu.tanke.pojo.GameDisplayEntity;
 
 import java.util.List;
 
@@ -24,9 +24,9 @@ import timber.log.Timber;
  *
  * @author ldx
  */
-public class GameDisplayAdapter extends BaseAdapter<GameDisplayAdapter.ViewHolder, List<GameEntry>> {
+public class GameDisplayAdapter extends BaseAdapter<GameDisplayAdapter.ViewHolder, List<GameDisplayEntity>> {
 
-  private List<GameEntry> dataList;
+  private List<GameDisplayEntity> dataList;
 
   private GameDisplayFragment fragment;
 
@@ -50,7 +50,7 @@ public class GameDisplayAdapter extends BaseAdapter<GameDisplayAdapter.ViewHolde
   }
 
   @Override
-  public void setData(List<GameEntry> data) {
+  public void setData(List<GameDisplayEntity> data) {
     this.dataList = data;
     notifyDataSetChanged();
   }
@@ -65,18 +65,18 @@ public class GameDisplayAdapter extends BaseAdapter<GameDisplayAdapter.ViewHolde
 
     int position = -1;
 
-    GameEntry gameEntry;
+    GameDisplayEntity gameDisplayEntity;
 
     ViewHolder(View itemView) {
       super(itemView);
       ButterKnife.bind(this, itemView);
     }
 
-    void bind(GameEntry entry, int position) {
+    void bind(GameDisplayEntity entry, int position) {
       Glide.with(fragment).load(entry.getImg()).asBitmap().into(imageView);
       textView.setText(entry.getTitle());
       this.position = position;
-      this.gameEntry = entry;
+      this.gameDisplayEntity = entry;
     }
 
     @OnClick(R.id.item_root)
@@ -87,7 +87,7 @@ public class GameDisplayAdapter extends BaseAdapter<GameDisplayAdapter.ViewHolde
         return;
       }
 
-      controller.onItemClick(gameEntry, position);
+      controller.onItemClick(gameDisplayEntity, position);
     }
   }
 

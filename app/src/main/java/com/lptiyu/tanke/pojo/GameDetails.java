@@ -1,4 +1,4 @@
-package com.lptiyu.tanke.bean;
+package com.lptiyu.tanke.pojo;
 
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -11,7 +11,7 @@ import com.google.gson.annotations.SerializedName;
  *
  * @author ldx
  */
-public class GameDetails extends GameEntry implements Parcelable {
+public class GameDetails extends GameDisplayEntity implements Parcelable {
 
   @SerializedName("num")
   private int peoplePlaying;
