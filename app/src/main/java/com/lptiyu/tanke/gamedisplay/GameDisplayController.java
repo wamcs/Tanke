@@ -12,7 +12,7 @@ import com.baidu.location.LocationClientOption;
 import com.lptiyu.tanke.MainActivityController;
 import com.lptiyu.tanke.R;
 import com.lptiyu.tanke.base.controller.FragmentController;
-import com.lptiyu.tanke.bean.GameEntry;
+import com.lptiyu.tanke.pojo.GameDisplayEntity;
 import com.lptiyu.tanke.io.net.HttpService;
 import com.lptiyu.tanke.io.net.Response;
 import com.lptiyu.tanke.utils.NetworkUtil;
@@ -83,12 +83,12 @@ public class GameDisplayController extends FragmentController {
       loc = ShaPrefer.getString(getString(R.string.main_page_location_key), null);
     }
 
-    HttpService.getGameService().getGamePage(loc)
+    HttpService.getGameService().getGamePage(loc, 0)
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
-        .subscribe(new Action1<Response<List<GameEntry>>>() {
+        .subscribe(new Action1<Response<List<GameDisplayEntity>>>() {
           @Override
-          public void call(Response<List<GameEntry>> response) {
+          public void call(Response<List<GameDisplayEntity>> response) {
             fragment.loading(false);
             if (response.getStatus() == Response.RESPONSE_OK) {
               updateList(response.getData());
@@ -151,7 +151,7 @@ public class GameDisplayController extends FragmentController {
           @Override
           public Observable<String> call(final BDLocation bdLocation) {
             return HttpService.getGameService()
-                .getSupportLocations()
+                .getSupportedCities()
                 .contains(bdLocation.getCity())
                 .map(new Func1<Boolean, String>() {
                   @Override
@@ -179,7 +179,7 @@ public class GameDisplayController extends FragmentController {
         });
   }
 
-  private void updateList(List<GameEntry> gameEntries) {
+  private void updateList(List<GameDisplayEntity> gameEntries) {
     if (adapter == null) {
       adapter = new GameDisplayAdapter((GameDisplayFragment) getFragment());
     }
@@ -197,12 +197,8 @@ public class GameDisplayController extends FragmentController {
     startActivityForResult(new Intent(getContext(), CaptureActivity.class), SCANNER_REQUEST_CODE);
   }
 
-  public void onItemClick(GameEntry gameEntry, int position) {
-    int id = ShaPrefer.getInt(String.format(getString(R.string.has_downloaded_mask), gameEntry.id), -1);
-    if (id == -1) {
-
-
-    }
+  public void onItemClick(GameDisplayEntity gameDisplayEntity, int position) {
+    int id = ShaPrefer.getInt(String.format(getString(R.string.has_downloaded_mask), gameDisplayEntity.getId()), -1);
 
   }
 

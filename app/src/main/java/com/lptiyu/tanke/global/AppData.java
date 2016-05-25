@@ -4,6 +4,10 @@ import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.lptiyu.tanke.pojo.GameDisplayEntity;
+
 import java.io.File;
 
 /**
@@ -17,12 +21,26 @@ public class AppData {
 
   private static int versionCode = -1;
 
+  private static Gson sGson;
+
+  static {
+    GsonBuilder builder = new GsonBuilder();
+    builder.registerTypeAdapter(GameDisplayEntity.GAME_STATE.class, GameDisplayEntity.GAME_STATE.NORMAL);
+    builder.registerTypeAdapter(GameDisplayEntity.RECOMMENDED_TYPE.class, GameDisplayEntity.RECOMMENDED_TYPE.NORMAL);
+    builder.registerTypeAdapter(GameDisplayEntity.GAME_TYPE.class, GameDisplayEntity.GAME_TYPE.INDIVIDUALS);
+    sGson = builder.create();
+  }
+
   public static Context getContext() {
     return sContext;
   }
 
+  public static Gson globalGson() {
+    return sGson;
+  }
+
   public static int getVersionCode() {
-    if (versionCode >= 0){
+    if (versionCode >= 0) {
       return versionCode;
     }
     PackageManager manager = sContext.getPackageManager();
