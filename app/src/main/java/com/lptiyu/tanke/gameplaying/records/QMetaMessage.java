@@ -66,7 +66,7 @@ public class QMetaMessage implements Serializable {
       if (spotTime != 0) {
         store();
       }
-    } else if (record.getType() == RunningRecord.RECORD_TYPE.ON_FINISH) {
+    } else if (record.getType() == RunningRecord.RECORD_TYPE.REACH_POINT) {
       if (spotTime != 0) {
         store();
       }

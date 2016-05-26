@@ -77,7 +77,7 @@ public class GamePlayingController extends ActivityController implements
   }
 
   @TargetMethod(requestCode = PermissionDispatcher.PERMISSION_REQUEST_CODE_LOCATION)
-  void startLocateService() {
+  public void startLocateService() {
     locateHelper.startLocate();
     mapHelper.animateCameraToCurrentPosition();
   }

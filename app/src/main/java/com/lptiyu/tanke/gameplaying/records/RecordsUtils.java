@@ -31,7 +31,7 @@ public class RecordsUtils {
   // 记录用户到达了某个点的信息，能够把对某一个点标示到达, 这个信息会被放在Message里，这是比较危险的，但是现在赶工期，暂时只能这样了。
   public static void dispatchTypeReachedSpot(RecordsHandler handler, int index) {
     RunningRecord record = new RunningRecord.Builder()
-        .type(RunningRecord.RECORD_TYPE.ON_POINT_REACHED)
+        .type(RunningRecord.RECORD_TYPE.FINISH_TASK)
         .time(System.currentTimeMillis())
         .remark("" + index)
         .build();
@@ -54,12 +54,12 @@ public class RecordsUtils {
 
   public static boolean isGameFinishedFromMemory(MemRecords memRecords) {
     RunningRecord record = memRecords.last();
-    return record != null && record.getType() == RunningRecord.RECORD_TYPE.ON_FINISH;
+    return record != null && record.getType() == RunningRecord.RECORD_TYPE.REACH_POINT;
   }
 
   public static boolean isGameStartedFromMemory(MemRecords memRecords) {
     RunningRecord record = memRecords.first();
-    return record != null && record.getType() == RunningRecord.RECORD_TYPE.ON_START;
+    return record != null && record.getType() == RunningRecord.RECORD_TYPE.START_GAME;
   }
 
   /**
@@ -124,7 +124,7 @@ public class RecordsUtils {
       e.printStackTrace();
     }
 
-    return record != null && record.getType() == RunningRecord.RECORD_TYPE.ON_START;
+    return record != null && record.getType() == RunningRecord.RECORD_TYPE.START_GAME;
   }
 
   /**
@@ -152,8 +152,8 @@ public class RecordsUtils {
     }
 
     Timber.e("record : " + new Gson().toJson(record));
-    Timber.e("isfinished " + (record != null && (record.getType() == RunningRecord.RECORD_TYPE.ON_FINISH)));
-    return ((record != null) && (record.getType() == RunningRecord.RECORD_TYPE.ON_FINISH));
+    Timber.e("isfinished " + (record != null && (record.getType() == RunningRecord.RECORD_TYPE.REACH_POINT)));
+    return ((record != null) && (record.getType() == RunningRecord.RECORD_TYPE.REACH_POINT));
   }
 
 }

@@ -24,9 +24,9 @@ public class Point implements Parcelable {
   @SerializedName("point_index")
   private int pointIndex;
 
-  private String latitude;
+  private double latitude;
 
-  private String longitude;
+  private double longitude;
 
   @SerializedName("task_id")
   private List<String> taskId;
@@ -67,19 +67,19 @@ public class Point implements Parcelable {
     this.pointIndex = pointIndex;
   }
 
-  public String getLatitude() {
+  public double getLatitude() {
     return latitude;
   }
 
-  public void setLatitude(String latitude) {
+  public void setLatitude(double latitude) {
     this.latitude = latitude;
   }
 
-  public String getLongitude() {
+  public double getLongitude() {
     return longitude;
   }
 
-  public void setLongitude(String longitude) {
+  public void setLongitude(double longitude) {
     this.longitude = longitude;
   }
 
@@ -103,8 +103,8 @@ public class Point implements Parcelable {
     private long id;
     private long lineId;
     private int pointIndex;
-    private String latitude;
-    private String longitude;
+    private double latitude;
+    private double longitude;
     private List<String> taskId;
     private Map<String, Task> missionMap;
 
@@ -126,12 +126,12 @@ public class Point implements Parcelable {
       return this;
     }
 
-    public Builder latitude(String val) {
+    public Builder latitude(double val) {
       latitude = val;
       return this;
     }
 
-    public Builder longitude(String val) {
+    public Builder longitude(double val) {
       longitude = val;
       return this;
     }
@@ -161,8 +161,8 @@ public class Point implements Parcelable {
     dest.writeLong(this.id);
     dest.writeLong(this.lineId);
     dest.writeInt(this.pointIndex);
-    dest.writeString(this.latitude);
-    dest.writeString(this.longitude);
+    dest.writeDouble(this.latitude);
+    dest.writeDouble(this.longitude);
     dest.writeStringList(this.taskId);
     dest.writeInt(this.missionMap.size());
     for (Map.Entry<String, Task> entry : this.missionMap.entrySet()) {
@@ -175,8 +175,8 @@ public class Point implements Parcelable {
     this.id = in.readLong();
     this.lineId = in.readLong();
     this.pointIndex = in.readInt();
-    this.latitude = in.readString();
-    this.longitude = in.readString();
+    this.latitude = in.readDouble();
+    this.longitude = in.readDouble();
     this.taskId = in.createStringArrayList();
     int missionMapSize = in.readInt();
     this.missionMap = new HashMap<String, Task>(missionMapSize);

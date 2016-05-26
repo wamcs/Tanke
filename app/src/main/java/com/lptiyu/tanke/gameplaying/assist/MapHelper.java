@@ -10,25 +10,28 @@ import com.baidu.location.BDLocation;
 import com.baidu.mapapi.map.BaiduMap;
 import com.baidu.mapapi.map.BitmapDescriptor;
 import com.baidu.mapapi.map.BitmapDescriptorFactory;
+import com.baidu.mapapi.map.Circle;
 import com.baidu.mapapi.map.CircleOptions;
 import com.baidu.mapapi.map.LogoPosition;
 import com.baidu.mapapi.map.MapStatusUpdateFactory;
 import com.baidu.mapapi.map.MarkerOptions;
 import com.baidu.mapapi.map.MyLocationConfiguration;
 import com.baidu.mapapi.map.MyLocationData;
+import com.baidu.mapapi.map.PolylineOptions;
 import com.baidu.mapapi.map.TextureMapView;
 import com.baidu.mapapi.map.UiSettings;
 import com.baidu.mapapi.model.LatLng;
+import com.baidu.mapapi.utils.DistanceUtil;
 import com.lptiyu.tanke.R;
 import com.lptiyu.tanke.gameplaying.pojo.Point;
+import com.lptiyu.tanke.global.Conf;
 import com.lptiyu.tanke.utils.Display;
 import com.lptiyu.tanke.widget.NumNail;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import timber.log.Timber;
 
 /**
  * @author : xiaoxiaoda
@@ -37,19 +40,26 @@ import timber.log.Timber;
  */
 public class MapHelper {
 
+  private Context mContext;
+
   private TextureMapView mapView;
   private BaiduMap mBaiduMap;
-
-  private boolean animateToCurrentPositionOnce = true;
-  private MyLocationData.Builder mLocationDataBuilder;
 
   private SensorHelper mSensorHelper;
   private MapCircleAnimationHelper mapCircleAnimationHelper;
 
-  private Context mContext;
-
   private List<Point> mPoints;
   private Map<Point, MarkerOptions> nailMarkerContainer = new HashMap<>();
+
+  private LatLng currentLatLng;
+  private LatLng lastTimeLatLng;
+  private List<LatLng> trackLatLngs;
+
+  private Circle attackPointCircle;
+  private CircleOptions attackPointCircleOptions;
+
+  private MyLocationData.Builder mLocationDataBuilder;
+  private boolean animateToCurrentPositionOnce = true;
 
   private static final int paddingLeft = 0;
   private static final int paddingTop = 0;
@@ -63,7 +73,11 @@ public class MapHelper {
     mContext = context;
     mapView = view;
     mBaiduMap = mapView.getMap();
+    init();
+  }
 
+  private void init() {
+    trackLatLngs = new ArrayList<>();
     mSensorHelper = new SensorHelper(mContext);
     mapCircleAnimationHelper = new MapCircleAnimationHelper(mContext, mBaiduMap);
 
@@ -84,6 +98,7 @@ public class MapHelper {
   }
 
   private void initEvent() {
+
   }
 
   public void startAnimate() {
@@ -96,6 +111,7 @@ public class MapHelper {
     }
     mPoints = points;
     initNails(mPoints);
+    setAttackPointCircle(mPoints.get(0));
   }
 
   /**
@@ -106,13 +122,16 @@ public class MapHelper {
    */
   public void onReceiveLocation(BDLocation location) {
     mBaiduMap.setMyLocationData(makeUpLocationData(location));
+    currentLatLng = new LatLng(location.getLatitude(), location.getLongitude());
     if (animateToCurrentPositionOnce) {
-
-      Timber.e("latitude : %f, longitude : %f", location.getLatitude(), location.getLongitude());
-
-      mBaiduMap.animateMapStatus(MapStatusUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 18));
+      mBaiduMap.animateMapStatus(MapStatusUpdateFactory.newLatLngZoom(currentLatLng, 18));
       animateToCurrentPositionOnce = false;
     }
+    if ((null != lastTimeLatLng) && (DistanceUtil.getDistance(lastTimeLatLng, currentLatLng) > Conf.LOCATION_DISTANCE_THRESHOLD_BOTTOM)
+        && (DistanceUtil.getDistance(lastTimeLatLng, currentLatLng) < Conf.LOCATION_DISTANCE_THRESHOLD_TOP)) {
+      drawPolyLine(lastTimeLatLng);
+    }
+    lastTimeLatLng = currentLatLng;
   }
 
   public void animateCameraToCurrentPosition() {
@@ -132,6 +151,15 @@ public class MapHelper {
     setNail(points.get(0), 0, NumNail.NailType.RED);
   }
 
+  private void setAttackPointCircle(Point point) {
+    if (attackPointCircle == null) {
+      attackPointCircleOptions = generateCircleOption(new LatLng(point.getLatitude(), point.getLongitude()));
+      attackPointCircle = mapCircleAnimationHelper.addCircleAnimation(attackPointCircleOptions);
+    } else {
+      attackPointCircle.setCenter(new LatLng(point.getLatitude(), point.getLongitude()));
+    }
+  }
+
   private void setNail(Point point, int index, NumNail.NailType type) {
     if (nailMarkerContainer == null) {
       throw new IllegalStateException("MarkerContainer not init");
@@ -140,15 +168,27 @@ public class MapHelper {
     if (nailMarkerContainer.containsKey(point)) {
       options = nailMarkerContainer.get(point);
     } else {
-      options = newNailMarkerOptions(point);
+      options = newNailMarkerOptions();
     }
-    options.position(new LatLng(Double.valueOf(point.getLatitude()), Double.valueOf(point.getLongitude())));
+    options.position(new LatLng(point.getLatitude(), point.getLongitude()));
     Bitmap b = NumNail.getNailBitmap(mContext, type).bakeText("" + index).getBitmap();
     if (b != null) {
       options.icon(BitmapDescriptorFactory.fromBitmap(b));
     }
     nailMarkerContainer.put(point, options);
     mBaiduMap.addOverlay(options);
+  }
+
+  public void drawPolyLine(LatLng ll) {
+    if (ll == null) {
+      return;
+    }
+    trackLatLngs.add(ll);
+    mBaiduMap.addOverlay(initPolyLineOptions().points(trackLatLngs));
+  }
+
+  private PolylineOptions initPolyLineOptions() {
+    return new PolylineOptions().width(10).color(0xff0F8AD7);
   }
 
   /**
@@ -175,10 +215,9 @@ public class MapHelper {
     return new MyLocationConfiguration(null, true, bitmapDescriptor);
   }
 
-  private MarkerOptions newNailMarkerOptions(Point point) {
+  private MarkerOptions newNailMarkerOptions() {
     MarkerOptions options = new MarkerOptions();
-    options.title("Nail");
-    options.draggable(false);
+    options.title("Nail").draggable(false).anchor(0.28f, 0.85f);
     return options;
   }
 
@@ -186,7 +225,7 @@ public class MapHelper {
     CircleOptions circleOptions = new CircleOptions();
     circleOptions
         .center(latLng)
-        .fillColor(mContext.getResources().getColor(R.color.white07));
+        .fillColor(mContext.getResources().getColor(R.color.attackPointCircleColor));
     return circleOptions;
   }
 

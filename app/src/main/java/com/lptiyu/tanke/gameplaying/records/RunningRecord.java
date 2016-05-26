@@ -122,12 +122,11 @@ public class RunningRecord implements Parcelable {
   }
 
   public enum RECORD_TYPE implements JsonSerializer<RECORD_TYPE>, JsonDeserializer<RECORD_TYPE> {
-    NORMAL(0),
-    ON_START(1),
-    ON_FINISH(2),
-    ON_FAILED(3),
-    ON_POINT_REACHED(4),
-    ON_POINT_COMPLETED(5);
+    START_GAME(0),
+    REACH_POINT(1),
+    START_TASK(2),
+    FINISH_TASK(3),
+    FINISH_GAME(4);
 
     final int type;
 
@@ -153,7 +152,7 @@ public class RunningRecord implements Parcelable {
             String.format("The item (%d) for GAME_STATE is unexpected.",
                 item));
       }
-      return NORMAL;
+      return FINISH_TASK;
     }
 
     @Override

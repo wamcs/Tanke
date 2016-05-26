@@ -36,7 +36,7 @@ public class RecordsHandler extends Handler {
 
   int temp = 1;
 
-  private RunningRecord mLastRecord = new RunningRecord.Builder().type(RunningRecord.RECORD_TYPE.ON_FINISH).build();
+  private RunningRecord mLastRecord = new RunningRecord.Builder().type(RunningRecord.RECORD_TYPE.REACH_POINT).build();
 
   private MemRecords memRecords;
 
