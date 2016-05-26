@@ -31,6 +31,8 @@ public final class HttpService {
 
   private static UserService userService;
 
+  private static TeamService teamService;
+
   static {
     OkHttpClient.Builder httpClientBuilder = new OkHttpClient.Builder();
 
@@ -47,7 +49,6 @@ public final class HttpService {
             .addQueryParameter("ostype", "1")
             .addQueryParameter("version", String.valueOf(AppData.getVersionCode()))
             .build();
-        System.out.println("newUrl = " + newUrl);
         Request processed = originalRequest.newBuilder()
             .url(newUrl).build();
         return chain.proceed(processed);
@@ -67,6 +68,7 @@ public final class HttpService {
 
     gameService = retrofit.create(GameService.class);
     userService = retrofit.create(UserService.class);
+    teamService = retrofit.create(TeamService.class);
   }
 
   private HttpService() {
@@ -78,5 +80,9 @@ public final class HttpService {
 
   public static UserService getUserService() {
     return userService;
+  }
+
+  public static TeamService getTeamService() {
+    return teamService;
   }
 }

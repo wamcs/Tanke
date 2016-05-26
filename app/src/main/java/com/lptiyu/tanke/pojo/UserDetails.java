@@ -36,4 +36,83 @@ public class UserDetails {
   @SerializedName("Finish_num")
   private int finishedGameNum;
 
+  public String getNickname() {
+    return nickname;
+  }
+
+  public void setNickname(String nickname) {
+    this.nickname = nickname;
+  }
+
+  public String getAvatar() {
+    return avatar;
+  }
+
+  public void setAvatar(String avatar) {
+    this.avatar = avatar;
+  }
+
+  public String getPhone() {
+    return phone;
+  }
+
+  public void setPhone(String phone) {
+    this.phone = phone;
+  }
+
+  public String getBirthday() {
+    return birthday;
+  }
+
+  public void setBirthday(String birthday) {
+    this.birthday = birthday;
+  }
+
+  public String getSex() {
+    return sex;
+  }
+
+  public void setSex(String sex) {
+    this.sex = sex;
+  }
+
+  public String getHeight() {
+    return height;
+  }
+
+  public void setHeight(String height) {
+    this.height = height;
+  }
+
+  public String getWeight() {
+    return weight;
+  }
+
+  public void setWeight(String weight) {
+    this.weight = weight;
+  }
+
+  public String getAddress() {
+    return address;
+  }
+
+  public void setAddress(String address) {
+    this.address = address;
+  }
+
+  public int getPlayingGameNum() {
+    return playingGameNum;
+  }
+
+  public void setPlayingGameNum(int playingGameNum) {
+    this.playingGameNum = playingGameNum;
+  }
+
+  public int getFinishedGameNum() {
+    return finishedGameNum;
+  }
+
+  public void setFinishedGameNum(int finishedGameNum) {
+    this.finishedGameNum = finishedGameNum;
+  }
 }

@@ -14,35 +14,53 @@ import rx.Observable;
  */
 public interface TeamService {
 
-  // Return team_id
+  /**
+   * 2.14 组建团队
+   *
+   * @return teamId
+   */
   @GET("Home/Ranks")
-  Observable<Response<Integer>> setupTeam(@Query("uid") int uid,
-                                          @Query("token") String token,
-                                          @Query("game_id") int gameId,
-                                          @Query("name") String teamName);
-
-  @GET("Home/Getranks")
-  Observable<Response<Team>> getTeamMessages(
-      @Query("uid") int uid,
-      @Query("token") int token,
-      @Query("ranks_id") int teamId);
-
-
-  @GET("Home/Reranks")
-  Observable<Response<Void>> exitTeam(
-      @Query("uid") int uid,
-      @Query("token") String token,
-      @Query("ranks_id") int teamId);
-
-  @GET("Home/Moveranks")
-  Observable<Response<Void>> removeTeamMember(
-      @Query("uid") int uid,
-      @Query("token") String token,
-      @Query("ranks_id") int teamId,
-      //被移除的用户的id
-      @Query("user_id") int userId
+  Observable<Response<Integer>> setupTeam(
+      @Query("uid") long uid,
+      @Query("game_id") long gameId,
+      @Query("name") String teamName
   );
 
+  /**
+   * 2.15 获取团队信息
+   */
+  @GET("Home/Getranks")
+  Observable<Response<Team>> getTeamMessages(
+      @Query("uid") long uid,
+      @Query("token") String token,
+      @Query("ranks_id") long teamId
+  );
+
+
+  /**
+   * 2.19 退出团队
+   */
+  @GET("Home/Reranks")
+  Observable<Response<Void>> exitTeam(
+      @Query("uid") long uid,
+      @Query("token") String token,
+      @Query("ranks_id") long teamId);
+
+  /**
+   * 2.20 移除团队成员
+   */
+  @GET("Home/Moveranks")
+  Observable<Response<Void>> removeTeamMember(
+      @Query("uid") long uid,
+      @Query("token") String token,
+      @Query("ranks_id") long teamId,
+      //被移除的用户的id
+      @Query("user_id") long removedUserId
+  );
+
+  /**
+   * 2.30 解散队伍
+   */
   @GET("Home/Delranks")
   Observable<Response<Void>> dismissTeam(
       @Query("uid") int uid,
