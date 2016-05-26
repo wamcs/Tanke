@@ -5,6 +5,10 @@ import android.os.Parcelable;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 /**
  * @author : xiaoxiaoda
  *         date: 16-5-25
@@ -24,10 +28,10 @@ public class Point implements Parcelable {
 
   private String longitude;
 
-  private String message;
+  @SerializedName("task_id")
+  private List<String> taskId;
 
-  @SerializedName("qrcode_info")
-  private String qrCodeInfo;
+  private Map<String, Mission> missionMap;
 
   private Point(Builder builder) {
     setId(builder.id);
@@ -35,8 +39,8 @@ public class Point implements Parcelable {
     setPointIndex(builder.pointIndex);
     setLatitude(builder.latitude);
     setLongitude(builder.longitude);
-    setMessage(builder.message);
-    setQrCodeInfo(builder.qrCodeInfo);
+    setTaskId(builder.taskId);
+    setMissionMap(builder.missionMap);
   }
 
   public long getId() {
@@ -79,22 +83,21 @@ public class Point implements Parcelable {
     this.longitude = longitude;
   }
 
-  public String getMessage() {
-    return message;
+  public List<String> getTaskId() {
+    return taskId;
   }
 
-  public void setMessage(String message) {
-    this.message = message;
+  public void setTaskId(List<String> taskId) {
+    this.taskId = taskId;
   }
 
-  public String getQrCodeInfo() {
-    return qrCodeInfo;
+  public Map<String, Mission> getMissionMap() {
+    return missionMap;
   }
 
-  public void setQrCodeInfo(String qrCodeInfo) {
-    this.qrCodeInfo = qrCodeInfo;
+  public void setMissionMap(Map<String, Mission> missionMap) {
+    this.missionMap = missionMap;
   }
-
 
   public static final class Builder {
     private long id;
@@ -102,8 +105,8 @@ public class Point implements Parcelable {
     private int pointIndex;
     private String latitude;
     private String longitude;
-    private String message;
-    private String qrCodeInfo;
+    private List<String> taskId;
+    private Map<String, Mission> missionMap;
 
     public Builder() {
     }
@@ -133,13 +136,13 @@ public class Point implements Parcelable {
       return this;
     }
 
-    public Builder message(String val) {
-      message = val;
+    public Builder taskId(List<String> val) {
+      taskId = val;
       return this;
     }
 
-    public Builder qrCodeInfo(String val) {
-      qrCodeInfo = val;
+    public Builder missionMap(Map<String, Mission> val) {
+      missionMap = val;
       return this;
     }
 
@@ -160,8 +163,12 @@ public class Point implements Parcelable {
     dest.writeInt(this.pointIndex);
     dest.writeString(this.latitude);
     dest.writeString(this.longitude);
-    dest.writeString(this.message);
-    dest.writeString(this.qrCodeInfo);
+    dest.writeStringList(this.taskId);
+    dest.writeInt(this.missionMap.size());
+    for (Map.Entry<String, Mission> entry : this.missionMap.entrySet()) {
+      dest.writeString(entry.getKey());
+      dest.writeParcelable(entry.getValue(), flags);
+    }
   }
 
   protected Point(Parcel in) {
@@ -170,8 +177,14 @@ public class Point implements Parcelable {
     this.pointIndex = in.readInt();
     this.latitude = in.readString();
     this.longitude = in.readString();
-    this.message = in.readString();
-    this.qrCodeInfo = in.readString();
+    this.taskId = in.createStringArrayList();
+    int missionMapSize = in.readInt();
+    this.missionMap = new HashMap<String, Mission>(missionMapSize);
+    for (int i = 0; i < missionMapSize; i++) {
+      String key = in.readString();
+      Mission value = in.readParcelable(Mission.class.getClassLoader());
+      this.missionMap.put(key, value);
+    }
   }
 
   public static final Creator<Point> CREATOR = new Creator<Point>() {

@@ -1,4 +1,4 @@
-package com.lptiyu.tanke.gameplaying.assist.zip;
+package com.lptiyu.tanke.gameplaying.assist.zip.filter;
 
 import java.io.File;
 import java.io.FilenameFilter;
@@ -9,6 +9,12 @@ import java.util.regex.Pattern;
  * @author : xiaoxiaoda
  *         date: 16-5-24
  *         email: wonderfulifeel@gmail.com
+ */
+
+/**
+ * this class is to filter the file
+ * which is unzipped from the game zip
+ * now it is a dir
  */
 public class GameUnzippedDirFilter implements FilenameFilter {
 

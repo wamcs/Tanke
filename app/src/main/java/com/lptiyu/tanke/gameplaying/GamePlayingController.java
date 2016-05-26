@@ -6,19 +6,21 @@ import android.view.View;
 import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
 import com.baidu.mapapi.map.TextureMapView;
+import com.google.gson.Gson;
 import com.lptiyu.tanke.R;
 import com.lptiyu.tanke.base.controller.ActivityController;
 import com.lptiyu.tanke.base.ui.BaseActivity;
 import com.lptiyu.tanke.gameplaying.assist.LocateHelper;
 import com.lptiyu.tanke.gameplaying.assist.MapHelper;
 import com.lptiyu.tanke.gameplaying.assist.zip.GameZipHelper;
-import com.lptiyu.tanke.gameplaying.assist.zip.GameZipScanner;
 import com.lptiyu.tanke.permission.PermissionDispatcher;
 import com.lptiyu.tanke.permission.TargetMethod;
+import com.lptiyu.tanke.utils.ToastUtil;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import timber.log.Timber;
 
 /**
  * @author : xiaoxiaoda
@@ -62,7 +64,13 @@ public class GamePlayingController extends ActivityController implements
   @OnClick(R.id.start_animate)
   void startAnimateButtonClicked() {
     mapHelper.startAnimate();
-    gameZipHelper.checkAndParseGameZip(1111111111, 1111111111);
+
+    if (gameZipHelper.checkAndParseGameZip(1000000001, 2000000001)) {
+      ToastUtil.TextToast("游戏加载完成");
+      Timber.e(new Gson().toJson(gameZipHelper.getmPoints()));
+
+    }
+
   }
 
   @TargetMethod(requestCode = PermissionDispatcher.PERMISSION_REQUEST_CODE_LOCATION)

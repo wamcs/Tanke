@@ -33,19 +33,15 @@ public class ThemeLine implements Parcelable {
   @SerializedName("create_time")
   private long createTime;
 
-  @SerializedName("mission_count")
-  private int missionCount;
-
-  @SerializedName("is_del")
-  private IS_DEL isDel;
+  @SerializedName("point_count")
+  private int pointCount;
 
   private ThemeLine(Builder builder) {
     setId(builder.id);
     setGameId(builder.gameId);
     setLineName(builder.lineName);
     setCreateTime(builder.createTime);
-    setMissionCount(builder.missionCount);
-    setIsDel(builder.isDel);
+    setPointCount(builder.pointCount);
   }
 
   enum IS_DEL implements JsonDeserializer<IS_DEL>, JsonSerializer<IS_DEL> {
@@ -81,7 +77,6 @@ public class ThemeLine implements Parcelable {
     }
   }
 
-
   public long getId() {
     return id;
   }
@@ -114,20 +109,12 @@ public class ThemeLine implements Parcelable {
     this.createTime = createTime;
   }
 
-  public int getMissionCount() {
-    return missionCount;
+  public int getPointCount() {
+    return pointCount;
   }
 
-  public void setMissionCount(int missionCount) {
-    this.missionCount = missionCount;
-  }
-
-  public IS_DEL getIsDel() {
-    return isDel;
-  }
-
-  public void setIsDel(IS_DEL isDel) {
-    this.isDel = isDel;
+  public void setPointCount(int pointCount) {
+    this.pointCount = pointCount;
   }
 
 
@@ -136,8 +123,7 @@ public class ThemeLine implements Parcelable {
     private long gameId;
     private String lineName;
     private long createTime;
-    private int missionCount;
-    private IS_DEL isDel;
+    private int pointCount;
 
     public Builder() {
     }
@@ -162,13 +148,8 @@ public class ThemeLine implements Parcelable {
       return this;
     }
 
-    public Builder missionCount(int val) {
-      missionCount = val;
-      return this;
-    }
-
-    public Builder isDel(IS_DEL val) {
-      isDel = val;
+    public Builder pointCount(int val) {
+      pointCount = val;
       return this;
     }
 
@@ -188,8 +169,7 @@ public class ThemeLine implements Parcelable {
     dest.writeLong(this.gameId);
     dest.writeString(this.lineName);
     dest.writeLong(this.createTime);
-    dest.writeInt(this.missionCount);
-    dest.writeInt(this.isDel == null ? -1 : this.isDel.ordinal());
+    dest.writeInt(this.pointCount);
   }
 
   protected ThemeLine(Parcel in) {
@@ -197,9 +177,7 @@ public class ThemeLine implements Parcelable {
     this.gameId = in.readLong();
     this.lineName = in.readString();
     this.createTime = in.readLong();
-    this.missionCount = in.readInt();
-    int tmpIsDel = in.readInt();
-    this.isDel = tmpIsDel == -1 ? null : IS_DEL.values()[tmpIsDel];
+    this.pointCount = in.readInt();
   }
 
   public static final Creator<ThemeLine> CREATOR = new Creator<ThemeLine>() {

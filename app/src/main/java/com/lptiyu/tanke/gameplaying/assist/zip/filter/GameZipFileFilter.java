@@ -1,4 +1,4 @@
-package com.lptiyu.tanke.gameplaying.assist.zip;
+package com.lptiyu.tanke.gameplaying.assist.zip.filter;
 
 import java.io.File;
 import java.io.FilenameFilter;
@@ -12,7 +12,11 @@ import java.util.regex.Pattern;
  *         email: wonderfulifeel@gmail.com
  */
 
-class GameZipFileFilter implements FilenameFilter {
+/**
+ * this class is to filter the file
+ * which is match with the game zip file name rules
+ */
+public class GameZipFileFilter implements FilenameFilter {
 
   static Pattern gameZipPattern = Pattern.compile("[0-9]{10}_[0-9]{10}_[0-9]{10}.zip$");
 
