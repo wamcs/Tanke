@@ -1,7 +1,8 @@
 package com.lptiyu.tanke.io.net;
 
 import com.lptiyu.tanke.BuildConfig;
-import com.lptiyu.tanke.pojo.User;
+import com.lptiyu.tanke.pojo.UserDetails;
+import com.lptiyu.tanke.pojo.UserEntity;
 
 import junit.framework.Assert;
 
@@ -33,9 +34,9 @@ public class UserServiceTest {
   @Test
   public void testRegister() throws Exception {
     userService.register("13006180386", "123qwe", "132465", UserService.USER_TYPE_NORMAL)
-        .subscribe(new Action1<Response<User>>() {
+        .subscribe(new Action1<Response<UserEntity>>() {
           @Override
-          public void call(Response<User> userResponse) {
+          public void call(Response<UserEntity> userResponse) {
             Assert.assertNotNull(userResponse);
             System.out.println("userResponse = " + userResponse);
           }
@@ -50,10 +51,10 @@ public class UserServiceTest {
 
   @Test
   public void testLogin() throws Exception {
-    userService.login("13006180386", "123qwe", UserService.USER_TYPE_NORMAL)
-        .subscribe(new Action1<Response<User>>() {
+    userService.login("13006180386", "123qwe")
+        .subscribe(new Action1<Response<UserEntity>>() {
           @Override
-          public void call(Response<User> userResponse) {
+          public void call(Response<UserEntity> userResponse) {
             Assert.assertNotNull(userResponse);
             System.out.println(userResponse.toString());
           }

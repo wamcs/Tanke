@@ -19,7 +19,7 @@ import java.lang.reflect.Type;
  * @author ldx
  */
 public class GameDisplayEntity {
-  protected int id;
+  protected long id;
 
   @SerializedName("pic")
   protected String img;
@@ -48,11 +48,11 @@ public class GameDisplayEntity {
 
   protected GAME_TYPE type = GAME_TYPE.INDIVIDUALS;
 
-  public int getId() {
+  public long getId() {
     return id;
   }
 
-  public void setId(int id) {
+  public void setId(long id) {
     this.id = id;
   }
 

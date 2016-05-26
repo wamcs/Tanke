@@ -49,4 +49,20 @@ public interface GameService {
   //TODO startGame的接口不知道干什么用的
   //TODO 游戏日志需要调整
 
+  /**
+   * 2.29 游戏结束后获取分享接口
+   * @param uid 用户id
+   * @param token 判断用户合法的随机数
+   * @param gameId 游戏Id
+   * @param teamId 团队Id
+   * @return Response,String 分享的链接
+   */
+  @GET("Home/Share")
+  Observable<Response<String>> share(
+      @Query("uid") long uid,
+      @Query("token") String token,
+      @Query("game_id") long gameId,
+      @Query("tanks_id") long teamId
+  );
+
 }
