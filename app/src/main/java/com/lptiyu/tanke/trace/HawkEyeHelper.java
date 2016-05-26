@@ -48,4 +48,8 @@ public abstract class HawkEyeHelper {
       mClient.onDestroy();
     }
   }
+
+  public static String makeUpTraceEntityName(String gameId, String userId) {
+    return gameId + "_" + userId;
+  }
 }
