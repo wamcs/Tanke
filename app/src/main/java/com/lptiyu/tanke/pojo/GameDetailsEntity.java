@@ -32,7 +32,7 @@ public class GameDetailsEntity {
   private String startTime;
 
   @SerializedName("end_time")
-  private String endTIme;
+  private String endTime;
 
   @SerializedName("type")
   private GAME_TYPE type;
