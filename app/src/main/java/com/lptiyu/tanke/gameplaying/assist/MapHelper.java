@@ -1,6 +1,7 @@
 package com.lptiyu.tanke.gameplaying.assist;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ZoomControls;
@@ -12,13 +13,22 @@ import com.baidu.mapapi.map.BitmapDescriptorFactory;
 import com.baidu.mapapi.map.CircleOptions;
 import com.baidu.mapapi.map.LogoPosition;
 import com.baidu.mapapi.map.MapStatusUpdateFactory;
+import com.baidu.mapapi.map.MarkerOptions;
 import com.baidu.mapapi.map.MyLocationConfiguration;
 import com.baidu.mapapi.map.MyLocationData;
 import com.baidu.mapapi.map.TextureMapView;
 import com.baidu.mapapi.map.UiSettings;
 import com.baidu.mapapi.model.LatLng;
 import com.lptiyu.tanke.R;
+import com.lptiyu.tanke.gameplaying.pojo.Point;
 import com.lptiyu.tanke.utils.Display;
+import com.lptiyu.tanke.widget.NumNail;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import timber.log.Timber;
 
 /**
  * @author : xiaoxiaoda
@@ -37,6 +47,9 @@ public class MapHelper {
   private MapCircleAnimationHelper mapCircleAnimationHelper;
 
   private Context mContext;
+
+  private List<Point> mPoints;
+  private Map<Point, MarkerOptions> nailMarkerContainer = new HashMap<>();
 
   private static final int paddingLeft = 0;
   private static final int paddingTop = 0;
@@ -77,6 +90,14 @@ public class MapHelper {
 
   }
 
+  public void bindData(List<Point> points) {
+    if (points == null) {
+      return;
+    }
+    mPoints = points;
+    initNails(mPoints);
+  }
+
   /**
    * receive location info from LocateHelper
    * set the BDLocation to map as user's location
@@ -86,21 +107,48 @@ public class MapHelper {
   public void onReceiveLocation(BDLocation location) {
     mBaiduMap.setMyLocationData(makeUpLocationData(location));
     if (animateToCurrentPositionOnce) {
+
+      Timber.e("latitude : %f, longitude : %f", location.getLatitude(), location.getLongitude());
+
       mBaiduMap.animateMapStatus(MapStatusUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 18));
       animateToCurrentPositionOnce = false;
     }
   }
 
+  public void animateCameraToCurrentPosition() {
+    animateToCurrentPositionOnce = true;
+  }
+
   /**
-   * this method can hide the baidu logo
-   * but baidu said the logo should not be hide
-   * so i'm not sure if i will be killed by baidu :)
+   * init the nail on the map
+   * point info from mPoints
    */
-  private void hideBaiduLogo() {
-    View child = mapView.getChildAt(1);
-    if (child != null && (child instanceof ImageView || child instanceof ZoomControls)) {
-      child.setVisibility(View.INVISIBLE);
+  private void initNails(List<Point> points) {
+    /**
+     * init the first target
+     * when user arrives in the current target
+     * the next target will be shown
+     */
+    setNail(points.get(0), 0, NumNail.NailType.RED);
+  }
+
+  private void setNail(Point point, int index, NumNail.NailType type) {
+    if (nailMarkerContainer == null) {
+      throw new IllegalStateException("MarkerContainer not init");
     }
+    MarkerOptions options;
+    if (nailMarkerContainer.containsKey(point)) {
+      options = nailMarkerContainer.get(point);
+    } else {
+      options = newNailMarkerOptions(point);
+    }
+    options.position(new LatLng(Double.valueOf(point.getLatitude()), Double.valueOf(point.getLongitude())));
+    Bitmap b = NumNail.getNailBitmap(mContext, type).bakeText("" + index).getBitmap();
+    if (b != null) {
+      options.icon(BitmapDescriptorFactory.fromBitmap(b));
+    }
+    nailMarkerContainer.put(point, options);
+    mBaiduMap.addOverlay(options);
   }
 
   /**
@@ -122,13 +170,16 @@ public class MapHelper {
     return mLocationDataBuilder.build();
   }
 
-  public void animateCameraToCurrentPosition() {
-    animateToCurrentPositionOnce = true;
-  }
-
   private MyLocationConfiguration initMyLocationConfiguration() {
     BitmapDescriptor bitmapDescriptor = BitmapDescriptorFactory.fromResource(R.mipmap.img_user_position_arrow);
     return new MyLocationConfiguration(null, true, bitmapDescriptor);
+  }
+
+  private MarkerOptions newNailMarkerOptions(Point point) {
+    MarkerOptions options = new MarkerOptions();
+    options.title("Nail");
+    options.draggable(false);
+    return options;
   }
 
   private CircleOptions generateCircleOption(LatLng latLng) {
@@ -137,6 +188,18 @@ public class MapHelper {
         .center(latLng)
         .fillColor(mContext.getResources().getColor(R.color.white07));
     return circleOptions;
+  }
+
+  /**
+   * this method can hide the baidu logo
+   * but baidu said the logo should not be hide
+   * so i'm not sure if i will be killed by baidu :)
+   */
+  private void hideBaiduLogo() {
+    View child = mapView.getChildAt(1);
+    if (child != null && (child instanceof ImageView || child instanceof ZoomControls)) {
+      child.setVisibility(View.INVISIBLE);
+    }
   }
 
   public void onResume() {
