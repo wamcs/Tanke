@@ -6,7 +6,10 @@ import android.content.pm.PackageManager;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.lptiyu.tanke.pojo.GameDisplayEntity;
+import com.lptiyu.tanke.pojo.GAME_STATE;
+import com.lptiyu.tanke.pojo.GAME_TYPE;
+import com.lptiyu.tanke.pojo.RECOMMENDED_TYPE;
+import com.lptiyu.tanke.pojo.Team;
 
 import java.io.File;
 
@@ -25,9 +28,10 @@ public class AppData {
 
   static {
     GsonBuilder builder = new GsonBuilder();
-    builder.registerTypeAdapter(GameDisplayEntity.GAME_STATE.class, GameDisplayEntity.GAME_STATE.NORMAL);
-    builder.registerTypeAdapter(GameDisplayEntity.RECOMMENDED_TYPE.class, GameDisplayEntity.RECOMMENDED_TYPE.NORMAL);
-    builder.registerTypeAdapter(GameDisplayEntity.GAME_TYPE.class, GameDisplayEntity.GAME_TYPE.INDIVIDUALS);
+    builder.registerTypeAdapter(GAME_STATE.class, GAME_STATE.NORMAL);
+    builder.registerTypeAdapter(RECOMMENDED_TYPE.class, RECOMMENDED_TYPE.NORMAL);
+    builder.registerTypeAdapter(GAME_TYPE.class, GAME_TYPE.INDIVIDUALS);
+    builder.registerTypeAdapter(Team.UserStatus.class, Team.UserStatus.MASTER);
     sGson = builder.create();
   }
 
