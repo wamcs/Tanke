@@ -20,7 +20,7 @@ import java.lang.reflect.Type;
  *         date: 16-5-25
  *         email: wonderfulifeel@gmail.com
  */
-public class Mission implements Parcelable {
+public class Task implements Parcelable {
 
   private long id;
 
@@ -36,7 +36,7 @@ public class Mission implements Parcelable {
 
   private String pwd;
 
-  private Mission(Builder builder) {
+  private Task(Builder builder) {
     setId(builder.id);
     setType(builder.type);
     setExp(builder.exp);
@@ -183,8 +183,8 @@ public class Mission implements Parcelable {
       return this;
     }
 
-    public Mission build() {
-      return new Mission(this);
+    public Task build() {
+      return new Task(this);
     }
   }
 
@@ -203,7 +203,7 @@ public class Mission implements Parcelable {
     dest.writeString(this.pwd);
   }
 
-  protected Mission(Parcel in) {
+  protected Task(Parcel in) {
     this.id = in.readLong();
     int tmpType = in.readInt();
     this.type = tmpType == -1 ? null : MISSION_TYPE.values()[tmpType];
@@ -213,15 +213,15 @@ public class Mission implements Parcelable {
     this.pwd = in.readString();
   }
 
-  public static final Creator<Mission> CREATOR = new Creator<Mission>() {
+  public static final Creator<Task> CREATOR = new Creator<Task>() {
     @Override
-    public Mission createFromParcel(Parcel source) {
-      return new Mission(source);
+    public Task createFromParcel(Parcel source) {
+      return new Task(source);
     }
 
     @Override
-    public Mission[] newArray(int size) {
-      return new Mission[size];
+    public Task[] newArray(int size) {
+      return new Task[size];
     }
   };
 }

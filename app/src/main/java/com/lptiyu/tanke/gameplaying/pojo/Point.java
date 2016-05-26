@@ -31,7 +31,7 @@ public class Point implements Parcelable {
   @SerializedName("task_id")
   private List<String> taskId;
 
-  private Map<String, Mission> missionMap;
+  private Map<String, Task> missionMap;
 
   private Point(Builder builder) {
     setId(builder.id);
@@ -91,11 +91,11 @@ public class Point implements Parcelable {
     this.taskId = taskId;
   }
 
-  public Map<String, Mission> getMissionMap() {
+  public Map<String, Task> getMissionMap() {
     return missionMap;
   }
 
-  public void setMissionMap(Map<String, Mission> missionMap) {
+  public void setMissionMap(Map<String, Task> missionMap) {
     this.missionMap = missionMap;
   }
 
@@ -106,7 +106,7 @@ public class Point implements Parcelable {
     private String latitude;
     private String longitude;
     private List<String> taskId;
-    private Map<String, Mission> missionMap;
+    private Map<String, Task> missionMap;
 
     public Builder() {
     }
@@ -141,7 +141,7 @@ public class Point implements Parcelable {
       return this;
     }
 
-    public Builder missionMap(Map<String, Mission> val) {
+    public Builder missionMap(Map<String, Task> val) {
       missionMap = val;
       return this;
     }
@@ -165,7 +165,7 @@ public class Point implements Parcelable {
     dest.writeString(this.longitude);
     dest.writeStringList(this.taskId);
     dest.writeInt(this.missionMap.size());
-    for (Map.Entry<String, Mission> entry : this.missionMap.entrySet()) {
+    for (Map.Entry<String, Task> entry : this.missionMap.entrySet()) {
       dest.writeString(entry.getKey());
       dest.writeParcelable(entry.getValue(), flags);
     }
@@ -179,10 +179,10 @@ public class Point implements Parcelable {
     this.longitude = in.readString();
     this.taskId = in.createStringArrayList();
     int missionMapSize = in.readInt();
-    this.missionMap = new HashMap<String, Mission>(missionMapSize);
+    this.missionMap = new HashMap<String, Task>(missionMapSize);
     for (int i = 0; i < missionMapSize; i++) {
       String key = in.readString();
-      Mission value = in.readParcelable(Mission.class.getClassLoader());
+      Task value = in.readParcelable(Task.class.getClassLoader());
       this.missionMap.put(key, value);
     }
   }

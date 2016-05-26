@@ -3,7 +3,7 @@ package com.lptiyu.tanke.gameplaying.assist.zip;
 
 import com.google.gson.Gson;
 import com.lptiyu.tanke.gameplaying.assist.zip.filter.GameUnzippedPointDirFilter;
-import com.lptiyu.tanke.gameplaying.pojo.Mission;
+import com.lptiyu.tanke.gameplaying.pojo.Task;
 import com.lptiyu.tanke.gameplaying.pojo.Point;
 import com.lptiyu.tanke.gameplaying.pojo.ThemeLine;
 import com.lptiyu.tanke.utils.FileUtils;
@@ -29,7 +29,7 @@ public class GameZipParser {
 
   private static final String THEME_LINE_JSON_FILE_NAME = "theme_line.json";
   private static final String POINT_JSON_FILE_NAME = "point.json";
-  private static final String MISSION_JSON_FILE_NAME = "mission.json";
+  private static final String TASK_JSON_FILE_NAME = "mission.json";
 
   public GameZipParser() {
     mGson = new Gson();
@@ -107,74 +107,74 @@ public class GameZipParser {
       return null;
     }
 
-    Map<String, Mission> missionMap = new HashMap<>();
-    for (String missionName : point.getTaskId()) {
-      String missionDirPath = pointRootDir + "/" + missionName;
-      Mission mission = checkAndParsePointMission(missionDirPath);
-      if (mission == null) {
-        Timber.e("mission %s parse error", missionName);
+    Map<String, Task> taskMap = new HashMap<>();
+    for (String taskName : point.getTaskId()) {
+      String taskDirPath = pointRootDir + "/" + taskName;
+      Task task = checkAndParsePointMission(taskDirPath);
+      if (task == null) {
+        Timber.e("task %s parse error", taskName);
         return null;
       }
-      missionMap.put(missionName, mission);
+      taskMap.put(taskName, task);
     }
-    point.setMissionMap(missionMap);
+    point.setMissionMap(taskMap);
     return point;
   }
 
   /**
-   * This method is to parse mission info
-   * from the mission dir
+   * This method is to parse task info
+   * from the task dir
    *
-   * @param missionDirPath mission dir path
-   * @return diff type of mission if parse success, null for error
+   * @param taskDirPath task dir path
+   * @return diff type of task if parse success, null for error
    */
-  private Mission checkAndParsePointMission(String missionDirPath) {
-    File file = new File(missionDirPath);
+  private Task checkAndParsePointMission(String taskDirPath) {
+    File file = new File(taskDirPath);
     if (!file.exists()) {
-      Timber.e("%s, mission dir is not exist or can not be open", missionDirPath);
+      Timber.e("%s, task dir is not exist or can not be open", taskDirPath);
       return null;
     }
 
-    String missionJsonFilePath = missionDirPath + "/" + MISSION_JSON_FILE_NAME;
-    Mission mission = checkAndParseTJsonFile(missionJsonFilePath, Mission.class);
-    if (mission == null) {
-      Timber.e("parse mission json file error");
+    String taskJsonFilePath = taskDirPath + "/" + TASK_JSON_FILE_NAME;
+    Task task = checkAndParseTJsonFile(taskJsonFilePath, Task.class);
+    if (task == null) {
+      Timber.e("parse task json file error");
       return null;
     }
 
-    if (!completeMissionInfo(mission, missionDirPath)) {
-      // mission info files are damaged or not exist
+    if (!completeMissionInfo(task, taskDirPath)) {
+      // task info files are damaged or not exist
       return null;
     }
-    return mission;
+    return task;
   }
 
   /**
-   * Complete mission info about the content and pwd
+   * Complete task info about the content and pwd
    *
-   * @param mission        mission to be completed
-   * @param missionDirPath mission content file's root directory
+   * @param task        task to be completed
+   * @param taskDirPath task content file's root directory
    * @return true if complete success, false for error
    */
-  private boolean completeMissionInfo(Mission mission, String missionDirPath) {
-    String missionContentFilePath = missionDirPath + "/" + mission.getContent();
-    if (!FileUtils.isFileExist(missionContentFilePath)) {
-      Timber.e("mission : %s,  message file is damaged", missionContentFilePath);
+  private boolean completeMissionInfo(Task task, String taskDirPath) {
+    String taskContentFilePath = taskDirPath + "/" + task.getContent();
+    if (!FileUtils.isFileExist(taskContentFilePath)) {
+      Timber.e("task : %s,  message file is damaged", taskContentFilePath);
       return false;
     }
-    mission.setContent(missionContentFilePath);
+    task.setContent(taskContentFilePath);
 
-    String missionPwdFilePath = missionDirPath + "/" + mission.getPwd();
-    if (!FileUtils.isFileExist(missionPwdFilePath)) {
-      Timber.e("mission : %s,  password file is damaged", missionPwdFilePath);
+    String taskPwdFilePath = taskDirPath + "/" + task.getPwd();
+    if (!FileUtils.isFileExist(taskPwdFilePath)) {
+      Timber.e("task : %s,  password file is damaged", taskPwdFilePath);
       return false;
     }
-    String pwd = FileUtils.readFileByChar(missionPwdFilePath);
+    String pwd = FileUtils.readFileByChar(taskPwdFilePath);
     if (pwd.length() == 0) {
-      Timber.e("read file : %s error", missionPwdFilePath);
+      Timber.e("read file : %s error", taskPwdFilePath);
       return false;
     }
-    mission.setPwd(pwd);
+    task.setPwd(pwd);
     return true;
   }
 
