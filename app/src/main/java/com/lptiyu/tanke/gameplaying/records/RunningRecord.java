@@ -67,7 +67,7 @@ public class RunningRecord implements Parcelable {
     TASK_FINISH(3),
     GAME_FINISH(4);
 
-    final int type;
+    public final int type;
 
     public int getType() {
       return type;
