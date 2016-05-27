@@ -46,7 +46,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:layout_marginRight="4dp"
-                        android:text="@string/complete_next"
+                        android:text="@string/complete"
                         android:textColor="@color/complete_next_button_text_color"
                         android:textSize="@dimen/complete_arrow_button_text_size" />
 
@@ -95,7 +95,6 @@
                         android:layout_height="@dimen/complete_user_avatar_size"
                         android:layout_gravity="center"
                         android:background="@mipmap/img_male"
-                        app:placeholderImage="@mipmap/img_male"
                         app:roundAsCircle="true" />
                 </FrameLayout>
             </LinearLayout>
@@ -108,7 +107,7 @@
                 android:layout_weight="42"
                 android:background="@color/white10"
                 android:gravity="center"
-                android:hint="@string/complete_input_nickname"
+                android:hint="@string/input_nickname"
                 android:textColor="@color/base_text_color"
                 android:textColorHint="@color/base_text_color"
                 android:textSize="@dimen/complete_nickname_edit_text_size" />
@@ -126,7 +125,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="30dp"
-                    android:text="@string/complete_gender"
+                    android:text="@string/gender"
                     android:textColor="@color/base_text_color"
                     android:textSize="@dimen/complete_gender_text_size" />
 
@@ -137,7 +136,7 @@
                     android:layout_marginRight="42dp"
                     android:background="@drawable/male_select_style"
                     android:gravity="center"
-                    android:text="@string/complete_male"
+                    android:text="@string/male"
                     android:textColor="@color/white10"
                     android:textSize="@dimen/complete_gender_text_size" />
 
@@ -146,7 +145,7 @@
                     android:layout_width="@dimen/complete_gender_text_height"
                     android:layout_height="@dimen/complete_gender_text_height"
                     android:gravity="center"
-                    android:text="@string/complete_female"
+                    android:text="@string/female"
                     android:textColor="@color/grey06"
                     android:textSize="@dimen/complete_gender_text_size" />
 
@@ -169,7 +168,7 @@
 
                     <TextView
                         style="@style/CompleteItemTitle"
-                        android:text="@string/complete_height" />
+                        android:text="@string/height" />
 
                     <TextView
                         android:id="@id/complete_height_text"
@@ -193,7 +192,7 @@
 
                     <TextView
                         style="@style/CompleteItemTitle"
-                        android:text="@string/complete_birthday" />
+                        android:text="@string/birthday" />
 
                     <TextView
                         android:id="@id/complete_birthday_text"
@@ -217,7 +216,7 @@
 
                     <TextView
                         style="@style/CompleteItemTitle"
-                        android:text="@string/complete_weight" />
+                        android:text="@string/weight" />
 
                     <TextView
                         android:id="@id/complete_weight_text"
@@ -267,7 +266,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_marginTop="17dp"
-                        android:text="@string/complete_change_city"
+                        android:text="@string/change_city"
                         android:textColor="@color/grey09"
                         android:textSize="5sp" />
                 </FrameLayout>

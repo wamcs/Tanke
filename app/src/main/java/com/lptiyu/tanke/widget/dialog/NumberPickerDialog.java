@@ -1,16 +1,14 @@
 package com.lptiyu.tanke.widget.dialog;
 
 import android.content.Context;
-import android.support.v7.app.AlertDialog;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
 
-import com.lptiyu.tanke.R;
 
+import com.lptiyu.tanke.R;
+import com.lptiyu.tanke.utils.Inflater;
 
 import net.simonvt.numberpicker.NumberPicker;
-
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -21,7 +19,7 @@ import butterknife.OnClick;
  * date: 16-1-20
  * email: daque@hustunique.com
  */
-public class NumberPickerDialog extends AlertDialog {
+public class NumberPickerDialog extends BaseDialog {
 
   @BindView(R.id.layout_dialog_number_picker_picker)
   NumberPicker mNumberPicker;
@@ -34,13 +32,22 @@ public class NumberPickerDialog extends AlertDialog {
 
   public NumberPickerDialog(Context context) {
     super(context);
-    View view = LayoutInflater.from(context).inflate(R.layout.layout_dialog_image_choose, null);
-    ButterKnife.bind(this, view);
-    setView(view);
+    this.setCustomView(R.layout.layout_dialog_number_picker, context);
   }
 
+  @Override
+  public BaseDialog setCustomView(int resId, Context context) {
+    View v = Inflater.inflate(resId, null, false);
+    return setCustomView(v, context);
+  }
 
-  public AlertDialog withMinMaxValue(int min, int max) {
+  @Override
+  public BaseDialog setCustomView(View view, Context context) {
+    ButterKnife.bind(this, view);
+    return super.setCustomView(view, context);
+  }
+
+  public BaseDialog withMinMaxValue(int min, int max) {
     mNumberPicker.setMinValue(min);
     mNumberPicker.setMaxValue(max);
     return this;
@@ -51,7 +58,7 @@ public class NumberPickerDialog extends AlertDialog {
   }
 
   public interface OnNumberPickedListener {
-    void onNumberPicked(int number);
+    public void onNumberPicked(int number);
   }
 
   @OnClick(R.id.layout_dialog_number_picker_cancel)

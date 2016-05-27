@@ -58,20 +58,25 @@
     <string name="select_image">选择图像</string>
 
     <!-- CompleteInformationActivity Text Area-->
-    <string name="complete_next">完成</string>
-    <string name="complete_input_nickname">点击输入昵称</string>
-    <string name="complete_gender">性别</string>
-    <string name="complete_male">男</string>
-    <string name="complete_female">女</string>
-    <string name="complete_height">身高</string>
-    <string name="complete_weight">体重</string>
-    <string name="complete_birthday">出生日期</string>
-    <string name="complete_change_city">点击切换城市</string>
+    <string name="complete">完成</string>
+    <string name="input_nickname">点击输入昵称</string>
+    <string name="gender">性别</string>
+    <string name="male">男</string>
+    <string name="female">女</string>
+    <string name="height">身高</string>
+    <string name="weight">体重</string>
+    <string name="birthday">出生日期</string>
+    <string name="change_city">点击切换城市</string>
     <string name="year">年</string>
     <string name="month">月</string>
     <string name="day">日</string>
     <string name="hour">时</string>
     <string name="minute">分</string>
+    <string name="please_select_avatar">请选择头像</string>
+    <string name="please_input_nick_name">请填写昵称</string>
+    <string name="upload_avatar_error">上传头像失败</string>
+
+
 
     <!-- GamePlayingActivity Text Area -->
     <string name="reach_attack_point">已到达攻击点，点击该点开始任务</string>

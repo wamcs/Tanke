@@ -13,6 +13,10 @@ import com.lptiyu.tanke.base.controller.ActivityController;
 import com.lptiyu.tanke.global.Accounts;
 import com.lptiyu.tanke.global.Conf;
 import com.lptiyu.tanke.initialization.ui.SignUpActivity;
+import com.lptiyu.tanke.io.net.HttpService;
+import com.lptiyu.tanke.io.net.Response;
+import com.lptiyu.tanke.io.net.UserService;
+import com.lptiyu.tanke.pojo.UserEntity;
 import com.lptiyu.tanke.utils.ThirdLoginHelper;
 import com.lptiyu.tanke.utils.ToastUtil;
 import com.lptiyu.tanke.widget.LoginEditView;
@@ -20,6 +24,9 @@ import com.lptiyu.tanke.widget.LoginEditView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import rx.Observer;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
 
 /**
  * author:wamcs
@@ -160,6 +167,7 @@ public class LoginController extends ActivityController {
     void signUp(){
         Intent intent = new Intent(this.getContext(), SignUpActivity.class);
         intent.putExtra(Conf.SIGN_UP_CODE,Conf.REGISTER_CODE);
+        intent.putExtra(Conf.SIGN_UP_TYPE,UserService.USER_TYPE_NORMAL);
         startActivity(intent);
     }
 
@@ -182,18 +190,33 @@ public class LoginController extends ActivityController {
             return;
         }
 
-        String phoneNumber = mInputPhoneEditText.getText().toString();
-        String password = mInputPasswordEditText.getText().toString();
+        final String phoneNumber = mInputPhoneEditText.getText().toString();
+        final String password = mInputPasswordEditText.getText().toString();
 
 
-        //TODO:send message to server
+        HttpService.getUserService().login(phoneNumber,password)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Action1<Response<UserEntity>>() {
+                    @Override
+                    public void call(Response<UserEntity> userEntityResponse) {
+                        int status = userEntityResponse.getStatus();
+                        if (status != 1){
+                            ToastUtil.TextToast(userEntityResponse.getInfo());
+                            return;
+                        }
 
-        //if success:
+                        UserEntity entity = userEntityResponse.getData();
+                        Accounts.setId(entity.getUid());
+                        Accounts.setToken(entity.getToken());
+                        Accounts.setPhoneNumber(entity.getPhone());
+                        //Accounts.setNickName(entity.getNickname());
+                        //Accounts.setAvatar(entity.getAvatar());
+                        //nickname 和 avatar 干什么用？不造
+                        //TODO:jump to main activity
+                    }
+                });
 
-        Accounts.setPhoneNumber(phoneNumber);
-        Accounts.setPassword(password);
 
-        //TODO:jump to main activity
 
 
     }

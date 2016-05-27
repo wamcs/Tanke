@@ -19,6 +19,7 @@ public class DirUtils {
   private static String DATA_ROOT_DIR;
   private static final String FILES = "/files";
   private static final String TEMP = "/temp";
+  private static final String RES = "/res";
   private static final String RECORD = "/record";
   private static final String GAME = "/game";
   private static final String ANDROID_RESOURCE = "android.resource://";
@@ -44,6 +45,21 @@ public class DirUtils {
       return null;
     }
     File destDir = new File(rootDir + type);
+    if (!destDir.exists()) {
+      if (destDir.mkdirs()) {
+        Timber.d("=======create dir======== %s", destDir.getAbsolutePath());
+      } else {
+        Timber.d("=======create dir========failed");
+      }
+    }
+    return destDir;
+  }
+
+  public static File getResDirectory() {
+    StringBuilder stringBuilder = new StringBuilder();
+    if (hasSDCard()) stringBuilder.append(SDCARD_ROOT_DIR).append(RES);
+    else stringBuilder.append(DATA_ROOT_DIR).append(FILES).append(RES);
+    File destDir = new File(stringBuilder.toString());
     if (!destDir.exists()) {
       if (destDir.mkdirs()) {
         Timber.d("=======create dir======== %s", destDir.getAbsolutePath());

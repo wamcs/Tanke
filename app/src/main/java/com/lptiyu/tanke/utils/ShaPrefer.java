@@ -41,6 +41,11 @@ public class ShaPrefer {
     return preferences.getInt(key, defValue);
   }
 
+  public static long getLong(String key,long defValue){
+    checkDefault();
+    return preferences.getLong(key,defValue);
+  }
+
   public static void remove(String...keys){
     checkDefault();
     SharedPreferences.Editor editor = preferences.edit();

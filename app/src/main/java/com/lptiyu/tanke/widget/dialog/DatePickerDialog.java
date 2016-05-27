@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 import com.lptiyu.tanke.R;
 import com.lptiyu.tanke.global.Conf;
+import com.lptiyu.tanke.utils.Inflater;
 
 
 import net.simonvt.numberpicker.NumberPicker;
@@ -21,7 +22,7 @@ import butterknife.OnClick;
  * date: 16-1-20
  * email: daque@hustunique.com
  */
-public class DatePickerDialog extends AlertDialog {
+public class DatePickerDialog extends BaseDialog {
 
   @BindView(R.id.layout_dialog_date_picker_year)
   NumberPicker mYearPicker;
@@ -39,11 +40,11 @@ public class DatePickerDialog extends AlertDialog {
 
   public DatePickerDialog(Context context) {
     super(context);
-    View view = LayoutInflater.from(context).inflate(R.layout.layout_dialog_image_choose, null);
-    ButterKnife.bind(this, view);
+    this.withTitle(context.getString(R.string.birthday))                                  //.withTitle(null)  no title
+            . setCustomView(R.layout.layout_dialog_date_picker, context);
     init();
-    setView(view);
   }
+
 
   private void init() {
     mYearPicker.setMaxValue(Conf.MAX_BIIRTHDAY_YEAR);
@@ -87,6 +88,20 @@ public class DatePickerDialog extends AlertDialog {
       }
     }
   }
+
+
+  @Override
+  public BaseDialog setCustomView(int resId, Context context) {
+    View v = Inflater.inflate(resId, null, false);
+    return setCustomView(v, context);
+  }
+
+  @Override
+  public BaseDialog setCustomView(View view, Context context) {
+    ButterKnife.bind(this, view);
+    return super.setCustomView(view, context);
+  }
+
 
 
   public void setOnDateChoosedListener(OnDateChoosedListener listener) {

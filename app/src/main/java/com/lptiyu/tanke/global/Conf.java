@@ -21,6 +21,7 @@ public final class Conf {
      * Sign up conf
      */
     public static final String SIGN_UP_CODE = "sign_up_code";
+    public static final String SIGN_UP_TYPE = "sign_up_type";
     public static final int REGISTER_CODE = 1;
     public static final int RESET_PASSWORD_CODE = 2;
 

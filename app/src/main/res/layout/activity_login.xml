@@ -93,13 +93,13 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="151"/>
+            android:layout_weight="130"/>
 
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="70"
+            android:layout_weight="90"
             android:orientation="vertical">
 
             <TextView
@@ -108,7 +108,7 @@
                 android:layout_gravity="center"
                 android:text="@string/login_other_method"
                 android:textColor="@color/white10"
-                android:textSize="7sp"
+                android:textSize="9sp"
                 />
 
             <LinearLayout
@@ -123,14 +123,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="16dp"
-                    android:background="@mipmap/img_weibo"/>
+                    android:background="@mipmap/img_weixin"/>
 
                 <ImageView
                     android:id="@id/login_qq_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="16dp"
-                    android:background="@mipmap/img_weibo"/>
+                    android:background="@mipmap/img_qq"/>
 
                 <ImageView
                     android:id="@id/login_weibo_button"

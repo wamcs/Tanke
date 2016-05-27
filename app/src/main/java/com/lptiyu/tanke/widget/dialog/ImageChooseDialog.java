@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.provider.MediaStore;
+import android.support.annotation.LayoutRes;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,8 +13,10 @@ import com.lptiyu.tanke.R;
 import com.lptiyu.tanke.base.controller.ActivityController;
 import com.lptiyu.tanke.base.controller.ContextController;
 import com.lptiyu.tanke.base.controller.FragmentController;
+import com.lptiyu.tanke.base.ui.BaseActivity;
 import com.lptiyu.tanke.global.Conf;
 import com.lptiyu.tanke.utils.DirUtils;
+import com.lptiyu.tanke.utils.Inflater;
 
 import java.io.File;
 
@@ -26,24 +29,32 @@ import timber.log.Timber;
  * date:2016/5/26
  * email:kaili@hustunique.com
  */
-public class ImageChooseDialog extends AlertDialog {
+public class ImageChooseDialog extends BaseDialog {
 
 
 
     private ContextController mController;
     private File mTempFile;
     private OnImageChoosedListener mListener;
+    private OnPermissionGetListener permissionGetListener;
 
-    public ImageChooseDialog(Context context) {
+    public ImageChooseDialog(Context context, ContextController controller) {
         super(context);
-        View view = LayoutInflater.from(context).inflate(R.layout.layout_dialog_image_choose, null);
-        ButterKnife.bind(this, view);
-        setView(view);
-
+        mController = controller;
+        this.withTitle(context.getString(R.string.select_image))                                  //.withTitle(null)  no title
+                .setCustomView(R.layout.layout_dialog_image_choose, context);
     }
 
-    public void setContextController(ContextController context){
-        this.mController = context;
+    @Override
+    public BaseDialog setCustomView(int resId, Context context) {
+        View v = Inflater.inflate(resId, null, false);
+        return setCustomView(v, context);
+    }
+
+    @Override
+    public BaseDialog setCustomView(View view, Context context) {
+        ButterKnife.bind(this, view);
+        return super.setCustomView(view, context);
     }
 
     @Override
@@ -99,6 +110,7 @@ public class ImageChooseDialog extends AlertDialog {
 
     @OnClick(R.id.dialog_user_avatar_take_photo)
     void startTakePhoto() {
+        permissionGetListener.onPermissionGet();
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(mTempFile));
         if (mController instanceof FragmentController) {
@@ -122,12 +134,22 @@ public class ImageChooseDialog extends AlertDialog {
     }
 
 
+
+
     public interface OnImageChoosedListener {
         void onImageChoosed(File file);
     }
 
+    public interface OnPermissionGetListener{
+        void onPermissionGet();
+    }
+
     public void setOnImageChoosedListener(OnImageChoosedListener listener) {
         mListener = listener;
+    }
+
+    public void setOnPermissionGetListener(OnPermissionGetListener listener){
+        permissionGetListener = listener;
     }
 
 }

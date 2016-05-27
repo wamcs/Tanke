@@ -20,130 +20,134 @@ import butterknife.ButterKnife;
  */
 public abstract class ActivityController extends ContextController {
 
-  @BindView(R.id.tool_bar)
-  Toolbar mToolbar;
+    @BindView(R.id.tool_bar)
+    Toolbar mToolbar;
 
-  private View mRootView;
+    private View mRootView;
 
-  private AppCompatActivity mActivity;
+    private AppCompatActivity mActivity;
 
-  public ActivityController(AppCompatActivity activity, View view) {
-    super(activity);
-    this.mRootView = view;
-    this.mActivity = activity;
-    if (isToolbarEnable()) {
-      ButterKnife.bind(this, view);
+    public ActivityController(AppCompatActivity activity, View view) {
+        super(activity);
+        this.mRootView = view;
+        this.mActivity = activity;
+        if (isToolbarEnable()) {
+            ButterKnife.bind(this, view);
+        }
+        baseInit();
     }
-    baseInit();
-  }
 
-  protected boolean isToolbarEnable() {
-    return true;
-  }
-
-  public AppCompatActivity getActivity() {
-    return mActivity;
-  }
-
-  public Window getWindow() {
-    return mActivity.getWindow();
-  }
-
-  public View findViewById(int resId) {
-    return mActivity.findViewById(resId);
-  }
-
-  protected void baseInit() {
-    if (isToolbarEnable()) {
-      initToolbar();
+    protected boolean isToolbarEnable() {
+        return true;
     }
-  }
 
-  protected void initToolbar() {
-    mActivity.setSupportActionBar(mToolbar);
-    mToolbar.setContentInsetsAbsolute(0, 0);
-    ActionBar actionBar = getSupportActionBar();
-    if (actionBar != null) {
-      actionBar.setDisplayHomeAsUpEnabled(false);
-      actionBar.setDisplayShowHomeEnabled(false);
-      actionBar.setHomeButtonEnabled(false);
-      actionBar.setDisplayShowCustomEnabled(true);
-      actionBar.setDisplayShowTitleEnabled(false);
-      actionBar.setHomeAsUpIndicator(null);
+    public AppCompatActivity getActivity() {
+        return mActivity;
     }
-  }
 
-  public ActionBar getSupportActionBar() {
-    return mActivity.getSupportActionBar();
-  }
+    public Window getWindow() {
+        return mActivity.getWindow();
+    }
 
-  public void onPostCreate() {
+    public View findViewById(int resId) {
+        return mActivity.findViewById(resId);
+    }
 
-  }
+    protected void baseInit() {
+        if (isToolbarEnable()) {
+            initToolbar();
+        }
+    }
 
-  public void onStart() {
+    protected void initToolbar() {
+        mActivity.setSupportActionBar(mToolbar);
+        mToolbar.setContentInsetsAbsolute(0, 0);
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(false);
+            actionBar.setDisplayShowHomeEnabled(false);
+            actionBar.setHomeButtonEnabled(false);
+            actionBar.setDisplayShowCustomEnabled(true);
+            actionBar.setDisplayShowTitleEnabled(false);
+            actionBar.setHomeAsUpIndicator(null);
+        }
+    }
 
-  }
+    public ActionBar getSupportActionBar() {
+        return mActivity.getSupportActionBar();
+    }
 
-  public void onResume() {
-  }
+    public void onPostCreate() {
 
-  public void onPause() {
-  }
+    }
 
-  public void onStop() {
+    public void onStart() {
 
-  }
+    }
 
-  public void onSaveInstanceState(Bundle outState) {
+    public void onResume() {
+    }
 
-  }
+    public void onPause() {
+    }
 
-  public void onDestroy() {
+    public void onStop() {
 
-  }
+    }
+
+    public void onSaveInstanceState(Bundle outState) {
+
+    }
+
+    public void onDestroy() {
+
+    }
 
 
-  public void onActivityResult(int requestCode, int resultCode, Intent data) {
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-  }
+    }
 
-  public void onBackPressed() {
+    public void onBackPressed() {
 
-  }
+    }
 
-  public View getRootView() {
-    return mRootView;
-  }
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults){
 
-  public void startActivity(Intent intent) {
-    mActivity.startActivity(intent);
-  }
+    }
 
-  public void startActivityForResult(Intent intent, int requestCode) {
-    mActivity.startActivityForResult(intent, requestCode);
-  }
+    public View getRootView() {
+        return mRootView;
+    }
 
-  public void finish() {
-    mActivity.finish();
-  }
+    public void startActivity(Intent intent) {
+        mActivity.startActivity(intent);
+    }
 
-  public Intent getIntent() {
-    return mActivity.getIntent();
-  }
+    public void startActivityForResult(Intent intent, int requestCode) {
+        mActivity.startActivityForResult(intent, requestCode);
+    }
 
-  public void performHomeClick() {
-    Intent intent = new Intent(Intent.ACTION_MAIN);
-    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-    intent.addCategory(Intent.CATEGORY_HOME);
-    startActivity(intent);
-  }
+    public void finish() {
+        mActivity.finish();
+    }
 
-  public FragmentManager getSupportFragmentManager() {
-    return mActivity.getSupportFragmentManager();
-  }
+    public Intent getIntent() {
+        return mActivity.getIntent();
+    }
 
-  public void overridePendingTransition(int enterAnim, int exitAnim) {
-    mActivity.overridePendingTransition(enterAnim, exitAnim);
-  }
+    public void performHomeClick() {
+        Intent intent = new Intent(Intent.ACTION_MAIN);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.addCategory(Intent.CATEGORY_HOME);
+        startActivity(intent);
+    }
+
+    public FragmentManager getSupportFragmentManager() {
+        return mActivity.getSupportFragmentManager();
+    }
+
+    public void overridePendingTransition(int enterAnim, int exitAnim) {
+        mActivity.overridePendingTransition(enterAnim, exitAnim);
+    }
 }

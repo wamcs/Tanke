@@ -19,20 +19,36 @@ public class Accounts {
     return ShaPrefer.getString("user_phone", "");
   }
 
-  public static void setPassword(String password){
-    ShaPrefer.put("user_password",password);
+  public static long getId() {
+    return ShaPrefer.getLong("user_id", 0L);
   }
 
-  public static String getPassword(){
-    return ShaPrefer.getString("user_password","");
+  public static void setId(long s) {
+    ShaPrefer.put("user_id", s);
   }
 
-  public static String getKey() {
-    return ShaPrefer.getString("user_key", "");
+  public static String getToken() {
+    return ShaPrefer.getString("user_token", "");
   }
 
-  public static void setKey(String s) {
-    ShaPrefer.put("user_key", s);
+  public static void setToken(String s) {
+    ShaPrefer.put("user_token", s);
+  }
+
+  public static String getNickName() {
+    return ShaPrefer.getString("user_nickname", "");
+  }
+
+  public static void setNickName(String s) {
+    ShaPrefer.put("user_nickname", s);
+  }
+
+  public static String getAvatar() {
+    return ShaPrefer.getString("user_avatar_url", "");
+  }
+
+  public static void setAvatar(String s) {
+    ShaPrefer.put("user_avatar_url", s);
   }
 
   public static String getOpenId() {
@@ -44,11 +60,11 @@ public class Accounts {
   }
 
   public static boolean isLogin() {
-    String key = getKey();
-    return (key != null) && (!key.isEmpty());
+    long key = getId();
+    return (key != 0L);
   }
 
   public static void logOut() {
-    setKey("");
+    setId(0L);
   }
 }

@@ -30,25 +30,30 @@ public class SignUpController extends ActivityController {
 
     public SignUpController(AppCompatActivity activity, View view) {
         super(activity, view);
-        ButterKnife.bind(this,view);
-        init(activity,view);
+        ButterKnife.bind(this, view);
+        init(activity, view);
 
     }
 
-    private void init(AppCompatActivity activity, View view){
+    private void init(AppCompatActivity activity, View view) {
         int code;
-        code = getIntent().getIntExtra(Conf.SIGN_UP_CODE,0);
-        if (code == 0){
+        code = getIntent().getIntExtra(Conf.SIGN_UP_CODE, 0);
+        if (code == 0) {
             throw new IllegalStateException("code must be in Conf");
         }
 
 
-        switch (code){
+        switch (code) {
             case Conf.REGISTER_CODE:
-            signUpHelper = new RegisterHelper(activity,view);
+                int type = getIntent().getIntExtra(Conf.SIGN_UP_TYPE, -1);
+                if (type == -1) {
+                    throw new IllegalStateException("not has this type");
+                }
+                signUpHelper = new RegisterHelper(activity, view, type);
                 break;
             case Conf.RESET_PASSWORD_CODE:
-                signUpHelper = new ResetPasswordHelper(activity,view);
+
+                signUpHelper = new ResetPasswordHelper(activity, view);
                 break;
         }
 
@@ -68,17 +73,17 @@ public class SignUpController extends ActivityController {
     }
 
     @OnClick(R.id.sign_up_return_button)
-    void back(){
+    void back() {
         finish();
     }
 
     @OnClick(R.id.sign_up_get_code_button)
-    void getCode(){
+    void getCode() {
         signUpHelper.getCode();
     }
 
     @OnClick(R.id.sign_up_next_button)
-    void next(){
+    void next() {
         signUpHelper.next();
     }
 }
