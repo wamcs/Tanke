@@ -81,7 +81,7 @@ public class GameDetails extends GameDisplayEntity implements Parcelable {
     dest.writeString(this.rule);
     dest.writeString(this.zipUrl);
     dest.writeString(this.shareUrl);
-    dest.writeInt(this.id);
+    dest.writeLong(this.id);
     dest.writeString(this.img);
     dest.writeString(this.title);
     dest.writeString(this.area);

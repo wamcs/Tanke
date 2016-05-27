@@ -7,6 +7,7 @@ import android.view.View;
 
 import com.lptiyu.tanke.R;
 import com.lptiyu.tanke.initialization.ui.CompleteInformationActivity;
+import com.lptiyu.tanke.io.net.HttpService;
 import com.lptiyu.tanke.utils.ToastUtil;
 
 /**
@@ -27,6 +28,21 @@ public class RegisterHelper extends SignUpHelper {
         signUpNextButton.setText(R.string.next);
     }
 
+    @Override
+    public void getCode() {
+        super.getCode();
+
+
+        //TODO:call verify code api
+
+        //call success
+        signUpGetCodeButton.setEnabled(false);
+        signUpGetCodeButton.setClickable(false);
+        TimeCounter timeCounter = new TimeCounter(COUNT_DOWN_TIME, 1000);
+        timeCounter.start();
+        signUpNextButton.setClickable(true);
+        signUpNextButton.setEnabled(true);
+    }
 
     @Override
     public void next() {
@@ -34,13 +50,15 @@ public class RegisterHelper extends SignUpHelper {
         Editable phone = signUpPhoneEditText.getText();
         Editable password = signUpPasswordEditText.getText();
         Editable code = signUpCodeEditText.getText();
+
+
         //TODO:send message to server
 
         //if success:get userid and set it to account
         Intent intent =new Intent();
         intent.setClass(context, CompleteInformationActivity.class);
         context.startActivity(intent);
-        context.finish();
+
     }
 
 

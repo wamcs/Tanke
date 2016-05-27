@@ -6,6 +6,7 @@ import android.text.Editable;
 import android.view.View;
 
 import com.lptiyu.tanke.R;
+import com.lptiyu.tanke.io.net.HttpService;
 
 /**
  * author:wamcs
@@ -29,6 +30,21 @@ public class ResetPasswordHelper extends SignUpHelper {
     }
 
 
+    @Override
+    public void getCode() {
+        super.getCode();
+
+        //TODO:call verify code api
+
+        //call success
+        signUpGetCodeButton.setEnabled(false);
+        signUpGetCodeButton.setClickable(false);
+        TimeCounter timeCounter = new TimeCounter(COUNT_DOWN_TIME, 1000);
+        timeCounter.start();
+        signUpNextButton.setClickable(true);
+        signUpNextButton.setEnabled(true);
+
+    }
 
     @Override
     public void next() {

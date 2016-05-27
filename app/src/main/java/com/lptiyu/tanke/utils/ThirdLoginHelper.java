@@ -1,6 +1,7 @@
 package com.lptiyu.tanke.utils;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 
 import com.lptiyu.tanke.global.AppData;
@@ -62,7 +63,7 @@ public class ThirdLoginHelper implements PlatformActionListener {
 
     }
 
-    public void login(String id) {
+    public void login(String id,String platformName,HashMap<String, Object> hashMap) {
         //TODO:send message to server,turn activity
     }
 
@@ -79,7 +80,7 @@ public class ThirdLoginHelper implements PlatformActionListener {
             getWeiboUserInformation(hashMap);
         if (platform.getName().equals(WECHAT))
             getWechatUserInformation(hashMap);
-        login(id);
+        login(id,platform.getName(),hashMap);
     }
 
     @Override

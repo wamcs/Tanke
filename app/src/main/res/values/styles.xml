@@ -61,4 +61,23 @@
         <item name="android:layout_gravity">center_vertical</item>
     </style>
 
+    <!-- CompleteInformationActivity Style Area-->
+    <style name="CompleteItemTitle">
+        <item name="android:textColor">@color/complete_item_title_color</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_gravity">center_horizontal</item>
+        <item name="android:textSize">@dimen/complete_item_title_text_size</item>
+        <item name="android:layout_marginBottom">@dimen/complete_item_title_margin_bottom</item>
+        <item name="android:layout_marginTop">@dimen/complete_item_title_margin_top</item>
+    </style>
+
+    <style name="CompleteItemContent">
+        <item name="android:textColor">@color/base_text_color</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_gravity">center_horizontal</item>
+        <item name="android:textSize">@dimen/complete_item_content_text_size</item>
+        <item name="android:layout_marginBottom">@dimen/complete_item_content_margin_bottom</item>
+    </style>
 </resources>

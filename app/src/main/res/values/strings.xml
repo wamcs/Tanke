@@ -50,9 +50,27 @@
     <string name="input_verify_code">请输入验证码</string>
     <string name="get_verify_code">获取验证码</string>
     <string name="next">下一步</string>
-
-
-
     <string name="reset_title">找回密码</string>
+
+    <!--ImageChooseDialog Text Area-->
+    <string name="dialog_user_avatar_take_photo">拍照</string>
+    <string name="dialog_user_avatar_gallery">从相册中选择</string>
+    <string name="select_image">选择图像</string>
+
+    <!-- CompleteInformationActivity Text Area-->
+    <string name="complete_next">完成</string>
+    <string name="complete_input_nickname">点击输入昵称</string>
+    <string name="complete_gender">性别</string>
+    <string name="complete_male">男</string>
+    <string name="complete_female">女</string>
+    <string name="complete_height">身高</string>
+    <string name="complete_weight">体重</string>
+    <string name="complete_birthday">出生日期</string>
+    <string name="complete_change_city">点击切换城市</string>
+    <string name="year">年</string>
+    <string name="month">月</string>
+    <string name="day">日</string>
+    <string name="hour">时</string>
+    <string name="minute">分</string>
 
 </resources>

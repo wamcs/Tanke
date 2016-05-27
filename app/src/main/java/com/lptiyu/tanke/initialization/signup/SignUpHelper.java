@@ -1,7 +1,6 @@
 package com.lptiyu.tanke.initialization.signup;
 
 
-import android.content.Context;
 import android.os.CountDownTimer;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
@@ -11,7 +10,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.lptiyu.tanke.R;
-import com.lptiyu.tanke.utils.TimeUtil;
+import com.lptiyu.tanke.utils.TimeUtils;
 import com.lptiyu.tanke.utils.ToastUtil;
 
 import butterknife.BindView;
@@ -62,17 +61,6 @@ public class SignUpHelper {
             return;
         }
 
-
-            //TODO:call verify code api
-
-            //call success
-            signUpGetCodeButton.setEnabled(false);
-            signUpGetCodeButton.setClickable(false);
-            TimeCounter timeCounter = new TimeCounter(COUNT_DOWN_TIME, 1000);
-            timeCounter.start();
-            signUpNextButton.setClickable(true);
-            signUpNextButton.setEnabled(true);
-
     }
 
 
@@ -105,7 +93,7 @@ public class SignUpHelper {
 
         @Override
         public void onTick(long millisUntilFinished) {
-            signUpGetCodeButton.setText(TimeUtil.getFriendlyTime(millisUntilFinished));
+            signUpGetCodeButton.setText(TimeUtils.getFriendlyTime(millisUntilFinished));
         }
 
         @Override

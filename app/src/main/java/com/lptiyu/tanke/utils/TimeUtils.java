@@ -11,7 +11,7 @@ import java.util.Locale;
  * date:2016/5/25
  * email:kaili@hustunique.com
  */
-public class TimeUtil {
+public class TimeUtils {
 
     public final static long ONE_MINUTE_TIME = 60000L;
     public final static long ONE_HOUR_TIME = ONE_MINUTE_TIME * 60;
