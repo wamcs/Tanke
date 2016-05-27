@@ -37,7 +37,6 @@ public class GamePlayingController extends ActivityController implements
   private LocateHelper locateHelper;
   private GameZipHelper gameZipHelper;
 
-
   public GamePlayingController(AppCompatActivity activity, View view) {
     super(activity, view);
     ButterKnife.bind(this, view);
@@ -49,6 +48,17 @@ public class GamePlayingController extends ActivityController implements
     locateHelper = new LocateHelper(getActivity().getApplicationContext());
     locateHelper.registerLocationListener(this);
     gameZipHelper = new GameZipHelper();
+
+    //TODO : get game id and line id from intent
+    if (gameZipHelper.checkAndParseGameZip(1000000001, 2000000001)) {
+      ToastUtil.TextToast("游戏包加载完成");
+      Timber.e(new Gson().toJson(gameZipHelper.getmPoints()));
+      mapHelper.bindData(gameZipHelper.getmPoints());
+
+    } else {
+      ToastUtil.TextToast("游戏包加载失败");
+    }
+
   }
 
   @Override
@@ -64,13 +74,6 @@ public class GamePlayingController extends ActivityController implements
   @OnClick(R.id.start_animate)
   void startAnimateButtonClicked() {
     mapHelper.startAnimate();
-
-    if (gameZipHelper.checkAndParseGameZip(1000000001, 2000000001)) {
-      ToastUtil.TextToast("游戏加载完成");
-      Timber.e(new Gson().toJson(gameZipHelper.getmPoints()));
-
-    }
-
   }
 
   @TargetMethod(requestCode = PermissionDispatcher.PERMISSION_REQUEST_CODE_LOCATION)
