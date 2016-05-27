@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.lptiyu.tanke.MainActivityController;
 import com.lptiyu.tanke.R;
@@ -19,6 +20,7 @@ import com.lptiyu.tanke.utils.ToastUtil;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import timber.log.Timber;
 
 /**
  * EMAIL : danxionglei@foxmail.com
@@ -66,8 +68,7 @@ public class GameDisplayFragment extends BaseFragment {
         .setNegativeButton(R.string.dismiss, new DialogInterface.OnClickListener() {
           @Override
           public void onClick(DialogInterface dialog, int which) {
-
-
+            Timber.v("用户取消了City(%s)的修改", city.getName());
           }
         })
     ;
@@ -79,8 +80,8 @@ public class GameDisplayFragment extends BaseFragment {
     }
   }
 
-  public void loadingError() {
-    ToastUtil.TextToast(getString(R.string.loading_error));
+  public void loadingError(Throwable t) {
+    ToastUtil.TextToast(t.getMessage());
   }
 
   @Override

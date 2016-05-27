@@ -6,6 +6,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.List;
+
 /**
  * EMAIL : danxionglei@foxmail.com
  * DATE : 16/5/22
@@ -22,6 +24,8 @@ public abstract class BaseAdapter<VH extends RecyclerView.ViewHolder, DataType> 
     return LayoutInflater.from(context).inflate(layoutId, null);
   }
 
-  public abstract void setData(DataType data);
+  public abstract void addData(List<DataType> data);
+
+  public abstract void setData(List<DataType> data);
 }
 

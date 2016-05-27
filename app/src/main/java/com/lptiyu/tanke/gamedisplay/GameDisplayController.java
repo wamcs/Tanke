@@ -2,7 +2,6 @@ package com.lptiyu.tanke.gamedisplay;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.support.annotation.Nullable;
 import android.view.View;
 
 import com.baidu.location.BDLocation;
@@ -11,7 +10,7 @@ import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
 import com.lptiyu.tanke.MainActivityController;
 import com.lptiyu.tanke.R;
-import com.lptiyu.tanke.base.controller.FragmentController;
+import com.lptiyu.tanke.base.recyclerview.BaseListFragmentController;
 import com.lptiyu.tanke.io.net.HttpService;
 import com.lptiyu.tanke.io.net.Response;
 import com.lptiyu.tanke.pojo.City;
@@ -22,7 +21,6 @@ import com.lptiyu.tanke.utils.ToastUtil;
 import com.lptiyu.zxinglib.android.CaptureActivity;
 
 import java.util.List;
-import java.util.Locale;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -40,12 +38,14 @@ import timber.log.Timber;
  *
  * @author ldx
  */
-public class GameDisplayController extends FragmentController {
+public class GameDisplayController extends BaseListFragmentController<GameDisplayEntity> {
 
   //As a view controller
   GameDisplayFragment fragment;
 
   GameDisplayAdapter adapter;
+
+  private String requestLocation;
 
   public static final int LOCATION_REQUEST_CODE = 0x1;
 
@@ -61,19 +61,18 @@ public class GameDisplayController extends FragmentController {
     init();
   }
 
-  @Override
-  public void onDetach() {
-    super.onDetach();
-  }
-
+  /**
+   * 判断网络，请求数据，并开始定位及定位接下来的逻辑
+   */
   private void init() {
     if (!NetworkUtil.checkIsNetworkConnected()) {
       ToastUtil.TextToast(R.string.no_network);
       return;
     }
 
-    inflateRecyclerView(null);
-
+    requestLocation = ShaPrefer.getString(getString(R.string.main_page_location_key), "武汉");
+    adapter = new GameDisplayAdapter(fragment);
+    refreshTop();
     initLocation();
   }
 
@@ -82,41 +81,42 @@ public class GameDisplayController extends FragmentController {
       Timber.e("You want to change the city, but the city is null");
       return;
     }
+    requestLocation = c.getName();
+    refreshTop();
     ShaPrefer.put(getString(R.string.main_page_location_key), c.getName());
-    inflateRecyclerView(c.getName());
   }
 
-  private void inflateRecyclerView(@Nullable String loc) {
+  @Override
+  public void showRefreshState(boolean refreshing) {
+    super.showRefreshState(refreshing);
+    fragment.loading(refreshing);
+  }
 
-    fragment.loading(true);
+  @Override
+  public void showError(Throwable t) {
+    super.showError(t);
+    fragment.loadingError(t);
+  }
 
-    if (loc == null) {
-      loc = ShaPrefer.getString(getString(R.string.main_page_location_key), null);
-    }
+  @Override
+  public Observable<List<GameDisplayEntity>> requestData(int page) {
+    return HttpService.getGameService()
+        .getGamePage(requestLocation, page)
+        .map(new Func1<Response<List<GameDisplayEntity>>, List<GameDisplayEntity>>() {
+          @Override
+          public List<GameDisplayEntity> call(Response<List<GameDisplayEntity>> listResponse) {
+            if (listResponse.getStatus() != Response.RESPONSE_OK) {
+              throw new RuntimeException(listResponse.getInfo());
+            }
+            return listResponse.getData();
+          }
+        });
+  }
 
-    HttpService.getGameService().getGamePage(loc, 0)
-        .subscribeOn(Schedulers.io())
-        .observeOn(AndroidSchedulers.mainThread())
-        .subscribe(
-            new Action1<Response<List<GameDisplayEntity>>>() {
-              @Override
-              public void call(Response<List<GameDisplayEntity>> response) {
-                fragment.loading(false);
-                if (response.getStatus() == Response.RESPONSE_OK) {
-                  updateList(response.getData());
-                } else {
-                  ToastUtil.Exception(new Exception(
-                      String.format(Locale.CHINA, "%s(status:%d)", response.getInfo(), response.getStatus())));
-                }
-              }
-            }, new Action1<Throwable>() {
-              @Override
-              public void call(Throwable throwable) {
-                fragment.loading(false);
-                fragment.loadingError();
-              }
-            });
-
+  @SuppressWarnings("unchecked")
+  @Override
+  public GameDisplayAdapter getAdapter() {
+    return adapter;
   }
 
   private void initLocation() {
@@ -204,15 +204,12 @@ public class GameDisplayController extends FragmentController {
             // 更新本地记录
             fragment.changeToCurrentCityDialog(c);
           }
+        }, new Action1<Throwable>() {
+          @Override
+          public void call(Throwable throwable) {
+            fragment.loadingError(throwable);
+          }
         });
-  }
-
-  private void updateList(List<GameDisplayEntity> gameEntries) {
-    if (adapter == null) {
-      adapter = new GameDisplayAdapter((GameDisplayFragment) getFragment());
-    }
-
-    adapter.setData(gameEntries);
   }
 
   @OnClick(R.id.location)
@@ -240,7 +237,8 @@ public class GameDisplayController extends FragmentController {
         if (loc == null) {
           break;
         }
-        inflateRecyclerView(loc);
+        requestLocation = loc;
+        refreshTop();
         break;
       case SCANNER_REQUEST_CODE:
 
@@ -248,4 +246,5 @@ public class GameDisplayController extends FragmentController {
       default:
     }
   }
+
 }
