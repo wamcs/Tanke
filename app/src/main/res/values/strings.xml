@@ -73,4 +73,8 @@
     <string name="hour">时</string>
     <string name="minute">分</string>
 
+    <!-- GamePlayingActivity Text Area -->
+    <string name="reach_attack_point">已到达攻击点，点击该点开始任务</string>
+    <string name="start_task">开始任务</string>
+
 </resources>

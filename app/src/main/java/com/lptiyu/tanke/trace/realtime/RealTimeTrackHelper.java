@@ -1,13 +1,12 @@
 package com.lptiyu.tanke.trace.realtime;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.baidu.trace.OnEntityListener;
 import com.baidu.trace.TraceLocation;
+import com.lptiyu.tanke.global.AppData;
 import com.lptiyu.tanke.trace.HawkEyeHelper;
 import com.lptiyu.tanke.trace.bean.HistoryTrackData;
-import com.lptiyu.tanke.utils.GsonUtil;
 
 import java.lang.ref.WeakReference;
 
@@ -57,7 +56,7 @@ public class RealTimeTrackHelper extends HawkEyeHelper implements
 
       @Override
       public void onQueryEntityListCallback(String s) {
-        HistoryTrackData historyTrackData = GsonUtil.parseJson(s,
+        HistoryTrackData historyTrackData = AppData.globalGson().fromJson(s,
             HistoryTrackData.class);
         if (mCallbackReference.get() != null) {
           mCallbackReference.get().onQueryEntityListCallback(historyTrackData);

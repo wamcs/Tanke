@@ -19,10 +19,8 @@ public class DirUtils {
   private static String DATA_ROOT_DIR;
   private static final String FILES = "/files";
   private static final String TEMP = "/temp";
-  private static final String RES = "/res";
-  private static final String RAW = "/raw";
-  private static final String PHOTOS = "/photos";
-  private static final String SHARE = "/share";
+  private static final String RECORD = "/record";
+  private static final String GAME = "/game";
   private static final String ANDROID_RESOURCE = "android.resource://";
 
   private static boolean hasSDCard() {
@@ -30,77 +28,42 @@ public class DirUtils {
     return status.equals(Environment.MEDIA_MOUNTED);
   }
 
-  public static void init(Context context) {
-    SDCARD_ROOT_DIR = context.getExternalFilesDir(null).getPath();
+  public static void init(Context context) throws Exception {
+    File file = context.getExternalFilesDir(null);
+    if (file != null) {
+      SDCARD_ROOT_DIR = file.getPath();
+    } else {
+      throw new Exception("GET SDCARD DIR ERROR");
+    }
     DATA_ROOT_DIR = context.getFilesDir().toString();
   }
 
+  public static File getDirectory(String rootDir, String type) {
+    if (SDCARD_ROOT_DIR == null || DATA_ROOT_DIR == null) {
+      Timber.e("you should invoke init() method before use DirUtils");
+      return null;
+    }
+    File destDir = new File(rootDir + type);
+    if (!destDir.exists()) {
+      if (destDir.mkdirs()) {
+        Timber.d("=======create dir======== %s", destDir.getAbsolutePath());
+      } else {
+        Timber.d("=======create dir========failed");
+      }
+    }
+    return destDir;
+  }
+
   public static File getTempDirectory() {
-    if (SDCARD_ROOT_DIR == null || DATA_ROOT_DIR == null) {
-      Timber.e("you should invoke init() method before use DirUtils");
-      return null;
-    }
-    StringBuilder stringBuilder = new StringBuilder();
-    if (hasSDCard()) stringBuilder.append(SDCARD_ROOT_DIR).append(TEMP);
-    else stringBuilder.append(DATA_ROOT_DIR).append(FILES).append(TEMP);
-    File destDir = new File(stringBuilder.toString());
-    if (!destDir.exists()) {
-      if (destDir.mkdirs()) {
-        Timber.d("=======create dir======== %s", destDir.getAbsolutePath());
-      } else {
-        Timber.d("=======create dir========failed");
-      }
-    }
-    return destDir;
+    return getDirectory(SDCARD_ROOT_DIR, TEMP);
   }
 
-  public static File getResDirectory() {
-    if (SDCARD_ROOT_DIR == null || DATA_ROOT_DIR == null) {
-      Timber.e("you should invoke init() method before use DirUtils");
-      return null;
-    }
-    StringBuilder stringBuilder = new StringBuilder();
-    if (hasSDCard()) stringBuilder.append(SDCARD_ROOT_DIR).append(RES);
-    else stringBuilder.append(DATA_ROOT_DIR).append(FILES).append(RES);
-    File destDir = new File(stringBuilder.toString());
-    if (!destDir.exists()) {
-      if (destDir.mkdirs()) {
-        Timber.d("=======create dir======== %s", destDir.getAbsolutePath());
-      } else {
-        Timber.d("=======create dir========failed");
-      }
-    }
-    return destDir;
+  public static File getRecordDirectory() {
+    return getDirectory(SDCARD_ROOT_DIR, RECORD);
   }
 
-  public static File getPhotosDirectory(){
-    StringBuilder stringBuilder = new StringBuilder();
-    if (hasSDCard()) stringBuilder.append(SDCARD_ROOT_DIR).append(PHOTOS);
-    else stringBuilder.append(DATA_ROOT_DIR).append(FILES).append(PHOTOS);
-    File destDir = new File(stringBuilder.toString());
-    if (!destDir.exists()) {
-      if (destDir.mkdirs()) {
-        Timber.d("=======create dir======== %s", destDir.getAbsolutePath());
-      } else {
-        Timber.d("=======create dir========failed");
-      }
-    }
-    return destDir;
-  }
-
-  public static File getSharePhotosDirectory(){
-    StringBuilder stringBuilder = new StringBuilder();
-    if (hasSDCard()) stringBuilder.append(SDCARD_ROOT_DIR).append(PHOTOS).append(SHARE);
-    else stringBuilder.append(DATA_ROOT_DIR).append(FILES).append(PHOTOS).append(SHARE);
-    File destDir = new File(stringBuilder.toString());
-    if (!destDir.exists()) {
-      if (destDir.mkdirs()) {
-        Timber.d("=======create dir======== %s", destDir.getAbsolutePath());
-      } else {
-        Timber.d("=======create dir========failed");
-      }
-    }
-    return destDir;
+  public static File getGameDirectory() {
+    return getDirectory(DATA_ROOT_DIR, GAME);
   }
 
 }

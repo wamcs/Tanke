@@ -1,4 +1,4 @@
-package com.lptiyu.tanke.records;
+package com.lptiyu.tanke.gameplaying.records;
 
 import java.util.List;
 

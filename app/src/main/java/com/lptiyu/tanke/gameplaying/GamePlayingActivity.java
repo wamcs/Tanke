@@ -13,10 +13,10 @@ public class GamePlayingActivity extends BaseActivity {
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-
     setContentView(R.layout.activity_game_playing);
 
-    mController = new GamePlayingController(this, getWindow().getDecorView());
+    //TODO : get some info from intent to change controller
+    mController = new NewGamePlayingController(this, getWindow().getDecorView());
 
   }
 

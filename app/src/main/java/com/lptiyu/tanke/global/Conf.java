@@ -1,5 +1,6 @@
 package com.lptiyu.tanke.global;
 
+
 import com.lptiyu.tanke.utils.TimeUtils;
 
 /**
@@ -8,6 +9,13 @@ import com.lptiyu.tanke.utils.TimeUtils;
  * email:kaili@hustunique.com
  */
 public final class Conf {
+
+    /**
+     * Running activity
+     */
+    public static final float LOCATION_DISTANCE_THRESHOLD_BOTTOM = 0.5f;
+    public static final float LOCATION_DISTANCE_THRESHOLD_TOP = 10.0f;
+    public static final double POINT_RADIUS = 10.0;
 
     /**
      * Sign up conf
@@ -57,5 +65,6 @@ public final class Conf {
     public static final int MIN_HOUR = 0;
     public static final int MAX_MINUTE = 59;
     public static final int MIN_MINUTE = 0;
+
 
 }

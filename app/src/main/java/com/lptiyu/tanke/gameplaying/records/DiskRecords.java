@@ -1,4 +1,4 @@
-package com.lptiyu.tanke.records;
+package com.lptiyu.tanke.gameplaying.records;
 
 import com.google.gson.Gson;
 import com.lptiyu.tanke.utils.DirUtils;
@@ -26,13 +26,12 @@ class DiskRecords {
 
   private Gson gson = new Gson();
 
-  static File generateFile(String activity_id) {
-    return new File(DirUtils.getTempDirectory(),
-        String.format("aid=%s.run", activity_id));
+  static File generateFile(long gameId) {
+    return new File(DirUtils.getRecordDirectory(), String.format("aid=%d.run", gameId));
   }
 
-  static File generateMetaFile(String activity_id) {
-    return new File(DirUtils.getTempDirectory(), String.format("aid=%s.meta", activity_id));
+  static File generateMetaFile(long gameId) {
+    return new File(DirUtils.getRecordDirectory(), String.format("aid=%d.meta", gameId));
   }
 
   DiskRecords(File cacheFile) {

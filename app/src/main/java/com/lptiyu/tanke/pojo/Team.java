@@ -22,7 +22,7 @@ public class Team {
 
   // 当前用户的身份
   @SerializedName("state")
-  private CurrentStatus state;
+  private UserStatus state;
 
   // 团队名称
   private String name;
@@ -30,20 +30,22 @@ public class Team {
   // 队员人数
   private int num;
 
+  @SerializedName("low")
   // 游戏要求最低人数
   private int low;
 
+  @SerializedName("high")
   // 游戏要求最高人数
   private int high;
 
   @SerializedName("data")
   private List<TeamMember> members;
 
-  public CurrentStatus getState() {
+  public UserStatus getState() {
     return state;
   }
 
-  public void setState(CurrentStatus state) {
+  public void setState(UserStatus state) {
     this.state = state;
   }
 
@@ -106,7 +108,7 @@ public class Team {
     private String grade;
 
     @SerializedName("type")
-    private CurrentStatus state;
+    private UserStatus state;
 
     public int getTeamMemberId() {
       return teamMemberId;
@@ -148,36 +150,38 @@ public class Team {
       this.grade = grade;
     }
 
-    public CurrentStatus getState() {
+    public UserStatus getState() {
       return state;
     }
 
-    public void setState(CurrentStatus state) {
+    public void setState(UserStatus state) {
       this.state = state;
     }
   }
 
-
-  public enum CurrentStatus implements JsonSerializer<CurrentStatus>,
-      JsonDeserializer<CurrentStatus> {
+  /**
+   * 当前用户在团队身份, 是否是队长
+   */
+  public enum UserStatus implements JsonSerializer<UserStatus>,
+      JsonDeserializer<UserStatus> {
     NORMAL(0),
     MASTER(1);
 
     public final int value;
 
-    CurrentStatus(int value) {
+    UserStatus(int value) {
       this.value = value;
     }
 
     @Override
-    public JsonElement serialize(CurrentStatus src, Type typeOfSrc, JsonSerializationContext context) {
+    public JsonElement serialize(UserStatus src, Type typeOfSrc, JsonSerializationContext context) {
       return new JsonPrimitive(src.value);
     }
 
     @Override
-    public CurrentStatus deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+    public UserStatus deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
       final int item = json.getAsInt();
-      for (CurrentStatus status : CurrentStatus.values()) {
+      for (UserStatus status : UserStatus.values()) {
         if (status.value == item) {
           return status;
         }

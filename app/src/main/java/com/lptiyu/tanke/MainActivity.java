@@ -10,10 +10,9 @@ import butterknife.ButterKnife;
 
 public class MainActivity extends BaseActivity {
 
- FragmentManager mFragmentManager;
+  FragmentManager mFragmentManager;
 
   MainActivityController mController;
-
 
 
   @Override

@@ -53,7 +53,7 @@ class PermissionUtil {
 
   public static List<Method> findTargetMethodWithRequestCode(Class clazz, int requestCodeAskPermission) {
     List<Method> targetMethods = new ArrayList<>();
-    Method[] methods = clazz.getDeclaredMethods();
+    Method[] methods = clazz.getMethods();
     for (Method m : methods) {
       Annotation annotation = m.getAnnotation(TargetMethod.class);
       if (annotation == null) {

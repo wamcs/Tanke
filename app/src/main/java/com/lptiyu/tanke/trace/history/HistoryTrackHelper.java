@@ -3,9 +3,9 @@ package com.lptiyu.tanke.trace.history;
 import android.content.Context;
 
 import com.baidu.trace.OnTrackListener;
+import com.lptiyu.tanke.global.AppData;
 import com.lptiyu.tanke.trace.HawkEyeHelper;
 import com.lptiyu.tanke.trace.bean.HistoryTrackData;
-import com.lptiyu.tanke.utils.GsonUtil;
 
 import java.lang.ref.WeakReference;
 
@@ -69,7 +69,7 @@ public class HistoryTrackHelper extends HawkEyeHelper implements
 
       @Override
       public void onQueryHistoryTrackCallback(String s) {
-        HistoryTrackData data = GsonUtil.parseJson(s, HistoryTrackData.class);
+        HistoryTrackData data = AppData.globalGson().fromJson(s, HistoryTrackData.class);
         if (mCallbackReference.get() != null) {
           mCallbackReference.get().onQueryHistoryTrackCallback(data);
         }
