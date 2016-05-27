@@ -12,8 +12,9 @@ import android.view.ViewGroup;
 
 import com.lptiyu.tanke.MainActivityController;
 import com.lptiyu.tanke.R;
-import com.lptiyu.tanke.base.controller.FragmentController;
 import com.lptiyu.tanke.base.ui.BaseFragment;
+import com.lptiyu.tanke.pojo.City;
+import com.lptiyu.tanke.utils.ShaPrefer;
 import com.lptiyu.tanke.utils.ToastUtil;
 
 import butterknife.BindView;
@@ -53,18 +54,19 @@ public class GameDisplayFragment extends BaseFragment {
     return adapter;
   }
 
-  public void changeToCurrentCity(String city) {
+  public void changeToCurrentCityDialog(final City city) {
     new AlertDialog.Builder(getContext())
-        .setMessage(String.format(getString(R.string.change_city_dialog_message), city))
+        .setMessage(String.format(getString(R.string.change_city_dialog_message), city.getName()))
         .setPositiveButton(R.string.ensure, new DialogInterface.OnClickListener() {
           @Override
           public void onClick(DialogInterface dialog, int which) {
-
+            controller.changeCurrentCity(city);
           }
         })
         .setNegativeButton(R.string.dismiss, new DialogInterface.OnClickListener() {
           @Override
           public void onClick(DialogInterface dialog, int which) {
+
 
           }
         })

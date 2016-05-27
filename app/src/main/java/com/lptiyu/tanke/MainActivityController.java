@@ -36,7 +36,6 @@ public class MainActivityController extends ActivityController {
   }
 
   private void init() {
-    //TODO add fragment
     fragments.add(new GameDisplayFragment());
     fragments.add(new SecondFragment());
     fragments.add(new ThirdFragment());
