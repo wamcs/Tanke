@@ -24,7 +24,7 @@ import timber.log.Timber;
  *
  * @author ldx
  */
-public class GameDisplayAdapter extends BaseAdapter<GameDisplayAdapter.ViewHolder, List<GameDisplayEntity>> {
+public class GameDisplayAdapter extends BaseAdapter<GameDisplayAdapter.ViewHolder, GameDisplayEntity> {
 
   private List<GameDisplayEntity> dataList;
 
@@ -47,6 +47,17 @@ public class GameDisplayAdapter extends BaseAdapter<GameDisplayAdapter.ViewHolde
   @Override
   public int getItemCount() {
     return dataList == null ? 0 : dataList.size();
+  }
+
+  @Override
+  public void addData(List<GameDisplayEntity> data) {
+    if (dataList == null) {
+      setData(data);
+      return;
+    }
+    int i = dataList.size();
+    dataList.addAll(data);
+    notifyItemInserted(i);
   }
 
   @Override

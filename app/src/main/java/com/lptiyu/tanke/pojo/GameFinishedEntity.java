@@ -19,7 +19,7 @@ public class GameFinishedEntity {
   String name;
 
   @SerializedName("time")
-  int time; //TODO 单位不明确
+  int time; //秒
 
   @SerializedName("values")
   int expPoints;

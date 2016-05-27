@@ -11,8 +11,8 @@ public class City {
   private long id;
   private String name;
   private String province;
-  private String latitude;
-  private String longitude;
+  private double latitude;
+  private double longitude;
 
   public long getId() {
     return id;
@@ -38,19 +38,19 @@ public class City {
     this.province = province;
   }
 
-  public String getLatitude() {
+  public double getLatitude() {
     return latitude;
   }
 
-  public void setLatitude(String latitude) {
+  public void setLatitude(double latitude) {
     this.latitude = latitude;
   }
 
-  public String getLongtitude() {
+  public double getLongtitude() {
     return longitude;
   }
 
-  public void setLongtitude(String longtitude) {
-    this.longitude = longtitude;
+  public void setLongtitude(double longitude) {
+    this.longitude = longitude;
   }
 }

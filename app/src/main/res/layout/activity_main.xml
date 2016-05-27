@@ -12,6 +12,7 @@
 
     <LinearLayout
         android:id="@+id/bottom_button_layout"
+        android:layout_alignParentBottom="true"
         android:layout_width="match_parent"
         android:layout_height="56dp">
 
@@ -38,9 +39,11 @@
 
     </LinearLayout>
 
-    <android.support.v4.app.Fragment
-        android:id="@+id/main_fragment"
+    <FrameLayout
+        android:id="@+id/fragment_container"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        android:layout_above="@id/bottom_button_layout"
+        />
 
 </RelativeLayout>
