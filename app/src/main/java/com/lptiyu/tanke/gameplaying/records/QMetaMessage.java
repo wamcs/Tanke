@@ -1,9 +1,6 @@
 package com.lptiyu.tanke.gameplaying.records;
 
 
-import com.baidu.mapapi.model.LatLng;
-import com.baidu.mapapi.utils.DistanceUtil;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -62,11 +59,11 @@ public class QMetaMessage implements Serializable {
     updateSpotSite(record);
     updateSpotTime(record);
 
-    if (record.getType() == RunningRecord.RECORD_TYPE.ON_POINT_COMPLETED) {
+    if (record.getType() == RunningRecord.RECORD_TYPE.TASK_FINISH) {
       if (spotTime != 0) {
         store();
       }
-    } else if (record.getType() == RunningRecord.RECORD_TYPE.REACH_POINT) {
+    } else if (record.getType() == RunningRecord.RECORD_TYPE.POINT_REACH) {
       if (spotTime != 0) {
         store();
       }
@@ -140,20 +137,20 @@ public class QMetaMessage implements Serializable {
   }
 
   private void updateSpotTime(RunningRecord record) {
-    spotTime += (record.getTime() - lastSpotTime);
-    lastSpotTime = record.getTime();
+    spotTime += (record.getCreateTime() - lastSpotTime);
+    lastSpotTime = record.getCreateTime();
   }
 
   private void updateSpotSite(RunningRecord record) {
-    if (record.getType() == RunningRecord.RECORD_TYPE.NORMAL) {
-      double rX = Double.valueOf(record.getX());
-      double rY = Double.valueOf(record.getY());
-      spotDistance +=
-          lastSpotSiteX == Double.MIN_VALUE || lastSpotSiteY == Double.MIN_VALUE ? 0 :
-              DistanceUtil.getDistance(new LatLng(lastSpotSiteX, lastSpotSiteY), new LatLng(rX, rY));
-      lastSpotSiteX = rX;
-      lastSpotSiteY = rY;
-    }
+//    if (record.getType() == RunningRecord.RECORD_TYPE.NORMAL) {
+//      double rX = Double.valueOf(record.getX());
+//      double rY = Double.valueOf(record.getY());
+//      spotDistance +=
+//          lastSpotSiteX == Double.MIN_VALUE || lastSpotSiteY == Double.MIN_VALUE ? 0 :
+//              DistanceUtil.getDistance(new LatLng(lastSpotSiteX, lastSpotSiteY), new LatLng(rX, rY));
+//      lastSpotSiteX = rX;
+//      lastSpotSiteY = rY;
+//    }
   }
 
 }

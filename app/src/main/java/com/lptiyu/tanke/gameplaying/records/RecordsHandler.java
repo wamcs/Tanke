@@ -8,6 +8,7 @@ import android.os.Message;
 import com.baidu.mapapi.model.LatLng;
 import com.baidu.mapapi.utils.DistanceUtil;
 import com.google.gson.Gson;
+import com.lptiyu.tanke.global.AppData;
 import com.lptiyu.tanke.utils.thread;
 
 import java.io.IOException;
@@ -30,13 +31,11 @@ public class RecordsHandler extends Handler {
 
   private static final int RESUME_FROM_DISC = 0x1 << 2;
 
-  private String activityId;
+  private long gameId;
 
-  int teamId;
+  long teamId;
 
-  int temp = 1;
-
-  private RunningRecord mLastRecord = new RunningRecord.Builder().type(RunningRecord.RECORD_TYPE.REACH_POINT).build();
+  private RunningRecord mLastRecord;
 
   private MemRecords memRecords;
 
@@ -48,16 +47,13 @@ public class RecordsHandler extends Handler {
 
   private static Handler mainHandler = new Handler(Looper.getMainLooper());
 
-  private static final double LOCATION_DISTANCE_THRESHOLD_BOTTOM = 0.5;
-  private static final double LOCATION_DISTANCE_THRESHOLD_TOP = 10;
-
   //=========================  PUBLIC INTERFACE  ===============================
 
 
   private RecordsHandler(Looper looper, Builder builder) {
     super(looper);
     teamId = builder.teamId;
-    activityId = builder.activity_id;
+    gameId = builder.gameId;
     memRecords = builder.memRecords;
     diskRecords = builder.diskRecords;
     networkRecords = builder.networkRecords;
@@ -107,43 +103,23 @@ public class RecordsHandler extends Handler {
     }
   }
 
-  Gson gson = new Gson();
-
   private void handleRecordMessage(Message msg) {
     if (msg.obj == null || !(msg.obj instanceof RunningRecord)) {
       Timber.e("Handle message error, object is null or not RunningRecord");
       return;
     }
     RunningRecord record = (RunningRecord) msg.obj;
-    // get a new message, but we sometimes need not to handle it.
-    if (mLastRecord != null && mLastRecord.getType() == RunningRecord.RECORD_TYPE.NORMAL&& record.getX() != null && record.getY() != null &&
-        DistanceUtil.getDistance(
-            new LatLng(Double.valueOf(record.getX()), Double.valueOf(record.getY())),
-            new LatLng(Double.valueOf(mLastRecord.getX()), Double.valueOf(mLastRecord.getY()))) < LOCATION_DISTANCE_THRESHOLD_BOTTOM) {
-//      networkRecords.sendToNetwork(record, activityId, new FutureCallback<Response<List<RunningRecord>>>() {
-//        @Override
-//        public void onCompleted(final Exception e, final Response<List<RunningRecord>> result) {
-//          mainHandler.post(new Runnable() {
-//            @Override
-//            public void run() {
-//              callback.onCompleted(e, result);
-//            }
-//          });
-//        }
-//      });
-
-      Timber.v("Records abandoned");
-      return;
+    record.setIndex(mPointIndex.getAndAdd(1));
+    record.setTeamId(teamId);
+    if (mLastRecord != null) {
+      record.setDistance((int)DistanceUtil.getDistance(mLastRecord.getLatLng(), record.getLatLng()));
     }
 
-    record.setIndex(mPointIndex.getAndAdd(1));
-
-    String s = gson.toJson(record);
-    Timber.v(s);
+    Timber.v(AppData.globalGson().toJson(record));
 
     mLastRecord = record;
-
     memRecords.add(record);
+
     //TODO : upload record to server, only the special record such as arrive the point or finish the task in the point
 //    networkRecords.sendToNetwork(record, activityId, new FutureCallback<Response<List<RunningRecord>>>() {
 //      @Override
@@ -156,8 +132,9 @@ public class RecordsHandler extends Handler {
 //        });
 //      }
 //    });
+
     diskRecords.appendRecord(record);
-    RecordsUtils.writeMetaMessage(activityId, memRecords.getMetaMessage());
+    RecordsUtils.writeMetaMessage(gameId, memRecords.getMetaMessage());
   }
 
   public MemRecords getMemRecords() {
@@ -165,25 +142,25 @@ public class RecordsHandler extends Handler {
   }
 
   public static final class Builder {
-    private String activity_id = null;
-    private int teamId = Integer.MIN_VALUE;
+    private long gameId = Long.MIN_VALUE;
+    private long teamId = Long.MIN_VALUE;
     private MemRecords memRecords;
     private DiskRecords diskRecords;
     private NetworkRecords networkRecords;
 //    private FutureCallback<Response<List<RunningRecord>>> callback;
     private Handler mainHandler;
 
-    public Builder(String activity_id, int teamId, boolean isTeamMaster) {
-      withActivity_id(activity_id);
+    public Builder(long gameId, long teamId) {
+      withGameId(gameId);
       withTeamId(teamId);
     }
 
-    public Builder withActivity_id(String val) {
-      activity_id = val;
+    public Builder withGameId(long val) {
+      gameId = val;
       return this;
     }
 
-    public Builder withTeamId(int teamId) {
+    public Builder withTeamId(long teamId) {
       this.teamId = teamId;
       return this;
     }
@@ -209,7 +186,7 @@ public class RecordsHandler extends Handler {
     }
 
     public RecordsHandler build() {
-      if (activity_id == null || teamId == Integer.MIN_VALUE) {
+      if (gameId == Long.MIN_VALUE|| teamId == Integer.MIN_VALUE) {
         throw new IllegalArgumentException("You need to pass in activityId team_id");
       }
 
@@ -218,7 +195,7 @@ public class RecordsHandler extends Handler {
       }
 
       if (diskRecords == null) {
-        diskRecords = new DiskRecords(DiskRecords.generateFile(activity_id));
+        diskRecords = new DiskRecords(DiskRecords.generateFile(gameId));
       }
 
       if (mainHandler == null) {

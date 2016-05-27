@@ -3,6 +3,7 @@ package com.lptiyu.tanke.gameplaying.pojo;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.baidu.mapapi.model.LatLng;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.HashMap;
@@ -97,6 +98,10 @@ public class Point implements Parcelable {
 
   public void setMissionMap(Map<String, Task> missionMap) {
     this.missionMap = missionMap;
+  }
+
+  public LatLng getLatLng() {
+    return new LatLng(latitude, longitude);
   }
 
   public static final class Builder {

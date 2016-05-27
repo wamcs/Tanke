@@ -19,6 +19,7 @@ public class DirUtils {
   private static String DATA_ROOT_DIR;
   private static final String FILES = "/files";
   private static final String TEMP = "/temp";
+  private static final String RECORD = "/record";
   private static final String GAME = "/game";
   private static final String ANDROID_RESOURCE = "android.resource://";
 
@@ -55,6 +56,10 @@ public class DirUtils {
 
   public static File getTempDirectory() {
     return getDirectory(SDCARD_ROOT_DIR, TEMP);
+  }
+
+  public static File getRecordDirectory() {
+    return getDirectory(SDCARD_ROOT_DIR, RECORD);
   }
 
   public static File getGameDirectory() {

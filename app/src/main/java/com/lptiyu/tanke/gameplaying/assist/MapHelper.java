@@ -2,6 +2,7 @@ package com.lptiyu.tanke.gameplaying.assist;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ZoomControls;
@@ -12,8 +13,10 @@ import com.baidu.mapapi.map.BitmapDescriptor;
 import com.baidu.mapapi.map.BitmapDescriptorFactory;
 import com.baidu.mapapi.map.Circle;
 import com.baidu.mapapi.map.CircleOptions;
+import com.baidu.mapapi.map.InfoWindow;
 import com.baidu.mapapi.map.LogoPosition;
 import com.baidu.mapapi.map.MapStatusUpdateFactory;
+import com.baidu.mapapi.map.Marker;
 import com.baidu.mapapi.map.MarkerOptions;
 import com.baidu.mapapi.map.MyLocationConfiguration;
 import com.baidu.mapapi.map.MyLocationData;
@@ -26,6 +29,7 @@ import com.lptiyu.tanke.R;
 import com.lptiyu.tanke.gameplaying.pojo.Point;
 import com.lptiyu.tanke.global.Conf;
 import com.lptiyu.tanke.utils.Display;
+import com.lptiyu.tanke.utils.ToastUtil;
 import com.lptiyu.tanke.widget.NumNail;
 
 import java.util.ArrayList;
@@ -38,7 +42,8 @@ import java.util.Map;
  *         date: 16-5-22
  *         email: wonderfulifeel@gmail.com
  */
-public class MapHelper {
+public class MapHelper implements
+    BaiduMap.OnMarkerClickListener {
 
   private Context mContext;
 
@@ -49,22 +54,36 @@ public class MapHelper {
   private MapCircleAnimationHelper mapCircleAnimationHelper;
 
   private List<Point> mPoints;
-  private Map<Point, MarkerOptions> nailMarkerContainer = new HashMap<>();
+  private Point currentAttackPoint;
+  private Map<Point, Marker> nailMarkerContainer = new HashMap<>();
 
   private LatLng currentLatLng;
   private LatLng lastTimeLatLng;
   private List<LatLng> trackLatLngs;
 
+  // draw the circle around attack point , in order to notify user
   private Circle attackPointCircle;
   private CircleOptions attackPointCircleOptions;
 
+  // info window content and info window, show when user arrive the attack point
+  private InfoWindow mTaskEntryInfoWindow;
+  private View mTaskEntryInfoWindowView;
+
   private MyLocationData.Builder mLocationDataBuilder;
+
+  // if this boolean is true, map will animate to current location when receive newly location
   private boolean animateToCurrentPositionOnce = true;
+
+  private boolean isReachAttackPoint = false;
+  private boolean isInfoWindowShown = false;
 
   private static final int paddingLeft = 0;
   private static final int paddingTop = 0;
   private static final int paddingRight = 0;
   private static final int paddingBottom = Display.dip2px(100);
+
+  // default delta value, the distance between info window and marker
+  private static final int DEFAULT_INFO_WINDOW_DELTA_Y = -70;
 
   public MapHelper(Context context, TextureMapView view) {
     if (view == null) {
@@ -80,6 +99,7 @@ public class MapHelper {
     trackLatLngs = new ArrayList<>();
     mSensorHelper = new SensorHelper(mContext);
     mapCircleAnimationHelper = new MapCircleAnimationHelper(mContext, mBaiduMap);
+    mTaskEntryInfoWindowView = LayoutInflater.from(mContext).inflate(R.layout.layout_map_infowindow, null);
 
     initMap();
     initEvent();
@@ -98,7 +118,7 @@ public class MapHelper {
   }
 
   private void initEvent() {
-
+    mBaiduMap.setOnMarkerClickListener(this);
   }
 
   public void startAnimate() {
@@ -110,15 +130,57 @@ public class MapHelper {
       return;
     }
     mPoints = points;
+  }
+
+  public void initMapFlow() {
     initNails(mPoints);
-    setAttackPointCircle(mPoints.get(0));
+    currentAttackPoint = mPoints.get(0);
+    setAttackPointCircle(currentAttackPoint);
+  }
+
+  @Override
+  public boolean onMarkerClick(Marker marker) {
+    if (isInfoWindowShown) {
+      mBaiduMap.hideInfoWindow();
+      isInfoWindowShown = false;
+      return true;
+    }
+
+    Marker currentMarker = nailMarkerContainer.get(currentAttackPoint);
+    if (currentMarker == marker) {
+      mTaskEntryInfoWindowView.findViewById(R.id.start_task).setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+          if (isReachAttackPoint) {
+            ToastUtil.TextToast("进入游戏界面");
+          } else {
+            ToastUtil.TextToast("您还未到达该攻击点");
+          }
+        }
+      });
+    } else {
+      mTaskEntryInfoWindowView.findViewById(R.id.start_task).setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+          //TODO : intent to history tasks flow
+        }
+      });
+    }
+    mTaskEntryInfoWindow = new InfoWindow(mTaskEntryInfoWindowView, marker.getPosition(), DEFAULT_INFO_WINDOW_DELTA_Y);
+    mBaiduMap.showInfoWindow(mTaskEntryInfoWindow);
+    isInfoWindowShown = true;
+    return true;
+  }
+
+  public void onReachAttackPoint() {
+    isReachAttackPoint = true;
   }
 
   /**
    * receive location info from LocateHelper
    * set the BDLocation to map as user's location
    *
-   * @param location
+   * @param location real time location from LocateHelper
    */
   public void onReceiveLocation(BDLocation location) {
     mBaiduMap.setMyLocationData(makeUpLocationData(location));
@@ -129,7 +191,7 @@ public class MapHelper {
     }
     if ((null != lastTimeLatLng) && (DistanceUtil.getDistance(lastTimeLatLng, currentLatLng) > Conf.LOCATION_DISTANCE_THRESHOLD_BOTTOM)
         && (DistanceUtil.getDistance(lastTimeLatLng, currentLatLng) < Conf.LOCATION_DISTANCE_THRESHOLD_TOP)) {
-      drawPolyLine(lastTimeLatLng);
+      drawPolyLine(currentLatLng);
     }
     lastTimeLatLng = currentLatLng;
   }
@@ -152,11 +214,12 @@ public class MapHelper {
   }
 
   private void setAttackPointCircle(Point point) {
+    LatLng latLng = point.getLatLng();
     if (attackPointCircle == null) {
-      attackPointCircleOptions = generateCircleOption(new LatLng(point.getLatitude(), point.getLongitude()));
+      attackPointCircleOptions = generateCircleOption(latLng);
       attackPointCircle = mapCircleAnimationHelper.addCircleAnimation(attackPointCircleOptions);
     } else {
-      attackPointCircle.setCenter(new LatLng(point.getLatitude(), point.getLongitude()));
+      attackPointCircle.setCenter(latLng);
     }
   }
 
@@ -166,20 +229,18 @@ public class MapHelper {
     }
     MarkerOptions options;
     if (nailMarkerContainer.containsKey(point)) {
-      options = nailMarkerContainer.get(point);
-    } else {
-      options = newNailMarkerOptions();
+      nailMarkerContainer.get(point).remove();
     }
-    options.position(new LatLng(point.getLatitude(), point.getLongitude()));
+    options = newNailMarkerOptions();
+    options.position(point.getLatLng());
     Bitmap b = NumNail.getNailBitmap(mContext, type).bakeText("" + index).getBitmap();
     if (b != null) {
       options.icon(BitmapDescriptorFactory.fromBitmap(b));
     }
-    nailMarkerContainer.put(point, options);
-    mBaiduMap.addOverlay(options);
+    nailMarkerContainer.put(point, ((Marker) mBaiduMap.addOverlay(options)));
   }
 
-  public void drawPolyLine(LatLng ll) {
+  private void drawPolyLine(LatLng ll) {
     if (ll == null) {
       return;
     }
@@ -217,7 +278,10 @@ public class MapHelper {
 
   private MarkerOptions newNailMarkerOptions() {
     MarkerOptions options = new MarkerOptions();
-    options.title("Nail").draggable(false).anchor(0.28f, 0.85f);
+    options
+        .title("Nail")
+        .draggable(false)
+        .anchor(0.28f, 0.85f);
     return options;
   }
 

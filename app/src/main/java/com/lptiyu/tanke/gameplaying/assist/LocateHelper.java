@@ -2,6 +2,7 @@ package com.lptiyu.tanke.gameplaying.assist;
 
 import android.content.Context;
 
+import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
@@ -15,12 +16,13 @@ import timber.log.Timber;
  *         date: 16-5-23
  *         email: wonderfulifeel@gmail.com
  */
-public class LocateHelper {
+public class LocateHelper implements BDLocationListener {
 
   private static final String DEFAULT_COOR_TYPE = "bd09ll";
   private static final int DEFAULT_SPAN = 1000;
 
   private LocationClient mLocationClient;
+  private BDLocationListener mBDLocationListener;
 
   private WeakReference<Context> contextWeakReference;
 
@@ -28,6 +30,14 @@ public class LocateHelper {
     contextWeakReference = new WeakReference<>(context);
     mLocationClient = new LocationClient(contextWeakReference.get());
     initLocation();
+  }
+
+  @Override
+  public void onReceiveLocation(BDLocation location) {
+    if (location == null || mBDLocationListener == null) {
+      return;
+    }
+    mBDLocationListener.onReceiveLocation(location);
   }
 
   public void startLocate() {
@@ -54,14 +64,16 @@ public class LocateHelper {
     if (listener == null) {
       throw new IllegalStateException("please set a non-null listener");
     }
-    mLocationClient.registerLocationListener(listener);
+    mLocationClient.registerLocationListener(this);
+    mBDLocationListener = listener;
   }
 
   public void unRegisterLocationListener(BDLocationListener listener) {
     if (mLocationClient == null) {
       return;
     }
-    mLocationClient.unRegisterLocationListener(listener);
+    mBDLocationListener = null;
+    mLocationClient.unRegisterLocationListener(this);
   }
 
   private void initLocation() {
@@ -79,7 +91,5 @@ public class LocateHelper {
     option.setEnableSimulateGps(false);//可选，默认false，设置是否需要过滤gps仿真结果，默认需要
     mLocationClient.setLocOption(option);
   }
-
-
 
 }

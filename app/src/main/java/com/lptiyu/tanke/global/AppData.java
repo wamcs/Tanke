@@ -34,8 +34,8 @@ public class AppData {
     builder.registerTypeAdapter(RECOMMENDED_TYPE.class, RECOMMENDED_TYPE.NORMAL);
     builder.registerTypeAdapter(GAME_TYPE.class, GAME_TYPE.INDIVIDUALS);
     builder.registerTypeAdapter(Team.UserStatus.class, Team.UserStatus.MASTER);
-    builder.registerTypeAdapter(Task.class, Task.MISSION_TYPE.FINISH);
-    builder.registerTypeAdapter(RunningRecord.class, RunningRecord.RECORD_TYPE.START_GAME);
+    builder.registerTypeAdapter(Task.MISSION_TYPE.class, Task.MISSION_TYPE.FINISH);
+    builder.registerTypeAdapter(RunningRecord.RECORD_TYPE.class, RunningRecord.RECORD_TYPE.GAME_START);
     sGson = builder.create();
   }
 
