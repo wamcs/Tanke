@@ -1,18 +1,37 @@
 package com.lptiyu.tanke;
 
 import android.os.Bundle;
-import android.support.v4.app.FragmentManager;
+import android.support.annotation.IntDef;
+import android.view.View;
 
 import com.lptiyu.tanke.base.controller.ActivityController;
 import com.lptiyu.tanke.base.ui.BaseActivity;
 
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class MainActivity extends BaseActivity {
 
-  FragmentManager mFragmentManager;
-
   MainActivityController mController;
+
+  /**
+   * Init value is a non-zero value, and then will be set to value.
+   */
+  public int mCurrentIndex = 2;
+
+  @BindView(R.id.page_1)
+  View tab1;
+
+  @BindView(R.id.page_2)
+  View tab2;
+
+  @BindView(R.id.page_3)
+  View tab3;
 
 
   @Override
@@ -30,7 +49,28 @@ public class MainActivity extends BaseActivity {
   }
 
   private void init() {
-    mFragmentManager = getSupportFragmentManager();
+    selectTab(0);
+  }
+
+  @IntDef({0, 1, 2})
+  @Target(ElementType.PARAMETER)
+  @Retention(RetentionPolicy.SOURCE)
+  @interface page {
+  }
+
+
+  public void selectTab(@page int index) {
+    if (mCurrentIndex == index) {
+      return;
+    }
+
+    selectTab(index == 0, tab1);
+    selectTab(index == 1, tab2);
+    selectTab(index == 2, tab3);
+  }
+
+  private void selectTab(boolean select, View View) {
+    // TODO Need to do
   }
 
 }

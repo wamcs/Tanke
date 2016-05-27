@@ -34,19 +34,13 @@ public abstract class BaseFragment extends Fragment implements ControllerHolder 
       if (controller instanceof ActivityController) {
         mActivityController = (ActivityController) controller;
       } else {
-        System.out.println("controller = [" + controller + "] is not ActivityController.");
+        System.err.println("controller = [" + controller + "] is not ActivityController.");
       }
     } else {
-      throw new RuntimeException(context.toString()
+      System.err.println(context.toString()
           + " must implement ControllerHolder");
     }
-
-    if (!(mActivityController instanceof OnFragmentInteractionListener)) {
-      throw new RuntimeException(mActivityController.toString()
-          + " must implement OnFragmentInteractionListener");
-    }
   }
-
 
   @Override
   public void onResume() {
@@ -113,17 +107,4 @@ public abstract class BaseFragment extends Fragment implements ControllerHolder 
 
   public abstract FragmentController getController();
 
-  /**
-   * This interface must be implemented by activities that contain this
-   * fragment to allow an interaction in this fragment to be communicated
-   * to the activity and potentially other fragments contained in that
-   * activity.
-   * <p>
-   * See the Android Training lesson <a href=
-   * "http://developer.android.com/training/basics/fragments/communicating.html"
-   * >Communicating with Other Fragments</a> for more information.
-   */
-  public interface OnFragmentInteractionListener {
-    void onFragmentInteraction();
-  }
 }

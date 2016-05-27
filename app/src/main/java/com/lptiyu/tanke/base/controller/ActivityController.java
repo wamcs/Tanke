@@ -2,6 +2,7 @@ package com.lptiyu.tanke.base.controller;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -136,6 +137,10 @@ public abstract class ActivityController extends ContextController {
     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
     intent.addCategory(Intent.CATEGORY_HOME);
     startActivity(intent);
+  }
+
+  public FragmentManager getSupportFragmentManager() {
+    return mActivity.getSupportFragmentManager();
   }
 
   public void overridePendingTransition(int enterAnim, int exitAnim) {
