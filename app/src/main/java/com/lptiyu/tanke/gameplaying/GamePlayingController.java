@@ -1,6 +1,7 @@
 package com.lptiyu.tanke.gameplaying;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -20,9 +21,13 @@ import com.lptiyu.tanke.gameplaying.pojo.Point;
 import com.lptiyu.tanke.gameplaying.records.RecordsHandler;
 import com.lptiyu.tanke.gameplaying.records.RecordsUtils;
 import com.lptiyu.tanke.gameplaying.records.RunningRecord;
+import com.lptiyu.tanke.gameplaying.task.BaseTaskActivity;
 import com.lptiyu.tanke.global.Conf;
 import com.lptiyu.tanke.permission.PermissionDispatcher;
 import com.lptiyu.tanke.permission.TargetMethod;
+import com.lptiyu.tanke.trace.tracing.ITracingHelper;
+import com.lptiyu.tanke.trace.tracing.TracingCallback;
+import com.lptiyu.tanke.trace.tracing.TracingHelper;
 import com.lptiyu.tanke.utils.ToastUtil;
 import com.lptiyu.tanke.utils.VibrateUtils;
 
@@ -39,11 +44,14 @@ import timber.log.Timber;
  *         email: wonderfulifeel@gmail.com
  */
 public abstract class GamePlayingController extends ActivityController implements
-    BDLocationListener {
+    BDLocationListener,
+    TracingCallback,
+    MapHelper.OnMapMarkerClickListener {
 
   @BindView(R.id.map_view)
   TextureMapView mapView;
 
+  ITracingHelper mTracingHelper;
   MapHelper mapHelper;
   LocateHelper locateHelper;
   GameZipHelper gameZipHelper;
@@ -79,16 +87,21 @@ public abstract class GamePlayingController extends ActivityController implement
     //TODO : get game id and line id from intent
     ToastUtil.TextToast("游戏包加载完成");
 
+    mTracingHelper = new TracingHelper(getActivity().getApplicationContext(), this);
+    mTracingHelper.entityName(String.format("%d_%d".toLowerCase(), TEMP_GAME_ID, TEMP_TEAM_ID));
     mapHelper = new MapHelper(getActivity(), mapView);
     locateHelper = new LocateHelper(getActivity().getApplicationContext());
     locateHelper.registerLocationListener(this);
 
     mPoints = gameZipHelper.getmPoints();
     mapHelper.bindData(mPoints);
+    mapHelper.setmMapMarkerClickListener(this);
 
     mRecordsHandler = new RecordsHandler.Builder(TEMP_GAME_ID, TEMP_TEAM_ID).build();
 
     initRecords();
+
+//    mTracingHelper.start();
   }
 
   @Override
@@ -185,6 +198,44 @@ public abstract class GamePlayingController extends ActivityController implement
   public void startLocateService() {
     locateHelper.startLocate();
     mapHelper.animateCameraToCurrentPosition();
+  }
+
+  @Override
+  public void onMarkerClicked(Point point) {
+    if (currentAttackPoint == point) {
+      if (isReachedAttackPoint) {
+        Intent intent = new Intent();
+        intent.setClass(getActivity(), BaseTaskActivity.class);
+        intent.putExtra(Conf.CLICKED_POINT, point);
+        intent.putExtra(Conf.GAME_ID, TEMP_GAME_ID);
+        intent.putExtra(Conf.TEAM_ID, TEMP_TEAM_ID);
+        //TODO : start activity for result
+        getActivity().startActivity(intent);
+      } else {
+        ToastUtil.TextToast("您还未到达该攻击点");
+      }
+    } else {
+      //TODO : start history task activity to display records
+//      Intent intent = new Intent();
+//      intent.setClass(getActivity(), BaseTaskActivity.class);
+//      intent.putExtra(Conf.CLICKED_POINT, point);
+//      getActivity().startActivity(intent);
+    }
+  }
+
+  @Override
+  public void onTraceStart() {
+    Timber.e("hawk eye service start");
+  }
+
+  @Override
+  public void onTracePush(byte b, String s) {
+
+  }
+
+  @Override
+  public void onTraceStop() {
+    Timber.e("hawk eye service stop");
   }
 
   @Override

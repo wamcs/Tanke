@@ -32,7 +32,7 @@ public class Point implements Parcelable {
   @SerializedName("task_id")
   private List<String> taskId;
 
-  private Map<String, Task> missionMap;
+  private Map<String, Task> taskMap;
 
   private Point(Builder builder) {
     setId(builder.id);
@@ -41,7 +41,7 @@ public class Point implements Parcelable {
     setLatitude(builder.latitude);
     setLongitude(builder.longitude);
     setTaskId(builder.taskId);
-    setMissionMap(builder.missionMap);
+    setTaskMap(builder.missionMap);
   }
 
   public long getId() {
@@ -92,12 +92,12 @@ public class Point implements Parcelable {
     this.taskId = taskId;
   }
 
-  public Map<String, Task> getMissionMap() {
-    return missionMap;
+  public Map<String, Task> getTaskMap() {
+    return taskMap;
   }
 
-  public void setMissionMap(Map<String, Task> missionMap) {
-    this.missionMap = missionMap;
+  public void setTaskMap(Map<String, Task> taskMap) {
+    this.taskMap = taskMap;
   }
 
   public LatLng getLatLng() {
@@ -169,8 +169,8 @@ public class Point implements Parcelable {
     dest.writeDouble(this.latitude);
     dest.writeDouble(this.longitude);
     dest.writeStringList(this.taskId);
-    dest.writeInt(this.missionMap.size());
-    for (Map.Entry<String, Task> entry : this.missionMap.entrySet()) {
+    dest.writeInt(this.taskMap.size());
+    for (Map.Entry<String, Task> entry : this.taskMap.entrySet()) {
       dest.writeString(entry.getKey());
       dest.writeParcelable(entry.getValue(), flags);
     }
@@ -184,11 +184,11 @@ public class Point implements Parcelable {
     this.longitude = in.readDouble();
     this.taskId = in.createStringArrayList();
     int missionMapSize = in.readInt();
-    this.missionMap = new HashMap<String, Task>(missionMapSize);
+    this.taskMap = new HashMap<String, Task>(missionMapSize);
     for (int i = 0; i < missionMapSize; i++) {
       String key = in.readString();
       Task value = in.readParcelable(Task.class.getClassLoader());
-      this.missionMap.put(key, value);
+      this.taskMap.put(key, value);
     }
   }
 

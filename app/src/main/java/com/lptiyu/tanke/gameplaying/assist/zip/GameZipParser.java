@@ -117,7 +117,7 @@ public class GameZipParser {
       }
       taskMap.put(taskName, task);
     }
-    point.setMissionMap(taskMap);
+    point.setTaskMap(taskMap);
     return point;
   }
 
