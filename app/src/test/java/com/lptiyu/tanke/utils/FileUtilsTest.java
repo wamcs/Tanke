@@ -11,6 +11,6 @@ public class FileUtilsTest {
 
   @Test
   public void testUnzipFile() throws Exception {
-    FileUtils.unzipFile("./1000000001_2000000001_1464075128.zip", "./");
+    FileUtils.unzipFile("src/test/res/1000000001_2000000001_1464075128.zip", "src/test/res//");
   }
 }

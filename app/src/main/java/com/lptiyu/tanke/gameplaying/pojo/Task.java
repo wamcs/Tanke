@@ -30,7 +30,7 @@ public class Task implements Parcelable {
   private int exp;
 
   @SerializedName("mission_name")
-  private String missionName;
+  private String taskName;
 
   private String content;
 
@@ -40,7 +40,7 @@ public class Task implements Parcelable {
     setId(builder.id);
     setType(builder.type);
     setExp(builder.exp);
-    setMissionName(builder.missionName);
+    setTaskName(builder.missionName);
     setContent(builder.content);
     setPwd(builder.pwd);
   }
@@ -111,12 +111,12 @@ public class Task implements Parcelable {
     this.exp = exp;
   }
 
-  public String getMissionName() {
-    return missionName;
+  public String getTaskName() {
+    return taskName;
   }
 
-  public void setMissionName(String missionName) {
-    this.missionName = missionName;
+  public void setTaskName(String taskName) {
+    this.taskName = taskName;
   }
 
   public String getContent() {
@@ -198,7 +198,7 @@ public class Task implements Parcelable {
     dest.writeLong(this.id);
     dest.writeInt(this.type == null ? -1 : this.type.ordinal());
     dest.writeInt(this.exp);
-    dest.writeString(this.missionName);
+    dest.writeString(this.taskName);
     dest.writeString(this.content);
     dest.writeString(this.pwd);
   }
@@ -208,7 +208,7 @@ public class Task implements Parcelable {
     int tmpType = in.readInt();
     this.type = tmpType == -1 ? null : TASK_TYPE.values()[tmpType];
     this.exp = in.readInt();
-    this.missionName = in.readString();
+    this.taskName = in.readString();
     this.content = in.readString();
     this.pwd = in.readString();
   }

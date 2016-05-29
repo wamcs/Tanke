@@ -21,6 +21,7 @@ import com.lptiyu.tanke.gameplaying.records.MemRecords;
 import com.lptiyu.tanke.gameplaying.records.RecordsHandler;
 import com.lptiyu.tanke.gameplaying.records.RunningRecord;
 import com.lptiyu.tanke.global.Conf;
+import com.lptiyu.tanke.utils.ToastUtil;
 
 import java.util.List;
 import java.util.Map;
@@ -28,7 +29,6 @@ import java.util.Map;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import timber.log.Timber;
 
 /**
  * @author : xiaoxiaoda
@@ -56,6 +56,7 @@ public class BaseTaskController extends ActivityController {
   private Point mPoint;
   private Task currentTask;
   private int currentTaskIndex = 0;
+  private boolean isAllTaskDone = false;
   private List<String> taskIds;
   private Map<String, Task> taskMap;
 
@@ -90,6 +91,10 @@ public class BaseTaskController extends ActivityController {
     currentTask = taskMap.get(taskIds.get(currentTaskIndex));
     mRecordsHandler = new RecordsHandler.Builder(gameId, teamId).build();
     updateTaskDisplay();
+
+
+
+
     checkAndResumeTaskStatus();
   }
 
@@ -118,10 +123,12 @@ public class BaseTaskController extends ActivityController {
 
         case TASK_FINISH:
           if (currentTask.getId() == record.getTaskId()) {
-            if (currentTaskIndex < taskIds.size()) {
+            if (currentTaskIndex < taskIds.size() - 1) {
               currentTaskIndex++;
               currentTask = taskMap.get(taskIds.get(currentTaskIndex));
               updateTaskDisplay();
+            } else {
+              isAllTaskDone = true;
             }
           }
           break;
@@ -136,12 +143,13 @@ public class BaseTaskController extends ActivityController {
   }
 
   private void updateTaskDisplay() {
+
+    mToolbarTitle.setText(currentTask.getTaskName());
+    mWebView.loadUrl(currentTask.getContent());
+
     switch (currentTask.getType()) {
 
       case SCAN_CODE:
-        String url = currentTask.getContent();
-        mWebView.loadUrl(url);
-        Timber.e("here");
         break;
 
       case LOCATE:
@@ -220,10 +228,21 @@ public class BaseTaskController extends ActivityController {
 
   @OnClick(R.id.default_tool_bar_imageview)
   void back() {
-    if (currentTaskIndex >= taskIds.size()) {
+    if (isAllTaskDone) {
       finish();
     } else {
       showExitDialog(getString(R.string.exit_task_activity_when_doing));
+    }
+  }
+
+  @OnClick(R.id.task_answer_area)
+  void onJumpTaskClicked() {
+    if (currentTaskIndex < taskIds.size() - 1) {
+      currentTaskIndex++;
+      currentTask = taskMap.get(taskIds.get(currentTaskIndex));
+      updateTaskDisplay();
+    } else {
+      ToastUtil.TextToast("您已经完成了此攻击点的所有任务,可以开始下一个攻击点任务了");
     }
   }
 
