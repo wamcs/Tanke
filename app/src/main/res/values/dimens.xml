@@ -29,4 +29,8 @@
     <dimen name="login_activity_edit_layout_button_height">20dp</dimen>
 
 
+    <dimen name="main_page_item_img_width">100dp</dimen>
+    <dimen name="main_page_item_img_height">61.8dp</dimen>
+    <dimen name="main_page_item_text_size_normal">15sp</dimen>
+    <dimen name="main_page_item_text_size_small">11sp</dimen>
 </resources>
