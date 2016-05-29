@@ -109,4 +109,12 @@ public class GameStatus {
   public void setDurationTime(int durationTime) {
     this.durationTime = durationTime;
   }
+
+  public List<TaskStatus> getTasks() {
+    return tasks;
+  }
+
+  public void setTasks(List<TaskStatus> tasks) {
+    this.tasks = tasks;
+  }
 }

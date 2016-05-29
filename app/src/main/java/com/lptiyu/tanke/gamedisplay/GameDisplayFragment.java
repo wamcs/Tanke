@@ -9,15 +9,18 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.lptiyu.tanke.MainActivityController;
 import com.lptiyu.tanke.R;
-import com.lptiyu.tanke.base.controller.FragmentController;
 import com.lptiyu.tanke.base.ui.BaseFragment;
+import com.lptiyu.tanke.pojo.City;
+import com.lptiyu.tanke.utils.ShaPrefer;
 import com.lptiyu.tanke.utils.ToastUtil;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import timber.log.Timber;
 
 /**
  * EMAIL : danxionglei@foxmail.com
@@ -53,19 +56,19 @@ public class GameDisplayFragment extends BaseFragment {
     return adapter;
   }
 
-  public void changeToCurrentCity(String city) {
+  public void changeToCurrentCityDialog(final City city) {
     new AlertDialog.Builder(getContext())
-        .setMessage(String.format(getString(R.string.change_city_dialog_message), city))
+        .setMessage(String.format(getString(R.string.change_city_dialog_message), city.getName()))
         .setPositiveButton(R.string.ensure, new DialogInterface.OnClickListener() {
           @Override
           public void onClick(DialogInterface dialog, int which) {
-
+            controller.changeCurrentCity(city);
           }
         })
         .setNegativeButton(R.string.dismiss, new DialogInterface.OnClickListener() {
           @Override
           public void onClick(DialogInterface dialog, int which) {
-
+            Timber.v("用户取消了City(%s)的修改", city.getName());
           }
         })
     ;
@@ -77,8 +80,8 @@ public class GameDisplayFragment extends BaseFragment {
     }
   }
 
-  public void loadingError() {
-    ToastUtil.TextToast(getString(R.string.loading_error));
+  public void loadingError(Throwable t) {
+    ToastUtil.TextToast(t.getMessage());
   }
 
   @Override
