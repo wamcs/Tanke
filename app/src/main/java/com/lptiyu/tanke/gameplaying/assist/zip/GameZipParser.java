@@ -5,7 +5,6 @@ import com.lptiyu.tanke.gameplaying.assist.zip.filter.GameUnzippedPointDirFilter
 import com.lptiyu.tanke.gameplaying.pojo.Point;
 import com.lptiyu.tanke.gameplaying.pojo.Task;
 import com.lptiyu.tanke.gameplaying.pojo.ThemeLine;
-import com.lptiyu.tanke.global.AppData;
 import com.lptiyu.tanke.utils.FileUtils;
 
 import java.io.File;
@@ -86,7 +85,7 @@ public class GameZipParser {
   /**
    * Check the point dir is exist
    * parse the file in the dir
-   * <p/>
+   * <p>
    * 1. parse the point.json file
    * 2. parse the other message
    *
@@ -168,7 +167,7 @@ public class GameZipParser {
       Timber.e("task : %s,  password file is damaged", taskPwdFilePath);
       return false;
     }
-    String pwd = FileUtils.readFileByChar(taskPwdFilePath);
+    String pwd = FileUtils.readFileByLine(taskPwdFilePath);
     if (pwd.length() == 0) {
       Timber.e("read file : %s error", taskPwdFilePath);
       return false;
@@ -193,13 +192,7 @@ public class GameZipParser {
       Timber.e("%s is not exist or can not be open", jsonFilePath);
       return null;
     }
-
-    String fileContent = FileUtils.readFileByChar(file);
-    if (fileContent.length() == 0) {
-      Timber.e("read json file : %s error", jsonFilePath);
-      return null;
-    }
-    return AppData.globalGson().fromJson(fileContent, clazz);
+    return FileUtils.parseJsonFile(file, clazz);
   }
 
   public ThemeLine getmThemeLine() {

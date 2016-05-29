@@ -3,17 +3,20 @@ package com.lptiyu.tanke.utils;
 
 import com.file.zip.ZipEntry;
 import com.file.zip.ZipFile;
+import com.google.gson.stream.JsonReader;
+import com.lptiyu.tanke.global.AppData;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.RandomAccessFile;
 import java.util.Enumeration;
-
-import timber.log.Timber;
 
 
 /**
@@ -59,7 +62,7 @@ public class FileUtils {
   public static String unzipFile(String fileName, String filePath) {
     String dirPath = null;
     try {
-      ZipFile zipFile = new ZipFile(fileName);
+      ZipFile zipFile = new ZipFile(fileName, "GBK");
       Enumeration emu = zipFile.getEntries();
       while (emu.hasMoreElements()) {
         ZipEntry entry = (ZipEntry) emu.nextElement();
@@ -93,35 +96,43 @@ public class FileUtils {
     return dirPath;
   }
 
-  public static String readFileByChar(File file) {
-    if (file == null || !file.exists()) {
-      Timber.e("target file is illegal");
-      return "";
-    }
-    StringBuilder jsonStringBuilder = new StringBuilder();
-    try {
-      FileInputStream fis = new FileInputStream(file);
-      int tempChar;
-      while ((tempChar = fis.read()) != -1) {
-        // 对于windows下，\r\n这两个字符在一起时，表示一个换行。
-        // 但如果这两个字符分开显示时，会换两次行。
-        // 因此，屏蔽掉\r，或者屏蔽\n。否则，将会多出很多空行。
-        if (((char) tempChar) != '\r') {
-          jsonStringBuilder.append((char) tempChar);
+  public static String readFileByLine(String filePath) {
+    return readFileByLine(new File(filePath));
+  }
+
+  public static String readFileByLine(File file) {
+    StringBuilder resultBuilder = new StringBuilder("");
+    String encoding = "GBK";
+    if (file.isFile() && file.exists()) {
+      try {
+        InputStreamReader isr = new InputStreamReader(new FileInputStream(file), encoding);
+        BufferedReader br = new BufferedReader(isr);
+        String line = null;
+        while ((line = br.readLine()) != null) {
+          resultBuilder.append(line);
         }
+      } catch (IOException e) {
+        e.printStackTrace();
       }
+    }
+    return resultBuilder.toString();
+  }
+
+  public static <T> T parseJsonFile(String filePath, Class<T> clazz) {
+    File file = new File(filePath);
+    return parseJsonFile(file, clazz);
+  }
+
+  public static <T> T parseJsonFile(File file, Class<T> clazz) {
+    T result = null;
+    try {
+      InputStream is = new FileInputStream(file);
+      InputStreamReader isr = new InputStreamReader(is);
+      result = AppData.globalGson().fromJson(new JsonReader(isr), clazz);
     } catch (IOException e) {
       e.printStackTrace();
     }
-    if (jsonStringBuilder.length() == 0) {
-      return "";
-    }
-    return jsonStringBuilder.toString();
-  }
-
-
-  public static String readFileByChar(String filePath) {
-    return readFileByChar(new File(filePath));
+    return result;
   }
 
   public static boolean isFileExist(String filePath) {

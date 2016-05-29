@@ -31,5 +31,14 @@
     <!-- Map InfoWindow Dimens-->
     <dimen name="layout_map_infowindow_content_padding">5dp</dimen>
 
+    <!-- TaskActivity Dimens-->
+    <dimen name="task_answer_area_height">40dp</dimen>
+
+    <dimen name="task_fragment_tab_height">48dp</dimen>
+    <dimen name="task_fragment_tab_corner_radius">18dp</dimen>
+    <dimen name="task_fragment_tab_indicator_thick">36dp</dimen>
+    <dimen name="task_fragment_tab_text_size">16sp</dimen>
+    <dimen name="task_fragment_tab_indicator_width">20dp</dimen>
+
 
 </resources>

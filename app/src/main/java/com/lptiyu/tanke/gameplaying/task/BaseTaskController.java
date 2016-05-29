@@ -2,15 +2,12 @@ package com.lptiyu.tanke.gameplaying.task;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.webkit.WebSettings;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.lptiyu.tanke.R;
@@ -21,7 +18,9 @@ import com.lptiyu.tanke.gameplaying.records.MemRecords;
 import com.lptiyu.tanke.gameplaying.records.RecordsHandler;
 import com.lptiyu.tanke.gameplaying.records.RunningRecord;
 import com.lptiyu.tanke.global.Conf;
-import com.lptiyu.tanke.utils.ToastUtil;
+import com.ogaclejapan.smarttablayout.SmartTabLayout;
+import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItemAdapter;
+import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItems;
 
 import java.util.List;
 import java.util.Map;
@@ -39,10 +38,10 @@ public class BaseTaskController extends ActivityController {
 
   @BindView(R.id.default_tool_bar_textview)
   TextView mToolbarTitle;
-  @BindView(R.id.web_view)
-  WebView mWebView;
-  @BindView(R.id.task_answer_area)
-  RelativeLayout mAnswerArea;
+  @BindView(R.id.view_pager_tab)
+  SmartTabLayout mSmartTabLayout;
+  @BindView(R.id.view_pager)
+  ViewPager mViewPager;
 
   private long teamId;
   private long gameId;
@@ -54,8 +53,10 @@ public class BaseTaskController extends ActivityController {
   private RecordsHandler mRecordsHandler;
 
   private Point mPoint;
+
   private Task currentTask;
   private int currentTaskIndex = 0;
+
   private boolean isAllTaskDone = false;
   private List<String> taskIds;
   private Map<String, Task> taskMap;
@@ -63,12 +64,6 @@ public class BaseTaskController extends ActivityController {
   public BaseTaskController(AppCompatActivity activity, View view) {
     super(activity, view);
     ButterKnife.bind(this, view);
-
-    WebSettings webSettings = mWebView.getSettings();
-    webSettings.setJavaScriptEnabled(true);
-    webSettings.setAllowFileAccess(true);
-    webSettings.setLoadsImagesAutomatically(true);
-    mWebView.setWebViewClient(new WebViewClient());
 
     initLoadingDialog();
     mLoadingDialog.show();
@@ -89,13 +84,45 @@ public class BaseTaskController extends ActivityController {
 
   private void init() {
     currentTask = taskMap.get(taskIds.get(currentTaskIndex));
+    mToolbarTitle.setText(currentTask.getTaskName());
     mRecordsHandler = new RecordsHandler.Builder(gameId, teamId).build();
-    updateTaskDisplay();
+    initViewPager();
+//    updateTaskDisplay();
+//    checkAndResumeTaskStatus();
+  }
 
+  private void initViewPager() {
+    FragmentPagerItems.Creator creator = FragmentPagerItems.with(getContext());
+    for (String taskId : taskIds) {
+      Task task = taskMap.get(taskId);
+      creator.add(task.getTaskName(), MultiplyTaskFragment.class);
+    }
+    FragmentPagerItemAdapter adapter = new FragmentPagerItemAdapter(
+        getSupportFragmentManager(), creator.create());
+    mViewPager.setAdapter(adapter);
+    mSmartTabLayout.setViewPager(mViewPager);
+    mSmartTabLayout.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+      @Override
+      public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
+      }
 
+      @Override
+      public void onPageSelected(int position) {
+        if (position < taskIds.size()) {
+          String id = taskIds.get(position);
+          Task t = taskMap.get(id);
+          if (t != null) {
+            mToolbarTitle.setText(t.getTaskName());
+          }
+        }
+      }
 
-    checkAndResumeTaskStatus();
+      @Override
+      public void onPageScrollStateChanged(int state) {
+
+      }
+    });
   }
 
   private void checkAndResumeTaskStatus() {
@@ -122,15 +149,7 @@ public class BaseTaskController extends ActivityController {
           break;
 
         case TASK_FINISH:
-          if (currentTask.getId() == record.getTaskId()) {
-            if (currentTaskIndex < taskIds.size() - 1) {
-              currentTaskIndex++;
-              currentTask = taskMap.get(taskIds.get(currentTaskIndex));
-              updateTaskDisplay();
-            } else {
-              isAllTaskDone = true;
-            }
-          }
+
           break;
 
         case GAME_FINISH:
@@ -143,9 +162,6 @@ public class BaseTaskController extends ActivityController {
   }
 
   private void updateTaskDisplay() {
-
-    mToolbarTitle.setText(currentTask.getTaskName());
-    mWebView.loadUrl(currentTask.getContent());
 
     switch (currentTask.getType()) {
 
@@ -235,17 +251,6 @@ public class BaseTaskController extends ActivityController {
     }
   }
 
-  @OnClick(R.id.task_answer_area)
-  void onJumpTaskClicked() {
-    if (currentTaskIndex < taskIds.size() - 1) {
-      currentTaskIndex++;
-      currentTask = taskMap.get(taskIds.get(currentTaskIndex));
-      updateTaskDisplay();
-    } else {
-      ToastUtil.TextToast("您已经完成了此攻击点的所有任务,可以开始下一个攻击点任务了");
-    }
-  }
-
   @Override
   public void onBackPressed() {
     if (mLoadingDialog == null) {
@@ -267,5 +272,12 @@ public class BaseTaskController extends ActivityController {
   @Override
   public void onDestroy() {
     super.onDestroy();
+  }
+
+  public Task getTaskAtPosition(int position) {
+    if (position < 0 || taskIds == null || position >= taskIds.size() || taskMap == null || taskMap.size() == 0) {
+      return null;
+    }
+    return taskMap.get(taskIds.get(position));
   }
 }

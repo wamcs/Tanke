@@ -1,0 +1,33 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:context=".gameplaying.task.MultiplyTaskFragment">
+
+    <RelativeLayout
+        android:id="@+id/task_answer_area"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/task_answer_area_height"
+        android:layout_alignParentBottom="true"
+        android:background="@color/colorPrimary">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:drawableLeft="@mipmap/img_qr_code"
+            android:drawablePadding="10dp"
+            android:padding="5dp"
+            android:text="@string/scan_game_manager_qrcode"
+            android:textColor="@color/default_font_color"
+            android:textSize="16sp"/>
+
+    </RelativeLayout>
+
+    <WebView
+        android:id="@+id/web_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/task_answer_area"/>
+
+</RelativeLayout>
