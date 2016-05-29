@@ -50,5 +50,7 @@
     <string name="start_task">开始任务</string>
 
     <!-- BaseTaskActivity Text Area -->
+    <string name="exit_task_activity_when_loading">任务还在加载中，您确定要终止加载吗？</string>
+    <string name="exit_task_activity_when_doing">"当前攻击点任务还全部完成，您确定要中断吗？"</string>
 
 </resources>

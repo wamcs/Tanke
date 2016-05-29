@@ -91,4 +91,5 @@ dependencies {
     //    Zxing
     compile project(path: ':zxinglib')
     testCompile 'org.robolectric:robolectric:3.1-rc1'
+    compile files('libs/ZipEntry.jar')
 }

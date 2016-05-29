@@ -1,11 +1,15 @@
 package com.lptiyu.tanke.gameplaying.task;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -23,6 +27,8 @@ import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
+import timber.log.Timber;
 
 /**
  * @author : xiaoxiaoda
@@ -44,6 +50,7 @@ public class BaseTaskController extends ActivityController {
   private long DEFAULT_GAME_ID = -1L;
 
   private AlertDialog mLoadingDialog;
+  private AlertDialog mExitDialog;
   private RecordsHandler mRecordsHandler;
 
   private Point mPoint;
@@ -55,6 +62,12 @@ public class BaseTaskController extends ActivityController {
   public BaseTaskController(AppCompatActivity activity, View view) {
     super(activity, view);
     ButterKnife.bind(this, view);
+
+    WebSettings webSettings = mWebView.getSettings();
+    webSettings.setJavaScriptEnabled(true);
+    webSettings.setAllowFileAccess(true);
+    webSettings.setLoadsImagesAutomatically(true);
+    mWebView.setWebViewClient(new WebViewClient());
 
     initLoadingDialog();
     mLoadingDialog.show();
@@ -74,7 +87,7 @@ public class BaseTaskController extends ActivityController {
   }
 
   private void init() {
-    currentTask = taskMap.get(taskIds.get(0));
+    currentTask = taskMap.get(taskIds.get(currentTaskIndex));
     mRecordsHandler = new RecordsHandler.Builder(gameId, teamId).build();
     updateTaskDisplay();
     checkAndResumeTaskStatus();
@@ -88,7 +101,7 @@ public class BaseTaskController extends ActivityController {
     List<RunningRecord> allRecords = memRecords.getAll();
     int recordStartIndex = findCurrentPointReachIndex(allRecords);
     List<RunningRecord> runningRecordList = allRecords.subList(recordStartIndex, allRecords.size());
-    for(RunningRecord record : runningRecordList) {
+    for (RunningRecord record : runningRecordList) {
       switch (record.getType()) {
 
         case GAME_START:
@@ -119,13 +132,16 @@ public class BaseTaskController extends ActivityController {
 
       }
     }
+    mLoadingDialog.dismiss();
   }
 
   private void updateTaskDisplay() {
     switch (currentTask.getType()) {
 
       case SCAN_CODE:
-
+        String url = currentTask.getContent();
+        mWebView.loadUrl(url);
+        Timber.e("here");
         break;
 
       case LOCATE:
@@ -167,9 +183,56 @@ public class BaseTaskController extends ActivityController {
     }
     View view = LayoutInflater.from(getContext()).inflate(R.layout.layout_loading, null);
     mLoadingDialog = new AlertDialog.Builder(getActivity())
-        .setCancelable(false)
+        .setOnKeyListener(new DialogInterface.OnKeyListener() {
+          @Override
+          public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
+            if (event.getAction() == KeyEvent.KEYCODE_BACK) {
+              showExitDialog(getString(R.string.exit_task_activity_when_loading));
+              return true;
+            }
+            return false;
+          }
+        })
         .setView(view)
         .create();
+  }
+
+  private void showExitDialog(String str) {
+    if (mExitDialog == null) {
+      mExitDialog = new AlertDialog.Builder(getActivity())
+          .setPositiveButton(R.string.ensure, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+              finish();
+            }
+          })
+          .setNegativeButton(R.string.button_cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+              mExitDialog.dismiss();
+            }
+          })
+          .create();
+    }
+    mExitDialog.setMessage(str);
+    mExitDialog.show();
+  }
+
+  @OnClick(R.id.default_tool_bar_imageview)
+  void back() {
+    if (currentTaskIndex >= taskIds.size()) {
+      finish();
+    } else {
+      showExitDialog(getString(R.string.exit_task_activity_when_doing));
+    }
+  }
+
+  @Override
+  public void onBackPressed() {
+    if (mLoadingDialog == null) {
+      return;
+    }
+    back();
   }
 
   @Override

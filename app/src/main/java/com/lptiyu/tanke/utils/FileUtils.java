@@ -1,6 +1,9 @@
 package com.lptiyu.tanke.utils;
 
 
+import com.file.zip.ZipEntry;
+import com.file.zip.ZipFile;
+
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -9,8 +12,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.util.Enumeration;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipFile;
 
 import timber.log.Timber;
 
@@ -59,7 +60,7 @@ public class FileUtils {
     String dirPath = null;
     try {
       ZipFile zipFile = new ZipFile(fileName);
-      Enumeration emu = zipFile.entries();
+      Enumeration emu = zipFile.getEntries();
       while (emu.hasMoreElements()) {
         ZipEntry entry = (ZipEntry) emu.nextElement();
         if (entry.isDirectory()) {
@@ -85,8 +86,7 @@ public class FileUtils {
         bis.close();
       }
       zipFile.close();
-      String path = zipFile.getName();
-      dirPath = path.substring(0, path.length() - 4);
+      dirPath = fileName.substring(0, fileName.length() - 4);
     } catch (IOException e) {
       e.printStackTrace();
     }

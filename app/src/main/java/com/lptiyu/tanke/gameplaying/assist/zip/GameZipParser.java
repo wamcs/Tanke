@@ -1,11 +1,11 @@
 package com.lptiyu.tanke.gameplaying.assist.zip;
 
 
-import com.google.gson.Gson;
 import com.lptiyu.tanke.gameplaying.assist.zip.filter.GameUnzippedPointDirFilter;
-import com.lptiyu.tanke.gameplaying.pojo.Task;
 import com.lptiyu.tanke.gameplaying.pojo.Point;
+import com.lptiyu.tanke.gameplaying.pojo.Task;
 import com.lptiyu.tanke.gameplaying.pojo.ThemeLine;
+import com.lptiyu.tanke.global.AppData;
 import com.lptiyu.tanke.utils.FileUtils;
 
 import java.io.File;
@@ -23,16 +23,15 @@ import timber.log.Timber;
  */
 public class GameZipParser {
 
-  private Gson mGson;
   private ThemeLine mThemeLine;
   private List<Point> mPoints;
 
   private static final String THEME_LINE_JSON_FILE_NAME = "theme_line.json";
   private static final String POINT_JSON_FILE_NAME = "point.json";
   private static final String TASK_JSON_FILE_NAME = "mission.json";
+  private static final String LOCAL_FILE_PREFIX = "file://";
 
   public GameZipParser() {
-    mGson = new Gson();
   }
 
   /**
@@ -87,7 +86,7 @@ public class GameZipParser {
   /**
    * Check the point dir is exist
    * parse the file in the dir
-   * <p>
+   * <p/>
    * 1. parse the point.json file
    * 2. parse the other message
    *
@@ -162,7 +161,7 @@ public class GameZipParser {
       Timber.e("task : %s,  message file is damaged", taskContentFilePath);
       return false;
     }
-    task.setContent(taskContentFilePath);
+    task.setContent(LOCAL_FILE_PREFIX + taskContentFilePath);
 
     String taskPwdFilePath = taskDirPath + "/" + task.getPwd();
     if (!FileUtils.isFileExist(taskPwdFilePath)) {
@@ -200,7 +199,7 @@ public class GameZipParser {
       Timber.e("read json file : %s error", jsonFilePath);
       return null;
     }
-    return mGson.fromJson(fileContent, clazz);
+    return AppData.globalGson().fromJson(fileContent, clazz);
   }
 
   public ThemeLine getmThemeLine() {
