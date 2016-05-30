@@ -30,6 +30,7 @@ import timber.log.Timber;
 public class DistinguishTaskController extends MultiplyTaskController {
 
   private File mTempFile;
+  private View answerView;
   private static final int CAMERA_REQUEST_CODE = 1;
   private static final String DISTINGUISH_TASK_TEMP_PHOTO = "distinguish_task_temp_photo.png";
 
@@ -39,16 +40,18 @@ public class DistinguishTaskController extends MultiplyTaskController {
 
   @Override
   public void initTaskView() {
-    View view = LayoutInflater.from(getContext()).inflate(R.layout.layout_distinguish_task, null);
-    RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-    layoutParams.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
-    mAnswerArea.addView(view, layoutParams);
-    mAnswerArea.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View v) {
-        PermissionDispatcher.showCameraWithCheck(((BaseFragment) getFragment()));
-      }
-    });
+    if (answerView == null) {
+      answerView = LayoutInflater.from(getContext()).inflate(R.layout.layout_distinguish_task, null);
+      RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+      layoutParams.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
+      mAnswerArea.addView(answerView, layoutParams);
+      mAnswerArea.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+          PermissionDispatcher.showCameraWithCheck(((BaseFragment) getFragment()));
+        }
+      });
+    }
   }
 
   @TargetMethod(requestCode = PermissionDispatcher.PERMISSION_REQUEST_CODE_CAMERA)

@@ -19,22 +19,25 @@ import timber.log.Timber;
  */
 public class TimingTaskController extends MultiplyTaskController {
 
+  private View answerView;
   public TimingTaskController(Fragment fragment, ActivityController controller, View view) {
     super(fragment, controller, view);
   }
 
   @Override
   public void initTaskView() {
-    View view = LayoutInflater.from(getContext()).inflate(R.layout.layout_timing_task, null);
-    RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-    layoutParams.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
-    mAnswerArea.addView(view, layoutParams);
-    mAnswerArea.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View v) {
-        ToastUtil.TextToast("定时器将于10s后启动");
-      }
-    });
+    if (answerView == null) {
+      answerView = LayoutInflater.from(getContext()).inflate(R.layout.layout_timing_task, null);
+      RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+      layoutParams.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
+      mAnswerArea.addView(answerView, layoutParams);
+      mAnswerArea.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+          ToastUtil.TextToast("定时器将于10s后启动");
+        }
+      });
+    }
   }
 
 }

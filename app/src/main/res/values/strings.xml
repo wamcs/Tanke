@@ -60,6 +60,11 @@
     <string name="error_answer">答案不正确，请重新输入</string>
     <string name="distinguish_photo">开始拍照</string>
     <string name="finish_this_point_task">点击开启下一攻击点</string>
+    <string name="check_locate_task">点我进行地点验证</string>
+    <string name="locate_task_locating">定位验证中.....</string>
+    <string name="cancel_locating">取消定位验证</string>
+    <string name="right_location">恭喜您，找到目的地</string>
+    <string name="error_location">抱歉，与目的地不符</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

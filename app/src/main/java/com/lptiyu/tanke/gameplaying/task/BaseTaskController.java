@@ -50,7 +50,7 @@ public class BaseTaskController extends ActivityController {
 
   private AlertDialog mLoadingDialog;
   private AlertDialog mExitDialog;
-  private RecordsHandler mRecordsHandler;
+  private MemRecords mRecords;
   private FragmentPagerItemAdapter fragmentPagerItemAdapter;
 
   private Point mPoint;
@@ -73,8 +73,9 @@ public class BaseTaskController extends ActivityController {
     gameId = intent.getLongExtra(Conf.GAME_ID, DEFAULT_GAME_ID);
     teamId = intent.getLongExtra(Conf.TEAM_ID, DEFAULT_TEAM_ID);
     mPoint = intent.getParcelableExtra(Conf.CLICKED_POINT);
+    mRecords = intent.getParcelableExtra(Conf.MEMORY_RECORDS);
 
-    if (mPoint != null) {
+    if (mPoint != null && mRecords != null) {
       taskIds = mPoint.getTaskId();
       taskMap = mPoint.getTaskMap();
       if (taskIds != null && taskMap != null) {
@@ -86,9 +87,8 @@ public class BaseTaskController extends ActivityController {
   private void init() {
     currentTask = taskMap.get(taskIds.get(currentTaskIndex));
     mToolbarTitle.setText(currentTask.getTaskName());
-    mRecordsHandler = new RecordsHandler.Builder(gameId, teamId).build();
     initViewPager();
-    checkAndResumeTaskStatus();
+//    checkAndResumeTaskStatus();
   }
 
   private void initViewPager() {
@@ -126,38 +126,53 @@ public class BaseTaskController extends ActivityController {
   }
 
   private void checkAndResumeTaskStatus() {
-    MemRecords memRecords = mRecordsHandler.getMemRecords();
-    if (memRecords == null) {
+
+    //open the first task as default
+    MultiplyTaskFragment firstFragment = ((MultiplyTaskFragment) fragmentPagerItemAdapter.getItem(0));
+    MultiplyTaskController firstController = ((MultiplyTaskController) firstFragment.getController());
+    firstController.openSealAndInitTask();
+
+    //read log to resume the task condition
+    if (mRecords == null) {
       return;
     }
-    List<RunningRecord> allRecords = memRecords.getAll();
+    List<RunningRecord> allRecords = mRecords.getAll();
     int recordStartIndex = findCurrentPointReachIndex(allRecords);
     List<RunningRecord> runningRecordList = allRecords.subList(recordStartIndex, allRecords.size());
     for (RunningRecord record : runningRecordList) {
       switch (record.getType()) {
 
         case GAME_START:
-          // no sense
           break;
 
         case POINT_REACH:
-
           break;
 
         case TASK_START:
-
+          if (currentTask.getId() == record.getTaskId()) {
+            MultiplyTaskFragment fragment = ((MultiplyTaskFragment) fragmentPagerItemAdapter.getItem(currentTaskIndex));
+            MultiplyTaskController controller = ((MultiplyTaskController) fragment.getController());
+            controller.openSealAndInitTask();
+          }
           break;
 
         case TASK_FINISH:
-
+          if (currentTask.getId() == record.getTaskId()) {
+            MultiplyTaskFragment f = ((MultiplyTaskFragment) fragmentPagerItemAdapter.getItem(currentTaskIndex));
+            MultiplyTaskController c = ((MultiplyTaskController) f.getController());
+            c.finishTask();
+            currentTaskIndex++;
+            currentTask = taskMap.get(taskIds.get(currentTaskIndex));
+          }
           break;
 
         case GAME_FINISH:
-
           break;
 
       }
     }
+
+
     mLoadingDialog.dismiss();
   }
 
@@ -177,6 +192,8 @@ public class BaseTaskController extends ActivityController {
       return;
     }
     View view = LayoutInflater.from(getContext()).inflate(R.layout.layout_loading, null);
+    TextView textView = ((TextView) view.findViewById(R.id.loading_dialog_textview));
+    textView.setText(getString(R.string.loading));
     mLoadingDialog = new AlertDialog.Builder(getActivity())
         .setOnKeyListener(new DialogInterface.OnKeyListener() {
           @Override

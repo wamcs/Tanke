@@ -22,7 +22,8 @@ import com.lptiyu.zxinglib.android.CaptureActivity;
  */
 public class ScanTaskController extends MultiplyTaskController {
 
-  private static final int CAPTURE_ACTIVITY_REQUEST_CODE = 1;
+  private View answerView;
+  private static final int CAMERA_PERMISSION_REQUEST_CODE = 1;
 
   public ScanTaskController(Fragment fragment, ActivityController controller, View view) {
     super(fragment, controller, view);
@@ -30,22 +31,24 @@ public class ScanTaskController extends MultiplyTaskController {
 
   @Override
   public void initTaskView() {
-    View view = LayoutInflater.from(getContext()).inflate(R.layout.layout_scan_task, null);
-    RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-    layoutParams.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
-    mAnswerArea.addView(view, layoutParams);
-    mAnswerArea.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View v) {
-        PermissionDispatcher.showCameraWithCheck(((BaseFragment) getFragment()));
-      }
-    });
+    if (answerView == null) {
+      answerView = LayoutInflater.from(getContext()).inflate(R.layout.layout_scan_task, null);
+      RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+      layoutParams.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
+      mAnswerArea.addView(answerView, layoutParams);
+      mAnswerArea.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+          PermissionDispatcher.showCameraWithCheck(((BaseFragment) getFragment()));
+        }
+      });
+    }
   }
 
   @TargetMethod(requestCode = PermissionDispatcher.PERMISSION_REQUEST_CODE_CAMERA)
   public void startScanQrCodeActivity() {
     Intent intent = new Intent(getContext(), CaptureActivity.class);
-    startActivityForResult(intent, CAPTURE_ACTIVITY_REQUEST_CODE);
+    startActivityForResult(intent, CAMERA_PERMISSION_REQUEST_CODE);
   }
 
   @Override

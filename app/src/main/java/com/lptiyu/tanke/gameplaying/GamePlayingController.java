@@ -209,6 +209,7 @@ public abstract class GamePlayingController extends ActivityController implement
         intent.putExtra(Conf.CLICKED_POINT, point);
         intent.putExtra(Conf.GAME_ID, TEMP_GAME_ID);
         intent.putExtra(Conf.TEAM_ID, TEMP_TEAM_ID);
+        intent.putExtra(Conf.MEMORY_RECORDS, mRecordsHandler.getMemRecords());
         //TODO : start activity for result
         getActivity().startActivity(intent);
       } else {

@@ -9,7 +9,8 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/task_answer_area_height"
         android:layout_alignParentBottom="true"
-        android:background="@color/colorPrimary">
+        android:background="@color/colorPrimary"
+        android:visibility="gone">
 
     </RelativeLayout>
 
@@ -18,5 +19,24 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@id/task_answer_area"/>
+
+    <ImageView
+        android:id="@+id/seal_not_open"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true"
+        android:contentDescription="@string/content_description"
+        android:scaleType="centerCrop"
+        android:src="@mipmap/img_seal_not_open"/>
+
+    <ImageView
+        android:id="@+id/seal_finished"
+        android:layout_width="200dp"
+        android:layout_height="140dp"
+        android:layout_centerInParent="true"
+        android:contentDescription="@string/content_description"
+        android:rotation="-30"
+        android:src="@mipmap/img_seal_finished"
+        android:visibility="gone"/>
 
 </RelativeLayout>

@@ -5,6 +5,7 @@ import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.lptiyu.tanke.R;
@@ -27,6 +28,10 @@ public abstract class MultiplyTaskController extends FragmentController {
   WebView mWebView;
   @BindView(R.id.task_answer_area)
   RelativeLayout mAnswerArea;
+  @BindView(R.id.seal_not_open)
+  ImageView mSealNotOpen;
+  @BindView(R.id.seal_finished)
+  ImageView mSealFinished;
 
   int taskIndex;
   Task mTask;
@@ -47,7 +52,6 @@ public abstract class MultiplyTaskController extends FragmentController {
   private void init() {
     mTask = mActivityController.getTaskAtPosition(taskIndex);
     initWebView();
-    updateTaskDisplay();
   }
 
   private void initWebView() {
@@ -58,9 +62,14 @@ public abstract class MultiplyTaskController extends FragmentController {
     mWebView.setWebViewClient(new WebViewClient());
   }
 
-  public void updateTaskDisplay() {
-    mWebView.loadUrl(mTask.getContent());
+  public void openSealAndInitTask() {
+    mSealNotOpen.setVisibility(View.GONE);
+    mAnswerArea.setVisibility(View.VISIBLE);
     initTaskView();
+  }
+
+  public void finishTask() {
+    mSealFinished.setVisibility(View.VISIBLE);
   }
 
   public abstract void initTaskView();

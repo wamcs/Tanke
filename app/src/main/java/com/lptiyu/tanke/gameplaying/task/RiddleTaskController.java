@@ -24,6 +24,7 @@ import timber.log.Timber;
 public class RiddleTaskController extends MultiplyTaskController implements
     View.OnClickListener {
 
+  private View answerView;
   private EditText editText;
   private ImageView mEnsureButton;
 
@@ -33,14 +34,15 @@ public class RiddleTaskController extends MultiplyTaskController implements
 
   @Override
   public void initTaskView() {
-    View view = LayoutInflater.from(getContext()).inflate(R.layout.layout_riddle_task, null);
-    RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-    layoutParams.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
-    mAnswerArea.addView(view, layoutParams);
-
-    editText = ((EditText) view.findViewById(R.id.riddle_task_edittext));
-    mEnsureButton = ((ImageView) view.findViewById(R.id.riddle_task_ensure));
-    mEnsureButton.setOnClickListener(this);
+    if (answerView == null) {
+      answerView = LayoutInflater.from(getContext()).inflate(R.layout.layout_riddle_task, null);
+      RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+      layoutParams.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
+      mAnswerArea.addView(answerView, layoutParams);
+      editText = ((EditText) answerView.findViewById(R.id.riddle_task_edittext));
+      mEnsureButton = ((ImageView) answerView.findViewById(R.id.riddle_task_ensure));
+      mEnsureButton.setOnClickListener(this);
+    }
   }
 
   @Override

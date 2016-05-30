@@ -36,6 +36,10 @@ public class PermissionDispatcher {
     nextStepWithCheck(fragment, PERMISSION_REQUEST_CODE_CAMERA);
   }
 
+  public static void startLocateWithCheck(BaseFragment fragment) {
+    nextStepWithCheck(fragment, PERMISSION_REQUEST_CODE_LOCATION);
+  }
+
   @TargetApi(Build.VERSION_CODES.M)
   private static void nextStepWithCheck(BaseFragment fragment, int requestCodeAskPermission) {
     if (Build.VERSION.SDK_INT < 23) {
