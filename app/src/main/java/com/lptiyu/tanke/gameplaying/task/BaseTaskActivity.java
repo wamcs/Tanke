@@ -14,9 +14,7 @@ public class BaseTaskActivity extends BaseActivity {
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_base_task);
-
     mController = new BaseTaskController(this, getWindow().getDecorView());
-
   }
 
   @Override

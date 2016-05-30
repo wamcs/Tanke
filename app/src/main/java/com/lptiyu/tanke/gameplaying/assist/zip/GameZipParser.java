@@ -6,6 +6,7 @@ import com.lptiyu.tanke.gameplaying.pojo.Point;
 import com.lptiyu.tanke.gameplaying.pojo.Task;
 import com.lptiyu.tanke.gameplaying.pojo.ThemeLine;
 import com.lptiyu.tanke.utils.FileUtils;
+import com.lptiyu.zxinglib.core.common.StringUtils;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -172,7 +173,7 @@ public class GameZipParser {
       Timber.e("read file : %s error", taskPwdFilePath);
       return false;
     }
-    task.setPwd(pwd);
+    task.setPwd(StringUtils.replaceBlank(pwd));
     return true;
   }
 

@@ -11,17 +11,6 @@
         android:layout_alignParentBottom="true"
         android:background="@color/colorPrimary">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:drawableLeft="@mipmap/img_qr_code"
-            android:drawablePadding="10dp"
-            android:padding="5dp"
-            android:text="@string/scan_game_manager_qrcode"
-            android:textColor="@color/default_font_color"
-            android:textSize="16sp"/>
-
     </RelativeLayout>
 
     <WebView

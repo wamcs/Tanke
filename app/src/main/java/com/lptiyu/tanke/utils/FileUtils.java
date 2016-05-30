@@ -102,7 +102,7 @@ public class FileUtils {
 
   public static String readFileByLine(File file) {
     StringBuilder resultBuilder = new StringBuilder("");
-    String encoding = "GBK";
+    String encoding = "utf-8";
     if (file.isFile() && file.exists()) {
       try {
         InputStreamReader isr = new InputStreamReader(new FileInputStream(file), encoding);

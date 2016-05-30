@@ -51,6 +51,7 @@ public class BaseTaskController extends ActivityController {
   private AlertDialog mLoadingDialog;
   private AlertDialog mExitDialog;
   private RecordsHandler mRecordsHandler;
+  private FragmentPagerItemAdapter fragmentPagerItemAdapter;
 
   private Point mPoint;
 
@@ -87,8 +88,7 @@ public class BaseTaskController extends ActivityController {
     mToolbarTitle.setText(currentTask.getTaskName());
     mRecordsHandler = new RecordsHandler.Builder(gameId, teamId).build();
     initViewPager();
-//    updateTaskDisplay();
-//    checkAndResumeTaskStatus();
+    checkAndResumeTaskStatus();
   }
 
   private void initViewPager() {
@@ -97,9 +97,9 @@ public class BaseTaskController extends ActivityController {
       Task task = taskMap.get(taskId);
       creator.add(task.getTaskName(), MultiplyTaskFragment.class);
     }
-    FragmentPagerItemAdapter adapter = new FragmentPagerItemAdapter(
+    fragmentPagerItemAdapter = new FragmentPagerItemAdapter(
         getSupportFragmentManager(), creator.create());
-    mViewPager.setAdapter(adapter);
+    mViewPager.setAdapter(fragmentPagerItemAdapter);
     mSmartTabLayout.setViewPager(mViewPager);
     mSmartTabLayout.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
       @Override
@@ -159,35 +159,6 @@ public class BaseTaskController extends ActivityController {
       }
     }
     mLoadingDialog.dismiss();
-  }
-
-  private void updateTaskDisplay() {
-
-    switch (currentTask.getType()) {
-
-      case SCAN_CODE:
-        break;
-
-      case LOCATE:
-
-        break;
-
-      case RIDDLE:
-
-        break;
-
-      case DISTINGUISH:
-
-        break;
-
-      case TIMING:
-
-        break;
-
-      case FINISH:
-
-        break;
-    }
   }
 
   private int findCurrentPointReachIndex(List<RunningRecord> memRecords) {
