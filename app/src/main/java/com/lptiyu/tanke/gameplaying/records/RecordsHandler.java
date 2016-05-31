@@ -5,10 +5,7 @@ import android.os.HandlerThread;
 import android.os.Looper;
 import android.os.Message;
 
-import com.baidu.mapapi.model.LatLng;
 import com.baidu.mapapi.utils.DistanceUtil;
-import com.google.gson.Gson;
-import com.lptiyu.tanke.global.AppData;
 import com.lptiyu.tanke.utils.thread;
 
 import java.io.IOException;
@@ -95,6 +92,7 @@ public class RecordsHandler extends Handler {
       thread.mainThread(new Runnable() {
         @Override
         public void run() {
+          mPointIndex = new AtomicInteger(memRecords.getAll().size());
           callback.dataResumed(memRecords.getAll());
         }
       });
@@ -111,11 +109,10 @@ public class RecordsHandler extends Handler {
     RunningRecord record = (RunningRecord) msg.obj;
     record.setIndex(mPointIndex.getAndAdd(1));
     record.setTeamId(teamId);
+    record.setCreateTime(System.currentTimeMillis());
     if (mLastRecord != null) {
       record.setDistance((int)DistanceUtil.getDistance(mLastRecord.getLatLng(), record.getLatLng()));
     }
-
-    Timber.v(AppData.globalGson().toJson(record));
 
     mLastRecord = record;
     memRecords.add(record);

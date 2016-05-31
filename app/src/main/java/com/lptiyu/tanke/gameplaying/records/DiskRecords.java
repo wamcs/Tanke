@@ -1,6 +1,7 @@
 package com.lptiyu.tanke.gameplaying.records;
 
 import com.google.gson.Gson;
+import com.lptiyu.tanke.global.AppData;
 import com.lptiyu.tanke.utils.DirUtils;
 import com.lptiyu.tanke.utils.FileUtils;
 
@@ -24,7 +25,7 @@ class DiskRecords {
 
   private File mCacheFile = null;
 
-  private Gson gson = new Gson();
+  private Gson gson = AppData.globalGson();
 
   static File generateFile(long gameId) {
     return new File(DirUtils.getRecordDirectory(), String.format("aid=%d.run", gameId));

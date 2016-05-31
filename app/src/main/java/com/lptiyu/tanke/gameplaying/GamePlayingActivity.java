@@ -16,7 +16,7 @@ public class GamePlayingActivity extends BaseActivity {
     setContentView(R.layout.activity_game_playing);
 
     //TODO : get some info from intent to change controller
-    mController = new NewGamePlayingController(this, getWindow().getDecorView());
+    mController = new HistoryGamePlayingController(this, getWindow().getDecorView());
 
   }
 

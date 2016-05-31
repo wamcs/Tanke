@@ -4,7 +4,9 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.TextView;
 
 import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
@@ -61,15 +63,16 @@ public abstract class GamePlayingController extends ActivityController implement
   List<Point> mPoints;
 
   // used to create and dispatch record
-  RecordsHandler mRecordsHandler;
+  public static RecordsHandler mRecordsHandler;
 
   AlertDialog mAlertDialog;
+  AlertDialog mLoadingDialog;
   boolean isReachedAttackPoint = false;
   boolean isGameFinished = false;
 
   static final long TEMP_GAME_ID = 1000000001L;
   static final long TEMP_LINE_ID = 2000000001L;
-  static final long TEMP_TEAM_ID = 3000000001L;
+  static final long TEMP_TEAM_ID = 9000000001L;
 
   public GamePlayingController(AppCompatActivity activity, View view) {
     super(activity, view);
@@ -99,6 +102,7 @@ public abstract class GamePlayingController extends ActivityController implement
 
     mRecordsHandler = new RecordsHandler.Builder(TEMP_GAME_ID, TEMP_TEAM_ID).build();
 
+    showLoadingDialog();
     initRecords();
 
 //    mTracingHelper.start();
@@ -167,7 +171,7 @@ public abstract class GamePlayingController extends ActivityController implement
     return distance < Conf.POINT_RADIUS;
   }
 
-  private void showAlertDialog(String message) {
+  void showAlertDialog(String message) {
     if (mAlertDialog == null) {
       mAlertDialog = new AlertDialog.Builder(getActivity())
           .setPositiveButton(getString(R.string.ensure), new DialogInterface.OnClickListener() {
@@ -180,6 +184,19 @@ public abstract class GamePlayingController extends ActivityController implement
           .create();
     }
     mAlertDialog.show();
+  }
+
+  void showLoadingDialog() {
+    if (mLoadingDialog == null) {
+      View view = LayoutInflater.from(getContext()).inflate(R.layout.layout_loading, null);
+      TextView textView = ((TextView) view.findViewById(R.id.loading_dialog_textview));
+      textView.setText(getString(R.string.loading));
+      mLoadingDialog = new AlertDialog.Builder(getActivity())
+          .setCancelable(false)
+          .setView(view)
+          .create();
+    }
+    mLoadingDialog.show();
   }
 
   @OnClick(R.id.start_locate)
@@ -209,7 +226,6 @@ public abstract class GamePlayingController extends ActivityController implement
         intent.putExtra(Conf.CLICKED_POINT, point);
         intent.putExtra(Conf.GAME_ID, TEMP_GAME_ID);
         intent.putExtra(Conf.TEAM_ID, TEMP_TEAM_ID);
-        intent.putExtra(Conf.MEMORY_RECORDS, mRecordsHandler.getMemRecords());
         //TODO : start activity for result
         getActivity().startActivity(intent);
       } else {

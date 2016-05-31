@@ -35,6 +35,7 @@ public class FinishTaskController extends MultiplyTaskController {
           mActivityController.onBackPressed();
         }
       });
+      mWebView.loadUrl(mTask.getContent());
     }
   }
 }

@@ -5,23 +5,23 @@ import android.content.Intent;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.view.KeyEvent;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
 
 import com.lptiyu.tanke.R;
 import com.lptiyu.tanke.base.controller.ActivityController;
+import com.lptiyu.tanke.gameplaying.GamePlayingController;
 import com.lptiyu.tanke.gameplaying.pojo.Point;
 import com.lptiyu.tanke.gameplaying.pojo.Task;
-import com.lptiyu.tanke.gameplaying.records.MemRecords;
-import com.lptiyu.tanke.gameplaying.records.RecordsHandler;
+import com.lptiyu.tanke.gameplaying.records.RecordsUtils;
 import com.lptiyu.tanke.gameplaying.records.RunningRecord;
 import com.lptiyu.tanke.global.Conf;
+import com.lptiyu.tanke.utils.ToastUtil;
 import com.ogaclejapan.smarttablayout.SmartTabLayout;
 import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItemAdapter;
 import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItems;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -48,9 +48,8 @@ public class BaseTaskController extends ActivityController {
   private long DEFAULT_TEAM_ID = -1L;
   private long DEFAULT_GAME_ID = -1L;
 
-  private AlertDialog mLoadingDialog;
   private AlertDialog mExitDialog;
-  private MemRecords mRecords;
+
   private FragmentPagerItemAdapter fragmentPagerItemAdapter;
 
   private Point mPoint;
@@ -66,16 +65,12 @@ public class BaseTaskController extends ActivityController {
     super(activity, view);
     ButterKnife.bind(this, view);
 
-    initLoadingDialog();
-    mLoadingDialog.show();
-
     Intent intent = getIntent();
     gameId = intent.getLongExtra(Conf.GAME_ID, DEFAULT_GAME_ID);
     teamId = intent.getLongExtra(Conf.TEAM_ID, DEFAULT_TEAM_ID);
     mPoint = intent.getParcelableExtra(Conf.CLICKED_POINT);
-    mRecords = intent.getParcelableExtra(Conf.MEMORY_RECORDS);
 
-    if (mPoint != null && mRecords != null) {
+    if (mPoint != null) {
       taskIds = mPoint.getTaskId();
       taskMap = mPoint.getTaskMap();
       if (taskIds != null && taskMap != null) {
@@ -87,8 +82,22 @@ public class BaseTaskController extends ActivityController {
   private void init() {
     currentTask = taskMap.get(taskIds.get(currentTaskIndex));
     mToolbarTitle.setText(currentTask.getTaskName());
+    resumeFromMemRecords();
     initViewPager();
-//    checkAndResumeTaskStatus();
+  }
+
+  private void resumeFromMemRecords() {
+    List<RunningRecord> records = getAppropriateRecordList();
+    for (RunningRecord record : records) {
+
+      if (RunningRecord.RECORD_TYPE.TASK_FINISH == record.getType()) {
+        if (currentTask.getId() == record.getTaskId()) {
+          onNextTask();
+        }
+      }
+
+
+    }
   }
 
   private void initViewPager() {
@@ -125,88 +134,14 @@ public class BaseTaskController extends ActivityController {
     });
   }
 
-  private void checkAndResumeTaskStatus() {
-
-    //open the first task as default
-    MultiplyTaskFragment firstFragment = ((MultiplyTaskFragment) fragmentPagerItemAdapter.getItem(0));
-    MultiplyTaskController firstController = ((MultiplyTaskController) firstFragment.getController());
-    firstController.openSealAndInitTask();
-
-    //read log to resume the task condition
-    if (mRecords == null) {
-      return;
-    }
-    List<RunningRecord> allRecords = mRecords.getAll();
-    int recordStartIndex = findCurrentPointReachIndex(allRecords);
-    List<RunningRecord> runningRecordList = allRecords.subList(recordStartIndex, allRecords.size());
-    for (RunningRecord record : runningRecordList) {
-      switch (record.getType()) {
-
-        case GAME_START:
-          break;
-
-        case POINT_REACH:
-          break;
-
-        case TASK_START:
-          if (currentTask.getId() == record.getTaskId()) {
-            MultiplyTaskFragment fragment = ((MultiplyTaskFragment) fragmentPagerItemAdapter.getItem(currentTaskIndex));
-            MultiplyTaskController controller = ((MultiplyTaskController) fragment.getController());
-            controller.openSealAndInitTask();
-          }
-          break;
-
-        case TASK_FINISH:
-          if (currentTask.getId() == record.getTaskId()) {
-            MultiplyTaskFragment f = ((MultiplyTaskFragment) fragmentPagerItemAdapter.getItem(currentTaskIndex));
-            MultiplyTaskController c = ((MultiplyTaskController) f.getController());
-            c.finishTask();
-            currentTaskIndex++;
-            currentTask = taskMap.get(taskIds.get(currentTaskIndex));
-          }
-          break;
-
-        case GAME_FINISH:
-          break;
-
-      }
-    }
-
-
-    mLoadingDialog.dismiss();
-  }
-
-  private int findCurrentPointReachIndex(List<RunningRecord> memRecords) {
-    int result = memRecords.size();
-    for (RunningRecord r : memRecords) {
-      if (r.getPointId() == mPoint.getId()) {
-        result = memRecords.indexOf(r);
-        break;
+  private List<RunningRecord> findAppropriateRecordList(List<RunningRecord> memRecords) {
+    List<RunningRecord> result = new ArrayList<>();
+    for (RunningRecord record : memRecords) {
+      if (record.getPointId() == mPoint.getId()) {
+        result.add(record);
       }
     }
     return result;
-  }
-
-  private void initLoadingDialog() {
-    if (mLoadingDialog != null) {
-      return;
-    }
-    View view = LayoutInflater.from(getContext()).inflate(R.layout.layout_loading, null);
-    TextView textView = ((TextView) view.findViewById(R.id.loading_dialog_textview));
-    textView.setText(getString(R.string.loading));
-    mLoadingDialog = new AlertDialog.Builder(getActivity())
-        .setOnKeyListener(new DialogInterface.OnKeyListener() {
-          @Override
-          public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
-            if (event.getAction() == KeyEvent.KEYCODE_BACK) {
-              showExitDialog(getString(R.string.exit_task_activity_when_loading));
-              return true;
-            }
-            return false;
-          }
-        })
-        .setView(view)
-        .create();
   }
 
   private void showExitDialog(String str) {
@@ -230,6 +165,51 @@ public class BaseTaskController extends ActivityController {
     mExitDialog.show();
   }
 
+  private boolean onNextTask() {
+    if (currentTaskIndex < taskIds.size() - 1) {
+      currentTaskIndex++;
+      currentTask = taskMap.get(taskIds.get(currentTaskIndex));
+      return true;
+    } else {
+      ToastUtil.TextToast("您已经完成了此攻击点所有任务");
+      return false;
+    }
+  }
+
+  private void dispatchTaskRecord(RunningRecord.RECORD_TYPE type, long taskId) {
+    RunningRecord record = new RunningRecord.Builder()
+        .x(34.123123)
+        .y(114.321321)
+        .pointId(mPoint.getId())
+        .taskId(taskId)
+        .type(type)
+        .build();
+    RecordsUtils.dispatchTypeRecord(GamePlayingController.mRecordsHandler, record);
+  }
+
+  public void openNextTaskIfExist() {
+    if (currentTaskIndex == 0) {
+      dispatchTaskRecord(RunningRecord.RECORD_TYPE.TASK_START, currentTask.getId());
+    }
+    dispatchTaskRecord(RunningRecord.RECORD_TYPE.TASK_FINISH, currentTask.getId());
+    if (onNextTask()) {
+      mViewPager.setCurrentItem(currentTaskIndex);
+      MultiplyTaskController controller = ((MultiplyTaskController) ((MultiplyTaskFragment) fragmentPagerItemAdapter.getPage(currentTaskIndex)).getController());
+      if (controller != null) {
+        dispatchTaskRecord(RunningRecord.RECORD_TYPE.TASK_START, currentTask.getId());
+        controller.openSealAndInitTask();
+      }
+    }
+  }
+
+  public void dispatchStartCurrentTaskRecord() {
+    dispatchTaskRecord(RunningRecord.RECORD_TYPE.TASK_START, currentTask.getId());
+  }
+
+  public void dispatchFinishCurrentTaskRecord() {
+    dispatchTaskRecord(RunningRecord.RECORD_TYPE.TASK_FINISH, currentTask.getId());
+  }
+
   @OnClick(R.id.default_tool_bar_imageview)
   void back() {
     if (isAllTaskDone) {
@@ -241,9 +221,6 @@ public class BaseTaskController extends ActivityController {
 
   @Override
   public void onBackPressed() {
-    if (mLoadingDialog == null) {
-      return;
-    }
     back();
   }
 
@@ -268,4 +245,9 @@ public class BaseTaskController extends ActivityController {
     }
     return taskMap.get(taskIds.get(position));
   }
+
+  public List<RunningRecord> getAppropriateRecordList() {
+    return findAppropriateRecordList(GamePlayingController.mRecordsHandler.getMemRecords().getAll());
+  }
+
 }

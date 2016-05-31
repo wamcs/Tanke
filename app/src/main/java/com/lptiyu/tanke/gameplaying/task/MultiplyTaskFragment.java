@@ -13,6 +13,8 @@ import com.lptiyu.tanke.base.ui.BaseFragment;
 import com.lptiyu.tanke.gameplaying.pojo.Task;
 import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItem;
 
+import timber.log.Timber;
+
 public class MultiplyTaskFragment extends BaseFragment {
 
   private FragmentController mFragmentController;

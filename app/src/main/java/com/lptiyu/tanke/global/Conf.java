@@ -17,7 +17,6 @@ public class Conf {
   public static final String CLICKED_POINT = "clicked_point";
   public static final String TEAM_ID = "team_id";
   public static final String GAME_ID = "game_id";
-  public static final String MEMORY_RECORDS = "memory_records";
   public static final String MULTIPLY_FRAGMENT_BUNDLE_INDEX = "multiply_fragment_bundle_index";
 
 

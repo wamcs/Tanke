@@ -43,8 +43,10 @@ public class RunningRecord implements Parcelable {
   @SerializedName("type")
   private RECORD_TYPE type;
 
+  @SerializedName("point_id")
   private long pointId;
 
+  @SerializedName("task_id")
   private long taskId;
 
   private RunningRecord(Builder builder) {
@@ -244,7 +246,7 @@ public class RunningRecord implements Parcelable {
       return this;
     }
 
-    public Builder taskId(int val) {
+    public Builder taskId(long val) {
       taskId = val;
       return this;
     }

@@ -42,11 +42,14 @@ public class RiddleTaskController extends MultiplyTaskController implements
       editText = ((EditText) answerView.findViewById(R.id.riddle_task_edittext));
       mEnsureButton = ((ImageView) answerView.findViewById(R.id.riddle_task_ensure));
       mEnsureButton.setOnClickListener(this);
+      mWebView.loadUrl(mTask.getContent());
     }
   }
 
   @Override
   public void onClick(View v) {
+    finishTask();
+    mActivityController.openNextTaskIfExist();
     switch (v.getId()) {
       case R.id.riddle_task_ensure:
         Editable editable = editText.getText();

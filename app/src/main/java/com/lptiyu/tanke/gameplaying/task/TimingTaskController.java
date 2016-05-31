@@ -35,8 +35,11 @@ public class TimingTaskController extends MultiplyTaskController {
         @Override
         public void onClick(View v) {
           ToastUtil.TextToast("定时器将于10s后启动");
+          finishTask();
+          mActivityController.openNextTaskIfExist();
         }
       });
+      mWebView.loadUrl(mTask.getContent());
     }
   }
 
