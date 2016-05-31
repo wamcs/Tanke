@@ -10,8 +10,12 @@ import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.WindowManager;
+import android.view.animation.BounceInterpolator;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -46,7 +50,7 @@ import static com.baidu.location.LocationClientOption.*;
  * date:2016/5/19
  * email:kaili@hustunique.com
  */
-public class CompleteInformationController extends ActivityController implements BDLocationListener{
+public class CompleteInformationController extends ActivityController implements BDLocationListener {
 
 
     @BindView(R.id.complete_next_button)
@@ -71,6 +75,9 @@ public class CompleteInformationController extends ActivityController implements
     @BindView(R.id.complete_location_text)
     TextView mLocationText;
 
+    @BindView(R.id.complete_location_button)
+    ImageView mLocationButton;
+
     private ImageChooseDialog mImageChooseDialog;
     private NumberPickerDialog mNumberPickerDialog;
     private DatePickerDialog mDatePickerDialog;
@@ -79,6 +86,7 @@ public class CompleteInformationController extends ActivityController implements
     private final static int FEMALE_TYPE = 2;
 
     private static final int REQUEST_PERMISSION_CAMERA_CODE = 1;
+    private static final int REQUEST_PERMISSION_LOCATION = 2;
 
     private Context context;
     private LocationClient client;
@@ -87,9 +95,9 @@ public class CompleteInformationController extends ActivityController implements
     private boolean isAvatarSet;
 
 
-
     public CompleteInformationController(AppCompatActivity activity, View view) {
         super(activity, view);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         ButterKnife.bind(this, view);
         init();
     }
@@ -101,21 +109,39 @@ public class CompleteInformationController extends ActivityController implements
         UserDetails Muser = ThirdLoginHelper.getUserDetail();
         initDataFromThirdLogin(Muser);
 
+        requestLocationPermission();
         mLocationText.setText("定位中");
         locate();
         client.start();
 
+        mLocationButton.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction()){
+                    case MotionEvent.ACTION_DOWN:
+                        chooseLocation();
+                        break;
+                    case MotionEvent.ACTION_UP:
+                        mLocationButton.animate().scaleY(1.0f)
+                                .scaleX(1.0f).setInterpolator(new BounceInterpolator())
+                                .setDuration(100).start();
+                        break;
+                }
+                return true;
+            }
+        });
+
     }
 
-    private void initDataFromThirdLogin(UserDetails userDetails){
-        if (userDetails.getNickname()!=null) {
+    private void initDataFromThirdLogin(UserDetails userDetails) {
+        if (userDetails.getNickname() != null) {
             mNicknameText.setText(userDetails.getNickname());
         }
-        if (userDetails.getAvatar()!=null) {
+        if (userDetails.getAvatar() != null) {
             mAvatarImageView.setImageURI(Uri.parse(userDetails.getAvatar()));
             isAvatarSet = true;
         }
-        if(userDetails.getSex()!=null) {
+        if (userDetails.getSex() != null) {
             switch (userDetails.getSex()) {
                 case "男":
                     changeGender(MALE_TYPE);
@@ -133,14 +159,14 @@ public class CompleteInformationController extends ActivityController implements
         }
     }
 
-    private void changeGender(int type){
-        switch (type){
+    private void changeGender(int type) {
+        switch (type) {
             case MALE_TYPE:
                 mGenderMaleButton.setBackgroundResource(R.drawable.male_select_style);
                 mGenderMaleButton.setTextColor(getResources().getColor(R.color.white10));
                 mGenderFemaleButton.setBackgroundColor(getResources().getColor(R.color.white00));
                 mGenderFemaleButton.setTextColor(getResources().getColor(R.color.grey06));
-                if (!isAvatarSet){
+                if (!isAvatarSet) {
                     mAvatarImageView.setBackground(getDrawable(R.mipmap.img_male));
                 }
                 mUserGender = MALE_TYPE;
@@ -150,7 +176,7 @@ public class CompleteInformationController extends ActivityController implements
                 mGenderFemaleButton.setTextColor(getResources().getColor(R.color.white10));
                 mGenderMaleButton.setBackgroundColor(getResources().getColor(R.color.white00));
                 mGenderMaleButton.setTextColor(getResources().getColor(R.color.grey06));
-                if (!isAvatarSet){
+                if (!isAvatarSet) {
                     mAvatarImageView.setBackground(getDrawable(R.mipmap.img_female));
                 }
                 mUserGender = FEMALE_TYPE;
@@ -175,13 +201,21 @@ public class CompleteInformationController extends ActivityController implements
     @OnClick(R.id.complete_avatar_image_view)
     void changeImage() {
         if (null == mImageChooseDialog) {
-            mImageChooseDialog = new ImageChooseDialog(context,this);
+            mImageChooseDialog = new ImageChooseDialog(context, this);
             mImageChooseDialog.setOnPermissionGetListener(new ImageChooseDialog.OnPermissionGetListener() {
                 @TargetApi(Build.VERSION_CODES.M)
                 @Override
-                public void onPermissionGet() {
-                    if (!(getActivity().checkSelfPermission(Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED)) {
+                public boolean onPermissionGet() {
+                    if (!(getActivity().checkSelfPermission(Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED)
+                            || !(getActivity().checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)) {
+                        if (getActivity().shouldShowRequestPermissionRationale(Manifest.permission.CAMERA)
+                                || getActivity().shouldShowRequestPermissionRationale(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                            ToastUtil.TextToast("Please grant the permission this time");
+                        }
                         requestCameraPermission();
+                        return false;
+                    } else {
+                        return true;
                     }
                 }
             });
@@ -232,29 +266,37 @@ public class CompleteInformationController extends ActivityController implements
     }
 
     @OnClick(R.id.complete_gender_male_button)
-    void changeGenderToMale(){
+    void changeGenderToMale() {
         changeGender(MALE_TYPE);
     }
 
     @OnClick(R.id.complete_gender_female_button)
-    void changeGenderToFemale(){
+    void changeGenderToFemale() {
         changeGender(FEMALE_TYPE);
     }
 
-    @OnClick(R.id.complete_location_button)
-    void chooseLocation(){
-        locate();
+
+    private void chooseLocation() {
+        if (Build.VERSION.SDK_INT >= 23) {
+            if (!(getActivity().checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED)) {
+                requestLocationPermission();
+                return;
+            }
+        }
+        client.start();
+        mLocationButton.animate().scaleX(0.9f).scaleY(0.9f).setInterpolator(new BounceInterpolator()).setDuration(100).start();
+
     }
 
     @OnClick(R.id.complete_next_button)
-    void next(){
-        if (!isAvatarSet){
+    void next() {
+        if (!isAvatarSet) {
             ToastUtil.TextToast(getString(R.string.please_select_avatar));
             return;
         }
 
         Editable nickname = mNicknameText.getText();
-        if (nickname.length() == 0){
+        if (nickname.length() == 0) {
             ToastUtil.TextToast(getString(R.string.please_input_nick_name));
             return;
         }
@@ -276,20 +318,19 @@ public class CompleteInformationController extends ActivityController implements
         //TODO:user avatar
     }
 
-    private void locate(){
-        if (null == client){
-            client = new LocationClient(getContext());
-            initLocation();
-            client.registerLocationListener(this);
-        }
+    private void locate() {
+
+        client = new LocationClient(getContext());
+        initLocation();
+        client.registerLocationListener(this);
     }
 
-    private void initLocation(){
+    private void initLocation() {
         LocationClientOption option = new LocationClientOption();
         option.setLocationMode(LocationMode.Hight_Accuracy
         );//可选，默认高精度，设置定位模式，高精度，低功耗，仅设备
         option.setCoorType("bd09ll");//可选，默认gcj02，设置返回的定位结果坐标系
-        int span=1000;
+        int span = 1000;
         option.setScanSpan(span);//可选，默认0，即仅定位一次，设置发起定位请求的间隔需要大于等于1000ms才是有效的
         option.setIsNeedAddress(true);//可选，设置是否需要地址信息，默认不需要
         option.setOpenGps(true);//可选，默认false,设置是否使用gps
@@ -308,19 +349,13 @@ public class CompleteInformationController extends ActivityController implements
 
 
     @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        finish();
-    }
-
-    @Override
     public void onReceiveLocation(BDLocation bdLocation) {
-        Log.d("lk", "address string:" + bdLocation.getAddrStr());
-        Log.d("lk", "city string:" + bdLocation.getCity());
-        if (bdLocation.getLocType() == BDLocation.TypeGpsLocation) {
-            mLocationText.setText(bdLocation.getAddrStr());
+        if (bdLocation.getLocType() == BDLocation.TypeGpsLocation
+                || bdLocation.getLocType() == BDLocation.TypeNetWorkLocation) {
+            mLocationText.setText(bdLocation.getCity());
+            ToastUtil.TextToast("定位成功");
 
-        }else {
+        } else {
             ToastUtil.TextToast("定位失败");
             mLocationText.setText("武汉");
         }
@@ -337,19 +372,17 @@ public class CompleteInformationController extends ActivityController implements
     }
 
 
-
-  //android M 调用相机权限需要在使用时调用
+    //android M 调用相机权限需要在使用时调用
     @TargetApi(Build.VERSION_CODES.M)
     private void requestCameraPermission() {
-        getActivity().requestPermissions(new String[]{Manifest.permission.CAMERA}, REQUEST_PERMISSION_CAMERA_CODE);
+        String[] permissions = {Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
+        getActivity().requestPermissions(permissions, REQUEST_PERMISSION_CAMERA_CODE);
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == REQUEST_PERMISSION_CAMERA_CODE) {
-            int grantResult = grantResults[0];
-            boolean granted = grantResult == PackageManager.PERMISSION_GRANTED;
-        }
+    @TargetApi(Build.VERSION_CODES.M)
+    private void requestLocationPermission() {
+        getActivity().requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_PERMISSION_LOCATION);
     }
+
+
 }

@@ -15,6 +15,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.util.List;
 
 import retrofit2.http.GET;
+import retrofit2.http.POST;
 import retrofit2.http.Query;
 import rx.Observable;
 
@@ -114,6 +115,13 @@ public interface UserService {
   Observable<Response<String>> uploadUserAvatar(
       //TODO need to try
   );
+
+
+
+  /**
+   * 完善信息上传
+   */
+
 
   @IntDef({
       USER_DETAIL_NICKNAME,

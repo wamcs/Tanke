@@ -19,7 +19,7 @@
             android:layout_height="@dimen/sign_up_return_button_size"
             android:layout_marginLeft="@dimen/sign_up_return_button_margin_left"
             android:layout_marginTop="@dimen/sign_up_title_margin_top"
-            android:src="@mipmap/img_back" />
+            android:src="@mipmap/img_last_white" />
 
         <TextView
             android:id="@id/sign_up_title"
@@ -156,6 +156,16 @@
         android:textColor="@color/white10"
         android:textSize="14sp"
         android:text="@string/next"/>
+
+    <TextView
+        android:id="@+id/sign_up_protocol_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/sign_up_next_button"
+        android:text="@string/click_user_protocol"
+        android:layout_marginTop="10dp"
+        android:layout_centerHorizontal="true"
+        android:textColor="@color/grey05"/>
 
 
 </RelativeLayout>

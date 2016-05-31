@@ -1,6 +1,72 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-</LinearLayout>
+    <android.support.v7.widget.Toolbar
+        style="@style/Toolbar"
+        android:id="@id/tool_bar"/>
+
+    <RelativeLayout
+        android:id="@+id/RelativeLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@id/protocol_last_button"
+            android:layout_width="@dimen/protocol_return_button_size"
+            android:layout_height="@dimen/protocol_return_button_size"
+            android:layout_marginLeft="@dimen/protocol_return_button_margin_left"
+            android:layout_marginTop="@dimen/protocol_title_margin_top"
+            android:src="@mipmap/img_last_blue" />
+
+        <TextView
+            android:textColor="@color/grey01"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/user_protocol"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/protocol_title_margin_top"
+            android:textSize="@dimen/protocol_title_text_size"
+            />
+    </RelativeLayout>
+
+
+    <WebView
+        android:id="@id/protocol_web_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/protocol_next_button"
+        android:layout_below="@+id/RelativeLayout">
+
+    </WebView>
+
+    <RelativeLayout
+        android:background="@drawable/gradient_rect_style"
+        android:id="@id/protocol_next_button"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/protocol_next_button_height"
+        android:layout_alignParentBottom="true">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/next"
+            android:textSize="@dimen/protocol_next_button_text_size"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="13dp"
+            android:textColor="@color/white10"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/ps"
+            android:textSize="@dimen/protocol_ps_text_size"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="30dp"
+            android:textColor="@color/white10"
+            />
+    </RelativeLayout>
+
+</RelativeLayout>

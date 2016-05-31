@@ -79,6 +79,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".initialization.ui.SignUpActivity" >
+
         </activity>
         <activity android:name=".initialization.ui.UserProtocolActivity">
         </activity>

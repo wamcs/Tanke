@@ -50,5 +50,10 @@
     <item name="complete_birthday_button" type="id"/>
     <item name="complete_location_text" type="id"/>
     <item name="complete_location_button" type="id"/>
+    
+    <!-- Protocol Activity Ids Area-->
+    <item name="protocol_last_button" type="id"/>
+    <item name="protocol_web_view" type="id"/>
+    <item name="protocol_next_button" type="id"/>
 
 </resources>

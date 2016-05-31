@@ -74,6 +74,15 @@
     <dimen name="complete_location_size">120dp</dimen>
     <dimen name="complete_location_button_size">100dp</dimen>
     <dimen name="complete_location_text_size">10sp</dimen>
+    
+    <!-- protocol Dimens-->
+    <dimen name="protocol_return_button_size">16dp</dimen>
+    <dimen name="protocol_title_margin_top">35dp</dimen>
+    <dimen name="protocol_return_button_margin_left">15dp</dimen>
+    <dimen name="protocol_title_text_size">15sp</dimen>
+    <dimen name="protocol_next_button_text_size">14sp</dimen>
+    <dimen name="protocol_ps_text_size">6sp</dimen>
+    <dimen name="protocol_next_button_height">50dp</dimen>
 
     <!-- Map InfoWindow Dimens-->
     <dimen name="layout_map_infowindow_content_padding">5dp</dimen>

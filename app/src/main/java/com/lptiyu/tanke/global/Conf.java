@@ -67,5 +67,12 @@ public final class Conf {
     public static final int MAX_MINUTE = 59;
     public static final int MIN_MINUTE = 0;
 
+    /**
+     * Protocol Area
+     */
+    public static final String PROTOCOL_URL = "protocol_url";
+    public static final int PROTOCOL_CODE = 1;
+    public static final String PROTOCOL_STATE = "protocol_state";
+
 
 }

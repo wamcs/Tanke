@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.annotation.LayoutRes;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 
@@ -71,6 +72,8 @@ public class ImageChooseDialog extends BaseDialog {
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        Log.d("lk","requestCode "+ requestCode);
         switch (requestCode) {
 
             case Conf.REQUEST_CODE_TAKE_PHOTO:
@@ -110,7 +113,9 @@ public class ImageChooseDialog extends BaseDialog {
 
     @OnClick(R.id.dialog_user_avatar_take_photo)
     void startTakePhoto() {
-        permissionGetListener.onPermissionGet();
+        if (!permissionGetListener.onPermissionGet()){
+            return;
+        }
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(mTempFile));
         if (mController instanceof FragmentController) {
@@ -141,7 +146,7 @@ public class ImageChooseDialog extends BaseDialog {
     }
 
     public interface OnPermissionGetListener{
-        void onPermissionGet();
+        boolean onPermissionGet();
     }
 
     public void setOnImageChoosedListener(OnImageChoosedListener listener) {

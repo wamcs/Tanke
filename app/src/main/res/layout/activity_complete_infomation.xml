@@ -30,7 +30,7 @@
                     android:layout_height="@dimen/complete_arrow_button_size"
                     android:layout_marginLeft="@dimen/complete_arrow_button_margin_x"
                     android:layout_marginTop="@dimen/complete_arrow_button_margin_y"
-                    android:src="@mipmap/img_last" />
+                    android:src="@mipmap/img_last_grey" />
 
                 <LinearLayout
                     android:id="@id/complete_next_button"
@@ -55,7 +55,7 @@
                         android:layout_width="@dimen/complete_arrow_button_size"
                         android:layout_height="@dimen/complete_arrow_button_size"
                         android:drawablePadding="4dp"
-                        android:src="@mipmap/img_next" />
+                        android:src="@mipmap/img_next_bule" />
                 </LinearLayout>
             </RelativeLayout>
 

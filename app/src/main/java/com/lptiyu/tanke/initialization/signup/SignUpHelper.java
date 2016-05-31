@@ -56,7 +56,7 @@ public class SignUpHelper {
 
     public void getCode(){
         Editable phone = signUpPhoneEditText.getText();
-        if (phone.length() < 0 ||phone.length() > 11){
+        if (phone.length() != 11){
             ToastUtil.TextToast(R.string.error_user_phone);
             return;
         }
@@ -66,7 +66,7 @@ public class SignUpHelper {
 
     public void next(){
         Editable phone = signUpPhoneEditText.getText();
-        if (phone.length() < 0 ||phone.length() > 11){
+        if (phone.length() != 11){
             ToastUtil.TextToast(R.string.error_user_phone);
             return;
         }
