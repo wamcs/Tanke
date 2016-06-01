@@ -102,6 +102,14 @@ public abstract class BaseActivity extends AppCompatActivity implements Controll
     }
   }
 
+  @Override
+  public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+    if (null != controller){
+      controller.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
+    super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+  }
+
   public abstract ActivityController getController();
 
 }

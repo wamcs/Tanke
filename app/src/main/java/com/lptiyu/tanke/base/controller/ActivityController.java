@@ -2,7 +2,6 @@ package com.lptiyu.tanke.base.controller;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -109,11 +108,11 @@ public abstract class ActivityController extends ContextController {
 
   }
 
-  public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+  public void onBackPressed() {
 
   }
 
-  public void onBackPressed() {
+  public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
 
   }
 

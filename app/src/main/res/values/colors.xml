@@ -44,11 +44,27 @@
     <color name="grey01">#191919</color>
     <color name="grey00">#FF000000</color>
 
-    <!-- LoginEditText colors-->
-    <color name="custom_edit_color">#7c99d6</color>
+
+
+    <color name="base_text_color">#7c99d6</color>
+    <color name="button_pressed">#4e4ebd</color>
 
     <!-- LoginActivity colors-->
     <color name="login_activity_title_color">#769df6</color>
-    <color name="login_activity_button_pressed">#4e4ebd</color>
+
+
+    <!-- GuideActivity colors-->
+    <color name="guide_activity_indicator_solid_color">#8d48db</color>
+    <color name="guide_activity_indicator_stroke_color">#FFFAF0</color>
+
+    <!-- registerActivity colors-->
+    <color name="register_activity_gradient_start">#6d99ff</color>
+    <color name="register_activity_gradient_end">#3c6cde</color>
+    
+    <!-- completeInformationActivity colors-->
+    <color name="complete_next_button_text_color">#3e6ddf</color>
+    <color name="complete_male_button_bg_color">#4d7ce9</color>
+    <color name="complete_female_button_bg_color">#ff546d</color>
+    <color name="complete_item_title_color">#d9e2f6</color>
 
 </resources>
