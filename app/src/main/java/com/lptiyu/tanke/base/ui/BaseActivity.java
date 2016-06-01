@@ -88,14 +88,6 @@ public abstract class BaseActivity extends AppCompatActivity implements Controll
   }
 
   @Override
-  public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-    super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-    if (controller != null) {
-      controller.onRequestPermissionsResult(requestCode, permissions, grantResults);
-    }
-  }
-
-  @Override
   public void onBackPressed() {
     if (null != controller) {
       controller.onBackPressed();
