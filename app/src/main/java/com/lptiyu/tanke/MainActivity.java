@@ -33,7 +33,6 @@ public class MainActivity extends BaseActivity {
   @BindView(R.id.page_3)
   View tab3;
 
-
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);

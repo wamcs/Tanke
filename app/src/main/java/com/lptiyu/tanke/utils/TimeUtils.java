@@ -27,7 +27,7 @@ public class TimeUtils {
     try {
       return dateFormatter.parse(date);
     } catch (ParseException e) {
-      e.printStackTrace();
+//      e.printStackTrace();
       return null;
     }
   }
@@ -39,7 +39,7 @@ public class TimeUtils {
     try {
       return timeFormatter.parse(time);
     } catch (ParseException e) {
-      e.printStackTrace();
+//      e.printStackTrace();
       return null;
     }
   }
