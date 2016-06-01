@@ -222,8 +222,8 @@ public class GameDisplayController extends BaseListFragmentController<GameDispla
     startActivityForResult(new Intent(getContext(), CaptureActivity.class), SCANNER_REQUEST_CODE);
   }
 
-  void onItemClick(GameDisplayEntity gameDisplayEntity, int position) {
-    int id = ShaPrefer.getInt(String.format(getString(R.string.has_downloaded_mask), gameDisplayEntity.getId()), -1);
+  void onItemClick(GameDisplayEntity gameDisplayEntity) {
+    // TODO jump to different page
   }
 
   @Override
