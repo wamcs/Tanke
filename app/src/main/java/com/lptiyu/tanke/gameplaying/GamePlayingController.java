@@ -2,6 +2,7 @@ package com.lptiyu.tanke.gameplaying;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
@@ -171,6 +172,14 @@ public abstract class GamePlayingController extends ActivityController implement
     return distance < Conf.POINT_RADIUS;
   }
 
+  void onNextPoint() {
+    Timber.e("next point");
+    /**
+     * TODO:
+     * 1.d
+     */
+  }
+
   void showAlertDialog(String message) {
     if (mAlertDialog == null) {
       mAlertDialog = new AlertDialog.Builder(getActivity())
@@ -220,24 +229,36 @@ public abstract class GamePlayingController extends ActivityController implement
   @Override
   public void onMarkerClicked(Point point) {
     if (currentAttackPoint == point) {
-      if (isReachedAttackPoint) {
-        Intent intent = new Intent();
-        intent.setClass(getActivity(), BaseTaskActivity.class);
-        intent.putExtra(Conf.CLICKED_POINT, point);
-        intent.putExtra(Conf.GAME_ID, TEMP_GAME_ID);
-        intent.putExtra(Conf.TEAM_ID, TEMP_TEAM_ID);
-        //TODO : start activity for result
-        getActivity().startActivity(intent);
-      } else {
+      if (!isReachedAttackPoint) {
         ToastUtil.TextToast("您还未到达该攻击点");
+        return;
       }
-    } else {
-      //TODO : start history task activity to display records
-//      Intent intent = new Intent();
-//      intent.setClass(getActivity(), BaseTaskActivity.class);
-//      intent.putExtra(Conf.CLICKED_POINT, point);
-//      getActivity().startActivity(intent);
     }
+    Intent intent = new Intent();
+    intent.setClass(getActivity(), BaseTaskActivity.class);
+    intent.putExtra(Conf.CLICKED_POINT, point);
+    intent.putExtra(Conf.GAME_ID, TEMP_GAME_ID);
+    intent.putExtra(Conf.TEAM_ID, TEMP_TEAM_ID);
+    startActivityForResult(intent, Conf.REQUEST_CODE_TASK_ACTIVITY);
+  }
+
+  @Override
+  public void onActivityResult(int requestCode, int resultCode, Intent data) {
+    super.onActivityResult(requestCode, resultCode, data);
+    if (requestCode == Conf.REQUEST_CODE_TASK_ACTIVITY && resultCode == Conf.RESULT_CODE_TASK_ACTIVITY) {
+      if (data != null) {
+        boolean isAllTaskFinished = data.getBooleanExtra(Conf.IS_POINT_TASK_ALL_FINISHED, false);
+        if (isAllTaskFinished) {
+          onNextPoint();
+        }
+      }
+    }
+  }
+
+  @Override
+  public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+    super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    PermissionDispatcher.onActivityRequestPermissionsResult(((BaseActivity) getActivity()), requestCode, permissions, grantResults);
   }
 
   @Override

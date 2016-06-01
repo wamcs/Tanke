@@ -28,6 +28,7 @@ import java.util.Map;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import timber.log.Timber;
 
 /**
  * @author : xiaoxiaoda
@@ -95,8 +96,6 @@ public class BaseTaskController extends ActivityController {
           onNextTask();
         }
       }
-
-
     }
   }
 
@@ -172,6 +171,7 @@ public class BaseTaskController extends ActivityController {
       return true;
     } else {
       ToastUtil.TextToast("您已经完成了此攻击点所有任务");
+      isAllTaskDone = true;
       return false;
     }
   }
@@ -213,6 +213,9 @@ public class BaseTaskController extends ActivityController {
   @OnClick(R.id.default_tool_bar_imageview)
   void back() {
     if (isAllTaskDone) {
+      Intent intent = new Intent();
+      intent.putExtra(Conf.IS_POINT_TASK_ALL_FINISHED, true);
+      getActivity().setResult(Conf.RESULT_CODE_TASK_ACTIVITY, intent);
       finish();
     } else {
       showExitDialog(getString(R.string.exit_task_activity_when_doing));

@@ -3,6 +3,7 @@ package com.lptiyu.tanke.base.ui;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.PersistableBundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 
 import com.lptiyu.tanke.base.controller.ActivityController;
@@ -86,6 +87,13 @@ public abstract class BaseActivity extends AppCompatActivity implements Controll
     super.onActivityResult(requestCode, resultCode, data);
   }
 
+  @Override
+  public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+    super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    if (controller != null) {
+      controller.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
+  }
 
   @Override
   public void onBackPressed() {

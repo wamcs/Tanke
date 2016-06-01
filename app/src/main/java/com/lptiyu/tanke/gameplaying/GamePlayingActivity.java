@@ -1,6 +1,7 @@
 package com.lptiyu.tanke.gameplaying;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 
 import com.lptiyu.tanke.R;
 import com.lptiyu.tanke.base.controller.ActivityController;
