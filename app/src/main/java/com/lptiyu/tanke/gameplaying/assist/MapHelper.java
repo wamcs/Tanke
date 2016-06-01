@@ -148,7 +148,7 @@ public class MapHelper implements
       return true;
     }
     clickedPoint = null;
-    for(Map.Entry<Point, Marker> entry : nailMarkerContainer.entrySet()) {
+    for (Map.Entry<Point, Marker> entry : nailMarkerContainer.entrySet()) {
       if (entry.getValue() == marker) {
         clickedPoint = entry.getKey();
       }
@@ -171,8 +171,17 @@ public class MapHelper implements
     return true;
   }
 
-  public void onReachAttackPoint() {
+  public void onReachAttackPoint(int index) {
     isReachAttackPoint = true;
+    Point curPoint = mPoints.get(index);
+    setNail(curPoint, index, NumNail.NailType.GREEN);
+  }
+
+  public void updateNextPoint(int index) {
+    isReachAttackPoint = false;
+    Point nextPoint = mPoints.get(index);
+    setNail(nextPoint, index, NumNail.NailType.RED);
+    setAttackPointCircle(nextPoint);
   }
 
   /**

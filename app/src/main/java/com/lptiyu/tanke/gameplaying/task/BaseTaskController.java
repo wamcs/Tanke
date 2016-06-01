@@ -90,7 +90,6 @@ public class BaseTaskController extends ActivityController {
   private void resumeFromMemRecords() {
     List<RunningRecord> records = getAppropriateRecordList();
     for (RunningRecord record : records) {
-
       if (RunningRecord.RECORD_TYPE.TASK_FINISH == record.getType()) {
         if (currentTask.getId() == record.getTaskId()) {
           onNextTask();
@@ -149,6 +148,10 @@ public class BaseTaskController extends ActivityController {
           .setPositiveButton(R.string.ensure, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+              Intent intent = new Intent();
+              intent.putExtra(Conf.IS_POINT_TASK_ALL_FINISHED_INDEX, mPoint.getPointIndex());
+              intent.putExtra(Conf.IS_POINT_TASK_ALL_FINISHED, isAllTaskDone);
+              getActivity().setResult(Conf.RESULT_CODE_TASK_ACTIVITY, intent);
               finish();
             }
           })
@@ -214,7 +217,8 @@ public class BaseTaskController extends ActivityController {
   void back() {
     if (isAllTaskDone) {
       Intent intent = new Intent();
-      intent.putExtra(Conf.IS_POINT_TASK_ALL_FINISHED, true);
+      intent.putExtra(Conf.IS_POINT_TASK_ALL_FINISHED, isAllTaskDone);
+      intent.putExtra(Conf.IS_POINT_TASK_ALL_FINISHED_INDEX, mPoint.getPointIndex());
       getActivity().setResult(Conf.RESULT_CODE_TASK_ACTIVITY, intent);
       finish();
     } else {

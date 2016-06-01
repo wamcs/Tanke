@@ -17,6 +17,7 @@ import com.baidu.mapapi.utils.DistanceUtil;
 import com.lptiyu.tanke.R;
 import com.lptiyu.tanke.base.controller.ActivityController;
 import com.lptiyu.tanke.base.ui.BaseActivity;
+import com.lptiyu.tanke.gameplaying.assist.ConsoleHelper;
 import com.lptiyu.tanke.gameplaying.assist.LocateHelper;
 import com.lptiyu.tanke.gameplaying.assist.MapHelper;
 import com.lptiyu.tanke.gameplaying.assist.zip.GameZipHelper;
@@ -57,6 +58,7 @@ public abstract class GamePlayingController extends ActivityController implement
   ITracingHelper mTracingHelper;
   MapHelper mapHelper;
   LocateHelper locateHelper;
+  ConsoleHelper consoleHelper;
   GameZipHelper gameZipHelper;
 
   int currentAttackPointIndex = 0;
@@ -65,6 +67,7 @@ public abstract class GamePlayingController extends ActivityController implement
 
   // used to create and dispatch record
   public static RecordsHandler mRecordsHandler;
+  RunningRecord.Builder runningRecordBuilder;
 
   AlertDialog mAlertDialog;
   AlertDialog mLoadingDialog;
@@ -78,30 +81,32 @@ public abstract class GamePlayingController extends ActivityController implement
   public GamePlayingController(AppCompatActivity activity, View view) {
     super(activity, view);
     ButterKnife.bind(this, view);
-    init();
+    init(view);
   }
 
-  private void init() {
+  private void init(View view) {
     gameZipHelper = new GameZipHelper();
     if (!gameZipHelper.checkAndParseGameZip(TEMP_GAME_ID, TEMP_LINE_ID) || gameZipHelper.getmPoints().size() == 0) {
       ToastUtil.TextToast("游戏包加载失败");
+      return;
       //TODO : notice user that the game zip is damaged, please download again,then finish this activity
     }
-
     //TODO : get game id and line id from intent
     ToastUtil.TextToast("游戏包加载完成");
 
+    mPoints = gameZipHelper.getmPoints();
+
+    mapHelper = new MapHelper(getActivity(), mapView);
+    mapHelper.bindData(mPoints);
+    mapHelper.setmMapMarkerClickListener(this);
+    consoleHelper = new ConsoleHelper(getActivity(), view, mPoints);
     mTracingHelper = new TracingHelper(getActivity().getApplicationContext(), this);
     mTracingHelper.entityName(String.format("%d_%d".toLowerCase(), TEMP_GAME_ID, TEMP_TEAM_ID));
-    mapHelper = new MapHelper(getActivity(), mapView);
     locateHelper = new LocateHelper(getActivity().getApplicationContext());
     locateHelper.registerLocationListener(this);
 
-    mPoints = gameZipHelper.getmPoints();
-    mapHelper.bindData(mPoints);
-    mapHelper.setmMapMarkerClickListener(this);
-
     mRecordsHandler = new RecordsHandler.Builder(TEMP_GAME_ID, TEMP_TEAM_ID).build();
+    runningRecordBuilder = new RunningRecord.Builder();
 
     showLoadingDialog();
     initRecords();
@@ -112,23 +117,15 @@ public abstract class GamePlayingController extends ActivityController implement
   @Override
   public void onReceiveLocation(BDLocation location) {
     mapHelper.onReceiveLocation(location);
-
     /**
      * Check whether user reach the attack point
      * when the game is not finished and the point is not reached
      */
     if (!isGameFinished && !isReachedAttackPoint) {
       if (checkIfReachAttackPoint(location)) {
-        /**
-         * TODO : when the point's tasks are done
-         * remember to do these things
-         * isReachedAttackPoint = false
-         * currentAttackPointIndex++
-         * currentAttackPoint = mPoint(currentAttackPointIndex)
-         */
-
-        isReachedAttackPoint = true;
         onReachAttackPoint();
+        VibrateUtils.vibrate();
+        showAlertDialog(getString(R.string.reach_attack_point));
         RecordsUtils.dispatchTypeRecord(mRecordsHandler, initReachPointRecord(location.getLatitude(), location.getLongitude(), currentAttackPoint.getId()));
       }
     }
@@ -139,24 +136,32 @@ public abstract class GamePlayingController extends ActivityController implement
    * vibrate and show the dialog to tell them click the nail in the map
    * then begin the tasks in this attack point
    */
-  private void onReachAttackPoint() {
+  void onReachAttackPoint() {
     if (currentAttackPoint == null || currentAttackPointIndex < 0) {
       Timber.e("current attack point is error");
       return;
     }
-    mapHelper.onReachAttackPoint();
-    VibrateUtils.vibrate();
-    showAlertDialog(getString(R.string.reach_attack_point));
+    isReachedAttackPoint = true;
+    mapHelper.onReachAttackPoint(currentAttackPointIndex);
+    consoleHelper.onReachAttackPoint(currentAttackPointIndex);
   }
 
-  private RunningRecord initReachPointRecord(double x, double y, long pointId) {
-    return new RunningRecord.Builder()
+  private RunningRecord initPointRecord(double x, double y, long pointId, RunningRecord.RECORD_TYPE type) {
+    return runningRecordBuilder
         .x(x)
         .y(y)
         .pointId(pointId)
-        .type(RunningRecord.RECORD_TYPE.POINT_REACH)
+        .type(type)
         .createTime(System.currentTimeMillis())
         .build();
+  }
+
+  private RunningRecord initReachPointRecord(double x, double y, long pointId) {
+    return initPointRecord(x, y, pointId, RunningRecord.RECORD_TYPE.POINT_REACH);
+  }
+
+  private RunningRecord initFinishPointRecord(double x, double y, long pointId) {
+    return initPointRecord(x, y, pointId, RunningRecord.RECORD_TYPE.POINT_FINISH);
   }
 
   /**
@@ -173,11 +178,18 @@ public abstract class GamePlayingController extends ActivityController implement
   }
 
   void onNextPoint() {
-    Timber.e("next point");
-    /**
-     * TODO:
-     * 1.d
-     */
+    if (currentAttackPointIndex < mPoints.size() - 1) {
+      currentAttackPointIndex++;
+      currentAttackPoint = mPoints.get(currentAttackPointIndex);
+      consoleHelper.updateNextPoint(currentAttackPointIndex);
+      mapHelper.updateNextPoint(currentAttackPointIndex);
+      isReachedAttackPoint = false;
+    } else {
+      //TODO : all point has arrive and the game is finished
+      isGameFinished = true;
+      ToastUtil.TextToast("您已经完成了所有的攻击点");
+    }
+
   }
 
   void showAlertDialog(String message) {
@@ -247,8 +259,13 @@ public abstract class GamePlayingController extends ActivityController implement
     super.onActivityResult(requestCode, resultCode, data);
     if (requestCode == Conf.REQUEST_CODE_TASK_ACTIVITY && resultCode == Conf.RESULT_CODE_TASK_ACTIVITY) {
       if (data != null) {
+        int clickedPointIndex = data.getIntExtra(Conf.IS_POINT_TASK_ALL_FINISHED_INDEX, -1);
         boolean isAllTaskFinished = data.getBooleanExtra(Conf.IS_POINT_TASK_ALL_FINISHED, false);
+        if (clickedPointIndex != currentAttackPointIndex) {
+          return;
+        }
         if (isAllTaskFinished) {
+          RecordsUtils.dispatchTypeRecord(mRecordsHandler, initFinishPointRecord(34.123123, 114.321321, currentAttackPoint.getId()));
           onNextPoint();
         }
       }
@@ -279,20 +296,28 @@ public abstract class GamePlayingController extends ActivityController implement
   @Override
   public void onResume() {
     super.onResume();
-    mapHelper.onResume();
+    if (mapHelper != null) {
+      mapHelper.onResume();
+    }
   }
 
   @Override
   public void onPause() {
     super.onPause();
-    mapHelper.onPause();
+    if (mapHelper != null) {
+      mapHelper.onPause();
+    }
   }
 
   @Override
   public void onDestroy() {
-    mapHelper.onDestroy();
-    locateHelper.stopLocate();
-    locateHelper.unRegisterLocationListener(this);
+    if (mapHelper != null) {
+      mapHelper.onDestroy();
+    }
+    if (locateHelper != null) {
+      locateHelper.stopLocate();
+      locateHelper.unRegisterLocationListener(this);
+    }
     super.onDestroy();
   }
 

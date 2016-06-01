@@ -103,6 +103,10 @@ public abstract class MultiplyTaskController extends FragmentController {
           }
           break;
 
+        case POINT_FINISH:
+
+          break;
+
         case GAME_FINISH:
           break;
       }

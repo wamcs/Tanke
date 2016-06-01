@@ -6,8 +6,8 @@ import android.view.View;
 import com.lptiyu.tanke.gameplaying.records.RecordsHandler;
 import com.lptiyu.tanke.gameplaying.records.RecordsUtils;
 import com.lptiyu.tanke.gameplaying.records.RunningRecord;
-import com.lptiyu.tanke.global.AppData;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import timber.log.Timber;
@@ -37,8 +37,7 @@ public class HistoryGamePlayingController extends GamePlayingController {
             Timber.e("Resume from history records error");
             return;
           }
-//          resumeHistoryRecords(recordList);
-//          resumeHistoryRecords(mRecordsHandler.getMemRecords().getAll());
+          resumeHistoryRecords(recordList);
           mLoadingDialog.dismiss();
         }
       });
@@ -56,9 +55,42 @@ public class HistoryGamePlayingController extends GamePlayingController {
   }
 
   private void resumeHistoryRecords(List<RunningRecord> recordList) {
-    for(RunningRecord r : recordList) {
-      Timber.e(AppData.globalGson().toJson(r));
+    recordList = findAppropriateRecords(recordList);
+    for (RunningRecord record : recordList) {
+      if (record.getPointId() == currentAttackPoint.getId()) {
+        switch (record.getType()) {
+          case POINT_REACH:
+            mapHelper.onReachAttackPoint(currentAttackPointIndex);
+            consoleHelper.onReachAttackPoint(currentAttackPointIndex);
+            onReachAttackPoint();
+            break;
+
+          case POINT_FINISH:
+            onNextPoint();
+            break;
+        }
+      } else {
+
+      }
     }
+  }
+
+  /**
+   * This method is to find records about point reach
+   * in the aspect of map, only need to read about point reach record
+   *
+   * @param records all records from disk file
+   * @return the record list about point reach
+   */
+  private List<RunningRecord> findAppropriateRecords(List<RunningRecord> records) {
+    List<RunningRecord> result = new ArrayList<>();
+    for (RunningRecord record : records) {
+      RunningRecord.RECORD_TYPE type = record.getType();
+      if (type == RunningRecord.RECORD_TYPE.POINT_REACH || type == RunningRecord.RECORD_TYPE.POINT_FINISH) {
+        result.add(record);
+      }
+    }
+    return result;
   }
 
 }

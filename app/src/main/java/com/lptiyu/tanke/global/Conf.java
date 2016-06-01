@@ -82,6 +82,7 @@ public final class Conf {
   public static final String MULTIPLY_FRAGMENT_BUNDLE_INDEX = "multiply_fragment_bundle_index";
   public static final int REQUEST_CODE_TASK_ACTIVITY = 6;
   public static final int RESULT_CODE_TASK_ACTIVITY = 7;
+  public static final String IS_POINT_TASK_ALL_FINISHED_INDEX = "is_point_task_all_finished_index";
   public static final String IS_POINT_TASK_ALL_FINISHED = "is_point_task_all_finished";
 
 

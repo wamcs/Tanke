@@ -67,7 +67,8 @@ public class RunningRecord implements Parcelable {
     POINT_REACH(1),
     TASK_START(2),
     TASK_FINISH(3),
-    GAME_FINISH(4);
+    POINT_FINISH(4),
+    GAME_FINISH(5);
 
     public final int type;
 

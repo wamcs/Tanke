@@ -9,8 +9,21 @@
         <attr name="takInnerHeight" format="reference|dimension"/>
         <attr name="takBaseColor" format="color|reference"/>
         <attr name="takImageToText" format="reference|dimension"/>
+    </declare-styleable>
 
-        
+    <declare-styleable name="SpotCircleView">
+        <attr name="spotSolidColor" format="color|reference"/>
+        <attr name="spotStrokeWidth" format="dimension"/>
+        <attr name="spotTextSize" format="dimension"/>
+        <attr name="spotText" format="string"/>
+        <attr name="spotState" format="enum">
+            <enum name="stroke_grey" value="0"/>
+            <enum name="stroke_red" value="1"/>
+            <enum name="stroke_green" value="2"/>
+            <enum name="solid_grey" value="4"/>
+            <enum name="solid_red" value="1"/>
+            <enum name="solid_green" value="2"/>
+        </attr>
     </declare-styleable>
 
 

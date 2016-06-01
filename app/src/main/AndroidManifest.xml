@@ -69,11 +69,7 @@
 
         </activity>
         <activity android:name=".initialization.ui.CompleteInformationActivity" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
 
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
         </activity>
         <activity android:name=".initialization.ui.SignUpActivity" >
 
@@ -144,7 +140,11 @@
             </intent-filter>
         </activity>
         <activity android:name=".gameplaying.GamePlayingActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
 
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
         </activity>
         <activity android:name=".gameplaying.task.BaseTaskActivity">
         </activity>
