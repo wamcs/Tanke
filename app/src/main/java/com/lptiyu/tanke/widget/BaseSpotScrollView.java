@@ -111,7 +111,6 @@ public class BaseSpotScrollView extends HorizontalScrollView {
     LayoutParams lp = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
     mSpotList = new LinearLayout(context);
     mSpotList.setOrientation(LinearLayout.HORIZONTAL);
-    mSpotList.setBackgroundColor(getContext().getResources().getColor(R.color.transparent));
     addView(mSpotList, lp);
     mSpotViewLayoutParams = new LinearLayout.LayoutParams(Display.dip2px(50), Display.dip2px(50));
     lp.gravity = Gravity.CENTER_VERTICAL;
@@ -281,6 +280,7 @@ public class BaseSpotScrollView extends HorizontalScrollView {
 
       if (widthMode == MeasureSpec.EXACTLY) {
         mWidth = widthSize;
+
       } else {
         mPaint.setTextSize(mTextSize);
         mPaint.getTextBounds(mText, 0, mText.length(), mBounds);
@@ -288,7 +288,6 @@ public class BaseSpotScrollView extends HorizontalScrollView {
         int desired = (int) (getPaddingLeft() + textWidth + getPaddingRight());
         mWidth = desired;
       }
-
       if (heightMode == MeasureSpec.EXACTLY) {
         mHeight = heightSize;
       } else {
@@ -298,7 +297,6 @@ public class BaseSpotScrollView extends HorizontalScrollView {
         int desired = (int) (getPaddingTop() + textHeight + getPaddingBottom());
         mHeight = desired;
       }
-
       if (mWidth < mHeight) {
         mHeight = mWidth;
       } else {
