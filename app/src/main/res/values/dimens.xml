@@ -76,7 +76,7 @@
     <dimen name="complete_location_size">120dp</dimen>
     <dimen name="complete_location_button_size">100dp</dimen>
     <dimen name="complete_location_text_size">10sp</dimen>
-    
+
     <!-- protocol Dimens-->
     <dimen name="protocol_return_button_size">16dp</dimen>
     <dimen name="protocol_title_margin_top">35dp</dimen>

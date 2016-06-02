@@ -82,7 +82,7 @@ public class MapHelper implements
   private static final int paddingLeft = 0;
   private static final int paddingTop = 0;
   private static final int paddingRight = 0;
-  private static final int paddingBottom = Display.dip2px(100);
+  private static final int paddingBottom = Display.dip2px(60);
 
   // default delta value, the distance between info window and marker
   private static final int DEFAULT_INFO_WINDOW_DELTA_Y = -70;
@@ -206,6 +206,10 @@ public class MapHelper implements
 
   public void animateCameraToCurrentPosition() {
     animateToCurrentPositionOnce = true;
+  }
+
+  public void animateCameraToCurrentTarget() {
+    mBaiduMap.animateMapStatus(MapStatusUpdateFactory.newLatLngZoom(currentAttackPoint.getLatLng(), 18));
   }
 
   public void animateCameraToMarkerByIndex(int index) {

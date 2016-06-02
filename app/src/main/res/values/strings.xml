@@ -19,7 +19,7 @@
     <!--Game display page-->
     <string name="change_city_dialog_message">是否需要切换到当前城市(%s)?</string>
     <string name="main_page_location_key">main_page_location</string>
-    <string name="main_page_date_formatter" formatted="false">%d月%d日-%d月%d日 </string>
+    <string name="main_page_date_formatter" formatted="false">%d月%d日-%d月%d日</string>
     <string name="main_page_date_format_pattern" formatted="false">%d月%d日-%d月%d日</string>
     <string name="main_page_forever">白天-黑夜</string>
     <string name="team_type_team">团队赛</string>
@@ -36,10 +36,9 @@
     <string name="login">登录</string>
 
 
-
     <!-- GuideActivity Text Area-->
     <string name="skip">跳过</string>
-    
+
     <!-- Register and resetPassword Text Area-->
     <string name="register_title">注册</string>
     <string name="reset_password_title">找回密码</string>
@@ -86,16 +85,15 @@
     <string name="upload_avatar_error">上传头像失败</string>
 
 
-
     <!-- GamePlayingActivity Text Area -->
     <string name="reach_attack_point">已到达攻击点，点击该点开始任务</string>
     <string name="start_task">开始任务</string>
-    
+
     <!-- Protocol Activity Text Area-->
     <string name="user_protocol">用户协议</string>
     <string name="ps">注：点击“下一步”即代表您已阅读并同意上述协议的所有内容</string>
 
-    <!-- BaseTaskActivity Text Area -->
+    <!-- GameTaskActivity Text Area -->
     <string name="exit_task_activity_when_loading">任务还在加载中，您确定要终止加载吗？</string>
     <string name="exit_task_activity_when_doing">"当前攻击点任务还全部完成，您确定要中断吗？"</string>
     <string name="scan_game_manager_qrcode">扫描通关二维码</string>
@@ -111,6 +109,9 @@
     <string name="cancel_locating">取消定位验证</string>
     <string name="right_location">恭喜您，找到目的地</string>
     <string name="error_location">抱歉，与目的地不符</string>
+
+    <!-- GameDataActivity Text Area-->
+    <string name="game_data">游戏数据</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

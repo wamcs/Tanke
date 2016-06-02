@@ -35,7 +35,7 @@ import timber.log.Timber;
  *         date: 16-5-28
  *         email: wonderfulifeel@gmail.com
  */
-public class BaseTaskController extends ActivityController {
+public class GameTaskController extends ActivityController {
 
   @BindView(R.id.default_tool_bar_textview)
   TextView mToolbarTitle;
@@ -62,7 +62,7 @@ public class BaseTaskController extends ActivityController {
   private List<String> taskIds;
   private Map<String, Task> taskMap;
 
-  public BaseTaskController(AppCompatActivity activity, View view) {
+  public GameTaskController(AppCompatActivity activity, View view) {
     super(activity, view);
     ButterKnife.bind(this, view);
 

@@ -62,18 +62,14 @@
         </service>
 
         <activity android:name=".MainActivity">
-
         </activity>
         <activity android:name=".initialization.ui.LoginActivity">
         </activity>
         <activity android:name=".initialization.ui.GuideActivity">
-
         </activity>
-        <activity android:name=".initialization.ui.CompleteInformationActivity" >
-
+        <activity android:name=".initialization.ui.CompleteInformationActivity">
         </activity>
-        <activity android:name=".initialization.ui.SignUpActivity" >
-
+        <activity android:name=".initialization.ui.SignUpActivity">
         </activity>
         <activity android:name=".initialization.ui.UserProtocolActivity">
         </activity>
@@ -100,7 +96,6 @@
             android:exported="true"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
-
         <activity
             android:name="com.lptiyu.zxinglib.android.CaptureActivity"
             android:clearTaskOnLaunch="true"
@@ -148,7 +143,9 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".gameplaying.task.BaseTaskActivity">
+        <activity android:name=".gameplaying.task.GameTaskActivity">
+        </activity>
+        <activity android:name=".gamedata.GameDataActivity">
         </activity>
     </application>
 

@@ -17,6 +17,7 @@ import com.baidu.mapapi.utils.DistanceUtil;
 import com.lptiyu.tanke.R;
 import com.lptiyu.tanke.base.controller.ActivityController;
 import com.lptiyu.tanke.base.ui.BaseActivity;
+import com.lptiyu.tanke.gamedata.GameDataActivity;
 import com.lptiyu.tanke.gameplaying.assist.ConsoleHelper;
 import com.lptiyu.tanke.gameplaying.assist.LocateHelper;
 import com.lptiyu.tanke.gameplaying.assist.MapHelper;
@@ -25,7 +26,7 @@ import com.lptiyu.tanke.gameplaying.pojo.Point;
 import com.lptiyu.tanke.gameplaying.records.RecordsHandler;
 import com.lptiyu.tanke.gameplaying.records.RecordsUtils;
 import com.lptiyu.tanke.gameplaying.records.RunningRecord;
-import com.lptiyu.tanke.gameplaying.task.BaseTaskActivity;
+import com.lptiyu.tanke.gameplaying.task.GameTaskActivity;
 import com.lptiyu.tanke.global.Conf;
 import com.lptiyu.tanke.permission.PermissionDispatcher;
 import com.lptiyu.tanke.permission.TargetMethod;
@@ -234,6 +235,18 @@ public abstract class GamePlayingController extends ActivityController implement
     mLoadingDialog.show();
   }
 
+  @OnClick(R.id.game_data)
+  void startGameDataActivity() {
+    Intent intent = new Intent();
+    intent.setClass(getActivity(), GameDataActivity.class);
+    startActivity(intent);
+  }
+
+  @OnClick(R.id.move_to_target)
+  void moveToTarget() {
+    mapHelper.animateCameraToCurrentTarget();
+  }
+
   @OnClick(R.id.start_locate)
   void startLocateButtonClicked() {
     PermissionDispatcher.startLocateWithCheck(((BaseActivity) getActivity()));
@@ -261,7 +274,7 @@ public abstract class GamePlayingController extends ActivityController implement
       }
     }
     Intent intent = new Intent();
-    intent.setClass(getActivity(), BaseTaskActivity.class);
+    intent.setClass(getActivity(), GameTaskActivity.class);
     intent.putExtra(Conf.CLICKED_POINT, point);
     intent.putExtra(Conf.GAME_ID, TEMP_GAME_ID);
     intent.putExtra(Conf.TEAM_ID, TEMP_TEAM_ID);

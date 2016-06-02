@@ -13,8 +13,6 @@ import com.lptiyu.tanke.base.ui.BaseFragment;
 import com.lptiyu.tanke.gameplaying.pojo.Task;
 import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItem;
 
-import timber.log.Timber;
-
 public class MultiplyTaskFragment extends BaseFragment {
 
   private FragmentController mFragmentController;
@@ -36,11 +34,11 @@ public class MultiplyTaskFragment extends BaseFragment {
   public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
     View view = inflater.inflate(R.layout.fragment_multiply_task, container, false);
     ActivityController activityController = getActivityController();
-    if (!(activityController instanceof BaseTaskController)) {
+    if (!(activityController instanceof GameTaskController)) {
       throw new RuntimeException(activityController.toString()
-          + " must be the subclass of BaseTaskController");
+          + " must be the subclass of GameTaskController");
     }
-    BaseTaskController mActivityController = (BaseTaskController) activityController;
+    GameTaskController mActivityController = (GameTaskController) activityController;
     Task mTask = mActivityController.getTaskAtPosition(FragmentPagerItem.getPosition(getArguments()));
     switch (mTask.getType()) {
       case SCAN_CODE:

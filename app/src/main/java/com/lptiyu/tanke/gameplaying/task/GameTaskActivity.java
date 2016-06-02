@@ -6,15 +6,15 @@ import com.lptiyu.tanke.R;
 import com.lptiyu.tanke.base.controller.ActivityController;
 import com.lptiyu.tanke.base.ui.BaseActivity;
 
-public class BaseTaskActivity extends BaseActivity {
+public class GameTaskActivity extends BaseActivity {
 
   private ActivityController mController;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    setContentView(R.layout.activity_base_task);
-    mController = new BaseTaskController(this, getWindow().getDecorView());
+    setContentView(R.layout.activity_game_task);
+    mController = new GameTaskController(this, getWindow().getDecorView());
   }
 
   @Override

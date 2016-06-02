@@ -18,15 +18,43 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 
-    <Button
+    <ImageView
         android:id="@+id/start_locate"
-        android:layout_width="38dp"
-        android:layout_height="38dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@mipmap/img_locate"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
-        android:layout_marginBottom="105dp"
         android:layout_marginLeft="5dp"
-        android:background="@mipmap/img_locate"/>
+        android:layout_marginBottom="65dp"
+        android:contentDescription="@string/content_description"
+        android:background="@drawable/map_button_style"/>
+
+    <ImageView
+        android:id="@+id/move_to_target"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:padding="10dp"
+        android:layout_marginBottom="5dp"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="5dp"
+        android:src="@mipmap/img_target"
+        android:layout_above="@id/start_locate"
+        android:contentDescription="@string/content_description"
+        android:background="@drawable/map_button_style"/>
+
+    <ImageView
+        android:id="@+id/game_data"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:padding="5dp"
+        android:layout_marginBottom="5dp"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="5dp"
+        android:src="@mipmap/img_game_data"
+        android:layout_above="@id/move_to_target"
+        android:contentDescription="@string/content_description"
+        android:background="@drawable/map_button_style"/>
 
     <Button
         android:id="@+id/start_animate"

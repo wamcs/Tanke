@@ -16,7 +16,6 @@ import com.lptiyu.tanke.base.controller.ActivityController;
 import com.lptiyu.tanke.base.controller.FragmentController;
 import com.lptiyu.tanke.gameplaying.pojo.Task;
 import com.lptiyu.tanke.gameplaying.records.RunningRecord;
-import com.lptiyu.tanke.global.AppData;
 import com.lptiyu.tanke.utils.ToastUtil;
 import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItem;
 
@@ -24,7 +23,6 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import timber.log.Timber;
 
 /**
  * @author : xiaoxiaoda
@@ -47,16 +45,16 @@ public abstract class MultiplyTaskController extends FragmentController {
   int taskIndex;
   Task mTask;
   List<RunningRecord> recordList;
-  BaseTaskController mActivityController;
+  GameTaskController mActivityController;
 
   public MultiplyTaskController(Fragment fragment, ActivityController controller, View view) {
     super(fragment, controller, view);
     ButterKnife.bind(this, view);
-    if (!(controller instanceof BaseTaskController)) {
+    if (!(controller instanceof GameTaskController)) {
       throw new RuntimeException(controller.toString()
-          + " must be the subclass of BaseTaskController");
+          + " must be the subclass of GameTaskController");
     }
-    mActivityController = (BaseTaskController) controller;
+    mActivityController = (GameTaskController) controller;
     taskIndex = FragmentPagerItem.getPosition(fragment.getArguments());
     init();
   }
