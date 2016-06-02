@@ -41,7 +41,7 @@
         android:theme="@style/AppTheme">
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
-            android:value="qnETHCCOsjRZouq6GUXQR8AQKTOQnS8U" />
+            android:value="qnETHCCOsjRZouq6GUXQR8AQKTOQnS8U"/>
 
         <!-- the service used to support locate -->
         <service
@@ -58,18 +58,22 @@
         </service>
 
         <activity android:name=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
 
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
         </activity>
 
         <activity android:name=".initialization.ui.LoginActivity">
         </activity>
         <activity android:name=".initialization.ui.GuideActivity">
         </activity>
-        <activity android:name=".initialization.ui.CompleteInformationActivity" >
+        <activity android:name=".initialization.ui.CompleteInformationActivity">
         </activity>
-        <activity android:name=".initialization.ui.RegisterActivity" >
+        <activity android:name=".initialization.ui.RegisterActivity">
         </activity>
-        <activity android:name=".initialization.ui.ResetSecretActivity" >
+        <activity android:name=".initialization.ui.ResetSecretActivity">
         </activity>
         <activity android:name=".initialization.ui.UserProtocolActivity">
         </activity>
@@ -81,12 +85,12 @@
             android:theme="@android:style/Theme.Translucent.NoTitleBar"
             android:windowSoftInputMode="stateHidden|adjustResize">
             <intent-filter>
-                <data android:scheme="tencent1105156320" />
+                <data android:scheme="tencent1105156320"/>
 
-                <action android:name="android.intent.action.VIEW" />
+                <action android:name="android.intent.action.VIEW"/>
 
-                <category android:name="android.intent.category.BROWSABLE" />
-                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
         </activity>
 
@@ -96,7 +100,7 @@
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:exported="true"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
 
 
         <activity
@@ -105,46 +109,42 @@
             android:screenOrientation="portrait"
             android:stateNotNeeded="true"
             android:theme="@style/CaptureTheme"
-            android:windowSoftInputMode="stateAlwaysHidden" />
+            android:windowSoftInputMode="stateAlwaysHidden"/>
         <activity
             android:name="com.lptiyu.zxinglib.android.PreferencesActivity"
             android:label="@string/preferences_name"
-            android:stateNotNeeded="true" />
+            android:stateNotNeeded="true"/>
         <activity
             android:name="com.lptiyu.zxinglib.android.share.ShareActivity"
             android:screenOrientation="user"
-            android:stateNotNeeded="true" />
+            android:stateNotNeeded="true"/>
         <activity
             android:name="com.lptiyu.zxinglib.android.encode.EncodeActivity"
             android:stateNotNeeded="true">
             <intent-filter>
-                <action android:name="com.google.zxing.client.android.ENCODE" />
+                <action android:name="com.google.zxing.client.android.ENCODE"/>
 
-                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
             <!-- This allows us to handle the Share button in Contacts. -->
             <intent-filter>
-                <action android:name="android.intent.action.SEND" />
+                <action android:name="android.intent.action.SEND"/>
 
-                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.DEFAULT"/>
 
-                <data android:mimeType="text/x-vcard" />
+                <data android:mimeType="text/x-vcard"/>
             </intent-filter>
             <!-- This allows us to handle sharing any plain text . -->
             <intent-filter>
-                <action android:name="android.intent.action.SEND" />
+                <action android:name="android.intent.action.SEND"/>
 
-                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.DEFAULT"/>
 
-                <data android:mimeType="text/plain" />
+                <data android:mimeType="text/plain"/>
             </intent-filter>
         </activity>
         <activity android:name=".gameplaying.GamePlayingActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
 
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
         </activity>
 
     </application>

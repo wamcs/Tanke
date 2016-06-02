@@ -78,6 +78,9 @@ dependencies {
     compile files('libs/ShareSDK-Wechat-Moments-2.6.5.jar')
     compile project(':number_picker')
     compile 'com.google.code.gson:gson:2.6.2'
+    // 圆角图片
+    compile 'de.hdodenhof:circleimageview:2.0.0'
+
     //    RecyclerView
     compile 'com.android.support:recyclerview-v7:23.4.0'
     //    CardView

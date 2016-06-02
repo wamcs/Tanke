@@ -20,7 +20,6 @@ import butterknife.ButterKnife;
  */
 public abstract class ActivityController extends ContextController {
 
-  @BindView(R.id.tool_bar)
   Toolbar mToolbar;
 
   private View mRootView;
@@ -32,13 +31,13 @@ public abstract class ActivityController extends ContextController {
     this.mRootView = view;
     this.mActivity = activity;
     if (isToolbarEnable()) {
-      ButterKnife.bind(this, view);
+      mToolbar = (Toolbar) findViewById(R.id.tool_bar);
     }
     baseInit();
   }
 
   protected boolean isToolbarEnable() {
-    return true;
+    return false;
   }
 
   public AppCompatActivity getActivity() {
