@@ -45,13 +45,18 @@ public class ConsoleHelper {
   }
 
   public void onReachAttackPoint(int index) {
-    runningSpotScrollView.setSpots(index, BaseSpotScrollView.STATE.STATE_SOLID_GREEN);
-    ToastUtil.TextToast(String.format("reach point : %d", index));
+    runningSpotScrollView.setSpots(index, BaseSpotScrollView.STATE.STATE_DONE);
   }
 
   public void updateNextPoint(int index) {
-    runningSpotScrollView.setSpots(index, BaseSpotScrollView.STATE.STATE_SOLID_RED);
-    ToastUtil.TextToast(String.format("next point : %d", index));
+    runningSpotScrollView.setSpots(index, BaseSpotScrollView.STATE.STATE_DOING);
+  }
+
+  public void setOnSpotClickListener(BaseSpotScrollView.OnSpotItemClickListener listener) {
+    if (runningSpotScrollView != null) {
+      runningSpotScrollView.setSpotClickable(true);
+      runningSpotScrollView.setOnSpotItemClickListener(listener);
+    }
   }
 
 }

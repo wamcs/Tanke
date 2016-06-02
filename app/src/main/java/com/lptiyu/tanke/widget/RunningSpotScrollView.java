@@ -30,9 +30,9 @@ public class RunningSpotScrollView extends BaseSpotScrollView {
     }
     for (int i = 0; i < count; i++) {
       if (0 == i) {
-        addSpot(i, STATE.STATE_SOLID_RED);
+        addSpot(i, count, STATE.STATE_DOING);
       } else {
-        addSpot(i, STATE.STATE_STROKE_GREY);
+        addSpot(i, count, STATE.STATE_TO_DO);
       }
     }
     mCurrentCircle = spotList.get(0);

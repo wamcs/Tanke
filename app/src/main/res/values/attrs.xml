@@ -11,22 +11,16 @@
         <attr name="takImageToText" format="reference|dimension"/>
     </declare-styleable>
 
-    <declare-styleable name="SpotCircleView">
-        <attr name="spotSolidColor" format="color|reference"/>
-        <attr name="spotStrokeWidth" format="dimension"/>
+    <declare-styleable name="BaseSpotScrollView">
+        <attr name="spotItemLineWidth" format="dimension"/>
+        <attr name="spotCircleRadius" format="dimension"/>
+        <attr name="spotItemLineHeight" format="dimension"/>
         <attr name="spotTextSize" format="dimension"/>
-        <attr name="spotText" format="string"/>
-        <attr name="spotState" format="enum">
-            <enum name="stroke_grey" value="0"/>
-            <enum name="stroke_red" value="1"/>
-            <enum name="stroke_green" value="2"/>
-            <enum name="solid_grey" value="4"/>
-            <enum name="solid_red" value="1"/>
-            <enum name="solid_green" value="2"/>
-        </attr>
+        <attr name="spotDoneColor" format="color|reference"/>
+        <attr name="spotDoingColor" format="color|reference"/>
+        <attr name="spotToDoColor" format="color|reference"/>
+        <attr name="spotItemLineColor" format="color|reference"/>
     </declare-styleable>
-
-
 
 
 </resources>

@@ -173,15 +173,15 @@ public class MapHelper implements
 
   public void onReachAttackPoint(int index) {
     isReachAttackPoint = true;
-    Point curPoint = mPoints.get(index);
-    setNail(curPoint, index, NumNail.NailType.GREEN);
+    currentAttackPoint = mPoints.get(index);
+    setNail(currentAttackPoint, index, NumNail.NailType.GREEN);
   }
 
   public void updateNextPoint(int index) {
     isReachAttackPoint = false;
-    Point nextPoint = mPoints.get(index);
-    setNail(nextPoint, index, NumNail.NailType.RED);
-    setAttackPointCircle(nextPoint);
+    currentAttackPoint = mPoints.get(index);
+    setNail(currentAttackPoint, index, NumNail.NailType.RED);
+    setAttackPointCircle(currentAttackPoint);
   }
 
   /**
@@ -206,6 +206,13 @@ public class MapHelper implements
 
   public void animateCameraToCurrentPosition() {
     animateToCurrentPositionOnce = true;
+  }
+
+  public void animateCameraToMarkerByIndex(int index) {
+    if (mPoints != null && index <= currentAttackPoint.getPointIndex()) {
+      Point targetPoint = mPoints.get(index);
+      mBaiduMap.animateMapStatus(MapStatusUpdateFactory.newLatLngZoom(targetPoint.getLatLng(), 18));
+    }
   }
 
   /**
@@ -340,4 +347,5 @@ public class MapHelper implements
   public interface OnMapMarkerClickListener {
     void onMarkerClicked(Point point);
   }
+
 }

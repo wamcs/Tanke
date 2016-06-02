@@ -19,12 +19,31 @@ import com.lptiyu.tanke.utils.Display;
 import java.util.ArrayList;
 import java.util.List;
 
+import timber.log.Timber;
+
 /**
  * @author: xiaoxiaoda
  * date: 16-1-22
  * email: daque@hustunique.com
  */
 public class BaseSpotScrollView extends HorizontalScrollView {
+
+  private float spotCircleRadius;
+  private float spotItemLineWidth;
+  private float spotItemLineHeight;
+  private float spotTextSize;
+  private int spotDoingColor;
+  private int spotDoneColor;
+  private int spotToDoColor;
+  private int spotItemLineColor;
+
+  static final float DEFAULT_SPOT_ITEM_LINE_WIDTH = 90.0f;
+  static final float DEFAULT_SPOT_ITEM_LINE_HEIGHT = 10.0f;
+  static final float DEFAULT_SPOT_CIRCLE_RADIUS = 50.0f;
+  static final int DEFAULT_SPOT_DOING_COLOR = 0x769df6;
+  static final int DEFAULT_SPOT_DONE_COLOR = 0xaa0000;
+  static final int DEFAULT_SPOT_TO_DO_COLOR = 0x999999;
+  static final int DEFAULT_SPOT_ITEM_LINE_COLOR = 0x769df6;
 
   protected boolean isClickable = true;
 
@@ -38,18 +57,10 @@ public class BaseSpotScrollView extends HorizontalScrollView {
 
   protected LinearLayout.LayoutParams mSpotViewLayoutParams;
 
-  private static final int DEFAULT_SOLIDE_COLOR = 0xFD3333;
-  private static final float DEFAULT_STROKE_WIDTH = Display.dip2px(1);
-  private static final float DEFAULT_TEXT_SIZE = 15;
-  private static final int DEFAULT_STATE = STATE.STATE_STROKE_RED.getK();
-
   public enum STATE {
-    STATE_STROKE_GREY(0),
-    STATE_STROKE_RED(1),
-    STATE_STROKE_GREEN(2),
-    STATE_SOLID_GREY(3),
-    STATE_SOLID_RED(4),
-    STATE_SOLID_GREEN(5);
+    STATE_DONE(0),
+    STATE_DOING(1),
+    STATE_TO_DO(2);
 
     private int k;
 
@@ -65,30 +76,19 @@ public class BaseSpotScrollView extends HorizontalScrollView {
       STATE s;
       switch (i) {
         case 0:
-          s = STATE_STROKE_GREY;
+          s = STATE_DONE;
           break;
 
         case 1:
-          s = STATE_STROKE_RED;
+          s = STATE_DOING;
           break;
 
         case 2:
-          s = STATE_STROKE_GREEN;
+          s = STATE_TO_DO;
           break;
 
-        case 3:
-          s = STATE_SOLID_GREY;
-          break;
-
-        case 4:
-          s = STATE_SOLID_RED;
-          break;
-
-        case 5:
-          s = STATE_SOLID_GREEN;
-          break;
         default:
-          s = STATE_STROKE_RED;
+          s = STATE_DONE;
       }
       return s;
     }
@@ -104,6 +104,19 @@ public class BaseSpotScrollView extends HorizontalScrollView {
 
   public BaseSpotScrollView(Context context, AttributeSet attrs, int defStyleAttr) {
     super(context, attrs, defStyleAttr);
+    TypedArray a = context.getTheme().obtainStyledAttributes(attrs, R.styleable.BaseSpotScrollView, defStyleAttr, 0);
+    try {
+      spotDoingColor = a.getColor(R.styleable.BaseSpotScrollView_spotDoingColor, DEFAULT_SPOT_DOING_COLOR);
+      spotDoneColor = a.getColor(R.styleable.BaseSpotScrollView_spotDoneColor, DEFAULT_SPOT_DONE_COLOR);
+      spotToDoColor = a.getColor(R.styleable.BaseSpotScrollView_spotToDoColor, DEFAULT_SPOT_TO_DO_COLOR);
+      spotItemLineColor = a.getColor(R.styleable.BaseSpotScrollView_spotItemLineColor, DEFAULT_SPOT_ITEM_LINE_COLOR);
+      spotItemLineHeight = a.getDimension(R.styleable.BaseSpotScrollView_spotItemLineHeight, DEFAULT_SPOT_ITEM_LINE_HEIGHT);
+      spotItemLineWidth = a.getDimension(R.styleable.BaseSpotScrollView_spotItemLineWidth, DEFAULT_SPOT_ITEM_LINE_WIDTH);
+      spotTextSize = a.getDimension(R.styleable.BaseSpotScrollView_spotTextSize, Display.sp2px(getContext(), 12));
+      spotCircleRadius = a.getDimension(R.styleable.BaseSpotScrollView_spotCircleRadius, DEFAULT_SPOT_CIRCLE_RADIUS);
+    } finally {
+      a.recycle();
+    }
     init(context);
   }
 
@@ -112,23 +125,29 @@ public class BaseSpotScrollView extends HorizontalScrollView {
     mSpotList = new LinearLayout(context);
     mSpotList.setOrientation(LinearLayout.HORIZONTAL);
     addView(mSpotList, lp);
-    mSpotViewLayoutParams = new LinearLayout.LayoutParams(Display.dip2px(50), Display.dip2px(50));
+    mSpotViewLayoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
     lp.gravity = Gravity.CENTER_VERTICAL;
   }
 
-  @Override
-  protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-    super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-
-  }
-
-  protected void addSpot(int num, STATE state) {
+  protected void addSpot(int num, int count, STATE state) {
     SpotCircleView spotCircleView = new SpotCircleView(getContext());
-    spotCircleView.setmSolidColor(getResources().getColor(R.color.colorPrimary));
+    spotCircleView.setSpotDoingColor(spotDoingColor);
+    spotCircleView.setSpotDoneColor(spotDoneColor);
+    spotCircleView.setSpotToDoColor(spotToDoColor);
+    spotCircleView.setSpotItemLineColor(spotItemLineColor);
+    spotCircleView.setSpotItemLineHeight(spotItemLineHeight);
+    spotCircleView.setSpotItemLineWidth(spotItemLineWidth);
+    spotCircleView.setSpotTextSize(spotTextSize);
     spotCircleView.setmState(state);
-    spotCircleView.setmStrokeWidth(Display.dip2px(1));
+    spotCircleView.setmRadius(spotCircleRadius);
     spotCircleView.setmText(String.valueOf(num));
-    spotCircleView.setmTextSize(Display.sp2px(getContext(), 16));
+
+    if (num == 0) {
+      spotCircleView.setFirstOne(true);
+    }
+    if (num == count - 1) {
+      spotCircleView.setLastOne(true);
+    }
     spotList.add(spotCircleView);
     mSpotList.addView(spotCircleView, mSpotViewLayoutParams);
   }
@@ -165,20 +184,29 @@ public class BaseSpotScrollView extends HorizontalScrollView {
 
   class SpotCircleView extends View implements OnClickListener {
 
+    private int spotDoingColor;
+    private int spotDoneColor;
+    private int spotToDoColor;
+    private int spotItemLineColor;
+
     private float mRadius;
-    private int mSolidColor;
-    private float mStrokeWidth;
-    private float mTextSize;
+    private float spotItemLineWidth;
+    private float spotItemLineHeight;
+    private float spotTextSize;
+
     private String mText;
     private STATE mState;
+
+    private boolean isFirstOne = false;
+    private boolean isLastOne = false;
 
     private int mTag;
 
     private float mHeight;
     private float mWidth;
 
-    private Paint mPaint;
     private Rect mBounds;
+    private Paint mPaint;
 
     public SpotCircleView(Context context) {
       this(context, null);
@@ -190,17 +218,39 @@ public class BaseSpotScrollView extends HorizontalScrollView {
 
     public SpotCircleView(Context context, AttributeSet attrs, int defStyleAttr) {
       super(context, attrs, defStyleAttr);
-      TypedArray a = context.getTheme().obtainStyledAttributes(attrs, R.styleable.SpotCircleView, defStyleAttr, 0);
-      try {
-        mSolidColor = a.getColor(R.styleable.SpotCircleView_spotSolidColor, DEFAULT_SOLIDE_COLOR);
-        mStrokeWidth = a.getDimension(R.styleable.SpotCircleView_spotStrokeWidth, DEFAULT_STROKE_WIDTH);
-        mTextSize = a.getDimension(R.styleable.SpotCircleView_spotTextSize, DEFAULT_TEXT_SIZE);
-        mText = a.getString(R.styleable.SpotCircleView_spotText);
-        mState = STATE.fromValue(a.getInteger(R.styleable.SpotCircleView_spotState, DEFAULT_STATE));
-      } finally {
-        a.recycle();
-      }
       init();
+    }
+
+    public int getSpotDoingColor() {
+      return spotDoingColor;
+    }
+
+    public void setSpotDoingColor(int spotDoingColor) {
+      this.spotDoingColor = spotDoingColor;
+    }
+
+    public int getSpotDoneColor() {
+      return spotDoneColor;
+    }
+
+    public void setSpotDoneColor(int spotDoneColor) {
+      this.spotDoneColor = spotDoneColor;
+    }
+
+    public int getSpotToDoColor() {
+      return spotToDoColor;
+    }
+
+    public void setSpotToDoColor(int spotToDoColor) {
+      this.spotToDoColor = spotToDoColor;
+    }
+
+    public int getSpotItemLineColor() {
+      return spotItemLineColor;
+    }
+
+    public void setSpotItemLineColor(int spotItemLineColor) {
+      this.spotItemLineColor = spotItemLineColor;
     }
 
     public int getmTag() {
@@ -228,28 +278,28 @@ public class BaseSpotScrollView extends HorizontalScrollView {
       this.mRadius = mRadius;
     }
 
-    public int getmSolidColor() {
-      return mSolidColor;
+    public float getSpotItemLineWidth() {
+      return spotItemLineWidth;
     }
 
-    public void setmSolidColor(int mSolidColor) {
-      this.mSolidColor = mSolidColor;
+    public void setSpotItemLineWidth(float spotItemLineWidth) {
+      this.spotItemLineWidth = spotItemLineWidth;
     }
 
-    public float getmStrokeWidth() {
-      return mStrokeWidth;
+    public float getSpotItemLineHeight() {
+      return spotItemLineHeight;
     }
 
-    public void setmStrokeWidth(float mStrokeWidth) {
-      this.mStrokeWidth = mStrokeWidth;
+    public void setSpotItemLineHeight(float spotItemLineHeight) {
+      this.spotItemLineHeight = spotItemLineHeight;
     }
 
-    public float getmTextSize() {
-      return mTextSize;
+    public float getSpotTextSize() {
+      return spotTextSize;
     }
 
-    public void setmTextSize(float mTextSize) {
-      this.mTextSize = mTextSize;
+    public void setSpotTextSize(float spotTextSize) {
+      this.spotTextSize = spotTextSize;
     }
 
     public String getmText() {
@@ -260,6 +310,22 @@ public class BaseSpotScrollView extends HorizontalScrollView {
       this.mText = mText;
       this.mTag = Integer.valueOf(mText);
       invalidate();
+    }
+
+    public boolean isFirstOne() {
+      return isFirstOne;
+    }
+
+    public void setFirstOne(boolean firstOne) {
+      isFirstOne = firstOne;
+    }
+
+    public boolean isLastOne() {
+      return isLastOne;
+    }
+
+    public void setLastOne(boolean lastOne) {
+      isLastOne = lastOne;
     }
 
     private void init() {
@@ -280,29 +346,32 @@ public class BaseSpotScrollView extends HorizontalScrollView {
 
       if (widthMode == MeasureSpec.EXACTLY) {
         mWidth = widthSize;
-
       } else {
-        mPaint.setTextSize(mTextSize);
+        mPaint.setTextSize(spotTextSize);
         mPaint.getTextBounds(mText, 0, mText.length(), mBounds);
         float textWidth = mBounds.width();
-        int desired = (int) (getPaddingLeft() + textWidth + getPaddingRight());
+        int desired = (int) (getPaddingLeft() + textWidth + getPaddingRight() + spotItemLineWidth * 2);
         mWidth = desired;
       }
+
       if (heightMode == MeasureSpec.EXACTLY) {
         mHeight = heightSize;
       } else {
-        mPaint.setTextSize(mTextSize);
+        mPaint.setTextSize(spotTextSize);
         mPaint.getTextBounds(mText, 0, mText.length(), mBounds);
         float textHeight = mBounds.height();
         int desired = (int) (getPaddingTop() + textHeight + getPaddingBottom());
         mHeight = desired;
       }
-      if (mWidth < mHeight) {
-        mHeight = mWidth;
+      int minRadius;
+      if (mBounds.height() < mBounds.width()) {
+        minRadius = mBounds.width() / 2;
       } else {
-        mWidth = mHeight;
+        minRadius = mBounds.height() / 2;
       }
-      mRadius = mHeight / 4;
+      if (minRadius - 2 > mRadius) {
+        mRadius = minRadius;
+      }
       setMeasuredDimension((int) mWidth, (int) mHeight);
     }
 
@@ -310,76 +379,74 @@ public class BaseSpotScrollView extends HorizontalScrollView {
     protected void onDraw(Canvas canvas) {
       super.onDraw(canvas);
 
-      canvas.drawColor(getResources().getColor(R.color.default_font_color));
+      drawLineBetweenItem(canvas);
 
+      drawSpotBackground(canvas);
+
+      drawSpotText(canvas);
+    }
+
+    private void drawLineBetweenItem(Canvas canvas) {
+      mPaint.reset();
+      mPaint.setAntiAlias(true);
+      Rect rect;
+      mPaint.setColor(spotItemLineColor);
+      mPaint.setStrokeWidth(spotItemLineHeight);
+      if (isFirstOne) {
+        if (isLastOne) {
+          rect = null;
+        } else {
+          rect = new Rect((int) mWidth / 2, (int) (mHeight - spotItemLineHeight) / 2, (int) mWidth, (int) (mHeight + spotItemLineHeight) / 2);
+        }
+      } else {
+        if (isLastOne) {
+          rect = new Rect(0, (int) (mHeight - spotItemLineHeight) / 2, (int) mWidth / 2, (int) (mHeight + spotItemLineHeight) / 2);
+        } else {
+          rect = new Rect(0, (int) (mHeight - spotItemLineHeight) / 2, (int) mWidth, (int) (mHeight + spotItemLineHeight) / 2);
+        }
+      }
+      if (rect != null) {
+        canvas.drawRect(rect, mPaint);
+      }
+    }
+
+    private void drawSpotBackground(Canvas canvas) {
+      mPaint.reset();
+      mPaint.setAntiAlias(true);
       switch (mState) {
-
-        case STATE_STROKE_GREY:
-          mPaint.setColor(getResources().getColor(R.color.grey06));
-          mPaint.setStyle(Paint.Style.STROKE);
-          mPaint.setStrokeWidth(mStrokeWidth);
+        case STATE_DONE:
+          mPaint.setColor(getResources().getColor(R.color.default_font_color));
+          canvas.drawCircle(mWidth / 2, mHeight / 2, mRadius + Display.dip2px(3), mPaint);
+          mPaint.setColor(spotDoneColor);
           canvas.drawCircle(mWidth / 2, mHeight / 2, mRadius, mPaint);
-
-          mPaint.reset();
-          mPaint.setAntiAlias(true);
-          mPaint.setTextSize(mTextSize);
-          mPaint.getTextBounds(mText, 0, mText.length(), mBounds);
-          mPaint.setColor(getResources().getColor(R.color.grey06));
-          canvas.drawText(mText, (mWidth - mPaint.measureText(mText)) / 2, mHeight / 2 + mBounds.height() / 2, mPaint);
           break;
 
-        case STATE_STROKE_RED:
-          mPaint.setColor(getResources().getColor(R.color.colorPrimary));
-          mPaint.setStyle(Paint.Style.STROKE);
-          mPaint.setStrokeWidth(mStrokeWidth);
+        case STATE_DOING:
+          mPaint.setColor(getResources().getColor(R.color.default_font_color));
+          canvas.drawCircle(mWidth / 2, mHeight / 2, mRadius + Display.dip2px(3), mPaint);
+          mPaint.setColor(spotDoingColor);
           canvas.drawCircle(mWidth / 2, mHeight / 2, mRadius, mPaint);
-
-          mPaint.reset();
-          mPaint.setAntiAlias(true);
-          mPaint.setTextSize(mTextSize);
-          mPaint.getTextBounds(mText, 0, mText.length(), mBounds);
-          mPaint.setColor(getResources().getColor(R.color.colorPrimary));
-          canvas.drawText(mText, (mWidth - mPaint.measureText(mText)) / 2, mHeight / 2 + mBounds.height() / 2, mPaint);
           break;
 
-        case STATE_STROKE_GREEN:
-          mPaint.setColor(getResources().getColor(R.color.green));
-          mPaint.setStyle(Paint.Style.STROKE);
-          mPaint.setStrokeWidth(mStrokeWidth);
+        case STATE_TO_DO:
+          mPaint.setColor(spotToDoColor);
           canvas.drawCircle(mWidth / 2, mHeight / 2, mRadius, mPaint);
-
-          mPaint.reset();
-          mPaint.setAntiAlias(true);
-          mPaint.setTextSize(mTextSize);
-          mPaint.getTextBounds(mText, 0, mText.length(), mBounds);
-          mPaint.setColor(getResources().getColor(R.color.green));
-          canvas.drawText(mText, (mWidth - mPaint.measureText(mText)) / 2, mHeight / 2 + mBounds.height() / 2, mPaint);
-          break;
-
-        case STATE_SOLID_GREY:
-          mPaint.setColor(getResources().getColor(R.color.grey06));
-          canvas.drawCircle(mWidth / 2, mHeight / 2, mRadius + mStrokeWidth, mPaint);
-          break;
-
-        case STATE_SOLID_RED:
-          mPaint.setColor(getResources().getColor(R.color.colorPrimary));
-          canvas.drawCircle(mWidth / 2, mHeight / 2, mRadius + mStrokeWidth, mPaint);
-          break;
-
-        case STATE_SOLID_GREEN:
-          mPaint.setColor(getResources().getColor(R.color.green));
-          canvas.drawCircle(mWidth / 2, mHeight / 2, mRadius + mStrokeWidth, mPaint);
           break;
       }
+    }
 
-      if (mState == STATE.STATE_SOLID_GREY || STATE.STATE_SOLID_RED == mState || STATE.STATE_SOLID_GREEN == mState) {
-        mPaint.reset();
-        mPaint.setAntiAlias(true);
-        mPaint.setTextSize(mTextSize);
-        mPaint.getTextBounds(mText, 0, mText.length(), mBounds);
+    private void drawSpotText(Canvas canvas) {
+      mPaint.reset();
+      mPaint.setAntiAlias(true);
+      mPaint.setTextSize(spotTextSize);
+      mPaint.getTextBounds(mText, 0, mText.length(), mBounds);
+      if (mState == STATE.STATE_TO_DO) {
+        mPaint.setColor(getResources().getColor(R.color.grey05));
+      } else {
         mPaint.setColor(getResources().getColor(R.color.default_font_color));
-        canvas.drawText(mText, (mWidth - mPaint.measureText(mText)) / 2, mHeight / 2 + mBounds.height() / 2, mPaint);
       }
+
+      canvas.drawText(mText, (mWidth - mPaint.measureText(mText)) / 2, mHeight / 2 + mBounds.height() / 2, mPaint);
     }
 
     @Override
@@ -389,6 +456,7 @@ public class BaseSpotScrollView extends HorizontalScrollView {
       }
       mListener.onSpotItemClick(v, mTag);
     }
+
   }
 
 }

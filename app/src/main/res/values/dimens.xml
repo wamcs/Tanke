@@ -89,6 +89,13 @@
     <!-- Map InfoWindow Dimens-->
     <dimen name="layout_map_infowindow_content_padding">5dp</dimen>
 
+    <!-- PlayingActivity Dimens -->
+    <dimen name="running_spot_view_root_height">48dp</dimen>
+    <dimen name="running_spot_view_text_size">12sp</dimen>
+    <dimen name="running_spot_view_item_line_width">35dp</dimen>
+    <dimen name="running_spot_view_item_line_height">8dp</dimen>
+    <dimen name="running_spot_view_radius">12dp</dimen>
+
     <!-- TaskActivity Dimens-->
     <dimen name="task_content_height">40dp</dimen>
     <dimen name="task_answer_area_height">48dp</dimen>
@@ -98,8 +105,6 @@
     <dimen name="task_fragment_tab_indicator_thick">36dp</dimen>
     <dimen name="task_fragment_tab_text_size">16sp</dimen>
     <dimen name="task_fragment_tab_indicator_width">20dp</dimen>
-
-
 
     <dimen name="main_page_item_img_width">100dp</dimen>
     <dimen name="main_page_item_img_height">61.8dp</dimen>

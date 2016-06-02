@@ -34,6 +34,7 @@ import com.lptiyu.tanke.trace.tracing.TracingCallback;
 import com.lptiyu.tanke.trace.tracing.TracingHelper;
 import com.lptiyu.tanke.utils.ToastUtil;
 import com.lptiyu.tanke.utils.VibrateUtils;
+import com.lptiyu.tanke.widget.BaseSpotScrollView;
 
 import java.util.List;
 
@@ -50,7 +51,8 @@ import timber.log.Timber;
 public abstract class GamePlayingController extends ActivityController implements
     BDLocationListener,
     TracingCallback,
-    MapHelper.OnMapMarkerClickListener {
+    MapHelper.OnMapMarkerClickListener,
+    BaseSpotScrollView.OnSpotItemClickListener {
 
   @BindView(R.id.map_view)
   TextureMapView mapView;
@@ -100,6 +102,7 @@ public abstract class GamePlayingController extends ActivityController implement
     mapHelper.bindData(mPoints);
     mapHelper.setmMapMarkerClickListener(this);
     consoleHelper = new ConsoleHelper(getActivity(), view, mPoints);
+    consoleHelper.setOnSpotClickListener(this);
     mTracingHelper = new TracingHelper(getActivity().getApplicationContext(), this);
     mTracingHelper.entityName(String.format("%d_%d".toLowerCase(), TEMP_GAME_ID, TEMP_TEAM_ID));
     locateHelper = new LocateHelper(getActivity().getApplicationContext());
@@ -129,6 +132,17 @@ public abstract class GamePlayingController extends ActivityController implement
         RecordsUtils.dispatchTypeRecord(mRecordsHandler, initReachPointRecord(location.getLatitude(), location.getLongitude(), currentAttackPoint.getId()));
       }
     }
+  }
+
+  /**
+   * This method is invoked when spot is clicked
+   * need to animate camera to clicked spot's marker
+   * @param view clicked spot view
+   * @param position the position of clicked spot view
+   */
+  @Override
+  public void onSpotItemClick(View view, int position) {
+    mapHelper.animateCameraToMarkerByIndex(position);
   }
 
   /**

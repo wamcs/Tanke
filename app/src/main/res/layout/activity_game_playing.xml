@@ -35,11 +35,19 @@
         android:text="下一个"/>
 
     <com.lptiyu.tanke.widget.RunningSpotScrollView
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/running_scroll_view"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="@dimen/running_spot_view_root_height"
         android:layout_alignParentBottom="true"
-        android:background="@color/colorPrimary"/>
-
+        app:spotDoneColor="@color/green"
+        app:spotDoingColor="@color/colorPrimary"
+        app:spotToDoColor="@color/white09"
+        app:spotItemLineColor="@color/colorPrimary"
+        app:spotTextSize="@dimen/running_spot_view_text_size"
+        app:spotItemLineWidth="@dimen/running_spot_view_item_line_width"
+        app:spotItemLineHeight="@dimen/running_spot_view_item_line_height"
+        app:spotCircleRadius="@dimen/running_spot_view_radius"
+        android:background="@drawable/gradient_rect_style"/>
 
 </RelativeLayout>
