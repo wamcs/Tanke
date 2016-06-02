@@ -36,7 +36,7 @@ public class BaseSpotScrollView extends HorizontalScrollView {
 
   protected SpotCircleView mCurrentCircle;
 
-  protected LinearLayout.LayoutParams mLayoutParams;
+  protected LinearLayout.LayoutParams mSpotViewLayoutParams;
 
   private static final int DEFAULT_SOLIDE_COLOR = 0xFD3333;
   private static final float DEFAULT_STROKE_WIDTH = Display.dip2px(1);
@@ -108,15 +108,22 @@ public class BaseSpotScrollView extends HorizontalScrollView {
   }
 
   private void init(Context context) {
-    LayoutParams lp = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT);
+    LayoutParams lp = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
     mSpotList = new LinearLayout(context);
     mSpotList.setOrientation(LinearLayout.HORIZONTAL);
+    mSpotList.setBackgroundColor(getContext().getResources().getColor(R.color.transparent));
     addView(mSpotList, lp);
-    mLayoutParams = new LinearLayout.LayoutParams(Display.dip2px(50), Display.dip2px(50));
+    mSpotViewLayoutParams = new LinearLayout.LayoutParams(Display.dip2px(50), Display.dip2px(50));
     lp.gravity = Gravity.CENTER_VERTICAL;
   }
 
-  public void addSpot(int num, STATE state) {
+  @Override
+  protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+    super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+
+  }
+
+  protected void addSpot(int num, STATE state) {
     SpotCircleView spotCircleView = new SpotCircleView(getContext());
     spotCircleView.setmSolidColor(getResources().getColor(R.color.colorPrimary));
     spotCircleView.setmState(state);
@@ -124,7 +131,7 @@ public class BaseSpotScrollView extends HorizontalScrollView {
     spotCircleView.setmText(String.valueOf(num));
     spotCircleView.setmTextSize(Display.sp2px(getContext(), 16));
     spotList.add(spotCircleView);
-    mSpotList.addView(spotCircleView, mLayoutParams);
+    mSpotList.addView(spotCircleView, mSpotViewLayoutParams);
   }
 
   public void setOnSpotItemClickListener(OnSpotItemClickListener listener) {
@@ -184,9 +191,7 @@ public class BaseSpotScrollView extends HorizontalScrollView {
 
     public SpotCircleView(Context context, AttributeSet attrs, int defStyleAttr) {
       super(context, attrs, defStyleAttr);
-
       TypedArray a = context.getTheme().obtainStyledAttributes(attrs, R.styleable.SpotCircleView, defStyleAttr, 0);
-
       try {
         mSolidColor = a.getColor(R.styleable.SpotCircleView_spotSolidColor, DEFAULT_SOLIDE_COLOR);
         mStrokeWidth = a.getDimension(R.styleable.SpotCircleView_spotStrokeWidth, DEFAULT_STROKE_WIDTH);
@@ -276,7 +281,6 @@ public class BaseSpotScrollView extends HorizontalScrollView {
 
       if (widthMode == MeasureSpec.EXACTLY) {
         mWidth = widthSize;
-
       } else {
         mPaint.setTextSize(mTextSize);
         mPaint.getTextBounds(mText, 0, mText.length(), mBounds);
@@ -284,6 +288,7 @@ public class BaseSpotScrollView extends HorizontalScrollView {
         int desired = (int) (getPaddingLeft() + textWidth + getPaddingRight());
         mWidth = desired;
       }
+
       if (heightMode == MeasureSpec.EXACTLY) {
         mHeight = heightSize;
       } else {
@@ -293,6 +298,7 @@ public class BaseSpotScrollView extends HorizontalScrollView {
         int desired = (int) (getPaddingTop() + textHeight + getPaddingBottom());
         mHeight = desired;
       }
+
       if (mWidth < mHeight) {
         mHeight = mWidth;
       } else {
