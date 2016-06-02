@@ -62,6 +62,7 @@
         </service>
 
         <activity android:name=".MainActivity">
+
         </activity>
         <activity android:name=".initialization.ui.LoginActivity">
         </activity>
@@ -99,6 +100,8 @@
             android:exported="true"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
+
+
         <activity
             android:name="com.lptiyu.zxinglib.android.CaptureActivity"
             android:clearTaskOnLaunch="true"
@@ -140,11 +143,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".gameplaying.GamePlayingActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
 
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
         </activity>
         <activity android:name=".gameplaying.task.BaseTaskActivity">
         </activity>
