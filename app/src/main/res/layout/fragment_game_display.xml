@@ -37,7 +37,14 @@
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/relative_layout"/>
+        android:layout_below="@id/relative_layout"
+        android:overScrollMode="never"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/shadow_reverse"/>
 
 
 </RelativeLayout>
