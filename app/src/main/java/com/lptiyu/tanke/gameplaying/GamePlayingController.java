@@ -22,7 +22,9 @@ import com.lptiyu.tanke.gameplaying.assist.ConsoleHelper;
 import com.lptiyu.tanke.gameplaying.assist.LocateHelper;
 import com.lptiyu.tanke.gameplaying.assist.MapHelper;
 import com.lptiyu.tanke.gameplaying.assist.zip.GameZipHelper;
+import com.lptiyu.tanke.gameplaying.pojo.GAME_ACTIVITY_FINISH_TYPE;
 import com.lptiyu.tanke.gameplaying.pojo.Point;
+import com.lptiyu.tanke.gameplaying.pojo.Task;
 import com.lptiyu.tanke.gameplaying.records.RecordsHandler;
 import com.lptiyu.tanke.gameplaying.records.RecordsUtils;
 import com.lptiyu.tanke.gameplaying.records.RunningRecord;
@@ -132,50 +134,6 @@ public abstract class GamePlayingController extends ActivityController implement
 //    mTracingHelper.start();
   }
 
-  @Override
-  public void onReceiveLocation(BDLocation location) {
-    mapHelper.onReceiveLocation(location);
-    /**
-     * Check whether user reach the attack point
-     * when the game is not finished and the point is not reached
-     */
-    if (!isGameFinished && !isReachedAttackPoint) {
-      if (checkIfReachAttackPoint(location)) {
-        onReachAttackPoint();
-        VibrateUtils.vibrate();
-        showAlertDialog(getString(R.string.reach_attack_point));
-        RecordsUtils.dispatchTypeRecord(mRecordsHandler, initReachPointRecord(location.getLatitude(), location.getLongitude(), currentAttackPoint.getId()));
-      }
-    }
-  }
-
-  /**
-   * This method is invoked when spot is clicked
-   * need to animate camera to clicked spot's marker
-   *
-   * @param view     clicked spot view
-   * @param position the position of clicked spot view
-   */
-  @Override
-  public void onSpotItemClick(View view, int position) {
-    mapHelper.animateCameraToMarkerByIndex(position);
-  }
-
-  /**
-   * This method to notify user when they first arrive the attack point
-   * vibrate and show the dialog to tell them click the nail in the map
-   * then begin the tasks in this attack point
-   */
-  void onReachAttackPoint() {
-    if (currentAttackPoint == null || currentAttackPointIndex < 0) {
-      Timber.e("current attack point is error");
-      return;
-    }
-    isReachedAttackPoint = true;
-    mapHelper.onReachAttackPoint(currentAttackPointIndex);
-    consoleHelper.onReachAttackPoint(currentAttackPointIndex);
-  }
-
   private RunningRecord initPointRecord(double x, double y, long pointId, RunningRecord.RECORD_TYPE type) {
     return runningRecordBuilder
         .x(x)
@@ -206,6 +164,34 @@ public abstract class GamePlayingController extends ActivityController implement
         currentAttackPoint.getLatLng());
     return distance < Conf.POINT_RADIUS;
   }
+
+  /**
+   * This method is to start timing task
+   * when receive timing signal from GameTaskActivity
+   */
+  private void startTimingTaskFlow(Task timingTask) {
+    if (timingTask == null) {
+      return;
+    }
+
+  }
+
+
+  /**
+   * This method to notify user when they first arrive the attack point
+   * vibrate and show the dialog to tell them click the nail in the map
+   * then begin the tasks in this attack point
+   */
+  void onReachAttackPoint() {
+    if (currentAttackPoint == null || currentAttackPointIndex < 0) {
+      Timber.e("current attack point is error");
+      return;
+    }
+    isReachedAttackPoint = true;
+    mapHelper.onReachAttackPoint(currentAttackPointIndex);
+    consoleHelper.onReachAttackPoint(currentAttackPointIndex);
+  }
+
 
   void onNextPoint() {
     if (currentAttackPointIndex < mPoints.size() - 1) {
@@ -274,6 +260,35 @@ public abstract class GamePlayingController extends ActivityController implement
     RecordsUtils.dispatchTypeRecord(mRecordsHandler, initReachPointRecord(34.123123, 114.321321, currentAttackPoint.getId()));
   }
 
+  @Override
+  public void onReceiveLocation(BDLocation location) {
+    mapHelper.onReceiveLocation(location);
+    /**
+     * Check whether user reach the attack point
+     * when the game is not finished and the point is not reached
+     */
+    if (!isGameFinished && !isReachedAttackPoint) {
+      if (checkIfReachAttackPoint(location)) {
+        onReachAttackPoint();
+        VibrateUtils.vibrate();
+        showAlertDialog(getString(R.string.reach_attack_point));
+        RecordsUtils.dispatchTypeRecord(mRecordsHandler, initReachPointRecord(location.getLatitude(), location.getLongitude(), currentAttackPoint.getId()));
+      }
+    }
+  }
+
+  /**
+   * This method is invoked when spot is clicked
+   * need to animate camera to clicked spot's marker
+   *
+   * @param view     clicked spot view
+   * @param position the position of clicked spot view
+   */
+  @Override
+  public void onSpotItemClick(View view, int position) {
+    mapHelper.animateCameraToMarkerByIndex(position);
+  }
+
   @TargetMethod(requestCode = PermissionDispatcher.PERMISSION_REQUEST_CODE_LOCATION)
   public void startLocateService() {
     locateHelper.startLocate();
@@ -301,14 +316,26 @@ public abstract class GamePlayingController extends ActivityController implement
     super.onActivityResult(requestCode, resultCode, data);
     if (requestCode == Conf.REQUEST_CODE_TASK_ACTIVITY && resultCode == Conf.RESULT_CODE_TASK_ACTIVITY) {
       if (data != null) {
-        int clickedPointIndex = data.getIntExtra(Conf.IS_POINT_TASK_ALL_FINISHED_INDEX, -1);
-        boolean isAllTaskFinished = data.getBooleanExtra(Conf.IS_POINT_TASK_ALL_FINISHED, false);
-        if (clickedPointIndex != currentAttackPointIndex) {
-          return;
-        }
-        if (isAllTaskFinished) {
-          RecordsUtils.dispatchTypeRecord(mRecordsHandler, initFinishPointRecord(34.123123, 114.321321, currentAttackPoint.getId()));
-          onNextPoint();
+        GAME_ACTIVITY_FINISH_TYPE type = ((GAME_ACTIVITY_FINISH_TYPE) data.getSerializableExtra(Conf.GAME_ACTIVITY_FINISH_TYPE));
+        switch (type) {
+
+          case TIMING_TASK:
+            Task task = data.getParcelableExtra(Conf.TIMING_TASK);
+            startTimingTaskFlow(task);
+            break;
+
+          case USER_ACTION:
+            int clickedPointIndex = data.getIntExtra(Conf.IS_POINT_TASK_ALL_FINISHED_INDEX, -1);
+            if (clickedPointIndex != currentAttackPointIndex) {
+              return;
+            }
+
+            boolean isAllTaskFinished = data.getBooleanExtra(Conf.IS_POINT_TASK_ALL_FINISHED, false);
+            if (isAllTaskFinished) {
+              RecordsUtils.dispatchTypeRecord(mRecordsHandler, initFinishPointRecord(34.123123, 114.321321, currentAttackPoint.getId()));
+              onNextPoint();
+            }
+            break;
         }
       }
     }

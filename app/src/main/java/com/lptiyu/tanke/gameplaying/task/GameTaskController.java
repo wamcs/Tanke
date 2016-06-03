@@ -2,6 +2,7 @@ package com.lptiyu.tanke.gameplaying.task;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 import com.lptiyu.tanke.R;
 import com.lptiyu.tanke.base.controller.ActivityController;
 import com.lptiyu.tanke.gameplaying.GamePlayingController;
+import com.lptiyu.tanke.gameplaying.pojo.GAME_ACTIVITY_FINISH_TYPE;
 import com.lptiyu.tanke.gameplaying.pojo.Point;
 import com.lptiyu.tanke.gameplaying.pojo.Task;
 import com.lptiyu.tanke.gameplaying.records.RecordsUtils;
@@ -28,7 +30,6 @@ import java.util.Map;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import timber.log.Timber;
 
 /**
  * @author : xiaoxiaoda
@@ -61,6 +62,8 @@ public class GameTaskController extends ActivityController {
   private boolean isAllTaskDone = false;
   private List<String> taskIds;
   private Map<String, Task> taskMap;
+
+
 
   public GameTaskController(AppCompatActivity activity, View view) {
     super(activity, view);
@@ -148,11 +151,7 @@ public class GameTaskController extends ActivityController {
           .setPositiveButton(R.string.ensure, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-              Intent intent = new Intent();
-              intent.putExtra(Conf.IS_POINT_TASK_ALL_FINISHED_INDEX, mPoint.getPointIndex());
-              intent.putExtra(Conf.IS_POINT_TASK_ALL_FINISHED, isAllTaskDone);
-              getActivity().setResult(Conf.RESULT_CODE_TASK_ACTIVITY, intent);
-              finish();
+              finishGameTaskActivityByType(GAME_ACTIVITY_FINISH_TYPE.USER_ACTION, null);
             }
           })
           .setNegativeButton(R.string.button_cancel, new DialogInterface.OnClickListener() {
@@ -216,11 +215,7 @@ public class GameTaskController extends ActivityController {
   @OnClick(R.id.default_tool_bar_imageview)
   void back() {
     if (isAllTaskDone) {
-      Intent intent = new Intent();
-      intent.putExtra(Conf.IS_POINT_TASK_ALL_FINISHED, isAllTaskDone);
-      intent.putExtra(Conf.IS_POINT_TASK_ALL_FINISHED_INDEX, mPoint.getPointIndex());
-      getActivity().setResult(Conf.RESULT_CODE_TASK_ACTIVITY, intent);
-      finish();
+      finishGameTaskActivityByType(GAME_ACTIVITY_FINISH_TYPE.USER_ACTION, null);
     } else {
       showExitDialog(getString(R.string.exit_task_activity_when_doing));
     }
@@ -255,6 +250,24 @@ public class GameTaskController extends ActivityController {
 
   public List<RunningRecord> getAppropriateRecordList() {
     return findAppropriateRecordList(GamePlayingController.mRecordsHandler.getMemRecords().getAll());
+  }
+
+  public void finishGameTaskActivityByType(GAME_ACTIVITY_FINISH_TYPE type, @Nullable Task timingTask) {
+    Intent intent = new Intent();
+    intent.putExtra(Conf.GAME_ACTIVITY_FINISH_TYPE, type);
+    switch (type) {
+
+      case TIMING_TASK:
+        intent.putExtra(Conf.TIMING_TASK, timingTask);
+        break;
+
+      case USER_ACTION:
+        intent.putExtra(Conf.IS_POINT_TASK_ALL_FINISHED_INDEX, mPoint.getPointIndex());
+        intent.putExtra(Conf.IS_POINT_TASK_ALL_FINISHED, isAllTaskDone);
+        break;
+    }
+    getActivity().setResult(Conf.RESULT_CODE_TASK_ACTIVITY, intent);
+    finish();
   }
 
 }

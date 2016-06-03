@@ -82,6 +82,9 @@ public final class Conf {
   public static final String LINE_ID = "line_id";
   public static final int REQUEST_CODE_TASK_ACTIVITY = 6;
   public static final int RESULT_CODE_TASK_ACTIVITY = 7;
+
+  public static final String GAME_ACTIVITY_FINISH_TYPE = "game_activity_finish_type";
+  public static final String TIMING_TASK = "timing_task";
   public static final String IS_POINT_TASK_ALL_FINISHED_INDEX = "is_point_task_all_finished_index";
   public static final String IS_POINT_TASK_ALL_FINISHED = "is_point_task_all_finished";
 

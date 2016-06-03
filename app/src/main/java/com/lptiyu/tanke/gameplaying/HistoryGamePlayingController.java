@@ -6,6 +6,7 @@ import android.view.View;
 import com.lptiyu.tanke.gameplaying.records.RecordsHandler;
 import com.lptiyu.tanke.gameplaying.records.RecordsUtils;
 import com.lptiyu.tanke.gameplaying.records.RunningRecord;
+import com.lptiyu.tanke.global.AppData;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,14 +38,15 @@ public class HistoryGamePlayingController extends GamePlayingController {
             Timber.e("Resume from history records error");
             return;
           }
-          resumeHistoryRecords(recordList);
+          resumePointRecords(recordList);
+          resumeCurrentPointTaskRecords(recordList);
           mLoadingDialog.dismiss();
         }
       });
     }
   }
 
-  private void resumeHistoryRecords(List<RunningRecord> recordList) {
+  private void resumePointRecords(List<RunningRecord> recordList) {
     recordList = findAppropriateRecords(recordList);
     for (RunningRecord record : recordList) {
       if (record.getPointId() == currentAttackPoint.getId()) {
@@ -60,8 +62,15 @@ public class HistoryGamePlayingController extends GamePlayingController {
             break;
         }
       } else {
-
+        //TODO : the records are mixed = =, i don't what to do
       }
+    }
+  }
+
+  private void resumeCurrentPointTaskRecords(List<RunningRecord> recordList) {
+    recordList = findCurrentPointTaskRecords(recordList);
+    for (RunningRecord record : recordList) {
+      //TODO : to resume current point task records
     }
   }
 
@@ -77,6 +86,17 @@ public class HistoryGamePlayingController extends GamePlayingController {
     for (RunningRecord record : records) {
       RunningRecord.RECORD_TYPE type = record.getType();
       if (type == RunningRecord.RECORD_TYPE.POINT_REACH || type == RunningRecord.RECORD_TYPE.POINT_FINISH) {
+        result.add(record);
+      }
+    }
+    return result;
+  }
+
+  private List<RunningRecord> findCurrentPointTaskRecords(List<RunningRecord> records) {
+    List<RunningRecord> result = new ArrayList<>();
+    for (RunningRecord record : records) {
+      RunningRecord.RECORD_TYPE type = record.getType();
+      if (record.getPointId() == currentAttackPoint.getId() && (type == RunningRecord.RECORD_TYPE.TASK_START || type == RunningRecord.RECORD_TYPE.TASK_FINISH)) {
         result.add(record);
       }
     }
