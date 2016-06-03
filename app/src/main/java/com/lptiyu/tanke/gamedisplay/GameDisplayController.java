@@ -67,11 +67,10 @@ public class GameDisplayController extends BaseListFragmentController<GameDispla
   private void init() {
     if (!NetworkUtil.checkIsNetworkConnected()) {
       ToastUtil.TextToast(R.string.no_network);
-      return;
+//      return;
     }
 
     requestLocation = ShaPrefer.getString(getString(R.string.main_page_location_key), "武汉");
-    adapter = new GameDisplayAdapter(fragment);
     refreshTop();
     initLocation();
   }
@@ -87,35 +86,35 @@ public class GameDisplayController extends BaseListFragmentController<GameDispla
   }
 
   @Override
-  public void showRefreshState(boolean refreshing) {
-    super.showRefreshState(refreshing);
+  protected void onRefreshStateChanged(boolean refreshing) {
     fragment.loading(refreshing);
   }
 
   @Override
-  public void showError(Throwable t) {
-    super.showError(t);
+  protected void onError(Throwable t) {
+    super.onError(t);
     fragment.loadingError(t);
   }
 
   @Override
-  public Observable<List<GameDisplayEntity>> requestData(int page) {
-    return HttpService.getGameService()
-        .getGamePage(requestLocation, page)
-        .map(new Func1<Response<List<GameDisplayEntity>>, List<GameDisplayEntity>>() {
-          @Override
-          public List<GameDisplayEntity> call(Response<List<GameDisplayEntity>> listResponse) {
-            if (listResponse.getStatus() != Response.RESPONSE_OK) {
-              throw new RuntimeException(listResponse.getInfo());
-            }
-            return listResponse.getData();
-          }
-        });
+  protected Observable<List<GameDisplayEntity>> requestData(int page) {
+//    return HttpService.getGameService()
+//        .getGamePage(requestLocation, page)
+//        .map(new Func1<Response<List<GameDisplayEntity>>, List<GameDisplayEntity>>() {
+//          @Override
+//          public List<GameDisplayEntity> call(Response<List<GameDisplayEntity>> listResponse) {
+//            if (listResponse.getStatus() != Response.RESPONSE_OK) {
+//              throw new RuntimeException(listResponse.getInfo());
+//            }
+//            return listResponse.getData();
+//          }
+//        });
+    return Observable.just(DummyData.entities);
   }
 
   @SuppressWarnings("unchecked")
   @Override
-  public GameDisplayAdapter getAdapter() {
+  protected GameDisplayAdapter getAdapter() {
     return adapter;
   }
 
@@ -222,8 +221,8 @@ public class GameDisplayController extends BaseListFragmentController<GameDispla
     startActivityForResult(new Intent(getContext(), CaptureActivity.class), SCANNER_REQUEST_CODE);
   }
 
-  void onItemClick(GameDisplayEntity gameDisplayEntity, int position) {
-    int id = ShaPrefer.getInt(String.format(getString(R.string.has_downloaded_mask), gameDisplayEntity.getId()), -1);
+  void onItemClick(GameDisplayEntity gameDisplayEntity) {
+    // TODO jump to different page
   }
 
   @Override

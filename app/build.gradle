@@ -89,6 +89,9 @@ dependencies {
     compile 'org.greenrobot:greendao:2.2.1'
     //    GreenDao
     compile 'com.google.code.gson:gson:2.6.2'
+    // 圆角图片
+    compile 'de.hdodenhof:circleimageview:2.0.0'
+
     //    RecyclerView
     compile 'com.android.support:recyclerview-v7:23.4.0'
     //    CardView

@@ -35,9 +35,11 @@ public class RunApplication extends Application {
       SDKInitializer.initialize(this);
       DirUtils.init(this);
       Fresco.initialize(this);
-      String installationId = AVInstallation.getCurrentInstallation().getInstallationId();
-      Accounts.setInstallationId(installationId);
-      Timber.d("this device installation is %s"+installationId);
+      if (Accounts.getInstallationId().isEmpty()) {
+        String installationId = AVInstallation.getCurrentInstallation().getInstallationId();
+        Accounts.setInstallationId(installationId);
+        Timber.d("this device installation is %s" + installationId);
+      }
 
     } catch (Exception e) {
       // To test it automatically.

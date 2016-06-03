@@ -12,25 +12,25 @@ public class GameDisplayEntity {
   protected long id;
 
   @SerializedName("pic")
-  protected String img;
+  protected String img = "";
 
-  protected String title;
+  protected String title = "";
 
-  protected String area;
+  protected String area = "";
 
-  protected String city;
+  protected String city = "";
 
   @SerializedName("start_date")
-  protected String startDate;
+  protected String startDate = "";
 
   @SerializedName("end_date")
-  protected String endDate;
+  protected String endDate = "";
 
   @SerializedName("start_time")
-  protected String startTime;
+  protected String startTime = "";
 
   @SerializedName("end_time")
-  protected String endTime;
+  protected String endTime = "";
 
   protected GAME_STATE state = GAME_STATE.NORMAL;
 
@@ -136,4 +136,21 @@ public class GameDisplayEntity {
   }
 
 
+  @Override
+  public String toString() {
+    return "GameDisplayEntity {" +
+        "\n id=" + id +
+        ",\n img='" + img + '\'' +
+        ",\n title='" + title + '\'' +
+        ",\n area='" + area + '\'' +
+        ",\n city='" + city + '\'' +
+        ",\n startDate='" + startDate + '\'' +
+        ",\n endDate='" + endDate + '\'' +
+        ",\n startTime='" + startTime + '\'' +
+        ",\n endTime='" + endTime + '\'' +
+        ",\n state=" + state +
+        ",\n recommend=" + recommend +
+        ",\n type=" + type +
+        '}';
+  }
 }

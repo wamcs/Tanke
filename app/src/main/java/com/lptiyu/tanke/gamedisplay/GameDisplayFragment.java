@@ -1,6 +1,7 @@
 package com.lptiyu.tanke.gamedisplay;
 
 import android.content.DialogInterface;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
@@ -9,13 +10,12 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
+import android.widget.RelativeLayout;
 
 import com.lptiyu.tanke.MainActivityController;
 import com.lptiyu.tanke.R;
 import com.lptiyu.tanke.base.ui.BaseFragment;
 import com.lptiyu.tanke.pojo.City;
-import com.lptiyu.tanke.utils.ShaPrefer;
 import com.lptiyu.tanke.utils.ToastUtil;
 
 import butterknife.BindView;
@@ -31,6 +31,9 @@ import timber.log.Timber;
 public class GameDisplayFragment extends BaseFragment {
 
   private GameDisplayController controller;
+
+  @BindView(R.id.relative_layout)
+  RelativeLayout toolBar;
 
   @BindView(R.id.recycler_view)
   RecyclerView recyclerView;
@@ -48,8 +51,25 @@ public class GameDisplayFragment extends BaseFragment {
   }
 
   private void init() {
+    toolBar.setBackground(new GradientDrawable(GradientDrawable.Orientation.LEFT_RIGHT,
+        new int[]{
+            getResources().getColor(R.color.light_blue),
+            getResources().getColor(R.color.middle_blue),
+            getResources().getColor(R.color.dark_blue)
+        }));
     recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
     recyclerView.setAdapter(adapter = new GameDisplayAdapter(this));
+    recyclerView.addItemDecoration(new ElasticItemDecoration(getContext()));
+    ElasticTouchListener listener = new ElasticTouchListener();
+    recyclerView.addOnItemTouchListener(listener);
+    listener.setOnRefreshListener(new ElasticTouchListener.OnRefreshListener() {
+      @Override
+      public void onRefresh() {
+        if (!controller.isRefreshing()) {
+          controller.refreshTop();
+        }
+      }
+    });
   }
 
   public GameDisplayAdapter getAdapter() {

@@ -35,12 +35,11 @@ public abstract class BaseListFragmentController<Data> extends FragmentControlle
   }
 
   public void refreshTop() {
-    mListPage = 0;
-
-    if (lastRequest != null && isRefreshing() && !lastRequest.isUnsubscribed()) {
-      lastRequest.unsubscribe();
+    if (isRefreshing) {
+      return;
     }
-    showRefreshState(true);
+    mListPage = 0;
+    changeRefreshState(true);
     lastRequest = requestData(mListPage)
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
@@ -48,22 +47,23 @@ public abstract class BaseListFragmentController<Data> extends FragmentControlle
           @Override
           public void call(List<Data> datas) {
             getAdapter().setData(datas);
-            showRefreshState(false);
+            changeRefreshState(false);
           }
         }, new Action1<Throwable>() {
           @Override
           public void call(Throwable throwable) {
-            showRefreshState(false);
+            onError(throwable);
+            changeRefreshState(false);
           }
         });
   }
 
   public void refreshBottom() {
-    mListPage++;
-    if (lastRequest != null && isRefreshing() && !lastRequest.isUnsubscribed()) {
-      lastRequest.unsubscribe();
+    if (isRefreshing) {
+      return;
     }
-    showRefreshState(true);
+    mListPage++;
+    changeRefreshState(true);
     lastRequest = requestData(mListPage)
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
@@ -71,7 +71,13 @@ public abstract class BaseListFragmentController<Data> extends FragmentControlle
           @Override
           public void call(List<Data> datas) {
             getAdapter().addData(datas);
-            showRefreshState(false);
+            changeRefreshState(false);
+          }
+        }, new Action1<Throwable>() {
+          @Override
+          public void call(Throwable throwable) {
+            onError(throwable);
+            changeRefreshState(false);
           }
         });
   }
@@ -80,16 +86,21 @@ public abstract class BaseListFragmentController<Data> extends FragmentControlle
     return isRefreshing;
   }
 
-  public void showRefreshState(boolean refreshing) {
+  private void changeRefreshState(boolean refreshing) {
     this.isRefreshing = refreshing;
+    onRefreshStateChanged(refreshing);
   }
 
-  public void showError(Throwable t) {
+  protected void onRefreshStateChanged(boolean isRefreshing) {
+
+  }
+
+  protected void onError(Throwable t) {
     Timber.e(t, "Loading error...");
   }
 
-  public abstract Observable<List<Data>> requestData(int page);
+  protected abstract Observable<List<Data>> requestData(int page);
 
-  public abstract <T extends BaseAdapter<? extends RecyclerView.ViewHolder, Data>> T getAdapter();
+  protected abstract <T extends BaseAdapter<Data>> T getAdapter();
 
 }

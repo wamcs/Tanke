@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimary">#769df6</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
 
@@ -45,9 +45,16 @@
     <color name="grey00">#FF000000</color>
 
 
-
     <color name="base_text_color">#7c99d6</color>
     <color name="button_pressed">#4e4ebd</color>
+
+    <color name="light_blue">#769df6</color>
+    <color name="middle_blue">#5173ea</color>
+    <color name="dark_blue">#2c4ed0</color>
+
+    <!-- LoginEditText colors-->
+    <color name="custom_edit_color">#7c99d6</color>
+
 
     <!-- LoginActivity colors-->
     <color name="login_activity_title_color">#769df6</color>

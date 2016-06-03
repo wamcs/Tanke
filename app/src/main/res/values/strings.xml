@@ -17,8 +17,20 @@
     <!--Game display page-->
     <string name="change_city_dialog_message">是否需要切换到当前城市(%s)?</string>
     <string name="main_page_location_key">main_page_location</string>
+<<<<<<< HEAD
 
     <!-- LoginActivity Text Area-->
+=======
+    <string name="main_page_date_format_pattern" formatted="false">%d月%d日-%d月%d日</string>
+    <string name="main_page_forever">白天-黑夜</string>
+    <string name="team_type_team">团队赛</string>
+    <string name="team_type_individule">个人赛</string>
+    <!--Game display page-->
+
+    <!--Game details-->
+    <!--Game details-->
+
+>>>>>>> 780b0b9dec188edf6006bc4f8c0f40b2f588ddb6
     <string name="name">步 道 运 动</string>
     <string name="please_input_password">请输入密码</string>
     <string name="please_input_phone">请输入手机号</string>

@@ -3,17 +3,19 @@ package com.lptiyu.tanke.io.net;
 
 import android.support.annotation.IntDef;
 
+import com.lptiyu.tanke.pojo.GameFinishedEntity;
 import com.lptiyu.tanke.pojo.GameManageEntity;
 import com.lptiyu.tanke.pojo.GamePlayingEntity;
 import com.lptiyu.tanke.pojo.Reward;
 import com.lptiyu.tanke.pojo.UserDetails;
 import com.lptiyu.tanke.pojo.UserEntity;
-import com.lptiyu.tanke.pojo.GameFinishedEntity;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.util.List;
 
+import okhttp3.RequestBody;
+import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
@@ -42,9 +44,9 @@ public interface UserService {
 
   @GET("Login/Register")
   Observable<Response<UserEntity>> register(@Query("phone") String phone, // 手机号
-                                      @Query("pwd") String pwd, // 密码
-                                      @Query("code") String code,
-                                      @Query("type") @UserType int type); // 验证码
+                                            @Query("pwd") String pwd, // 密码
+                                            @Query("code") String code,
+                                            @Query("type") @UserType int type); // 验证码
 
   /**
    * 2.3 登录
@@ -58,7 +60,7 @@ public interface UserService {
    */
   @GET("Login/Login_san")
   Observable<Response<UserEntity>> loginThirdParty(@Query("openid") String openId,
-                                             @Query("type") int type);
+                                                   @Query("type") int type);
 
   /**
    * 2.5 忘记密码
@@ -71,6 +73,7 @@ public interface UserService {
 
   /**
    * 2.6 获取验证码 注册时
+   *
    * @param type 注册时，后台缓存的有数据，需要上传type来确定
    *             是通过哪种方式注册，1，
    */
@@ -105,16 +108,17 @@ public interface UserService {
   @GET("User/User")
   Observable<Response<UserDetails>> getUserDetail(
       @Query("uid") long uid,
-      @Query("token") int token
+      @Query("token") String token
   );
 
   /**
    * 2.9 个人信息上传图片
    */
-  @GET("User/Userphoto")
+  @POST("User/Userphoto")
   Observable<Response<String>> uploadUserAvatar(
-      //TODO need to try
-  );
+      @Query("uid") long uid,
+      @Query("token") String token,
+      @Body RequestBody file);
 
 
 
@@ -142,7 +146,8 @@ public interface UserService {
 
   /**
    * 2.11 修改用户信息
-   * @param type 类型  1：昵称 2：生日 3：性别 4：身高 5：体重
+   *
+   * @param type 类型  1：昵称 2：生日 3：性别 4：身高 5：体重 ， 见上
    */
   @GET("User/Update_user")
   Observable<Response<Void>> resetUserDetails(

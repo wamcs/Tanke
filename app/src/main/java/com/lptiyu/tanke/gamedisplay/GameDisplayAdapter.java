@@ -1,22 +1,12 @@
 package com.lptiyu.tanke.gamedisplay;
 
-import android.support.v7.widget.RecyclerView;
-import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-import com.lptiyu.tanke.R;
 import com.lptiyu.tanke.base.recyclerview.BaseAdapter;
+import com.lptiyu.tanke.base.recyclerview.BaseViewHolder;
 import com.lptiyu.tanke.pojo.GameDisplayEntity;
 
 import java.util.List;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-import timber.log.Timber;
 
 /**
  * EMAIL : danxionglei@foxmail.com
@@ -24,7 +14,7 @@ import timber.log.Timber;
  *
  * @author ldx
  */
-public class GameDisplayAdapter extends BaseAdapter<GameDisplayAdapter.ViewHolder, GameDisplayEntity> {
+public class GameDisplayAdapter extends BaseAdapter<GameDisplayEntity> {
 
   private List<GameDisplayEntity> dataList;
 
@@ -34,19 +24,33 @@ public class GameDisplayAdapter extends BaseAdapter<GameDisplayAdapter.ViewHolde
     this.fragment = fragment;
   }
 
+  @SuppressWarnings("unchecked")
   @Override
-  public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-    return new ViewHolder(fromResLayout(parent, R.layout.fragment_game_display));
+  public BaseViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    if (viewType == 1) {
+      return new ElasticHeaderViewHolder(parent, fragment);
+    } else {
+      return new NormalViewHolder(parent, fragment);
+    }
   }
 
   @Override
-  public void onBindViewHolder(ViewHolder holder, int position) {
-    holder.bind(dataList.get(position), position);
+  public void onBindViewHolder(BaseViewHolder<GameDisplayEntity> holder, int position) {
+    if (position == 0) {
+      holder.bind(dataList.subList(0, 3));
+    } else {
+      holder.bind(dataList.get(position - 1));
+    }
+  }
+
+  @Override
+  public int getItemViewType(int position) {
+    return position == 0 ? 1 : 0;
   }
 
   @Override
   public int getItemCount() {
-    return dataList == null ? 0 : dataList.size();
+    return Math.max(0, dataList == null || dataList.size() < 2 ? 0 : dataList.size() - 2);
   }
 
   @Override
@@ -64,42 +68,6 @@ public class GameDisplayAdapter extends BaseAdapter<GameDisplayAdapter.ViewHolde
   public void setData(List<GameDisplayEntity> data) {
     this.dataList = data;
     notifyDataSetChanged();
-  }
-
-  public class ViewHolder extends RecyclerView.ViewHolder {
-
-    @BindView(R.id.image_view)
-    ImageView imageView;
-
-    @BindView(R.id.text_view)
-    TextView textView;
-
-    int position = -1;
-
-    GameDisplayEntity gameDisplayEntity;
-
-    ViewHolder(View itemView) {
-      super(itemView);
-      ButterKnife.bind(this, itemView);
-    }
-
-    void bind(GameDisplayEntity entry, int position) {
-      Glide.with(fragment).load(entry.getImg()).asBitmap().into(imageView);
-      textView.setText(entry.getTitle());
-      this.position = position;
-      this.gameDisplayEntity = entry;
-    }
-
-    @OnClick(R.id.item_root)
-    void onItemClick() {
-      GameDisplayController controller = fragment.getController();
-      if (controller == null) {
-        Timber.e("GameDisplayFragment get Controller is null");
-        return;
-      }
-
-      controller.onItemClick(gameDisplayEntity, position);
-    }
   }
 
 }

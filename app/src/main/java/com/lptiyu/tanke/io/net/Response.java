@@ -42,10 +42,10 @@ public final class Response<T> {
 
   @Override
   public String toString() {
-    return "Response{" +
-        "status=" + status +
-        ", info='" + info + '\'' +
-        ", data=" + data +
-        '}';
+    return "Response {" + "\n" +
+        " status=" + status +
+        ",\n info='" + info + '\'' +
+        ",\n data=" + data +
+        "\n}";
   }
 }

@@ -72,7 +72,7 @@ public class MainActivityController extends ActivityController {
     }
     //先根据Tag从FragmentTransaction事物获取之前添加的Fragment
     Fragment fragment = getSupportFragmentManager().findFragmentByTag(
-        fragments.get(mCurrentIndex).getClass().getName());
+        fragments.get(index).getClass().getName());
 
     if (null == fragment) {
       //如fragment为空，则之前未添加此Fragment。便从集合中取出
