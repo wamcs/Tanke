@@ -87,7 +87,6 @@ public abstract class BaseActivity extends AppCompatActivity implements Controll
     super.onActivityResult(requestCode, resultCode, data);
   }
 
-
   @Override
   public void onBackPressed() {
     if (null != controller) {

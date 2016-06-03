@@ -11,8 +11,6 @@ import android.view.Window;
 
 import com.lptiyu.tanke.R;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
 
 
 /**
@@ -23,133 +21,131 @@ public abstract class ActivityController extends ContextController {
 
   Toolbar mToolbar;
 
+  private View mRootView;
 
-    private View mRootView;
-
-    private AppCompatActivity mActivity;
-
+  private AppCompatActivity mActivity;
 
   public ActivityController(AppCompatActivity activity, View view) {
-      super(activity);
-      this.mRootView = view;
-      this.mActivity = activity;
-      if (isToolbarEnable()) {
-          mToolbar = (Toolbar) findViewById(R.id.tool_bar);
-      }
+    super(activity);
+    this.mRootView = view;
+    this.mActivity = activity;
+    if (isToolbarEnable()) {
+      mToolbar = (Toolbar) findViewById(R.id.tool_bar);
+    }
+    baseInit();
   }
-
 
   protected boolean isToolbarEnable() {
     return false;
   }
 
-    public AppCompatActivity getActivity() {
-        return mActivity;
+  public AppCompatActivity getActivity() {
+    return mActivity;
+  }
+
+  public Window getWindow() {
+    return mActivity.getWindow();
+  }
+
+  public View findViewById(int resId) {
+    return mActivity.findViewById(resId);
+  }
+
+  protected void baseInit() {
+    if (isToolbarEnable()) {
+      initToolbar();
     }
+  }
 
-    public Window getWindow() {
-        return mActivity.getWindow();
+  protected void initToolbar() {
+    mActivity.setSupportActionBar(mToolbar);
+    mToolbar.setContentInsetsAbsolute(0, 0);
+    ActionBar actionBar = getSupportActionBar();
+    if (actionBar != null) {
+      actionBar.setDisplayHomeAsUpEnabled(false);
+      actionBar.setDisplayShowHomeEnabled(false);
+      actionBar.setHomeButtonEnabled(false);
+      actionBar.setDisplayShowCustomEnabled(true);
+      actionBar.setDisplayShowTitleEnabled(false);
+      actionBar.setHomeAsUpIndicator(null);
     }
+  }
 
-    public View findViewById(int resId) {
-        return mActivity.findViewById(resId);
-    }
+  public ActionBar getSupportActionBar() {
+    return mActivity.getSupportActionBar();
+  }
 
-    protected void baseInit() {
-        if (isToolbarEnable()) {
-            initToolbar();
-        }
-    }
+  public void onPostCreate() {
 
-    protected void initToolbar() {
-        mActivity.setSupportActionBar(mToolbar);
-        mToolbar.setContentInsetsAbsolute(0, 0);
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setDisplayHomeAsUpEnabled(false);
-            actionBar.setDisplayShowHomeEnabled(false);
-            actionBar.setHomeButtonEnabled(false);
-            actionBar.setDisplayShowCustomEnabled(true);
-            actionBar.setDisplayShowTitleEnabled(false);
-            actionBar.setHomeAsUpIndicator(null);
-        }
-    }
+  }
 
-    public ActionBar getSupportActionBar() {
-        return mActivity.getSupportActionBar();
-    }
+  public void onStart() {
 
-    public void onPostCreate() {
+  }
 
-    }
+  public void onResume() {
+  }
 
-    public void onStart() {
+  public void onPause() {
+  }
 
-    }
+  public void onStop() {
 
-    public void onResume() {
-    }
+  }
 
-    public void onPause() {
-    }
+  public void onSaveInstanceState(Bundle outState) {
 
-    public void onStop() {
+  }
 
-    }
+  public void onDestroy() {
 
-    public void onSaveInstanceState(Bundle outState) {
-
-    }
-
-    public void onDestroy() {
-
-    }
+  }
 
 
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+  public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-    }
+  }
 
-    public void onBackPressed() {
+  public void onBackPressed() {
 
-    }
+  }
 
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults){
+  public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
 
-    }
+  }
 
-    public View getRootView() {
-        return mRootView;
-    }
+  public View getRootView() {
+    return mRootView;
+  }
 
-    public void startActivity(Intent intent) {
-        mActivity.startActivity(intent);
-    }
+  public void startActivity(Intent intent) {
+    mActivity.startActivity(intent);
+  }
 
-    public void startActivityForResult(Intent intent, int requestCode) {
-        mActivity.startActivityForResult(intent, requestCode);
-    }
+  public void startActivityForResult(Intent intent, int requestCode) {
+    mActivity.startActivityForResult(intent, requestCode);
+  }
 
-    public void finish() {
-        mActivity.finish();
-    }
+  public void finish() {
+    mActivity.finish();
+  }
 
-    public Intent getIntent() {
-        return mActivity.getIntent();
-    }
+  public Intent getIntent() {
+    return mActivity.getIntent();
+  }
 
-    public void performHomeClick() {
-        Intent intent = new Intent(Intent.ACTION_MAIN);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent.addCategory(Intent.CATEGORY_HOME);
-        startActivity(intent);
-    }
+  public void performHomeClick() {
+    Intent intent = new Intent(Intent.ACTION_MAIN);
+    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+    intent.addCategory(Intent.CATEGORY_HOME);
+    startActivity(intent);
+  }
 
-    public FragmentManager getSupportFragmentManager() {
-        return mActivity.getSupportFragmentManager();
-    }
+  public FragmentManager getSupportFragmentManager() {
+    return mActivity.getSupportFragmentManager();
+  }
 
-    public void overridePendingTransition(int enterAnim, int exitAnim) {
-        mActivity.overridePendingTransition(enterAnim, exitAnim);
-    }
+  public void overridePendingTransition(int enterAnim, int exitAnim) {
+    mActivity.overridePendingTransition(enterAnim, exitAnim);
+  }
 }

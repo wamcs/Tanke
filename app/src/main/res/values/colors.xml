@@ -45,6 +45,8 @@
     <color name="grey00">#FF000000</color>
 
 
+    <color name="green">#40b553</color>
+
     <color name="base_text_color">#7c99d6</color>
     <color name="button_pressed">#4e4ebd</color>
 

@@ -15,7 +15,7 @@
         <item name="android:layout_height">?attr/actionBarSize</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:background">?attr/colorPrimary</item>
-        <item name="contentInsetStart">0dp</item>
+        <item name="contentInsetStart">10dp</item>
     </style>
 
     <!-- Number Picker Style -->

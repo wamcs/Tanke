@@ -1,12 +1,12 @@
 package com.lptiyu.tanke.gameplaying.assist.zip;
 
 
-import com.google.gson.Gson;
 import com.lptiyu.tanke.gameplaying.assist.zip.filter.GameUnzippedPointDirFilter;
-import com.lptiyu.tanke.gameplaying.pojo.Task;
 import com.lptiyu.tanke.gameplaying.pojo.Point;
+import com.lptiyu.tanke.gameplaying.pojo.Task;
 import com.lptiyu.tanke.gameplaying.pojo.ThemeLine;
 import com.lptiyu.tanke.utils.FileUtils;
+import com.lptiyu.zxinglib.core.common.StringUtils;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -23,16 +23,15 @@ import timber.log.Timber;
  */
 public class GameZipParser {
 
-  private Gson mGson;
   private ThemeLine mThemeLine;
   private List<Point> mPoints;
 
   private static final String THEME_LINE_JSON_FILE_NAME = "theme_line.json";
   private static final String POINT_JSON_FILE_NAME = "point.json";
   private static final String TASK_JSON_FILE_NAME = "mission.json";
+  private static final String LOCAL_FILE_PREFIX = "file://";
 
   public GameZipParser() {
-    mGson = new Gson();
   }
 
   /**
@@ -117,7 +116,7 @@ public class GameZipParser {
       }
       taskMap.put(taskName, task);
     }
-    point.setMissionMap(taskMap);
+    point.setTaskMap(taskMap);
     return point;
   }
 
@@ -162,19 +161,19 @@ public class GameZipParser {
       Timber.e("task : %s,  message file is damaged", taskContentFilePath);
       return false;
     }
-    task.setContent(taskContentFilePath);
+    task.setContent(LOCAL_FILE_PREFIX + taskContentFilePath);
 
     String taskPwdFilePath = taskDirPath + "/" + task.getPwd();
     if (!FileUtils.isFileExist(taskPwdFilePath)) {
       Timber.e("task : %s,  password file is damaged", taskPwdFilePath);
       return false;
     }
-    String pwd = FileUtils.readFileByChar(taskPwdFilePath);
+    String pwd = FileUtils.readFileByLine(taskPwdFilePath);
     if (pwd.length() == 0) {
       Timber.e("read file : %s error", taskPwdFilePath);
       return false;
     }
-    task.setPwd(pwd);
+    task.setPwd(StringUtils.replaceBlank(pwd));
     return true;
   }
 
@@ -194,13 +193,7 @@ public class GameZipParser {
       Timber.e("%s is not exist or can not be open", jsonFilePath);
       return null;
     }
-
-    String fileContent = FileUtils.readFileByChar(file);
-    if (fileContent.length() == 0) {
-      Timber.e("read json file : %s error", jsonFilePath);
-      return null;
-    }
-    return mGson.fromJson(fileContent, clazz);
+    return FileUtils.parseJsonFile(file, clazz);
   }
 
   public ThemeLine getmThemeLine() {

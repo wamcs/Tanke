@@ -5,9 +5,11 @@
     <string name="no_camera_permission">请您打开相机权限</string>
     <string name="no_location_permission">请您打开定位权限</string>
     <string name="camera_permission_rationale">我们需要使用您的相机来进行扫描二维码的功能，请点击确认前往授权，谢谢^_^</string>
-    <string name="location_permission_rationale">我们需要使用您的位置信息，为了继续为您提供服务，清点击确认前往授权，谢谢^_^"，请点击确认前往授权，谢谢^_^</string>
+    <string name="location_permission_rationale">
+        我们需要使用您的位置信息，为了继续为您提供服务，清点击确认前往授权，谢谢^_^"，请点击确认前往授权，谢谢^_^
+    </string>
     <string name="loading_error">加载失败，请稍后再试</string>
-    <string name="loading">加载中…</string>
+    <string name="loading">拼命加载中…</string>
     <string name="content_description">Image</string>
     <string name="ensure">确定</string>
     <string name="dismiss">取消</string>
@@ -18,9 +20,13 @@
     <string name="change_city_dialog_message">是否需要切换到当前城市(%s)?</string>
     <string name="main_page_location_key">main_page_location</string>
 <<<<<<< HEAD
+<<<<<<< HEAD
 
     <!-- LoginActivity Text Area-->
 =======
+=======
+    <string name="main_page_date_formatter" formatted="false">%d月%d日-%d月%d日</string>
+>>>>>>> 2019c73ab336afa0d28ec7830484c8efb3b49eb2
     <string name="main_page_date_format_pattern" formatted="false">%d月%d日-%d月%d日</string>
     <string name="main_page_forever">白天-黑夜</string>
     <string name="team_type_team">团队赛</string>
@@ -28,9 +34,11 @@
     <!--Game display page-->
 
     <!--Game details-->
-    <!--Game details-->
 
+<<<<<<< HEAD
 >>>>>>> 780b0b9dec188edf6006bc4f8c0f40b2f588ddb6
+=======
+>>>>>>> 2019c73ab336afa0d28ec7830484c8efb3b49eb2
     <string name="name">步 道 运 动</string>
     <string name="please_input_password">请输入密码</string>
     <string name="please_input_phone">请输入手机号</string>
@@ -40,10 +48,9 @@
     <string name="login">登录</string>
 
 
-
     <!-- GuideActivity Text Area-->
     <string name="skip">跳过</string>
-    
+
     <!-- Register and resetPassword Text Area-->
     <string name="register_title">注册</string>
     <string name="reset_password_title">找回密码</string>
@@ -90,13 +97,43 @@
     <string name="upload_avatar_error">上传头像失败</string>
 
 
-
     <!-- GamePlayingActivity Text Area -->
     <string name="reach_attack_point">已到达攻击点，点击该点开始任务</string>
     <string name="start_task">开始任务</string>
-    
+
     <!-- Protocol Activity Text Area-->
     <string name="user_protocol">用户协议</string>
     <string name="ps">注：点击“下一步”即代表您已阅读并同意上述协议的所有内容</string>
+
+    <!-- GameTaskActivity Text Area -->
+    <string name="exit_task_activity_when_loading">任务还在加载中，您确定要终止加载吗？</string>
+    <string name="exit_task_activity_when_doing">"当前攻击点任务还全部完成，您确定要中断吗？"</string>
+    <string name="scan_game_manager_qrcode">扫描通关二维码</string>
+    <string name="scan_error">扫码有误，请重试</string>
+
+    <string name="start_timing_task">启动定时器</string>
+    <string name="timing_dialog_message_formatter" formatted="false">任务将在%d秒后揭晓</string>
+
+    <string name="please_input_answer">请输入答案</string>
+    <string name="error_input">您的输入不规范</string>
+    <string name="right_answer">恭喜您，回答正确</string>
+    <string name="error_answer">答案不正确，请重新输入</string>
+
+    <string name="distinguish_photo">开始拍照</string>
+
+    <string name="finish_this_point_task">点击开启下一攻击点</string>
+
+    <string name="check_locate_task">点我进行地点验证</string>
+    <string name="locate_task_locating">定位验证中.....</string>
+    <string name="cancel_locating">取消定位验证</string>
+    <string name="right_location">恭喜您，找到目的地</string>
+    <string name="error_location">抱歉，与目的地不符</string>
+
+    <!-- GameDataActivity Text Area-->
+    <string name="game_data">游戏数据</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
 
 </resources>

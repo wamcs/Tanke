@@ -63,7 +63,6 @@
 
         <activity android:name=".MainActivity">
         </activity>
-
         <activity android:name=".initialization.ui.LoginActivity">
         </activity>
         <activity android:name=".initialization.ui.GuideActivity">
@@ -147,6 +146,15 @@
         </activity>
         <activity android:name=".gameplaying.GamePlayingActivity">
 
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+        <activity android:name=".gameplaying.task.GameTaskActivity">
+        </activity>
+        <activity android:name=".gamedata.GameDataActivity">
         </activity>
 
         <service android:name="com.avos.avoscloud.PushService"
@@ -161,6 +169,7 @@
                 <!-- 后台push的数据中需要添加字段"action":"com.tanke.PUSH_ACTION"-->
             </intent-filter>
         </receiver>
+
 
 
     </application>

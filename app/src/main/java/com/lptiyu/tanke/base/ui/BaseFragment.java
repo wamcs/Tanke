@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 
 import com.lptiyu.tanke.base.controller.ActivityController;
@@ -97,6 +98,14 @@ public abstract class BaseFragment extends Fragment implements ControllerHolder 
     super.onActivityResult(requestCode, resultCode, data);
     if (null != getController()) {
       getController().onActivityResult(requestCode, resultCode, data);
+    }
+  }
+
+  @Override
+  public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+    super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    if (null != getController()) {
+      getController().onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
   }
 

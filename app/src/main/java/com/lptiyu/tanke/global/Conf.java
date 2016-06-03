@@ -8,14 +8,8 @@ import com.lptiyu.tanke.utils.TimeUtils;
  * date:2016/5/25
  * email:kaili@hustunique.com
  */
-public final class Conf {
 
-    /**
-     * Running activity
-     */
-    public static final float LOCATION_DISTANCE_THRESHOLD_BOTTOM = 0.5f;
-    public static final float LOCATION_DISTANCE_THRESHOLD_TOP = 10.0f;
-    public static final double POINT_RADIUS = 10.0;
+public final class Conf {
 
     /**
      * Sign up conf
@@ -73,6 +67,23 @@ public final class Conf {
     public static final String PROTOCOL_URL = "protocol_url";
     public static final int PROTOCOL_CODE = 1;
     public static final String PROTOCOL_STATE = "protocol_state";
+
+
+  /**
+   * game playing activity
+   */
+  public static final float LOCATION_DISTANCE_THRESHOLD_BOTTOM = 0.5f;
+  public static final float LOCATION_DISTANCE_THRESHOLD_TOP = 10.0f;
+  public static final double POINT_RADIUS = 10.0;
+
+  public static final String CLICKED_POINT = "clicked_point";
+  public static final String TEAM_ID = "team_id";
+  public static final String GAME_ID = "game_id";
+  public static final String LINE_ID = "line_id";
+  public static final int REQUEST_CODE_TASK_ACTIVITY = 6;
+  public static final int RESULT_CODE_TASK_ACTIVITY = 7;
+  public static final String IS_POINT_TASK_ALL_FINISHED_INDEX = "is_point_task_all_finished_index";
+  public static final String IS_POINT_TASK_ALL_FINISHED = "is_point_task_all_finished";
 
 
 }

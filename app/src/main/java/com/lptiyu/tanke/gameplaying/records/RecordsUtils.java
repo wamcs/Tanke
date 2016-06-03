@@ -121,8 +121,6 @@ public class RecordsUtils {
       e.printStackTrace();
     }
 
-    Timber.e("record : %s" , AppData.globalGson().toJson(record));
-    Timber.e("isfinished : " + (record != null && (record.getType() == RunningRecord.RECORD_TYPE.POINT_REACH)));
     return ((record != null) && (record.getType() == RunningRecord.RECORD_TYPE.POINT_REACH));
   }
 

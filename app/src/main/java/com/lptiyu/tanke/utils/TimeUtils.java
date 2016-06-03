@@ -20,14 +20,13 @@ import java.util.Locale;
  */
 public class TimeUtils {
 
+
     public final static long ONE_MINUTE_TIME = 60000L;
     public final static long ONE_HOUR_TIME = ONE_MINUTE_TIME * 60;
     public final static long ONE_DAY_TIME = ONE_HOUR_TIME * 24;
 
     public static final DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd", Locale.CHINA);
-
     public static final DateFormat timeFormatter = new SimpleDateFormat("HH:mm:ss", Locale.CHINA);
-
     public static final DateFormat timeFormatter2 = new SimpleDateFormat("HH:mm", Locale.CHINA);
 
 
@@ -70,63 +69,11 @@ public class TimeUtils {
 
 
 
-    public static int getCurrentYear() {
-        return Calendar.getInstance().get(Calendar.YEAR);
-    }
 
-    public static int getCurrentMonth() {
-        return Calendar.getInstance().get(Calendar.MONTH) + 1;
-    }
-
-    public static int getCurrentDay() {
-        return Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
-    }
-
-    public static int getCurrentHour() {
-        return Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
-    }
-
-    public static int getCurrentMinute() {
-        return Calendar.getInstance().get(Calendar.MINUTE);
-    }
-
-
-    /**
-     * the follow three function are used for getting time (hours:minutes:seconds)
-     */
-    public static String getSeconds(long time) {
-        int s = (int) (time / 1000) % 60;
-        if (s < 10)
-            return "0" + s;
-        else
-            return s + "";
-    }
-
-    public static String getMinutes(long time) {
-
-        //总分钟数
-
-        int m = ((int) (time / 1000) / 60) % 60;
-        if (m < 10)
-            return "0" + m;
-        else
-            return m + "";
-    }
-
-    public static String getHours(long time) {
-        int h = (int) (time / 1000) / 3600;
-        if (h < 0)
-            return "0" + h;
-        else
-            return h + "";
-    }
-
-
-
-
-  /**
-   * @param date format was yyyy-MM-dd
-   */
+  /*
+  **
+  * @param date format was yyyy-MM-dd
+  */
   public static Date parseDate(String date) {
     try {
       return dateFormatter.parse(date);
@@ -188,6 +135,58 @@ public class TimeUtils {
       return null;
     }
     return timeFormatter2.format(parsed);
+  }
+
+
+  public static int getCurrentYear() {
+    return Calendar.getInstance().get(Calendar.YEAR);
+  }
+
+  public static int getCurrentMonth() {
+    return Calendar.getInstance().get(Calendar.MONTH) + 1;
+  }
+
+  public static int getCurrentDay() {
+    return Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
+  }
+
+  public static int getCurrentHour() {
+    return Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
+  }
+
+  public static int getCurrentMinute() {
+    return Calendar.getInstance().get(Calendar.MINUTE);
+  }
+
+
+  /**
+   * the follow three function are used for getting time (hours:minutes:seconds)
+   */
+  public static String getSeconds(long time) {
+    int s = (int) (time / 1000) % 60;
+    if (s < 10)
+      return "0" + s;
+    else
+      return s + "";
+  }
+
+  public static String getMinutes(long time) {
+
+    //总分钟数
+
+    int m = ((int) (time / 1000) / 60) % 60;
+    if (m < 10)
+      return "0" + m;
+    else
+      return m + "";
+  }
+
+  public static String getHours(long time) {
+    int h = (int) (time / 1000) / 3600;
+    if (h < 0)
+      return "0" + h;
+    else
+      return h + "";
   }
 
 

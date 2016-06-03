@@ -9,11 +9,18 @@
         <attr name="takInnerHeight" format="reference|dimension"/>
         <attr name="takBaseColor" format="color|reference"/>
         <attr name="takImageToText" format="reference|dimension"/>
-
-        
     </declare-styleable>
 
-
+    <declare-styleable name="BaseSpotScrollView">
+        <attr name="spotItemLineWidth" format="dimension"/>
+        <attr name="spotCircleRadius" format="dimension"/>
+        <attr name="spotItemLineHeight" format="dimension"/>
+        <attr name="spotTextSize" format="dimension"/>
+        <attr name="spotDoneColor" format="color|reference"/>
+        <attr name="spotDoingColor" format="color|reference"/>
+        <attr name="spotToDoColor" format="color|reference"/>
+        <attr name="spotItemLineColor" format="color|reference"/>
+    </declare-styleable>
 
 
 </resources>

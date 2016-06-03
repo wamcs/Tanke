@@ -52,7 +52,7 @@ public class LocateHelper implements BDLocationListener {
 
   public void stopLocate() {
     if (mLocationClient != null) {
-      if (mLocationClient.isStarted()) {
+      if (!mLocationClient.isStarted()) {
         Timber.e("locate service is already stop");
       } else {
         mLocationClient.stop();
