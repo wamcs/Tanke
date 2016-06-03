@@ -5,6 +5,7 @@ import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.Color;
 import android.view.animation.AccelerateDecelerateInterpolator;
+import android.view.animation.AccelerateInterpolator;
 
 import com.baidu.mapapi.map.BaiduMap;
 import com.baidu.mapapi.map.Circle;
@@ -47,7 +48,9 @@ class MapCircleAnimation implements
     currentCircleRadius = (Float) animation.getAnimatedValue() * maxRadius;
     int currentCircleFillColor = mCircle.getFillColor();
     mCircle.setRadius((int) currentCircleRadius);
-    mCircle.setFillColor(Color.argb((int) (255 * (1 - (float) animation.getAnimatedValue())), Color.red(currentCircleFillColor),
+    mCircle.setFillColor(
+        Color.argb((int) (255 * (1 - (float) animation.getAnimatedValue())),
+        Color.red(currentCircleFillColor),
         Color.green(currentCircleFillColor),
         Color.blue(currentCircleFillColor)));
   }

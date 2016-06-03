@@ -15,7 +15,7 @@
         <item name="android:layout_height">?attr/actionBarSize</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:background">?attr/colorPrimary</item>
-        <item name="contentInsetStart">0dp</item>
+        <item name="contentInsetStart">10dp</item>
     </style>
 
     <!-- Number Picker Style -->
@@ -28,9 +28,9 @@
     
     <!-- Login Activity Style-->
     <style name="loginActivityButton">
-        <item name="android:layout_height">@dimen/login_activity_edit_layout_button_height</item>
-        <item name="android:layout_width">@dimen/login_activity_edit_layout_button_width</item>
-        <item name="android:layout_marginTop">@dimen/login_activity_edit_layout_edit_to_button</item>
+        <item name="android:layout_height">@dimen/login_edit_layout_button_height</item>
+        <item name="android:layout_width">@dimen/login_edit_layout_button_width</item>
+        <item name="android:layout_marginTop">@dimen/login_edit_layout_edit_to_button</item>
         <item name="android:textSize">10sp</item>
         <item name="android:gravity">center</item>
         <item name="android:textColor">@color/white10</item>
@@ -38,5 +38,45 @@
 
     </style>
 
+    <!-- sign up activity style-->
+    <style name="signUpText">
+        <item name="android:textColor">@color/base_text_color</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:textSize">@dimen/sign_up_edit_text_size</item>
+        <item name="android:layout_gravity">center_vertical</item>
+    </style>
 
+    <style name="signUpEditText">
+        <item name="android:textColor">@color/base_text_color</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:background">@color/white10</item>
+        <item name="android:cursorVisible">false</item>
+        <item name="android:padding">5dp</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:textSize">@dimen/sign_up_edit_hint_text_size</item>
+        <item name="android:textColorHint">@color/grey07</item>
+        <item name="android:layout_gravity">center_vertical</item>
+    </style>
+
+    <!-- CompleteInformationActivity Style Area-->
+    <style name="CompleteItemTitle">
+        <item name="android:textColor">@color/complete_item_title_color</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_gravity">center_horizontal</item>
+        <item name="android:textSize">@dimen/complete_item_title_text_size</item>
+        <item name="android:layout_marginBottom">@dimen/complete_item_title_margin_bottom</item>
+        <item name="android:layout_marginTop">@dimen/complete_item_title_margin_top</item>
+    </style>
+
+    <style name="CompleteItemContent">
+        <item name="android:textColor">@color/base_text_color</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_gravity">center_horizontal</item>
+        <item name="android:textSize">@dimen/complete_item_content_text_size</item>
+        <item name="android:layout_marginBottom">@dimen/complete_item_content_margin_bottom</item>
+    </style>
 </resources>

@@ -120,6 +120,13 @@ public interface UserService {
       @Query("token") String token,
       @Body RequestBody file);
 
+
+
+  /**
+   * 完善信息上传
+   */
+
+
   @IntDef({
       USER_DETAIL_NICKNAME,
       USER_DETAIL_BIRTHDAY,

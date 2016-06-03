@@ -22,14 +22,89 @@
     <dimen name="custom_edit_inner_height">10dp</dimen>
 
     <!-- Login Activity Dimens-->
-    <dimen name="login_activity_title_size">80dp</dimen>
-    <dimen name="login_activity_title_text_size">33sp</dimen>
-    <dimen name="login_activity_edit_layout_margin">38dp</dimen>
-    <dimen name="login_activity_edit_layout_item_distance">15dp</dimen>
-    <dimen name="login_activity_edit_layout_edit_to_button">20dp</dimen>
-    <dimen name="login_activity_edit_layout_button_width">85dp</dimen>
-    <dimen name="login_activity_edit_layout_button_height">20dp</dimen>
+    <dimen name="login_title_size">80dp</dimen>
+    <dimen name="login_title_text_size">33sp</dimen>
+    <dimen name="login_edit_layout_margin">38dp</dimen>
+    <dimen name="login_edit_layout_item_distance">15dp</dimen>
+    <dimen name="login_edit_layout_edit_to_button">20dp</dimen>
+    <dimen name="login_edit_layout_button_width">85dp</dimen>
+    <dimen name="login_edit_layout_button_height">20dp</dimen>
 
+
+    <!-- Register Activity Dimens-->
+    <dimen name="sign_up_toolbar_height">146dp</dimen>
+    <dimen name="sign_up_return_button_size">16dp</dimen>
+    <dimen name="sign_up_title_margin_top">35dp</dimen>
+    <dimen name="sign_up_return_button_margin_left">15dp</dimen>
+    <dimen name="sign_up_edit_margin_top">104dp</dimen>
+    <dimen name="sign_up_edit_margin">20dp</dimen>
+    <dimen name="sign_up_edit_height">40dp</dimen>
+    <dimen name="sign_up_edit_left_text_margin_left">24dp</dimen>
+    <dimen name="sign_up_edit_left_text_margin_right">37dp</dimen>
+    <dimen name="sign_up_edit_text_size">12sp</dimen>
+    <dimen name="sign_up_edit_hint_text_size">10sp</dimen>
+    <dimen name="sign_up_edit_margin_bottom">23dp</dimen>
+    <dimen name="sign_up_next_button_text_size">14sp</dimen>
+    <dimen name="sign_up_title_text_size">16sp</dimen>
+    <dimen name="sign_up_second_edit_margin_bottom">24dp</dimen>
+
+    <!-- Dialog Dimens-->
+    <dimen name="layout_dialog_margin_left_right">20dp</dimen>
+    <dimen name="layout_dialog_number_picker_width">70dp</dimen>
+    <dimen name="layout_dialog_date_picker_margin">10dp</dimen>
+    <dimen name="layout_dialog_date_picker_picker_root_height">150dp</dimen>
+    <dimen name="layout_dialog_date_picker_picker_root_padding">5dp</dimen>
+
+    <!-- CompleteInformationActivity Dimens-->
+    <dimen name="complete_user_avatar_size">180dp</dimen>
+    <dimen name="complete_arrow_button_size">16dp</dimen>
+    <dimen name="complete_arrow_button_margin_x">18dp</dimen>
+    <dimen name="complete_arrow_button_margin_y">22dp</dimen>
+    <dimen name="complete_arrow_button_text_size">12sp</dimen>
+    <dimen name="complete_user_avatar_layout_size">240dp</dimen>
+    <dimen name="complete_user_avatar_border_size">20dp</dimen>
+    <dimen name="complete_nickname_edit_text_size">21sp</dimen>
+    <dimen name="complete_nickname_edit_width">160dp</dimen>
+    <dimen name="complete_gender_text_size">13sp</dimen>
+    <dimen name="complete_gender_text_height">20dp</dimen>
+    <dimen name="complete_item_title_text_size">10sp</dimen>
+    <dimen name="complete_item_content_text_size">14sp</dimen>
+    <dimen name="complete_item_title_margin_top">30dp</dimen>
+    <dimen name="complete_item_title_margin_bottom">15dp</dimen>
+    <dimen name="complete_item_content_margin_bottom">10dp</dimen>
+    <dimen name="complete_location_margin_bottom">15dp</dimen>
+    <dimen name="complete_location_size">120dp</dimen>
+    <dimen name="complete_location_button_size">100dp</dimen>
+    <dimen name="complete_location_text_size">10sp</dimen>
+
+    <!-- protocol Dimens-->
+    <dimen name="protocol_return_button_size">16dp</dimen>
+    <dimen name="protocol_title_margin_top">35dp</dimen>
+    <dimen name="protocol_return_button_margin_left">15dp</dimen>
+    <dimen name="protocol_title_text_size">15sp</dimen>
+    <dimen name="protocol_next_button_text_size">14sp</dimen>
+    <dimen name="protocol_ps_text_size">6sp</dimen>
+    <dimen name="protocol_next_button_height">50dp</dimen>
+
+    <!-- Map InfoWindow Dimens-->
+    <dimen name="layout_map_infowindow_content_padding">5dp</dimen>
+
+    <!-- PlayingActivity Dimens -->
+    <dimen name="running_spot_view_root_height">48dp</dimen>
+    <dimen name="running_spot_view_text_size">12sp</dimen>
+    <dimen name="running_spot_view_item_line_width">35dp</dimen>
+    <dimen name="running_spot_view_item_line_height">8dp</dimen>
+    <dimen name="running_spot_view_radius">12dp</dimen>
+
+    <!-- TaskActivity Dimens-->
+    <dimen name="task_content_height">40dp</dimen>
+    <dimen name="task_answer_area_height">48dp</dimen>
+
+    <dimen name="task_fragment_tab_height">48dp</dimen>
+    <dimen name="task_fragment_tab_corner_radius">18dp</dimen>
+    <dimen name="task_fragment_tab_indicator_thick">36dp</dimen>
+    <dimen name="task_fragment_tab_text_size">16sp</dimen>
+    <dimen name="task_fragment_tab_indicator_width">20dp</dimen>
 
     <dimen name="main_page_item_img_width">100dp</dimen>
     <dimen name="main_page_item_img_height">61.8dp</dimen>

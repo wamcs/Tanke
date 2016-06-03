@@ -120,6 +120,8 @@ public class LoginEditView extends LinearLayout {
         editText.setCursorVisible(false);
         editText.setHint(mHintText);
         editText.setBackgroundColor(getResources().getColor(R.color.white00));
+        //only aim at this project
+        editText.setInputType(InputType.TYPE_CLASS_PHONE);
         editText.setTextSize(TypedValue.COMPLEX_UNIT_PX, mTextSize);
         editText.setGravity(Gravity.CENTER_VERTICAL);
         if (isPassWord) {

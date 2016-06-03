@@ -25,12 +25,12 @@ public class Task implements Parcelable {
   private long id;
 
   @SerializedName("type")
-  private MISSION_TYPE type;
+  private TASK_TYPE type;
 
   private int exp;
 
   @SerializedName("mission_name")
-  private String missionName;
+  private String taskName;
 
   private String content;
 
@@ -40,12 +40,12 @@ public class Task implements Parcelable {
     setId(builder.id);
     setType(builder.type);
     setExp(builder.exp);
-    setMissionName(builder.missionName);
+    setTaskName(builder.missionName);
     setContent(builder.content);
     setPwd(builder.pwd);
   }
 
-  public enum MISSION_TYPE implements JsonSerializer<MISSION_TYPE>, JsonDeserializer<MISSION_TYPE> {
+  public enum TASK_TYPE implements JsonSerializer<TASK_TYPE>, JsonDeserializer<TASK_TYPE> {
     SCAN_CODE(0), // scan the QRCode
     LOCATE(1), // locate the position
     RIDDLE(2), // Secret mission
@@ -55,7 +55,7 @@ public class Task implements Parcelable {
 
     private int type;
 
-    MISSION_TYPE(int type) {
+    TASK_TYPE(int type) {
       this.type = type;
     }
 
@@ -65,9 +65,9 @@ public class Task implements Parcelable {
 
 
     @Override
-    public MISSION_TYPE deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+    public TASK_TYPE deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
       final int item = json.getAsInt();
-      for (MISSION_TYPE game_type : MISSION_TYPE.values()) {
+      for (TASK_TYPE game_type : TASK_TYPE.values()) {
         if (game_type.getType() == item) {
           return game_type;
         }
@@ -82,7 +82,7 @@ public class Task implements Parcelable {
     }
 
     @Override
-    public JsonElement serialize(MISSION_TYPE src, Type typeOfSrc, JsonSerializationContext context) {
+    public JsonElement serialize(TASK_TYPE src, Type typeOfSrc, JsonSerializationContext context) {
       return new JsonPrimitive(src.getType());
     }
   }
@@ -95,11 +95,11 @@ public class Task implements Parcelable {
     this.id = id;
   }
 
-  public MISSION_TYPE getType() {
+  public TASK_TYPE getType() {
     return type;
   }
 
-  public void setType(MISSION_TYPE type) {
+  public void setType(TASK_TYPE type) {
     this.type = type;
   }
 
@@ -111,12 +111,12 @@ public class Task implements Parcelable {
     this.exp = exp;
   }
 
-  public String getMissionName() {
-    return missionName;
+  public String getTaskName() {
+    return taskName;
   }
 
-  public void setMissionName(String missionName) {
-    this.missionName = missionName;
+  public void setTaskName(String taskName) {
+    this.taskName = taskName;
   }
 
   public String getContent() {
@@ -139,7 +139,7 @@ public class Task implements Parcelable {
   public static final class Builder {
     private long id;
     private long pointId;
-    private MISSION_TYPE type;
+    private TASK_TYPE type;
     private int exp;
     private String missionName;
     private String content;
@@ -158,7 +158,7 @@ public class Task implements Parcelable {
       return this;
     }
 
-    public Builder type(MISSION_TYPE val) {
+    public Builder type(TASK_TYPE val) {
       type = val;
       return this;
     }
@@ -198,7 +198,7 @@ public class Task implements Parcelable {
     dest.writeLong(this.id);
     dest.writeInt(this.type == null ? -1 : this.type.ordinal());
     dest.writeInt(this.exp);
-    dest.writeString(this.missionName);
+    dest.writeString(this.taskName);
     dest.writeString(this.content);
     dest.writeString(this.pwd);
   }
@@ -206,9 +206,9 @@ public class Task implements Parcelable {
   protected Task(Parcel in) {
     this.id = in.readLong();
     int tmpType = in.readInt();
-    this.type = tmpType == -1 ? null : MISSION_TYPE.values()[tmpType];
+    this.type = tmpType == -1 ? null : TASK_TYPE.values()[tmpType];
     this.exp = in.readInt();
-    this.missionName = in.readString();
+    this.taskName = in.readString();
     this.content = in.readString();
     this.pwd = in.readString();
   }

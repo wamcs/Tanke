@@ -3,6 +3,7 @@ package com.lptiyu.tanke.gameplaying.pojo;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.baidu.mapapi.model.LatLng;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.HashMap;
@@ -24,14 +25,14 @@ public class Point implements Parcelable {
   @SerializedName("point_index")
   private int pointIndex;
 
-  private String latitude;
+  private double latitude;
 
-  private String longitude;
+  private double longitude;
 
   @SerializedName("task_id")
   private List<String> taskId;
 
-  private Map<String, Task> missionMap;
+  private Map<String, Task> taskMap;
 
   private Point(Builder builder) {
     setId(builder.id);
@@ -40,7 +41,7 @@ public class Point implements Parcelable {
     setLatitude(builder.latitude);
     setLongitude(builder.longitude);
     setTaskId(builder.taskId);
-    setMissionMap(builder.missionMap);
+    setTaskMap(builder.missionMap);
   }
 
   public long getId() {
@@ -67,19 +68,19 @@ public class Point implements Parcelable {
     this.pointIndex = pointIndex;
   }
 
-  public String getLatitude() {
+  public double getLatitude() {
     return latitude;
   }
 
-  public void setLatitude(String latitude) {
+  public void setLatitude(double latitude) {
     this.latitude = latitude;
   }
 
-  public String getLongitude() {
+  public double getLongitude() {
     return longitude;
   }
 
-  public void setLongitude(String longitude) {
+  public void setLongitude(double longitude) {
     this.longitude = longitude;
   }
 
@@ -91,20 +92,24 @@ public class Point implements Parcelable {
     this.taskId = taskId;
   }
 
-  public Map<String, Task> getMissionMap() {
-    return missionMap;
+  public Map<String, Task> getTaskMap() {
+    return taskMap;
   }
 
-  public void setMissionMap(Map<String, Task> missionMap) {
-    this.missionMap = missionMap;
+  public void setTaskMap(Map<String, Task> taskMap) {
+    this.taskMap = taskMap;
+  }
+
+  public LatLng getLatLng() {
+    return new LatLng(latitude, longitude);
   }
 
   public static final class Builder {
     private long id;
     private long lineId;
     private int pointIndex;
-    private String latitude;
-    private String longitude;
+    private double latitude;
+    private double longitude;
     private List<String> taskId;
     private Map<String, Task> missionMap;
 
@@ -126,12 +131,12 @@ public class Point implements Parcelable {
       return this;
     }
 
-    public Builder latitude(String val) {
+    public Builder latitude(double val) {
       latitude = val;
       return this;
     }
 
-    public Builder longitude(String val) {
+    public Builder longitude(double val) {
       longitude = val;
       return this;
     }
@@ -161,11 +166,11 @@ public class Point implements Parcelable {
     dest.writeLong(this.id);
     dest.writeLong(this.lineId);
     dest.writeInt(this.pointIndex);
-    dest.writeString(this.latitude);
-    dest.writeString(this.longitude);
+    dest.writeDouble(this.latitude);
+    dest.writeDouble(this.longitude);
     dest.writeStringList(this.taskId);
-    dest.writeInt(this.missionMap.size());
-    for (Map.Entry<String, Task> entry : this.missionMap.entrySet()) {
+    dest.writeInt(this.taskMap.size());
+    for (Map.Entry<String, Task> entry : this.taskMap.entrySet()) {
       dest.writeString(entry.getKey());
       dest.writeParcelable(entry.getValue(), flags);
     }
@@ -175,15 +180,15 @@ public class Point implements Parcelable {
     this.id = in.readLong();
     this.lineId = in.readLong();
     this.pointIndex = in.readInt();
-    this.latitude = in.readString();
-    this.longitude = in.readString();
+    this.latitude = in.readDouble();
+    this.longitude = in.readDouble();
     this.taskId = in.createStringArrayList();
     int missionMapSize = in.readInt();
-    this.missionMap = new HashMap<String, Task>(missionMapSize);
+    this.taskMap = new HashMap<String, Task>(missionMapSize);
     for (int i = 0; i < missionMapSize; i++) {
       String key = in.readString();
       Task value = in.readParcelable(Task.class.getClassLoader());
-      this.missionMap.put(key, value);
+      this.taskMap.put(key, value);
     }
   }
 

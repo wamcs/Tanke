@@ -2,6 +2,7 @@ package com.lptiyu.tanke.initialization.ui;
 
 import android.os.Bundle;
 import android.os.PersistableBundle;
+import android.util.Log;
 
 import com.lptiyu.tanke.R;
 import com.lptiyu.tanke.base.controller.ActivityController;
@@ -18,8 +19,8 @@ public class GuideActivity extends BaseActivity {
     ActivityController controller;
 
     @Override
-    public void onCreate(Bundle savedInstanceState, PersistableBundle persistentState) {
-        super.onCreate(savedInstanceState, persistentState);
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_guide);
         controller = new GuideController(this,getWindow().getDecorView());
     }

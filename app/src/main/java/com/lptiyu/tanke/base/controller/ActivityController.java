@@ -111,6 +111,10 @@ public abstract class ActivityController extends ContextController {
 
   }
 
+  public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+
+  }
+
   public View getRootView() {
     return mRootView;
   }

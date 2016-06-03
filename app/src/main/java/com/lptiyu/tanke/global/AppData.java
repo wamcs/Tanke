@@ -6,6 +6,8 @@ import android.content.pm.PackageManager;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.lptiyu.tanke.gameplaying.pojo.Task;
+import com.lptiyu.tanke.gameplaying.records.RunningRecord;
 import com.lptiyu.tanke.pojo.GAME_STATE;
 import com.lptiyu.tanke.pojo.GAME_TYPE;
 import com.lptiyu.tanke.pojo.RECOMMENDED_TYPE;
@@ -32,6 +34,8 @@ public class AppData {
     builder.registerTypeAdapter(RECOMMENDED_TYPE.class, RECOMMENDED_TYPE.NORMAL);
     builder.registerTypeAdapter(GAME_TYPE.class, GAME_TYPE.INDIVIDUALS);
     builder.registerTypeAdapter(Team.UserStatus.class, Team.UserStatus.MASTER);
+    builder.registerTypeAdapter(Task.TASK_TYPE.class, Task.TASK_TYPE.FINISH);
+    builder.registerTypeAdapter(RunningRecord.RECORD_TYPE.class, RunningRecord.RECORD_TYPE.GAME_START);
     sGson = builder.create();
   }
 

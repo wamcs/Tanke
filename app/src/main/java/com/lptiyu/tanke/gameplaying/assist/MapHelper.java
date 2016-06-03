@@ -2,6 +2,7 @@ package com.lptiyu.tanke.gameplaying.assist;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ZoomControls;
@@ -10,51 +11,81 @@ import com.baidu.location.BDLocation;
 import com.baidu.mapapi.map.BaiduMap;
 import com.baidu.mapapi.map.BitmapDescriptor;
 import com.baidu.mapapi.map.BitmapDescriptorFactory;
+import com.baidu.mapapi.map.Circle;
 import com.baidu.mapapi.map.CircleOptions;
+import com.baidu.mapapi.map.InfoWindow;
 import com.baidu.mapapi.map.LogoPosition;
 import com.baidu.mapapi.map.MapStatusUpdateFactory;
+import com.baidu.mapapi.map.Marker;
 import com.baidu.mapapi.map.MarkerOptions;
 import com.baidu.mapapi.map.MyLocationConfiguration;
 import com.baidu.mapapi.map.MyLocationData;
+import com.baidu.mapapi.map.PolylineOptions;
 import com.baidu.mapapi.map.TextureMapView;
 import com.baidu.mapapi.map.UiSettings;
 import com.baidu.mapapi.model.LatLng;
+import com.baidu.mapapi.utils.DistanceUtil;
 import com.lptiyu.tanke.R;
 import com.lptiyu.tanke.gameplaying.pojo.Point;
+import com.lptiyu.tanke.global.Conf;
 import com.lptiyu.tanke.utils.Display;
 import com.lptiyu.tanke.widget.NumNail;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import timber.log.Timber;
 
 /**
  * @author : xiaoxiaoda
  *         date: 16-5-22
  *         email: wonderfulifeel@gmail.com
  */
-public class MapHelper {
+public class MapHelper implements
+    BaiduMap.OnMarkerClickListener {
+
+  private Context mContext;
 
   private TextureMapView mapView;
   private BaiduMap mBaiduMap;
 
-  private boolean animateToCurrentPositionOnce = true;
-  private MyLocationData.Builder mLocationDataBuilder;
-
   private SensorHelper mSensorHelper;
   private MapCircleAnimationHelper mapCircleAnimationHelper;
 
-  private Context mContext;
-
   private List<Point> mPoints;
-  private Map<Point, MarkerOptions> nailMarkerContainer = new HashMap<>();
+  private Point currentAttackPoint;
+  private Point clickedPoint;
+  private Map<Point, Marker> nailMarkerContainer = new HashMap<>();
+
+  private LatLng currentLatLng;
+  private LatLng lastTimeLatLng;
+  private List<LatLng> trackLatLngs;
+
+  // draw the circle around attack point , in order to notify user
+  private Circle attackPointCircle;
+  private CircleOptions attackPointCircleOptions;
+
+  // info window content and info window, show when user arrive the attack point
+  private InfoWindow mTaskEntryInfoWindow;
+  private View mTaskEntryInfoWindowView;
+
+  private MyLocationData.Builder mLocationDataBuilder;
+
+  private OnMapMarkerClickListener mMapMarkerClickListener;
+
+  // if this boolean is true, map will animate to current location when receive newly location
+  private boolean animateToCurrentPositionOnce = true;
+
+  private boolean isReachAttackPoint = false;
+  private boolean isInfoWindowShown = false;
 
   private static final int paddingLeft = 0;
   private static final int paddingTop = 0;
   private static final int paddingRight = 0;
-  private static final int paddingBottom = Display.dip2px(100);
+  private static final int paddingBottom = Display.dip2px(60);
+
+  // default delta value, the distance between info window and marker
+  private static final int DEFAULT_INFO_WINDOW_DELTA_Y = -70;
 
   public MapHelper(Context context, TextureMapView view) {
     if (view == null) {
@@ -63,9 +94,14 @@ public class MapHelper {
     mContext = context;
     mapView = view;
     mBaiduMap = mapView.getMap();
+    init();
+  }
 
+  private void init() {
+    trackLatLngs = new ArrayList<>(2);
     mSensorHelper = new SensorHelper(mContext);
     mapCircleAnimationHelper = new MapCircleAnimationHelper(mContext, mBaiduMap);
+    mTaskEntryInfoWindowView = LayoutInflater.from(mContext).inflate(R.layout.layout_map_infowindow, null);
 
     initMap();
     initEvent();
@@ -84,6 +120,7 @@ public class MapHelper {
   }
 
   private void initEvent() {
+    mBaiduMap.setOnMarkerClickListener(this);
   }
 
   public void startAnimate() {
@@ -95,28 +132,91 @@ public class MapHelper {
       return;
     }
     mPoints = points;
+  }
+
+  public void initMapFlow() {
     initNails(mPoints);
+    currentAttackPoint = mPoints.get(0);
+    setAttackPointCircle(currentAttackPoint);
+  }
+
+  @Override
+  public boolean onMarkerClick(Marker marker) {
+    if (isInfoWindowShown) {
+      mBaiduMap.hideInfoWindow();
+      isInfoWindowShown = false;
+      return true;
+    }
+    clickedPoint = null;
+    for (Map.Entry<Point, Marker> entry : nailMarkerContainer.entrySet()) {
+      if (entry.getValue() == marker) {
+        clickedPoint = entry.getKey();
+      }
+    }
+    if (clickedPoint == null) {
+      return true;
+    }
+
+    mTaskEntryInfoWindowView.findViewById(R.id.start_task).setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        if (mMapMarkerClickListener != null) {
+          mMapMarkerClickListener.onMarkerClicked(clickedPoint);
+        }
+      }
+    });
+    mTaskEntryInfoWindow = new InfoWindow(mTaskEntryInfoWindowView, marker.getPosition(), DEFAULT_INFO_WINDOW_DELTA_Y);
+    mBaiduMap.showInfoWindow(mTaskEntryInfoWindow);
+    isInfoWindowShown = true;
+    return true;
+  }
+
+  public void onReachAttackPoint(int index) {
+    isReachAttackPoint = true;
+    currentAttackPoint = mPoints.get(index);
+    setNail(currentAttackPoint, index, NumNail.NailType.GREEN);
+  }
+
+  public void updateNextPoint(int index) {
+    isReachAttackPoint = false;
+    currentAttackPoint = mPoints.get(index);
+    setNail(currentAttackPoint, index, NumNail.NailType.RED);
+    setAttackPointCircle(currentAttackPoint);
   }
 
   /**
    * receive location info from LocateHelper
    * set the BDLocation to map as user's location
    *
-   * @param location
+   * @param location real time location from LocateHelper
    */
   public void onReceiveLocation(BDLocation location) {
     mBaiduMap.setMyLocationData(makeUpLocationData(location));
+    currentLatLng = new LatLng(location.getLatitude(), location.getLongitude());
     if (animateToCurrentPositionOnce) {
-
-      Timber.e("latitude : %f, longitude : %f", location.getLatitude(), location.getLongitude());
-
-      mBaiduMap.animateMapStatus(MapStatusUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 18));
+      mBaiduMap.animateMapStatus(MapStatusUpdateFactory.newLatLngZoom(currentLatLng, 18));
       animateToCurrentPositionOnce = false;
     }
+    if ((null != lastTimeLatLng) && (DistanceUtil.getDistance(lastTimeLatLng, currentLatLng) > Conf.LOCATION_DISTANCE_THRESHOLD_BOTTOM)
+        && (DistanceUtil.getDistance(lastTimeLatLng, currentLatLng) < Conf.LOCATION_DISTANCE_THRESHOLD_TOP)) {
+      drawPolyLine(lastTimeLatLng, currentLatLng);
+    }
+    lastTimeLatLng = currentLatLng;
   }
 
   public void animateCameraToCurrentPosition() {
     animateToCurrentPositionOnce = true;
+  }
+
+  public void animateCameraToCurrentTarget() {
+    mBaiduMap.animateMapStatus(MapStatusUpdateFactory.newLatLngZoom(currentAttackPoint.getLatLng(), 18));
+  }
+
+  public void animateCameraToMarkerByIndex(int index) {
+    if (mPoints != null && index <= currentAttackPoint.getPointIndex()) {
+      Point targetPoint = mPoints.get(index);
+      mBaiduMap.animateMapStatus(MapStatusUpdateFactory.newLatLngZoom(targetPoint.getLatLng(), 18));
+    }
   }
 
   /**
@@ -132,23 +232,45 @@ public class MapHelper {
     setNail(points.get(0), 0, NumNail.NailType.RED);
   }
 
+  private void setAttackPointCircle(Point point) {
+    LatLng latLng = point.getLatLng();
+    if (attackPointCircle == null) {
+      attackPointCircleOptions = generateCircleOption(latLng);
+      attackPointCircle = mapCircleAnimationHelper.addCircleAnimation(attackPointCircleOptions);
+    } else {
+      attackPointCircle.setCenter(latLng);
+    }
+  }
+
   private void setNail(Point point, int index, NumNail.NailType type) {
     if (nailMarkerContainer == null) {
       throw new IllegalStateException("MarkerContainer not init");
     }
     MarkerOptions options;
     if (nailMarkerContainer.containsKey(point)) {
-      options = nailMarkerContainer.get(point);
-    } else {
-      options = newNailMarkerOptions(point);
+      nailMarkerContainer.get(point).remove();
     }
-    options.position(new LatLng(Double.valueOf(point.getLatitude()), Double.valueOf(point.getLongitude())));
+    options = newNailMarkerOptions();
+    options.position(point.getLatLng());
     Bitmap b = NumNail.getNailBitmap(mContext, type).bakeText("" + index).getBitmap();
     if (b != null) {
       options.icon(BitmapDescriptorFactory.fromBitmap(b));
     }
-    nailMarkerContainer.put(point, options);
-    mBaiduMap.addOverlay(options);
+    nailMarkerContainer.put(point, ((Marker) mBaiduMap.addOverlay(options)));
+  }
+
+  private void drawPolyLine(LatLng oldLatLng, LatLng newLatLng) {
+    if (oldLatLng == null || newLatLng == null) {
+      return;
+    }
+    trackLatLngs.clear();
+    trackLatLngs.add(oldLatLng);
+    trackLatLngs.add(newLatLng);
+    mBaiduMap.addOverlay(initPolyLineOptions().points(trackLatLngs));
+  }
+
+  private PolylineOptions initPolyLineOptions() {
+    return new PolylineOptions().width(10).color(0xff0F8AD7);
   }
 
   /**
@@ -175,10 +297,12 @@ public class MapHelper {
     return new MyLocationConfiguration(null, true, bitmapDescriptor);
   }
 
-  private MarkerOptions newNailMarkerOptions(Point point) {
+  private MarkerOptions newNailMarkerOptions() {
     MarkerOptions options = new MarkerOptions();
-    options.title("Nail");
-    options.draggable(false);
+    options
+        .title("Nail")
+        .draggable(false)
+        .anchor(0.28f, 0.85f);
     return options;
   }
 
@@ -186,7 +310,7 @@ public class MapHelper {
     CircleOptions circleOptions = new CircleOptions();
     circleOptions
         .center(latLng)
-        .fillColor(mContext.getResources().getColor(R.color.white07));
+        .fillColor(mContext.getResources().getColor(R.color.attackPointCircleColor));
     return circleOptions;
   }
 
@@ -219,4 +343,13 @@ public class MapHelper {
     mSensorHelper.onDestroy();
     mapCircleAnimationHelper.onDestroy();
   }
+
+  public void setmMapMarkerClickListener(OnMapMarkerClickListener mMapMarkerClickListener) {
+    this.mMapMarkerClickListener = mMapMarkerClickListener;
+  }
+
+  public interface OnMapMarkerClickListener {
+    void onMarkerClicked(Point point);
+  }
+
 }
