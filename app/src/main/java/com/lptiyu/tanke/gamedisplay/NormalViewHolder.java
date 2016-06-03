@@ -11,10 +11,6 @@ import com.lptiyu.tanke.pojo.GAME_TYPE;
 import com.lptiyu.tanke.pojo.GameDisplayEntity;
 import com.lptiyu.tanke.utils.TimeUtils;
 
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Locale;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -88,34 +84,9 @@ public class NormalViewHolder extends BaseViewHolder<GameDisplayEntity> {
         new Func1<GameDisplayEntity, String>() {
           @Override
           public String call(GameDisplayEntity entity) {
-            String result;
-            Calendar calendar = Calendar.getInstance();
-
-            Date date = TimeUtils.parseDate(entity.getStartDate());
-            if (date == null) {
-              result = "";
-            } else {
-              calendar.setTime(date);
-              int startMonth = calendar.get(Calendar.MONTH);
-              int startDate = calendar.get(Calendar.DATE);
-              date = TimeUtils.parseDate(entity.getEndDate());
-              calendar.setTime(date);
-              int endMonth = calendar.get(Calendar.MONTH);
-              int endDate = calendar.get(Calendar.DATE);
-              result = String.format(Locale.CHINA, fragment.getString(R.string.main_page_date_format_pattern),
-                  startMonth, startDate, endMonth, endDate);
-            }
-
-            Date time = TimeUtils.parseTime(entity.getStartTime());
-            if (time == null) {
-              result += fragment.getString(R.string.main_page_forever);
-            } else {
-              result += TimeUtils.formatHourMinute(entity.getStartTime());
-              result += "-";
-              result += TimeUtils.formatHourMinute(entity.getEndTime());
-            }
-
-            return result;
+            return TimeUtils.parseTime(fragment.getContext(),
+                entity.getStartDate(), entity.getEndDate(),
+                entity.getStartTime(), entity.getEndTime());
           }
         })
         .subscribeOn(Schedulers.computation())

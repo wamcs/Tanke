@@ -26,7 +26,8 @@
     <string name="team_type_individule">个人赛</string>
     <!--Game display page-->
 
-    <!-- LoginActivity Text Area-->
+    <!--Game details-->
+
     <string name="name">步 道 运 动</string>
     <string name="please_input_password">请输入密码</string>
     <string name="please_input_phone">请输入手机号</string>
