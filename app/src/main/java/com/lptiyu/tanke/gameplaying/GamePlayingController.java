@@ -58,11 +58,12 @@ public abstract class GamePlayingController extends ActivityController implement
   @BindView(R.id.map_view)
   TextureMapView mapView;
 
-  ITracingHelper mTracingHelper;
-  MapHelper mapHelper;
-  LocateHelper locateHelper;
-  ConsoleHelper consoleHelper;
-  GameZipHelper gameZipHelper;
+  boolean isReachedAttackPoint = false;
+  boolean isGameFinished = false;
+
+  long gameId;
+  long lineId;
+  long teamId;
 
   int currentAttackPointIndex = 0;
   Point currentAttackPoint;
@@ -72,10 +73,14 @@ public abstract class GamePlayingController extends ActivityController implement
   public static RecordsHandler mRecordsHandler;
   RunningRecord.Builder runningRecordBuilder;
 
+  MapHelper mapHelper;
+  LocateHelper locateHelper;
+  ConsoleHelper consoleHelper;
+  GameZipHelper gameZipHelper;
+  ITracingHelper mTracingHelper;
+
   AlertDialog mAlertDialog;
   AlertDialog mLoadingDialog;
-  boolean isReachedAttackPoint = false;
-  boolean isGameFinished = false;
 
   static final long TEMP_GAME_ID = 1000000001L;
   static final long TEMP_LINE_ID = 2000000001L;
@@ -88,9 +93,19 @@ public abstract class GamePlayingController extends ActivityController implement
   }
 
   private void init(View view) {
+
+    showLoadingDialog();
+
     gameZipHelper = new GameZipHelper();
-    if (!gameZipHelper.checkAndParseGameZip(TEMP_GAME_ID, TEMP_LINE_ID) || gameZipHelper.getmPoints().size() == 0) {
+
+    Intent intent = getIntent();
+    gameId = intent.getLongExtra(Conf.GAME_ID, TEMP_GAME_ID);
+    lineId = intent.getLongExtra(Conf.LINE_ID, TEMP_LINE_ID);
+    teamId = intent.getLongExtra(Conf.TEAM_ID, TEMP_TEAM_ID);
+
+    if (!gameZipHelper.checkAndParseGameZip(gameId, lineId) || gameZipHelper.getmPoints().size() == 0) {
       ToastUtil.TextToast("游戏包加载失败");
+      mLoadingDialog.dismiss();
       return;
       //TODO : notice user that the game zip is damaged, please download again,then finish this activity
     }
@@ -105,14 +120,13 @@ public abstract class GamePlayingController extends ActivityController implement
     consoleHelper = new ConsoleHelper(getActivity(), view, mPoints);
     consoleHelper.setOnSpotClickListener(this);
     mTracingHelper = new TracingHelper(getActivity().getApplicationContext(), this);
-    mTracingHelper.entityName(String.format("%d_%d".toLowerCase(), TEMP_GAME_ID, TEMP_TEAM_ID));
+    mTracingHelper.entityName(String.format("%d_%d".toLowerCase(), gameId, teamId));
     locateHelper = new LocateHelper(getActivity().getApplicationContext());
     locateHelper.registerLocationListener(this);
 
-    mRecordsHandler = new RecordsHandler.Builder(TEMP_GAME_ID, TEMP_TEAM_ID).build();
+    mRecordsHandler = new RecordsHandler.Builder(gameId, teamId).build();
     runningRecordBuilder = new RunningRecord.Builder();
 
-    showLoadingDialog();
     initRecords();
 
 //    mTracingHelper.start();
@@ -138,7 +152,8 @@ public abstract class GamePlayingController extends ActivityController implement
   /**
    * This method is invoked when spot is clicked
    * need to animate camera to clicked spot's marker
-   * @param view clicked spot view
+   *
+   * @param view     clicked spot view
    * @param position the position of clicked spot view
    */
   @Override
@@ -276,8 +291,8 @@ public abstract class GamePlayingController extends ActivityController implement
     Intent intent = new Intent();
     intent.setClass(getActivity(), GameTaskActivity.class);
     intent.putExtra(Conf.CLICKED_POINT, point);
-    intent.putExtra(Conf.GAME_ID, TEMP_GAME_ID);
-    intent.putExtra(Conf.TEAM_ID, TEMP_TEAM_ID);
+    intent.putExtra(Conf.GAME_ID, gameId);
+    intent.putExtra(Conf.TEAM_ID, teamId);
     startActivityForResult(intent, Conf.REQUEST_CODE_TASK_ACTIVITY);
   }
 

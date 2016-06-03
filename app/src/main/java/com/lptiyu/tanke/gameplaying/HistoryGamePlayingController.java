@@ -29,7 +29,7 @@ public class HistoryGamePlayingController extends GamePlayingController {
     currentAttackPoint = mPoints.get(currentAttackPointIndex);
     mapHelper.initMapFlow();
 
-    if (RecordsUtils.isGameStartedFromDisk(TEMP_GAME_ID)) {
+    if (RecordsUtils.isGameStartedFromDisk(gameId)) {
       mRecordsHandler.dispatchResumeFromDisc(new RecordsHandler.ResumeCallback() {
         @Override
         public void dataResumed(List<RunningRecord> recordList) {
@@ -41,17 +41,7 @@ public class HistoryGamePlayingController extends GamePlayingController {
           mLoadingDialog.dismiss();
         }
       });
-    } else {
-      RunningRecord startRecord = new RunningRecord.Builder()
-          .x(34.123123)
-          .y(114.321321)
-          .type(RunningRecord.RECORD_TYPE.GAME_START)
-          .pointId(currentAttackPoint.getId())
-          .build();
-      RecordsUtils.dispatchTypeRecord(mRecordsHandler, startRecord);
-      mLoadingDialog.dismiss();
     }
-
   }
 
   private void resumeHistoryRecords(List<RunningRecord> recordList) {

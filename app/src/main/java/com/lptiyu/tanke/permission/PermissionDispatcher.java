@@ -82,7 +82,6 @@ public class PermissionDispatcher {
     List<Method> targetFragmentMethods = PermissionUtil.findTargetMethodWithRequestCode(fragment.getClass(), requestCodeAskPermission);
     List<Method> targetControllerMethods = PermissionUtil.findTargetMethodWithRequestCode(fragment.getController().getClass(), requestCodeAskPermission);
     for (Method m : targetFragmentMethods) {
-      Timber.e(m.getName());
       try {
         m.invoke(fragment);
       } catch (Exception e) {
@@ -90,7 +89,6 @@ public class PermissionDispatcher {
       }
     }
     for (Method m : targetControllerMethods) {
-      Timber.e(m.getName());
       try {
         m.invoke(fragment.getController());
       } catch (Exception e) {

@@ -16,9 +16,9 @@ import com.lptiyu.tanke.base.ui.BaseFragment;
 import com.lptiyu.tanke.permission.PermissionDispatcher;
 import com.lptiyu.tanke.permission.TargetMethod;
 import com.lptiyu.tanke.utils.DirUtils;
-import com.lptiyu.zxinglib.android.CaptureActivity;
 
 import java.io.File;
+import java.io.IOException;
 
 import timber.log.Timber;
 
@@ -62,12 +62,20 @@ public class DistinguishTaskController extends MultiplyTaskController {
     if (null == mTempFile) {
       mTempFile = new File(DirUtils.getTempDirectory(), DISTINGUISH_TASK_TEMP_PHOTO);
     }
-    if (mTempFile.exists() && mTempFile.isFile()) {
-      Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-      intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(mTempFile));
-      startActivityForResult(intent, CAMERA_REQUEST_CODE);
-    } else {
-      Timber.e("create temp distinguish photo file error");
+    if (!mTempFile.exists()) {
+      try {
+        if (mTempFile.createNewFile()) {
+          if (mTempFile.exists() && mTempFile.isFile()) {
+            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(mTempFile));
+            startActivityForResult(intent, CAMERA_REQUEST_CODE);
+          } else {
+            Timber.e("create temp distinguish photo file error");
+          }
+        }
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
     }
   }
 
@@ -76,7 +84,7 @@ public class DistinguishTaskController extends MultiplyTaskController {
     super.onActivityResult(requestCode, resultCode, data);
     switch (requestCode) {
       case CAMERA_REQUEST_CODE:
-        //TODO : to check whether the temp photo file is match with pwd photo
+        //TODO : to check whether the temp photo file(mTempFile) is match with pwd photo
         break;
     }
   }

@@ -1,6 +1,7 @@
 package com.lptiyu.tanke.gameplaying.task;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -13,7 +14,10 @@ import com.lptiyu.tanke.base.controller.ActivityController;
 import com.lptiyu.tanke.base.ui.BaseFragment;
 import com.lptiyu.tanke.permission.PermissionDispatcher;
 import com.lptiyu.tanke.permission.TargetMethod;
+import com.lptiyu.tanke.utils.ToastUtil;
 import com.lptiyu.zxinglib.android.CaptureActivity;
+
+import static android.app.Activity.RESULT_OK;
 
 /**
  * @author : xiaoxiaoda
@@ -58,7 +62,17 @@ public class ScanTaskController extends MultiplyTaskController {
   @Override
   public void onActivityResult(int requestCode, int resultCode, Intent data) {
     super.onActivityResult(requestCode, resultCode, data);
-
+    if (resultCode == RESULT_OK) {
+      Bundle b = data.getExtras();
+      String str = b.getString("data");
+      if (str == null|| str.length() == 0) {
+        ToastUtil.TextToast(getString(R.string.scan_error));
+        return;
+      }
+      //TODO : upload str to server to check pwd
+    } else {
+      ToastUtil.TextToast(getString(R.string.scan_error));
+    }
   }
 
   @Override
