@@ -22,6 +22,9 @@
     <string name="team_type_individule">个人赛</string>
     <!--Game display page-->
 
+    <!--Game details-->
+    <!--Game details-->
+
     <string name="name">步 道 运 动</string>
 
     <string name="please_input_secret">请输入密码</string>

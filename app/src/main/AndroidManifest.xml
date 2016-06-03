@@ -33,7 +33,6 @@
     <!-- Permission above added for barcode scanner -->
     <application
         android:name=".RunApplication"
-
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -58,11 +57,6 @@
         </service>
 
         <activity android:name=".MainActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
         </activity>
 
         <activity android:name=".initialization.ui.LoginActivity">
@@ -77,7 +71,6 @@
         </activity>
         <activity android:name=".initialization.ui.UserProtocolActivity">
         </activity>
-
         <activity
             android:name="com.mob.tools.MobUIShell"
             android:configChanges="keyboardHidden|orientation|screenSize"
@@ -94,15 +87,13 @@
             </intent-filter>
         </activity>
 
-        <!--微信回调使用-->
+        <!-- 微信回调使用 -->
         <activity
             android:name=".wxapi.WXEntryActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:exported="true"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
-
-
         <activity
             android:name="com.lptiyu.zxinglib.android.CaptureActivity"
             android:clearTaskOnLaunch="true"
@@ -144,9 +135,14 @@
             </intent-filter>
         </activity>
         <activity android:name=".gameplaying.GamePlayingActivity">
-
         </activity>
+        <activity android:name=".gamedetails.GameDetailsActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
 
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>
