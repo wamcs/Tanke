@@ -6,6 +6,7 @@ import android.view.View;
 
 import com.lptiyu.tanke.base.controller.ActivityController;
 import com.lptiyu.tanke.gamedisplay.GameDisplayFragment;
+import com.lptiyu.tanke.userCenter.UserCenterFragment;
 
 import java.util.ArrayList;
 
@@ -38,7 +39,7 @@ public class MainActivityController extends ActivityController {
   private void init() {
     fragments.add(new GameDisplayFragment());
     fragments.add(new SecondFragment());
-    fragments.add(new ThirdFragment());
+    fragments.add(new UserCenterFragment());
     changeTab(0);
   }
 
@@ -49,7 +50,7 @@ public class MainActivityController extends ActivityController {
 
   @OnClick(R.id.page_2)
   public void page_2() {
-   changeTab(1);
+    changeTab(1);
   }
 
   @OnClick(R.id.page_3)

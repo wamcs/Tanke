@@ -30,6 +30,7 @@
 
     <!--UserCenter start-->
     <string name="userCenter">我的</string>
+    <string name="user_level">LV.%d</string>
     <!--UserCenter finished-->
 
 

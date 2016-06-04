@@ -31,6 +31,15 @@
     <dimen name="login_edit_layout_button_height">20dp</dimen>
 
 
+    <!--User Center-->
+    <dimen name="user_center_linear_layout_height">20dp</dimen>
+    <dimen name="user_center_linear_layout_paddingLeft">20dp</dimen>
+    <dimen name="user_center_linear_layout_left_image_width">30dp</dimen>
+    <dimen name="user_center_linear_layout_left_image_height">30dp</dimen>
+    <dimen name="user_center_linear_layout_paddingRight">30dp</dimen>
+    <dimen name="user_center_linear_layout_bottom_line_height">0.5dp</dimen>
+
+
     <!-- Register Activity Dimens-->
     <dimen name="sign_up_toolbar_height">146dp</dimen>
     <dimen name="sign_up_return_button_size">16dp</dimen>
