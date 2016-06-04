@@ -344,6 +344,10 @@ public class MapHelper implements
     mapCircleAnimationHelper.onDestroy();
   }
 
+  public BaiduMap getmBaiduMap() {
+    return mBaiduMap;
+  }
+
   public void setmMapMarkerClickListener(OnMapMarkerClickListener mMapMarkerClickListener) {
     this.mMapMarkerClickListener = mMapMarkerClickListener;
   }

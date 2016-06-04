@@ -16,6 +16,8 @@ import android.widget.TextView;
 
 import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
+import com.baidu.mapapi.map.Marker;
+import com.baidu.mapapi.map.MarkerOptions;
 import com.baidu.mapapi.map.TextureMapView;
 import com.baidu.mapapi.model.LatLng;
 import com.baidu.mapapi.utils.DistanceUtil;
@@ -73,6 +75,10 @@ public abstract class GamePlayingController extends ActivityController implement
 
   boolean isReachedAttackPoint = false;
   boolean isGameFinished = false;
+  boolean isTimingTask = false;
+  boolean isTimingSuccess = true;
+
+  Task currentTimingTask;
 
   long gameId;
   long lineId;
@@ -184,11 +190,11 @@ public abstract class GamePlayingController extends ActivityController implement
    * This method is to start timing task
    * when receive timing signal from GameTaskActivity
    */
-  private void startTimingTaskFlow(Task timingTask) {
-    if (timingTask == null) {
-      return;
-    }
-    final int limitTimeMinute = Integer.valueOf(timingTask.getPwd());
+  protected void startTimingTaskFlow(Task task, long startTime) {
+    isTimingTask = true;
+    isTimingSuccess = true;
+    currentTimingTask = task;
+    final long limitTime = startTime + Integer.valueOf(currentTimingTask.getPwd()) * TimeUtils.ONE_MINUTE_TIME - System.currentTimeMillis();
     int translationY = (int) (mTickView.getHeight() + getResources().getDimension(R.dimen.tick_view_margin_top));
     mTickView.setTranslationY(-translationY);
     mTickView.setVisibility(View.VISIBLE);
@@ -200,7 +206,7 @@ public abstract class GamePlayingController extends ActivityController implement
 
       @Override
       public void onAnimationEnd(Animator animation) {
-        mTickView.startTick(15000L);
+        mTickView.startTick(limitTime);
       }
 
       @Override
@@ -213,6 +219,8 @@ public abstract class GamePlayingController extends ActivityController implement
 
       }
     });
+
+    onNextPoint();
   }
 
   /**
@@ -306,6 +314,28 @@ public abstract class GamePlayingController extends ActivityController implement
      */
     if (!isGameFinished && !isReachedAttackPoint) {
       if (checkIfReachAttackPoint(location)) {
+        if (isTimingTask) {
+          if (isTimingSuccess) {
+            mTickView.stopTick();
+            //TODO : user arrive the point at time
+            // notify user
+          } else {
+
+          }
+          int lastPointIndex = mPoints.indexOf(currentAttackPoint) - 1;
+          if (lastPointIndex >= 0) {
+            Point lastPoint = mPoints.get(lastPointIndex);
+            RecordsUtils.dispatchTypeRecord(mRecordsHandler, runningRecordBuilder
+                .x(34.123123)
+                .y(114.321321)
+                .pointId(lastPoint.getId())
+                .taskId(currentTimingTask.getId())
+                .type(RunningRecord.RECORD_TYPE.TASK_FINISH)
+                .createTime(System.currentTimeMillis())
+                .build());
+          }
+          isTimingTask = false;
+        }
         onReachAttackPoint();
         VibrateUtils.vibrate();
         showAlertDialog(getString(R.string.reach_attack_point));
@@ -340,6 +370,10 @@ public abstract class GamePlayingController extends ActivityController implement
         return;
       }
     }
+    if (isTimingTask) {
+      ToastUtil.TextToast("请先完成当前定时任务");
+      return;
+    }
     Intent intent = new Intent();
     intent.setClass(getActivity(), GameTaskActivity.class);
     intent.putExtra(Conf.CLICKED_POINT, point);
@@ -358,7 +392,7 @@ public abstract class GamePlayingController extends ActivityController implement
 
           case TIMING_TASK:
             Task task = data.getParcelableExtra(Conf.TIMING_TASK);
-            startTimingTaskFlow(task);
+            startTimingTaskFlow(task, System.currentTimeMillis());
             break;
 
           case USER_ACTION:
@@ -401,6 +435,7 @@ public abstract class GamePlayingController extends ActivityController implement
 
   @Override
   public void onTickFinish() {
+    isTimingSuccess = false;
     int translationY = (int) (mTickView.getHeight() + getResources().getDimension(R.dimen.tick_view_margin_top));
     mTickView.animate().setInterpolator(new AccelerateInterpolator()).translationY(-translationY).setDuration(500).setListener(new Animator.AnimatorListener() {
       @Override
@@ -423,7 +458,6 @@ public abstract class GamePlayingController extends ActivityController implement
 
       }
     });
-    //TODO : to judge the timing task is finish or nor
   }
 
   @Override

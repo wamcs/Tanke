@@ -3,12 +3,16 @@ package com.lptiyu.tanke.gameplaying;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
+import com.lptiyu.tanke.gameplaying.pojo.Task;
 import com.lptiyu.tanke.gameplaying.records.RecordsHandler;
 import com.lptiyu.tanke.gameplaying.records.RecordsUtils;
 import com.lptiyu.tanke.gameplaying.records.RunningRecord;
 import com.lptiyu.tanke.global.AppData;
+import com.lptiyu.tanke.utils.TimeUtils;
 
+import java.sql.Time;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import timber.log.Timber;
@@ -19,6 +23,8 @@ import timber.log.Timber;
  *         email: wonderfulifeel@gmail.com
  */
 public class HistoryGamePlayingController extends GamePlayingController {
+
+  private String currentTaskId;
 
   public HistoryGamePlayingController(AppCompatActivity activity, View view) {
     super(activity, view);
@@ -67,10 +73,31 @@ public class HistoryGamePlayingController extends GamePlayingController {
     }
   }
 
+  /**
+   * Resume the current attack point task record
+   * in order to avoid user exit app when timing task start
+   * according to the task start record, timing task's ending time can be calculate
+   *
+   * @param recordList all task records relate to this attack point
+   */
   private void resumeCurrentPointTaskRecords(List<RunningRecord> recordList) {
     recordList = findCurrentPointTaskRecords(recordList);
-    for (RunningRecord record : recordList) {
-      //TODO : to resume current point task records
+    if (recordList != null && recordList.size() != 0) {
+      RunningRecord record = recordList.get(recordList.size() - 1);
+      if (record == null || record.getType() != RunningRecord.RECORD_TYPE.TASK_START) {
+        return;
+      }
+      long currentTaskId = recordList.get(recordList.size() - 1).getTaskId();
+      Task resultTask = checkIfIsTimingTask(currentTaskId);
+      if (resultTask == null) {
+        return;
+      }
+      long startTimeMillis = record.getCreateTime();
+      long expectEndTimeMillis = Integer.valueOf(resultTask.getPwd()) * TimeUtils.ONE_MINUTE_TIME + startTimeMillis;
+      if (System.currentTimeMillis() < expectEndTimeMillis) {
+        startTimingTaskFlow(resultTask, startTimeMillis);
+      } else {
+      }
     }
   }
 
@@ -92,6 +119,12 @@ public class HistoryGamePlayingController extends GamePlayingController {
     return result;
   }
 
+  /**
+   * This method is to find all records about current attack point
+   *
+   * @param records all records
+   * @return return the record list
+   */
   private List<RunningRecord> findCurrentPointTaskRecords(List<RunningRecord> records) {
     List<RunningRecord> result = new ArrayList<>();
     for (RunningRecord record : records) {
@@ -101,6 +134,24 @@ public class HistoryGamePlayingController extends GamePlayingController {
       }
     }
     return result;
+  }
+
+  /**
+   * Check whether the task is timing task
+   *
+   * @param taskId
+   * @return null for false, task instance for true
+   */
+  private Task checkIfIsTimingTask(long taskId) {
+    String taskIdStr = String.valueOf(taskId);
+    Task task = currentAttackPoint.getTaskMap().get(taskIdStr);
+    if (task == null) {
+      return null;
+    }
+    if (task.getType() == Task.TASK_TYPE.TIMING) {
+      return task;
+    }
+    return null;
   }
 
 }

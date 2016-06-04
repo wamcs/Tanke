@@ -86,18 +86,17 @@ public class GameDisplayController extends BaseListFragmentController<GameDispla
   }
 
   @Override
-  protected void onRefreshStateChanged(boolean refreshing) {
+  public void onRefreshStateChanged(boolean refreshing) {
     fragment.loading(refreshing);
   }
 
   @Override
-  protected void onError(Throwable t) {
-    super.onError(t);
+  public void onError(Throwable t) {
     fragment.loadingError(t);
   }
 
   @Override
-  protected Observable<List<GameDisplayEntity>> requestData(int page) {
+  public Observable<List<GameDisplayEntity>> requestData(int page) {
 //    return HttpService.getGameService()
 //        .getGamePage(requestLocation, page)
 //        .map(new Func1<Response<List<GameDisplayEntity>>, List<GameDisplayEntity>>() {
@@ -114,7 +113,7 @@ public class GameDisplayController extends BaseListFragmentController<GameDispla
 
   @SuppressWarnings("unchecked")
   @Override
-  protected GameDisplayAdapter getAdapter() {
+  public GameDisplayAdapter getAdapter() {
     return adapter;
   }
 

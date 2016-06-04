@@ -63,8 +63,6 @@ public class GameTaskController extends ActivityController {
   private List<String> taskIds;
   private Map<String, Task> taskMap;
 
-
-
   public GameTaskController(AppCompatActivity activity, View view) {
     super(activity, view);
     ButterKnife.bind(this, view);
