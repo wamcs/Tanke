@@ -1,8 +1,9 @@
 package com.lptiyu.tanke.database;
 
-import android.database.sqlite.SQLiteDatabase;
 
 import com.lptiyu.tanke.global.AppData;
+
+import de.greenrobot.dao.async.AsyncSession;
 
 /**
  * author:wamcs
@@ -12,25 +13,42 @@ import com.lptiyu.tanke.global.AppData;
 public class DBHelper {
 
 
-    private static DaoMaster.DevOpenHelper helper;
-    private static SQLiteDatabase db;
-    private static DaoMaster master;
-    private static DaoSession session;
+    private volatile static DBHelper helper;
 
-    public static void init(){
-        helper = new DaoMaster.DevOpenHelper(AppData.getContext(),"tanke-db",null);
+
+
+    public static DBHelper getInstance(){
+        if (null == helper){
+            synchronized (DBHelper.class){
+                if (null == helper){
+                    helper = new DBHelper();
+                }
+            }
+        }
+        return helper;
     }
 
-    public static PushMessageDao getPushMessageDao(){
-        db = helper.getWritableDatabase();
-        master = new DaoMaster(db);
-        session = master.newSession();
-        return session.getPushMessageDao();
+    private static final String DB_NAME = "tanke.db";
+    private DaoSession daoSession;
+    private AsyncSession asyncSession;
+
+    private DBHelper(){
+        DaoMaster.DevOpenHelper helper = new DaoMaster.DevOpenHelper(AppData.getContext(),DB_NAME,null);
+        DaoMaster master = new DaoMaster(helper.getWritableDatabase());
+        daoSession = master.newSession();
+        asyncSession = daoSession.startAsyncSession();
     }
 
-    public static void recycle(){
-        session = null;
-        master = null;
-        db.close();
+    public MessageDao getPushMessageDao(){
+        return daoSession.getMessageDao();
+    }
+
+    public MessageListDao getMessageList(){
+        return daoSession.getMessageListDao();
+    }
+
+    //用于处理异步任务
+    public AsyncSession getAsyncSession(){
+        return asyncSession;
     }
 }

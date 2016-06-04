@@ -37,7 +37,8 @@ public final class Conf {
     public static final int USER_AVATAR_SIZE = 320;
 
     /**
-     * user information*/
+     * user information
+     */
 
     public static final int MAX_HEIGHT = 210;
     public static final int MIN_HEIGHT = 150;
@@ -46,7 +47,7 @@ public final class Conf {
 
     public static final int CURRENT_YEAR = TimeUtils.getCurrentYear();
     public static final int MAX_YEAR = CURRENT_YEAR + 10;
-    public static final int MAX_BIIRTHDAY_YEAR  = CURRENT_YEAR - 5;
+    public static final int MAX_BIIRTHDAY_YEAR = CURRENT_YEAR - 5;
     public static final int MIN_BIRTHDAY_YEAR = 1950;
     public static final int MAX_MONTH = 12;
     public static final int MIN_MONTH = 1;
@@ -69,21 +70,30 @@ public final class Conf {
     public static final String PROTOCOL_STATE = "protocol_state";
 
 
-  /**
-   * game playing activity
-   */
-  public static final float LOCATION_DISTANCE_THRESHOLD_BOTTOM = 0.5f;
-  public static final float LOCATION_DISTANCE_THRESHOLD_TOP = 10.0f;
-  public static final double POINT_RADIUS = 10.0;
+    /**
+     * game playing activity
+     */
+    public static final float LOCATION_DISTANCE_THRESHOLD_BOTTOM = 0.5f;
+    public static final float LOCATION_DISTANCE_THRESHOLD_TOP = 10.0f;
+    public static final double POINT_RADIUS = 10.0;
 
-  public static final String CLICKED_POINT = "clicked_point";
-  public static final String TEAM_ID = "team_id";
-  public static final String GAME_ID = "game_id";
-  public static final String LINE_ID = "line_id";
-  public static final int REQUEST_CODE_TASK_ACTIVITY = 6;
-  public static final int RESULT_CODE_TASK_ACTIVITY = 7;
-  public static final String IS_POINT_TASK_ALL_FINISHED_INDEX = "is_point_task_all_finished_index";
-  public static final String IS_POINT_TASK_ALL_FINISHED = "is_point_task_all_finished";
+    public static final String CLICKED_POINT = "clicked_point";
+    public static final String TEAM_ID = "team_id";
+    public static final String GAME_ID = "game_id";
+    public static final String LINE_ID = "line_id";
+    public static final int REQUEST_CODE_TASK_ACTIVITY = 6;
+    public static final int RESULT_CODE_TASK_ACTIVITY = 7;
+    public static final String IS_POINT_TASK_ALL_FINISHED_INDEX = "is_point_task_all_finished_index";
+    public static final String IS_POINT_TASK_ALL_FINISHED = "is_point_task_all_finished";
 
+
+    /**
+     * Message
+     */
+    public static final int TIME_TYPE = 0;
+    public static final int OFFICIAL_MESSAGE = 1;
+    public static final int SYSTEM_MESSAGE = 2;
+    public static final String PUSH_ACTION = "com.tanke.PUSH_ACTION";
+    public static final String MESSAGE_ACTION = "com.tanke.MESSAGE_ACTION";
 
 }
