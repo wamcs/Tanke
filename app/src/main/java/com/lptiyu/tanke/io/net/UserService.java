@@ -108,7 +108,7 @@ public interface UserService {
   @GET("User/User")
   Observable<Response<UserDetails>> getUserDetail(
       @Query("uid") long uid,
-      @Query("token") int token
+      @Query("token") String token
   );
 
   /**

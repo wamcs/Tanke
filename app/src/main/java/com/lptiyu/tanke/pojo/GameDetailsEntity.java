@@ -163,4 +163,24 @@ public class GameDetailsEntity {
   public void setType(GAME_TYPE type) {
     this.type = type;
   }
+
+  @Override
+  public String toString() {
+    return "GameDetailsEntity{" +
+        "gameId=" + gameId +
+        ", img='" + img + '\'' +
+        ", title='" + title + '\'' +
+        ", area='" + area + '\'' +
+        ", startDate='" + startDate + '\'' +
+        ", endDate='" + endDate + '\'' +
+        ", startTime='" + startTime + '\'' +
+        ", endTime='" + endTime + '\'' +
+        ", type=" + type +
+        ", peoplePlaying=" + peoplePlaying +
+        ", gameIntro='" + gameIntro + '\'' +
+        ", rule='" + rule + '\'' +
+        ", zipUrl='" + zipUrl + '\'' +
+        ", shareUrl='" + shareUrl + '\'' +
+        '}';
+  }
 }

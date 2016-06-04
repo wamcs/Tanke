@@ -136,4 +136,21 @@ public class GameDisplayEntity {
   }
 
 
+  @Override
+  public String toString() {
+    return "GameDisplayEntity {" +
+        "\n id=" + id +
+        ",\n img='" + img + '\'' +
+        ",\n title='" + title + '\'' +
+        ",\n area='" + area + '\'' +
+        ",\n city='" + city + '\'' +
+        ",\n startDate='" + startDate + '\'' +
+        ",\n endDate='" + endDate + '\'' +
+        ",\n startTime='" + startTime + '\'' +
+        ",\n endTime='" + endTime + '\'' +
+        ",\n state=" + state +
+        ",\n recommend=" + recommend +
+        ",\n type=" + type +
+        '}';
+  }
 }

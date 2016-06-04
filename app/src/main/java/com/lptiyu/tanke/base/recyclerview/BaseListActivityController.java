@@ -1,11 +1,10 @@
 package com.lptiyu.tanke.base.recyclerview;
 
 import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 import com.lptiyu.tanke.base.controller.ActivityController;
-import com.lptiyu.tanke.base.controller.FragmentController;
 
 import java.util.List;
 
@@ -13,17 +12,18 @@ import rx.Observable;
 
 /**
  * EMAIL : danxionglei@foxmail.com
- * DATE : 16/5/27
+ * DATE : 16/6/4
  *
  * @author ldx
  */
-public abstract class BaseListFragmentController<Data> extends FragmentController
+public abstract class BaseListActivityController<Data> extends ActivityController
     implements BaseListControllerImpl.DataInteractionListener<Data>, ListController {
 
   private BaseListControllerImpl<Data> impl;
 
-  public BaseListFragmentController(Fragment fragment, ActivityController controller, View view) {
-    super(fragment, controller, view);
+  public BaseListActivityController(AppCompatActivity activity, View view) {
+    super(activity, view);
+    impl = new BaseListControllerImpl<>(this);
   }
 
   @Override

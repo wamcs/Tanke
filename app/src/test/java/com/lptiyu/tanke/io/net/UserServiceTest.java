@@ -1,11 +1,13 @@
 package com.lptiyu.tanke.io.net;
 
 import com.lptiyu.tanke.BuildConfig;
+import com.lptiyu.tanke.pojo.UserDetails;
 import com.lptiyu.tanke.pojo.UserEntity;
 
 import junit.framework.Assert;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricGradleTestRunner;
@@ -39,13 +41,15 @@ public class UserServiceTest {
   }
 
   @Test
+  @Ignore
   public void testRegister() throws Exception {
     userService.register("13006180386", "123qwe", "132465", UserService.USER_TYPE_NORMAL)
         .subscribe(new Action1<Response<UserEntity>>() {
           @Override
           public void call(Response<UserEntity> userResponse) {
-            Assert.assertNotNull(userResponse);
             System.out.println("userResponse = " + userResponse);
+            Assert.assertNotNull(userResponse);
+            Assert.assertEquals(userResponse.getStatus(), Response.RESPONSE_OK);
           }
         }, new Action1<Throwable>() {
           @Override
@@ -63,6 +67,7 @@ public class UserServiceTest {
           @Override
           public void call(Response<UserEntity> userResponse) {
             Assert.assertNotNull(userResponse);
+            Assert.assertEquals(userResponse.getStatus(), Response.RESPONSE_OK);
             System.out.println(userResponse.toString());
           }
         }, new Action1<Throwable>() {
@@ -76,11 +81,24 @@ public class UserServiceTest {
 
   @Test
   public void testLoginThirdParty() throws Exception {
-
   }
 
   @Test
   public void testForgetPassword() throws Exception {
+    HttpService.getUserService().forgetPassword("13006180386", "123qwe", "123000")
+        .subscribe(new Action1<Response<Void>>() {
+          @Override
+          public void call(Response<Void> voidResponse) {
+            System.out.println("voidResponse = " + voidResponse);
+            Assert.assertEquals(voidResponse.getStatus(), Response.RESPONSE_OK);
+          }
+        }, new Action1<Throwable>() {
+          @Override
+          public void call(Throwable throwable) {
+            Assert.assertNull(throwable);
+          }
+        });
+
   }
 
   @Test
@@ -95,13 +113,26 @@ public class UserServiceTest {
 
   @Test
   public void testGetUserDetail() throws Exception {
+    HttpService.getUserService().getUserDetail(1,"haha")
+        .subscribe(new Action1<Response<UserDetails>>() {
+          @Override
+          public void call(Response<UserDetails> userDetailsResponse) {
+            System.out.println("userDetailsResponse = " + userDetailsResponse);
+            Assert.assertEquals(userDetailsResponse.getStatus(), Response.RESPONSE_OK);
+          }
+        }, new Action1<Throwable>() {
+          @Override
+          public void call(Throwable throwable) {
+            Assert.assertNull(throwable);
+          }
+        });
 
   }
 
   @Test
   public void testUploadUserAvatar() throws Exception {
     File file = new File("src/test/res/need_to_remove.png");
-    userService.uploadUserAvatar(UID, TOKEN,RequestBody.create(MediaType.parse("application/octet-stream"), file))
+    userService.uploadUserAvatar(UID, TOKEN, RequestBody.create(MediaType.parse("application/octet-stream"), file))
         .subscribe(new Action1<Response<String>>() {
           @Override
           public void call(Response<String> stringResponse) {
@@ -125,6 +156,19 @@ public class UserServiceTest {
 
   @Test
   public void testUserProtocol() throws Exception {
+    userService.userProtocol().subscribe(new Action1<Response<String>>() {
+      @Override
+      public void call(Response<String> stringResponse) {
+        System.out.println("stringResponse = " + stringResponse.getInfo());
+        Assert.assertEquals(stringResponse.getStatus(), Response.RESPONSE_OK);
+        Assert.assertNotNull(stringResponse.getData());
+      }
+    }, new Action1<Throwable>() {
+      @Override
+      public void call(Throwable throwable) {
+        Assert.assertNull(throwable);
+      }
+    });
 
   }
 }

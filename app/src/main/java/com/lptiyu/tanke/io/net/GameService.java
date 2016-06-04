@@ -3,7 +3,6 @@ package com.lptiyu.tanke.io.net;
 import com.lptiyu.tanke.pojo.City;
 import com.lptiyu.tanke.pojo.GameDetailsEntity;
 import com.lptiyu.tanke.pojo.GameDisplayEntity;
-import com.lptiyu.tanke.pojo.GameStatus;
 
 import java.util.List;
 
@@ -27,6 +26,8 @@ public interface GameService {
    */
   @GET("Home/Index")
   Observable<Response<List<GameDisplayEntity>>> getGamePage(
+      @Query("uid") int uid,
+      @Query("token") String token,
       @Query("city") String location, // 城市
       @Query("page") long page);
 
@@ -70,7 +71,7 @@ public interface GameService {
 
   @Streaming
   @GET
-  Observable<ResponseBody> downloadGameZip(@Url String url);
+  Observable<retrofit2.Response<ResponseBody>> downloadGameZip(@Url String url);
 
   /**
    * 2.28 获取开通城市

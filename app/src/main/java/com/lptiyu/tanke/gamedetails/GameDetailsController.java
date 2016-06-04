@@ -1,5 +1,7 @@
 package com.lptiyu.tanke.gamedetails;
 
+import android.app.ProgressDialog;
+import android.content.Intent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -7,23 +9,33 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.lptiyu.tanke.R;
 import com.lptiyu.tanke.base.controller.ActivityController;
+import com.lptiyu.tanke.gameplaying.GamePlayingActivity;
+import com.lptiyu.tanke.global.Conf;
 import com.lptiyu.tanke.io.net.HttpService;
-import com.lptiyu.tanke.io.net.Response;
 import com.lptiyu.tanke.pojo.GAME_TYPE;
 import com.lptiyu.tanke.pojo.GameDetailsEntity;
+import com.lptiyu.tanke.utils.DirUtils;
 import com.lptiyu.tanke.utils.TimeUtils;
 import com.lptiyu.tanke.utils.ToastUtil;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.Arrays;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import okhttp3.ResponseBody;
+import okio.BufferedSink;
+import okio.Okio;
+import retrofit2.Response;
 import rx.Observable;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.exceptions.Exceptions;
 import rx.functions.Action1;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
-import timber.log.Timber;
 
 /**
  * EMAIL : danxionglei@foxmail.com
@@ -57,15 +69,18 @@ public class GameDetailsController extends ActivityController {
   @BindView(R.id.num_playing)
   TextView mTextPeoplePlaying;
 
+  ProgressDialog progressDialog;
+
   private Subscription subscription;
 
-  private int gameId;
+  private long gameId = 1000000001;
 
   private GameDetailsEntity mGameDetailsEntity;
 
   public GameDetailsController(GameDetailsActivity activity, View view) {
     super(activity, view);
     gameId = getIntent().getIntExtra("data", Integer.MIN_VALUE);
+    gameId = 1000000001;
     ButterKnife.bind(this, view);
     init();
   }
@@ -139,6 +154,9 @@ public class GameDetailsController extends ActivityController {
       subscription = null;
     }
 
+    progressDialog = new ProgressDialog(getContext(), ProgressDialog.STYLE_SPINNER);
+    progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+
 //    subscription = HttpService.getGameService().getGameDetails(gameId)
     Observable.just(entity)
         .subscribeOn(Schedulers.io())
@@ -150,7 +168,6 @@ public class GameDetailsController extends ActivityController {
 //              Timber.e("Network Error (%d, %s)", gameDetailsEntityResponse.getStatus(), gameDetailsEntityResponse.getInfo());
 //              throw new IllegalStateException(gameDetailsEntityResponse.getInfo());
 //            }
-
             return entity;
           }
         })
@@ -180,7 +197,51 @@ public class GameDetailsController extends ActivityController {
 
   @OnClick(R.id.game_detail_ensure)
   public void ensureClicked() {
+    progressDialog.show();
+    HttpService.getGameService().downloadGameZip(
+        "http://7xrl39.com1.z0.glb.clouddn.com/1000000001_2000000001_1464075128.zip")
+        .map(new Func1<Response<ResponseBody>, File>() {
+          @Override
+          public File call(Response<ResponseBody> response) {
+            String contentDisposition = response.headers().get("Content-Disposition");
+            System.out.println("contentDisposition = " + contentDisposition);
+            String[] files = contentDisposition.split("\"");
 
+            File file = new File(DirUtils.getTempDirectory(), files[1]);
+
+            try {
+              if (!file.exists() && !file.createNewFile()) {
+                throw new IOException("Create file failed.");
+              }
+              BufferedSink sink = Okio.buffer(Okio.sink(file));
+              sink.writeAll(response.body().source());
+              sink.close();
+              return file;
+            } catch (IOException e) {
+              if (file.exists()) {
+                //noinspection ResultOfMethodCallIgnored
+                file.delete();
+              }
+              throw Exceptions.propagate(e);
+            }
+          }
+        })
+        .subscribeOn(Schedulers.io())
+        .observeOn(AndroidSchedulers.mainThread())
+        .subscribe(new Action1<File>() {
+          @Override
+          public void call(File file) {
+            progressDialog.dismiss();
+            Intent intent = new Intent(getContext(), GamePlayingActivity.class);
+            intent.putExtra(Conf.GAME_ID, gameId);
+            startActivity(intent);
+          }
+        }, new Action1<Throwable>() {
+          @Override
+          public void call(Throwable throwable) {
+            ToastUtil.TextToast(throwable.getMessage());
+          }
+        });
   }
 
   @Override
