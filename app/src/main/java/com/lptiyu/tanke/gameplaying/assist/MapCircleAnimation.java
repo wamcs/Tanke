@@ -5,7 +5,6 @@ import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.Color;
 import android.view.animation.AccelerateDecelerateInterpolator;
-import android.view.animation.AccelerateInterpolator;
 
 import com.baidu.mapapi.map.BaiduMap;
 import com.baidu.mapapi.map.Circle;
@@ -13,7 +12,6 @@ import com.baidu.mapapi.map.CircleOptions;
 import com.baidu.mapapi.model.LatLng;
 import com.lptiyu.tanke.R;
 
-import java.lang.annotation.Target;
 import java.lang.ref.WeakReference;
 
 import timber.log.Timber;
@@ -103,7 +101,12 @@ class MapCircleAnimation implements
   public void setAnimateCenter(LatLng latLng) {
     if (mCircle == null) {
       CircleOptions options = generateCircleOption(latLng);
-      mCircle = (Circle) baiduMapWeakReference.get().addOverlay(options);
+      BaiduMap weak = baiduMapWeakReference.get();
+      if (weak == null) {
+        Timber.e("Weak Reference of baiduMap is null");
+        return;
+      }
+      mCircle = (Circle) weak.addOverlay(options);
       return;
     }
     mCircle.setCenter(latLng);
@@ -129,7 +132,6 @@ class MapCircleAnimation implements
   }
 
   private ValueAnimator generateAnimation() {
-    //TODO : to draw circle with the map system
     ValueAnimator animator = ValueAnimator.ofFloat(0, 1);
     animator.setDuration(4000);
     animator.setInterpolator(new AccelerateDecelerateInterpolator());

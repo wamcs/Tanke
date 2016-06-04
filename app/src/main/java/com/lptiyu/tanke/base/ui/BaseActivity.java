@@ -2,7 +2,6 @@ package com.lptiyu.tanke.base.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 
@@ -23,11 +22,6 @@ public abstract class BaseActivity extends AppCompatActivity implements Controll
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-  }
-
-  @Override
-  public void onPostCreate(Bundle savedInstanceState, PersistableBundle persistentState) {
-    super.onPostCreate(savedInstanceState, persistentState);
   }
 
   @Override
@@ -96,7 +90,7 @@ public abstract class BaseActivity extends AppCompatActivity implements Controll
 
   @Override
   public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-    if (null != controller){
+    if (null != controller) {
       controller.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
     super.onRequestPermissionsResult(requestCode, permissions, grantResults);

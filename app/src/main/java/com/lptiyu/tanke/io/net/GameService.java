@@ -71,7 +71,7 @@ public interface GameService {
 
   @Streaming
   @GET
-  Observable<ResponseBody> downloadGameZip(@Url String url);
+  Observable<retrofit2.Response<ResponseBody>> downloadGameZip(@Url String url);
 
   /**
    * 2.28 获取开通城市
