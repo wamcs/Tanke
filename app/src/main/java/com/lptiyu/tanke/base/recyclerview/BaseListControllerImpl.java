@@ -17,7 +17,7 @@ import timber.log.Timber;
  *
  * @author ldx
  */
-class BaseListControllerImpl<Data> {
+class BaseListControllerImpl<Data> implements ListController{
 
   private int mListPage = 0;
 
@@ -34,6 +34,7 @@ class BaseListControllerImpl<Data> {
     this.listener = listener;
   }
 
+  @Override
   public void refreshTop() {
     if (isRefreshing) {
       return;
@@ -58,6 +59,7 @@ class BaseListControllerImpl<Data> {
         });
   }
 
+  @Override
   public void refreshBottom() {
     if (isRefreshing) {
       return;
@@ -82,6 +84,7 @@ class BaseListControllerImpl<Data> {
         });
   }
 
+  @Override
   public boolean isRefreshing() {
     return isRefreshing;
   }
@@ -101,8 +104,6 @@ class BaseListControllerImpl<Data> {
   }
 
   public interface DataInteractionListener<T> {
-
-    boolean isRefreshing();
 
     Observable<List<T>> requestData(int page);
 

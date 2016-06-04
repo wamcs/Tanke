@@ -17,13 +17,23 @@ import rx.Observable;
  * @author ldx
  */
 public abstract class BaseListActivityController<Data> extends ActivityController
-    implements BaseListControllerImpl.DataInteractionListener<Data> {
+    implements BaseListControllerImpl.DataInteractionListener<Data>, ListController {
 
   private BaseListControllerImpl<Data> impl;
 
   public BaseListActivityController(AppCompatActivity activity, View view) {
     super(activity, view);
     impl = new BaseListControllerImpl<>(this);
+  }
+
+  @Override
+  public void refreshTop() {
+    impl.refreshTop();
+  }
+
+  @Override
+  public void refreshBottom() {
+    impl.refreshBottom();
   }
 
   @Override

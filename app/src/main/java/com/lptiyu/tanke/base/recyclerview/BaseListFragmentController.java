@@ -17,12 +17,23 @@ import rx.Observable;
  *
  * @author ldx
  */
-public abstract class BaseListFragmentController<Data> extends FragmentController implements BaseListControllerImpl.DataInteractionListener<Data> {
+public abstract class BaseListFragmentController<Data> extends FragmentController
+    implements BaseListControllerImpl.DataInteractionListener<Data>, ListController {
 
-  BaseListControllerImpl<Data> impl;
+  private BaseListControllerImpl<Data> impl;
 
   public BaseListFragmentController(Fragment fragment, ActivityController controller, View view) {
     super(fragment, controller, view);
+  }
+
+  @Override
+  public void refreshTop() {
+    impl.refreshTop();
+  }
+
+  @Override
+  public void refreshBottom() {
+    impl.refreshBottom();
   }
 
   @Override
