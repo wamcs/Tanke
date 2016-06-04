@@ -82,16 +82,17 @@
     <com.lptiyu.tanke.widget.TickView
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/tick_view"
+        android:visibility="gone"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="@dimen/tick_view_margin_top"
         android:padding="5dp"
-        app:tickOuterCircleRadius="25dp"
+        app:tickTextSize="10sp"
+        app:tickOuterCircleRadius="35dp"
         app:tickOuterCircleColor="@color/colorPrimary"
-        app:tickInnerCircleRadius="20dp"
+        app:tickInnerCircleRadius="31dp"
         app:tickInnerCircleColor="@color/colorPrimaryDark"
-        app:tickFillColor="@color/green"
+        app:tickFillColor="@color/colorAccent"
         app:tickTextColor="@color/default_font_color"
-        app:tickTextSize="15sp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 

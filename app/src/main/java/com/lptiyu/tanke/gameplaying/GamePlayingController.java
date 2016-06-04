@@ -1,5 +1,6 @@
 package com.lptiyu.tanke.gameplaying;
 
+import android.animation.Animator;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.annotation.NonNull;
@@ -7,6 +8,10 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.animation.AccelerateDecelerateInterpolator;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.BounceInterpolator;
+import android.view.animation.TranslateAnimation;
 import android.widget.TextView;
 
 import com.baidu.location.BDLocation;
@@ -36,9 +41,11 @@ import com.lptiyu.tanke.trace.tracing.ITracingHelper;
 import com.lptiyu.tanke.trace.tracing.TracingCallback;
 import com.lptiyu.tanke.trace.tracing.TracingHelper;
 import com.lptiyu.tanke.utils.Display;
+import com.lptiyu.tanke.utils.TimeUtils;
 import com.lptiyu.tanke.utils.ToastUtil;
 import com.lptiyu.tanke.utils.VibrateUtils;
 import com.lptiyu.tanke.widget.BaseSpotScrollView;
+import com.lptiyu.tanke.widget.TickView;
 
 import java.util.List;
 
@@ -56,10 +63,13 @@ public abstract class GamePlayingController extends ActivityController implement
     BDLocationListener,
     TracingCallback,
     MapHelper.OnMapMarkerClickListener,
-    BaseSpotScrollView.OnSpotItemClickListener {
+    BaseSpotScrollView.OnSpotItemClickListener,
+    TickView.OnTickFinishListener {
 
   @BindView(R.id.map_view)
   TextureMapView mapView;
+  @BindView(R.id.tick_view)
+  TickView mTickView;
 
   boolean isReachedAttackPoint = false;
   boolean isGameFinished = false;
@@ -130,7 +140,11 @@ public abstract class GamePlayingController extends ActivityController implement
     mRecordsHandler = new RecordsHandler.Builder(gameId, teamId).build();
     runningRecordBuilder = new RunningRecord.Builder();
 
+    mTickView.setmListener(this);
+
     initRecords();
+
+    moveToTarget();
 
 //    mTracingHelper.start();
   }
@@ -174,9 +188,32 @@ public abstract class GamePlayingController extends ActivityController implement
     if (timingTask == null) {
       return;
     }
+    final int limitTimeMinute = Integer.valueOf(timingTask.getPwd());
+    int translationY = (int) (mTickView.getHeight() + getResources().getDimension(R.dimen.tick_view_margin_top));
+    mTickView.setTranslationY(-translationY);
+    mTickView.setVisibility(View.VISIBLE);
+    mTickView.animate().setInterpolator(new BounceInterpolator()).translationY(0).setDuration(800).setListener(new Animator.AnimatorListener() {
+      @Override
+      public void onAnimationStart(Animator animation) {
 
+      }
+
+      @Override
+      public void onAnimationEnd(Animator animation) {
+        mTickView.startTick(15000L);
+      }
+
+      @Override
+      public void onAnimationCancel(Animator animation) {
+
+      }
+
+      @Override
+      public void onAnimationRepeat(Animator animation) {
+
+      }
+    });
   }
-
 
   /**
    * This method to notify user when they first arrive the attack point
@@ -192,7 +229,6 @@ public abstract class GamePlayingController extends ActivityController implement
     mapHelper.onReachAttackPoint(currentAttackPointIndex);
     consoleHelper.onReachAttackPoint(currentAttackPointIndex);
   }
-
 
   void onNextPoint() {
     if (currentAttackPointIndex < mPoints.size() - 1) {
@@ -259,11 +295,6 @@ public abstract class GamePlayingController extends ActivityController implement
     isReachedAttackPoint = true;
     onReachAttackPoint();
     RecordsUtils.dispatchTypeRecord(mRecordsHandler, initReachPointRecord(34.123123, 114.321321, currentAttackPoint.getId()));
-  }
-
-  @OnClick(R.id.tick_view)
-  void startHeartBeat(View view) {
-    Display.playHeartbeatAnimation(view);
   }
 
   @Override
@@ -366,6 +397,33 @@ public abstract class GamePlayingController extends ActivityController implement
   @Override
   public void onTraceStop() {
     Timber.e("hawk eye service stop");
+  }
+
+  @Override
+  public void onTickFinish() {
+    int translationY = (int) (mTickView.getHeight() + getResources().getDimension(R.dimen.tick_view_margin_top));
+    mTickView.animate().setInterpolator(new AccelerateInterpolator()).translationY(-translationY).setDuration(500).setListener(new Animator.AnimatorListener() {
+      @Override
+      public void onAnimationStart(Animator animation) {
+
+      }
+
+      @Override
+      public void onAnimationEnd(Animator animation) {
+        mTickView.setVisibility(View.GONE);
+      }
+
+      @Override
+      public void onAnimationCancel(Animator animation) {
+
+      }
+
+      @Override
+      public void onAnimationRepeat(Animator animation) {
+
+      }
+    });
+    //TODO : to judge the timing task is finish or nor
   }
 
   @Override

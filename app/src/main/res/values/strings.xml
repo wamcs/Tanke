@@ -102,7 +102,7 @@
 
     <string name="start_timing_task">启动定时器</string>
     <string name="timing_dialog_message_formatter" formatted="false">任务将在%d秒后揭晓</string>
-    <string name="tick_view_message_formatter" formatted="false">%02d:%02d</string>
+    <string name="tick_view_message_formatter" formatted="false">%tM%n : %tS%n</string>
 
     <string name="please_input_answer">请输入答案</string>
     <string name="error_input">您的输入不规范</string>

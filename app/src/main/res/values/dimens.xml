@@ -96,6 +96,8 @@
     <dimen name="running_spot_view_item_line_height">8dp</dimen>
     <dimen name="running_spot_view_radius">12dp</dimen>
 
+    <dimen name="tick_view_margin_top">50dp</dimen>
+
     <!-- TaskActivity Dimens-->
     <dimen name="task_content_height">40dp</dimen>
     <dimen name="task_answer_area_height">48dp</dimen>
