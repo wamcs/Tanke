@@ -101,12 +101,13 @@
 
     <!-- GameTaskActivity Text Area -->
     <string name="exit_task_activity_when_loading">任务还在加载中，您确定要终止加载吗？</string>
-    <string name="exit_task_activity_when_doing">"当前攻击点任务还全部完成，您确定要中断吗？"</string>
+    <string name="exit_task_activity_when_doing">"当前攻击点任务还未全部完成，您确定要中断吗？"</string>
     <string name="scan_game_manager_qrcode">扫描通关二维码</string>
     <string name="scan_error">扫码有误，请重试</string>
 
     <string name="start_timing_task">启动定时器</string>
     <string name="timing_dialog_message_formatter" formatted="false">任务将在%d秒后揭晓</string>
+    <string name="tick_view_message_formatter" formatted="false">%tM%n : %tS%n</string>
 
     <string name="please_input_answer">请输入答案</string>
     <string name="error_input">您的输入不规范</string>

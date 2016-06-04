@@ -7,8 +7,12 @@ import android.widget.RelativeLayout;
 
 import com.lptiyu.tanke.R;
 import com.lptiyu.tanke.base.controller.ActivityController;
+import com.lptiyu.tanke.base.ui.BaseFragment;
+import com.lptiyu.tanke.gameplaying.pojo.GAME_ACTIVITY_FINISH_TYPE;
 import com.lptiyu.tanke.utils.Inflater;
 import com.lptiyu.tanke.utils.ToastUtil;
+
+import timber.log.Timber;
 
 
 /**
@@ -42,7 +46,6 @@ public class TimingTaskController extends MultiplyTaskController implements
         public void onClick(View v) {
 //          ToastUtil.TextToast("定时器将于10s后启动");
 //          counter.startCounting();
-
           finishTask();
           mActivityController.openNextTaskIfExist();
 
@@ -56,7 +59,22 @@ public class TimingTaskController extends MultiplyTaskController implements
 
   @Override
   public void onCounterFinished() {
-    getFragment().getActivity().finish();
+    //finish game activity and notify the GamePlayingActivity to start timing task flow
+    Fragment fragment = getFragment();
+    if (fragment == null) {
+      return;
+    }
+    if (!(fragment instanceof BaseFragment)) {
+      Timber.d("Fragment : %s is not instance of BaseFragment", fragment.toString());
+      return;
+    }
+    BaseFragment baseFragment = ((BaseFragment) fragment);
+    ActivityController activityController = baseFragment.getActivityController();
+    if (activityController == null || (!(activityController instanceof GameTaskController))) {
+      Timber.d("ActivityController : %s is not instance of GameTaskController", activityController.toString());
+      return;
+    }
+    ((GameTaskController) activityController).finishGameTaskActivityByType(GAME_ACTIVITY_FINISH_TYPE.TIMING_TASK, mTask);
   }
 
 }
