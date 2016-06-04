@@ -21,6 +21,16 @@
         <attr name="spotToDoColor" format="color|reference"/>
         <attr name="spotItemLineColor" format="color|reference"/>
     </declare-styleable>
+    
+    <declare-styleable name="TickView">
+        <attr name="tickTextSize" format="dimension"/>
+        <attr name="tickTextColor" format="color|reference"/>
+        <attr name="tickInnerCircleRadius" format="dimension"/>
+        <attr name="tickInnerCircleColor" format="color|reference"/>
+        <attr name="tickOuterCircleRadius" format="dimension"/>
+        <attr name="tickOuterCircleColor" format="color|reference"/>
+        <attr name="tickFillColor" format="color|reference"/>
+    </declare-styleable>
 
 
 </resources>

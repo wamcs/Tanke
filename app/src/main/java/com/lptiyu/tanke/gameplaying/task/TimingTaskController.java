@@ -64,7 +64,7 @@ public class TimingTaskController extends MultiplyTaskController implements
     Fragment fragment = getFragment();
     if (fragment == null) {
       return;
-    }`
+    }
     if (!(fragment instanceof BaseFragment)) {
       Timber.d("Fragment : %s is not instance of BaseFragment", fragment.toString());
       return;

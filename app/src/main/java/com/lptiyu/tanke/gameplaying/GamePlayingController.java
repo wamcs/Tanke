@@ -35,6 +35,7 @@ import com.lptiyu.tanke.permission.TargetMethod;
 import com.lptiyu.tanke.trace.tracing.ITracingHelper;
 import com.lptiyu.tanke.trace.tracing.TracingCallback;
 import com.lptiyu.tanke.trace.tracing.TracingHelper;
+import com.lptiyu.tanke.utils.Display;
 import com.lptiyu.tanke.utils.ToastUtil;
 import com.lptiyu.tanke.utils.VibrateUtils;
 import com.lptiyu.tanke.widget.BaseSpotScrollView;
@@ -258,6 +259,11 @@ public abstract class GamePlayingController extends ActivityController implement
     isReachedAttackPoint = true;
     onReachAttackPoint();
     RecordsUtils.dispatchTypeRecord(mRecordsHandler, initReachPointRecord(34.123123, 114.321321, currentAttackPoint.getId()));
+  }
+
+  @OnClick(R.id.tick_view)
+  void startHeartBeat(View view) {
+    Display.playHeartbeatAnimation(view);
   }
 
   @Override

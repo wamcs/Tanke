@@ -55,7 +55,6 @@
 
     <!-- LoginEditText colors-->
     <color name="custom_edit_color">#7c99d6</color>
->>>>>>> ldx
 
     <!-- LoginActivity colors-->
     <color name="login_activity_title_color">#769df6</color>

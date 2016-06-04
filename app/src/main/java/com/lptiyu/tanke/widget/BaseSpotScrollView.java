@@ -350,8 +350,7 @@ public class BaseSpotScrollView extends HorizontalScrollView {
         mPaint.setTextSize(spotTextSize);
         mPaint.getTextBounds(mText, 0, mText.length(), mBounds);
         float textWidth = mBounds.width();
-        int desired = (int) (getPaddingLeft() + textWidth + getPaddingRight() + spotItemLineWidth * 2);
-        mWidth = desired;
+        mWidth = (int) (getPaddingLeft() + textWidth + getPaddingRight() + spotItemLineWidth * 2);
       }
 
       if (heightMode == MeasureSpec.EXACTLY) {
@@ -360,8 +359,7 @@ public class BaseSpotScrollView extends HorizontalScrollView {
         mPaint.setTextSize(spotTextSize);
         mPaint.getTextBounds(mText, 0, mText.length(), mBounds);
         float textHeight = mBounds.height();
-        int desired = (int) (getPaddingTop() + textHeight + getPaddingBottom());
-        mHeight = desired;
+        mHeight = (int) (getPaddingTop() + textHeight + getPaddingBottom());
       }
       int minRadius;
       if (mBounds.height() < mBounds.width()) {
