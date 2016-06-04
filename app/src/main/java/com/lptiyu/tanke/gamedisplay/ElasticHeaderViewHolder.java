@@ -9,12 +9,12 @@ import com.bumptech.glide.Glide;
 import com.lptiyu.tanke.R;
 import com.lptiyu.tanke.base.recyclerview.BaseViewHolder;
 import com.lptiyu.tanke.pojo.GameDisplayEntity;
+import com.mikhaellopez.circularimageview.CircularImageView;
 
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
  * EMAIL : danxionglei@foxmail.com
@@ -27,13 +27,13 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class ElasticHeaderViewHolder extends BaseViewHolder<GameDisplayEntity> {
 
   @BindView(R.id.left_image_view)
-  CircleImageView leftImageView;
+  CircularImageView leftImageView;
 
   @BindView(R.id.middle_image_view)
-  CircleImageView middleImageView;
+  CircularImageView middleImageView;
 
   @BindView(R.id.right_image_view)
-  CircleImageView rightImageView;
+  CircularImageView rightImageView;
 
   @BindView(R.id.left_title)
   TextView leftTitle;

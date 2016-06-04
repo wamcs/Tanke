@@ -28,17 +28,6 @@ android {
         }
     }
 
-    buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            signingConfig signingConfigs.Release
-        }
-        debug {
-            signingConfig signingConfigs.Debug
-        }
-    }
-
     splits {
         abi {
             enable true
@@ -52,6 +41,18 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_7
         targetCompatibility JavaVersion.VERSION_1_7
     }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.Release
+        }
+        debug {
+            signingConfig signingConfigs.Debug
+        }
+    }
+
 }
 
 dependencies {
@@ -80,7 +81,7 @@ dependencies {
     compile project(':number_picker')
     compile 'com.google.code.gson:gson:2.6.2'
     // 圆角图片
-    compile 'de.hdodenhof:circleimageview:2.0.0'
+    compile 'com.mikhaellopez:circularimageview:3.0.2'
 
     //    RecyclerView
     //    CardView

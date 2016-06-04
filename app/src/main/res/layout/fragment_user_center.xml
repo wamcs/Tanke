@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/header_layout"
+        style="@style/TextAppearance.Toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/default_toolbar_height"
+        android:background="@drawable/toolbar_gradient"
+        android:gravity="center"
+        android:text="@string/userCenter" />
+
+    <LinearLayout
+        android:id="@+id/user_message_layout"
+        android:layout_below="@id/header_layout"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:orientation="horizontal"
+        android:paddingBottom="10dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:paddingTop="10dp">
+
+        <ImageView
+            android:id="@+id/user_avatar"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            />
+        <!--
+        app:civ_border_color="#EEEEEE"
+        app:civ_border_width="4dp"
+        app:civ_shadow="true"
+        app:civ_shadow_radius="10"
+        app:civ_shadow_color="#8BC34A"
+        -->
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="10dp"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:gravity="center_vertical"
+                >
+
+                <TextView
+                    android:id="@+id/user_nickname"
+                    style="@style/TextAppearance.UserCenter.middle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="林动"
+                    />
+
+                <ImageView
+                    android:id="@+id/user_sex"
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:padding="5dp"/>
+
+                <TextView
+                    android:id="@+id/user_location"
+                    style="@style/TextAppearance.UserCenter.small"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="湖北武汉"
+                    />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="6dp">
+
+                <TextView
+                    style="@style/TextAppearance.UserCenter.small"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="步道号："/>
+
+                <TextView
+                    android:id="@+id/user_uid"
+                    style="@style/TextAppearance.UserCenter.small"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="26567822"/>
+
+            </LinearLayout>
+
+            <RelativeLayout
+                android:layout_width="180dp"
+                android:layout_height="wrap_content">
+
+                <com.lptiyu.tanke.widget.GradientProgressBar
+                    android:id="@+id/user_progress"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginTop="5dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="3dp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_above="@id/user_progress"
+                    android:background="@drawable/blue_round_corner"
+                    style="@style/TextAppearance.UserCenter.TAG"
+                    android:text="LV.7"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_above="@id/user_progress"
+                    android:background="@drawable/blue_round_corner"
+                    style="@style/TextAppearance.UserCenter.TAG"
+                    android:text="LV.7"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_above="@id/user_progress"
+                    android:background="@drawable/blue_round_corner"
+                    style="@style/TextAppearance.UserCenter.TAG"
+                    android:text="LV.7"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_above="@id/user_progress"
+                    android:background="@drawable/purple_round_corner"
+                    android:layout_alignParentRight="true"
+                    style="@style/TextAppearance.UserCenter.TAG"
+                    android:text="LV.8"
+                    />
+
+                <TextView
+                    android:id="@+id/user_ha_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_above="@id/user_progress"
+                    style="@style/TextAppearance.UserCenter.small"
+                    android:text="步道跑神"
+                    />
+
+            </RelativeLayout>
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_below="@id/user_message_layout"
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="80dp"/>
+    </LinearLayout>
+
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:layout_below="@id/user_message_layout"
+        android:background="@drawable/shadow"
+        />
+</RelativeLayout>

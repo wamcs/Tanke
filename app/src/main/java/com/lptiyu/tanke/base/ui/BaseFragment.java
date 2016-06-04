@@ -1,12 +1,13 @@
 package com.lptiyu.tanke.base.ui;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import com.lptiyu.tanke.base.controller.ActivityController;
 import com.lptiyu.tanke.base.controller.BaseController;
@@ -28,6 +29,19 @@ public abstract class BaseFragment extends Fragment implements ControllerHolder 
   public BaseFragment() {
 
   }
+
+  public static View fromResLayout(LayoutInflater inflater, ViewGroup parent, int layoutId) {
+    return inflater.inflate(layoutId, parent, false);
+  }
+
+  public static View fromResLayout(ViewGroup parent, int layoutId) {
+    return LayoutInflater.from(parent.getContext()).inflate(layoutId, parent, false);
+  }
+
+  public static View fromResLayout(Context context, int layoutId) {
+    return LayoutInflater.from(context).inflate(layoutId, null);
+  }
+
 
   @Override
   public void onAttach(Context context) {

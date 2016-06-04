@@ -22,7 +22,6 @@
             android:background="@null"
             android:scaleType="centerInside"
             android:src="@mipmap/game_details_go_back_btn"
-            android:text="退"
             />
 
         <TextView
@@ -31,9 +30,7 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:text="华科森林记"
-            android:textColor="@color/white08"
-            android:textSize="17sp"
-            android:textStyle="normal"
+            style="@style/TextAppearance.Toolbar"
             />
 
         <ImageView
@@ -45,7 +42,6 @@
             android:layout_marginRight="10dp"
             android:scaleType="centerInside"
             android:src="@mipmap/game_details_share_btn"
-            android:text="享"
             />
     </RelativeLayout>
 

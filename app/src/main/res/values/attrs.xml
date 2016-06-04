@@ -22,5 +22,9 @@
         <attr name="spotItemLineColor" format="color|reference"/>
     </declare-styleable>
 
+    <declare-styleable name="GradientProgressBar">
+        <attr name="src" format="reference"/>
+    </declare-styleable>
+
 
 </resources>

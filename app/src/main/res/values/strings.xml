@@ -28,6 +28,11 @@
 
     <!--Game details-->
 
+    <!--UserCenter start-->
+    <string name="userCenter">我的</string>
+    <!--UserCenter finished-->
+
+
     <string name="name">步 道 运 动</string>
     <string name="please_input_password">请输入密码</string>
     <string name="please_input_phone">请输入手机号</string>

@@ -53,9 +53,10 @@
     <color name="middle_blue">#5173ea</color>
     <color name="dark_blue">#2c4ed0</color>
 
+    <color name="purple">#8151ea</color>
+
     <!-- LoginEditText colors-->
     <color name="custom_edit_color">#7c99d6</color>
->>>>>>> ldx
 
     <!-- LoginActivity colors-->
     <color name="login_activity_title_color">#769df6</color>
