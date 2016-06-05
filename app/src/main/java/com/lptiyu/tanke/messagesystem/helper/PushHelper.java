@@ -1,5 +1,8 @@
 package com.lptiyu.tanke.messagesystem.helper;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -8,7 +11,6 @@ import com.lptiyu.tanke.database.DBHelper;
 import com.lptiyu.tanke.database.Message;
 import com.lptiyu.tanke.database.MessageDao;
 import com.lptiyu.tanke.global.Conf;
-import com.lptiyu.tanke.messagesystem.OnRecyclerItemClickListener;
 import com.lptiyu.tanke.messagesystem.adpater.PushAdapter;
 
 import java.util.List;
@@ -19,8 +21,7 @@ import java.util.List;
  * email:kaili@hustunique.com
  */
 public class PushHelper extends MessageHelper implements
-        SwipeRefreshLayout.OnRefreshListener,
-        OnRecyclerItemClickListener {
+        SwipeRefreshLayout.OnRefreshListener {
 
     private MessageDao messageDao;
     private int loadMessageSumNumber;
@@ -59,7 +60,7 @@ public class PushHelper extends MessageHelper implements
         }
         loadMessageNumber = loadMessageSumNumber;
         loadMessage();
-        adapter =new PushAdapter(messageList);
+        adapter =new PushAdapter(context,messageList);
         mRecyclerView.setAdapter(adapter);
 
     }
@@ -88,10 +89,5 @@ public class PushHelper extends MessageHelper implements
         adapter.notifyDataSetChanged();
         isRefreshing = false;
         mSwipeRefreshLayout.setRefreshing(false);
-    }
-
-    @Override
-    public void onItemClick() {
-
     }
 }

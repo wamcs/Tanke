@@ -26,10 +26,9 @@ public class MessageDao extends AbstractDao<Message, Long> {
         public final static Property Id = new Property(0, Long.class, "id", true, "_id");
         public final static Property Alert = new Property(1, String.class, "alert", false, "ALERT");
         public final static Property Title = new Property(2, String.class, "title", false, "TITLE");
-        public final static Property Url = new Property(3, String.class, "url", false, "URL");
-        public final static Property Time = new Property(4, Long.class, "time", false, "TIME");
-        public final static Property Type = new Property(5, Integer.class, "type", false, "TYPE");
-        public final static Property Image = new Property(6, String.class, "image", false, "IMAGE");
+        public final static Property Time = new Property(3, Long.class, "time", false, "TIME");
+        public final static Property Type = new Property(4, Integer.class, "type", false, "TYPE");
+        public final static Property Image = new Property(5, String.class, "image", false, "IMAGE");
     };
 
 
@@ -48,10 +47,9 @@ public class MessageDao extends AbstractDao<Message, Long> {
                 "\"_id\" INTEGER PRIMARY KEY ," + // 0: id
                 "\"ALERT\" TEXT NOT NULL ," + // 1: alert
                 "\"TITLE\" TEXT," + // 2: title
-                "\"URL\" TEXT," + // 3: url
-                "\"TIME\" INTEGER," + // 4: time
-                "\"TYPE\" INTEGER," + // 5: type
-                "\"IMAGE\" TEXT);"); // 6: image
+                "\"TIME\" INTEGER," + // 3: time
+                "\"TYPE\" INTEGER," + // 4: type
+                "\"IMAGE\" TEXT);"); // 5: image
     }
 
     /** Drops the underlying database table. */
@@ -76,24 +74,19 @@ public class MessageDao extends AbstractDao<Message, Long> {
             stmt.bindString(3, title);
         }
  
-        String url = entity.getUrl();
-        if (url != null) {
-            stmt.bindString(4, url);
-        }
- 
         Long time = entity.getTime();
         if (time != null) {
-            stmt.bindLong(5, time);
+            stmt.bindLong(4, time);
         }
  
         Integer type = entity.getType();
         if (type != null) {
-            stmt.bindLong(6, type);
+            stmt.bindLong(5, type);
         }
  
         String image = entity.getImage();
         if (image != null) {
-            stmt.bindString(7, image);
+            stmt.bindString(6, image);
         }
     }
 
@@ -110,10 +103,9 @@ public class MessageDao extends AbstractDao<Message, Long> {
             cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // id
             cursor.getString(offset + 1), // alert
             cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2), // title
-            cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3), // url
-            cursor.isNull(offset + 4) ? null : cursor.getLong(offset + 4), // time
-            cursor.isNull(offset + 5) ? null : cursor.getInt(offset + 5), // type
-            cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6) // image
+            cursor.isNull(offset + 3) ? null : cursor.getLong(offset + 3), // time
+            cursor.isNull(offset + 4) ? null : cursor.getInt(offset + 4), // type
+            cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5) // image
         );
         return entity;
     }
@@ -124,10 +116,9 @@ public class MessageDao extends AbstractDao<Message, Long> {
         entity.setId(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
         entity.setAlert(cursor.getString(offset + 1));
         entity.setTitle(cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2));
-        entity.setUrl(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
-        entity.setTime(cursor.isNull(offset + 4) ? null : cursor.getLong(offset + 4));
-        entity.setType(cursor.isNull(offset + 5) ? null : cursor.getInt(offset + 5));
-        entity.setImage(cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6));
+        entity.setTime(cursor.isNull(offset + 3) ? null : cursor.getLong(offset + 3));
+        entity.setType(cursor.isNull(offset + 4) ? null : cursor.getInt(offset + 4));
+        entity.setImage(cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5));
      }
     
     /** @inheritdoc */

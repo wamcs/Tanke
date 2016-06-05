@@ -19,7 +19,6 @@ public class MyDaoGenerator {
         pushMessage.addIdProperty();
         pushMessage.addStringProperty("alert").notNull();
         pushMessage.addStringProperty("title");
-        pushMessage.addStringProperty("url");
         pushMessage.addLongProperty("time");
         pushMessage.addIntProperty("type");//1.官方资讯 2.系统推送
         pushMessage.addStringProperty("image");//图片消息，第一版没有

@@ -81,6 +81,10 @@
         </activity>
         <activity android:name=".initialization.ui.UserProtocolActivity">
         </activity>
+
+        <activity android:name=".messagesystem.MessageActivity">
+        </activity>
+
         <activity
             android:name="com.mob.tools.MobUIShell"
             android:configChanges="keyboardHidden|orientation|screenSize"
@@ -169,6 +173,7 @@
                 <!-- 后台push的数据中需要添加字段"action":"com.tanke.PUSH_ACTION"-->
             </intent-filter>
         </receiver>
+
 
 
 

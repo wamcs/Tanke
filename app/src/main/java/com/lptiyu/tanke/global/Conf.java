@@ -95,5 +95,8 @@ public final class Conf {
     public static final int SYSTEM_MESSAGE = 2;
     public static final String PUSH_ACTION = "com.tanke.PUSH_ACTION";
     public static final String MESSAGE_ACTION = "com.tanke.MESSAGE_ACTION";
+    public static final String PUSH_MESSAGE = "push_message";
+    public static final String USER_MESSAGE = "user_message";
+    public static final String MESSAGE_TYPE = "message_type";
 
 }

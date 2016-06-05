@@ -15,14 +15,13 @@ public class Message {
     private String alert;
     @SerializedName("title")
     private String title;
-    @SerializedName("url")
-    private String url;
     @SerializedName("image")
     private String image;
     @SerializedName("time")
     private Long time;
     @SerializedName("type")
     private Integer type;//0.时间 1.官方资讯 2.系统推送 (时间type不储存在数据库，只用于adapter生成
+
 
     public Message() {
     }
@@ -31,11 +30,10 @@ public class Message {
         this.id = id;
     }
 
-    public Message(Long id, String alert, String title, String url, Long time, Integer type, String image) {
+    public Message(Long id, String alert, String title, Long time, Integer type, String image) {
         this.id = id;
         this.alert = alert;
         this.title = title;
-        this.url = url;
         this.time = time;
         this.type = type;
         this.image = image;
@@ -65,14 +63,6 @@ public class Message {
 
     public void setTitle(String title) {
         this.title = title;
-    }
-
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
     }
 
     public Long getTime() {

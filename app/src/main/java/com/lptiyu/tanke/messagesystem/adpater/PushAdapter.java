@@ -2,7 +2,6 @@ package com.lptiyu.tanke.messagesystem.adpater;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.PixelFormat;
@@ -16,7 +15,6 @@ import android.view.ViewGroup;
 import com.lptiyu.tanke.R;
 import com.lptiyu.tanke.database.Message;
 import com.lptiyu.tanke.global.Conf;
-import com.lptiyu.tanke.messagesystem.OnRecyclerItemClickListener;
 import com.lptiyu.tanke.utils.Inflater;
 import com.lptiyu.tanke.utils.TimeUtils;
 
@@ -31,7 +29,6 @@ import java.util.List;
 public class PushAdapter extends MessageBaseAdapter {
 
     private List<Message> messageList;
-    private OnRecyclerItemClickListener listener;
 
     private static final int VIEW_TYPE_TIME = 1;
     private static final int VIEW_TYPE_MESSAGE = 2;
@@ -43,13 +40,20 @@ public class PushAdapter extends MessageBaseAdapter {
         this.messageList = messageList;
         this.context = context;
         currentTime = TimeUtils.getCurrentDate();
+        init();
+
+    }
+
+    private void init(){
         int size = (int) context.getResources().getDimension(R.dimen.message_img_size);
         Drawable drawable = context.getResources().getDrawable(R.mipmap.ic_launcher);
-        Bitmap avatarBitmap = createCricleImage(
+        Bitmap avatarBitmap = createCircleImage(
                 convertDrawable2Bitmap(drawable),
                 size
-                );
+        );
         avatar = new BitmapDrawable(avatarBitmap);
+
+
     }
 
     @Override
@@ -79,7 +83,7 @@ public class PushAdapter extends MessageBaseAdapter {
             case VIEW_TYPE_MESSAGE:
                 MessageViewHolder holder2 = (MessageViewHolder) holder;
                 holder2.mAvatar.setBackground(avatar);
-                holder2.mMessage.setText(messageList.get(position).getAlert());
+                holder2.mMessage.setText(addURLLink(messageList.get(position).getAlert()));
                 break;
 
 
@@ -101,7 +105,9 @@ public class PushAdapter extends MessageBaseAdapter {
         return VIEW_TYPE_MESSAGE;
     }
 
-    private Bitmap createCricleImage(Bitmap source,int size){
+
+
+    private Bitmap createCircleImage(Bitmap source, int size){
         final Paint paint =new Paint();
         paint.setAntiAlias(true);
         Bitmap target = Bitmap.createBitmap(size,size, Bitmap.Config.ARGB_8888);
