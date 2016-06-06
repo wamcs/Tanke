@@ -1,9 +1,14 @@
 package com.lptiyu.tanke.io.net;
 
+import android.support.annotation.IntDef;
+
 import com.lptiyu.tanke.pojo.City;
 import com.lptiyu.tanke.pojo.GameDetailsEntity;
 import com.lptiyu.tanke.pojo.GameDisplayEntity;
+import com.lptiyu.tanke.pojo.RECOMMENDED_TYPE;
 
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 import java.util.List;
 
 import okhttp3.ResponseBody;
@@ -41,11 +46,18 @@ public interface GameService {
   /**
    * 2.17 把生成的二维码信息上传后台
    */
-  @GET("Home/Code")
-  Observable<Response<Void>> registerCode(
+  @GET("Home/Code?type=1")
+  Observable<Response<Void>> regenerateTeamQRCode(
       @Query("uid") long uid,
       @Query("token") String token,
-      @Query("content") String content
+      @Query("ranks_id") int ranksId
+  );
+
+  @GET("Home/Code?type=2")
+  Observable<Response<Void>> regenerateJudgementQRCode(
+      @Query("uid") long uid,
+      @Query("token") String token,
+      @Query("task_id") int task_id
   );
 
   /**
@@ -53,21 +65,57 @@ public interface GameService {
    * 加入团队，或者扫码通关
    */
   @GET("Home/Subcode")
-  Observable<Response<Void>> uploadCode(
+  Observable<Response<Void>> verifyQRCode(
       @Query("uid") long uid,
       @Query("token") String token,
       @Query("content") String content
   );
 
+  public static final int RECORD_TYPE_GAME_START = 1;
+  public static final int RECORD_TYPE_SPOT_REACHED = 2;
+  public static final int RECORD_TYPE_TASK_START = 3;
+  public static final int RECORD_TYPE_TASK_FINISH = 4;
+  public static final int RECORD_TYPE_GAME_FINISH = 5;
+
+  @IntDef({RECORD_TYPE_GAME_START,
+      RECORD_TYPE_SPOT_REACHED,
+      RECORD_TYPE_TASK_START,
+      RECORD_TYPE_TASK_FINISH,
+      RECORD_TYPE_GAME_FINISH})
+  @Retention(RetentionPolicy.SOURCE)
+  public @interface RecordType {
+  }
+
   /**
    * 2.23 提交用户记录
    */
-  @GET("System/Rankslog")
-  Observable<Response<Void>> uploadGameRecords(
+  @GET("System/Rankslog?type=2")
+  Observable<Response<Void>> uploadPersonalGameRecords(
       @Query("uid") long uid,
-      @Query("token") String token
-      //TODO 接口字段以确定，具体命名由服务端确定
+      @Query("token") String token,
+      @Query("game_id") int gameId,
+      @Query("point_id") int pointId,
+      @Query("distance") String distanceFromRecords,
+      @Query("x") String x,
+      @Query("y") String y,
+      @Query("state") @RecordType int state
   );
+
+  /**
+   * 2.23 提交用户记录
+   */
+  @GET("System/Rankslog?type=1")
+  Observable<Response<Void>> uploadTeamGameRecords(
+      @Query("uid") long uid,
+      @Query("token") String token,
+      @Query("game_id") int gameId,
+      @Query("ranks_id") int rankId,
+      @Query("point_id") int pointId,
+      @Query("distance") String distanceFromRecords,
+      @Query("x") String x,
+      @Query("y") String y,
+      @Query("state") @RecordType int state
+      );
 
   @Streaming
   @GET
@@ -79,7 +127,6 @@ public interface GameService {
   @GET("System/City?page=1")
   Observable<Response<List<City>>> getSupportedCities();
 
-
   /**
    * 2.29 游戏结束后获取分享接口
    *
@@ -90,11 +137,11 @@ public interface GameService {
    * @return Response, String 分享的链接
    */
   @GET("Home/Share")
-  Observable<Response<String>> share(
+  Observable<Response<String>> getShareUrl(
       @Query("uid") long uid,
       @Query("token") String token,
       @Query("game_id") long gameId,
-      @Query("tanks_id") long teamId
+      @Query("ranks_id") long teamId
   );
 
 }

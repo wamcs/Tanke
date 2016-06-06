@@ -74,4 +74,16 @@ public class UserEntity {
   public void setIsNewUserThirdParty(int isNewUserThirdParty) {
     this.isNewUserThirdParty = isNewUserThirdParty;
   }
+
+  @Override
+  public String toString() {
+    return "UserEntity{" +
+        "uid=" + uid +
+        ", token='" + token + '\'' +
+        ", avatar='" + avatar + '\'' +
+        ", nickname='" + nickname + '\'' +
+        ", phone='" + phone + '\'' +
+        ", isNewUserThirdParty=" + isNewUserThirdParty +
+        '}';
+  }
 }
