@@ -11,14 +11,13 @@ import android.view.Window;
 
 import com.lptiyu.tanke.R;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
 
 
 /**
  * @author ldx
  */
 public abstract class ActivityController extends ContextController {
+
 
   Toolbar mToolbar;
 
