@@ -199,7 +199,7 @@ public class MapHelper implements
     }
     if ((null != lastTimeLatLng) && (DistanceUtil.getDistance(lastTimeLatLng, currentLatLng) > Conf.LOCATION_DISTANCE_THRESHOLD_BOTTOM)
         && (DistanceUtil.getDistance(lastTimeLatLng, currentLatLng) < Conf.LOCATION_DISTANCE_THRESHOLD_TOP)) {
-      drawPolyLine(lastTimeLatLng, currentLatLng);
+    drawPolyLine(lastTimeLatLng, currentLatLng);
     }
     lastTimeLatLng = currentLatLng;
   }

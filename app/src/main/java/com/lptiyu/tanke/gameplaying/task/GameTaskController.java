@@ -11,10 +11,11 @@ import android.widget.TextView;
 
 import com.lptiyu.tanke.R;
 import com.lptiyu.tanke.base.controller.ActivityController;
-import com.lptiyu.tanke.gameplaying.GamePlayingController;
 import com.lptiyu.tanke.gameplaying.pojo.GAME_ACTIVITY_FINISH_TYPE;
 import com.lptiyu.tanke.gameplaying.pojo.Point;
 import com.lptiyu.tanke.gameplaying.pojo.Task;
+import com.lptiyu.tanke.gameplaying.records.MemRecords;
+import com.lptiyu.tanke.gameplaying.records.RecordsHandler;
 import com.lptiyu.tanke.gameplaying.records.RecordsUtils;
 import com.lptiyu.tanke.gameplaying.records.RunningRecord;
 import com.lptiyu.tanke.global.Conf;
@@ -177,14 +178,7 @@ public class GameTaskController extends ActivityController {
   }
 
   private void dispatchTaskRecord(RunningRecord.RECORD_TYPE type, long taskId) {
-    RunningRecord record = new RunningRecord.Builder()
-        .x(34.123123)
-        .y(114.321321)
-        .pointId(mPoint.getId())
-        .taskId(taskId)
-        .type(type)
-        .build();
-    RecordsUtils.dispatchTypeRecord(GamePlayingController.mRecordsHandler, record);
+    RecordsUtils.dispatchTypeRecord(34.123123, 114.321321, mPoint.getId(), taskId, type);
   }
 
   public void openNextTaskIfExist() {
@@ -247,7 +241,15 @@ public class GameTaskController extends ActivityController {
   }
 
   public List<RunningRecord> getAppropriateRecordList() {
-    return findAppropriateRecordList(GamePlayingController.mRecordsHandler.getMemRecords().getAll());
+    List<RunningRecord> result = new ArrayList<>();
+    RecordsHandler handler = RecordsUtils.getmRecordsHandler();
+    if (handler != null) {
+      MemRecords memRecords = handler.getMemRecords();
+      if (memRecords != null && memRecords.getAll() != null) {
+        result = memRecords.getAll();
+      }
+    }
+    return findAppropriateRecordList(result);
   }
 
   public void finishGameTaskActivityByType(GAME_ACTIVITY_FINISH_TYPE type, @Nullable Task timingTask) {

@@ -22,17 +22,7 @@ public class NewGamePlayingController extends GamePlayingController {
   protected void initRecords() {
     currentAttackPoint = mPoints.get(currentAttackPointIndex);
     mapHelper.initMapFlow();
-    dispatchGameStartRecord();
+    RecordsUtils.dispatchTypeRecord(34.123123, 114.321321, currentAttackPoint.getId(), 0, RunningRecord.RECORD_TYPE.GAME_START);
     mLoadingDialog.dismiss();
-  }
-
-  private void dispatchGameStartRecord() {
-    RunningRecord startRecord = new RunningRecord.Builder()
-        .x(34.123123)
-        .y(114.321321)
-        .type(RunningRecord.RECORD_TYPE.GAME_START)
-        .pointId(currentAttackPoint.getId())
-        .build();
-    RecordsUtils.dispatchTypeRecord(mRecordsHandler, startRecord);
   }
 }

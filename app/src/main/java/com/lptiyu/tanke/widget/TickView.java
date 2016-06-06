@@ -286,6 +286,9 @@ public class TickView extends View {
         mMillisRemianing = 0;
         invalidate();
         stopTick();
+        if (mListener != null) {
+          mListener.onTickFinish();
+        }
       }
     };
     mTimer.start();
@@ -296,9 +299,6 @@ public class TickView extends View {
     if (mTimer != null) {
       isTicking = false;
       mTimer.cancel();
-      if (mListener != null) {
-        mListener.onTickFinish();
-      }
     }
   }
 

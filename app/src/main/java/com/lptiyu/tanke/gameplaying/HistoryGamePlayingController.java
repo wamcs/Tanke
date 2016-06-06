@@ -24,8 +24,6 @@ import timber.log.Timber;
  */
 public class HistoryGamePlayingController extends GamePlayingController {
 
-  private String currentTaskId;
-
   public HistoryGamePlayingController(AppCompatActivity activity, View view) {
     super(activity, view);
   }
@@ -36,8 +34,8 @@ public class HistoryGamePlayingController extends GamePlayingController {
     currentAttackPoint = mPoints.get(currentAttackPointIndex);
     mapHelper.initMapFlow();
 
-    if (RecordsUtils.isGameStartedFromDisk(gameId)) {
-      mRecordsHandler.dispatchResumeFromDisc(new RecordsHandler.ResumeCallback() {
+    if (RecordsUtils.isGameStartedFromDisk(gameId) && RecordsUtils.getmRecordsHandler() != null) {
+      RecordsUtils.getmRecordsHandler().dispatchResumeFromDisc(new RecordsHandler.ResumeCallback() {
         @Override
         public void dataResumed(List<RunningRecord> recordList) {
           if (recordList == null) {
@@ -95,7 +93,7 @@ public class HistoryGamePlayingController extends GamePlayingController {
       long startTimeMillis = record.getCreateTime();
       long expectEndTimeMillis = Integer.valueOf(resultTask.getPwd()) * TimeUtils.ONE_MINUTE_TIME + startTimeMillis;
       if (System.currentTimeMillis() < expectEndTimeMillis) {
-        startTimingTaskFlow(resultTask, startTimeMillis);
+        mTimingTaskHelper.startTimingTaskFlow(resultTask, startTimeMillis);
       } else {
       }
     }
