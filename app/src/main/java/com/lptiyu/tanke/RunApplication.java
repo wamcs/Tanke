@@ -1,6 +1,8 @@
 package com.lptiyu.tanke;
 
 import android.app.Application;
+import android.support.multidex.MultiDex;
+import android.support.multidex.MultiDexApplication;
 
 import com.avos.avoscloud.AVInstallation;
 import com.avos.avoscloud.AVOSCloud;
@@ -20,11 +22,13 @@ import timber.log.Timber;
  *
  * @author ldx
  */
-public class RunApplication extends Application {
+public class RunApplication extends MultiDexApplication {
 
   @Override
   public void onCreate() {
     super.onCreate();
+
+    MultiDex.install(this);
 
     Timber.plant(new Timber.DebugTree());
     AppData.init(this);

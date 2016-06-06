@@ -12,7 +12,7 @@ public class IMhelper extends MessageHelper {
 
 
     public IMhelper(AppCompatActivity activity, View view) {
-        super(activity, view);
+        super(activity, view, 0);
 
     }
 
