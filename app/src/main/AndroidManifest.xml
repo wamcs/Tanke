@@ -66,13 +66,25 @@
         <activity android:name=".initialization.ui.LoginActivity">
         </activity>
         <activity android:name=".initialization.ui.GuideActivity">
+
         </activity>
-        <activity android:name=".initialization.ui.CompleteInformationActivity">
+
+        <activity android:name=".initialization.ui.CompleteInformationActivity" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
         </activity>
-        <activity android:name=".initialization.ui.SignUpActivity">
+        <activity android:name=".initialization.ui.SignUpActivity" >
+
         </activity>
         <activity android:name=".initialization.ui.UserProtocolActivity">
         </activity>
+
+        <activity android:name=".messagesystem.MessageActivity">
+        </activity>
+
         <activity
             android:name="com.mob.tools.MobUIShell"
             android:configChanges="keyboardHidden|orientation|screenSize"
@@ -147,13 +159,23 @@
         </activity>
         <activity android:name=".gamedata.GameDataActivity">
         </activity>
-        <activity android:name=".gamedetails.GameDetailsActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
 
-                <category android:name="android.intent.category.LAUNCHER"/>
+        <service android:name="com.avos.avoscloud.PushService"
+            android:exported="true"/>
+
+        <receiver android:name=".pushreceiver.PushReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.USER_PRESENT" />
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+                <action android:name="com.tanke.PUSH_ACTION" />
+                <!-- 后台push的数据中需要添加字段"action":"com.tanke.PUSH_ACTION"-->
             </intent-filter>
-        </activity>
+        </receiver>
+
+
+
+
     </application>
 
 </manifest>

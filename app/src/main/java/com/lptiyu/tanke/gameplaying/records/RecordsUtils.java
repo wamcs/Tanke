@@ -48,26 +48,6 @@ public class RecordsUtils {
     return memRecords;
   }
 
-  public static void writeMetaMessage(long gameId, QMetaMessage message) {
-    try {
-      message.save(DiskRecords.generateMetaFile(gameId));
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
-  }
-
-  public static QMetaMessage readMetaMessage(long gameId) {
-    QMetaMessage metaMessage = null;
-
-    try {
-      metaMessage = QMetaMessage.read(DiskRecords.generateMetaFile(gameId));
-    } catch (IOException | ClassNotFoundException e) {
-      e.printStackTrace();
-    }
-
-    return metaMessage;
-  }
-
   /**
    * Used in RecordsHandler not initialized cases.
    *

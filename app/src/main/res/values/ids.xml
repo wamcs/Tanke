@@ -56,4 +56,12 @@
     <item name="protocol_web_view" type="id"/>
     <item name="protocol_next_button" type="id"/>
 
+    <!-- message activity ids area-->
+    <item name="message_recycler_view" type="id"/>
+    <item name="message_bottom_bar" type="id"/>
+    <item name="message_item_image_view" type="id"/>
+    <item name="message_item_text_view" type="id"/>
+    <item name="message_item_time_text" type="id"/>
+    <item name="message_refresh_layout" type="id"/>
+
 </resources>

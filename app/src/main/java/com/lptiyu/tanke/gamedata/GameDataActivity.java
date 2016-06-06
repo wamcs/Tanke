@@ -15,7 +15,6 @@ public class GameDataActivity extends BaseActivity {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_game_data);
     mController = new GameDataController(this, getWindow().getDecorView());
-
   }
 
   @Override

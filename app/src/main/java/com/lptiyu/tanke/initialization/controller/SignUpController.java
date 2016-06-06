@@ -18,10 +18,15 @@ import com.lptiyu.tanke.initialization.signup.ResetPasswordHelper;
 import com.lptiyu.tanke.initialization.signup.SignUpHelper;
 import com.lptiyu.tanke.initialization.ui.UserProtocolActivity;
 import com.lptiyu.tanke.io.net.HttpService;
+import com.lptiyu.tanke.io.net.Response;
+import com.lptiyu.tanke.utils.ToastUtil;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import rx.Scheduler;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
 import timber.log.Timber;
 
 /**
@@ -62,7 +67,20 @@ public class SignUpController extends ActivityController {
                     throw new IllegalStateException("not has this type");
                 }
                 signUpHelper = new RegisterHelper(activity, view, type);
-                //TODO:获取用户协议URL传给UserProtocolActivity
+                HttpService.getUserService().userProtocol()
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(new Action1<Response<String>>() {
+                            @Override
+                            public void call(Response<String> stringResponse) {
+                                int status = stringResponse.getStatus();
+                                if (status != 1){
+                                    ToastUtil.TextToast(stringResponse.getInfo());
+                                    return;
+                                }
+
+                                mProtocolURL = stringResponse.getData();
+                            }
+                        });
                 break;
             case Conf.RESET_PASSWORD_CODE:
 
