@@ -60,7 +60,7 @@ public interface UserService {
    */
   @GET("Login/Login_san")
   Observable<Response<UserEntity>> loginThirdParty(@Query("openid") String openId,
-                                                   @Query("type") int type);
+                                                   @Query("type") @UserType int type);
 
   /**
    * 2.5 忘记密码
@@ -85,7 +85,7 @@ public interface UserService {
   /**
    * 2.6 获取验证码 忘记密码时
    */
-  @GET("Login/GetCode?status=1")
+  @GET("Login/GetCode?status=2")
   Observable<Response<Void>> getVerifyCodeForgetPassword(
       @Query("phone") String phone);
 
@@ -103,7 +103,6 @@ public interface UserService {
 
   /**
    * 2.8 获取用户信息
-   * //TODO 这样会不会有问题，正在问李凯
    */
   @GET("User/User")
   Observable<Response<UserDetails>> getUserDetail(
@@ -120,13 +119,9 @@ public interface UserService {
       @Query("token") String token,
       @Body RequestBody file);
 
-
-
   /**
    * 完善信息上传
    */
-
-
   @IntDef({
       USER_DETAIL_NICKNAME,
       USER_DETAIL_BIRTHDAY,
@@ -152,7 +147,7 @@ public interface UserService {
   @GET("User/Update_user")
   Observable<Response<Void>> resetUserDetails(
       @Query("uid") long uid,
-      @Query("token") int token,
+      @Query("token") String token,
       @Query("type") @UserDetailType int type,
       @Query("content") String message);
 
@@ -171,7 +166,6 @@ public interface UserService {
 
   /**
    * 2.24 获取我正在玩儿的游戏
-   * //TODO 数据结构目前来看和FinishedGameEntity
    */
   @GET("My/Nowranks")
   Observable<Response<GamePlayingEntity>> gamePlaying(

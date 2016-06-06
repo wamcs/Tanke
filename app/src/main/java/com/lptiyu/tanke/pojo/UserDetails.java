@@ -115,4 +115,20 @@ public class UserDetails {
   public void setFinishedGameNum(int finishedGameNum) {
     this.finishedGameNum = finishedGameNum;
   }
+
+  @Override
+  public String toString() {
+    return "UserDetails{" +
+        "nickname='" + nickname + '\'' +
+        ", avatar='" + avatar + '\'' +
+        ", phone='" + phone + '\'' +
+        ", birthday='" + birthday + '\'' +
+        ", sex='" + sex + '\'' +
+        ", height='" + height + '\'' +
+        ", weight='" + weight + '\'' +
+        ", address='" + address + '\'' +
+        ", playingGameNum=" + playingGameNum +
+        ", finishedGameNum=" + finishedGameNum +
+        '}';
+  }
 }
