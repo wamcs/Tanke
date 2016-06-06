@@ -1,6 +1,8 @@
 package com.lptiyu.tanke.gamedata;
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -8,12 +10,13 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.lptiyu.tanke.R;
-import com.lptiyu.tanke.base.controller.ActivityController;
 import com.lptiyu.tanke.base.recyclerview.BaseAdapter;
 import com.lptiyu.tanke.base.recyclerview.BaseListActivityController;
-import com.lptiyu.tanke.gamedisplay.ElasticItemDecoration;
-import com.lptiyu.tanke.gamedisplay.ElasticTouchListener;
-import com.lptiyu.tanke.gamedisplay.GameDisplayAdapter;
+import com.lptiyu.tanke.gamedisplay.DummyData;
+import com.lptiyu.tanke.gameplaying.pojo.Point;
+import com.lptiyu.tanke.gameplaying.records.RunningRecord;
+import com.lptiyu.tanke.global.Conf;
+import com.lptiyu.tanke.pojo.GameDataEntity;
 
 import java.util.List;
 
@@ -27,12 +30,18 @@ import rx.Observable;
  *         date: 16-6-2
  *         email: wonderfulifeel@gmail.com
  */
-public class GameDataController extends BaseListActivityController<GameDataEntity> {
+public class GameDataController extends BaseListActivityController<GameDataEntity> implements
+    SwipeRefreshLayout.OnRefreshListener {
 
   @BindView(R.id.default_tool_bar_textview)
   TextView mToolbarTitle;
+  @BindView(R.id.swipe_refresh_layout)
+  SwipeRefreshLayout mRefreshLayout;
   @BindView(R.id.recycler_view)
   RecyclerView mRecyclerView;
+
+  private List<Point> mPoints;
+  private List<RunningRecord> mRecords;
 
   private GameDataAdapter mAdapter;
 
@@ -46,33 +55,53 @@ public class GameDataController extends BaseListActivityController<GameDataEntit
     mToolbarTitle.setText(getString(R.string.game_data));
     mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
     mAdapter = new GameDataAdapter();
-    ElasticTouchListener listener = new ElasticTouchListener();
-    listener.setOnRefreshListener(new ElasticTouchListener.OnRefreshListener() {
-      @Override
-      public void onRefresh() {
-        if (!isRefreshing()) {
-          refreshTop();
-        }
-      }
-    });
     mRecyclerView.setAdapter(mAdapter);
-    mRecyclerView.addItemDecoration(new ElasticItemDecoration(getContext()));
+    mRefreshLayout.setOnRefreshListener(this);
+//    resumeGameData();
+  }
+
+  private void resumeGameData() {
+    Intent intent = getIntent();
+    mPoints = intent.getParcelableArrayListExtra(Conf.GAME_POINTS);
+    mRecords = intent.getParcelableExtra(Conf.GAME_RECORDS);
+    if (mPoints == null || mRecords == null) {
+      resumeGameDataFromDisk();
+    }
+    resumeGameDataFromIntent();
+  }
+
+  private void resumeGameDataFromIntent() {
+
+  }
+
+  private void resumeGameDataFromDisk() {
+
+  }
+
+  @Override
+  public void onRefresh() {
+    if (!isRefreshing()) {
+      refreshTop();
+    }
   }
 
   @Override
   public Observable<List<GameDataEntity>> requestData(int page) {
-    return null;
+    //TODO : reload records and points info from disk "resumeGameDataFromDisk()"
+    return Observable.just(DumGameData.entities);
   }
 
   @NonNull
   @Override
   public BaseAdapter<GameDataEntity> getAdapter() {
-    return null;
+    return mAdapter;
   }
 
   @Override
   public void onRefreshStateChanged(boolean isRefreshing) {
-
+    if (mRefreshLayout != null) {
+      mRefreshLayout.setRefreshing(isRefreshing);
+    }
   }
 
   @Override

@@ -90,6 +90,12 @@ public final class Conf {
   public static final String IS_POINT_TASK_ALL_FINISHED = "is_point_task_all_finished";
 
   /**
+   * game data activity
+   */
+  public static final String GAME_POINTS = "game_points";
+  public static final String GAME_RECORDS = "game_records";
+
+  /**
    * Message
    */
   public static final int TIME_TYPE = 0;

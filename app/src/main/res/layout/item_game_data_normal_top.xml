@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:orientation="horizontal">
+
+    <RelativeLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1">
+
+        <ImageView
+            android:layout_width="2dp"
+            android:paddingTop="25dp"
+            android:layout_height="match_parent"
+            android:layout_centerHorizontal="true"
+            android:src="@color/colorPrimary"/>
+
+        <TextView
+            android:id="@+id/item_game_data_index"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/img_game_data_point"
+            android:gravity="center"
+            android:text="3"
+            android:textColor="@color/colorAccent"
+            android:textSize="13sp"
+            android:textStyle="bold"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="5"
+        android:padding="3dp">
+
+        <TextView
+            android:id="@+id/item_game_data_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:padding="3dp"
+            android:text="第三个攻击点"
+            android:textColor="@color/colorAccent"
+            android:textSize="15sp"
+            android:textStyle="bold"/>
+
+        <android.support.v7.widget.CardView
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/item_game_data_title"
+            android:layout_marginBottom="2dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="2dp"
+            app:cardBackgroundColor="@color/transparent"
+            app:cardCornerRadius="5dp"
+            app:cardElevation="1dp"
+            app:contentPadding="5dp">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/transparent">
+
+                <TextView
+                    android:id="@+id/item_game_data_time_consuming_pre"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:drawableLeft="@mipmap/game_detail_time"
+                    android:drawablePadding="5dp"
+                    android:padding="3dp"
+                    android:text="耗 时 : "/>
+
+                <TextView
+                    android:id="@+id/item_game_data_time_consuming"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:layout_toRightOf="@id/item_game_data_time_consuming_pre"
+                    android:padding="3dp"
+                    android:text="3分37秒"/>
+
+                <TextView
+                    android:id="@+id/item_game_data_exp_pre"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/item_game_data_time_consuming_pre"
+                    android:layout_margin="5dp"
+                    android:drawableLeft="@mipmap/game_detail_time"
+                    android:drawablePadding="5dp"
+                    android:padding="3dp"
+                    android:text="经 验 值 : "/>
+
+                <TextView
+                    android:id="@+id/item_game_data_exp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/item_game_data_time_consuming"
+                    android:layout_margin="5dp"
+                    android:layout_toRightOf="@id/item_game_data_exp_pre"
+                    android:padding="3dp"
+                    android:text="10 点"/>
+
+            </RelativeLayout>
+
+        </android.support.v7.widget.CardView>
+
+    </RelativeLayout>
+
+</LinearLayout>

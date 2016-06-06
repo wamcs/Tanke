@@ -3,6 +3,7 @@ package com.lptiyu.tanke.gameplaying;
 import android.animation.Animator;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -32,6 +33,7 @@ import com.lptiyu.tanke.gameplaying.assist.zip.GameZipHelper;
 import com.lptiyu.tanke.gameplaying.pojo.GAME_ACTIVITY_FINISH_TYPE;
 import com.lptiyu.tanke.gameplaying.pojo.Point;
 import com.lptiyu.tanke.gameplaying.pojo.Task;
+import com.lptiyu.tanke.gameplaying.records.MemRecords;
 import com.lptiyu.tanke.gameplaying.records.RecordsHandler;
 import com.lptiyu.tanke.gameplaying.records.RecordsUtils;
 import com.lptiyu.tanke.gameplaying.records.RunningRecord;
@@ -49,6 +51,7 @@ import com.lptiyu.tanke.utils.VibrateUtils;
 import com.lptiyu.tanke.widget.BaseSpotScrollView;
 import com.lptiyu.tanke.widget.TickView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -284,6 +287,18 @@ public abstract class GamePlayingController extends ActivityController implement
   @OnClick(R.id.game_data)
   void startGameDataActivity() {
     Intent intent = new Intent();
+    if (mPoints != null && mPoints instanceof ArrayList) {
+      intent.putParcelableArrayListExtra(Conf.GAME_POINTS, ((ArrayList<? extends Parcelable>) mPoints));
+    }
+    if (mRecordsHandler != null) {
+      MemRecords memRecords = mRecordsHandler.getMemRecords();
+      if (memRecords != null) {
+        List<RunningRecord> allRecords = memRecords.getAll();
+        if (allRecords != null && allRecords instanceof ArrayList) {
+          intent.putParcelableArrayListExtra(Conf.GAME_RECORDS, (((ArrayList<? extends Parcelable>) allRecords)));
+        }
+      }
+    }
     intent.setClass(getActivity(), GameDataActivity.class);
     startActivity(intent);
   }
