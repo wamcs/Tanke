@@ -21,33 +21,9 @@ public class GameDataAdapter extends BaseAdapter<GameDataEntity> {
 
   private List<GameDataEntity> gameDataEntities;
 
-  private static final int HEADER = 0;
-  private static final int NORMAL_TOP = 1;
-  private static final int NORMAL_MID = 2;
-  private static final int NORMAL_BOTTOM = 3;
-
   @Override
   public BaseViewHolder<GameDataEntity> onCreateViewHolder(ViewGroup parent, int viewType) {
-    int layoutId = R.layout.item_game_data_normal_mid;
-    switch (viewType) {
-      case HEADER:
-
-        break;
-
-      case NORMAL_TOP:
-        layoutId = R.layout.item_game_data_normal_top;
-        break;
-
-      case NORMAL_MID:
-        layoutId = R.layout.item_game_data_normal_mid;
-        break;
-
-      case NORMAL_BOTTOM:
-        layoutId = R.layout.item_game_data_normal_bottom;
-        break;
-
-    }
-    return new GameDataViewHolder(parent, layoutId);
+    return new GameDataViewHolder(parent);
   }
 
   @Override
@@ -63,16 +39,10 @@ public class GameDataAdapter extends BaseAdapter<GameDataEntity> {
     return gameDataEntities.size();
   }
 
-  @Override
-  public int getItemViewType(int position) {
-    if (position == 0) {
-      return NORMAL_TOP;
-    }
-    if (position == getItemCount() - 1) {
-      return NORMAL_BOTTOM;
-    }
-    return NORMAL_MID;
-  }
+//  @Override
+//  public int getItemViewType(int position) {
+//
+//  }
 
   @Override
   public void addData(List<GameDataEntity> data) {

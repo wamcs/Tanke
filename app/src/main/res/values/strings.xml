@@ -98,6 +98,11 @@
     <string name="reach_attack_point">已到达攻击点，点击该点开始任务</string>
     <string name="start_task">开始任务</string>
 
+    <!-- GameDataActivity Text Area-->
+    <string name="complete_person_num" formatted="false">%d人已完成</string>
+    <string name="complete_time" formatted="false">%04d.%02d.%02d %02d:%02d</string>
+
+
     <!-- Protocol Activity Text Area-->
     <string name="user_protocol">用户协议</string>
     <string name="ps">注：点击“下一步”即代表您已阅读并同意上述协议的所有内容</string>

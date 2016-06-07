@@ -274,7 +274,9 @@ public abstract class GamePlayingController extends ActivityController implement
         onReachAttackPoint();
         VibrateUtils.vibrate();
         showAlertDialog(getString(R.string.reach_attack_point));
-        dispatchReachPointRecord(location.getLatitude(), location.getLongitude(), currentAttackPointIndex);
+        if (currentAttackPointIndex != 0) {
+          dispatchReachPointRecord(location.getLatitude(), location.getLongitude(), currentAttackPointIndex);
+        }
       }
     }
   }
@@ -336,9 +338,11 @@ public abstract class GamePlayingController extends ActivityController implement
             if (clickedPointIndex != currentAttackPointIndex) {
               return;
             }
-
             boolean isAllTaskFinished = data.getBooleanExtra(Conf.IS_POINT_TASK_ALL_FINISHED, false);
             if (isAllTaskFinished) {
+              if (currentAttackPointIndex == 0) {
+                RecordsUtils.dispatchCachedRecords();
+              }
               dispatchFinishPointRecord(34.123123, 114.321321, currentAttackPointIndex);
               onNextPoint();
             }

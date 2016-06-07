@@ -33,7 +33,7 @@ import rx.Observable;
 public class GameDataController extends BaseListActivityController<GameDataEntity> implements
     SwipeRefreshLayout.OnRefreshListener {
 
-  @BindView(R.id.default_tool_bar_textview)
+  @BindView(R.id.activity_game_data_toolbar_textview)
   TextView mToolbarTitle;
   @BindView(R.id.swipe_refresh_layout)
   SwipeRefreshLayout mRefreshLayout;
@@ -109,9 +109,14 @@ public class GameDataController extends BaseListActivityController<GameDataEntit
 
   }
 
-  @OnClick(R.id.default_tool_bar_imageview)
+  @OnClick(R.id.activity_game_data_toolbar_imageview_left)
   void back() {
     finish();
+  }
+
+  @OnClick(R.id.activity_game_data_toolbar_imageview_right)
+  void share() {
+    //TODO : share the game data
   }
 
   @Override
