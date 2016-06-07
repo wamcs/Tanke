@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     >
@@ -9,8 +10,13 @@
         android:padding="@dimen/message_padding"
         android:layout_width="@dimen/message_item_layout_width"
         android:layout_height="wrap_content">
-        <ImageView
+        <com.mikhaellopez.circularimageview.CircularImageView
             android:id="@id/message_item_image_view"
+            app:civ_border_color="#EEEEEE"
+            app:civ_border_width="4dp"
+            app:civ_shadow="true"
+            app:civ_shadow_color="#8BC34A"
+            app:civ_shadow_radius="10"
             android:layout_width="@dimen/message_img_size"
             android:layout_height="@dimen/message_img_size"
             android:layout_marginRight="@dimen/message_margin"

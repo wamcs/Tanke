@@ -48,6 +48,8 @@ public class UserProtocolController extends ActivityController {
 
     @OnClick(R.id.protocol_last_button)
     void back() {
+        mWebView.onPause();
+        mWebView.destroy();
         finish();
     }
 
@@ -62,6 +64,8 @@ public class UserProtocolController extends ActivityController {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+        mWebView.onPause();
+        mWebView.destroy();
         finish();
     }
 }

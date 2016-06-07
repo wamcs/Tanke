@@ -6,37 +6,27 @@ package com.lptiyu.tanke.database;
  */
 public class MessageList {
 
-    private Long id;
     private String name;
     private Boolean isRead;
     private String content;
-    private Long userId;
+    private Long userId; //只有IM时有用
     private Long time;
-    private Integer type;
+    private Integer type; //1.官方资讯 2.系统推送 3... IM
 
     public MessageList() {
     }
 
-    public MessageList(Long id) {
-        this.id = id;
+    public MessageList(Integer type) {
+        this.type = type;
     }
 
-    public MessageList(Long id, String name, Boolean isRead, String content, Long userId, Long time, Integer type) {
-        this.id = id;
+    public MessageList(String name, Boolean isRead, String content, Long userId, Long time, Integer type) {
         this.name = name;
         this.isRead = isRead;
         this.content = content;
         this.userId = userId;
         this.time = time;
         this.type = type;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getName() {

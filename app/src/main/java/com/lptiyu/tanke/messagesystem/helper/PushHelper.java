@@ -3,17 +3,22 @@ package com.lptiyu.tanke.messagesystem.helper;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
+import com.google.gson.Gson;
 import com.lptiyu.tanke.database.DBHelper;
 import com.lptiyu.tanke.database.Message;
 import com.lptiyu.tanke.database.MessageDao;
+import com.lptiyu.tanke.database.MessageList;
 import com.lptiyu.tanke.global.Conf;
 import com.lptiyu.tanke.messagesystem.adpater.PushAdapter;
 
 import java.util.List;
+
+import timber.log.Timber;
 
 /**
  * author:wamcs
@@ -23,19 +28,23 @@ import java.util.List;
 public class PushHelper extends MessageHelper implements
         SwipeRefreshLayout.OnRefreshListener {
 
-    private MessageDao messageDao;
+
     private int loadMessageSumNumber;
     private int loadMessageNumber;
     private int tableItemNumber;
-    private List<Message> messageList;
     private int type;
-    private PushAdapter adapter;
     private boolean isRefreshing = false;
+
+    private PushAdapter adapter;
+    private MessageDao messageDao;
+    private List<Message> messageList;
+    private MessageReceiver receiver;
 
     public PushHelper(AppCompatActivity activity, View view, int type) {
         super(activity, view, type);
         this.type = type;
         init();
+        registerReceiver();
     }
 
     private void init() {
@@ -65,6 +74,15 @@ public class PushHelper extends MessageHelper implements
 
     }
 
+    private void registerReceiver(){
+        receiver =new MessageReceiver();
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(Conf.PUSH_ACTION);
+        filter.setPriority(10);
+        context.registerReceiver(receiver,filter);
+    }
+
+
     private void loadMessage() {
 
         //获取list
@@ -90,4 +108,53 @@ public class PushHelper extends MessageHelper implements
         isRefreshing = false;
         mSwipeRefreshLayout.setRefreshing(false);
     }
+
+    @Override
+    public void finish() {
+        context.unregisterReceiver(receiver);
+    }
+
+    public class MessageReceiver extends BroadcastReceiver{
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (intent.getAction().equals(Conf.PUSH_ACTION)) {
+                String jsonString = intent.getExtras().getString("com.avos.avoscloud.Data");
+                Timber.d("push data json is %s", jsonString);
+                Message message = new Gson().fromJson(jsonString, Message.class);
+
+                DBHelper.getInstance().getPushMessageDao().insert(message);
+
+                MessageList list = new MessageList();
+                list.setTime(message.getTime());
+                list.setContent(message.getAlert());
+                list.setIsRead(false);
+                list.setType(message.getType());
+                switch (message.getType()){
+                    case Conf.OFFICIAL_MESSAGE:
+                        list.setName("官方资讯");
+                        break;
+                    case Conf.SYSTEM_MESSAGE:
+                        list.setName("系统消息");
+                        break;
+                }
+
+                DBHelper.getInstance().getMessageListDao().insert(list);
+
+                if ((message.getTime()-messageList.get(messageList.size()-1).getTime())>LIMIT_TIME){
+                    Message timeMessage =new Message();
+                    message.setTime(message.getTime());
+                    message.setType(Conf.TIME_TYPE);
+                    messageList.add(timeMessage);
+                }
+                messageList.add(message);
+                adapter.notifyDataSetChanged();
+
+            }
+
+        }
+    }
+
+
+
 }
