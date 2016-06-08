@@ -8,6 +8,7 @@ import android.view.WindowManager;
 import android.view.animation.BounceInterpolator;
 import android.widget.ImageView;
 
+import com.lptiyu.tanke.MainActivity;
 import com.lptiyu.tanke.R;
 import com.lptiyu.tanke.base.controller.ActivityController;
 import com.lptiyu.tanke.global.Accounts;
@@ -25,8 +26,10 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import rx.Observer;
+import rx.Scheduler;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
+import rx.schedulers.Schedulers;
 
 /**
  * author:wamcs
@@ -196,6 +199,7 @@ public class LoginController extends ActivityController {
 
         HttpService.getUserService().login(phoneNumber,password)
                 .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
                 .subscribe(new Action1<Response<UserEntity>>() {
                     @Override
                     public void call(Response<UserEntity> userEntityResponse) {
@@ -213,6 +217,9 @@ public class LoginController extends ActivityController {
                         //Accounts.setAvatar(entity.getAvatar());
                         //nickname 和 avatar 干什么用？不造
                         //TODO:jump to main activity
+                        Intent intent = new Intent(getActivity(), MainActivity.class);
+                        startActivity(intent);
+                        finish();
                     }
                 });
 

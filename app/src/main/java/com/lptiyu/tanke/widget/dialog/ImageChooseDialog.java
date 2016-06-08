@@ -1,5 +1,6 @@
 package com.lptiyu.tanke.widget.dialog;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -37,7 +38,6 @@ public class ImageChooseDialog extends BaseDialog {
     private ContextController mController;
     private File mTempFile;
     private OnImageChoosedListener mListener;
-    private OnPermissionGetListener permissionGetListener;
 
     public ImageChooseDialog(Context context, ContextController controller) {
         super(context);
@@ -73,7 +73,9 @@ public class ImageChooseDialog extends BaseDialog {
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-        Log.d("lk","requestCode "+ requestCode);
+        if (resultCode == Activity.RESULT_CANCELED) {
+          return;
+        }
         switch (requestCode) {
 
             case Conf.REQUEST_CODE_TAKE_PHOTO:
@@ -113,9 +115,6 @@ public class ImageChooseDialog extends BaseDialog {
 
     @OnClick(R.id.dialog_user_avatar_take_photo)
     void startTakePhoto() {
-        if (!permissionGetListener.onPermissionGet()){
-            return;
-        }
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(mTempFile));
         if (mController instanceof FragmentController) {
@@ -139,22 +138,11 @@ public class ImageChooseDialog extends BaseDialog {
     }
 
 
-
-
     public interface OnImageChoosedListener {
         void onImageChoosed(File file);
-    }
-
-    public interface OnPermissionGetListener{
-        boolean onPermissionGet();
     }
 
     public void setOnImageChoosedListener(OnImageChoosedListener listener) {
         mListener = listener;
     }
-
-    public void setOnPermissionGetListener(OnPermissionGetListener listener){
-        permissionGetListener = listener;
-    }
-
 }

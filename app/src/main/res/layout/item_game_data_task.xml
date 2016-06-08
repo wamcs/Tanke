@@ -51,7 +51,7 @@
                 android:id="@+id/item_game_data_task_complete_person_num"
                 style="@style/GameDataItemText"
                 android:layout_alignParentRight="true"
-                android:text="@string/complete_person_num"
+                android:text="@string/complete_person_num_formatter"
                 android:textColor="@color/colorPrimary"
                 android:textSize="13sp"/>
 

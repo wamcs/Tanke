@@ -27,6 +27,7 @@ import butterknife.OnClick;
 import rx.Scheduler;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
+import rx.schedulers.Schedulers;
 import timber.log.Timber;
 
 /**
@@ -69,6 +70,7 @@ public class SignUpController extends ActivityController {
                 signUpHelper = new RegisterHelper(activity, view, type);
                 HttpService.getUserService().userProtocol()
                         .observeOn(AndroidSchedulers.mainThread())
+                        .subscribeOn(Schedulers.io())
                         .subscribe(new Action1<Response<String>>() {
                             @Override
                             public void call(Response<String> stringResponse) {
@@ -77,7 +79,6 @@ public class SignUpController extends ActivityController {
                                     ToastUtil.TextToast(stringResponse.getInfo());
                                     return;
                                 }
-
                                 mProtocolURL = stringResponse.getData();
                             }
                         });

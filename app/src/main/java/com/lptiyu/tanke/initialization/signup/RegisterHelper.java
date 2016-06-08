@@ -15,6 +15,7 @@ import com.lptiyu.tanke.utils.ToastUtil;
 
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
+import rx.schedulers.Schedulers;
 
 /**
  * author:wamcs
@@ -44,6 +45,7 @@ public class RegisterHelper extends SignUpHelper {
         Editable phone = signUpPhoneEditText.getText();
         HttpService.getUserService().getVerifyCodeRegister(type,phone.toString())
                 .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
                 .subscribe(new Action1<Response<Void>>() {
                     @Override
                     public void call(Response<Void> voidResponse) {
@@ -72,6 +74,7 @@ public class RegisterHelper extends SignUpHelper {
 
         HttpService.getUserService().register(phone,password,code,type)
                 .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
                 .subscribe(new Action1<Response<UserEntity>>() {
                     @Override
                     public void call(Response<UserEntity> userEntityResponse) {
