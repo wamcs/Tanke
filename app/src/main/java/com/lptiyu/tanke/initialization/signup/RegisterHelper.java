@@ -43,7 +43,7 @@ public class RegisterHelper extends SignUpHelper {
         super.getCode();
 
         Editable phone = signUpPhoneEditText.getText();
-        HttpService.getUserService().getVerifyCodeRegister(type,phone.toString())
+        HttpService.getUserService().getVerifyCode(type,phone.toString())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(new Action1<Response<Void>>() {

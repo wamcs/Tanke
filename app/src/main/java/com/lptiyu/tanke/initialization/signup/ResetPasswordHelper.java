@@ -41,7 +41,7 @@ public class ResetPasswordHelper extends SignUpHelper {
         super.getCode();
 
         String phone = signUpPhoneEditText.getText().toString();
-        HttpService.getUserService().getVerifyCodeForgetPassword(phone)
+        HttpService.getUserService().getVerifyCode(2, phone)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(new Action1<Response<Void>>() {
