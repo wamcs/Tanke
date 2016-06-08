@@ -34,6 +34,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import timber.log.Timber;
+
 /**
  * @author : xiaoxiaoda
  *         date: 16-5-22
@@ -57,9 +59,6 @@ public class MapHelper implements
   private LatLng currentLatLng;
   private LatLng lastTimeLatLng;
   private List<LatLng> trackLatLngs;
-
-  // draw the circle around attack point , in order to notify user
-  private Marker attackPointCircle;
 
   // info window content and info window, show when user arrive the attack point
   private InfoWindow mTaskEntryInfoWindow;
@@ -156,6 +155,7 @@ public class MapHelper implements
       public void onClick(View v) {
         if (mMapMarkerClickListener != null) {
           mMapMarkerClickListener.onMarkerClicked(clickedPoint);
+          mBaiduMap.hideInfoWindow();
         }
       }
     });

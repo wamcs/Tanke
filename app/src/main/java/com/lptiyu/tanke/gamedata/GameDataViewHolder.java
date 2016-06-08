@@ -44,13 +44,15 @@ public class GameDataViewHolder extends BaseViewHolder<GameDataEntity> {
   public void bind(GameDataEntity entity) {
     taskName.setText(entity.getTaskName());
     completeComsumingTime.setText(TimeUtils.getFriendlyTime(entity.getCompleteComsumingTime()));
-    taskExp.setText(String.valueOf(entity.getExp()));
 
     Context context = itemView.getContext();
-    String completePersonNumFormatter = context.getString(R.string.complete_person_num);
+    String completePersonNumFormatter = context.getString(R.string.complete_person_num_formatter);
     completePersonNum.setText(String.format(completePersonNumFormatter, entity.getCompletePersonNum()));
 
-    String completeTimeFormatter = context.getString(R.string.complete_time);
+    String expFormatter = context.getString(R.string.get_exp_formatter);
+    taskExp.setText(String.format(expFormatter, entity.getExp()));
+
+    String completeTimeFormatter = context.getString(R.string.complete_time_formatter);
     Date date = new Date(entity.getCompleteTime());
     completeTime.setText(String.format(completeTimeFormatter, date.getYear() + 1900, date.getMonth() + 1, date.getDate(), date.getHours(), date.getMinutes()));
     String typeStr = "扫码任务";

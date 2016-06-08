@@ -99,8 +99,9 @@
     <string name="start_task">开始任务</string>
 
     <!-- GameDataActivity Text Area-->
-    <string name="complete_person_num" formatted="false">%d人已完成</string>
-    <string name="complete_time" formatted="false">%04d.%02d.%02d %02d:%02d</string>
+    <string name="complete_person_num_formatter" formatted="false">%d人已完成</string>
+    <string name="complete_time_formatter" formatted="false">%04d.%02d.%02d %02d:%02d</string>
+    <string name="get_exp_formatter" formatted="false">%d经验值</string>
 
 
     <!-- Protocol Activity Text Area-->

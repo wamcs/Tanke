@@ -1,13 +1,10 @@
 package com.lptiyu.tanke.gamedata;
 
-import android.view.View;
 import android.view.ViewGroup;
 
-import com.lptiyu.tanke.R;
 import com.lptiyu.tanke.base.recyclerview.BaseAdapter;
 import com.lptiyu.tanke.base.recyclerview.BaseViewHolder;
 import com.lptiyu.tanke.pojo.GameDataEntity;
-import com.lptiyu.tanke.utils.Inflater;
 
 import java.util.ArrayList;
 import java.util.List;

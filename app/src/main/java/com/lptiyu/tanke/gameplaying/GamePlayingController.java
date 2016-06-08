@@ -115,11 +115,9 @@ public abstract class GamePlayingController extends ActivityController implement
       return;
       //TODO : notice user that the game zip is damaged, please download again,then finish this activity
     }
-    //TODO : get game id and line id from intent
     ToastUtil.TextToast("游戏包加载完成");
 
     mPoints = gameZipHelper.getmPoints();
-
     mapHelper = new MapHelper(getActivity(), mapView);
     mapHelper.bindData(mPoints);
     mapHelper.setmMapMarkerClickListener(this);
@@ -135,7 +133,6 @@ public abstract class GamePlayingController extends ActivityController implement
     RecordsUtils.initRecordsHandler(new RecordsHandler.Builder(gameId, teamId).build());
 
     initRecords();
-
     moveToTarget();
 
 //    mTracingHelper.start();
@@ -181,6 +178,7 @@ public abstract class GamePlayingController extends ActivityController implement
     isReachedAttackPoint = true;
     mapHelper.onReachAttackPoint(currentAttackPointIndex);
     consoleHelper.onReachAttackPoint(currentAttackPointIndex);
+    mapHelper.animateCameraToCurrentTarget();
   }
 
   void onNextPoint() {
@@ -228,6 +226,8 @@ public abstract class GamePlayingController extends ActivityController implement
   @OnClick(R.id.game_data)
   void startGameDataActivity() {
     Intent intent = new Intent();
+    intent.putExtra(Conf.GAME_ID, gameId);
+    intent.putExtra(Conf.LINE_ID, lineId);
     if (mPoints != null && mPoints instanceof ArrayList) {
       intent.putParcelableArrayListExtra(Conf.GAME_POINTS, ((ArrayList<? extends Parcelable>) mPoints));
     }
