@@ -62,6 +62,8 @@ public class ShaPrefer {
       editor.putBoolean(key, (Boolean) value);
     } else if (value instanceof Integer) {
       editor.putInt(key, (Integer) value);
+    } else if (value instanceof Long) {
+      editor.putLong(key, (Long) value);
     } else if (value instanceof Float) {
       editor.putFloat(key, (Float) value);
     } else if (value instanceof String) {

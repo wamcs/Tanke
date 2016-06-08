@@ -13,6 +13,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 
 import com.lptiyu.tanke.R;
+import com.lptiyu.tanke.base.controller.ContextController;
 import com.lptiyu.tanke.base.ui.BaseActivity;
 import com.lptiyu.tanke.base.ui.BaseFragment;
 
@@ -123,10 +124,16 @@ public class PermissionDispatcher {
   //====================================================== Request permission based on activity =====================================================
 
   public static void showCameraWithCheck(BaseActivity activity) {
+    if (activity == null) {
+      return;
+    }
     nextStepWithCheck(activity, PERMISSION_REQUEST_CODE_CAMERA);
   }
 
   public static void startLocateWithCheck(BaseActivity activity) {
+    if (activity == null) {
+      return;
+    }
     nextStepWithCheck(activity, PERMISSION_REQUEST_CODE_LOCATION);
   }
 
@@ -154,8 +161,8 @@ public class PermissionDispatcher {
   }
 
   private static void invokeTargetMethodWithRequestCode(BaseActivity activity, int requestCodeAskPermission) {
+
     List<Method> targetActivityMethods = PermissionUtil.findTargetMethodWithRequestCode(activity.getClass(), requestCodeAskPermission);
-    List<Method> targetControllerMethods = PermissionUtil.findTargetMethodWithRequestCode(activity.getController().getClass(), requestCodeAskPermission);
     for (Method m : targetActivityMethods) {
       Timber.e(m.getName());
       try {
@@ -164,6 +171,12 @@ public class PermissionDispatcher {
         e.printStackTrace();
       }
     }
+
+    ContextController controller = activity.getController();
+    if (controller == null) {
+      return;
+    }
+    List<Method> targetControllerMethods = PermissionUtil.findTargetMethodWithRequestCode(activity.getController().getClass(), requestCodeAskPermission);
     for (Method m : targetControllerMethods) {
       Timber.e(m.getName());
       try {

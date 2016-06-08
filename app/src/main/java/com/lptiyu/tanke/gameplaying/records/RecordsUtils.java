@@ -1,6 +1,8 @@
 package com.lptiyu.tanke.gameplaying.records;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import timber.log.Timber;
 
@@ -14,6 +16,7 @@ public class RecordsUtils {
 
   private static RunningRecord.Builder runningRecordBuilder;
   private static RecordsHandler mRecordsHandler;
+  private static List<RunningRecord> cacheRecords = new ArrayList<>();
 
   private RecordsUtils() {
   }
@@ -21,6 +24,17 @@ public class RecordsUtils {
   public static void initRecordsHandler(RecordsHandler recordsHandler) {
     mRecordsHandler = recordsHandler;
     runningRecordBuilder = new RunningRecord.Builder();
+  }
+
+  public static void cacheTypeRecord(double x, double y, long pointId, long taskId, RunningRecord.RECORD_TYPE type) {
+    cacheRecords.add(initPointRecord(x, y, pointId, taskId, type));
+  }
+
+  public static void dispatchCachedRecords() {
+    for (RunningRecord record : cacheRecords) {
+      dispatchTypeRecord(record);
+    }
+    cacheRecords.clear();
   }
 
   public static void dispatchTypeRecord(double x, double y, long pointId, long taskId, RunningRecord.RECORD_TYPE type) {

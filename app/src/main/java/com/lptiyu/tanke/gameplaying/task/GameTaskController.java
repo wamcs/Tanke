@@ -181,16 +181,33 @@ public class GameTaskController extends ActivityController {
     RecordsUtils.dispatchTypeRecord(34.123123, 114.321321, mPoint.getId(), taskId, type);
   }
 
+  private void cacheTaskRecord(RunningRecord.RECORD_TYPE type, long taskId) {
+    RecordsUtils.cacheTypeRecord(34.123123, 114.321321, mPoint.getId(), taskId, type);
+  }
+
   public void openNextTaskIfExist() {
+    int pointIndex = mPoint.getPointIndex();
     if (currentTaskIndex == 0) {
-      dispatchTaskRecord(RunningRecord.RECORD_TYPE.TASK_START, currentTask.getId());
+      if (pointIndex != 0) {
+        dispatchTaskRecord(RunningRecord.RECORD_TYPE.TASK_START, currentTask.getId());
+      } else {
+        cacheTaskRecord(RunningRecord.RECORD_TYPE.TASK_START, currentTask.getId());
+      }
     }
-    dispatchTaskRecord(RunningRecord.RECORD_TYPE.TASK_FINISH, currentTask.getId());
+    if (pointIndex != 0) {
+      dispatchTaskRecord(RunningRecord.RECORD_TYPE.TASK_FINISH, currentTask.getId());
+    } else {
+      cacheTaskRecord(RunningRecord.RECORD_TYPE.TASK_FINISH, currentTask.getId());
+    }
     if (onNextTask()) {
       mViewPager.setCurrentItem(currentTaskIndex);
       MultiplyTaskController controller = ((MultiplyTaskController) ((MultiplyTaskFragment) fragmentPagerItemAdapter.getPage(currentTaskIndex)).getController());
       if (controller != null) {
-        dispatchTaskRecord(RunningRecord.RECORD_TYPE.TASK_START, currentTask.getId());
+        if (pointIndex != 0) {
+          dispatchTaskRecord(RunningRecord.RECORD_TYPE.TASK_START, currentTask.getId());
+        } else {
+          cacheTaskRecord(RunningRecord.RECORD_TYPE.TASK_START, currentTask.getId());
+        }
         controller.openSealAndInitTask();
       }
     }

@@ -24,6 +24,7 @@ import cn.sharesdk.tencent.qzone.QZone;
 import cn.sharesdk.wechat.friends.Wechat;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
+import rx.schedulers.Schedulers;
 
 /**
  * author:wamcs
@@ -98,6 +99,7 @@ public class ThirdLoginHelper implements PlatformActionListener {
         intentToSignUP.putExtra(Conf.SIGN_UP_TYPE,platformType);
 
         HttpService.getUserService().loginThirdParty(id,platformType)
+                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Action1<Response<UserEntity>>() {
                     @Override

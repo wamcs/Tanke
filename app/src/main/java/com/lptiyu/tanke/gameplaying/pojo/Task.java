@@ -24,6 +24,9 @@ public class Task implements Parcelable {
 
   private long id;
 
+  @SerializedName("task_name")
+  private String name;
+
   @SerializedName("type")
   private TASK_TYPE type;
 
@@ -35,15 +38,6 @@ public class Task implements Parcelable {
   private String content;
 
   private String pwd;
-
-  private Task(Builder builder) {
-    setId(builder.id);
-    setType(builder.type);
-    setExp(builder.exp);
-    setTaskName(builder.missionName);
-    setContent(builder.content);
-    setPwd(builder.pwd);
-  }
 
   public enum TASK_TYPE implements JsonSerializer<TASK_TYPE>, JsonDeserializer<TASK_TYPE> {
     SCAN_CODE(0), // scan the QRCode
@@ -95,6 +89,14 @@ public class Task implements Parcelable {
     this.id = id;
   }
 
+  public String getName() {
+    return name;
+  }
+
+  public void setName(String name) {
+    this.name = name;
+  }
+
   public TASK_TYPE getType() {
     return type;
   }
@@ -135,59 +137,6 @@ public class Task implements Parcelable {
     this.pwd = pwd;
   }
 
-
-  public static final class Builder {
-    private long id;
-    private long pointId;
-    private TASK_TYPE type;
-    private int exp;
-    private String missionName;
-    private String content;
-    private String pwd;
-
-    public Builder() {
-    }
-
-    public Builder id(long val) {
-      id = val;
-      return this;
-    }
-
-    public Builder pointId(long val) {
-      pointId = val;
-      return this;
-    }
-
-    public Builder type(TASK_TYPE val) {
-      type = val;
-      return this;
-    }
-
-    public Builder exp(int val) {
-      exp = val;
-      return this;
-    }
-
-    public Builder missionName(String val) {
-      missionName = val;
-      return this;
-    }
-
-    public Builder content(String val) {
-      content = val;
-      return this;
-    }
-
-    public Builder pwd(String val) {
-      pwd = val;
-      return this;
-    }
-
-    public Task build() {
-      return new Task(this);
-    }
-  }
-
   @Override
   public int describeContents() {
     return 0;
@@ -196,6 +145,7 @@ public class Task implements Parcelable {
   @Override
   public void writeToParcel(Parcel dest, int flags) {
     dest.writeLong(this.id);
+    dest.writeString(this.name);
     dest.writeInt(this.type == null ? -1 : this.type.ordinal());
     dest.writeInt(this.exp);
     dest.writeString(this.taskName);
@@ -203,8 +153,12 @@ public class Task implements Parcelable {
     dest.writeString(this.pwd);
   }
 
+  public Task() {
+  }
+
   protected Task(Parcel in) {
     this.id = in.readLong();
+    this.name = in.readString();
     int tmpType = in.readInt();
     this.type = tmpType == -1 ? null : TASK_TYPE.values()[tmpType];
     this.exp = in.readInt();
