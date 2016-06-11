@@ -149,7 +149,6 @@
             </intent-filter>
         </activity>
         <activity android:name=".gameplaying.GamePlayingActivity">
-
         </activity>
         <activity android:name=".gameplaying.task.GameTaskActivity">
         </activity>
@@ -180,6 +179,8 @@
             android:name=".userCenter.UserManagerGameActivity"
             android:label="@string/title_activity_user_judge_game"
             android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+        <activity android:name=".userCenter.UserRewardActivity">
         </activity>
     </application>
 

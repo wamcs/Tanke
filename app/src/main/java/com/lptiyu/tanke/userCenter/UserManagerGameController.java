@@ -152,8 +152,9 @@ public class UserManagerGameController extends BaseListActivityController<GameMa
     public void game_qrcode() {
       Intent intent = new Intent(getContext(), EncodeActivity.class);
       intent.setAction(Intents.Encode.ACTION);
-      intent.putExtra(Intents.Encode.FORMAT, BarcodeFormat.QR_CODE);
+      intent.putExtra(Intents.Encode.FORMAT, BarcodeFormat.QR_CODE.name());
       intent.putExtra(Intents.Encode.TYPE, Contents.Type.TEXT);
+      intent.putExtra(Intents.Encode.SHOW_CONTENTS, false);
       intent.putExtra(Intents.Encode.DATA, entity.getQrcode());
       getContext().startActivity(intent);
     }
