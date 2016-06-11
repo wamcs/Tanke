@@ -493,10 +493,5 @@ public abstract class GamePlayingController extends ActivityController implement
     return false;
   }
 
-  @Override
-  public void onBackPressed() {
-    finish();
-  }
-
   protected abstract void initRecords();
 }

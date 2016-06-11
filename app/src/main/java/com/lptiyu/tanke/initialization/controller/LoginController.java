@@ -228,7 +228,7 @@ public class LoginController extends ActivityController {
     }
 
     @Override
-    public void onBackPressed() {
+    public boolean onBackPressed() {
         super.onBackPressed();
         if ((System.currentTimeMillis() - exitTime)>2000){
             ToastUtil.TextToast(getString(R.string.exit));
@@ -236,5 +236,6 @@ public class LoginController extends ActivityController {
         }else {
             System.exit(0);
         }
+        return true;
     }
 }

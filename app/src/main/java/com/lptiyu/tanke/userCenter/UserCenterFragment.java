@@ -1,5 +1,6 @@
 package com.lptiyu.tanke.userCenter;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -104,7 +105,7 @@ public class UserCenterFragment extends BaseFragment {
   private void bind(UserDetails details) {
     Glide.with(this).load(details.getAvatar()).into(mUserAvatar);
     mUserNickname.setText(details.getNickname());
-    //TODO need image
+    //TODO sex need image
     mUserSex.setImageDrawable(null);
     mUserLocation.setText(details.getAddress());
     mUserUid.setText(String.valueOf(Accounts.getId()));
@@ -136,7 +137,7 @@ public class UserCenterFragment extends BaseFragment {
 
   @OnClick(R.id.user_judge_game)
   public void user_judge_game() {
-
+    startActivity(new Intent(getContext(), UserManagerGameActivity.class));
   }
 
 

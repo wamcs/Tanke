@@ -121,8 +121,8 @@
     <dimen name="main_page_item_img_height">61.8dp</dimen>
     <dimen name="main_page_item_text_size_normal">15sp</dimen>
     <dimen name="main_page_item_text_size_small">11sp</dimen>
-    
-    
+
+
     <!-- Message Activity Dimens-->
     <dimen name="message_img_size">30dp</dimen>
     <dimen name="message_item_layout_width">280dp</dimen>
@@ -131,5 +131,6 @@
     <dimen name="message_text_size">16sp</dimen>
     <dimen name="message_time_text_size">14sp</dimen>
     <dimen name="message_time_text_view_height">20dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
 
 </resources>
