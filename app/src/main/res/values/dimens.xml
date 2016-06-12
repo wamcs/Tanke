@@ -58,11 +58,15 @@
     <dimen name="sign_up_second_edit_margin_bottom">24dp</dimen>
 
     <!-- Dialog Dimens-->
+    <dimen name="layout_dialog_check_box_radiobutton_margin">7dp</dimen>
     <dimen name="layout_dialog_margin_left_right">20dp</dimen>
     <dimen name="layout_dialog_number_picker_width">70dp</dimen>
     <dimen name="layout_dialog_date_picker_margin">10dp</dimen>
     <dimen name="layout_dialog_date_picker_picker_root_height">150dp</dimen>
     <dimen name="layout_dialog_date_picker_picker_root_padding">5dp</dimen>
+
+    <!-- LoadingDialog Dimens Area-->
+    <dimen name="layout_dialog_loading_width_height">35dp</dimen>
 
     <!-- CompleteInformationActivity Dimens-->
     <dimen name="complete_user_avatar_size">180dp</dimen>
@@ -141,5 +145,18 @@
     <dimen name="message_text_size">16sp</dimen>
     <dimen name="message_time_text_size">14sp</dimen>
     <dimen name="message_time_text_view_height">20dp</dimen>
+
+    <!-- Modify User Info Dimes-->
+    <dimen name="modify_user_info_item_height">46dp</dimen>
+    <dimen name="modify_user_info_item_text_size">16sp</dimen>
+    <dimen name="modify_user_info_item_content_margin">20dp</dimen>
+
+    <!--locate Activity Dimens-->
+    <dimen name="item_locate_activity_list_item_padding_top_bottom">17dp</dimen>
+    <dimen name="item_locate_activity_list_item_padding_left">25dp</dimen>
+
+    <!--gameList Dimens-->
+    <dimen name="game_list_item_picture_size">80dp</dimen>
+
 
 </resources>

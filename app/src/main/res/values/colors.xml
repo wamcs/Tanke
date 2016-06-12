@@ -84,4 +84,9 @@
     <!-- messageActivity colors-->
     <color name="message_text_bg_color">#e1e3e9</color>
 
+    <!-- locationActivity colors-->
+    <color name="divider_color">#dddddd</color>
+    <color name="label_header_color">#555555</color>
+    <color name="label_header_bg_color">#f4f4f4</color>
+
 </resources>

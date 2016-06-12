@@ -33,6 +33,7 @@ import com.lptiyu.tanke.base.ui.BaseActivity;
 import com.lptiyu.tanke.global.Conf;
 import com.lptiyu.tanke.permission.PermissionDispatcher;
 import com.lptiyu.tanke.permission.TargetMethod;
+import com.lptiyu.tanke.pojo.City;
 import com.lptiyu.tanke.pojo.UserDetails;
 import com.lptiyu.tanke.pojo.UserEntity;
 import com.lptiyu.tanke.utils.ThirdLoginHelper;
@@ -89,11 +90,10 @@ public class CompleteInformationController extends ActivityController implements
     private final static int MALE_TYPE = 1;
     private final static int FEMALE_TYPE = 2;
 
-    private static final int REQUEST_PERMISSION_CAMERA_CODE = 1;
-    private static final int REQUEST_PERMISSION_LOCATION = 2;
 
     private Context context;
     private LocationClient client;
+    private City city;
 
     private int mUserGender;
     private boolean isAvatarSet;
@@ -109,6 +109,7 @@ public class CompleteInformationController extends ActivityController implements
         context = getContext();
         changeGender(MALE_TYPE);
         mUserGender = MALE_TYPE;
+        city =new City();
         UserDetails Muser = ThirdLoginHelper.getUserDetail();
         initDataFromThirdLogin(Muser);
 
@@ -123,6 +124,8 @@ public class CompleteInformationController extends ActivityController implements
                     case MotionEvent.ACTION_DOWN:
                         ToastUtil.TextToast("启动选择城市列表");
 //                      PermissionDispatcher.startLocateWithCheck(((BaseActivity) getActivity()));
+                        mLocationButton.animate().scaleX(0.9f).scaleY(0.9f).setInterpolator(new BounceInterpolator()).setDuration(100).start();
+
                         break;
                     case MotionEvent.ACTION_UP:
                         mLocationButton.animate().scaleY(1.0f)
@@ -203,7 +206,8 @@ public class CompleteInformationController extends ActivityController implements
 
     @OnClick(R.id.complete_avatar_image_view)
     void changeImage() {
-      PermissionDispatcher.showCameraWithCheck(((BaseActivity) getActivity()));
+        PermissionDispatcher.showCameraWithCheck(((BaseActivity) getActivity()));
+        startCamera();
     }
 
     @OnClick(R.id.complete_height_button)
@@ -249,9 +253,6 @@ public class CompleteInformationController extends ActivityController implements
         changeGender(FEMALE_TYPE);
     }
 
-    private void chooseLocation() {
-
-    }
 
     @OnClick(R.id.complete_next_button)
     void next() {
@@ -280,31 +281,32 @@ public class CompleteInformationController extends ActivityController implements
 //        Muser.setHeight(mHeightText.getText().toString());
 //        Muser.setWeight(mWeightText.getText().toString());
 
+
         //TODO:user avatar
     }
 
-    private void locate() {
+        private void locate() {
 
-        client = new LocationClient(getContext());
-        initLocation();
-        client.registerLocationListener(this);
-    }
+            client = new LocationClient(getContext());
+            initLocation();
+            client.registerLocationListener(this);
+        }
 
-    private void initLocation() {
-        LocationClientOption option = new LocationClientOption();
-        option.setLocationMode(LocationMode.Hight_Accuracy
-        );//可选，默认高精度，设置定位模式，高精度，低功耗，仅设备
-        option.setCoorType("bd09ll");//可选，默认gcj02，设置返回的定位结果坐标系
-        int span = 1000;
-        option.setScanSpan(span);//可选，默认0，即仅定位一次，设置发起定位请求的间隔需要大于等于1000ms才是有效的
-        option.setIsNeedAddress(true);//可选，设置是否需要地址信息，默认不需要
-        option.setOpenGps(true);//可选，默认false,设置是否使用gps
-        option.setLocationNotify(true);//可选，默认false，设置是否当gps有效时按照1S1次频率输出GPS结果
-        option.setIsNeedLocationDescribe(true);//可选，默认false，设置是否需要位置语义化结果，可以在BDLocation.getLocationDescribe里得到，结果类似于“在北京天安门附近”
-        option.setIgnoreKillProcess(false);//可选，默认true，定位SDK内部是一个SERVICE，并放到了独立进程，设置是否在stop的时候杀死这个进程，默认不杀死
-        option.setEnableSimulateGps(false);//可选，默认false，设置是否需要过滤gps仿真结果，默认需要
-        client.setLocOption(option);
-    }
+        private void initLocation() {
+            LocationClientOption option = new LocationClientOption();
+            option.setLocationMode(LocationMode.Hight_Accuracy
+            );//可选，默认高精度，设置定位模式，高精度，低功耗，仅设备
+            option.setCoorType("bd09ll");//可选，默认gcj02，设置返回的定位结果坐标系
+            int span = 1000;
+            option.setScanSpan(span);//可选，默认0，即仅定位一次，设置发起定位请求的间隔需要大于等于1000ms才是有效的
+            option.setIsNeedAddress(true);//可选，设置是否需要地址信息，默认不需要
+            option.setOpenGps(true);//可选，默认false,设置是否使用gps
+            option.setLocationNotify(true);//可选，默认false，设置是否当gps有效时按照1S1次频率输出GPS结果
+            option.setIsNeedLocationDescribe(true);//可选，默认false，设置是否需要位置语义化结果，可以在BDLocation.getLocationDescribe里得到，结果类似于“在北京天安门附近”
+            option.setIgnoreKillProcess(false);//可选，默认true，定位SDK内部是一个SERVICE，并放到了独立进程，设置是否在stop的时候杀死这个进程，默认不杀死
+            option.setEnableSimulateGps(false);//可选，默认false，设置是否需要过滤gps仿真结果，默认需要
+            client.setLocOption(option);
+        }
 
 
     @Override
@@ -318,11 +320,19 @@ public class CompleteInformationController extends ActivityController implements
         if (bdLocation.getLocType() == BDLocation.TypeGpsLocation
                 || bdLocation.getLocType() == BDLocation.TypeNetWorkLocation) {
             mLocationText.setText(bdLocation.getCity());
+            city.setName(bdLocation.getCity());
+            city.setProvince(bdLocation.getProvince());
+            city.setLatitude(bdLocation.getLatitude());
+            city.setLongtitude(bdLocation.getLongitude());
             ToastUtil.TextToast("定位成功");
 
         } else {
             ToastUtil.TextToast("定位失败");
             mLocationText.setText("武汉");
+            city.setName("武汉");
+            city.setProvince("湖北");
+            city.setLatitude(30.515372);
+            city.setLongtitude(114.419876);
         }
         client.stop();
     }

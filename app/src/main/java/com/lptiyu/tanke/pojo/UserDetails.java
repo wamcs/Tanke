@@ -1,5 +1,8 @@
 package com.lptiyu.tanke.pojo;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.SerializedName;
 
 /**
@@ -8,7 +11,7 @@ import com.google.gson.annotations.SerializedName;
  *
  * @author ldx
  */
-public class UserDetails {
+public class UserDetails implements Parcelable{
 
   @SerializedName("name")
   private String nickname;
@@ -131,4 +134,51 @@ public class UserDetails {
         ", finishedGameNum=" + finishedGameNum +
         '}';
   }
+
+  @Override
+  public int describeContents() {
+    return 0;
+  }
+
+  @Override
+  public void writeToParcel(Parcel dest, int flags) {
+    dest.writeString(this.nickname);
+    dest.writeString(this.avatar);
+    dest.writeString(this.phone);
+    dest.writeString(this.birthday);
+    dest.writeString(this.sex);
+    dest.writeString(this.height);
+    dest.writeString(this.weight);
+    dest.writeString(this.address);
+    dest.writeInt(this.playingGameNum);
+    dest.writeInt(this.finishedGameNum);
+  }
+
+  public UserDetails() {
+  }
+
+  protected UserDetails(Parcel in) {
+    this.nickname = in.readString();
+    this.avatar = in.readString();
+    this.phone = in.readString();
+    this.birthday = in.readString();
+    this.sex = in.readString();
+    this.height = in.readString();
+    this.weight = in.readString();
+    this.address = in.readString();
+    this.playingGameNum = in.readInt();
+    this.finishedGameNum = in.readInt();
+  }
+
+  public static final Creator<UserDetails> CREATOR = new Creator<UserDetails>() {
+    @Override
+    public UserDetails createFromParcel(Parcel source) {
+      return new UserDetails(source);
+    }
+
+    @Override
+    public UserDetails[] newArray(int size) {
+      return new UserDetails[size];
+    }
+  };
 }

@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@id/tool_bar"
+        style="@style/Toolbar">
+        <include layout="@layout/layout_default_toolbar"/>
+    </android.support.v7.widget.Toolbar>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp">
+        <TextView
+            style="@style/ModifyUserInfoItemTitle"
+            android:text="@string/avatar"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:layout_marginRight="@dimen/modify_user_info_item_content_margin"
+            android:id="@id/modify_user_info_avatar_button"
+            android:layout_alignParentRight="true">
+            <com.facebook.drawee.view.SimpleDraweeView
+                android:layout_marginRight="10dp"
+                android:id="@id/modify_user_info_avatar_image"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:background="@mipmap/ic_launcher"
+                app:roundAsCircle="true"
+                />
+            <ImageView
+                android:layout_width="10dp"
+                android:layout_height="match_parent"
+                android:src="@mipmap/arrow_left_black"/>
+        </LinearLayout>
+
+    </RelativeLayout>
+
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/user_center_linear_layout_bottom_line_height"
+        android:layout_alignParentBottom="true"
+        android:background="@color/user_center_split_line"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/modify_user_info_item_height">
+
+        <TextView
+            style="@style/ModifyUserInfoItemTitle"
+            android:text="@string/nickname"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginRight="@dimen/modify_user_info_item_content_margin"
+            android:id="@id/modify_user_info_nickname_button"
+            android:layout_alignParentRight="true">
+            <TextView
+                style="@style/ModifyUserInfoItemText"
+                android:text="狂战士"
+                android:id="@id/modify_user_info_nickname_text"
+                />
+
+            <ImageView
+                android:layout_width="10dp"
+                android:layout_height="match_parent"
+                android:src="@mipmap/arrow_left_black"/>
+        </LinearLayout>
+
+
+    </RelativeLayout>
+
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/user_center_linear_layout_bottom_line_height"
+        android:layout_alignParentBottom="true"
+        android:background="@color/user_center_split_line"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/modify_user_info_item_height">
+
+        <TextView
+            style="@style/ModifyUserInfoItemTitle"
+            android:text="生日"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginRight="@dimen/modify_user_info_item_content_margin"
+            android:id="@id/modify_user_info_birthday_button"
+            android:layout_alignParentRight="true">
+            <TextView
+                style="@style/ModifyUserInfoItemText"
+                android:text="1970-01-01"
+                android:id="@id/modify_user_info_birthday_text"
+                />
+
+            <ImageView
+                android:layout_width="10dp"
+                android:layout_height="match_parent"
+                android:src="@mipmap/arrow_left_black"/>
+        </LinearLayout>
+
+
+    </RelativeLayout>
+
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/user_center_linear_layout_bottom_line_height"
+        android:layout_alignParentBottom="true"
+        android:background="@color/user_center_split_line"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/modify_user_info_item_height">
+
+        <TextView
+            style="@style/ModifyUserInfoItemTitle"
+            android:text="@string/gender"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginRight="@dimen/modify_user_info_item_content_margin"
+            android:id="@id/modify_user_info_gender_button"
+            android:layout_alignParentRight="true">
+            <TextView
+                style="@style/ModifyUserInfoItemText"
+                android:text="男"
+                android:id="@id/modify_user_info_gender_text"
+                />
+
+            <ImageView
+                android:layout_width="10dp"
+                android:layout_height="match_parent"
+                android:src="@mipmap/arrow_left_black"/>
+        </LinearLayout>
+
+
+    </RelativeLayout>
+
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/user_center_linear_layout_bottom_line_height"
+        android:layout_alignParentBottom="true"
+        android:background="@color/user_center_split_line"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/modify_user_info_item_height">
+
+        <TextView
+            style="@style/ModifyUserInfoItemTitle"
+            android:text="@string/height"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginRight="@dimen/modify_user_info_item_content_margin"
+            android:id="@id/modify_user_info_height_button"
+            android:layout_alignParentRight="true">
+            <TextView
+                style="@style/ModifyUserInfoItemText"
+                android:text="177cm"
+                android:id="@id/modify_user_info_height_text"
+                />
+
+            <ImageView
+                android:layout_width="10dp"
+                android:layout_height="match_parent"
+                android:src="@mipmap/arrow_left_black"/>
+        </LinearLayout>
+
+
+    </RelativeLayout>
+
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/user_center_linear_layout_bottom_line_height"
+        android:layout_alignParentBottom="true"
+        android:background="@color/user_center_split_line"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/modify_user_info_item_height">
+
+        <TextView
+            style="@style/ModifyUserInfoItemTitle"
+            android:text="@string/weight"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginRight="@dimen/modify_user_info_item_content_margin"
+            android:id="@id/modify_user_info_weight_button"
+            android:layout_alignParentRight="true">
+            <TextView
+                style="@style/ModifyUserInfoItemText"
+                android:text="75kg"
+                android:id="@id/modify_user_info_weight_text"
+                />
+
+            <ImageView
+                android:layout_width="10dp"
+                android:layout_height="match_parent"
+                android:src="@mipmap/arrow_left_black"/>
+        </LinearLayout>
+
+
+    </RelativeLayout>
+
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/user_center_linear_layout_bottom_line_height"
+        android:layout_alignParentBottom="true"
+        android:background="@color/user_center_split_line"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/modify_user_info_item_height">
+
+        <TextView
+            style="@style/ModifyUserInfoItemTitle"
+            android:text="所在地"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginRight="@dimen/modify_user_info_item_content_margin"
+            android:id="@id/modify_user_info_location_button"
+            android:layout_alignParentRight="true">
+            <TextView
+                style="@style/ModifyUserInfoItemText"
+                android:text="湖北武汉"
+                android:id="@id/modify_user_info_location_text"
+                />
+
+            <ImageView
+                android:layout_width="10dp"
+                android:layout_height="match_parent"
+                android:src="@mipmap/arrow_left_black"/>
+        </LinearLayout>
+
+
+    </RelativeLayout>
+
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/user_center_linear_layout_bottom_line_height"
+        android:layout_alignParentBottom="true"
+        android:background="@color/user_center_split_line"/>
+</LinearLayout>

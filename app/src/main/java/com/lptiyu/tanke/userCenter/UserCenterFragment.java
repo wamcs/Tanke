@@ -1,5 +1,6 @@
 package com.lptiyu.tanke.userCenter;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -13,9 +14,11 @@ import com.lptiyu.tanke.R;
 import com.lptiyu.tanke.base.controller.FragmentController;
 import com.lptiyu.tanke.base.ui.BaseFragment;
 import com.lptiyu.tanke.global.Accounts;
+import com.lptiyu.tanke.global.Conf;
 import com.lptiyu.tanke.io.net.HttpService;
 import com.lptiyu.tanke.io.net.Response;
 import com.lptiyu.tanke.pojo.UserDetails;
+import com.lptiyu.tanke.userCenter.ui.ModifyUserInfoActivity;
 import com.lptiyu.tanke.utils.ToastUtil;
 import com.lptiyu.tanke.widget.GradientProgressBar;
 import com.mikhaellopez.circularimageview.CircularImageView;
@@ -69,6 +72,7 @@ public class UserCenterFragment extends BaseFragment {
   TextView mUserGameFinishedNum;
 
   private Subscription subscription;
+  private Bundle bundle;
 
   @Nullable
   @Override
@@ -102,6 +106,7 @@ public class UserCenterFragment extends BaseFragment {
   }
 
   private void bind(UserDetails details) {
+    bundle.putParcelable(Conf.USER_DETAIL,details);
     Glide.with(this).load(details.getAvatar()).into(mUserAvatar);
     mUserNickname.setText(details.getNickname());
     //TODO need image
@@ -114,6 +119,13 @@ public class UserCenterFragment extends BaseFragment {
     mUserProgressName.setText("步道跑神");
     mUserGamePlayingNum.setText(String.valueOf(details.getPlayingGameNum()));
     mUserGameFinishedNum.setText(String.valueOf(details.getFinishedGameNum()));
+  }
+
+  @OnClick(R.id.user_message_layout)
+  void modifyUserinfo(){
+    Intent intent = new Intent(getActivity(), ModifyUserInfoActivity.class);
+    intent.putExtra(Conf.DATA_TO_INFO_MODIFY,bundle);
+    startActivity(intent);
   }
 
   @OnClick(R.id.user_game_playing)

@@ -86,6 +86,33 @@
         <activity android:name=".messagesystem.MessageActivity">
         </activity>
 
+        <activity android:name=".userCenter.ui.RewardListActivity">
+        </activity>
+
+        <activity android:name=".userCenter.ui.GameFinishedListActivity">
+        </activity>
+
+        <activity android:name=".userCenter.ui.GamePlayingListActivity">
+        </activity>
+
+        <activity android:name=".userCenter.ui.LocateActivity">
+        </activity>
+
+        <activity android:name=".userCenter.ui.ModifyTextActivity">
+        </activity>
+
+        <activity android:name=".userCenter.ui.ModifyUserInfoActivity">
+        </activity>
+
+        <activity android:name=".userCenter.ui.OtherUserInformationActivity">
+        </activity>
+
+        <activity android:name=".userCenter.ui.SettingActivity">
+        </activity>
+
+        <activity android:name=".messagesystem.MessageListActivity">
+        </activity>
+
         <activity
             android:name="com.mob.tools.MobUIShell"
             android:configChanges="keyboardHidden|orientation|screenSize"

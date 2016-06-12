@@ -77,6 +77,8 @@
     <!-- CompleteInformationActivity Text Area-->
     <string name="complete">完成</string>
     <string name="input_nickname">点击输入昵称</string>
+    <string name="avatar">头像</string>
+    <string name="nickname">昵称</string>
     <string name="gender">性别</string>
     <string name="male">男</string>
     <string name="female">女</string>
@@ -136,8 +138,26 @@
     <!-- GameDataActivity Text Area-->
     <string name="game_data">游戏数据</string>
 
+    <!-- ModifyInfo Text Area-->
+    <string name="change_nickname">更改姓名</string>
+    <string name="change_height">更改身高</string>
+    <string name="change_weight">更改体重</string>
+    <string name="change_nickname_hint">取一个好的昵称能让朋友更容易记住你</string>
+    <string name="change_nickname_error">昵称格式错误</string>
+    <string name="change_height_hint">写下你的身高吧，单位是CM</string>
+    <string name="change_height_error">身高规定范围为%dCM~%dCM,填写超出范围</string>
+    <string name="change_weight_hint">写下你的体重吧，单位是KG</string>
+    <string name="change_weight_error">体重规定范围为%dKG~%dKG,填写超出范围</string>
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
+    <!--LocateActivity Text Area-->
+    <string name="current_location">当前位置</string>
+    <string name="open_location">开通城市</string>
+    <string name="city_not_open">(该城市尚未开通)</string>
+    
+    <!-- gameList Text Area-->
+    <string name="game_progress">游戏进度</string>
 
 </resources>
