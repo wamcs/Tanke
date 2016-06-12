@@ -80,6 +80,15 @@
         <item name="android:layout_marginBottom">@dimen/complete_item_content_margin_bottom</item>
     </style>
 
+    <!-- GameDataActivity Style Area-->
+    <style name="GameDataItemText">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">@dimen/item_game_data_task_name_task_type_height</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:padding">@dimen/item_game_data_task_name_task_type_padding</item>
+
+    </style>
+
 
     <style name="TextAppearance">
     </style>

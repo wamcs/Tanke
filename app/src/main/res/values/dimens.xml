@@ -117,6 +117,16 @@
     <dimen name="task_fragment_tab_text_size">16sp</dimen>
     <dimen name="task_fragment_tab_indicator_width">20dp</dimen>
 
+    <!-- GameDataActivity Dimens-->
+    <dimen name="activity_game_data_toolbar_button_width_height">45dp</dimen>
+    <dimen name="activity_game_data_toolbar_imageview_right_margin_right">10dp</dimen>
+    <dimen name="item_game_data_task_name_task_type_height">30dp</dimen>
+    <dimen name="item_game_data_task_name_task_type_padding">5dp</dimen>
+    <dimen name="item_game_data_task_header_height">15dp</dimen>
+    <dimen name="item_game_data_task_root_padding_top_bottom">5dp</dimen>
+    <dimen name="item_game_data_task_root_padding_right_left">10dp</dimen>
+
+
     <dimen name="main_page_item_img_width">100dp</dimen>
     <dimen name="main_page_item_img_height">61.8dp</dimen>
     <dimen name="main_page_item_text_size_normal">15sp</dimen>

@@ -31,9 +31,9 @@ import rx.functions.Action1;
 @Config(constants = BuildConfig.class)
 public class UserServiceTest {
 
-  public static final int UID = 1;
+  public static final long UID = 1L;
 
-  public static final String TOKEN = "1929822";
+  public static final String TOKEN = "2D9A6633414967B5DF2BF397BD3AD695";
 
   UserService userService;
 
@@ -43,7 +43,7 @@ public class UserServiceTest {
   }
 
   @Test
-  @Ignore //已经测试成功
+  @Ignore //success 2.1
   public void testRegister() throws Exception {
     userService.register("13006180386", "123qwe", "132465", UserService.USER_TYPE_NORMAL)
         .subscribe(new Action1<Response<UserEntity>>() {
@@ -62,7 +62,7 @@ public class UserServiceTest {
         });
   }
 
-  @Test //成功
+  @Test //success 2.3
   public void testLogin() throws Exception {
     userService.login("13006180386", "123qwe")
         .subscribe(new Action1<Response<UserEntity>>() {
@@ -80,7 +80,7 @@ public class UserServiceTest {
         });
   }
 
-  @Test // 成功
+  @Test //success 2.4
   public void testLoginThirdParty() throws Exception {
     HttpService.getUserService().loginThirdParty("193840382029484", UserService.USER_TYPE_QQ)
         .subscribe(new Action1<Response<UserEntity>>() {
@@ -98,9 +98,9 @@ public class UserServiceTest {
   }
 
   @Test
-  //应该ok了吧，显示验证码或手机号错误
+  //success 2.5
   public void testForgetPassword() throws Exception {
-    HttpService.getUserService().forgetPassword("13006180386", "123qwe", "123000")
+    HttpService.getUserService().forgetPassword("13006180386", "123qwe", "712442")
         .subscribe(new Action1<Response<Void>>() {
           @Override
           public void call(Response<Void> voidResponse) {
@@ -116,9 +116,9 @@ public class UserServiceTest {
 
   }
 
-  @Test
+  @Test //success 2.6
   public void testGetVerifyCode() throws Exception {
-    HttpService.getUserService().getVerifyCodeForgetPassword("13006180386")
+    HttpService.getUserService().getVerifyCode(2, "18062145623")
         .subscribe(new Action1<Response<Void>>() {
           @Override
           public void call(Response<Void> voidResponse) {
@@ -135,14 +135,14 @@ public class UserServiceTest {
 
   }
 
-  @Test //测试成功
+  @Test //no use failed 2.7
   public void testResetPassword() throws Exception {
-    HttpService.getUserService().resetPassword(1L, "1123", "123qwe", "123qwe")
+    HttpService.getUserService().resetPassword(UID, TOKEN, "123qwe", "123qwe")
         .subscribe(new ResponseAction1(), new AssertNullAction1());
   }
 
   @Test
-  //测试成功
+  //success 2.8
   public void testGetUserDetail() throws Exception {
     HttpService.getUserService().getUserDetail(1, "haha")
         .subscribe(new Action1<Response<UserDetails>>() {
@@ -160,7 +160,7 @@ public class UserServiceTest {
 
   }
 
-  @Test
+  @Test // failed 2.9
   public void testUploadUserAvatar() throws Exception {
     File file = new File("src/test/res/need_to_remove.png");
     userService.uploadUserAvatar(UID, TOKEN, RequestBody.create(MediaType.parse("image/*"), file))
@@ -179,14 +179,14 @@ public class UserServiceTest {
   }
 
   @Test
-  //成功
+  // 2.11 体重、生日不能更改= =,其他的都通过了
   public void testResetUserDetails() throws Exception {
-    userService.resetUserDetails(UID, TOKEN, UserService.USER_DETAIL_BIRTHDAY, "1994-12-12")
+    userService.resetUserDetails(UID, TOKEN, UserService.USER_DETAIL_HEIGHT, "65")
         .subscribe(new ResponseAction1(), new AssertNullAction1());
   }
 
   @Test
-  //成功
+  //success 2.2
   public void testUserProtocol() throws Exception {
     userService.userProtocol().subscribe(new Action1<Response<String>>() {
       @Override
@@ -203,13 +203,13 @@ public class UserServiceTest {
 
   }
 
-  @Test
+  @Test //success
   public void testGamePlaying() throws Exception{
     userService.gamePlaying(UID, TOKEN)
         .subscribe(new ResponseAction1(), new AssertNullAction1());
   }
   
-  @Test
+  @Test //success
   public void testGameFinished() throws Exception{
     userService.gameFinished(UID, TOKEN)
         .subscribe(new ResponseAction1(), new AssertNullAction1());
@@ -221,23 +221,16 @@ public class UserServiceTest {
         .subscribe(new ResponseAction1(), new AssertNullAction1());
   }
 
-  @Test
+  @Test //success
   public void testManagerTask() throws Exception{
     userService.getManagerTask(UID, TOKEN)
         .subscribe(new ResponseAction1(), new AssertNullAction1());
   }
 
-  @Test
+  @Test //success
   public void testRegisterInstallation() throws Exception{
-    userService.registerInstallation(UID, TOKEN, "i12303i30ejd021o0d0d0023o4p230;234")
+    userService.registerInstallation(UID, TOKEN, "i12303234")
         .subscribe(new ResponseAction1(), new AssertNullAction1());
   }
-
-  @Test
-  public void testAboutUrl() throws Exception{
-    userService.about()
-        .subscribe(new ResponseAction1(), new AssertNullAction1());
-  }
-
 
 }

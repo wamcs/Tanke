@@ -12,6 +12,7 @@ import com.lptiyu.tanke.utils.ToastUtil;
 
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
+import rx.schedulers.Schedulers;
 
 /**
  * author:wamcs
@@ -40,8 +41,9 @@ public class ResetPasswordHelper extends SignUpHelper {
         super.getCode();
 
         String phone = signUpPhoneEditText.getText().toString();
-        HttpService.getUserService().getVerifyCodeForgetPassword(phone)
+        HttpService.getUserService().getVerifyCode(2, phone)
                 .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
                 .subscribe(new Action1<Response<Void>>() {
                     @Override
                     public void call(Response<Void> voidResponse) {
@@ -70,6 +72,7 @@ public class ResetPasswordHelper extends SignUpHelper {
         String code = signUpCodeEditText.getText().toString();
 
         HttpService.getUserService().forgetPassword(phone, password, code)
+                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Action1<Response<Void>>() {
                     @Override
@@ -79,6 +82,7 @@ public class ResetPasswordHelper extends SignUpHelper {
                             ToastUtil.TextToast(voidResponse.getInfo());
                             return;
                         }
+                      ToastUtil.TextToast(voidResponse.getInfo());
                         context.finish();
                     }
                 });

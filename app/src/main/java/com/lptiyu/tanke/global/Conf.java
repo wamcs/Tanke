@@ -73,9 +73,9 @@ public final class Conf {
   /**
    * game playing activity
    */
-  public static final float LOCATION_DISTANCE_THRESHOLD_BOTTOM = 0.5f;
+  public static final float LOCATION_DISTANCE_THRESHOLD_BOTTOM = 1.0f;
   public static final float LOCATION_DISTANCE_THRESHOLD_TOP = 10.0f;
-  public static final double POINT_RADIUS = 10.0;
+  public static final double POINT_RADIUS = 20.0;
 
   public static final String CLICKED_POINT = "clicked_point";
   public static final String TEAM_ID = "team_id";
@@ -88,6 +88,12 @@ public final class Conf {
   public static final String TIMING_TASK = "timing_task";
   public static final String IS_POINT_TASK_ALL_FINISHED_INDEX = "is_point_task_all_finished_index";
   public static final String IS_POINT_TASK_ALL_FINISHED = "is_point_task_all_finished";
+
+  /**
+   * game data activity
+   */
+  public static final String GAME_POINTS = "game_points";
+  public static final String GAME_RECORDS = "game_records";
 
   /**
    * Message

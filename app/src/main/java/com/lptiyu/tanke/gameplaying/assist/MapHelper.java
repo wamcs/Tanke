@@ -11,8 +11,6 @@ import com.baidu.location.BDLocation;
 import com.baidu.mapapi.map.BaiduMap;
 import com.baidu.mapapi.map.BitmapDescriptor;
 import com.baidu.mapapi.map.BitmapDescriptorFactory;
-import com.baidu.mapapi.map.Circle;
-import com.baidu.mapapi.map.CircleOptions;
 import com.baidu.mapapi.map.InfoWindow;
 import com.baidu.mapapi.map.LogoPosition;
 import com.baidu.mapapi.map.MapStatusUpdateFactory;
@@ -36,6 +34,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import timber.log.Timber;
+
 /**
  * @author : xiaoxiaoda
  *         date: 16-5-22
@@ -50,7 +50,6 @@ public class MapHelper implements
   private BaiduMap mBaiduMap;
 
   private SensorHelper mSensorHelper;
-  private MapCircleAnimationHelper mapCircleAnimationHelper;
 
   private List<Point> mPoints;
   private Point currentAttackPoint;
@@ -60,10 +59,6 @@ public class MapHelper implements
   private LatLng currentLatLng;
   private LatLng lastTimeLatLng;
   private List<LatLng> trackLatLngs;
-
-  // draw the circle around attack point , in order to notify user
-  private Circle attackPointCircle;
-  private CircleOptions attackPointCircleOptions;
 
   // info window content and info window, show when user arrive the attack point
   private InfoWindow mTaskEntryInfoWindow;
@@ -76,7 +71,7 @@ public class MapHelper implements
   // if this boolean is true, map will animate to current location when receive newly location
   private boolean animateToCurrentPositionOnce = true;
 
-  private boolean isReachAttackPoint = false;
+  //  private boolean isReachAttackPoint = false;
   private boolean isInfoWindowShown = false;
 
   private static final int paddingLeft = 0;
@@ -100,7 +95,6 @@ public class MapHelper implements
   private void init() {
     trackLatLngs = new ArrayList<>(2);
     mSensorHelper = new SensorHelper(mContext);
-    mapCircleAnimationHelper = new MapCircleAnimationHelper(mContext, mBaiduMap);
     mTaskEntryInfoWindowView = LayoutInflater.from(mContext).inflate(R.layout.layout_map_infowindow, null);
 
     initMap();
@@ -137,7 +131,6 @@ public class MapHelper implements
   public void initMapFlow() {
     initNails(mPoints);
     currentAttackPoint = mPoints.get(0);
-    setAttackPointCircle(currentAttackPoint);
   }
 
   @Override
@@ -162,6 +155,7 @@ public class MapHelper implements
       public void onClick(View v) {
         if (mMapMarkerClickListener != null) {
           mMapMarkerClickListener.onMarkerClicked(clickedPoint);
+          mBaiduMap.hideInfoWindow();
         }
       }
     });
@@ -172,16 +166,15 @@ public class MapHelper implements
   }
 
   public void onReachAttackPoint(int index) {
-    isReachAttackPoint = true;
+//    isReachAttackPoint = true;
     currentAttackPoint = mPoints.get(index);
     setNail(currentAttackPoint, index, NumNail.NailType.GREEN);
   }
 
   public void updateNextPoint(int index) {
-    isReachAttackPoint = false;
+//    isReachAttackPoint = false;
     currentAttackPoint = mPoints.get(index);
     setNail(currentAttackPoint, index, NumNail.NailType.RED);
-    setAttackPointCircle(currentAttackPoint);
   }
 
   /**
@@ -194,7 +187,7 @@ public class MapHelper implements
     mBaiduMap.setMyLocationData(makeUpLocationData(location));
     currentLatLng = new LatLng(location.getLatitude(), location.getLongitude());
     if (animateToCurrentPositionOnce) {
-      mBaiduMap.animateMapStatus(MapStatusUpdateFactory.newLatLngZoom(currentLatLng, 18));
+      mBaiduMap.animateMapStatus(MapStatusUpdateFactory.newLatLngZoom(currentLatLng, 20));
       animateToCurrentPositionOnce = false;
     }
     if ((null != lastTimeLatLng) && (DistanceUtil.getDistance(lastTimeLatLng, currentLatLng) > Conf.LOCATION_DISTANCE_THRESHOLD_BOTTOM)
@@ -209,13 +202,13 @@ public class MapHelper implements
   }
 
   public void animateCameraToCurrentTarget() {
-    mBaiduMap.animateMapStatus(MapStatusUpdateFactory.newLatLngZoom(currentAttackPoint.getLatLng(), 18));
+    mBaiduMap.animateMapStatus(MapStatusUpdateFactory.newLatLngZoom(currentAttackPoint.getLatLng(), 20));
   }
 
   public void animateCameraToMarkerByIndex(int index) {
     if (mPoints != null && index <= currentAttackPoint.getPointIndex()) {
       Point targetPoint = mPoints.get(index);
-      mBaiduMap.animateMapStatus(MapStatusUpdateFactory.newLatLngZoom(targetPoint.getLatLng(), 18));
+      mBaiduMap.animateMapStatus(MapStatusUpdateFactory.newLatLngZoom(targetPoint.getLatLng(), 20));
     }
   }
 
@@ -230,16 +223,6 @@ public class MapHelper implements
      * the next target will be shown
      */
     setNail(points.get(0), 0, NumNail.NailType.RED);
-  }
-
-  private void setAttackPointCircle(Point point) {
-    LatLng latLng = point.getLatLng();
-    if (attackPointCircle == null) {
-      attackPointCircleOptions = generateCircleOption(latLng);
-      attackPointCircle = mapCircleAnimationHelper.addCircleAnimation(attackPointCircleOptions);
-    } else {
-      attackPointCircle.setCenter(latLng);
-    }
   }
 
   private void setNail(Point point, int index, NumNail.NailType type) {
@@ -306,14 +289,6 @@ public class MapHelper implements
     return options;
   }
 
-  private CircleOptions generateCircleOption(LatLng latLng) {
-    CircleOptions circleOptions = new CircleOptions();
-    circleOptions
-        .center(latLng)
-        .fillColor(mContext.getResources().getColor(R.color.attackPointCircleColor));
-    return circleOptions;
-  }
-
   /**
    * this method can hide the baidu logo
    * but baidu said the logo should not be hide
@@ -329,19 +304,16 @@ public class MapHelper implements
   public void onResume() {
     mapView.onResume();
     mSensorHelper.onResume();
-    mapCircleAnimationHelper.onResume();
   }
 
   public void onPause() {
     mapView.onPause();
     mSensorHelper.onPause();
-    mapCircleAnimationHelper.onPause();
   }
 
   public void onDestroy() {
     mapView.onDestroy();
     mSensorHelper.onDestroy();
-    mapCircleAnimationHelper.onDestroy();
   }
 
   public BaiduMap getmBaiduMap() {

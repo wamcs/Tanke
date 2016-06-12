@@ -1,23 +1,17 @@
 package com.lptiyu.tanke.gameplaying;
 
-import android.animation.Animator;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.animation.AccelerateDecelerateInterpolator;
-import android.view.animation.AccelerateInterpolator;
-import android.view.animation.BounceInterpolator;
-import android.view.animation.TranslateAnimation;
 import android.widget.TextView;
 
 import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
-import com.baidu.mapapi.map.Marker;
-import com.baidu.mapapi.map.MarkerOptions;
 import com.baidu.mapapi.map.TextureMapView;
 import com.baidu.mapapi.model.LatLng;
 import com.baidu.mapapi.utils.DistanceUtil;
@@ -28,10 +22,12 @@ import com.lptiyu.tanke.gamedata.GameDataActivity;
 import com.lptiyu.tanke.gameplaying.assist.ConsoleHelper;
 import com.lptiyu.tanke.gameplaying.assist.LocateHelper;
 import com.lptiyu.tanke.gameplaying.assist.MapHelper;
+import com.lptiyu.tanke.gameplaying.assist.TimingTaskHelper;
 import com.lptiyu.tanke.gameplaying.assist.zip.GameZipHelper;
 import com.lptiyu.tanke.gameplaying.pojo.GAME_ACTIVITY_FINISH_TYPE;
 import com.lptiyu.tanke.gameplaying.pojo.Point;
 import com.lptiyu.tanke.gameplaying.pojo.Task;
+import com.lptiyu.tanke.gameplaying.records.MemRecords;
 import com.lptiyu.tanke.gameplaying.records.RecordsHandler;
 import com.lptiyu.tanke.gameplaying.records.RecordsUtils;
 import com.lptiyu.tanke.gameplaying.records.RunningRecord;
@@ -42,13 +38,12 @@ import com.lptiyu.tanke.permission.TargetMethod;
 import com.lptiyu.tanke.trace.tracing.ITracingHelper;
 import com.lptiyu.tanke.trace.tracing.TracingCallback;
 import com.lptiyu.tanke.trace.tracing.TracingHelper;
-import com.lptiyu.tanke.utils.Display;
-import com.lptiyu.tanke.utils.TimeUtils;
 import com.lptiyu.tanke.utils.ToastUtil;
 import com.lptiyu.tanke.utils.VibrateUtils;
 import com.lptiyu.tanke.widget.BaseSpotScrollView;
 import com.lptiyu.tanke.widget.TickView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -65,8 +60,7 @@ public abstract class GamePlayingController extends ActivityController implement
     BDLocationListener,
     TracingCallback,
     MapHelper.OnMapMarkerClickListener,
-    BaseSpotScrollView.OnSpotItemClickListener,
-    TickView.OnTickFinishListener {
+    BaseSpotScrollView.OnSpotItemClickListener {
 
   @BindView(R.id.map_view)
   TextureMapView mapView;
@@ -75,10 +69,6 @@ public abstract class GamePlayingController extends ActivityController implement
 
   boolean isReachedAttackPoint = false;
   boolean isGameFinished = false;
-  boolean isTimingTask = false;
-  boolean isTimingSuccess = true;
-
-  Task currentTimingTask;
 
   long gameId;
   long lineId;
@@ -88,15 +78,12 @@ public abstract class GamePlayingController extends ActivityController implement
   Point currentAttackPoint;
   List<Point> mPoints;
 
-  // used to create and dispatch record
-  public static RecordsHandler mRecordsHandler;
-  RunningRecord.Builder runningRecordBuilder;
-
   MapHelper mapHelper;
   LocateHelper locateHelper;
   ConsoleHelper consoleHelper;
   GameZipHelper gameZipHelper;
   ITracingHelper mTracingHelper;
+  TimingTaskHelper mTimingTaskHelper;
 
   AlertDialog mAlertDialog;
   AlertDialog mLoadingDialog;
@@ -128,11 +115,9 @@ public abstract class GamePlayingController extends ActivityController implement
       return;
       //TODO : notice user that the game zip is damaged, please download again,then finish this activity
     }
-    //TODO : get game id and line id from intent
     ToastUtil.TextToast("游戏包加载完成");
 
     mPoints = gameZipHelper.getmPoints();
-
     mapHelper = new MapHelper(getActivity(), mapView);
     mapHelper.bindData(mPoints);
     mapHelper.setmMapMarkerClickListener(this);
@@ -143,34 +128,14 @@ public abstract class GamePlayingController extends ActivityController implement
     locateHelper = new LocateHelper(getActivity().getApplicationContext());
     locateHelper.registerLocationListener(this);
 
-    mRecordsHandler = new RecordsHandler.Builder(gameId, teamId).build();
-    runningRecordBuilder = new RunningRecord.Builder();
+    mTimingTaskHelper = new TimingTaskHelper(this, mTickView);
 
-    mTickView.setmListener(this);
+    RecordsUtils.initRecordsHandler(new RecordsHandler.Builder(gameId, teamId).build());
 
     initRecords();
-
     moveToTarget();
 
 //    mTracingHelper.start();
-  }
-
-  private RunningRecord initPointRecord(double x, double y, long pointId, RunningRecord.RECORD_TYPE type) {
-    return runningRecordBuilder
-        .x(x)
-        .y(y)
-        .pointId(pointId)
-        .type(type)
-        .createTime(System.currentTimeMillis())
-        .build();
-  }
-
-  private RunningRecord initReachPointRecord(double x, double y, long pointId) {
-    return initPointRecord(x, y, pointId, RunningRecord.RECORD_TYPE.POINT_REACH);
-  }
-
-  private RunningRecord initFinishPointRecord(double x, double y, long pointId) {
-    return initPointRecord(x, y, pointId, RunningRecord.RECORD_TYPE.POINT_FINISH);
   }
 
   /**
@@ -186,41 +151,18 @@ public abstract class GamePlayingController extends ActivityController implement
     return distance < Conf.POINT_RADIUS;
   }
 
-  /**
-   * This method is to start timing task
-   * when receive timing signal from GameTaskActivity
-   */
-  protected void startTimingTaskFlow(Task task, long startTime) {
-    isTimingTask = true;
-    isTimingSuccess = true;
-    currentTimingTask = task;
-    final long limitTime = startTime + Integer.valueOf(currentTimingTask.getPwd()) * TimeUtils.ONE_MINUTE_TIME - System.currentTimeMillis();
-    int translationY = (int) (mTickView.getHeight() + getResources().getDimension(R.dimen.tick_view_margin_top));
-    mTickView.setTranslationY(-translationY);
-    mTickView.setVisibility(View.VISIBLE);
-    mTickView.animate().setInterpolator(new BounceInterpolator()).translationY(0).setDuration(800).setListener(new Animator.AnimatorListener() {
-      @Override
-      public void onAnimationStart(Animator animation) {
+  private void dispatchReachPointRecord(double x, double y, int pointIndex) {
+    if (mPoints == null || pointIndex >= mPoints.size()) {
+      return;
+    }
+    RecordsUtils.dispatchTypeRecord(x, y, mPoints.get(pointIndex).getId(), 0, RunningRecord.RECORD_TYPE.POINT_REACH);
+  }
 
-      }
-
-      @Override
-      public void onAnimationEnd(Animator animation) {
-        mTickView.startTick(limitTime);
-      }
-
-      @Override
-      public void onAnimationCancel(Animator animation) {
-
-      }
-
-      @Override
-      public void onAnimationRepeat(Animator animation) {
-
-      }
-    });
-
-    onNextPoint();
+  private void dispatchFinishPointRecord(double x, double y, int pointIndex) {
+    if (mPoints == null || pointIndex >= mPoints.size()) {
+      return;
+    }
+    RecordsUtils.dispatchTypeRecord(x, y, mPoints.get(pointIndex).getId(), 0, RunningRecord.RECORD_TYPE.POINT_FINISH);
   }
 
   /**
@@ -236,6 +178,7 @@ public abstract class GamePlayingController extends ActivityController implement
     isReachedAttackPoint = true;
     mapHelper.onReachAttackPoint(currentAttackPointIndex);
     consoleHelper.onReachAttackPoint(currentAttackPointIndex);
+    mapHelper.animateCameraToCurrentTarget();
   }
 
   void onNextPoint() {
@@ -250,7 +193,6 @@ public abstract class GamePlayingController extends ActivityController implement
       isGameFinished = true;
       ToastUtil.TextToast("您已经完成了所有的攻击点");
     }
-
   }
 
   void showAlertDialog(String message) {
@@ -284,6 +226,20 @@ public abstract class GamePlayingController extends ActivityController implement
   @OnClick(R.id.game_data)
   void startGameDataActivity() {
     Intent intent = new Intent();
+    intent.putExtra(Conf.GAME_ID, gameId);
+    intent.putExtra(Conf.LINE_ID, lineId);
+    if (mPoints != null && mPoints instanceof ArrayList) {
+      intent.putParcelableArrayListExtra(Conf.GAME_POINTS, ((ArrayList<? extends Parcelable>) mPoints));
+    }
+    if (RecordsUtils.getmRecordsHandler() != null) {
+      MemRecords memRecords = RecordsUtils.getmRecordsHandler().getMemRecords();
+      if (memRecords != null) {
+        List<RunningRecord> allRecords = memRecords.getAll();
+        if (allRecords != null && allRecords instanceof ArrayList) {
+          intent.putParcelableArrayListExtra(Conf.GAME_RECORDS, (((ArrayList<? extends Parcelable>) allRecords)));
+        }
+      }
+    }
     intent.setClass(getActivity(), GameDataActivity.class);
     startActivity(intent);
   }
@@ -301,8 +257,8 @@ public abstract class GamePlayingController extends ActivityController implement
   @OnClick(R.id.start_animate)
   void startAnimateButtonClicked() {
     isReachedAttackPoint = true;
+    mTimingTaskHelper.checkTimingTask();
     onReachAttackPoint();
-    RecordsUtils.dispatchTypeRecord(mRecordsHandler, initReachPointRecord(34.123123, 114.321321, currentAttackPoint.getId()));
   }
 
   @Override
@@ -314,32 +270,13 @@ public abstract class GamePlayingController extends ActivityController implement
      */
     if (!isGameFinished && !isReachedAttackPoint) {
       if (checkIfReachAttackPoint(location)) {
-        if (isTimingTask) {
-          if (isTimingSuccess) {
-            mTickView.stopTick();
-            //TODO : user arrive the point at time
-            // notify user
-          } else {
-
-          }
-          int lastPointIndex = mPoints.indexOf(currentAttackPoint) - 1;
-          if (lastPointIndex >= 0) {
-            Point lastPoint = mPoints.get(lastPointIndex);
-            RecordsUtils.dispatchTypeRecord(mRecordsHandler, runningRecordBuilder
-                .x(34.123123)
-                .y(114.321321)
-                .pointId(lastPoint.getId())
-                .taskId(currentTimingTask.getId())
-                .type(RunningRecord.RECORD_TYPE.TASK_FINISH)
-                .createTime(System.currentTimeMillis())
-                .build());
-          }
-          isTimingTask = false;
-        }
+        mTimingTaskHelper.checkTimingTask();
         onReachAttackPoint();
         VibrateUtils.vibrate();
         showAlertDialog(getString(R.string.reach_attack_point));
-        RecordsUtils.dispatchTypeRecord(mRecordsHandler, initReachPointRecord(location.getLatitude(), location.getLongitude(), currentAttackPoint.getId()));
+        if (currentAttackPointIndex != 0) {
+          dispatchReachPointRecord(location.getLatitude(), location.getLongitude(), currentAttackPointIndex);
+        }
       }
     }
   }
@@ -370,7 +307,7 @@ public abstract class GamePlayingController extends ActivityController implement
         return;
       }
     }
-    if (isTimingTask) {
+    if (mTimingTaskHelper.isTimingTask()) {
       ToastUtil.TextToast("请先完成当前定时任务");
       return;
     }
@@ -392,7 +329,8 @@ public abstract class GamePlayingController extends ActivityController implement
 
           case TIMING_TASK:
             Task task = data.getParcelableExtra(Conf.TIMING_TASK);
-            startTimingTaskFlow(task, System.currentTimeMillis());
+            mTimingTaskHelper.startTimingTaskFlow(task, System.currentTimeMillis());
+            onNextPoint();
             break;
 
           case USER_ACTION:
@@ -400,10 +338,12 @@ public abstract class GamePlayingController extends ActivityController implement
             if (clickedPointIndex != currentAttackPointIndex) {
               return;
             }
-
             boolean isAllTaskFinished = data.getBooleanExtra(Conf.IS_POINT_TASK_ALL_FINISHED, false);
             if (isAllTaskFinished) {
-              RecordsUtils.dispatchTypeRecord(mRecordsHandler, initFinishPointRecord(34.123123, 114.321321, currentAttackPoint.getId()));
+              if (currentAttackPointIndex == 0) {
+                RecordsUtils.dispatchCachedRecords();
+              }
+              dispatchFinishPointRecord(34.123123, 114.321321, currentAttackPointIndex);
               onNextPoint();
             }
             break;
@@ -434,33 +374,6 @@ public abstract class GamePlayingController extends ActivityController implement
   }
 
   @Override
-  public void onTickFinish() {
-    isTimingSuccess = false;
-    int translationY = (int) (mTickView.getHeight() + getResources().getDimension(R.dimen.tick_view_margin_top));
-    mTickView.animate().setInterpolator(new AccelerateInterpolator()).translationY(-translationY).setDuration(500).setListener(new Animator.AnimatorListener() {
-      @Override
-      public void onAnimationStart(Animator animation) {
-
-      }
-
-      @Override
-      public void onAnimationEnd(Animator animation) {
-        mTickView.setVisibility(View.GONE);
-      }
-
-      @Override
-      public void onAnimationCancel(Animator animation) {
-
-      }
-
-      @Override
-      public void onAnimationRepeat(Animator animation) {
-
-      }
-    });
-  }
-
-  @Override
   public void onResume() {
     super.onResume();
     if (mapHelper != null) {
@@ -486,6 +399,13 @@ public abstract class GamePlayingController extends ActivityController implement
       locateHelper.unRegisterLocationListener(this);
     }
     super.onDestroy();
+  }
+
+  public Point getLastPoint() {
+    if (currentAttackPointIndex > 0) {
+      return mPoints.get(currentAttackPointIndex - 1);
+    }
+    return null;
   }
 
   @Override

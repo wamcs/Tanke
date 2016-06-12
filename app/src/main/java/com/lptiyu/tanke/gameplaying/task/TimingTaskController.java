@@ -44,11 +44,9 @@ public class TimingTaskController extends MultiplyTaskController implements
       mAnswerArea.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-//          ToastUtil.TextToast("定时器将于10s后启动");
-//          counter.startCounting();
-          finishTask();
-          mActivityController.openNextTaskIfExist();
-
+          counter.startCounting();
+//          finishTask();
+//          mActivityController.openNextTaskIfExist();
         }
       });
       counter = new TimingCounter(getContext(), DEFAULT_TIMING_MILLIS, DEFAULT_TIMING_INTERVAL);

@@ -69,6 +69,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".initialization.ui.LoginActivity">
+
         </activity>
         <activity android:name=".initialization.ui.GuideActivity">
         </activity>

@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.view.MotionEvent;
@@ -27,7 +28,10 @@ import com.facebook.drawee.view.SimpleDraweeView;
 import com.facebook.imagepipeline.core.ImagePipeline;
 import com.lptiyu.tanke.R;
 import com.lptiyu.tanke.base.controller.ActivityController;
+import com.lptiyu.tanke.base.ui.BaseActivity;
 import com.lptiyu.tanke.global.Conf;
+import com.lptiyu.tanke.permission.PermissionDispatcher;
+import com.lptiyu.tanke.permission.TargetMethod;
 import com.lptiyu.tanke.pojo.UserDetails;
 import com.lptiyu.tanke.utils.ThirdLoginHelper;
 import com.lptiyu.tanke.utils.ToastUtil;
@@ -92,7 +96,6 @@ public class CompleteInformationController extends ActivityController implements
     private int mUserGender;
     private boolean isAvatarSet;
 
-
     public CompleteInformationController(AppCompatActivity activity, View view) {
         super(activity, view);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
@@ -107,7 +110,6 @@ public class CompleteInformationController extends ActivityController implements
         UserDetails Muser = ThirdLoginHelper.getUserDetail();
         initDataFromThirdLogin(Muser);
 
-        requestLocationPermission();
         mLocationText.setText("定位中");
         locate();
         client.start();
@@ -117,7 +119,8 @@ public class CompleteInformationController extends ActivityController implements
             public boolean onTouch(View v, MotionEvent event) {
                 switch (event.getAction()){
                     case MotionEvent.ACTION_DOWN:
-                        chooseLocation();
+                        ToastUtil.TextToast("启动选择城市列表");
+//                      PermissionDispatcher.startLocateWithCheck(((BaseActivity) getActivity()));
                         break;
                     case MotionEvent.ACTION_UP:
                         mLocationButton.animate().scaleY(1.0f)
@@ -198,36 +201,7 @@ public class CompleteInformationController extends ActivityController implements
 
     @OnClick(R.id.complete_avatar_image_view)
     void changeImage() {
-        if (null == mImageChooseDialog) {
-            mImageChooseDialog = new ImageChooseDialog(context, this);
-            mImageChooseDialog.setOnPermissionGetListener(new ImageChooseDialog.OnPermissionGetListener() {
-                @TargetApi(Build.VERSION_CODES.M)
-                @Override
-                public boolean onPermissionGet() {
-                    if (!(getActivity().checkSelfPermission(Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED)
-                            || !(getActivity().checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)) {
-                        if (getActivity().shouldShowRequestPermissionRationale(Manifest.permission.CAMERA)
-                                || getActivity().shouldShowRequestPermissionRationale(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-                            ToastUtil.TextToast("Please grant the permission this time");
-                        }
-                        requestCameraPermission();
-                        return false;
-                    } else {
-                        return true;
-                    }
-                }
-            });
-            mImageChooseDialog.setOnImageChoosedListener(new ImageChooseDialog.OnImageChoosedListener() {
-                @Override
-                public void onImageChoosed(File file) {
-                    ImagePipeline pipeline = Fresco.getImagePipeline();
-                    pipeline.evictFromCache(Uri.fromFile(file));
-                    mAvatarImageView.setImageURI(Uri.fromFile(file));
-                    isAvatarSet = true;
-                }
-            });
-        }
-        mImageChooseDialog.show();
+      PermissionDispatcher.showCameraWithCheck(((BaseActivity) getActivity()));
     }
 
     @OnClick(R.id.complete_height_button)
@@ -273,16 +247,7 @@ public class CompleteInformationController extends ActivityController implements
         changeGender(FEMALE_TYPE);
     }
 
-
     private void chooseLocation() {
-        if (Build.VERSION.SDK_INT >= 23) {
-            if (!(getActivity().checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED)) {
-                requestLocationPermission();
-                return;
-            }
-        }
-        client.start();
-        mLocationButton.animate().scaleX(0.9f).scaleY(0.9f).setInterpolator(new BounceInterpolator()).setDuration(100).start();
 
     }
 
@@ -299,20 +264,20 @@ public class CompleteInformationController extends ActivityController implements
             return;
         }
 
-       /* switch (mUserGender){
-            case MALE_TYPE:
-                Muser.setSex("男");
-                break;
-            case FEMALE_TYPE:
-                Muser.setSex("女");
-                break;
-        }
-        Muser.setAddress(mLocationText.getText().toString());
-        Muser.setNickname(mNicknameText.getText().toString());
-        Muser.setBirthday(mBirthdayText.getText().toString());
-        Muser.setHeight(mHeightText.getText().toString());
-        Muser.setWeight(mWeightText.getText().toString());
-*/
+//        switch (mUserGender){
+//            case MALE_TYPE:
+//                Muser.setSex("男");
+//                break;
+//            case FEMALE_TYPE:
+//                Muser.setSex("女");
+//                break;
+//        }
+//        Muser.setAddress(mLocationText.getText().toString());
+//        Muser.setNickname(mNicknameText.getText().toString());
+//        Muser.setBirthday(mBirthdayText.getText().toString());
+//        Muser.setHeight(mHeightText.getText().toString());
+//        Muser.setWeight(mWeightText.getText().toString());
+
         //TODO:user avatar
     }
 
@@ -357,7 +322,6 @@ public class CompleteInformationController extends ActivityController implements
             ToastUtil.TextToast("定位失败");
             mLocationText.setText("武汉");
         }
-
         client.stop();
     }
 
@@ -370,21 +334,33 @@ public class CompleteInformationController extends ActivityController implements
     }
 
 
-    //android M 调用相机权限需要在使用时调用
-    @TargetApi(Build.VERSION_CODES.M)
-    private void requestCameraPermission() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            String[] permissions = {Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
-            getActivity().requestPermissions(permissions, REQUEST_PERMISSION_CAMERA_CODE);
+  @TargetMethod(requestCode = PermissionDispatcher.PERMISSION_REQUEST_CODE_CAMERA)
+  public void startCamera() {
+    if (null == mImageChooseDialog) {
+      mImageChooseDialog = new ImageChooseDialog(context, this);
+      mImageChooseDialog.setOnImageChoosedListener(new ImageChooseDialog.OnImageChoosedListener() {
+        @Override
+        public void onImageChoosed(File file) {
+          ImagePipeline pipeline = Fresco.getImagePipeline();
+          pipeline.evictFromCache(Uri.fromFile(file));
+          mAvatarImageView.setImageURI(Uri.fromFile(file));
+          isAvatarSet = true;
         }
+      });
     }
+    mImageChooseDialog.show();
+  }
 
-    @TargetApi(Build.VERSION_CODES.M)
-    private void requestLocationPermission() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            getActivity().requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_PERMISSION_LOCATION);
-        }
-    }
+  @TargetMethod(requestCode = PermissionDispatcher.PERMISSION_REQUEST_CODE_LOCATION)
+  public void startLocate() {
+    client.start();
+    mLocationButton.animate().scaleX(0.9f).scaleY(0.9f).setInterpolator(new BounceInterpolator()).setDuration(100).start();
+  }
 
+  @Override
+  public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+    super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    PermissionDispatcher.onActivityRequestPermissionsResult(((BaseActivity) getActivity()), requestCode, permissions, grantResults);
+  }
 
 }

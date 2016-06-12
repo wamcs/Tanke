@@ -28,7 +28,9 @@ public abstract class BaseListFragmentController<Data> extends FragmentControlle
 
   @Override
   public void refreshTop() {
-    impl.refreshTop();
+    if (impl != null) {
+      impl.refreshTop();
+    }
   }
 
   @Override

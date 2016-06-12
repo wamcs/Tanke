@@ -50,14 +50,16 @@ public interface GameService {
   Observable<Response<Void>> regenerateTeamQRCode(
       @Query("uid") long uid,
       @Query("token") String token,
-      @Query("ranks_id") int ranksId
+      @Query("ranks_id") int ranksId,
+      @Query("content") String content
   );
 
   @GET("Home/Code?type=2")
   Observable<Response<Void>> regenerateJudgementQRCode(
       @Query("uid") long uid,
       @Query("token") String token,
-      @Query("task_id") int task_id
+      @Query("task_id") int task_id,
+      @Query("content") String content
   );
 
   /**
