@@ -49,7 +49,6 @@ public final class HttpService {
             .addQueryParameter("ostype", "1")
             .addQueryParameter("version", String.valueOf(AppData.getVersionCode()))
             .build();
-        System.out.println("newUrl = " + newUrl);
         Request processed = originalRequest.newBuilder()
             .url(newUrl).build();
         return chain.proceed(processed);
