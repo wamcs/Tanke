@@ -43,7 +43,7 @@ public class DBHelper {
         return daoSession.getMessageDao();
     }
 
-    public MessageListDao getMessageList(){
+    public MessageListDao getMessageListDao(){
         return daoSession.getMessageListDao();
     }
 

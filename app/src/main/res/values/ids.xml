@@ -64,4 +64,41 @@
     <item name="message_item_time_text" type="id"/>
     <item name="message_refresh_layout" type="id"/>
 
+    <!-- modify user information ids area-->
+    <item name="modify_user_info_avatar_button" type="id"/>
+    <item name="modify_user_info_nickname_button" type="id"/>
+    <item name="modify_user_info_birthday_button" type="id"/>
+    <item name="modify_user_info_gender_button" type="id"/>
+    <item name="modify_user_info_height_button" type="id"/>
+    <item name="modify_user_info_weight_button" type="id"/>
+    <item name="modify_user_info_location_button" type="id"/>
+    <item name="modify_user_info_avatar_image" type="id"/>
+    <item name="modify_user_info_nickname_text" type="id"/>
+    <item name="modify_user_info_birthday_text" type="id"/>
+    <item name="modify_user_info_gender_text" type="id"/>
+    <item name="modify_user_info_height_text" type="id"/>
+    <item name="modify_user_info_weight_text" type="id"/>
+    <item name="modify_user_info_location_text" type="id"/>
+
+    <item name="modify_text_edit" type="id"/>
+    <item name="modify_text_save" type="id"/>
+
+    <!-- locationActivity ids-->
+    <item name="locate_activity_list_normal_item" type="id"/>
+    <item name="locate_activity_locate_city" type="id"/>
+    <item name="locate_activity_locate_layout" type="id"/>
+    <item name="locate_activity_locate_error_text" type="id"/>
+
+    <!--gameList ids-->
+    <item name="game_playing_list_item" type="id"/>
+    <item name="game_playing_list_item_picture" type="id"/>
+    <item name="game_playing_list_item_name" type="id"/>
+    <item name="game_playing_list_item_progress" type="id"/>
+    <item name="game_playing_list_item_progress_number" type="id"/>
+    <item name="game_finished_list_item" type="id"/>
+    <item name="game_finished_list_item_picture" type="id"/>
+    <item name="game_finished_list_item_name" type="id"/>
+    <item name="game_finished_list_item_time" type="id"/>
+    <item name="game_finished_list_item_values" type="id"/>
+
 </resources>

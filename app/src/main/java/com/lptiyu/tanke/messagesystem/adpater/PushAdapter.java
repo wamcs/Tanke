@@ -34,27 +34,16 @@ public class PushAdapter extends MessageBaseAdapter {
     private static final int VIEW_TYPE_MESSAGE = 2;
     private long currentTime;
     private Context context;
-    private Drawable avatar;
 
     public PushAdapter(Context context,List<Message> messageList) {
         this.messageList = messageList;
         this.context = context;
         currentTime = TimeUtils.getCurrentDate();
-        init();
-
-    }
-
-    private void init(){
-        int size = (int) context.getResources().getDimension(R.dimen.message_img_size);
-        Drawable drawable = context.getResources().getDrawable(R.mipmap.ic_launcher);
-        Bitmap avatarBitmap = createCircleImage(
-                convertDrawable2Bitmap(drawable),
-                size
-        );
-        avatar = new BitmapDrawable(avatarBitmap);
 
 
     }
+
+
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -82,7 +71,7 @@ public class PushAdapter extends MessageBaseAdapter {
                 break;
             case VIEW_TYPE_MESSAGE:
                 MessageViewHolder holder2 = (MessageViewHolder) holder;
-                holder2.mAvatar.setBackground(avatar);
+                holder2.mAvatar.setImageDrawable(context.getResources().getDrawable(R.mipmap.ic_launcher));
                 holder2.mMessage.setText(addURLLink(messageList.get(position).getAlert()));
                 break;
 
@@ -107,26 +96,6 @@ public class PushAdapter extends MessageBaseAdapter {
 
 
 
-    private Bitmap createCircleImage(Bitmap source, int size){
-        final Paint paint =new Paint();
-        paint.setAntiAlias(true);
-        Bitmap target = Bitmap.createBitmap(size,size, Bitmap.Config.ARGB_8888);
-        Canvas canvas = new Canvas(target);
-        canvas.drawCircle(size/2,size/2,size/2,paint);
-        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
-        canvas.drawBitmap(source,0,0,paint);
-        return target;
-    }
 
-    private Bitmap convertDrawable2Bitmap(Drawable drawable) {
-        Bitmap bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(),drawable.getIntrinsicHeight(),
-                drawable.getOpacity() != PixelFormat.OPAQUE ? Bitmap.Config.ARGB_8888: Bitmap.Config.RGB_565);
-        Canvas canvas = new Canvas(bitmap);
-        // canvas.setBitmap(bitmap);
-        drawable.setBounds(0, 0, drawable.getIntrinsicWidth(),
-                drawable.getIntrinsicHeight());
-        drawable.draw(canvas);
-        return bitmap;
-    }
 
 }

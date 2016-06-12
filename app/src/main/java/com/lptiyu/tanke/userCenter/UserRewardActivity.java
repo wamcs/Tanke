@@ -53,7 +53,7 @@ public class UserRewardActivity extends BaseActivity {
     @BindView(R.id.recycler_view)
     RecyclerView recyclerView;
 
-    UserRewardAdapter adapter = new UserRewardAdapter();
+    private UserRewardAdapter adapter = new UserRewardAdapter();
 
     public UserRewardActivityController(UserRewardActivity activity, View view) {
       super(activity, view);
@@ -68,6 +68,7 @@ public class UserRewardActivity extends BaseActivity {
 
       recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
       recyclerView.setAdapter(adapter);
+      refreshTop();
     }
 
     @Override
@@ -76,7 +77,7 @@ public class UserRewardActivity extends BaseActivity {
           .map(new Func1<Response<List<Reward>>, List<Reward>>() {
             @Override
             public List<Reward> call(Response<List<Reward>> listResponse) {
-              if (listResponse.getStatus() == Response.RESPONSE_OK) {
+              if (listResponse.getStatus() != Response.RESPONSE_OK) {
                 throw new RuntimeException(listResponse.getInfo());
               }
               return listResponse.getData();

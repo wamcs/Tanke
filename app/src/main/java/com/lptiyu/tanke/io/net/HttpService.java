@@ -36,7 +36,12 @@ public final class HttpService {
   static {
     OkHttpClient.Builder httpClientBuilder = new OkHttpClient.Builder();
 
-    HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
+    HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor(new HttpLoggingInterceptor.Logger() {
+      @Override
+      public void log(String message) {
+        System.out.println("message = " + message);
+      }
+    });
     interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
 
     httpClientBuilder.addInterceptor(interceptor);
@@ -49,7 +54,6 @@ public final class HttpService {
             .addQueryParameter("ostype", "1")
             .addQueryParameter("version", String.valueOf(AppData.getVersionCode()))
             .build();
-        System.out.println("newUrl = " + newUrl);
         Request processed = originalRequest.newBuilder()
             .url(newUrl).build();
         return chain.proceed(processed);

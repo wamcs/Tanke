@@ -19,12 +19,6 @@ public final class Conf {
   public static final int REGISTER_CODE = 1;
   public static final int RESET_PASSWORD_CODE = 2;
 
-  /**
-   * Third login conf
-   */
-  public static final String USER_NAME = "user_name";
-  public static final String USER_AVATAR = "user_avatar";
-  public static final String USER_GENDER = "user_gender";
 
   /**
    * User Avatar conf
@@ -106,5 +100,21 @@ public final class Conf {
   public static final String PUSH_MESSAGE = "push_message";
   public static final String USER_MESSAGE = "user_message";
   public static final String MESSAGE_TYPE = "message_type";
+
+  /**
+   * UserCenter
+   */
+
+  public static final String USER_DETAIL = "user_detail";
+  public static final String DATA_TO_INFO_MODIFY = "data_to_user_info_modify";
+
+  public static final String USER_LOCATION = "user_location";
+  public static final String USER_INFO_TYPE = "user_info_type";
+  public static final String USER_INFO = "user_info";
+  public static final int REQUEST_CODE_NICKNAME = 1;
+  public static final int REQUEST_CODE_HEIGHT = 2;
+  public static final int REQUEST_CODE_WEIGHT = 3;
+  public static final int REQUEST_CODE_LOCATION = 4;
+
 
 }
