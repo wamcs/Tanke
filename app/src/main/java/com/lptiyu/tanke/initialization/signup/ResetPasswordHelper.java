@@ -21,7 +21,6 @@ import rx.schedulers.Schedulers;
  */
 public class ResetPasswordHelper extends SignUpHelper {
 
-
     public ResetPasswordHelper(AppCompatActivity activity, View view) {
         super(activity, view);
 

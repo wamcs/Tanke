@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <android.support.v7.widget.Toolbar
+        style="@style/Toolbar"
+        android:id="@id/tool_bar"
+        >
+        <include layout="@layout/layout_default_toolbar"
+            android:layout_width="320dp"
+            android:layout_height="match_parent" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="10dp"
+            android:text="保存"
+            android:id="@id/modify_text_save"
+            android:gravity="center"/>
+    </android.support.v7.widget.Toolbar>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_margin="5dp"
+        android:id="@id/modify_text_edit"/>
+
+</LinearLayout>

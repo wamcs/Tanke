@@ -6,10 +6,10 @@ import android.text.Spanned;
 import android.text.style.URLSpan;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.lptiyu.tanke.R;
+import com.mikhaellopez.circularimageview.CircularImageView;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -27,7 +27,7 @@ public class MessageBaseAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     class MessageViewHolder extends RecyclerView.ViewHolder {
 
         @BindView(R.id.message_item_image_view)
-        ImageView mAvatar;
+        CircularImageView mAvatar;
         @BindView(R.id.message_item_text_view)
         TextView mMessage;
 

@@ -87,13 +87,28 @@ public class RegisterHelper extends SignUpHelper {
                         Accounts.setId(entity.getUid());
                         Accounts.setToken(entity.getToken());
                         //Accounts.setPhoneNumber(entity.getPhone());
-                        Intent intent =new Intent();
-                        intent.setClass(context, CompleteInformationActivity.class);
-                        context.startActivity(intent);
+                        uploadInstallationId(entity.getUid(),entity.getToken());
                     }
                 });
 
     }
 
-
+    private void uploadInstallationId(long id,String token){
+        HttpService.getUserService().registerInstallation(id,token,Accounts.getInstallationId())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Action1<Response<Void>>() {
+                    @Override
+                    public void call(Response<Void> voidResponse) {
+                        int status = voidResponse.getStatus();
+                        if (status != 1){
+                            ToastUtil.TextToast(voidResponse.getInfo());
+                            return;
+                        }
+                        Intent intent =new Intent();
+                        intent.setClass(context, CompleteInformationActivity.class);
+                        context.startActivity(intent);
+                    }
+                });
+    }
 }

@@ -82,6 +82,33 @@
         </activity>
         <activity android:name=".messagesystem.MessageActivity">
         </activity>
+
+        <activity android:name=".userCenter.ui.RewardListActivity">
+        </activity>
+
+        <activity android:name=".userCenter.ui.GameFinishedListActivity">
+        </activity>
+
+        <activity android:name=".userCenter.ui.GamePlayingListActivity">
+        </activity>
+
+        <activity android:name=".userCenter.ui.LocateActivity">
+        </activity>
+
+        <activity android:name=".userCenter.ui.ModifyTextActivity">
+        </activity>
+
+        <activity android:name=".userCenter.ui.ModifyUserInfoActivity">
+        </activity>
+
+        <activity android:name=".userCenter.ui.OtherUserInformationActivity">
+        </activity>
+
+        <activity android:name=".userCenter.ui.SettingActivity">
+        </activity>
+
+        <activity android:name=".messagesystem.MessageListActivity">
+        </activity>
         <activity
             android:name="com.mob.tools.MobUIShell"
             android:configChanges="keyboardHidden|orientation|screenSize"
@@ -105,6 +132,11 @@
             android:exported="true"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
+        <!-- 用户反馈-->
+        <activity
+            android:name="com.avos.avoscloud.feedback.ThreadActivity" >
+        </activity>
+
         <activity
             android:name="com.lptiyu.zxinglib.android.CaptureActivity"
             android:clearTaskOnLaunch="true"
