@@ -36,7 +36,12 @@ public final class HttpService {
   static {
     OkHttpClient.Builder httpClientBuilder = new OkHttpClient.Builder();
 
-    HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
+    HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor(new HttpLoggingInterceptor.Logger() {
+      @Override
+      public void log(String message) {
+        System.out.println("message = " + message);
+      }
+    });
     interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
 
     httpClientBuilder.addInterceptor(interceptor);

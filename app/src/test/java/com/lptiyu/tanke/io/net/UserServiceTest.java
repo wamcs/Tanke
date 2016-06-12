@@ -1,7 +1,5 @@
 package com.lptiyu.tanke.io.net;
 
-import android.app.Application;
-
 import com.lptiyu.tanke.BuildConfig;
 import com.lptiyu.tanke.pojo.UserDetails;
 import com.lptiyu.tanke.pojo.UserEntity;
@@ -135,7 +133,7 @@ public class UserServiceTest {
 
   }
 
-  @Test //no use failed 2.7
+  @Test //success 2.7
   public void testResetPassword() throws Exception {
     HttpService.getUserService().resetPassword(UID, TOKEN, "123qwe", "123qwe")
         .subscribe(new ResponseAction1(), new AssertNullAction1());
@@ -163,7 +161,12 @@ public class UserServiceTest {
   @Test // failed 2.9
   public void testUploadUserAvatar() throws Exception {
     File file = new File("src/test/res/need_to_remove.png");
-    userService.uploadUserAvatar(UID, TOKEN, RequestBody.create(MediaType.parse("image/*"), file))
+    userService.uploadUserAvatar(1
+        , TOKEN
+        , RequestBody.create(
+            MediaType.parse("application/octet-stream")
+            , file)
+    )
         .subscribe(new Action1<Response<String>>() {
           @Override
           public void call(Response<String> stringResponse) {
@@ -204,31 +207,31 @@ public class UserServiceTest {
   }
 
   @Test //success
-  public void testGamePlaying() throws Exception{
+  public void testGamePlaying() throws Exception {
     userService.gamePlaying(UID, TOKEN)
         .subscribe(new ResponseAction1(), new AssertNullAction1());
   }
-  
+
   @Test //success
-  public void testGameFinished() throws Exception{
+  public void testGameFinished() throws Exception {
     userService.gameFinished(UID, TOKEN)
         .subscribe(new ResponseAction1(), new AssertNullAction1());
   }
 
   @Test //成功
-  public void testGetRewards() throws Exception{
+  public void testGetRewards() throws Exception {
     userService.getRewards(UID, TOKEN)
         .subscribe(new ResponseAction1(), new AssertNullAction1());
   }
 
   @Test //success
-  public void testManagerTask() throws Exception{
+  public void testManagerTask() throws Exception {
     userService.getManagerTask(UID, TOKEN)
         .subscribe(new ResponseAction1(), new AssertNullAction1());
   }
 
   @Test //success
-  public void testRegisterInstallation() throws Exception{
+  public void testRegisterInstallation() throws Exception {
     userService.registerInstallation(UID, TOKEN, "i12303234")
         .subscribe(new ResponseAction1(), new AssertNullAction1());
   }

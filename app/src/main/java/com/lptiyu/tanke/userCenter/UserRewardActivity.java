@@ -53,7 +53,7 @@ public class UserRewardActivity extends BaseActivity {
     @BindView(R.id.recycler_view)
     RecyclerView recyclerView;
 
-    UserRewardAdapter adapter = new UserRewardAdapter();
+    private UserRewardAdapter adapter = new UserRewardAdapter();
 
     public UserRewardActivityController(UserRewardActivity activity, View view) {
       super(activity, view);
