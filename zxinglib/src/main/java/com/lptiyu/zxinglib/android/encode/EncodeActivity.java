@@ -212,7 +212,7 @@ public final class EncodeActivity extends Activity {
         contents.setText(qrCodeEncoder.getDisplayContents());
         setTitle(qrCodeEncoder.getTitle());
       } else {
-        contents.setText("");
+        contents.setText("请扫描二维码");
         setTitle("");
       }
     } catch (WriterException e) {

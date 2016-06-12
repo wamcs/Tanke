@@ -131,7 +131,6 @@ public class RecordsHandler extends Handler {
 //    });
 
     diskRecords.appendRecord(record);
-    RecordsUtils.writeMetaMessage(gameId, memRecords.getMetaMessage());
   }
 
   public MemRecords getMemRecords() {

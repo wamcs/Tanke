@@ -1,9 +1,15 @@
 package com.lptiyu.tanke;
 
 import android.app.Application;
+import android.support.multidex.MultiDex;
+import android.support.multidex.MultiDexApplication;
 
+import com.avos.avoscloud.AVInstallation;
+import com.avos.avoscloud.AVOSCloud;
 import com.baidu.mapapi.SDKInitializer;
 import com.facebook.drawee.backends.pipeline.Fresco;
+import com.lptiyu.tanke.database.DBHelper;
+import com.lptiyu.tanke.global.Accounts;
 import com.lptiyu.tanke.global.AppData;
 import com.lptiyu.tanke.utils.DirUtils;
 
@@ -16,19 +22,28 @@ import timber.log.Timber;
  *
  * @author ldx
  */
-public class RunApplication extends Application {
+public class RunApplication extends MultiDexApplication {
 
   @Override
   public void onCreate() {
     super.onCreate();
 
+    MultiDex.install(this);
+
     Timber.plant(new Timber.DebugTree());
     AppData.init(this);
+
     try {
       ShareSDK.initSDK(this, "1276c2d783264");
+      AVOSCloud.initialize(AppData.getContext(),"Wqseclbr8wx2kFAS7YseVc5n-gzGzoHsz","1z4GofW1zaArBjcj53u3oBm1");
       SDKInitializer.initialize(this);
       DirUtils.init(this);
       Fresco.initialize(this);
+      if (Accounts.getInstallationId().isEmpty()) {
+        String installationId = AVInstallation.getCurrentInstallation().getInstallationId();
+        Accounts.setInstallationId(installationId);
+        Timber.d("this device installation is %s" + installationId);
+      }
 
     } catch (Exception e) {
       // To test it automatically.

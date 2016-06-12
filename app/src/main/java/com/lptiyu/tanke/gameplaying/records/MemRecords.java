@@ -18,8 +18,6 @@ public class MemRecords implements Parcelable {
 
   private List<RunningRecord> recordArrayList = new ArrayList<>();
 
-  private QMetaMessage qMetaMessage = new QMetaMessage();
-
   private boolean onlyMeta = false;
 
   public MemRecords() {
@@ -46,7 +44,6 @@ public class MemRecords implements Parcelable {
       if (!onlyMeta) {
         recordArrayList.add(record);
       }
-      qMetaMessage.update(record);
     }
   }
 
@@ -59,9 +56,6 @@ public class MemRecords implements Parcelable {
       if (!onlyMeta) {
         recordArrayList.addAll(recordList);
       }
-      for (RunningRecord record : recordList) {
-        qMetaMessage.update(record);
-      }
     }
   }
 
@@ -70,8 +64,6 @@ public class MemRecords implements Parcelable {
       if (!onlyMeta) {
         recordArrayList.clear();
       }
-
-      qMetaMessage.clear();
     }
   }
 
@@ -101,10 +93,6 @@ public class MemRecords implements Parcelable {
     return recordArrayList;
   }
 
-  public QMetaMessage getMetaMessage() {
-    return qMetaMessage;
-  }
-
   @Override
   public int describeContents() {
     return 0;
@@ -113,13 +101,11 @@ public class MemRecords implements Parcelable {
   @Override
   public void writeToParcel(Parcel dest, int flags) {
     dest.writeTypedList(recordArrayList);
-    dest.writeSerializable(this.qMetaMessage);
     dest.writeByte(onlyMeta ? (byte) 1 : (byte) 0);
   }
 
   protected MemRecords(Parcel in) {
     this.recordArrayList = in.createTypedArrayList(RunningRecord.CREATOR);
-    this.qMetaMessage = (QMetaMessage) in.readSerializable();
     this.onlyMeta = in.readByte() != 0;
   }
 

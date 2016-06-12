@@ -11,7 +11,7 @@
         android:layout_centerVertical="true"
         android:contentDescription="@null"
         android:padding="@dimen/default_toolbar_imageview_padding"
-        android:src="@mipmap/img_back_arrow"/>
+        android:src="@mipmap/img_last_white"/>
 
     <TextView
         android:id="@id/default_tool_bar_textview"

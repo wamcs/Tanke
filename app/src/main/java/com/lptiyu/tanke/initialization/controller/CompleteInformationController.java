@@ -9,7 +9,6 @@ import android.net.Uri;
 import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
@@ -30,7 +29,6 @@ import com.lptiyu.tanke.R;
 import com.lptiyu.tanke.base.controller.ActivityController;
 import com.lptiyu.tanke.global.Conf;
 import com.lptiyu.tanke.pojo.UserDetails;
-import com.lptiyu.tanke.pojo.UserEntity;
 import com.lptiyu.tanke.utils.ThirdLoginHelper;
 import com.lptiyu.tanke.utils.ToastUtil;
 import com.lptiyu.tanke.widget.dialog.DatePickerDialog;
@@ -375,13 +373,17 @@ public class CompleteInformationController extends ActivityController implements
     //android M 调用相机权限需要在使用时调用
     @TargetApi(Build.VERSION_CODES.M)
     private void requestCameraPermission() {
-        String[] permissions = {Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
-        getActivity().requestPermissions(permissions, REQUEST_PERMISSION_CAMERA_CODE);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            String[] permissions = {Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
+            getActivity().requestPermissions(permissions, REQUEST_PERMISSION_CAMERA_CODE);
+        }
     }
 
     @TargetApi(Build.VERSION_CODES.M)
     private void requestLocationPermission() {
-        getActivity().requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_PERMISSION_LOCATION);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            getActivity().requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_PERMISSION_LOCATION);
+        }
     }
 
 

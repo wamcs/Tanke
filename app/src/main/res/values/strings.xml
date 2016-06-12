@@ -19,6 +19,8 @@
     <!--Game display page-->
     <string name="change_city_dialog_message">是否需要切换到当前城市(%s)?</string>
     <string name="main_page_location_key">main_page_location</string>
+
+    <!-- LoginActivity Text Area-->
     <string name="main_page_date_formatter" formatted="false">%d月%d日-%d月%d日</string>
     <string name="main_page_date_format_pattern" formatted="false">%d月%d日-%d月%d日</string>
     <string name="main_page_forever">白天-黑夜</string>
@@ -130,6 +132,7 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_user_judge_game">UserJudgeGameActivity</string>
 
 
 </resources>

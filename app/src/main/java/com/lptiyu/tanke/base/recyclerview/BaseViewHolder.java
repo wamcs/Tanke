@@ -6,18 +6,20 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.util.List;
-
 /**
  * EMAIL : danxionglei@foxmail.com
  * DATE : 16/6/1
  *
  * @author ldx
  */
-public class BaseViewHolder<Bean> extends RecyclerView.ViewHolder {
+public abstract class BaseViewHolder<Bean> extends RecyclerView.ViewHolder {
 
   public BaseViewHolder(View itemView) {
     super(itemView);
+  }
+
+  public BaseViewHolder(ViewGroup parent, int layoutId) {
+    super(fromResLayout(parent, layoutId));
   }
 
   public static View fromResLayout(ViewGroup parent, int layoutId) {
@@ -28,12 +30,10 @@ public class BaseViewHolder<Bean> extends RecyclerView.ViewHolder {
     return LayoutInflater.from(context).inflate(layoutId, null);
   }
 
-  public void bind(Bean entity) {
-    throw new RuntimeException("Not impl the bind");
+  public Context getContext() {
+    return itemView.getContext();
   }
 
-  public void bind(List<Bean> entities) {
-    throw new RuntimeException("Not impl the bind");
-  }
+  public abstract void bind(Bean entity);
 
 }

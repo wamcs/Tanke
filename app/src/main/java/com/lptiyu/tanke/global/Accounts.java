@@ -27,6 +27,14 @@ public class Accounts {
     ShaPrefer.put("user_id", s);
   }
 
+  public static String getInstallationId(){
+    return ShaPrefer.getString("installationId","");
+  }
+
+  public static void setInstallationId(String installationId){
+    ShaPrefer.put("installationId",installationId);
+  }
+
   public static String getToken() {
     return ShaPrefer.getString("user_token", "");
   }

@@ -37,9 +37,8 @@ public class UserProtocolController extends ActivityController {
 
     private void init(){
         toolbar.setVisibility(View.GONE);
-        //String urlString = getIntent().getStringExtra(Conf.PROTOCOL_URL);
-        //mWebView.loadUrl(urlString);
-        mWebView.loadUrl("https://www.zhihu.com/question/46888478");
+        String urlString = getIntent().getStringExtra(Conf.PROTOCOL_URL);
+        mWebView.loadUrl(urlString);
     }
 
     @Override
@@ -60,9 +59,4 @@ public class UserProtocolController extends ActivityController {
         finish();
     }
 
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        finish();
-    }
 }

@@ -20,7 +20,7 @@ import rx.Observable;
 public abstract class BaseListFragmentController<Data> extends FragmentController
     implements BaseListControllerImpl.DataInteractionListener<Data>, ListController {
 
-  private BaseListControllerImpl<Data> impl;
+  private BaseListControllerImpl<Data> impl = new BaseListControllerImpl<>(this);
 
   public BaseListFragmentController(Fragment fragment, ActivityController controller, View view) {
     super(fragment, controller, view);

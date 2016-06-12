@@ -44,14 +44,15 @@
     <color name="grey01">#191919</color>
     <color name="grey00">#FF000000</color>
 
+
     <color name="green">#40b553</color>
 
     <color name="base_text_color">#7c99d6</color>
     <color name="button_pressed">#4e4ebd</color>
 
-    <color name="light_blue">#769df6</color>
-    <color name="middle_blue">#5173ea</color>
-    <color name="dark_blue">#2c4ed0</color>
+    <color name="light_blue">#7aa1fa</color>
+    <color name="middle_blue">#5682e7</color>
+    <color name="dark_blue">#3868da</color>
 
     <color name="purple">#8151ea</color>
 
@@ -60,6 +61,7 @@
 
     <!-- LoginEditText colors-->
     <color name="custom_edit_color">#7c99d6</color>
+
 
     <!-- LoginActivity colors-->
     <color name="login_activity_title_color">#769df6</color>
@@ -72,11 +74,14 @@
     <!-- registerActivity colors-->
     <color name="register_activity_gradient_start">#6d99ff</color>
     <color name="register_activity_gradient_end">#3c6cde</color>
-    
+
     <!-- completeInformationActivity colors-->
     <color name="complete_next_button_text_color">#3e6ddf</color>
     <color name="complete_male_button_bg_color">#4d7ce9</color>
     <color name="complete_female_button_bg_color">#ff546d</color>
     <color name="complete_item_title_color">#d9e2f6</color>
+
+    <!-- messageActivity colors-->
+    <color name="message_text_bg_color">#e1e3e9</color>
 
 </resources>
