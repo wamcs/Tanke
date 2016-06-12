@@ -42,8 +42,6 @@ public class RecordsHandler extends Handler {
 
   private static AtomicInteger mPointIndex = new AtomicInteger(0);
 
-  private static Handler mainHandler = new Handler(Looper.getMainLooper());
-
   //=========================  PUBLIC INTERFACE  ===============================
 
 

@@ -26,17 +26,6 @@ public class RecordsUtils {
     runningRecordBuilder = new RunningRecord.Builder();
   }
 
-  public static void cacheTypeRecord(double x, double y, long pointId, long taskId, RunningRecord.RECORD_TYPE type) {
-    cacheRecords.add(initPointRecord(x, y, pointId, taskId, type));
-  }
-
-  public static void dispatchCachedRecords() {
-    for (RunningRecord record : cacheRecords) {
-      dispatchTypeRecord(record);
-    }
-    cacheRecords.clear();
-  }
-
   public static void dispatchTypeRecord(double x, double y, long pointId, long taskId, RunningRecord.RECORD_TYPE type) {
     dispatchTypeRecord(initPointRecord(x, y, pointId, taskId, type));
   }

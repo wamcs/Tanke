@@ -151,20 +151,6 @@ public abstract class GamePlayingController extends ActivityController implement
     return distance < Conf.POINT_RADIUS;
   }
 
-  private void dispatchReachPointRecord(double x, double y, int pointIndex) {
-    if (mPoints == null || pointIndex >= mPoints.size()) {
-      return;
-    }
-    RecordsUtils.dispatchTypeRecord(x, y, mPoints.get(pointIndex).getId(), 0, RunningRecord.RECORD_TYPE.POINT_REACH);
-  }
-
-  private void dispatchFinishPointRecord(double x, double y, int pointIndex) {
-    if (mPoints == null || pointIndex >= mPoints.size()) {
-      return;
-    }
-    RecordsUtils.dispatchTypeRecord(x, y, mPoints.get(pointIndex).getId(), 0, RunningRecord.RECORD_TYPE.POINT_FINISH);
-  }
-
   /**
    * This method to notify user when they first arrive the attack point
    * vibrate and show the dialog to tell them click the nail in the map
@@ -259,6 +245,7 @@ public abstract class GamePlayingController extends ActivityController implement
     isReachedAttackPoint = true;
     mTimingTaskHelper.checkTimingTask();
     onReachAttackPoint();
+    RecordsUtils.dispatchTypeRecord(34.123123, 114.321321, mPoints.get(currentAttackPointIndex).getId(), 0, RunningRecord.RECORD_TYPE.POINT_REACH);
   }
 
   @Override
@@ -274,9 +261,7 @@ public abstract class GamePlayingController extends ActivityController implement
         onReachAttackPoint();
         VibrateUtils.vibrate();
         showAlertDialog(getString(R.string.reach_attack_point));
-        if (currentAttackPointIndex != 0) {
-          dispatchReachPointRecord(location.getLatitude(), location.getLongitude(), currentAttackPointIndex);
-        }
+        RecordsUtils.dispatchTypeRecord(location.getLatitude(), location.getLongitude(), mPoints.get(currentAttackPointIndex).getId(), 0, RunningRecord.RECORD_TYPE.POINT_REACH);
       }
     }
   }
@@ -340,10 +325,7 @@ public abstract class GamePlayingController extends ActivityController implement
             }
             boolean isAllTaskFinished = data.getBooleanExtra(Conf.IS_POINT_TASK_ALL_FINISHED, false);
             if (isAllTaskFinished) {
-              if (currentAttackPointIndex == 0) {
-                RecordsUtils.dispatchCachedRecords();
-              }
-              dispatchFinishPointRecord(34.123123, 114.321321, currentAttackPointIndex);
+              RecordsUtils.dispatchTypeRecord(34.123123, 114.321321, mPoints.get(currentAttackPointIndex).getId(), 0, RunningRecord.RECORD_TYPE.POINT_FINISH);
               onNextPoint();
             }
             break;

@@ -15,6 +15,7 @@ import com.lptiyu.tanke.R;
 import com.lptiyu.tanke.base.controller.ActivityController;
 import com.lptiyu.tanke.base.controller.FragmentController;
 import com.lptiyu.tanke.gameplaying.pojo.Task;
+import com.lptiyu.tanke.gameplaying.records.RecordsUtils;
 import com.lptiyu.tanke.gameplaying.records.RunningRecord;
 import com.lptiyu.tanke.utils.ToastUtil;
 import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItem;

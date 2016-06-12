@@ -12,7 +12,6 @@ import android.widget.TextView;
 import com.lptiyu.tanke.R;
 import com.lptiyu.tanke.base.recyclerview.BaseAdapter;
 import com.lptiyu.tanke.base.recyclerview.BaseListActivityController;
-import com.lptiyu.tanke.gamedisplay.DummyData;
 import com.lptiyu.tanke.gameplaying.assist.zip.GameZipHelper;
 import com.lptiyu.tanke.gameplaying.pojo.Point;
 import com.lptiyu.tanke.gameplaying.pojo.Task;
@@ -22,9 +21,9 @@ import com.lptiyu.tanke.gameplaying.records.RecordsUtils;
 import com.lptiyu.tanke.gameplaying.records.RunningRecord;
 import com.lptiyu.tanke.global.Conf;
 import com.lptiyu.tanke.pojo.GameDataEntity;
-import com.lptiyu.tanke.utils.ToastUtil;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -73,6 +72,7 @@ public class GameDataController extends BaseListActivityController<GameDataEntit
     mAdapter = new GameDataAdapter();
     mRecyclerView.setAdapter(mAdapter);
     mRefreshLayout.setOnRefreshListener(this);
+    pointMap = new HashMap<>();
     checkAndResumeGameData();
   }
 
@@ -114,25 +114,39 @@ public class GameDataController extends BaseListActivityController<GameDataEntit
   }
 
   private void resumeGameData() {
-    for(RunningRecord record : mRecords) {
-      if (record.getType() != RunningRecord.RECORD_TYPE.TASK_FINISH) {
+    RunningRecord startRecord = null;
+    RunningRecord endRecord = null;
+    for (RunningRecord record : mRecords) {
+      if (record.getType() != RunningRecord.RECORD_TYPE.TASK_START || record.getType() != RunningRecord.RECORD_TYPE.TASK_FINISH) {
         continue;
       }
-      Point p = pointMap.get(record.getPointId());
-      if (p != null) {
-        Map<String, Task> map = p.getTaskMap();
-        if (map != null) {
-        Task task = map.get(String.valueOf(record.getTaskId()));
-          if (task != null) {
-//            gameDataEntityBuilder
-//                .taskId(task.getId())
-//                .taskName(task.getName())
-//                .type(task.getType())
-//                .completePersonNum(0)
-//                .completeTime(record.getCreateTime())
-//                .completeComsumingTime()
-//                .exp();
-//            gameDataEntities.add(gameDataEntityBuilder.build());
+      if (record.getType() == RunningRecord.RECORD_TYPE.TASK_START) {
+        startRecord = record;
+      } else {
+        endRecord = record;
+        if (startRecord == null) {
+          return;
+        }
+        if (endRecord.getPointId() != startRecord.getPointId()) {
+          Timber.e("there is an error in running records");
+          return;
+        }
+        Point p = pointMap.get(endRecord.getPointId());
+        if (p != null) {
+          Map<String, Task> map = p.getTaskMap();
+          if (map != null) {
+            Task task = map.get(String.valueOf(endRecord.getTaskId()));
+            if (task != null) {
+              gameDataEntityBuilder
+                  .taskId(task.getId())
+                  .taskName(task.getName())
+                  .type(task.getType())
+                  .completePersonNum(0)
+                  .completeTime(endRecord.getCreateTime())
+                  .completeComsumingTime(endRecord.getCreateTime() - startRecord.getCreateTime())
+                  .exp(task.getExp());
+              gameDataEntities.add(gameDataEntityBuilder.build());
+            }
           }
         }
       }
