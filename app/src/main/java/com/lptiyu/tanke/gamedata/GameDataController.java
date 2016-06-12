@@ -19,6 +19,7 @@ import com.lptiyu.tanke.gameplaying.records.MemRecords;
 import com.lptiyu.tanke.gameplaying.records.RecordsHandler;
 import com.lptiyu.tanke.gameplaying.records.RecordsUtils;
 import com.lptiyu.tanke.gameplaying.records.RunningRecord;
+import com.lptiyu.tanke.global.AppData;
 import com.lptiyu.tanke.global.Conf;
 import com.lptiyu.tanke.pojo.GameDataEntity;
 
@@ -83,7 +84,7 @@ public class GameDataController extends BaseListActivityController<GameDataEntit
     gameDataEntities = new ArrayList<>();
     gameDataEntityBuilder = new GameDataEntity.Builder();
     mPoints = intent.getParcelableArrayListExtra(Conf.GAME_POINTS);
-    mRecords = intent.getParcelableExtra(Conf.GAME_RECORDS);
+    mRecords = intent.getParcelableArrayListExtra(Conf.GAME_RECORDS);
     if (mPoints == null || mRecords == null) {
       if (gameId != Long.MIN_VALUE && lineId != Long.MIN_VALUE) {
         loadGameDataFromDisk();
@@ -117,7 +118,7 @@ public class GameDataController extends BaseListActivityController<GameDataEntit
     RunningRecord startRecord = null;
     RunningRecord endRecord = null;
     for (RunningRecord record : mRecords) {
-      if (record.getType() != RunningRecord.RECORD_TYPE.TASK_START || record.getType() != RunningRecord.RECORD_TYPE.TASK_FINISH) {
+      if (record.getType() != RunningRecord.RECORD_TYPE.TASK_START && record.getType() != RunningRecord.RECORD_TYPE.TASK_FINISH) {
         continue;
       }
       if (record.getType() == RunningRecord.RECORD_TYPE.TASK_START) {

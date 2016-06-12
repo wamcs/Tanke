@@ -15,7 +15,6 @@ import com.lptiyu.tanke.R;
 import com.lptiyu.tanke.base.controller.ActivityController;
 import com.lptiyu.tanke.base.controller.FragmentController;
 import com.lptiyu.tanke.gameplaying.pojo.Task;
-import com.lptiyu.tanke.gameplaying.records.RecordsUtils;
 import com.lptiyu.tanke.gameplaying.records.RunningRecord;
 import com.lptiyu.tanke.utils.ToastUtil;
 import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItem;
@@ -82,6 +81,9 @@ public abstract class MultiplyTaskController extends FragmentController {
   private void checkAndResumeTaskStatus() {
     recordList = mActivityController.getAppropriateRecordList();
     for (RunningRecord record : recordList) {
+      if (mTask.getId() != record.getTaskId()) {
+        continue;
+      }
       switch (record.getType()) {
 
         case GAME_START:
@@ -91,15 +93,11 @@ public abstract class MultiplyTaskController extends FragmentController {
           break;
 
         case TASK_START:
-          if (mTask.getId() == record.getTaskId()) {
-            openSealAndInitTask();
-          }
+          openSealAndInitTask();
           break;
 
         case TASK_FINISH:
-          if (mTask.getId() == record.getTaskId()) {
-            finishTask();
-          }
+          finishTask();
           break;
 
         case POINT_FINISH:

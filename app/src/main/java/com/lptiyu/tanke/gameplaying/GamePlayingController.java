@@ -243,9 +243,9 @@ public abstract class GamePlayingController extends ActivityController implement
   @OnClick(R.id.start_animate)
   void startAnimateButtonClicked() {
     isReachedAttackPoint = true;
-    mTimingTaskHelper.checkTimingTask();
+    mTimingTaskHelper.finishTimingTask();
     onReachAttackPoint();
-    RecordsUtils.dispatchTypeRecord(34.123123, 114.321321, mPoints.get(currentAttackPointIndex).getId(), 0, RunningRecord.RECORD_TYPE.POINT_REACH);
+    RecordsUtils.dispatchTypeRecord(currentAttackPointIndex, currentAttackPoint.getId(), 0, RunningRecord.RECORD_TYPE.POINT_REACH);
   }
 
   @Override
@@ -257,11 +257,11 @@ public abstract class GamePlayingController extends ActivityController implement
      */
     if (!isGameFinished && !isReachedAttackPoint) {
       if (checkIfReachAttackPoint(location)) {
-        mTimingTaskHelper.checkTimingTask();
+        mTimingTaskHelper.finishTimingTask();
         onReachAttackPoint();
         VibrateUtils.vibrate();
         showAlertDialog(getString(R.string.reach_attack_point));
-        RecordsUtils.dispatchTypeRecord(location.getLatitude(), location.getLongitude(), mPoints.get(currentAttackPointIndex).getId(), 0, RunningRecord.RECORD_TYPE.POINT_REACH);
+        RecordsUtils.dispatchTypeRecord(currentAttackPointIndex, currentAttackPoint.getId(), 0, RunningRecord.RECORD_TYPE.POINT_REACH);
       }
     }
   }
@@ -325,8 +325,9 @@ public abstract class GamePlayingController extends ActivityController implement
             }
             boolean isAllTaskFinished = data.getBooleanExtra(Conf.IS_POINT_TASK_ALL_FINISHED, false);
             if (isAllTaskFinished) {
-              RecordsUtils.dispatchTypeRecord(34.123123, 114.321321, mPoints.get(currentAttackPointIndex).getId(), 0, RunningRecord.RECORD_TYPE.POINT_FINISH);
+              RecordsUtils.dispatchTypeRecord(currentAttackPointIndex, mPoints.get(currentAttackPointIndex).getId(), 0, RunningRecord.RECORD_TYPE.POINT_FINISH);
               onNextPoint();
+              mapHelper.animateCameraToCurrentTarget();
             }
             break;
         }

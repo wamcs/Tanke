@@ -57,7 +57,7 @@ public class TimingTaskHelper implements
     showTickView(limitTime);
   }
 
-  public void checkTimingTask() {
+  public void finishTimingTask() {
     if (isTimingTask) {
       if (isTimingSuccess) {
         mTickView.stopTick();
@@ -75,8 +75,8 @@ public class TimingTaskHelper implements
           if (taskIds != null && taskIds.size() != 0) {
             long pointId = lastPoint.getId();
             long taskId = Long.valueOf(taskIds.get(taskIds.size() - 1));
-            RecordsUtils.dispatchTypeRecord(34.123123, 114.321321, pointId, taskId, RunningRecord.RECORD_TYPE.TASK_FINISH);
-            RecordsUtils.dispatchTypeRecord(34.123123, 114.321321, pointId, 0, RunningRecord.RECORD_TYPE.POINT_FINISH);
+            RecordsUtils.dispatchTypeRecord(lastPoint.getPointIndex(), pointId, taskId, RunningRecord.RECORD_TYPE.TASK_FINISH);
+            RecordsUtils.dispatchTypeRecord(lastPoint.getPointIndex(), pointId, 0, RunningRecord.RECORD_TYPE.POINT_FINISH);
           }
         }
       }
