@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/image_view"
+        android:layout_width="@dimen/main_page_item_img_width"
+        android:layout_height="@dimen/main_page_item_img_height"
+        android:layout_margin="10dp"
+        android:contentDescription="@string/content_description"
+        android:scaleType="centerCrop"
+        android:src="@mipmap/need_to_remove"
+        />
+
+    <LinearLayout
+        android:id="@+id/game_task_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_toRightOf="@id/image_view"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/game_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="游戏名称"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:text=":"
+            />
+
+        <TextView
+            android:id="@+id/task_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="任务名称"
+            />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/detail_message"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/game_task_name"
+        android:layout_marginTop="5dp"
+        android:layout_toRightOf="@id/image_view"
+        android:padding="3dp"
+        android:text="您是该任务的游戏管理员，请确认玩家完成任务后，出示二维码。"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/image_view">
+
+        <Button
+            android:id="@+id/game_rule"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:padding="0dp"
+            android:text="通关规则"
+            />
+
+        <Button
+            android:id="@+id/game_qrcode"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="出示二维码"
+            />
+    </LinearLayout>
+</RelativeLayout>

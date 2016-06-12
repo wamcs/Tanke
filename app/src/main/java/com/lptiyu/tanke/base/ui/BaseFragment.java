@@ -10,7 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.lptiyu.tanke.base.controller.ActivityController;
-import com.lptiyu.tanke.base.controller.BaseController;
 import com.lptiyu.tanke.base.controller.ControllerHolder;
 import com.lptiyu.tanke.base.controller.FragmentController;
 
@@ -24,7 +23,7 @@ import com.lptiyu.tanke.base.controller.FragmentController;
 public abstract class BaseFragment extends Fragment implements ControllerHolder {
 
 
-  private ActivityController mActivityController;
+  private ControllerHolder mControllerHolder;
 
   public BaseFragment() {
 
@@ -47,12 +46,7 @@ public abstract class BaseFragment extends Fragment implements ControllerHolder 
   public void onAttach(Context context) {
     super.onAttach(context);
     if (context instanceof ControllerHolder) {
-      BaseController controller = ((ControllerHolder) context).getController();
-      if (controller instanceof ActivityController) {
-        mActivityController = (ActivityController) controller;
-      } else {
-        System.err.println("controller = [" + controller + "] is not ActivityController.");
-      }
+      mControllerHolder = (ControllerHolder) context;
     } else {
       System.err.println(context.toString()
           + " must implement ControllerHolder");
@@ -124,10 +118,10 @@ public abstract class BaseFragment extends Fragment implements ControllerHolder 
   }
 
   public ActivityController getActivityController() {
-    if (mActivityController == null) {
+    if (mControllerHolder == null) {
       throw new RuntimeException("Must be called after Fragment.attach()");
     }
-    return mActivityController;
+    return (ActivityController) mControllerHolder.getController();
   }
 
   public abstract FragmentController getController();

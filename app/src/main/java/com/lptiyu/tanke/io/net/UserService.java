@@ -17,7 +17,9 @@ import java.util.List;
 import okhttp3.RequestBody;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.Part;
 import retrofit2.http.Query;
 import rx.Observable;
 
@@ -106,11 +108,12 @@ public interface UserService {
   /**
    * 2.9 个人信息上传图片
    */
+  @Multipart
   @POST("User/Userphoto")
   Observable<Response<String>> uploadUserAvatar(
       @Query("uid") long uid,
       @Query("token") String token,
-      @Body RequestBody file);
+      @Part("image") RequestBody file);
 
   /**
    * 完善信息上传
@@ -207,7 +210,7 @@ public interface UserService {
    * 2.27 获取我的裁判任务, page默认为1
    */
   @GET("My/Task")
-  Observable<Response<GameManageEntity>> getManagerTask(
+  Observable<Response<List<GameManageEntity>>> getManagerTask(
       @Query("uid") long ui,
       @Query("token") String token,
       @Query("page") int page

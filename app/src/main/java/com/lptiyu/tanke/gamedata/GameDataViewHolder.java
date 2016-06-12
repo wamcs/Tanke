@@ -79,7 +79,6 @@ public class GameDataViewHolder extends BaseViewHolder<GameDataEntity> {
     taskType.setText(typeStr);
   }
 
-  @Override
   public void bind(List<GameDataEntity> entities) {
     for (GameDataEntity entity : entities) {
       bind(entity);

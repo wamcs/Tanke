@@ -59,9 +59,4 @@ public class UserProtocolController extends ActivityController {
         finish();
     }
 
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        finish();
-    }
 }

@@ -1,5 +1,7 @@
 package com.lptiyu.tanke.io.net;
 
+import android.app.Application;
+
 import com.lptiyu.tanke.BuildConfig;
 import com.lptiyu.tanke.pojo.UserDetails;
 import com.lptiyu.tanke.pojo.UserEntity;
@@ -161,7 +163,7 @@ public class UserServiceTest {
   @Test // failed 2.9
   public void testUploadUserAvatar() throws Exception {
     File file = new File("src/test/res/need_to_remove.png");
-    userService.uploadUserAvatar(UID, TOKEN, RequestBody.create(MediaType.parse("application/octet-stream"), file))
+    userService.uploadUserAvatar(UID, TOKEN, RequestBody.create(MediaType.parse("image/*"), file))
         .subscribe(new Action1<Response<String>>() {
           @Override
           public void call(Response<String> stringResponse) {

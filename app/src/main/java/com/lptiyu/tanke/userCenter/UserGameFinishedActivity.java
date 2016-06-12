@@ -5,11 +5,11 @@ import android.os.Bundle;
 
 import com.lptiyu.tanke.R;
 
-public class ModifyUserInformationActivity extends AppCompatActivity {
+public class UserGameFinishedActivity extends AppCompatActivity {
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    setContentView(R.layout.activity_modify_user_information);
+    setContentView(R.layout.activity_user_game_finished);
   }
 }

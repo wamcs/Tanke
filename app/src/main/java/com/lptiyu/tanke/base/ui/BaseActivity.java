@@ -83,8 +83,8 @@ public abstract class BaseActivity extends AppCompatActivity implements Controll
 
   @Override
   public void onBackPressed() {
-    if (null != controller) {
-      controller.onBackPressed();
+    if (null != controller && !controller.onBackPressed()) {
+      super.onBackPressed();
     }
   }
 
