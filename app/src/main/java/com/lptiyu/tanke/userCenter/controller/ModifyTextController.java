@@ -137,9 +137,9 @@ public class ModifyTextController extends ActivityController {
     }
 
     @Override
-    public void onBackPressed() {
-        super.onBackPressed();
+    public boolean onBackPressed() {
         getActivity().setResult(0);
         finish();
+        return false;
     }
 }

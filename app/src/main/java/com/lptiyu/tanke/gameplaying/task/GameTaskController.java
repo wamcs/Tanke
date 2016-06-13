@@ -177,48 +177,23 @@ public class GameTaskController extends ActivityController {
     }
   }
 
-  private void dispatchTaskRecord(RunningRecord.RECORD_TYPE type, long taskId) {
-    RecordsUtils.dispatchTypeRecord(34.123123, 114.321321, mPoint.getId(), taskId, type);
-  }
-
-  private void cacheTaskRecord(RunningRecord.RECORD_TYPE type, long taskId) {
-    RecordsUtils.cacheTypeRecord(34.123123, 114.321321, mPoint.getId(), taskId, type);
+  private void dispatchTaskRecord(RunningRecord.RECORD_TYPE type) {
+    RecordsUtils.dispatchTypeRecord(mPoint.getPointIndex(), mPoint.getId(), currentTask.getId(), type);
   }
 
   public void openNextTaskIfExist() {
-    int pointIndex = mPoint.getPointIndex();
     if (currentTaskIndex == 0) {
-      if (pointIndex != 0) {
-        dispatchTaskRecord(RunningRecord.RECORD_TYPE.TASK_START, currentTask.getId());
-      } else {
-        cacheTaskRecord(RunningRecord.RECORD_TYPE.TASK_START, currentTask.getId());
-      }
+      dispatchTaskRecord(RunningRecord.RECORD_TYPE.TASK_START);
     }
-    if (pointIndex != 0) {
-      dispatchTaskRecord(RunningRecord.RECORD_TYPE.TASK_FINISH, currentTask.getId());
-    } else {
-      cacheTaskRecord(RunningRecord.RECORD_TYPE.TASK_FINISH, currentTask.getId());
-    }
+    dispatchTaskRecord(RunningRecord.RECORD_TYPE.TASK_FINISH);
     if (onNextTask()) {
       mViewPager.setCurrentItem(currentTaskIndex);
       MultiplyTaskController controller = ((MultiplyTaskController) ((MultiplyTaskFragment) fragmentPagerItemAdapter.getPage(currentTaskIndex)).getController());
       if (controller != null) {
-        if (pointIndex != 0) {
-          dispatchTaskRecord(RunningRecord.RECORD_TYPE.TASK_START, currentTask.getId());
-        } else {
-          cacheTaskRecord(RunningRecord.RECORD_TYPE.TASK_START, currentTask.getId());
-        }
+        dispatchTaskRecord(RunningRecord.RECORD_TYPE.TASK_START);
         controller.openSealAndInitTask();
       }
     }
-  }
-
-  public void dispatchStartCurrentTaskRecord() {
-    dispatchTaskRecord(RunningRecord.RECORD_TYPE.TASK_START, currentTask.getId());
-  }
-
-  public void dispatchFinishCurrentTaskRecord() {
-    dispatchTaskRecord(RunningRecord.RECORD_TYPE.TASK_FINISH, currentTask.getId());
   }
 
   @OnClick(R.id.default_tool_bar_imageview)

@@ -31,7 +31,7 @@ public class GameDataViewHolder extends BaseViewHolder<GameDataEntity> {
   @BindView(R.id.item_game_data_task_complete_time)
   TextView completeTime;
   @BindView(R.id.item_game_data_task_complete_consuming_time)
-  TextView completeComsumingTime;
+  TextView completeConsumingTime;
   @BindView(R.id.item_game_data_task_exp)
   TextView taskExp;
 
@@ -43,7 +43,7 @@ public class GameDataViewHolder extends BaseViewHolder<GameDataEntity> {
   @Override
   public void bind(GameDataEntity entity) {
     taskName.setText(entity.getTaskName());
-    completeComsumingTime.setText(TimeUtils.getFriendlyTime(entity.getCompleteComsumingTime()));
+    completeConsumingTime.setText(TimeUtils.getFriendlyTime(entity.getCompleteConsumingTime()));
 
     Context context = itemView.getContext();
     String completePersonNumFormatter = context.getString(R.string.complete_person_num_formatter);

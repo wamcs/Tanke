@@ -28,7 +28,7 @@ public class GameDataEntity implements Parcelable {
 
   private long completeTime;
 
-  private long completeComsumingTime;
+  private long completeConsumingTime;
 
   private int exp;
 
@@ -38,7 +38,7 @@ public class GameDataEntity implements Parcelable {
     setType(builder.type);
     setCompletePersonNum(builder.completePersonNum);
     setCompleteTime(builder.completeTime);
-    setCompleteComsumingTime(builder.completeComsumingTime);
+    setCompleteConsumingTime(builder.completeComsumingTime);
     setExp(builder.exp);
   }
 
@@ -83,12 +83,12 @@ public class GameDataEntity implements Parcelable {
     this.completeTime = completeTime;
   }
 
-  public long getCompleteComsumingTime() {
-    return completeComsumingTime;
+  public long getCompleteConsumingTime() {
+    return completeConsumingTime;
   }
 
-  public void setCompleteComsumingTime(long completeComsumingTime) {
-    this.completeComsumingTime = completeComsumingTime;
+  public void setCompleteConsumingTime(long completeConsumingTime) {
+    this.completeConsumingTime = completeConsumingTime;
   }
 
   public int getExp() {
@@ -111,7 +111,7 @@ public class GameDataEntity implements Parcelable {
     dest.writeInt(this.type == null ? -1 : this.type.ordinal());
     dest.writeInt(this.completePersonNum);
     dest.writeLong(this.completeTime);
-    dest.writeLong(this.completeComsumingTime);
+    dest.writeLong(this.completeConsumingTime);
     dest.writeInt(this.exp);
   }
 
@@ -125,7 +125,7 @@ public class GameDataEntity implements Parcelable {
     this.type = tmpType == -1 ? null : Task.TASK_TYPE.values()[tmpType];
     this.completePersonNum = in.readInt();
     this.completeTime = in.readLong();
-    this.completeComsumingTime = in.readLong();
+    this.completeConsumingTime = in.readLong();
     this.exp = in.readInt();
   }
 

@@ -145,9 +145,9 @@
     <string name="change_nickname_hint">取一个好的昵称能让朋友更容易记住你</string>
     <string name="change_nickname_error">昵称格式错误</string>
     <string name="change_height_hint">写下你的身高吧，单位是CM</string>
-    <string name="change_height_error">身高规定范围为%dCM~%dCM,填写超出范围</string>
+    <string formatted="false" name="change_height_error">身高规定范围为%dCM~%dCM,填写超出范围</string>
     <string name="change_weight_hint">写下你的体重吧，单位是KG</string>
-    <string name="change_weight_error">体重规定范围为%dKG~%dKG,填写超出范围</string>
+    <string formatted="false" name="change_weight_error">体重规定范围为%dKG~%dKG,填写超出范围</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

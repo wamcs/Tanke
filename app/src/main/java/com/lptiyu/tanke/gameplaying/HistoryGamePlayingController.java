@@ -56,8 +56,6 @@ public class HistoryGamePlayingController extends GamePlayingController {
       if (record.getPointId() == currentAttackPoint.getId()) {
         switch (record.getType()) {
           case POINT_REACH:
-            mapHelper.onReachAttackPoint(currentAttackPointIndex);
-            consoleHelper.onReachAttackPoint(currentAttackPointIndex);
             onReachAttackPoint();
             break;
 
@@ -85,7 +83,7 @@ public class HistoryGamePlayingController extends GamePlayingController {
       if (record == null || record.getType() != RunningRecord.RECORD_TYPE.TASK_START) {
         return;
       }
-      long currentTaskId = recordList.get(recordList.size() - 1).getTaskId();
+      long currentTaskId = record.getTaskId();
       Task resultTask = checkIfIsTimingTask(currentTaskId);
       if (resultTask == null) {
         return;
@@ -94,6 +92,7 @@ public class HistoryGamePlayingController extends GamePlayingController {
       long expectEndTimeMillis = Integer.valueOf(resultTask.getPwd()) * TimeUtils.ONE_MINUTE_TIME + startTimeMillis;
       if (System.currentTimeMillis() < expectEndTimeMillis) {
         mTimingTaskHelper.startTimingTaskFlow(resultTask, startTimeMillis);
+        onNextPoint();
       } else {
       }
     }
@@ -127,7 +126,7 @@ public class HistoryGamePlayingController extends GamePlayingController {
     List<RunningRecord> result = new ArrayList<>();
     for (RunningRecord record : records) {
       RunningRecord.RECORD_TYPE type = record.getType();
-      if (record.getPointId() == currentAttackPoint.getId() && (type == RunningRecord.RECORD_TYPE.TASK_START || type == RunningRecord.RECORD_TYPE.TASK_FINISH)) {
+      if ((record.getPointId() == currentAttackPoint.getId()) && (type == RunningRecord.RECORD_TYPE.TASK_START || type == RunningRecord.RECORD_TYPE.TASK_FINISH)) {
         result.add(record);
       }
     }

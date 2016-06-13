@@ -118,7 +118,6 @@
         <item name="android:paddingRight">2dp</item>
     </style>
 
-<<<<<<< HEAD
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
@@ -127,7 +126,6 @@
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
-=======
     <!-- Modify User Info-->
     <style name="ModifyUserInfoItemTitle">
         <item name="android:layout_height">match_parent</item>
@@ -146,7 +144,6 @@
         <item name="android:textColor">@color/grey06</item>
         <item name="android:layout_marginRight">10dp</item>
     </style>
->>>>>>> 80fd4f20dd7b2d09fae5dd599a249d69c5ae5e4c
 
 
 </resources>

@@ -117,10 +117,6 @@ public class MapHelper implements
     mBaiduMap.setOnMarkerClickListener(this);
   }
 
-  public void startAnimate() {
-
-  }
-
   public void bindData(List<Point> points) {
     if (points == null) {
       return;

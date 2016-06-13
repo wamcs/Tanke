@@ -127,9 +127,9 @@ public class LocateController extends ActivityController implements BDLocationLi
     }
 
     @Override
-    public void onBackPressed() {
-        super.onBackPressed();
+    public boolean onBackPressed() {
         finish();
+        return false;
     }
 
     @Override

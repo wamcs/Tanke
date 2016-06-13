@@ -6,6 +6,8 @@ import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
+import com.baidu.mapapi.model.LatLng;
+import com.lptiyu.tanke.gameplaying.records.RecordsUtils;
 
 import java.lang.ref.WeakReference;
 
@@ -37,6 +39,7 @@ public class LocateHelper implements BDLocationListener {
     if (location == null || mBDLocationListener == null) {
       return;
     }
+    RecordsUtils.setCurrentLatLng(new LatLng(location.getLatitude(), location.getLongitude()));
     mBDLocationListener.onReceiveLocation(location);
   }
 

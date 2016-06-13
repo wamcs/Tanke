@@ -256,9 +256,9 @@ public class ModifyUserInfoController extends ActivityController {
         }
     }
 
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        finish();
-    }
+  @Override
+  public boolean onBackPressed() {
+    finish();
+    return true;
+  }
 }
