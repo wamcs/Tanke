@@ -145,6 +145,7 @@
     <dimen name="message_text_size">16sp</dimen>
     <dimen name="message_time_text_size">14sp</dimen>
     <dimen name="message_time_text_view_height">20dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
 
     <!-- Modify User Info Dimes-->
     <dimen name="modify_user_info_item_height">46dp</dimen>

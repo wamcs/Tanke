@@ -109,7 +109,7 @@ public class UserCenterFragment extends BaseFragment {
     bundle.putParcelable(Conf.USER_DETAIL,details);
     Glide.with(this).load(details.getAvatar()).into(mUserAvatar);
     mUserNickname.setText(details.getNickname());
-    //TODO need image
+    //TODO sex need image
     mUserSex.setImageDrawable(null);
     mUserLocation.setText(details.getAddress());
     mUserUid.setText(String.valueOf(Accounts.getId()));
@@ -138,7 +138,7 @@ public class UserCenterFragment extends BaseFragment {
 
   @OnClick(R.id.user_rewards)
   void user_rewards() {
-
+    startActivity(new Intent(getContext(), UserRewardActivity.class));
   }
 
   @OnClick(R.id.setting)
@@ -148,7 +148,7 @@ public class UserCenterFragment extends BaseFragment {
 
   @OnClick(R.id.user_judge_game)
   public void user_judge_game() {
-
+    startActivity(new Intent(getContext(), UserManagerGameActivity.class));
   }
 
 

@@ -58,9 +58,4 @@ public class MessageController extends ActivityController {
         finish();
     }
 
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        finish();
-    }
 }

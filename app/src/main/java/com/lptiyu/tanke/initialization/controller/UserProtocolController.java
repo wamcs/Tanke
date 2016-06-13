@@ -62,10 +62,9 @@ public class UserProtocolController extends ActivityController {
     }
 
     @Override
-    public void onBackPressed() {
-        super.onBackPressed();
+    public boolean onBackPressed() {
         mWebView.onPause();
         mWebView.destroy();
-        finish();
+        return false;
     }
 }

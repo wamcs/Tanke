@@ -12,7 +12,6 @@ import android.view.Window;
 import com.lptiyu.tanke.R;
 
 
-
 /**
  * @author ldx
  */
@@ -106,8 +105,8 @@ public abstract class ActivityController extends ContextController {
 
   }
 
-  public void onBackPressed() {
-
+  public boolean onBackPressed() {
+    return false;
   }
 
   public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {

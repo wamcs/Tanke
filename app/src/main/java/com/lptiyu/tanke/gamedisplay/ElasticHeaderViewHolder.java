@@ -82,7 +82,6 @@ public class ElasticHeaderViewHolder extends BaseViewHolder<GameDisplayEntity> {
     animator.start();
   }
 
-  @Override
   public void bind(List<GameDisplayEntity> entities) {
     bindEntity(middleImageView, middleTitle, entities.get(0));
     bindEntity(leftImageView, leftTitle, entities.get(1));
@@ -94,5 +93,10 @@ public class ElasticHeaderViewHolder extends BaseViewHolder<GameDisplayEntity> {
         .centerCrop()
         .into(imageView);
     textView.setText(entity.getTitle());
+  }
+
+  @Override
+  public void bind(GameDisplayEntity entity) {
+
   }
 }

@@ -231,8 +231,9 @@ public class GameTaskController extends ActivityController {
   }
 
   @Override
-  public void onBackPressed() {
+  public boolean onBackPressed() {
     back();
+    return true;
   }
 
   @Override

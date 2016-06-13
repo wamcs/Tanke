@@ -17,7 +17,9 @@ import java.util.List;
 import okhttp3.RequestBody;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.Part;
 import retrofit2.http.Query;
 import rx.Observable;
 
@@ -72,21 +74,14 @@ public interface UserService {
 
 
   /**
-   * 2.6 获取验证码 注册时
+   * 2.6 获取验证码 type {1:注册,2:忘记密码}
    *
    * @param type 注册时，后台缓存的有数据，需要上传type来确定
-   *             是通过哪种方式注册，1，
+   *             是通过哪种方式注册，
    */
-  @GET("Login/GetCode?status=1")
-  Observable<Response<Void>> getVerifyCodeRegister(
-      @Query("type") @UserType int type,
-      @Query("phone") String phone);
-
-  /**
-   * 2.6 获取验证码 忘记密码时
-   */
-  @GET("Login/GetCode?status=2")
-  Observable<Response<Void>> getVerifyCodeForgetPassword(
+  @GET("Login/GetCode")
+  Observable<Response<Void>> getVerifyCode(
+      @Query("status") int type,
       @Query("phone") String phone);
 
 
@@ -113,11 +108,12 @@ public interface UserService {
   /**
    * 2.9 个人信息上传图片
    */
+  @Multipart
   @POST("User/Userphoto")
   Observable<Response<String>> uploadUserAvatar(
       @Query("uid") long uid,
       @Query("token") String token,
-      @Body RequestBody file);
+      @Part("image") RequestBody file);
 
   /**
    * 完善信息上传
@@ -158,7 +154,7 @@ public interface UserService {
   Observable<Response<String>> userProtocol();
 
   @GET("My/Nowranks?page=1")
-  Observable<Response<GamePlayingEntity>> gamePlaying(
+  Observable<Response<List<GamePlayingEntity>>> gamePlaying(
       @Query("uid") long uid,
       @Query("token") String token
   );
@@ -178,7 +174,7 @@ public interface UserService {
    * 2.25 获取用户已完成的游戏 默认page = 1
    */
   @GET("My/Finishranks?page=1")
-  Observable<Response<GameFinishedEntity>> gameFinished(
+  Observable<Response<List<GameFinishedEntity>>> gameFinished(
       @Query("uid") long uid,
       @Query("token") String token
   );
@@ -214,7 +210,7 @@ public interface UserService {
    * 2.27 获取我的裁判任务, page默认为1
    */
   @GET("My/Task")
-  Observable<Response<GameManageEntity>> getManagerTask(
+  Observable<Response<List<GameManageEntity>>> getManagerTask(
       @Query("uid") long ui,
       @Query("token") String token,
       @Query("page") int page
@@ -224,26 +220,18 @@ public interface UserService {
    * 2.27 获取我的裁判任务, page默认为1
    */
   @GET("My/Task?page=1")
-  Observable<Response<GameManageEntity>> getManagerTask(
+  Observable<Response<List<GameManageEntity>>> getManagerTask(
       @Query("uid") long uid,
       @Query("token") String token);
 
   /**
    * 2.30 绑定设备的installationId，以便后台推送信息
    */
-  @GET("System/InstallationId")
+  @GET("System/Installation?")
   Observable<Response<Void>> registerInstallation(
       @Query("uid") long uid,
       @Query("token") String token,
       @Query("installation_id") String installationId
   );
-
-  /**
-   * 2.31 关于界面
-   *
-   * @return 关于界面的链接
-   */
-  @GET("System/About")
-  Observable<Response<String>> about();
 
 }
