@@ -34,8 +34,8 @@
             app:civ_border_color="#fff"
             app:civ_border_width="5dp"
             app:civ_shadow="true"
-            app:civ_shadow_color="#000"
-            app:civ_shadow_radius="5"
+            app:civ_shadow_color="@color/grey04"
+            app:civ_shadow_radius="1"
             android:layout_width="80dp"
             android:layout_height="80dp" />
 
