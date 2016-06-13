@@ -14,6 +14,7 @@
     <!-- Normal Permissions do not need request -->
     <uses-permission android:name="com.android.launcher.permission.READ_SETTINGS"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
     <uses-permission android:name="android.permission.INTERNET"/>
@@ -62,7 +63,11 @@
         </service>
 
         <activity android:name=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
 
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
         </activity>
         <activity android:name=".initialization.ui.LoginActivity">
 
@@ -103,8 +108,6 @@
         <activity android:name=".userCenter.ui.SettingActivity">
         </activity>
 
-        <activity android:name=".messagesystem.MessageListActivity">
-        </activity>
         <activity
             android:name="com.mob.tools.MobUIShell"
             android:configChanges="keyboardHidden|orientation|screenSize"
@@ -174,20 +177,21 @@
             </intent-filter>
         </activity>
         <activity android:name=".gameplaying.GamePlayingActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
 
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
         </activity>
         <activity android:name=".gameplaying.task.GameTaskActivity">
         </activity>
         <activity android:name=".gamedata.GameDataActivity">
         </activity>
 
-        <service
-            android:name="com.avos.avoscloud.PushService"
-            android:exported="true"/>
+        <service android:name="com.avos.avoscloud.PushService" />
+
+        <receiver android:name="com.avos.avoscloud.AVBroadcastReceiver" >
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.USER_PRESENT" />
+            </intent-filter>
+        </receiver>
 
         <receiver android:name=".pushreceiver.PushReceiver">
             <intent-filter>
@@ -195,7 +199,6 @@
                 <action android:name="android.intent.action.USER_PRESENT"/>
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE"/>
                 <action android:name="com.tanke.PUSH_ACTION"/>
-                <!-- 后台push的数据中需要添加字段"action":"com.tanke.PUSH_ACTION" -->
             </intent-filter>
         </receiver>
 
