@@ -41,8 +41,6 @@ public class SignUpController extends ActivityController {
     TextView mProtocolButton;
 
     private SignUpHelper signUpHelper;
-    private String mProtocolURL;
-    private boolean isReadProtocol;
 
     public SignUpController(AppCompatActivity activity, View view) {
         super(activity, view);
@@ -68,20 +66,6 @@ public class SignUpController extends ActivityController {
                     throw new IllegalStateException("not has this type");
                 }
                 signUpHelper = new RegisterHelper(activity, view, type);
-                HttpService.getUserService().userProtocol()
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribeOn(Schedulers.io())
-                        .subscribe(new Action1<Response<String>>() {
-                            @Override
-                            public void call(Response<String> stringResponse) {
-                                int status = stringResponse.getStatus();
-                                if (status != 1){
-                                    ToastUtil.TextToast(stringResponse.getInfo());
-                                    return;
-                                }
-                                mProtocolURL = stringResponse.getData();
-                            }
-                        });
                 break;
             case Conf.RESET_PASSWORD_CODE:
 
@@ -90,15 +74,6 @@ public class SignUpController extends ActivityController {
                 break;
         }
 
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        switch (requestCode){
-            case Conf.PROTOCOL_CODE:
-               isReadProtocol = data.getBooleanExtra(Conf.PROTOCOL_STATE,false);
-                break;
-        }
     }
 
     @Override
@@ -126,18 +101,12 @@ public class SignUpController extends ActivityController {
 
     @OnClick(R.id.sign_up_next_button)
     void next() {
-        if (!isReadProtocol){
-            openProtocol();
-            return;
-        }
         signUpHelper.next();
     }
 
     @OnClick(R.id.sign_up_protocol_button)
     void openProtocol(){
         Intent intent = new Intent(getContext(), UserProtocolActivity.class);
-        intent.putExtra(Conf.PROTOCOL_URL,mProtocolURL);
-        startActivityForResult(intent,Conf.PROTOCOL_CODE);
-
+        startActivity(intent);
     }
 }

@@ -2,15 +2,10 @@ package com.lptiyu.tanke.widget;
 
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
-import android.graphics.drawable.ShapeDrawable;
-import android.graphics.drawable.shapes.RoundRectShape;
 import android.text.Editable;
 import android.text.InputType;
-import android.text.TextUtils;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.ViewGroup;
@@ -20,6 +15,7 @@ import android.widget.LinearLayout;
 
 import com.lptiyu.tanke.R;
 import com.lptiyu.tanke.utils.Display;
+import com.lptiyu.tanke.utils.Views;
 
 /**
  * author:wamcs
@@ -117,7 +113,8 @@ public class LoginEditView extends LinearLayout {
         editText.setSingleLine();
         editText.setHintTextColor(mBaseColor);
         editText.setTextColor(mBaseColor);
-        editText.setCursorVisible(false);
+        editText.setCursorVisible(true);
+        Views.setCursorDrawable(editText, R.drawable.cursor);
         editText.setHint(mHintText);
         editText.setBackgroundColor(getResources().getColor(R.color.white00));
         //only aim at this project

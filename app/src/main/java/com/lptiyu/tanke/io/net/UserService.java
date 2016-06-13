@@ -15,7 +15,6 @@ import java.lang.annotation.RetentionPolicy;
 import java.util.List;
 
 import okhttp3.RequestBody;
-import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
@@ -73,15 +72,25 @@ public interface UserService {
                                             @Query("code") String code);
 
 
+  @IntDef({
+      REGISTER, RESET_PSW
+  })
+  @Retention(RetentionPolicy.SOURCE)
+  public @interface VERITY_CODE {
+  }
+
+  public static final int REGISTER = 1;
+  public static final int RESET_PSW = 2;
+
   /**
    * 2.6 获取验证码 type {1:注册,2:忘记密码}
    *
    * @param type 注册时，后台缓存的有数据，需要上传type来确定
    *             是通过哪种方式注册，
    */
-  @GET("Login/GetCode")
+  @GET("Login/GetCodes")
   Observable<Response<Void>> getVerifyCode(
-      @Query("status") int type,
+      @Query("status") @VERITY_CODE int type,
       @Query("phone") String phone);
 
 

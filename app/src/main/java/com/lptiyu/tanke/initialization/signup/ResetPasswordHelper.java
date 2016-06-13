@@ -1,13 +1,12 @@
 package com.lptiyu.tanke.initialization.signup;
 
-import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
-import android.text.Editable;
 import android.view.View;
 
 import com.lptiyu.tanke.R;
 import com.lptiyu.tanke.io.net.HttpService;
 import com.lptiyu.tanke.io.net.Response;
+import com.lptiyu.tanke.io.net.UserService;
 import com.lptiyu.tanke.utils.ToastUtil;
 
 import rx.android.schedulers.AndroidSchedulers;
@@ -40,7 +39,7 @@ public class ResetPasswordHelper extends SignUpHelper {
         super.getCode();
 
         String phone = signUpPhoneEditText.getText().toString();
-        HttpService.getUserService().getVerifyCode(2, phone)
+        HttpService.getUserService().getVerifyCode(UserService.RESET_PSW, phone)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(new Action1<Response<Void>>() {
@@ -81,7 +80,7 @@ public class ResetPasswordHelper extends SignUpHelper {
                             ToastUtil.TextToast(voidResponse.getInfo());
                             return;
                         }
-                      ToastUtil.TextToast(voidResponse.getInfo());
+                        ToastUtil.TextToast(voidResponse.getInfo());
                         context.finish();
                     }
                 });

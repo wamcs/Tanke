@@ -11,10 +11,12 @@ import com.baidu.location.LocationClientOption;
 import com.lptiyu.tanke.MainActivityController;
 import com.lptiyu.tanke.R;
 import com.lptiyu.tanke.base.recyclerview.BaseListFragmentController;
+import com.lptiyu.tanke.global.Accounts;
 import com.lptiyu.tanke.io.net.HttpService;
 import com.lptiyu.tanke.io.net.Response;
 import com.lptiyu.tanke.pojo.City;
 import com.lptiyu.tanke.pojo.GameDisplayEntity;
+import com.lptiyu.tanke.userCenter.ui.LocateActivity;
 import com.lptiyu.tanke.utils.NetworkUtil;
 import com.lptiyu.tanke.utils.ShaPrefer;
 import com.lptiyu.tanke.utils.ToastUtil;
@@ -97,18 +99,17 @@ public class GameDisplayController extends BaseListFragmentController<GameDispla
 
   @Override
   public Observable<List<GameDisplayEntity>> requestData(int page) {
-//    return HttpService.getGameService()
-//        .getGamePage(requestLocation, page)
-//        .map(new Func1<Response<List<GameDisplayEntity>>, List<GameDisplayEntity>>() {
-//          @Override
-//          public List<GameDisplayEntity> call(Response<List<GameDisplayEntity>> listResponse) {
-//            if (listResponse.getStatus() != Response.RESPONSE_OK) {
-//              throw new RuntimeException(listResponse.getInfo());
-//            }
-//            return listResponse.getData();
-//          }
-//        });
-    return Observable.just(DummyData.entities);
+    return HttpService.getGameService()
+        .getGamePage(Accounts.getId(), Accounts.getToken(), requestLocation, page)
+        .map(new Func1<Response<List<GameDisplayEntity>>, List<GameDisplayEntity>>() {
+          @Override
+          public List<GameDisplayEntity> call(Response<List<GameDisplayEntity>> listResponse) {
+            if (listResponse.getStatus() != Response.RESPONSE_OK) {
+              throw new RuntimeException(listResponse.getInfo());
+            }
+            return listResponse.getData();
+          }
+        });
   }
 
   @SuppressWarnings("unchecked")
@@ -212,7 +213,7 @@ public class GameDisplayController extends BaseListFragmentController<GameDispla
 
   @OnClick(R.id.location)
   void clickLocation() {
-    startActivityForResult(new Intent(getContext(), LocationActivity.class), LOCATION_REQUEST_CODE);
+    startActivityForResult(new Intent(getContext(), LocateActivity.class), LOCATION_REQUEST_CODE);
   }
 
   @OnClick(R.id.scanner)

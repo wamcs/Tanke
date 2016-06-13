@@ -72,21 +72,35 @@
                 app:takTextSize="@dimen/custom_edit_text_size"
                 />
 
-            <TextView
+            <RelativeLayout
                 android:id="@id/login_sign_up_button"
-                style="@style/loginActivityButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_below="@id/login_input_password"
-                android:text="@string/login_new_user"
-                />
+                android:padding="10dp">
 
-            <TextView
+                <TextView
+                    style="@style/loginActivityButton"
+                    android:text="@string/login_new_user"
+                    />
+
+            </RelativeLayout>
+
+            <RelativeLayout
                 android:id="@id/login_forget_password_button"
-                style="@style/loginActivityButton"
-                android:layout_alignParentRight="true"
+                android:layout_width="wrap_content"
                 android:layout_below="@id/login_input_password"
-                android:layout="@id/login_sign_up_button"
-                android:text="@string/login_forget_password"
-                />
+                android:padding="10dp"
+                android:layout_alignParentRight="true"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    style="@style/loginActivityButton"
+                    android:layout="@id/login_sign_up_button"
+                    android:text="@string/login_forget_password"
+                    />
+
+            </RelativeLayout>
 
         </RelativeLayout>
 

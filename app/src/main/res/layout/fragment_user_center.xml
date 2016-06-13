@@ -29,11 +29,13 @@
 
         <com.mikhaellopez.circularimageview.CircularImageView
             android:id="@+id/user_avatar"
-            app:civ_border_color="#EEEEEE"
-            app:civ_border_width="4dp"
+            android:src="@mipmap/default_avatar"
+            app:civ_border="true"
+            app:civ_border_color="#fff"
+            app:civ_border_width="5dp"
             app:civ_shadow="true"
-            app:civ_shadow_color="#8BC34A"
-            app:civ_shadow_radius="10"
+            app:civ_shadow_color="#000"
+            app:civ_shadow_radius="5"
             android:layout_width="80dp"
             android:layout_height="80dp" />
 
@@ -159,6 +161,7 @@
             android:layout_height="@dimen/user_center_linear_layout_left_image_width"
             android:layout_centerVertical="true"
             android:layout_marginLeft="20dp"
+            android:src="@mipmap/icon_playing"
             android:scaleType="centerInside"/>
 
         <TextView
@@ -210,6 +213,7 @@
             android:layout_height="@dimen/user_center_linear_layout_left_image_width"
             android:layout_centerVertical="true"
             android:layout_marginLeft="20dp"
+            android:src="@mipmap/icon_finished"
             android:scaleType="centerInside"/>
 
         <TextView
@@ -262,6 +266,7 @@
             android:layout_height="@dimen/user_center_linear_layout_left_image_width"
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/user_center_linear_layout_paddingLeft"
+            android:src="@mipmap/icon_rewards"
             android:scaleType="centerInside"/>
 
         <TextView
@@ -303,6 +308,7 @@
             android:layout_height="@dimen/user_center_linear_layout_left_image_width"
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/user_center_linear_layout_paddingLeft"
+            android:src="@mipmap/icon_judge_task"
             android:scaleType="centerInside"/>
 
         <TextView
@@ -343,6 +349,7 @@
             android:layout_width="@dimen/user_center_linear_layout_left_image_width"
             android:layout_height="@dimen/user_center_linear_layout_left_image_width"
             android:layout_centerVertical="true"
+            android:src="@mipmap/icon_setting"
             android:layout_marginLeft="@dimen/user_center_linear_layout_paddingLeft"
             android:scaleType="centerInside"/>
 

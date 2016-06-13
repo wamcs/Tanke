@@ -31,115 +31,114 @@ import rx.schedulers.Schedulers;
  */
 public class ModifyTextController extends ActivityController {
 
-    @BindView(R.id.default_tool_bar_textview)
-    TextView mTitle;
-    @BindView(R.id.modify_text_edit)
-    EditText mEditText;
+  @BindView(R.id.default_tool_bar_textview)
+  TextView mTitle;
+  @BindView(R.id.modify_text_edit)
+  EditText mEditText;
 
-    private int type;
-    private int requestCode;
-    private String content;
+  private int type;
+  private int requestCode;
+  private String content;
 
-    public ModifyTextController(AppCompatActivity activity, View view) {
-        super(activity, view);
-        ButterKnife.bind(this,view);
-        init();
+  public ModifyTextController(AppCompatActivity activity, View view) {
+    super(activity, view);
+    ButterKnife.bind(this, view);
+    init();
+  }
+
+  private void init() {
+    type = getIntent().getIntExtra(Conf.USER_INFO_TYPE, 0);
+    content = getIntent().getStringExtra(Conf.USER_INFO);
+    if (type == 0) {
+      throw new IllegalStateException("there are not this state");
     }
-
-    private void init(){
-        type = getIntent().getIntExtra(Conf.USER_INFO_TYPE,0);
-        content = getIntent().getStringExtra(Conf.USER_INFO);
-        if (type == 0){
-            throw new IllegalStateException("there are not this state");
+    mEditText.setHintTextColor(getResources().getColor(R.color.grey06));
+    switch (type) {
+      case UserService.USER_DETAIL_NICKNAME:
+        mTitle.setText(getString(R.string.change_nickname));
+        requestCode = Conf.REQUEST_CODE_NICKNAME;
+        mEditText.setHint(getString(R.string.change_nickname_hint));
+        mEditText.setText(content);
+        break;
+      case UserService.USER_DETAIL_HEIGHT:
+        mTitle.setText(getString(R.string.change_height));
+        requestCode = Conf.REQUEST_CODE_HEIGHT;
+        mEditText.setHint(getString(R.string.change_height_hint));
+        mEditText.setInputType(InputType.TYPE_CLASS_NUMBER);
+        mEditText.setText(content.substring(0, 2));
+        break;
+      case UserService.USER_DETAIL_WEIGHT:
+        mTitle.setText(getString(R.string.change_weight));
+        requestCode = Conf.REQUEST_CODE_WEIGHT;
+        mEditText.setHint(R.string.change_weight_hint);
+        mEditText.setInputType(InputType.TYPE_CLASS_NUMBER);
+        if (content.length() == 5) {
+          mEditText.setText(content.substring(0, 2));
+        } else {
+          mEditText.setText(content.substring(0, 1));
         }
-        mEditText.setHintTextColor(getResources().getColor(R.color.grey06));
-        switch (type){
-            case UserService.USER_DETAIL_NICKNAME:
-                mTitle.setText(getString(R.string.change_nickname));
-                requestCode = Conf.REQUEST_CODE_NICKNAME;
-                mEditText.setHint(getString(R.string.change_nickname_hint));
-                mEditText.setText(content);
-                break;
-            case UserService.USER_DETAIL_HEIGHT:
-                mTitle.setText(getString(R.string.change_height));
-                requestCode = Conf.REQUEST_CODE_HEIGHT;
-                mEditText.setHint(getString(R.string.change_height_hint));
-                mEditText.setInputType(InputType.TYPE_CLASS_NUMBER);
-                mEditText.setText(content.substring(0,2));
-                break;
-            case UserService.USER_DETAIL_WEIGHT:
-                mTitle.setText(getString(R.string.change_weight));
-                requestCode = Conf.REQUEST_CODE_WEIGHT;
-                mEditText.setHint(R.string.change_weight_hint);
-                mEditText.setInputType(InputType.TYPE_CLASS_NUMBER);
-                if (content.length() == 5){
-                    mEditText.setText(content.substring(0,2));
-                }else {
-                    mEditText.setText(content.substring(0,1));
-                }
-                break;
+        break;
+    }
+  }
+
+  @OnClick(R.id.default_tool_bar_imageview)
+  void back() {
+    getActivity().setResult(0);
+    finish();
+  }
+
+  @OnClick(R.id.modify_text_save)
+  void save() {
+    Editable editable = mEditText.getText();
+    final String content = editable.toString();
+    switch (type) {
+      case UserService.USER_DETAIL_NICKNAME:
+        if (editable.length() == 0) {
+          ToastUtil.TextToast(getString(R.string.change_height_error));
+          return;
         }
-    }
-
-    @OnClick(R.id.default_tool_bar_imageview)
-    void back(){
-        getActivity().setResult(0);
-        finish();
-    }
-
-    @OnClick(R.id.modify_text_save)
-    void save(){
-        Editable editable = mEditText.getText();
-        final String content = editable.toString();
-        switch (type){
-            case UserService.USER_DETAIL_NICKNAME:
-                if (editable.length() == 0){
-                    ToastUtil.TextToast(getString(R.string.change_height_error));
-                    return;
-                }
-                break;
-            case UserService.USER_DETAIL_HEIGHT:
-                if (Integer.parseInt(content)<Conf.MIN_HEIGHT || Integer.parseInt(content)>Conf.MAX_HEIGHT){
-                    ToastUtil.TextToast(String.format(getString(R.string.change_height_error),Conf.MIN_HEIGHT,Conf.MAX_HEIGHT));
-                    return;
-                }
-                break;
-            case UserService.USER_DETAIL_WEIGHT:
-                if (Integer.parseInt(content)<Conf.MIN_WEIGHT || Integer.parseInt(content)>Conf.MAX_WEIGHT){
-                    ToastUtil.TextToast(String.format(getString(R.string.change_weight_error),Conf.MIN_WEIGHT,Conf.MAX_WEIGHT));
-                    return;
-                }
-                break;
+        break;
+      case UserService.USER_DETAIL_HEIGHT:
+        if (Integer.parseInt(content) < Conf.MIN_HEIGHT || Integer.parseInt(content) > Conf.MAX_HEIGHT) {
+          ToastUtil.TextToast(String.format(getString(R.string.change_height_error), Conf.MIN_HEIGHT, Conf.MAX_HEIGHT));
+          return;
         }
-
-        if (content.equals(this.content)){
-            ToastUtil.TextToast("修改之后才能进行数据上传");
-            return;
+        break;
+      case UserService.USER_DETAIL_WEIGHT:
+        if (Integer.parseInt(content) < Conf.MIN_WEIGHT || Integer.parseInt(content) > Conf.MAX_WEIGHT) {
+          ToastUtil.TextToast(String.format(getString(R.string.change_weight_error), Conf.MIN_WEIGHT, Conf.MAX_WEIGHT));
+          return;
         }
-
-        HttpService.getUserService().resetUserDetails(Accounts.getId(),Accounts.getToken(),type,content)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io())
-                .subscribe(new Action1<Response<Void>>() {
-                    @Override
-                    public void call(Response<Void> voidResponse) {
-                        int status = voidResponse.getStatus();
-                        if (status != 1){
-                            ToastUtil.TextToast(voidResponse.getInfo());
-                            return;
-                        }
-                        Intent intent = new Intent();
-                        intent.putExtra(Conf.USER_INFO,content);
-                        getActivity().setResult(requestCode,intent);
-                        finish();
-                    }
-                });
+        break;
     }
 
-    @Override
-    public boolean onBackPressed() {
-        getActivity().setResult(0);
-        finish();
-        return false;
+    if (content.equals(this.content)) {
+      ToastUtil.TextToast("修改之后才能进行数据上传");
+      return;
     }
+
+    HttpService.getUserService().resetUserDetails(Accounts.getId(), Accounts.getToken(), type, content)
+        .observeOn(AndroidSchedulers.mainThread())
+        .subscribeOn(Schedulers.io())
+        .subscribe(new Action1<Response<Void>>() {
+          @Override
+          public void call(Response<Void> voidResponse) {
+            int status = voidResponse.getStatus();
+            if (status != 1) {
+              ToastUtil.TextToast(voidResponse.getInfo());
+              return;
+            }
+            Intent intent = new Intent();
+            intent.putExtra(Conf.USER_INFO, content);
+            getActivity().setResult(requestCode, intent);
+            finish();
+          }
+        });
+  }
+
+  @Override
+  public boolean onBackPressed() {
+    getActivity().setResult(0);
+    return false;
+  }
 }

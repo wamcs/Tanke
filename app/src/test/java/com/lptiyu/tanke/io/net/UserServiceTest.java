@@ -165,8 +165,7 @@ public class UserServiceTest {
         , TOKEN
         , RequestBody.create(
             MediaType.parse("application/octet-stream")
-            , file)
-    )
+            , file))
         .subscribe(new Action1<Response<String>>() {
           @Override
           public void call(Response<String> stringResponse) {

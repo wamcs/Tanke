@@ -16,6 +16,9 @@ import com.lptiyu.tanke.R;
 import com.lptiyu.tanke.base.recyclerview.BaseAdapter;
 import com.lptiyu.tanke.base.recyclerview.BaseListActivityController;
 import com.lptiyu.tanke.base.recyclerview.BaseViewHolder;
+import com.lptiyu.tanke.global.Accounts;
+import com.lptiyu.tanke.io.net.HttpService;
+import com.lptiyu.tanke.io.net.Response;
 import com.lptiyu.tanke.pojo.GameManageEntity;
 import com.lptiyu.tanke.utils.ToastUtil;
 import com.lptiyu.zxinglib.android.Contents;
@@ -23,13 +26,13 @@ import com.lptiyu.zxinglib.android.Intents;
 import com.lptiyu.zxinglib.android.encode.EncodeActivity;
 import com.lptiyu.zxinglib.core.BarcodeFormat;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import rx.Observable;
+import rx.functions.Func1;
 
 /**
  * EMAIL : danxionglei@foxmail.com
@@ -68,33 +71,17 @@ public class UserManagerGameController extends BaseListActivityController<GameMa
   @Override
   public Observable<List<GameManageEntity>> requestData(int page) {
     return
-//        HttpService.getUserService()
-//        .getManagerTask(Accounts.getId(), Accounts.getToken(), page)
-//        .map(new Func1<Response<List<GameManageEntity>>, List<GameManageEntity>>() {
-//          @Override
-//          public List<GameManageEntity> call(Response<List<GameManageEntity>> gameManageEntityResponse) {
-//            if (gameManageEntityResponse.getStatus() != Response.RESPONSE_OK) {
-//              throw new RuntimeException(gameManageEntityResponse.getInfo());
-//            }
-//            return gameManageEntityResponse.getData();
-//          }
-//        });
-        Observable.just(dummyDatas);
-  }
-
-  private static List<GameManageEntity> dummyDatas = new ArrayList<>();
-
-  static {
-    GameManageEntity entity = new GameManageEntity();
-    entity.setImg("http://s10.sinaimg.cn/middle/4cafd049ta44ee96828f9&690");
-    entity.setTitle("绝望坡惊魂");
-    entity.setQrcode("jienbuvueiwi://asdfji/fajsdifjimmbbbcjiddji");
-    dummyDatas.add(entity);
-    GameManageEntity entity1 = new GameManageEntity();
-    entity1.setImg("http://h.hiphotos.baidu.com/zhidao/pic/item/cc11728b4710b91217962a89c3fdfc0392452276.jpg");
-    entity1.setTitle("毛主席的召唤");
-    entity1.setQrcode("jienbuvueiwi://asdfji/fajsdifjimmbbbcjiddji");
-    dummyDatas.add(entity1);
+        HttpService.getUserService()
+            .getManagerTask(Accounts.getId(), Accounts.getToken(), page)
+            .map(new Func1<Response<List<GameManageEntity>>, List<GameManageEntity>>() {
+              @Override
+              public List<GameManageEntity> call(Response<List<GameManageEntity>> gameManageEntityResponse) {
+                if (gameManageEntityResponse.getStatus() != Response.RESPONSE_OK) {
+                  throw new RuntimeException(gameManageEntityResponse.getInfo());
+                }
+                return gameManageEntityResponse.getData();
+              }
+            });
   }
 
   @NonNull
@@ -164,6 +151,7 @@ public class UserManagerGameController extends BaseListActivityController<GameMa
       this.entity = entity;
       Glide.with(itemView.getContext()).load(entity.getImg()).into(gameImage);
       gameTitle.setText(entity.getTitle());
+      gameDetailMessage.setText(entity.getContent());
     }
   }
 }

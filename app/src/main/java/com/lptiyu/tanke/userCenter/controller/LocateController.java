@@ -22,6 +22,7 @@ import com.lptiyu.tanke.pojo.City;
 import com.lptiyu.tanke.userCenter.adapter.LocateListAdapter;
 import com.lptiyu.tanke.utils.ToastUtil;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -49,7 +50,7 @@ public class LocateController extends ActivityController implements BDLocationLi
     @BindView(R.id.location_recycler_View)
     RecyclerView mRecyclerView;
 
-    private List<City> list;
+    private List<City> list = new ArrayList<>();
     private LocationClient client;
     private City city;
 
@@ -63,37 +64,37 @@ public class LocateController extends ActivityController implements BDLocationLi
         city = new City();
         mTitle.setText("选择城市");
         mLocateErrorText.setVisibility(View.GONE);
+        LinearLayoutManager manager =new LinearLayoutManager(getContext());
+        manager.setOrientation(LinearLayoutManager.VERTICAL);
+        mRecyclerView.setLayoutManager(manager);
+        final LocateListAdapter adapter = new LocateListAdapter(list);
+        adapter.setOnCityItemClickListener(new LocateListAdapter.OnCityItemClickListener() {
+          @Override
+          public void OnCityItemClick(int position) {
+            city = list.get(position);
+            clickLocation();
+          }
+        });
+
+        locate();
         HttpService.getGameService().getSupportedCities()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Action1<Response<List<City>>>() {
                     @Override
                     public void call(Response<List<City>> listResponse) {
-                        list = listResponse.getData();
+                        list.clear();
+                        list.addAll(listResponse.getData());
+                        adapter.notifyDataSetChanged();
                     }
                 });
-        locate();
-        client.start();
-
-        LinearLayoutManager manager =new LinearLayoutManager(getContext());
-        manager.setOrientation(LinearLayoutManager.VERTICAL);
-        mRecyclerView.setLayoutManager(manager);
-        LocateListAdapter adapter =new LocateListAdapter(list);
-        adapter.setOnCityItemClickListener(new LocateListAdapter.OnCityItemClickListener() {
-            @Override
-            public void OnCityItemClick(int position) {
-                city = list.get(position);
-                clickLocation();
-            }
-        });
-
     }
 
     private void locate() {
-
         client = new LocationClient(getContext());
         initLocation();
         client.registerLocationListener(this);
+        client.start();
     }
 
     private void initLocation() {
@@ -132,7 +133,6 @@ public class LocateController extends ActivityController implements BDLocationLi
         return false;
     }
 
-    @Override
     public void onReceiveLocation(BDLocation bdLocation) {
         if (bdLocation.getLocType() == BDLocation.TypeGpsLocation
                 || bdLocation.getLocType() == BDLocation.TypeNetWorkLocation) {

@@ -60,7 +60,6 @@ public final class Conf {
    * Protocol Area
    */
   public static final String PROTOCOL_URL = "protocol_url";
-  public static final int PROTOCOL_CODE = 1;
   public static final String PROTOCOL_STATE = "protocol_state";
 
 

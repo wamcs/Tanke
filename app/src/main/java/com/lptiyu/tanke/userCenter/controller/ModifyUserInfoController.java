@@ -87,8 +87,13 @@ public class ModifyUserInfoController extends ActivityController {
     private void init(){
         mTitle.setText("资料修改");
         Bundle bundle = getIntent().getBundleExtra(Conf.DATA_TO_INFO_MODIFY);
+        if (bundle == null) {
+            return;
+        }
         UserDetails details = bundle.getParcelable(Conf.USER_DETAIL);
-        assert details != null;
+        if (details == null) {
+            return;
+        }
         mAvatarImage.setImageURI(Uri.parse(details.getAvatar()));
         mBirthdayText.setText(details.getBirthday());
         mNicknameText.setText(details.getNickname());
@@ -261,4 +266,5 @@ public class ModifyUserInfoController extends ActivityController {
     finish();
     return true;
   }
+
 }
