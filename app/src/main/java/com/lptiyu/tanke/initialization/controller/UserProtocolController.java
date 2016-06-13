@@ -1,6 +1,5 @@
 package com.lptiyu.tanke.initialization.controller;
 
-import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -9,12 +8,17 @@ import android.webkit.WebView;
 
 import com.lptiyu.tanke.R;
 import com.lptiyu.tanke.base.controller.ActivityController;
-import com.lptiyu.tanke.global.Conf;
+import com.lptiyu.tanke.io.net.HttpService;
+import com.lptiyu.tanke.io.net.Response;
+import com.lptiyu.tanke.utils.ToastUtil;
 
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
+import rx.schedulers.Schedulers;
 
 /**
  * author:wamcs
@@ -37,8 +41,18 @@ public class UserProtocolController extends ActivityController {
 
     private void init(){
         toolbar.setVisibility(View.GONE);
-        String urlString = getIntent().getStringExtra(Conf.PROTOCOL_URL);
-        mWebView.loadUrl(urlString);
+        HttpService.getUserService().userProtocol().subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(new Action1<Response<String>>() {
+                @Override
+                public void call(Response<String> stringResponse) {
+                    if (stringResponse.getStatus() != Response.RESPONSE_OK) {
+                        ToastUtil.TextToast(stringResponse.getInfo());
+                        return;
+                    }
+                    mWebView.loadUrl(stringResponse.getData());
+                }
+            });
     }
 
     @Override
@@ -48,23 +62,35 @@ public class UserProtocolController extends ActivityController {
 
     @OnClick(R.id.protocol_last_button)
     void back() {
-        mWebView.onPause();
-        mWebView.destroy();
         finish();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mWebView.onResume();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        mWebView.onPause();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mWebView.destroy();
+
     }
 
     @OnClick(R.id.protocol_next_button)
     void read(){
-        Intent intent =new Intent();
-        intent.putExtra(Conf.PROTOCOL_STATE,true);
-        getActivity().setResult(Conf.PROTOCOL_CODE,intent);
         finish();
     }
 
     @Override
     public boolean onBackPressed() {
-        mWebView.onPause();
-        mWebView.destroy();
         return false;
     }
 }

@@ -12,6 +12,7 @@ import com.lptiyu.tanke.pojo.GAME_STATE;
 import com.lptiyu.tanke.pojo.GAME_TYPE;
 import com.lptiyu.tanke.pojo.RECOMMENDED_TYPE;
 import com.lptiyu.tanke.pojo.Team;
+import com.lptiyu.tanke.utils.ShaPrefer;
 
 import java.io.File;
 
@@ -61,6 +62,17 @@ public class AppData {
     }
 
     return -1;
+  }
+
+  public static boolean isFirstInApp() {
+    // 如果获取不到这个键，就返回true, 则判断为第一次进入这个App
+    if (ShaPrefer.getBoolean("firstInApp", true)) {
+      // 现在把该值变成false, 即，以后进入不是第一次进入
+      ShaPrefer.put("firstInApp", false);
+      return true;
+    } else {
+      return false;
+    }
   }
 
   public static void init(Context context) {

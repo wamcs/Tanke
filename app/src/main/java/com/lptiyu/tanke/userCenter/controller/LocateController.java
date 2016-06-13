@@ -127,12 +127,6 @@ public class LocateController extends ActivityController implements BDLocationLi
     }
 
     @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        finish();
-    }
-
-    @Override
     public void onReceiveLocation(BDLocation bdLocation) {
         if (bdLocation.getLocType() == BDLocation.TypeGpsLocation
                 || bdLocation.getLocType() == BDLocation.TypeNetWorkLocation) {

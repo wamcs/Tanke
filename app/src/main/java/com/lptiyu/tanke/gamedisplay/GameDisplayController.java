@@ -11,6 +11,7 @@ import com.baidu.location.LocationClientOption;
 import com.lptiyu.tanke.MainActivityController;
 import com.lptiyu.tanke.R;
 import com.lptiyu.tanke.base.recyclerview.BaseListFragmentController;
+import com.lptiyu.tanke.global.Accounts;
 import com.lptiyu.tanke.io.net.HttpService;
 import com.lptiyu.tanke.io.net.Response;
 import com.lptiyu.tanke.pojo.City;
@@ -97,18 +98,17 @@ public class GameDisplayController extends BaseListFragmentController<GameDispla
 
   @Override
   public Observable<List<GameDisplayEntity>> requestData(int page) {
-//    return HttpService.getGameService()
-//        .getGamePage(requestLocation, page)
-//        .map(new Func1<Response<List<GameDisplayEntity>>, List<GameDisplayEntity>>() {
-//          @Override
-//          public List<GameDisplayEntity> call(Response<List<GameDisplayEntity>> listResponse) {
-//            if (listResponse.getStatus() != Response.RESPONSE_OK) {
-//              throw new RuntimeException(listResponse.getInfo());
-//            }
-//            return listResponse.getData();
-//          }
-//        });
-    return Observable.just(DummyData.entities);
+    return HttpService.getGameService()
+        .getGamePage(Accounts.getId(), Accounts.getToken(), requestLocation, page)
+        .map(new Func1<Response<List<GameDisplayEntity>>, List<GameDisplayEntity>>() {
+          @Override
+          public List<GameDisplayEntity> call(Response<List<GameDisplayEntity>> listResponse) {
+            if (listResponse.getStatus() != Response.RESPONSE_OK) {
+              throw new RuntimeException(listResponse.getInfo());
+            }
+            return listResponse.getData();
+          }
+        });
   }
 
   @SuppressWarnings("unchecked")

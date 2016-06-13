@@ -31,7 +31,7 @@ public interface GameService {
    */
   @GET("Home/Index")
   Observable<Response<List<GameDisplayEntity>>> getGamePage(
-      @Query("uid") int uid,
+      @Query("uid") long uid,
       @Query("token") String token,
       @Query("city") String location, // 城市
       @Query("page") long page);

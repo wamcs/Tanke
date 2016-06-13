@@ -72,18 +72,17 @@ public class UserCenterFragment extends BaseFragment {
   TextView mUserGameFinishedNum;
 
   private Subscription subscription;
-  private Bundle bundle;
 
   @Nullable
   @Override
   public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
     View view = fromResLayout(inflater, container, R.layout.fragment_user_center);
     ButterKnife.bind(this, view);
-    init();
     return view;
   }
 
   private void init() {
+    System.out.println("hahahahahaha");
     subscription = HttpService.getUserService()
         .getUserDetail(Accounts.getId(), Accounts.getToken())
         .subscribeOn(Schedulers.io())
@@ -100,14 +99,13 @@ public class UserCenterFragment extends BaseFragment {
         }, new Action1<Throwable>() {
           @Override
           public void call(Throwable throwable) {
-            ToastUtil.TextToast(throwable.getMessage());
+            throw new RuntimeException(throwable);
           }
         });
   }
 
   private void bind(UserDetails details) {
-    bundle.putParcelable(Conf.USER_DETAIL,details);
-    Glide.with(this).load(details.getAvatar()).into(mUserAvatar);
+    Glide.with(this).load(details.getAvatar()).error(R.mipmap.default_avatar).into(mUserAvatar);
     mUserNickname.setText(details.getNickname());
     //TODO sex need image
     mUserSex.setImageDrawable(null);
@@ -122,9 +120,9 @@ public class UserCenterFragment extends BaseFragment {
   }
 
   @OnClick(R.id.user_message_layout)
-  void modifyUserinfo(){
+  void modifyUserinfo() {
     Intent intent = new Intent(getActivity(), ModifyUserInfoActivity.class);
-    intent.putExtra(Conf.DATA_TO_INFO_MODIFY,bundle);
+//    intent.putExtra(Conf.DATA_TO_INFO_MODIFY, bundle);
     startActivity(intent);
   }
 

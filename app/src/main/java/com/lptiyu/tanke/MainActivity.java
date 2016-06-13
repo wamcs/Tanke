@@ -2,7 +2,7 @@ package com.lptiyu.tanke;
 
 import android.os.Bundle;
 import android.support.annotation.IntDef;
-import android.view.View;
+import android.widget.ImageView;
 
 import com.lptiyu.tanke.base.controller.ActivityController;
 import com.lptiyu.tanke.base.ui.BaseActivity;
@@ -25,20 +25,20 @@ public class MainActivity extends BaseActivity {
   public int mCurrentIndex = 2;
 
   @BindView(R.id.page_1)
-  View tab1;
+  ImageView tab1;
 
   @BindView(R.id.page_2)
-  View tab2;
+  ImageView tab2;
 
   @BindView(R.id.page_3)
-  View tab3;
+  ImageView tab3;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
-    mController = new MainActivityController(this, getWindow().getDecorView());
     ButterKnife.bind(this);
+    mController = new MainActivityController(this, getWindow().getDecorView());
     init();
   }
 
@@ -63,13 +63,18 @@ public class MainActivity extends BaseActivity {
       return;
     }
 
-    selectTab(index == 0, tab1);
-    selectTab(index == 1, tab2);
-    selectTab(index == 2, tab3);
+    selectTab(index == 0, tab1, R.mipmap.icon_main_page_selected, R.mipmap.icon_main_page_unselected);
+    selectTab(index == 1, tab2, R.mipmap.icon_message_selected, R.mipmap.icon_message_unselected);
+    selectTab(index == 2, tab3, R.mipmap.icon_me_selected, R.mipmap.icon_me_unselected);
+    mCurrentIndex = index;
   }
 
-  private void selectTab(boolean select, View View) {
-    // TODO Need to do
+  private void selectTab(boolean select, ImageView view, int resSelected, int resUnselected) {
+    if (select) {
+      view.setImageResource(resSelected);
+    } else {
+      view.setImageResource(resUnselected);
+    }
   }
 
 }

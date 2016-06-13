@@ -105,7 +105,7 @@ public class RegisterHelper extends SignUpHelper {
                             ToastUtil.TextToast(voidResponse.getInfo());
                             return;
                         }
-                        Intent intent =new Intent();
+                        Intent intent = new Intent();
                         intent.setClass(context, CompleteInformationActivity.class);
                         context.startActivity(intent);
                     }

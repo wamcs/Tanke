@@ -62,14 +62,15 @@
         </service>
 
         <activity android:name=".MainActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
 
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
         </activity>
         <activity android:name=".initialization.ui.LoginActivity">
-
+        </activity>
+        <activity android:name=".initialization.ui.SplashActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
         </activity>
         <activity android:name=".initialization.ui.GuideActivity">
         </activity>
@@ -134,7 +135,7 @@
             android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
         <!-- 用户反馈-->
         <activity
-            android:name="com.avos.avoscloud.feedback.ThreadActivity" >
+            android:name="com.avos.avoscloud.feedback.ThreadActivity">
         </activity>
 
         <activity
