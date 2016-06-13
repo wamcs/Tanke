@@ -88,10 +88,6 @@ public abstract class GamePlayingController extends ActivityController implement
   AlertDialog mAlertDialog;
   AlertDialog mLoadingDialog;
 
-  static final long TEMP_GAME_ID = 1000000001L;
-  static final long TEMP_LINE_ID = 2000000001L;
-  static final long TEMP_TEAM_ID = 9000000001L;
-
   public GamePlayingController(AppCompatActivity activity, View view) {
     super(activity, view);
     ButterKnife.bind(this, view);
@@ -105,9 +101,9 @@ public abstract class GamePlayingController extends ActivityController implement
     gameZipHelper = new GameZipHelper();
 
     Intent intent = getIntent();
-    gameId = intent.getLongExtra(Conf.GAME_ID, TEMP_GAME_ID);
-    lineId = intent.getLongExtra(Conf.LINE_ID, TEMP_LINE_ID);
-    teamId = intent.getLongExtra(Conf.TEAM_ID, TEMP_TEAM_ID);
+    gameId = intent.getLongExtra(Conf.GAME_ID, Conf.TEMP_GAME_ID);
+    lineId = intent.getLongExtra(Conf.LINE_ID, Conf.TEMP_LINE_ID);
+    teamId = intent.getLongExtra(Conf.TEAM_ID, Conf.TEMP_TEAM_ID);
 
     if (!gameZipHelper.checkAndParseGameZip(gameId, lineId) || gameZipHelper.getmPoints().size() == 0) {
       ToastUtil.TextToast("游戏包加载失败");
@@ -124,7 +120,7 @@ public abstract class GamePlayingController extends ActivityController implement
     consoleHelper = new ConsoleHelper(getActivity(), view, mPoints);
     consoleHelper.setOnSpotClickListener(this);
     mTracingHelper = new TracingHelper(getActivity().getApplicationContext(), this);
-    mTracingHelper.entityName(String.format("%d_%d".toLowerCase(), gameId, teamId));
+    mTracingHelper.entityName(Conf.makeUpTrackEntityName(gameId, teamId));
     locateHelper = new LocateHelper(getActivity().getApplicationContext());
     locateHelper.registerLocationListener(this);
 
@@ -135,7 +131,7 @@ public abstract class GamePlayingController extends ActivityController implement
     initRecords();
     moveToTarget();
 
-//    mTracingHelper.start();
+    mTracingHelper.start();
   }
 
   /**
@@ -178,6 +174,11 @@ public abstract class GamePlayingController extends ActivityController implement
       //TODO : all point has arrive and the game is finished
       isGameFinished = true;
       ToastUtil.TextToast("您已经完成了所有的攻击点");
+      mTracingHelper.stop();
+      if (!RecordsUtils.isGameFinishedFromDisk(gameId)) {
+        RecordsUtils.dispatchTypeRecord(new RunningRecord.Builder().type(RunningRecord.RECORD_TYPE.GAME_FINISH).build());
+        startGameDataActivity();
+      }
     }
   }
 
@@ -217,16 +218,20 @@ public abstract class GamePlayingController extends ActivityController implement
     if (mPoints != null && mPoints instanceof ArrayList) {
       intent.putParcelableArrayListExtra(Conf.GAME_POINTS, ((ArrayList<? extends Parcelable>) mPoints));
     }
-    if (RecordsUtils.getmRecordsHandler() != null) {
-      MemRecords memRecords = RecordsUtils.getmRecordsHandler().getMemRecords();
-      if (memRecords != null) {
-        List<RunningRecord> allRecords = memRecords.getAll();
-        if (allRecords != null && allRecords instanceof ArrayList) {
-          intent.putParcelableArrayListExtra(Conf.GAME_RECORDS, (((ArrayList<? extends Parcelable>) allRecords)));
+    if (isGameFinished) {
+      intent.setClass(getActivity(), GameShareActivity.class);
+    } else {
+      if (RecordsUtils.getmRecordsHandler() != null) {
+        MemRecords memRecords = RecordsUtils.getmRecordsHandler().getMemRecords();
+        if (memRecords != null) {
+          List<RunningRecord> allRecords = memRecords.getAll();
+          if (allRecords != null && allRecords instanceof ArrayList) {
+            intent.putParcelableArrayListExtra(Conf.GAME_RECORDS, (((ArrayList<? extends Parcelable>) allRecords)));
+          }
         }
       }
+      intent.setClass(getActivity(), GameDataActivity.class);
     }
-    intent.setClass(getActivity(), GameDataActivity.class);
     startActivity(intent);
   }
 
@@ -242,9 +247,16 @@ public abstract class GamePlayingController extends ActivityController implement
 
   @OnClick(R.id.start_animate)
   void startAnimateButtonClicked() {
+    if (isGameFinished) {
+      return;
+    }
     isReachedAttackPoint = true;
     mTimingTaskHelper.finishTimingTask();
     onReachAttackPoint();
+    // if the last point has the timing task, it should be finish either
+    if (mTimingTaskHelper.isTimingTask()) {
+      mTimingTaskHelper.dispatchTimingTaskRecord();
+    }
     RecordsUtils.dispatchTypeRecord(currentAttackPointIndex, currentAttackPoint.getId(), 0, RunningRecord.RECORD_TYPE.POINT_REACH);
   }
 
@@ -261,6 +273,11 @@ public abstract class GamePlayingController extends ActivityController implement
         onReachAttackPoint();
         VibrateUtils.vibrate();
         showAlertDialog(getString(R.string.reach_attack_point));
+
+        // if the last point has the timing task, it should be finish either
+        if (mTimingTaskHelper.isTimingTask()) {
+          mTimingTaskHelper.dispatchTimingTaskRecord();
+        }
         RecordsUtils.dispatchTypeRecord(currentAttackPointIndex, currentAttackPoint.getId(), 0, RunningRecord.RECORD_TYPE.POINT_REACH);
       }
     }

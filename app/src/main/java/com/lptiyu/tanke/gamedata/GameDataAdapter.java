@@ -36,11 +36,6 @@ public class GameDataAdapter extends BaseAdapter<GameDataEntity> {
     return gameDataEntities.size();
   }
 
-//  @Override
-//  public int getItemViewType(int position) {
-//
-//  }
-
   @Override
   public void addData(List<GameDataEntity> data) {
     if (gameDataEntities == null) {

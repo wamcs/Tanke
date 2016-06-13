@@ -14,7 +14,9 @@ import android.widget.TextView;
 import com.lptiyu.tanke.R;
 import com.lptiyu.tanke.base.controller.ActivityController;
 import com.lptiyu.tanke.base.controller.FragmentController;
+import com.lptiyu.tanke.gameplaying.pojo.Point;
 import com.lptiyu.tanke.gameplaying.pojo.Task;
+import com.lptiyu.tanke.gameplaying.records.RecordsUtils;
 import com.lptiyu.tanke.gameplaying.records.RunningRecord;
 import com.lptiyu.tanke.utils.ToastUtil;
 import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItem;
@@ -43,6 +45,7 @@ public abstract class MultiplyTaskController extends FragmentController {
   AlertDialog mLoadingDialog;
 
   int taskIndex;
+  boolean isTaskDone = false;
   Task mTask;
   List<RunningRecord> recordList;
   GameTaskController mActivityController;
@@ -64,10 +67,12 @@ public abstract class MultiplyTaskController extends FragmentController {
     initLoadingDialog();
     mLoadingDialog.show();
     initWebView();
-    if (taskIndex == 0) {
-      openSealAndInitTask();
-    }
     checkAndResumeTaskStatus();
+    if (taskIndex == 0 && (!isTaskDone)) {
+      openSealAndInitTask();
+      Point point = mActivityController.getmPoint();
+      RecordsUtils.dispatchTypeRecord(point.getPointIndex(), point.getId(), mTask.getId(), RunningRecord.RECORD_TYPE.TASK_START);
+    }
   }
 
   private void initWebView() {
@@ -125,6 +130,7 @@ public abstract class MultiplyTaskController extends FragmentController {
         ToastUtil.TextToast("此任务您已完成");
       }
     });
+    isTaskDone = true;
   }
 
   private void initLoadingDialog() {

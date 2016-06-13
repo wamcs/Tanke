@@ -7,12 +7,9 @@ import com.lptiyu.tanke.gameplaying.pojo.Task;
 import com.lptiyu.tanke.gameplaying.records.RecordsHandler;
 import com.lptiyu.tanke.gameplaying.records.RecordsUtils;
 import com.lptiyu.tanke.gameplaying.records.RunningRecord;
-import com.lptiyu.tanke.global.AppData;
 import com.lptiyu.tanke.utils.TimeUtils;
 
-import java.sql.Time;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import timber.log.Timber;
@@ -92,9 +89,10 @@ public class HistoryGamePlayingController extends GamePlayingController {
       long expectEndTimeMillis = Integer.valueOf(resultTask.getPwd()) * TimeUtils.ONE_MINUTE_TIME + startTimeMillis;
       if (System.currentTimeMillis() < expectEndTimeMillis) {
         mTimingTaskHelper.startTimingTaskFlow(resultTask, startTimeMillis);
-        onNextPoint();
       } else {
+        mTimingTaskHelper.startTimingTaskFlow(resultTask, Long.MIN_VALUE);
       }
+      onNextPoint();
     }
   }
 

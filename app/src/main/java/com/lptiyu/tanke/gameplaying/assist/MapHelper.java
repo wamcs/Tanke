@@ -163,12 +163,18 @@ public class MapHelper implements
 
   public void onReachAttackPoint(int index) {
 //    isReachAttackPoint = true;
+    if (index < 0 || mPoints == null || index >= mPoints.size()) {
+      return;
+    }
     currentAttackPoint = mPoints.get(index);
     setNail(currentAttackPoint, index, NumNail.NailType.GREEN);
   }
 
   public void updateNextPoint(int index) {
 //    isReachAttackPoint = false;
+    if (index < 0 || mPoints == null || index >= mPoints.size()) {
+      return;
+    }
     currentAttackPoint = mPoints.get(index);
     setNail(currentAttackPoint, index, NumNail.NailType.RED);
   }

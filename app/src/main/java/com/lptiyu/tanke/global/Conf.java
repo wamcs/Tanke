@@ -116,5 +116,17 @@ public final class Conf {
   public static final int REQUEST_CODE_WEIGHT = 3;
   public static final int REQUEST_CODE_LOCATION = 4;
 
+  /**
+   * This method is to make up the entity name of baidu hawk eye service
+   * @param gameId
+   * @param teamId
+   * @return
+   */
+  public static String makeUpTrackEntityName(long gameId, long teamId) {
+    return String.format("%d_%d".toLowerCase(), gameId, teamId);
+  }
 
+  public static final long TEMP_GAME_ID = 1000000001L;
+  public static final long TEMP_LINE_ID = 2000000001L;
+  public static final long TEMP_TEAM_ID = 9000000001L;
 }

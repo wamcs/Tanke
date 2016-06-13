@@ -53,8 +53,12 @@ public class TimingTaskHelper implements
     isTimingTask = true;
     isTimingSuccess = true;
     timingTask = task;
-    long limitTime = startTime + Integer.valueOf(timingTask.getPwd()) * TimeUtils.ONE_MINUTE_TIME - System.currentTimeMillis();
-    showTickView(limitTime);
+    if (startTime == Long.MIN_VALUE) {
+      isTimingSuccess = false;
+    } else {
+      long limitTime = startTime + Integer.valueOf(timingTask.getPwd()) * TimeUtils.ONE_MINUTE_TIME - System.currentTimeMillis();
+      showTickView(limitTime);
+    }
   }
 
   public void finishTimingTask() {
@@ -67,21 +71,29 @@ public class TimingTaskHelper implements
         showAlertDialog("您在指定时间内完成");
         isTimingSuccess = false;
       }
-      if (contextWeakReference.get() != null) {
-        GamePlayingController controller = contextWeakReference.get();
-        Point lastPoint = controller.getLastPoint();
-        if (lastPoint != null) {
-          List<String> taskIds = lastPoint.getTaskId();
-          if (taskIds != null && taskIds.size() != 0) {
-            long pointId = lastPoint.getId();
-            long taskId = Long.valueOf(taskIds.get(taskIds.size() - 1));
-            RecordsUtils.dispatchTypeRecord(lastPoint.getPointIndex(), pointId, taskId, RunningRecord.RECORD_TYPE.TASK_FINISH);
-            RecordsUtils.dispatchTypeRecord(lastPoint.getPointIndex(), pointId, 0, RunningRecord.RECORD_TYPE.POINT_FINISH);
-          }
+      dispatchTimingTaskRecord();
+    }
+    isTimingTask = false;
+  }
+
+  /**
+   * This method is to dispatch the record
+   * when the timing task is done
+   */
+  public void dispatchTimingTaskRecord() {
+    if (contextWeakReference.get() != null) {
+      GamePlayingController controller = contextWeakReference.get();
+      Point lastPoint = controller.getLastPoint();
+      if (lastPoint != null) {
+        List<String> taskIds = lastPoint.getTaskId();
+        if (taskIds != null && taskIds.size() != 0) {
+          long pointId = lastPoint.getId();
+          long taskId = Long.valueOf(taskIds.get(taskIds.size() - 1));
+          RecordsUtils.dispatchTypeRecord(lastPoint.getPointIndex(), pointId, taskId, RunningRecord.RECORD_TYPE.TASK_FINISH);
+          RecordsUtils.dispatchTypeRecord(lastPoint.getPointIndex(), pointId, 0, RunningRecord.RECORD_TYPE.POINT_FINISH);
         }
       }
     }
-    isTimingTask = false;
   }
 
   private void showTickView(final long limitTime) {

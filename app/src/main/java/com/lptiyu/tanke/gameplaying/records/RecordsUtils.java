@@ -1,6 +1,7 @@
 package com.lptiyu.tanke.gameplaying.records;
 
 import com.baidu.mapapi.model.LatLng;
+import com.lptiyu.tanke.global.AppData;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -134,7 +135,6 @@ public class RecordsUtils {
       Timber.d("ActivityID is null or is empty string.");
       return false;
     }
-
     // Now you have the ref of the records in disk.
     DiskRecords records = new DiskRecords(DiskRecords.generateFile(gameId));
     if (records.isEmpty()) {
@@ -147,8 +147,7 @@ public class RecordsUtils {
     } catch (IOException e) {
       e.printStackTrace();
     }
-
-    return ((record != null) && (record.getType() == RunningRecord.RECORD_TYPE.POINT_REACH));
+    return ((record != null) && (record.getType() == RunningRecord.RECORD_TYPE.GAME_FINISH));
   }
 
   public static RecordsHandler getmRecordsHandler() {

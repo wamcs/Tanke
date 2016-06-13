@@ -77,8 +77,6 @@ public class ShareHelper {
 
 
   private static void shareWechatFriends(String title, String text, String imagePath, String shareUrl) {
-
-
     Platform.ShareParams shareParams = new Platform.ShareParams();
     if (null != shareUrl) {
       shareParams.setShareType(Platform.SHARE_WEBPAGE);
@@ -92,7 +90,6 @@ public class ShareHelper {
     Platform wechat = ShareSDK.getPlatform(Wechat.NAME);
     wechat.setPlatformActionListener(new listener());
     wechat.share(shareParams);
-
   }
 
   private static void shareWechatCircle(String title, String text, String imagePath, String shareUrl) {

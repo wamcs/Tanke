@@ -140,7 +140,7 @@ public class GameDataController extends BaseListActivityController<GameDataEntit
             if (task != null) {
               gameDataEntityBuilder
                   .taskId(task.getId())
-                  .taskName(task.getName())
+                  .taskName(task.getTaskName())
                   .type(task.getType())
                   .completePersonNum(0)
                   .completeTime(endRecord.getCreateTime())

@@ -24,15 +24,12 @@ public class Task implements Parcelable {
 
   private long id;
 
-  @SerializedName("task_name")
-  private String name;
-
   @SerializedName("type")
   private TASK_TYPE type;
 
   private int exp;
 
-  @SerializedName("mission_name")
+  @SerializedName("task_name")
   private String taskName;
 
   private String content;
@@ -89,14 +86,6 @@ public class Task implements Parcelable {
     this.id = id;
   }
 
-  public String getName() {
-    return name;
-  }
-
-  public void setName(String name) {
-    this.name = name;
-  }
-
   public TASK_TYPE getType() {
     return type;
   }
@@ -145,7 +134,6 @@ public class Task implements Parcelable {
   @Override
   public void writeToParcel(Parcel dest, int flags) {
     dest.writeLong(this.id);
-    dest.writeString(this.name);
     dest.writeInt(this.type == null ? -1 : this.type.ordinal());
     dest.writeInt(this.exp);
     dest.writeString(this.taskName);
@@ -158,7 +146,6 @@ public class Task implements Parcelable {
 
   protected Task(Parcel in) {
     this.id = in.readLong();
-    this.name = in.readString();
     int tmpType = in.readInt();
     this.type = tmpType == -1 ? null : TASK_TYPE.values()[tmpType];
     this.exp = in.readInt();

@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/game_share_form_style"
+                android:paddingBottom="@dimen/layout_game_share_form_padding_bottom">
+
+    <LinearLayout
+        android:id="@+id/layout_game_share_form_root"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal">
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+
+            <TextView
+                android:id="@+id/layout_game_share_form_time"
+                style="@style/ShareActivityTextData"
+                android:text="00:03:07"/>
+
+            <TextView
+                style="@style/ShareActivityTextTitle"
+                android:layout_below="@id/layout_game_share_form_time"
+                android:text="@string/total_time"/>
+
+            <ImageView style="@style/ShareActivityTextLine"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+
+            <TextView
+                android:id="@+id/layout_game_share_form_speed"
+                style="@style/ShareActivityTextData"
+                android:text="275'41''"/>
+
+            <TextView
+                style="@style/ShareActivityTextTitle"
+                android:layout_below="@id/layout_game_share_form_speed"
+                android:text="@string/avarange_speed"/>
+
+            <ImageView style="@style/ShareActivityTextLine"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+
+            <TextView
+                android:id="@+id/layout_game_share_form_calorie"
+                style="@style/ShareActivityTextData"
+                android:text="25.6"/>
+
+            <TextView
+                style="@style/ShareActivityTextTitle"
+                android:layout_below="@id/layout_game_share_form_calorie"
+                android:text="@string/calorie"/>
+
+        </RelativeLayout>
+
+        <ImageView style="@style/ShareActivityTextLine"/>
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+
+            <TextView
+                android:id="@+id/layout_game_share_form_exp"
+                style="@style/ShareActivityTextData"
+                android:text="60 exp"/>
+
+            <TextView
+                style="@style/ShareActivityTextTitle"
+                android:layout_below="@id/layout_game_share_form_exp"
+                android:text="@string/total_exp"/>
+
+            <ImageView style="@style/ShareActivityTextLine"/>
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/layout_game_share_form_root"
+        android:layout_marginBottom="20dp"
+        android:paddingLeft="25dp">
+
+        <TextView
+            android:id="@+id/layout_game_share_form_distance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="20"
+            android:textColor="@color/default_font_color"
+            android:textSize="30sp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/layout_game_share_form_distance"
+            android:gravity="center_vertical"
+            android:text="@string/meter"
+            android:textColor="@color/default_font_color"
+            android:textSize="30sp"/>
+
+        <TextView
+            android:id="@+id/layout_game_share_form_other_team_info"
+            style="@style/ShareActivityTextData"
+            android:layout_alignLeft="@id/layout_game_share_form_distance"
+            android:layout_below="@id/layout_game_share_form_distance"
+            android:padding="5dp"
+            android:text="有5支队伍完成了比赛"/>
+
+    </RelativeLayout>
+
+</RelativeLayout>

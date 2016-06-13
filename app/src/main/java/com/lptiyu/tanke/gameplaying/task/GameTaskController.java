@@ -182,9 +182,6 @@ public class GameTaskController extends ActivityController {
   }
 
   public void openNextTaskIfExist() {
-    if (currentTaskIndex == 0) {
-      dispatchTaskRecord(RunningRecord.RECORD_TYPE.TASK_START);
-    }
     dispatchTaskRecord(RunningRecord.RECORD_TYPE.TASK_FINISH);
     if (onNextTask()) {
       mViewPager.setCurrentItem(currentTaskIndex);
@@ -231,6 +228,10 @@ public class GameTaskController extends ActivityController {
       return null;
     }
     return taskMap.get(taskIds.get(position));
+  }
+
+  public Point getmPoint() {
+    return mPoint;
   }
 
   public List<RunningRecord> getAppropriateRecordList() {
