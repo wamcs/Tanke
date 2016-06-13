@@ -65,7 +65,6 @@ public class GamePlayingViewHolder extends BaseViewHolder<GamePlayingEntity> {
         });
     }
 
-    @Override
     public void bind(List<GamePlayingEntity> entities) {
         for (GamePlayingEntity entity : entities){
             bind(entity);
