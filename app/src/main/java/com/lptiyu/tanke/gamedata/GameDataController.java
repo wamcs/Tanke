@@ -50,7 +50,6 @@ public class GameDataController extends BaseListActivityController<GameDataEntit
   RecyclerView mRecyclerView;
 
   private long gameId;
-  private long lineId;
 
   private GameDataEntity.Builder gameDataEntityBuilder;
 
@@ -80,13 +79,12 @@ public class GameDataController extends BaseListActivityController<GameDataEntit
   private void checkAndResumeGameData() {
     Intent intent = getIntent();
     gameId = intent.getLongExtra(Conf.GAME_ID, Long.MIN_VALUE);
-    lineId = intent.getLongExtra(Conf.LINE_ID, Long.MIN_VALUE);
     gameDataEntities = new ArrayList<>();
     gameDataEntityBuilder = new GameDataEntity.Builder();
     mPoints = intent.getParcelableArrayListExtra(Conf.GAME_POINTS);
     mRecords = intent.getParcelableArrayListExtra(Conf.GAME_RECORDS);
     if (mPoints == null || mRecords == null) {
-      if (gameId != Long.MIN_VALUE && lineId != Long.MIN_VALUE) {
+      if (gameId != Long.MIN_VALUE) {
         loadGameDataFromDisk();
       }
     }
@@ -101,7 +99,7 @@ public class GameDataController extends BaseListActivityController<GameDataEntit
 
   private void loadGameDataFromDisk() {
     GameZipHelper zipHelper = new GameZipHelper();
-    if (!zipHelper.checkAndParseGameZip(gameId, lineId) || zipHelper.getmPoints().size() == 0) {
+    if (!zipHelper.checkAndParseGameZip(gameId) || zipHelper.getmPoints().size() == 0) {
       return;
     }
     mPoints = zipHelper.getmPoints();

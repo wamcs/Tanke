@@ -56,6 +56,35 @@
         android:padding="5dp"
         android:src="@mipmap/img_game_data"/>
 
+    <ImageView
+        android:id="@+id/zoom_out"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="65dp"
+        android:layout_marginRight="5dp"
+        android:background="@drawable/map_button_style"
+        android:contentDescription="@string/content_description"
+        android:src="@drawable/map_zoom_out_button"/>
+
+
+    <ImageView
+        android:id="@+id/zoom_in"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_above="@id/zoom_out"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="5dp"
+        android:layout_marginEnd="5dp"
+        android:layout_marginRight="5dp"
+        android:background="@drawable/map_button_style"
+        android:contentDescription="@string/content_description"
+        android:src="@drawable/map_zoom_in_button"/>
+
+
     <Button
         android:id="@+id/start_animate"
         android:layout_width="wrap_content"
@@ -80,20 +109,20 @@
 
 
     <com.lptiyu.tanke.widget.TickView
-        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/tick_view"
-        android:visibility="gone"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/tick_view_margin_top"
         android:padding="5dp"
-        app:tickTextSize="10sp"
-        app:tickOuterCircleRadius="35dp"
-        app:tickOuterCircleColor="@color/colorPrimary"
-        app:tickInnerCircleRadius="31dp"
-        app:tickInnerCircleColor="@color/colorPrimaryDark"
+        android:visibility="gone"
         app:tickFillColor="@color/colorAccent"
+        app:tickInnerCircleColor="@color/colorPrimaryDark"
+        app:tickInnerCircleRadius="31dp"
+        app:tickOuterCircleColor="@color/colorPrimary"
+        app:tickOuterCircleRadius="35dp"
         app:tickTextColor="@color/default_font_color"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        app:tickTextSize="10sp"/>
 
 </RelativeLayout>

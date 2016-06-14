@@ -18,7 +18,7 @@ import java.util.regex.Pattern;
  */
 public class GameZipFileFilter implements FilenameFilter {
 
-  static Pattern gameZipPattern = Pattern.compile("[0-9]{10}_[0-9]{10}_[0-9]{10}.zip$");
+  static Pattern gameZipPattern = Pattern.compile("[0-9]+_[0-9]+_[0-9]{10}.zip$");
 
   @Override
   public boolean accept(File dir, String filename) {

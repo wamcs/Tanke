@@ -74,11 +74,6 @@ public class MapHelper implements
   //  private boolean isReachAttackPoint = false;
   private boolean isInfoWindowShown = false;
 
-  private static final int paddingLeft = 0;
-  private static final int paddingTop = 0;
-  private static final int paddingRight = 0;
-  private static final int paddingBottom = Display.dip2px(60);
-
   // default delta value, the distance between info window and marker
   private static final int DEFAULT_INFO_WINDOW_DELTA_Y = -70;
 
@@ -108,8 +103,8 @@ public class MapHelper implements
     uiSettings.setOverlookingGesturesEnabled(false);
     mBaiduMap.setMyLocationEnabled(true);
     mBaiduMap.setMyLocationConfigeration(initMyLocationConfiguration());
-    mBaiduMap.setPadding(paddingLeft, paddingTop, paddingRight, paddingBottom);
     mapView.setLogoPosition(LogoPosition.logoPostionRightTop);
+    mapView.showZoomControls(false);
     mapView.showScaleControl(false);
   }
 
@@ -127,6 +122,14 @@ public class MapHelper implements
   public void initMapFlow() {
     initNails(mPoints);
     currentAttackPoint = mPoints.get(0);
+  }
+
+  public boolean mapZoomIn() {
+    return true;
+  }
+
+  public boolean mapZoomOut() {
+    return true;
   }
 
   @Override

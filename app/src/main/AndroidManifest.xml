@@ -69,6 +69,7 @@
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
+>>>>>>> bf556bdac791699c7e1b5eae123cd7db58fbfc99
         </activity>
         <activity android:name=".initialization.ui.GuideActivity">
         </activity>
@@ -164,6 +165,11 @@
             </intent-filter>
         </activity>
         <activity android:name=".gameplaying.GamePlayingActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
         </activity>
         <activity android:name=".gameplaying.task.GameTaskActivity">
         </activity>

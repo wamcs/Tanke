@@ -28,16 +28,15 @@ public class GameZipHelper {
    * check、unzip、parse the zip file
    *
    * @param gameId
-   * @param lineId
    */
-  public boolean checkAndParseGameZip(long gameId, long lineId) {
-    if (mGameZipScanner.isZipFileExist(lineId) == GameZipScanner.ZIP_FILE_NOT_FOUND) {
-      Timber.e("zip file not found which gameId : %d, lineId : %d", gameId, lineId);
+  public boolean checkAndParseGameZip(long gameId) {
+    if (mGameZipScanner.isZipFileExist(gameId) == GameZipScanner.ZIP_FILE_NOT_FOUND) {
+      Timber.e("zip file not found which gameId : %d", gameId);
       return false;
     }
-    String unzippedDir = mGameZipScanner.isZipFileUnzipped(lineId);
+    String unzippedDir = mGameZipScanner.isZipFileUnzipped(gameId);
     if (unzippedDir == null) {
-      unzippedDir = FileUtils.unzipFile(mGameZipScanner.getGameZipFileAbsolutePath(lineId), DirUtils.getTempDirectory().getAbsolutePath() + "/");
+      unzippedDir = FileUtils.unzipFile(mGameZipScanner.getGameZipFileAbsolutePath(gameId), DirUtils.getTempDirectory().getAbsolutePath() + "/");
     }
     return mGameZipParser.parseGameZip(unzippedDir);
   }

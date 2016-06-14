@@ -79,6 +79,8 @@
         <item name="android:layout_marginBottom">@dimen/complete_item_content_margin_bottom</item>
     </style>
 
+    <!-- GamePlayingActivity Style Area-->
+
     <!-- GameDataActivity Style Area-->
     <style name="GameDataItemText">
         <item name="android:layout_width">wrap_content</item>

@@ -223,12 +223,10 @@ public class GameShareController extends ActivityController implements
       polyline = new PolylineOptions().width(10)
           .color(Color.RED).points(points);
       totalDistance = (int) distance;
-      resumeFromRecords();
-      if (null != polyline) {
-        mMap.addOverlay(polyline);
-      }
+      mMap.addOverlay(polyline);
       animateToPointsBounds();
     }
+    resumeFromRecords();
   }
 
   private void animateToPointsBounds() {

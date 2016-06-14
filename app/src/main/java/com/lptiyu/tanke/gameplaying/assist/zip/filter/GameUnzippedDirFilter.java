@@ -18,7 +18,7 @@ import java.util.regex.Pattern;
  */
 public class GameUnzippedDirFilter implements FilenameFilter {
 
-  static Pattern gameUpzippedPattern = Pattern.compile("[0-9]{10}_[0-9]{10}_[0-9]{10}");
+  static Pattern gameUpzippedPattern = Pattern.compile("[0-9]+_[0-9]+_[0-9]{10}");
 
   @Override
   public boolean accept(File dir, String filename) {
