@@ -8,6 +8,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.baidu.location.BDLocation;
@@ -66,6 +67,11 @@ public abstract class GamePlayingController extends ActivityController implement
   TextureMapView mapView;
   @BindView(R.id.tick_view)
   TickView mTickView;
+  @BindView(R.id.zoom_in)
+  ImageView mZoomIn;
+  @BindView(R.id.zoom_out)
+  ImageView mZoomOut;
+
 
   boolean isReachedAttackPoint = false;
   boolean isGameFinished = false;
@@ -262,18 +268,18 @@ public abstract class GamePlayingController extends ActivityController implement
   @OnClick(R.id.zoom_in)
   void zoomIn() {
     if (mapHelper.mapZoomIn()) {
-
+      mZoomOut.setClickable(true);
     } else {
-
+      mZoomIn.setClickable(false);
     }
   }
 
   @OnClick(R.id.zoom_out)
   void zoomOut() {
     if (mapHelper.mapZoomOut()) {
-
+      mZoomIn.setClickable(true);
     } else {
-
+      mZoomOut.setClickable(false);
     }
   }
 

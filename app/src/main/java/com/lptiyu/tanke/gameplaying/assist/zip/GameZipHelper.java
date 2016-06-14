@@ -30,7 +30,7 @@ public class GameZipHelper {
    * @param gameId
    */
   public boolean checkAndParseGameZip(long gameId) {
-    if (mGameZipScanner.isZipFileExist(gameId) == GameZipScanner.ZIP_FILE_NOT_FOUND) {
+    if (mGameZipScanner.isZipFileExist(gameId) == GameZipScanner.ZIP_FILE_NOT_FOUND_TIMESTAMP) {
       Timber.e("zip file not found which gameId : %d", gameId);
       return false;
     }

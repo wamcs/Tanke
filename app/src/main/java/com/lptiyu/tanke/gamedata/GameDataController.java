@@ -74,6 +74,7 @@ public class GameDataController extends BaseListActivityController<GameDataEntit
     mRefreshLayout.setOnRefreshListener(this);
     pointMap = new HashMap<>();
     checkAndResumeGameData();
+    onRefresh();
   }
 
   private void checkAndResumeGameData() {
@@ -186,11 +187,6 @@ public class GameDataController extends BaseListActivityController<GameDataEntit
   @OnClick(R.id.activity_game_data_toolbar_imageview_left)
   void back() {
     finish();
-  }
-
-  @OnClick(R.id.activity_game_data_toolbar_imageview_right)
-  void share() {
-    //TODO : share the game data
   }
 
   @Override

@@ -42,13 +42,17 @@ public class RecordsUtils {
     mCachedRecords.add(record);
   }
 
+  public static void cleanCachedRecords() {
+    if (mCachedRecords != null) {
+      mCachedRecords.clear();
+    }
+  }
+
   public static void dispatchCachedRecords() {
     for (RunningRecord record : mCachedRecords) {
       dispatchTypeRecord(record);
     }
-    if (mCachedRecords != null) {
-      mCachedRecords.clear();
-    }
+    cleanCachedRecords();
   }
 
   public static void dispatchTypeRecord(int pointIndex, long pointId, long taskId, RunningRecord.RECORD_TYPE type) {

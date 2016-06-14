@@ -13,6 +13,8 @@ import com.baidu.mapapi.map.BitmapDescriptor;
 import com.baidu.mapapi.map.BitmapDescriptorFactory;
 import com.baidu.mapapi.map.InfoWindow;
 import com.baidu.mapapi.map.LogoPosition;
+import com.baidu.mapapi.map.MapStatus;
+import com.baidu.mapapi.map.MapStatusUpdate;
 import com.baidu.mapapi.map.MapStatusUpdateFactory;
 import com.baidu.mapapi.map.Marker;
 import com.baidu.mapapi.map.MarkerOptions;
@@ -125,10 +127,26 @@ public class MapHelper implements
   }
 
   public boolean mapZoomIn() {
+    MapStatus oldMapStatus = mBaiduMap.getMapStatus();
+    float zoom = oldMapStatus.zoom;
+    float maxZoom = mBaiduMap.getMaxZoomLevel();
+    if (zoom >= maxZoom) {
+      return false;
+    }
+    MapStatusUpdate update = MapStatusUpdateFactory.newLatLngZoom(oldMapStatus.target, zoom + 1);
+    mBaiduMap.animateMapStatus(update);
     return true;
   }
 
   public boolean mapZoomOut() {
+    MapStatus oldMapStatus = mBaiduMap.getMapStatus();
+    float zoom = oldMapStatus.zoom;
+    float minZoom = mBaiduMap.getMinZoomLevel();
+    if (zoom <= minZoom) {
+      return false;
+    }
+    MapStatusUpdate update = MapStatusUpdateFactory.newLatLngZoom(oldMapStatus.target, zoom - 1);
+    mBaiduMap.animateMapStatus(update);
     return true;
   }
 

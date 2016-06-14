@@ -37,17 +37,6 @@
                 android:textColor="@color/default_font_color"
                 android:textSize="@dimen/default_toolbar_textview_text_size"/>
 
-            <ImageView
-                android:id="@+id/activity_game_data_toolbar_imageview_right"
-                android:layout_width="@dimen/activity_game_data_toolbar_button_width_height"
-                android:layout_height="@dimen/activity_game_data_toolbar_button_width_height"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="@dimen/activity_game_data_toolbar_imageview_right_margin_right"
-                android:contentDescription="@null"
-                android:padding="@dimen/default_toolbar_imageview_padding"
-                android:src="@mipmap/game_details_share_btn"/>
-
         </RelativeLayout>
 
     </android.support.v7.widget.Toolbar>

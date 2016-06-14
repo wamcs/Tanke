@@ -24,7 +24,7 @@ public class GameZipScanner {
 
   private static final String ZIP_DIVIDER = "_";
   private static final String DEFAULT_GAME_ROOT_DIR = DirUtils.getTempDirectory().getAbsolutePath() + "/";
-  public static final long ZIP_FILE_NOT_FOUND = -1L;
+  public static final long ZIP_FILE_NOT_FOUND_TIMESTAMP = -1L;
 
   public GameZipScanner() {
     gameIdZipFileMap = new HashMap<>();
@@ -62,7 +62,7 @@ public class GameZipScanner {
 
   public long getGameZipFileTimeStamp(long gameId) {
     if (gameIdTimeStampMap.get(gameId) == null) {
-      return ZIP_FILE_NOT_FOUND;
+      return ZIP_FILE_NOT_FOUND_TIMESTAMP;
     }
     return gameIdTimeStampMap.get(gameId);
   }

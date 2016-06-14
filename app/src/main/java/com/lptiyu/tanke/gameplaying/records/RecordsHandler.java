@@ -107,7 +107,6 @@ public class RecordsHandler extends Handler {
     RunningRecord record = (RunningRecord) msg.obj;
     record.setIndex(mPointIndex.getAndAdd(1));
     record.setTeamId(teamId);
-    record.setCreateTime(System.currentTimeMillis());
     if (mLastRecord != null) {
       record.setDistance((int)DistanceUtil.getDistance(mLastRecord.getLatLng(), record.getLatLng()));
     }
