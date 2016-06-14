@@ -183,6 +183,9 @@ public class GameDetailsController extends ActivityController {
           public File call(retrofit2.Response<ResponseBody> response) {
             String url = mGameDetailsEntity.getZipUrl();
             String[] segs =  url.split("/");
+            if (segs.length == 0) {
+              throw new IllegalStateException("Wrong url can not split file name");
+            }
 
             File file = new File(DirUtils.getTempDirectory(), segs[segs.length - 1]);
 
