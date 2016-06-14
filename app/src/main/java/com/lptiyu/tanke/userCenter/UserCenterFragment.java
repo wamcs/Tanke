@@ -82,7 +82,6 @@ public class UserCenterFragment extends BaseFragment {
   }
 
   private void init() {
-    System.out.println("hahahahahaha");
     subscription = HttpService.getUserService()
         .getUserDetail(Accounts.getId(), Accounts.getToken())
         .subscribeOn(Schedulers.io())

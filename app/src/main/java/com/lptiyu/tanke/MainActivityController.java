@@ -92,5 +92,4 @@ public class MainActivityController extends ActivityController {
     ft.commit();
   }
 
-
 }
