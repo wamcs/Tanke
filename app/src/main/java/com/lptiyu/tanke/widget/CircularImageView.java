@@ -11,6 +11,7 @@ import android.graphics.Paint;
 import android.graphics.Shader;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.widget.ImageView;
@@ -21,7 +22,7 @@ import android.widget.ImageView;
  *
  * @author ldx
  */
-public class CircularImageView extends ImageView{
+public class CircularImageView extends ImageView {
   private static final ScaleType SCALE_TYPE = ScaleType.CENTER_CROP;
 
   // Default Values
@@ -77,6 +78,8 @@ public class CircularImageView extends ImageView{
       shadowRadius = DEFAULT_SHADOW_RADIUS;
       drawShadow(attributes.getFloat(com.mikhaellopez.circularimageview.R.styleable.CircularImageView_civ_shadow_radius, shadowRadius), attributes.getColor(com.mikhaellopez.circularimageview.R.styleable.CircularImageView_civ_shadow_color, shadowColor));
     }
+
+    attributes.recycle();
   }
   //endregion
 
@@ -172,8 +175,8 @@ public class CircularImageView extends ImageView{
   private void drawShadow(float shadowRadius, int shadowColor) {
     this.shadowRadius = shadowRadius;
     this.shadowColor = shadowColor;
-    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.HONEYCOMB) {
-      setLayerType(LAYER_TYPE_SOFTWARE, paintBorder);
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+      setLayerType(LAYER_TYPE_SOFTWARE, null);
     }
     paintBorder.setShadowLayer(shadowRadius, 0.0f, shadowRadius / 2, shadowColor);
   }

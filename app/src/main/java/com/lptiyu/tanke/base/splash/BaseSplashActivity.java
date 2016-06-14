@@ -68,6 +68,7 @@ public abstract class BaseSplashActivity extends BaseActivity {
   public void process() {
     if (isFirstInApp()) {
       startActivity(new Intent(this, GuideActivity.class));
+      finish();
     } else {
 //      if (isImageValid()) {
 //        Glide.with(this).load(imageFile).into(splashView);

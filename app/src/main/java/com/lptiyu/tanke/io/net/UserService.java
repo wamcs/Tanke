@@ -88,7 +88,7 @@ public interface UserService {
    * @param type 注册时，后台缓存的有数据，需要上传type来确定
    *             是通过哪种方式注册，
    */
-  @GET("Login/GetCodes")
+  @GET("Login/GetCode")
   Observable<Response<Void>> getVerifyCode(
       @Query("status") @VERITY_CODE int type,
       @Query("phone") String phone);

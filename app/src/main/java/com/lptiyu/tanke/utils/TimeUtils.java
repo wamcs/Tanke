@@ -50,13 +50,10 @@ public class TimeUtils {
      * @param date format was yyyy-MM-dd
      */
     public static Date parseDate(String date) {
-      if (date == null) {
-        return new Date();
-      }
+        if (date == null) return null;
         try {
             return dateFormatter.parse(date);
         } catch (ParseException e) {
-//      e.printStackTrace();
             return null;
         }
     }

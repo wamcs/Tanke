@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.lptiyu.tanke.R;
+import com.lptiyu.tanke.utils.Strings;
 import com.lptiyu.tanke.utils.TimeUtils;
 import com.lptiyu.tanke.utils.ToastUtil;
 
@@ -59,37 +60,44 @@ public class SignUpHelper {
     }
 
 
-    public void getCode(){
-        Editable phone = signUpPhoneEditText.getText();
-        if (phone.length() != 11){
+    public boolean getCode(){
+        String phone = signUpPhoneEditText.getText().toString().trim();
+        if (phone.length() != 11 || !Strings.checkPhone(phone)){
             spannableString = new SpannableString(context.getResources().getString(R.string.error_user_phone));
-            spannableString.setSpan(new ForegroundColorSpan(Color.RED),0,spannableString.length()-1, Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
+            spannableString.setSpan(new ForegroundColorSpan(Color.RED),
+                0, spannableString.length(),
+                Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
             signUpPhoneEditText.setText(spannableString);
-            return;
+            return false;
         }
 
+        return true;
     }
 
 
-    public void next(){
+    public boolean next(){
         Editable phone = signUpPhoneEditText.getText();
         if (phone.length() != 11){
+
             spannableString = new SpannableString(context.getResources().getString(R.string.error_user_phone));
-            spannableString.setSpan(new ForegroundColorSpan(Color.RED),0,spannableString.length()-1, Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
+            spannableString.setSpan(new ForegroundColorSpan(Color.RED),
+                0, spannableString.length(),
+                Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
             signUpPhoneEditText.setText(spannableString);
-            return;
+            return false;
         }
 
         Editable password = signUpPasswordEditText.getText();
-        if (password.length()<6){
+        if (password.length() < 6){
             spannableString = new SpannableString(context.getResources().getString(R.string.error_user_password));
-            spannableString.setSpan(new ForegroundColorSpan(Color.RED),0,spannableString.length()-1, Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
+            spannableString.setSpan(new ForegroundColorSpan(Color.RED),
+                0, spannableString.length(),
+                Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
             signUpPasswordEditText.setText(spannableString);
-            return;
+            return false;
         }
 
-
-
+        return true;
     }
 
 

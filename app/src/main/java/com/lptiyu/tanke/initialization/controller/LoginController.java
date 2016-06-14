@@ -38,8 +38,6 @@ import rx.schedulers.Schedulers;
  */
 public class LoginController extends ActivityController {
 
-
-
     @BindView(R.id.login_input_phone)
     LoginEditView mInputPhoneEditText;
     @BindView(R.id.login_input_password)
@@ -55,7 +53,6 @@ public class LoginController extends ActivityController {
     private boolean isButtonEnable=true;
 
     private ThirdLoginHelper helper;
-    private long exitTime;
 
     public LoginController(AppCompatActivity activity, View view) {
         super(activity, view);
@@ -232,17 +229,5 @@ public class LoginController extends ActivityController {
     @Override
     protected boolean isToolbarEnable() {
         return false;
-    }
-
-    @Override
-    public boolean onBackPressed() {
-        super.onBackPressed();
-        if ((System.currentTimeMillis() - exitTime)>2000){
-            ToastUtil.TextToast(getString(R.string.exit));
-            exitTime = System.currentTimeMillis();
-        }else {
-            System.exit(0);
-        }
-        return true;
     }
 }

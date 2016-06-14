@@ -22,7 +22,7 @@ public class SplashActivity extends BaseSplashActivity {
 
   @Override
   protected Observable<String> fetchSplashUrl() {
-    return Observable.just("http://www.chinaviki.com/photos/2713/b/1_2713_294535.jpg");
+    return null;
   }
 
   @Override

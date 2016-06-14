@@ -62,13 +62,14 @@
             android:exported="true">
         </service>
 
-        <activity android:name=".MainActivity">
-
-        </activity>
-        <activity android:name=".initialization.ui.LoginActivity">
-        </activity>
+        <activity android:name=".MainActivity"/>
+        <activity android:name=".initialization.ui.LoginActivity"/>
         <activity android:name=".initialization.ui.SplashActivity">
-
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+>>>>>>> bf556bdac791699c7e1b5eae123cd7db58fbfc99
         </activity>
         <activity android:name=".initialization.ui.GuideActivity">
         </activity>
@@ -172,9 +173,10 @@
         </activity>
         <activity android:name=".gameplaying.task.GameTaskActivity">
         </activity>
+        <activity android:name=".gamedetails.GameDetailsActivity">
+        </activity>
         <activity android:name=".gamedata.GameDataActivity">
         </activity>
-
         <service android:name="com.avos.avoscloud.PushService"/>
 
         <receiver android:name="com.avos.avoscloud.AVBroadcastReceiver">

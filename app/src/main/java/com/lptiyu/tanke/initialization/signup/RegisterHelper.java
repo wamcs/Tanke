@@ -12,6 +12,7 @@ import com.lptiyu.tanke.io.net.HttpService;
 import com.lptiyu.tanke.io.net.Response;
 import com.lptiyu.tanke.pojo.UserEntity;
 import com.lptiyu.tanke.utils.ToastUtil;
+import com.lptiyu.tanke.utils.rx.ToastExceptionAction;
 
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
@@ -39,11 +40,13 @@ public class RegisterHelper extends SignUpHelper {
     }
 
     @Override
-    public void getCode() {
-        super.getCode();
+    public boolean getCode() {
+        if (!super.getCode()) {
+            return false;
+        }
 
         Editable phone = signUpPhoneEditText.getText();
-        HttpService.getUserService().getVerifyCode(type,phone.toString())
+        HttpService.getUserService().getVerifyCode(type, phone.toString())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(new Action1<Response<Void>>() {
@@ -61,13 +64,15 @@ public class RegisterHelper extends SignUpHelper {
                         signUpNextButton.setClickable(true);
                         signUpNextButton.setEnabled(true);
                     }
-                });
-
+                }, new ToastExceptionAction(signUpGetCodeButton.getContext().getApplicationContext()));
+        return true;
     }
 
     @Override
-    public void next() {
-        super.next();
+    public boolean next() {
+        if (!super.next()) {
+            return false;
+        }
         String phone = signUpPhoneEditText.getText().toString();
         String  password = signUpPasswordEditText.getText().toString();
         String code = signUpCodeEditText.getText().toString();
@@ -89,8 +94,8 @@ public class RegisterHelper extends SignUpHelper {
                         //Accounts.setPhoneNumber(entity.getPhone());
                         uploadInstallationId(entity.getUid(),entity.getToken());
                     }
-                });
-
+                }, new ToastExceptionAction(signUpPhoneEditText.getContext().getApplicationContext()));
+        return true;
     }
 
     private void uploadInstallationId(long id,String token){

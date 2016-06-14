@@ -26,9 +26,7 @@ public class ElasticItemDecoration extends RecyclerView.ItemDecoration {
 
   private float shadowHeight = Display.dip2px(10);
 
-
   private Context context;
-
 
   public ElasticItemDecoration(Context context) {
     super();
@@ -41,7 +39,7 @@ public class ElasticItemDecoration extends RecyclerView.ItemDecoration {
 
   private void init() {
     shadowDrawable = context.getResources().getDrawable(R.drawable.shadow);
-    linePaint.setColor(getColor(R.color.black05));
+    linePaint.setColor(getColor(R.color.grey06));
   }
 
   private int getColor(int resId) {
@@ -75,7 +73,7 @@ public class ElasticItemDecoration extends RecyclerView.ItemDecoration {
         shadowDrawable.setBounds((int) rl, (int) top, (int) rr, (int) bottom);
         shadowDrawable.draw(c);
       } else {
-        bottom = top + Display.dip2px(1);
+        bottom = top + Display.dip2px(0.5f);
         c.drawLine(left, top, right, bottom, linePaint);
       }
     }
