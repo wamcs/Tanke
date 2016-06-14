@@ -181,12 +181,15 @@ public class GameDetailsController extends ActivityController {
         .map(new Func1<retrofit2.Response<ResponseBody>, File>() {
           @Override
           public File call(retrofit2.Response<ResponseBody> response) {
+            System.out.println("GameDetailsController.call 1");
             String url = mGameDetailsEntity.getZipUrl();
             String[] segs =  url.split("/");
             if (segs.length == 0) {
+              System.out.println("GameDetailsController.call 2");
               throw new IllegalStateException("Wrong url can not split file name");
             }
 
+            System.out.println("GameDetailsController.call 3");
             File file = new File(DirUtils.getTempDirectory(), segs[segs.length - 1]);
 
             try {
