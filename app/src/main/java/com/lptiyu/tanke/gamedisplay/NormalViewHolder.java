@@ -1,5 +1,6 @@
 package com.lptiyu.tanke.gamedisplay;
 
+import android.content.Intent;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -7,6 +8,8 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.lptiyu.tanke.R;
 import com.lptiyu.tanke.base.recyclerview.BaseViewHolder;
+import com.lptiyu.tanke.gamedetails.GameDetailsActivity;
+import com.lptiyu.tanke.global.Conf;
 import com.lptiyu.tanke.pojo.GAME_TYPE;
 import com.lptiyu.tanke.pojo.GameDisplayEntity;
 import com.lptiyu.tanke.utils.TimeUtils;
@@ -57,6 +60,16 @@ public class NormalViewHolder extends BaseViewHolder<GameDisplayEntity> {
     this.fragment = fragment;
   }
 
+  @OnClick(R.id.item_root)
+  public void item_root() {
+    if (gameDisplayEntity == null) {
+      return;
+    }
+    Intent intent = new Intent(getContext(), GameDetailsActivity.class);
+    intent.putExtra(Conf.GAME_ID, gameDisplayEntity.getId());
+    getContext().startActivity(intent);
+  }
+
   public void bind(GameDisplayEntity entity) {
     this.gameDisplayEntity = entity;
     parseImage(entity);
@@ -68,7 +81,8 @@ public class NormalViewHolder extends BaseViewHolder<GameDisplayEntity> {
   }
 
   private void parseImage(GameDisplayEntity entity) {
-    Glide.with(fragment).load(entity.getImg()).into(imageView);
+    Glide.with(fragment).load(entity.getImg())
+        .into(imageView);
   }
 
   private void parseTitle(GameDisplayEntity entity) {

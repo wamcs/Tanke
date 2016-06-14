@@ -14,7 +14,7 @@
     <!-- Normal Permissions do not need request -->
     <uses-permission android:name="com.android.launcher.permission.READ_SETTINGS"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
     <uses-permission android:name="android.permission.INTERNET"/>
@@ -62,17 +62,13 @@
             android:exported="true">
         </service>
 
-        <activity android:name=".MainActivity">
+        <activity android:name=".MainActivity"/>
+        <activity android:name=".initialization.ui.LoginActivity"/>
+        <activity android:name=".initialization.ui.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
-
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
-        </activity>
-        <activity android:name=".initialization.ui.LoginActivity">
-        </activity>
-        <activity android:name=".initialization.ui.SplashActivity">
-
         </activity>
         <activity android:name=".initialization.ui.GuideActivity">
         </activity>
@@ -171,15 +167,16 @@
         </activity>
         <activity android:name=".gameplaying.task.GameTaskActivity">
         </activity>
+        <activity android:name=".gamedetails.GameDetailsActivity">
+        </activity>
         <activity android:name=".gamedata.GameDataActivity">
         </activity>
+        <service android:name="com.avos.avoscloud.PushService"/>
 
-        <service android:name="com.avos.avoscloud.PushService" />
-
-        <receiver android:name="com.avos.avoscloud.AVBroadcastReceiver" >
+        <receiver android:name="com.avos.avoscloud.AVBroadcastReceiver">
             <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED" />
-                <action android:name="android.intent.action.USER_PRESENT" />
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+                <action android:name="android.intent.action.USER_PRESENT"/>
             </intent-filter>
         </receiver>
 

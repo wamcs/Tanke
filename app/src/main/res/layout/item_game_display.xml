@@ -2,7 +2,7 @@
 <RelativeLayout android:id="@+id/item_root"
                 xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
-                android:layout_height="100dp"
+                android:layout_height="118dp"
                 android:orientation="horizontal"
                 android:padding="10dp">
 
@@ -32,6 +32,8 @@
             android:text="华科森林记"
             android:textSize="@dimen/main_page_item_text_size_normal"
             android:textStyle="bold"
+            android:maxLength="7"
+            android:ellipsize="end"
             />
 
         <TextView
@@ -54,6 +56,7 @@
             android:drawableLeft="@mipmap/main_page_item_location"
             android:drawablePadding="5dp"
             android:paddingBottom="2dp"
+            android:paddingTop="3dp"
             android:text="洪山区-华科校区"
             android:textSize="@dimen/main_page_item_text_size_small"
             />
@@ -64,6 +67,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/location"
             android:drawableLeft="@mipmap/main_page_item_time"
+            android:paddingTop="4dp"
             android:drawablePadding="5dp"
             android:text="04.10-04.12"
             android:textSize="@dimen/main_page_item_text_size_small"
