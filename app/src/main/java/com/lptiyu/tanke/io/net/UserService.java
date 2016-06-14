@@ -173,7 +173,7 @@ public interface UserService {
    * 2.24 获取我正在玩儿的游戏
    */
   @GET("My/Nowranks")
-  Observable<Response<GamePlayingEntity>> gamePlaying(
+  Observable<Response<List<GamePlayingEntity>>> gamePlaying(
       @Query("uid") long uid,
       @Query("token") String token,
       @Query("page") int page
@@ -192,7 +192,7 @@ public interface UserService {
    * 2.25 获取用户已完成的游戏
    */
   @GET("My/Finishranks")
-  Observable<Response<GameFinishedEntity>> gameFinished(
+  Observable<Response<List<GameFinishedEntity>>> gameFinished(
       @Query("uid") long uid,
       @Query("token") String token,
       @Query("page") int page

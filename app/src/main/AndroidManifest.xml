@@ -81,11 +81,9 @@
         </activity>
         <activity android:name=".messagesystem.MessageActivity">
         </activity>
-        <activity android:name=".userCenter.ui.RewardListActivity">
+        <activity android:name=".userCenter.ui.UserGameFinishedListActivity">
         </activity>
-        <activity android:name=".userCenter.ui.GameFinishedListActivity">
-        </activity>
-        <activity android:name=".userCenter.ui.GamePlayingListActivity">
+        <activity android:name=".userCenter.ui.UserGamePlayingListActivity">
         </activity>
         <activity android:name=".userCenter.ui.LocateActivity">
         </activity>
@@ -165,7 +163,6 @@
             </intent-filter>
         </activity>
         <activity android:name=".gameplaying.GamePlayingActivity">
-
         </activity>
         <activity android:name=".gameplaying.task.GameTaskActivity">
         </activity>
@@ -191,10 +188,6 @@
             </intent-filter>
         </receiver>
 
-        <activity android:name=".userCenter.UserGamePlayingActivity">
-        </activity>
-        <activity android:name=".userCenter.UserGameFinishedActivity">
-        </activity>
         <activity android:name=".userCenter.ModifyUserInformationActivity">
         </activity>
         <activity android:name=".userCenter.UserManagerGameActivity">
