@@ -128,6 +128,8 @@ public abstract class GamePlayingController extends ActivityController implement
 
     initRecords();
     moveToTarget();
+
+    startLocateButtonClicked();
   }
 
   /**
