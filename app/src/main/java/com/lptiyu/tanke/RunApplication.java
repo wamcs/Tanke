@@ -12,7 +12,9 @@ import com.facebook.drawee.backends.pipeline.Fresco;
 import com.lptiyu.tanke.database.DBHelper;
 import com.lptiyu.tanke.global.Accounts;
 import com.lptiyu.tanke.global.AppData;
+import com.lptiyu.tanke.global.Conf;
 import com.lptiyu.tanke.messagesystem.MessageActivity;
+import com.lptiyu.tanke.userCenter.location.LocationFileParser;
 import com.lptiyu.tanke.utils.DirUtils;
 
 import cn.sharesdk.framework.ShareSDK;
@@ -42,6 +44,7 @@ public class RunApplication extends MultiDexApplication {
       SDKInitializer.initialize(this);
       DirUtils.init(this);
       Fresco.initialize(this);
+      LocationFileParser.init(getApplicationContext(), Conf.DEFAULT_CITY_ASSETS);
       if (Accounts.getInstallationId().isEmpty()) {
         String installationId = AVInstallation.getCurrentInstallation().getInstallationId();
         Accounts.setInstallationId(installationId);

@@ -65,11 +65,6 @@
         <activity android:name=".MainActivity"/>
         <activity android:name=".initialization.ui.LoginActivity"/>
         <activity android:name=".initialization.ui.SplashActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
         </activity>
         <activity android:name=".initialization.ui.GuideActivity">
         </activity>
@@ -86,10 +81,16 @@
         <activity android:name=".userCenter.ui.UserGamePlayingListActivity">
         </activity>
         <activity android:name=".userCenter.ui.LocateActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
         </activity>
         <activity android:name=".userCenter.ui.ModifyTextActivity">
         </activity>
         <activity android:name=".userCenter.ui.ModifyUserInfoActivity">
+
         </activity>
         <activity android:name=".userCenter.ui.OtherUserInformationActivity">
         </activity>

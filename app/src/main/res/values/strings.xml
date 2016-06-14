@@ -165,7 +165,8 @@
 
     <!--LocateActivity Text Area-->
     <string name="current_location">当前位置</string>
-    <string name="open_location">开通城市</string>
+    <string name="choose_area">选择地区</string>
+    <string name="all_location">全部地区</string>
     <string name="city_not_open">(该城市尚未开通)</string>
 
     <!-- gameList Text Area-->

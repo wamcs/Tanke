@@ -84,10 +84,13 @@
     <item name="modify_text_save" type="id"/>
 
     <!-- locationActivity ids-->
+    <item name="locate_activity_listview_province" type="id"/>
+    <item name="locate_activity_listview_city" type="id"/>
     <item name="locate_activity_list_normal_item" type="id"/>
     <item name="locate_activity_locate_city" type="id"/>
     <item name="locate_activity_locate_layout" type="id"/>
     <item name="locate_activity_locate_error_text" type="id"/>
+    <item name="locate_activity_list_header" type="id"/>
 
     <!--gameList ids-->
     <item name="game_playing_list_item" type="id"/>

@@ -31,7 +31,6 @@ public class PushReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
 
-        Log.d("lk","has receive");
         if (intent.getAction().equals(Conf.PUSH_ACTION)){
             String jsonString = intent.getExtras().getString("com.avos.avoscloud.Data");
             Timber.d("push data json is %s",jsonString);
@@ -62,11 +61,7 @@ public class PushReceiver extends BroadcastReceiver {
                                     Context.NOTIFICATION_SERVICE);
             mNotifyMgr.notify(0,notification.build());
 
-            //给pushHelper发广播用于处理在message界面信息更新,需要考虑下怎么写
-//            Intent messageIntent = new Intent();
-//            messageIntent.setAction(Conf.PUSH_ACTION);
-////            intent.putExtra(Conf.PUSH_MESSAGE,message);
-//            context.sendBroadcast(messageIntent);
+
         }
     }
 

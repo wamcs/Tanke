@@ -5,7 +5,7 @@ import android.os.Bundle;
 import com.lptiyu.tanke.R;
 import com.lptiyu.tanke.base.controller.ActivityController;
 import com.lptiyu.tanke.base.ui.BaseActivity;
-import com.lptiyu.tanke.userCenter.controller.LocateController;
+import com.lptiyu.tanke.userCenter.location.LocateActivityController;
 
 /**
  * author:wamcs
@@ -20,7 +20,7 @@ public class LocateActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_locate);
-        activityController = new LocateController(this,getWindow().getDecorView());
+        activityController = new LocateActivityController(this,getWindow().getDecorView());
     }
 
     @Override

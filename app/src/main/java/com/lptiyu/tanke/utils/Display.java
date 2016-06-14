@@ -36,6 +36,15 @@ public class Display {
     return px / display.density;
   }
 
+  public static int width() {
+    DisplayMetrics display = display();
+    if (display == null) {
+      return 0;
+    }
+    return display.widthPixels;
+  }
+
+
   /**
    * 将sp值转换为px值，保证文字大小不变
    *

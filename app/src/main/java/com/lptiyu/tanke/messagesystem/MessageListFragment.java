@@ -29,8 +29,6 @@ public class MessageListFragment extends BaseFragment {
     @BindView(R.id.message_list_recycler_view)
     RecyclerView mRecyclerView;
 
-    private MessageListAdapter adapter;
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -42,7 +40,8 @@ public class MessageListFragment extends BaseFragment {
 
     private void init(){
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        mRecyclerView.setAdapter(adapter = new MessageListAdapter(getContext()));
+        MessageListAdapter adapter = new MessageListAdapter(getContext());
+        mRecyclerView.setAdapter(adapter);
     }
 
 
