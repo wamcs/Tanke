@@ -51,12 +51,6 @@ public class GameDisplayFragment extends BaseFragment {
   }
 
   private void init() {
-    toolBar.setBackground(new GradientDrawable(GradientDrawable.Orientation.LEFT_RIGHT,
-        new int[]{
-            getResources().getColor(R.color.light_blue),
-            getResources().getColor(R.color.middle_blue),
-            getResources().getColor(R.color.dark_blue)
-        }));
     recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
     recyclerView.setAdapter(adapter = new GameDisplayAdapter(this));
     recyclerView.addItemDecoration(new ElasticItemDecoration(getContext()));

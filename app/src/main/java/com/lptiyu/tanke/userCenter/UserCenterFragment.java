@@ -14,12 +14,12 @@ import com.lptiyu.tanke.R;
 import com.lptiyu.tanke.base.controller.FragmentController;
 import com.lptiyu.tanke.base.ui.BaseFragment;
 import com.lptiyu.tanke.global.Accounts;
-import com.lptiyu.tanke.global.Conf;
 import com.lptiyu.tanke.io.net.HttpService;
 import com.lptiyu.tanke.io.net.Response;
 import com.lptiyu.tanke.pojo.UserDetails;
+import com.lptiyu.tanke.userCenter.ui.UserGameFinishedListActivity;
+import com.lptiyu.tanke.userCenter.ui.UserGamePlayingListActivity;
 import com.lptiyu.tanke.userCenter.ui.ModifyUserInfoActivity;
-import com.lptiyu.tanke.utils.ToastUtil;
 import com.lptiyu.tanke.widget.GradientProgressBar;
 import com.mikhaellopez.circularimageview.CircularImageView;
 
@@ -127,10 +127,12 @@ public class UserCenterFragment extends BaseFragment {
 
   @OnClick(R.id.user_game_playing)
   void gamePlayingClicked() {
+    startActivity(new Intent(getContext(), UserGamePlayingListActivity.class));
   }
 
   @OnClick(R.id.user_game_finished)
   void user_game_finished() {
+    startActivity(new Intent(getContext(), UserGameFinishedListActivity.class));
   }
 
   @OnClick(R.id.user_rewards)

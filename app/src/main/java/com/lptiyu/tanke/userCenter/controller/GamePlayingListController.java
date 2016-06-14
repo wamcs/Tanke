@@ -3,15 +3,20 @@ package com.lptiyu.tanke.userCenter.controller;
 import android.support.annotation.NonNull;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.lptiyu.tanke.R;
 import com.lptiyu.tanke.base.recyclerview.BaseAdapter;
 import com.lptiyu.tanke.base.recyclerview.BaseListActivityController;
+import com.lptiyu.tanke.global.Accounts;
+import com.lptiyu.tanke.io.net.HttpService;
+import com.lptiyu.tanke.io.net.Response;
 import com.lptiyu.tanke.pojo.GamePlayingEntity;
+import com.lptiyu.tanke.userCenter.adapter.GamePlayingAdapter;
+import com.lptiyu.tanke.utils.ToastUtil;
 
 import java.util.List;
 
@@ -19,6 +24,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import rx.Observable;
+import rx.functions.Func1;
 
 /**
  * author:wamcs
@@ -28,45 +34,61 @@ import rx.Observable;
 public class GamePlayingListController extends BaseListActivityController<GamePlayingEntity> implements
         SwipeRefreshLayout.OnRefreshListener {
 
-
     @BindView(R.id.default_tool_bar_textview)
     TextView mTitle;
-    @BindView(R.id.GameListRecyclerView)
-    RecyclerView GameListRecyclerView;
-    @BindView(R.id.GameListRefreshLayout)
-    SwipeRefreshLayout GameListRefreshLayout;
 
-    private List<GamePlayingEntity> entities;
+    @BindView(R.id.GameListRecyclerView)
+    RecyclerView recyclerView;
+
+    @BindView(R.id.GameListRefreshLayout)
+    SwipeRefreshLayout swipeRefreshLayout;
+
+    GamePlayingAdapter adapter = new GamePlayingAdapter();
 
     public GamePlayingListController(AppCompatActivity activity, View view) {
         super(activity, view);
         ButterKnife.bind(this, view);
+        init();
     }
 
     private void init(){
         mTitle.setText("正在进行");
+        swipeRefreshLayout.setOnRefreshListener(this);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerView.setAdapter(adapter);
+        refreshTop();
     }
 
 
     @Override
     public Observable<List<GamePlayingEntity>> requestData(int page) {
-        return null;
+        return HttpService.getUserService()
+            .gamePlaying(Accounts.getId(), Accounts.getToken(), page)
+            .map(new Func1<Response<List<GamePlayingEntity>>, List<GamePlayingEntity>>() {
+                @Override
+                public List<GamePlayingEntity> call(Response<List<GamePlayingEntity>> response) {
+                    if (response.getStatus() != Response.RESPONSE_OK) {
+                        throw new RuntimeException(response.getInfo());
+                    }
+                    return response.getData();
+                }
+            });
     }
 
     @NonNull
     @Override
     public BaseAdapter<GamePlayingEntity> getAdapter() {
-        return null;
+        return adapter;
     }
 
     @Override
     public void onRefreshStateChanged(boolean isRefreshing) {
-
+        swipeRefreshLayout.setRefreshing(isRefreshing);
     }
 
     @Override
     public void onError(Throwable t) {
-
+        ToastUtil.TextToast(t.getMessage());
     }
 
     @OnClick(R.id.default_tool_bar_imageview)
@@ -76,6 +98,6 @@ public class GamePlayingListController extends BaseListActivityController<GamePl
 
     @Override
     public void onRefresh() {
-
+        refreshTop();
     }
 }

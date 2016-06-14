@@ -10,6 +10,7 @@
         android:id="@+id/relative_layout"
         android:layout_width="match_parent"
         android:layout_height="@dimen/default_toolbar_height"
+        android:background="@drawable/toolbar_gradient"
         >
 
         <Button
@@ -20,6 +21,14 @@
             android:layout_centerVertical="true"
             android:visibility="gone"
             android:text="定位城市"
+            />
+
+        <TextView
+            style="@style/TextAppearance.Toolbar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="热门推荐"
             />
 
         <Button
