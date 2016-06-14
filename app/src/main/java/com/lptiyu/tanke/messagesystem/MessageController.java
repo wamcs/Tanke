@@ -5,6 +5,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import com.avos.avoscloud.PushService;
 import com.lptiyu.tanke.R;
 import com.lptiyu.tanke.base.controller.ActivityController;
 import com.lptiyu.tanke.global.Conf;
@@ -31,6 +32,7 @@ public class MessageController extends ActivityController {
     public MessageController(AppCompatActivity activity, View view) {
         super(activity, view);
         ButterKnife.bind(this,view);
+        init(activity, view);
     }
 
     private void init(AppCompatActivity activity, View view){

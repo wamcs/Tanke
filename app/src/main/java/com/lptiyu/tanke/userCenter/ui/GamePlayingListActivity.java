@@ -18,7 +18,7 @@ public class GamePlayingListActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_other_user);
+        setContentView(R.layout.activity_game_playing);
         activityController = new GamePlayingListController(this,getWindow().getDecorView());
     }
 

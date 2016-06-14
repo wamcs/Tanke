@@ -6,11 +6,13 @@ import android.support.multidex.MultiDexApplication;
 
 import com.avos.avoscloud.AVInstallation;
 import com.avos.avoscloud.AVOSCloud;
+import com.avos.avoscloud.PushService;
 import com.baidu.mapapi.SDKInitializer;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.lptiyu.tanke.database.DBHelper;
 import com.lptiyu.tanke.global.Accounts;
 import com.lptiyu.tanke.global.AppData;
+import com.lptiyu.tanke.messagesystem.MessageActivity;
 import com.lptiyu.tanke.utils.DirUtils;
 
 import cn.sharesdk.framework.ShareSDK;
@@ -36,13 +38,14 @@ public class RunApplication extends MultiDexApplication {
     try {
       ShareSDK.initSDK(this, "1276c2d783264");
       AVOSCloud.initialize(AppData.getContext(),"Wqseclbr8wx2kFAS7YseVc5n-gzGzoHsz","1z4GofW1zaArBjcj53u3oBm1");
+      PushService.setDefaultPushCallback(this, MessageActivity.class);
       SDKInitializer.initialize(this);
       DirUtils.init(this);
       Fresco.initialize(this);
       if (Accounts.getInstallationId().isEmpty()) {
         String installationId = AVInstallation.getCurrentInstallation().getInstallationId();
         Accounts.setInstallationId(installationId);
-        Timber.d("this device installation is %s" + installationId);
+        Timber.d("this device installation is %s", installationId);
       }
 
     } catch (Exception e) {
