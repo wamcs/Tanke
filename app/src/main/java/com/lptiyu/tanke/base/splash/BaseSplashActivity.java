@@ -98,6 +98,7 @@ public abstract class BaseSplashActivity extends BaseActivity {
       intent.setClass(this, LoginActivity.class);
     }
     startActivity(intent);
+    finish();
   }
 
   protected void smoothStartNext() {

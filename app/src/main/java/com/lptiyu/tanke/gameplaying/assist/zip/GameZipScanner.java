@@ -18,18 +18,18 @@ import timber.log.Timber;
  */
 public class GameZipScanner {
 
-  private Map<Long, String> lineIdZipFileMap;
-  private Map<Long, Long> lineIdTimeStampMap;
-  private Map<Long, String> lineIdUnzippedDirMap;
+  private Map<Long, String> gameIdZipFileMap;
+  private Map<Long, Long> gameIdTimeStampMap;
+  private Map<Long, String> gameIdUnzippedDirMap;
 
   private static final String ZIP_DIVIDER = "_";
   private static final String DEFAULT_GAME_ROOT_DIR = DirUtils.getTempDirectory().getAbsolutePath() + "/";
   public static final long ZIP_FILE_NOT_FOUND = -1L;
 
   public GameZipScanner() {
-    lineIdZipFileMap = new HashMap<>();
-    lineIdTimeStampMap = new HashMap<>();
-    lineIdUnzippedDirMap = new HashMap<>();
+    gameIdZipFileMap = new HashMap<>();
+    gameIdTimeStampMap = new HashMap<>();
+    gameIdUnzippedDirMap = new HashMap<>();
     scanGameZipFiles();
     scanGameUnzippedDir();
   }
@@ -38,37 +38,37 @@ public class GameZipScanner {
    * if the zip file is exist, return the timestamp
    * if not exist, return -1
    *
-   * @param lineId
+   * @param gameId
    * @return
    */
-  public long isZipFileExist(long lineId) {
-    return getGameZipFileTimeStamp(lineId);
+  public long isZipFileExist(long gameId) {
+    return getGameZipFileTimeStamp(gameId);
   }
 
   /**
    * if the zip file is unzipped, return the absolute path
    * else return null
    *
-   * @param lineId
+   * @param gameId
    * @return
    */
-  public String isZipFileUnzipped(long lineId) {
-    String result = lineIdUnzippedDirMap.get(lineId);
+  public String isZipFileUnzipped(long gameId) {
+    String result = gameIdUnzippedDirMap.get(gameId);
     if (result == null) {
       return null;
     }
     return DirUtils.getTempDirectory() + "/" + result;
   }
 
-  public long getGameZipFileTimeStamp(long lineId) {
-    if (lineIdTimeStampMap.get(lineId) == null) {
+  public long getGameZipFileTimeStamp(long gameId) {
+    if (gameIdTimeStampMap.get(gameId) == null) {
       return ZIP_FILE_NOT_FOUND;
     }
-    return lineIdTimeStampMap.get(lineId);
+    return gameIdTimeStampMap.get(gameId);
   }
 
-  public String getGameZipFileAbsolutePath(long lineId) {
-    return DEFAULT_GAME_ROOT_DIR + lineIdZipFileMap.get(lineId);
+  public String getGameZipFileAbsolutePath(long gameId) {
+    return DEFAULT_GAME_ROOT_DIR + gameIdZipFileMap.get(gameId);
   }
 
   private String[] scanFilesWithFilter(FilenameFilter filter) {
@@ -87,8 +87,8 @@ public class GameZipScanner {
     }
     for (String zipFile : files) {
       String[] gameLineTimeStamp = zipFile.split(ZIP_DIVIDER);
-      lineIdZipFileMap.put(Long.valueOf(gameLineTimeStamp[1]), zipFile);
-      lineIdTimeStampMap.put(Long.valueOf(gameLineTimeStamp[1]), Long.valueOf(gameLineTimeStamp[2].substring(0, 10)));
+      gameIdZipFileMap.put(Long.valueOf(gameLineTimeStamp[0]), zipFile);
+      gameIdTimeStampMap.put(Long.valueOf(gameLineTimeStamp[0]), Long.valueOf(gameLineTimeStamp[2].substring(0, 10)));
     }
   }
 
@@ -99,7 +99,7 @@ public class GameZipScanner {
     }
     for (String zipFile : files) {
       String[] gameLineTimeStamp = zipFile.split(ZIP_DIVIDER);
-      lineIdUnzippedDirMap.put(Long.valueOf(gameLineTimeStamp[1]), zipFile);
+      gameIdUnzippedDirMap.put(Long.valueOf(gameLineTimeStamp[0]), zipFile);
     }
   }
 }

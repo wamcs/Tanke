@@ -71,7 +71,6 @@ public abstract class GamePlayingController extends ActivityController implement
   boolean isGameFinished = false;
 
   long gameId;
-  long lineId;
   long teamId;
 
   int currentAttackPointIndex = 0;
@@ -102,10 +101,9 @@ public abstract class GamePlayingController extends ActivityController implement
 
     Intent intent = getIntent();
     gameId = intent.getLongExtra(Conf.GAME_ID, Conf.TEMP_GAME_ID);
-    lineId = intent.getLongExtra(Conf.LINE_ID, Conf.TEMP_LINE_ID);
     teamId = intent.getLongExtra(Conf.TEAM_ID, Conf.TEMP_TEAM_ID);
 
-    if (!gameZipHelper.checkAndParseGameZip(gameId, lineId) || gameZipHelper.getmPoints().size() == 0) {
+    if (!gameZipHelper.checkAndParseGameZip(gameId) || gameZipHelper.getmPoints().size() == 0) {
       ToastUtil.TextToast("游戏包加载失败");
       mLoadingDialog.dismiss();
       return;
@@ -130,8 +128,6 @@ public abstract class GamePlayingController extends ActivityController implement
 
     initRecords();
     moveToTarget();
-
-    mTracingHelper.start();
   }
 
   /**
@@ -214,7 +210,6 @@ public abstract class GamePlayingController extends ActivityController implement
   void startGameDataActivity() {
     Intent intent = new Intent();
     intent.putExtra(Conf.GAME_ID, gameId);
-    intent.putExtra(Conf.LINE_ID, lineId);
     if (mPoints != null && mPoints instanceof ArrayList) {
       intent.putParcelableArrayListExtra(Conf.GAME_POINTS, ((ArrayList<? extends Parcelable>) mPoints));
     }
@@ -262,6 +257,24 @@ public abstract class GamePlayingController extends ActivityController implement
     RecordsUtils.dispatchTypeRecord(currentAttackPointIndex, currentAttackPoint.getId(), 0, RunningRecord.RECORD_TYPE.POINT_REACH);
   }
 
+  @OnClick(R.id.zoom_in)
+  void zoomIn() {
+    if (mapHelper.mapZoomIn()) {
+
+    } else {
+
+    }
+  }
+
+  @OnClick(R.id.zoom_out)
+  void zoomOut() {
+    if (mapHelper.mapZoomOut()) {
+
+    } else {
+
+    }
+  }
+
   @Override
   public void onReceiveLocation(BDLocation location) {
     mapHelper.onReceiveLocation(location);
@@ -299,6 +312,7 @@ public abstract class GamePlayingController extends ActivityController implement
 
   @TargetMethod(requestCode = PermissionDispatcher.PERMISSION_REQUEST_CODE_LOCATION)
   public void startLocateService() {
+    mTracingHelper.start();
     locateHelper.startLocate();
     mapHelper.animateCameraToCurrentPosition();
   }

@@ -31,7 +31,7 @@ public class TracingHelper extends HawkEyeHelper implements
   private final int DEFAULT_PACK_INTERVAL = 10;
   private final int DEFAULT_TRACE_TYPE = 2;
 
-  public TracingHelper(Context context,TracingCallback callback) {
+  public TracingHelper(Context context, TracingCallback callback) {
     super(context);
     mTrace = new Trace(contextWeakReference.get(), DEFAULT_SERVICE_ID, DEFAULT_ENTITY_NAME, DEFAULT_TRACE_TYPE);
     mClient.setInterval(DEFAULT_GATER_INTERVAL, DEFAULT_PACK_INTERVAL);
@@ -42,7 +42,9 @@ public class TracingHelper extends HawkEyeHelper implements
   @Override
   public void start() {
     //TODO : set the entityName before invoke start
-    mClient.startTrace(mTrace, this);
+    if (!isTracing) {
+      mClient.startTrace(mTrace, this);
+    }
   }
 
   @Override
