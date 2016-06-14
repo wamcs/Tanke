@@ -8,6 +8,7 @@ import com.lptiyu.tanke.io.net.HttpService;
 import com.lptiyu.tanke.io.net.Response;
 import com.lptiyu.tanke.io.net.UserService;
 import com.lptiyu.tanke.utils.ToastUtil;
+import com.lptiyu.tanke.utils.rx.ToastExceptionAction;
 
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
@@ -35,8 +36,10 @@ public class ResetPasswordHelper extends SignUpHelper {
 
 
     @Override
-    public void getCode() {
-        super.getCode();
+    public boolean getCode() {
+        if (!super.getCode()) {
+            return false;
+        }
 
         String phone = signUpPhoneEditText.getText().toString();
         HttpService.getUserService().getVerifyCode(UserService.RESET_PSW, phone)
@@ -57,14 +60,16 @@ public class ResetPasswordHelper extends SignUpHelper {
                         signUpNextButton.setClickable(true);
                         signUpNextButton.setEnabled(true);
                     }
-                });
+                }, new ToastExceptionAction(signUpGetCodeButton.getContext().getApplicationContext()));
 
-
+        return true;
     }
 
     @Override
-    public void next() {
-        super.next();
+    public boolean next() {
+        if (!super.next()) {
+            return false;
+        }
         String phone = signUpPhoneEditText.getText().toString();
         String password = signUpPasswordEditText.getText().toString();
         String code = signUpCodeEditText.getText().toString();
@@ -84,5 +89,6 @@ public class ResetPasswordHelper extends SignUpHelper {
                         context.finish();
                     }
                 });
+        return true;
     }
 }
