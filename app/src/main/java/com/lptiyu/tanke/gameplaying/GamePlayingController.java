@@ -237,7 +237,9 @@ public abstract class GamePlayingController extends ActivityController implement
 
   @OnClick(R.id.move_to_target)
   void moveToTarget() {
-    mapHelper.animateCameraToCurrentTarget();
+    if (mapHelper != null) {
+      mapHelper.animateCameraToCurrentTarget();
+    }
   }
 
   @OnClick(R.id.start_locate)

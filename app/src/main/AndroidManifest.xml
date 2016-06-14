@@ -66,10 +66,7 @@
         <activity android:name=".initialization.ui.LoginActivity">
         </activity>
         <activity android:name=".initialization.ui.SplashActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
+
         </activity>
         <activity android:name=".initialization.ui.GuideActivity">
         </activity>
@@ -167,6 +164,10 @@
             </intent-filter>
         </activity>
         <activity android:name=".gameplaying.GamePlayingActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
         </activity>
         <activity android:name=".gameplaying.task.GameTaskActivity">
         </activity>

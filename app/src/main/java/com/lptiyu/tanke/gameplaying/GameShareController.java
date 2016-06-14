@@ -4,11 +4,9 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -28,11 +26,12 @@ import com.lptiyu.tanke.gameplaying.records.RecordsHandler;
 import com.lptiyu.tanke.gameplaying.records.RecordsUtils;
 import com.lptiyu.tanke.gameplaying.records.RunningRecord;
 import com.lptiyu.tanke.global.Conf;
+import com.lptiyu.tanke.io.net.HttpService;
+import com.lptiyu.tanke.io.net.Response;
 import com.lptiyu.tanke.trace.bean.HistoryTrackData;
 import com.lptiyu.tanke.trace.history.HistoryTrackCallback;
 import com.lptiyu.tanke.trace.history.HistoryTrackHelper;
 import com.lptiyu.tanke.trace.history.IHistoryTrackHelper;
-import com.lptiyu.tanke.utils.ScreenUtils;
 import com.lptiyu.tanke.utils.TimeUtils;
 import com.lptiyu.tanke.widget.dialog.ShareDialog;
 
@@ -44,6 +43,9 @@ import java.util.Set;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
+import rx.schedulers.Schedulers;
 import timber.log.Timber;
 
 /**
@@ -295,26 +297,43 @@ public class GameShareController extends ActivityController implements
 
   @OnClick(R.id.activity_game_share_toolbar_imageview_right)
   public void onShareButtonClicked() {
-    showLoadingDialog();
-    ScreenUtils.captureScreen(mToolbar, mFormRoot, mMapView, new ScreenUtils.ScreenCallBack() {
-      @Override
-      public void onScreenShot(String filePath) {
-        mLoadingDialog.dismiss();
-        if (null == filePath) {
-          Timber.d("capture screen error");
-          return;
-        }
-        String SHARE_TITLE = "测试标题";
-        String SHARE_CONTENT = "测试内容";
-//        String SHARE_URL = "http://www.baidu.com";
-        if (null == shareDialog) {
-          shareDialog = new ShareDialog(getContext());
-          shareDialog.setShareContent(SHARE_TITLE, SHARE_CONTENT, filePath, null);
-          Timber.e(filePath);
-        }
-        shareDialog.show();
-      }
-    });
+
+    HttpService.getGameService().getShareUrl(1, "11", gameId, teamId)
+        .observeOn(AndroidSchedulers.mainThread())
+        .subscribeOn(Schedulers.io())
+        .subscribe(new Action1<Response<String>>() {
+          @Override
+          public void call(Response<String> stringResponse) {
+            String SHARE_TITLE = "测试标题";
+            String SHARE_CONTENT = "测试内容";
+            if (null == shareDialog) {
+              shareDialog = new ShareDialog(getContext());
+              shareDialog.setShareContent(SHARE_TITLE, SHARE_CONTENT, null, stringResponse.getData());
+            }
+            shareDialog.show();
+          }
+        });
+
+//    showLoadingDialog();
+//    ScreenUtils.captureScreen(mToolbar, mFormRoot, mMapView, new ScreenUtils.ScreenCallBack() {
+//      @Override
+//      public void onScreenShot(String filePath) {
+//        mLoadingDialog.dismiss();
+//        if (null == filePath) {
+//          Timber.d("capture screen error");
+//          return;
+//        }
+//        String SHARE_TITLE = "测试标题";
+//        String SHARE_CONTENT = "测试内容";
+////        String SHARE_URL = "http://www.baidu.com";
+//        if (null == shareDialog) {
+//          shareDialog = new ShareDialog(getContext());
+//          shareDialog.setShareContent(SHARE_TITLE, SHARE_CONTENT, filePath, null);
+//          Timber.e(filePath);
+//        }
+//        shareDialog.show();
+//      }
+//    });
   }
 
 }
