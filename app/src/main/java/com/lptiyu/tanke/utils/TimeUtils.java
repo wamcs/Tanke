@@ -32,15 +32,15 @@ public class TimeUtils {
 
     public static String getFriendlyTime(long time) {
         if (ONE_MINUTE_TIME > time) {
-            return String.format("00 : %2d", time / 1000);
+            return String.format("00 : %2d".toLowerCase(), time / 1000);
         }
         if (ONE_HOUR_TIME > time) {
             int min = (int) (time / ONE_MINUTE_TIME);
             int sec = (int) ((time % ONE_MINUTE_TIME) / 1000);
-            return String.format("%02d : %02d", min, sec);
+            return String.format("%02d : %02d".toLowerCase(), min, sec);
         }
         if (ONE_DAY_TIME > time) {
-            return String.format("大约还有%d小时", time / ONE_HOUR_TIME);
+            return String.format("大约还有%d小时".toLowerCase(), time / ONE_HOUR_TIME);
         }
         return "大于一天";
     }
@@ -50,6 +50,9 @@ public class TimeUtils {
      * @param date format was yyyy-MM-dd
      */
     public static Date parseDate(String date) {
+      if (date == null) {
+        return new Date();
+      }
         try {
             return dateFormatter.parse(date);
         } catch (ParseException e) {
