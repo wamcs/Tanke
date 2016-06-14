@@ -8,8 +8,6 @@ import com.lptiyu.tanke.base.ui.BaseActivity;
 import com.lptiyu.tanke.gameplaying.records.RecordsUtils;
 import com.lptiyu.tanke.global.Conf;
 
-import timber.log.Timber;
-
 public class GamePlayingActivity extends BaseActivity {
 
   private GamePlayingController mController;

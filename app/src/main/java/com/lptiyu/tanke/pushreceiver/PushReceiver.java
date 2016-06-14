@@ -6,6 +6,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.NotificationCompat;
+import android.util.Log;
 
 
 import com.avos.avoscloud.AVOSCloud;
@@ -30,6 +31,7 @@ public class PushReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
 
+        Log.d("lk","has receive");
         if (intent.getAction().equals(Conf.PUSH_ACTION)){
             String jsonString = intent.getExtras().getString("com.avos.avoscloud.Data");
             Timber.d("push data json is %s",jsonString);
@@ -83,6 +85,6 @@ public class PushReceiver extends BroadcastReceiver {
                 break;
         }
 
-       DBHelper.getInstance().getMessageListDao().insert(messageList);
+       DBHelper.getInstance().getMessageListDao().insertOrReplace(messageList);
     }
 }
