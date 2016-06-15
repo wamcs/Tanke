@@ -18,7 +18,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
- * @author: xiaoxiaoda
+ * @author : xiaoxiaoda
  * date: 16-1-20
  * email: daque@hustunique.com
  */
@@ -112,7 +112,7 @@ public class DatePickerDialog extends BaseDialog {
   @OnClick(R.id.layout_dialog_date_picker_ensure)
   void clickEnsure() {
     if (mListener != null) {
-      String date = mYearPicker.getValue() + "." + mMonthPicker.getValue() + "." + mDayPicker.getValue();
+      String date = String.format(getContext().getString(R.string.date_picker_date_formatter), mYearPicker.getValue(), mMonthPicker.getValue(), mDayPicker.getValue());
       mListener.onDateChoosed(date);
     }
     dismiss();

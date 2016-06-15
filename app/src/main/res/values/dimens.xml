@@ -93,6 +93,13 @@
     <dimen name="complete_location_button_size">100dp</dimen>
     <dimen name="complete_location_text_size">10sp</dimen>
 
+    <!-- LocateUserActivity Dimens Area-->
+    <dimen name="item_locate_activity_list_normal_padding_top_bottom">17dp</dimen>
+    <dimen name="item_locate_activity_list_normal_padding_left">25dp</dimen>
+    <dimen name="item_locate_activity_list_locate_root_padding_top_bottom">8dp</dimen>
+    <dimen name="item_locate_activity_list_locate_root_padding_left">25dp</dimen>
+    <dimen name="item_locate_activity_list_hot_city_padding_left">20dp</dimen>
+
     <!-- protocol Dimens-->
     <dimen name="protocol_return_button_size">16dp</dimen>
     <dimen name="protocol_title_margin_top">35dp</dimen>

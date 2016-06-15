@@ -12,8 +12,11 @@ import com.facebook.drawee.backends.pipeline.Fresco;
 import com.lptiyu.tanke.database.DBHelper;
 import com.lptiyu.tanke.global.Accounts;
 import com.lptiyu.tanke.global.AppData;
+import com.lptiyu.tanke.global.Conf;
+import com.lptiyu.tanke.location.LocationFileParser;
 import com.lptiyu.tanke.messagesystem.MessageActivity;
 import com.lptiyu.tanke.utils.DirUtils;
+import com.lptiyu.tanke.utils.thread;
 
 import cn.sharesdk.framework.ShareSDK;
 import timber.log.Timber;
@@ -51,6 +54,22 @@ public class RunApplication extends MultiDexApplication {
     } catch (Exception e) {
       // To test it automatically.
       Timber.e(e, e.getMessage());
+    }
+
+    thread.background(new Runnable() {
+      @Override
+      public void run() {
+        readLocationFile();
+      }
+    });
+  }
+
+  private void readLocationFile() {
+    if (LocationFileParser.init(getApplicationContext(), LocationFileParser.FILE_TYPE_FROM_DIR, Conf.DEFAULT_CITY_ASSETS)) {
+      Timber.d("Loading Location file from Dir success");
+    } else {
+      Timber.d("Start Loading Default Assert");
+      LocationFileParser.init(getApplicationContext(), LocationFileParser.FILE_TYPE_FROM_ASSETS, Conf.DEFAULT_CITY_ASSETS);
     }
   }
 }

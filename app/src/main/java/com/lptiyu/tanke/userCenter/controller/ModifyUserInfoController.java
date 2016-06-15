@@ -16,8 +16,9 @@ import com.lptiyu.tanke.global.Conf;
 import com.lptiyu.tanke.io.net.HttpService;
 import com.lptiyu.tanke.io.net.Response;
 import com.lptiyu.tanke.io.net.UserService;
+import com.lptiyu.tanke.location.CityStruct;
+import com.lptiyu.tanke.location.LocateUserActivity;
 import com.lptiyu.tanke.pojo.UserDetails;
-import com.lptiyu.tanke.userCenter.ui.LocateActivity;
 import com.lptiyu.tanke.userCenter.ui.ModifyTextActivity;
 import com.lptiyu.tanke.utils.ToastUtil;
 import com.lptiyu.tanke.widget.dialog.DatePickerDialog;
@@ -35,6 +36,7 @@ import okhttp3.RequestBody;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.schedulers.Schedulers;
+import timber.log.Timber;
 
 /**
  * author:wamcs
@@ -99,7 +101,6 @@ public class ModifyUserInfoController extends ActivityController {
     mHeightText.setText(details.getHeight());
     mWeightText.setText(details.getWeight());
     mLocationText.setText(details.getAddress());
-
     mLoadingDialog = new LoadingDialog(getContext());
     userId = Accounts.getId();
     token = Accounts.getToken();
@@ -121,14 +122,13 @@ public class ModifyUserInfoController extends ActivityController {
               .subscribe(new Action1<Response<String>>() {
                 @Override
                 public void call(Response<String> stringResponse) {
+                  mLoadingDialog.cancel();
                   int status = stringResponse.getStatus();
                   if (status != 1) {
                     ToastUtil.TextToast(stringResponse.getInfo());
-                    mLoadingDialog.cancel();
                     return;
                   }
                   mAvatarImage.setImageURI(Uri.parse(stringResponse.getData()));
-                  mLoadingDialog.cancel();
                 }
               });
 
@@ -163,10 +163,10 @@ public class ModifyUserInfoController extends ActivityController {
               .subscribe(new Action1<Response<Void>>() {
                 @Override
                 public void call(Response<Void> voidResponse) {
+                  mLoadingDialog.cancel();
                   int status = voidResponse.getStatus();
                   if (status != 1) {
                     ToastUtil.TextToast(voidResponse.getInfo());
-                    mLoadingDialog.cancel();
                     return;
                   }
                   mBirthdayText.setText(mData);
@@ -195,10 +195,10 @@ public class ModifyUserInfoController extends ActivityController {
               .subscribe(new Action1<Response<Void>>() {
                 @Override
                 public void call(Response<Void> voidResponse) {
+                  mLoadingDialog.dismiss();
                   int status = voidResponse.getStatus();
                   if (status != 1) {
                     ToastUtil.TextToast(voidResponse.getInfo());
-                    mLoadingDialog.cancel();
                     return;
                   }
                   mGenderText.setText(sex);
@@ -228,8 +228,8 @@ public class ModifyUserInfoController extends ActivityController {
 
   @OnClick(R.id.modify_user_info_location_button)
   void modifyLocation() {
-    Intent intent = new Intent(getActivity(), LocateActivity.class);
-    startActivityForResult(intent, Conf.REQUEST_CODE_LOCATION);
+    Intent intent = new Intent(getActivity(), LocateUserActivity.class);
+    startActivityForResult(intent, Conf.REQUEST_CODE_START_USER_LOCATE);
   }
 
   @OnClick(R.id.default_tool_bar_imageview)
@@ -242,18 +242,49 @@ public class ModifyUserInfoController extends ActivityController {
     if (resultCode == Activity.RESULT_CANCELED) {
       return;
     }
-    switch (requestCode) {
+    if (null != mImageChooseDialog) {
+      mImageChooseDialog.onActivityResult(requestCode, resultCode, data);
+    }
+    switch (resultCode) {
       case Conf.REQUEST_CODE_NICKNAME:
-        mNicknameText.setText(data.getStringExtra(Conf.USER_INFO));
+        details.setNickname(data.getStringExtra(Conf.USER_INFO));
+        mNicknameText.setText(details.getNickname());
         break;
       case Conf.REQUEST_CODE_HEIGHT:
-        mHeightText.setText(data.getStringExtra(Conf.USER_INFO) + "CM");
+        details.setHeight(data.getStringExtra(Conf.USER_INFO));
+        mHeightText.setText(String.format(getString(R.string.modify_info_height_formatter), details.getHeight()));
         break;
       case Conf.REQUEST_CODE_WEIGHT:
-        mWeightText.setText(data.getStringExtra(Conf.USER_INFO) + "KG");
+        details.setWeight(data.getStringExtra(Conf.USER_INFO));
+        mWeightText.setText(String.format(getString(R.string.modify_info_weight_formatter), details.getWeight()));
         break;
-      case Conf.REQUEST_CODE_LOCATION:
-        mLocationText.setText(data.getStringExtra(Conf.USER_LOCATION));
+      case Conf.RESULT_CODE_START_USER_LOCATE:
+        mLoadingDialog.setDialogText("地区修改中");
+        mLoadingDialog.show();
+        CityStruct cityStruct = data.getParcelableExtra(Conf.CITY_STRUCT);
+        if (cityStruct == null) {
+          return;
+        }
+        String location = cityStruct.getmName();
+        if (location != null && location.length() != 0) {
+          details.setAddress(location);
+          HttpService.getUserService()
+              .resetUserDetails(userId, token, UserService.USER_DETAIL_LOCATION, location)
+              .observeOn(AndroidSchedulers.mainThread())
+              .subscribeOn(Schedulers.io())
+              .subscribe(new Action1<Response<Void>>() {
+                @Override
+                public void call(Response<Void> voidResponse) {
+                  mLoadingDialog.dismiss();
+                  int status = voidResponse.getStatus();
+                  if (status != 1) {
+                    ToastUtil.TextToast(voidResponse.getInfo());
+                    return;
+                  }
+                  mLocationText.setText(details.getAddress());
+                }
+              });
+        }
     }
   }
 

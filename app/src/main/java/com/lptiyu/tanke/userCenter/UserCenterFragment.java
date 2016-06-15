@@ -14,6 +14,7 @@ import com.lptiyu.tanke.R;
 import com.lptiyu.tanke.base.controller.FragmentController;
 import com.lptiyu.tanke.base.ui.BaseFragment;
 import com.lptiyu.tanke.global.Accounts;
+import com.lptiyu.tanke.global.Conf;
 import com.lptiyu.tanke.io.net.HttpService;
 import com.lptiyu.tanke.io.net.Response;
 import com.lptiyu.tanke.pojo.UserDetails;
@@ -72,6 +73,7 @@ public class UserCenterFragment extends BaseFragment {
   TextView mUserGameFinishedNum;
 
   private Subscription subscription;
+  private UserDetails mUserDetails;
 
   @Nullable
   @Override
@@ -90,7 +92,8 @@ public class UserCenterFragment extends BaseFragment {
           @Override
           public void call(Response<UserDetails> userDetailsResponse) {
             if (userDetailsResponse.getStatus() == Response.RESPONSE_OK) {
-              bind(userDetailsResponse.getData());
+              mUserDetails = userDetailsResponse.getData();
+              bind(mUserDetails);
             } else {
               throw new RuntimeException(userDetailsResponse.getInfo());
             }
@@ -119,9 +122,11 @@ public class UserCenterFragment extends BaseFragment {
   }
 
   @OnClick(R.id.user_message_layout)
-  void modifyUserinfo() {
+  void modifyUserInfo() {
     Intent intent = new Intent(getActivity(), ModifyUserInfoActivity.class);
-//    intent.putExtra(Conf.DATA_TO_INFO_MODIFY, bundle);
+    Bundle bundle = new Bundle();
+    bundle.putParcelable(Conf.USER_DETAIL, mUserDetails);
+    intent.putExtra(Conf.DATA_TO_INFO_MODIFY, bundle);
     startActivity(intent);
   }
 
@@ -149,7 +154,6 @@ public class UserCenterFragment extends BaseFragment {
   public void user_judge_game() {
     startActivity(new Intent(getContext(), UserManagerGameActivity.class));
   }
-
 
   @Override
   public void onResume() {

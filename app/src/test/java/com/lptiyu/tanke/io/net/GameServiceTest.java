@@ -80,7 +80,7 @@ public class GameServiceTest {
 
   @Test // success
   public void testUploadGameRecords() throws Exception {
-    HttpService.getGameService().uploadTeamGameRecords(1, "11", 1, 1, 1, "23", "123.32", "123.1", GameService.RECORD_TYPE_GAME_FINISH)
+    HttpService.getGameService().uploadTeamGameRecords(1, "11", 1, 1, 1, 1, "23", "123.32", "123.1", GameService.TEAM_RECORD, GameService.RECORD_TYPE_GAME_FINISH)
         .subscribe(new ResponseAction1(), new AssertNullAction1());
   }
 

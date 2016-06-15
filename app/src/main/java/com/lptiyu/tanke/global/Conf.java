@@ -19,14 +19,28 @@ public final class Conf {
   public static final int REGISTER_CODE = 1;
   public static final int RESET_PASSWORD_CODE = 2;
 
+  /**
+   * Request Code For Start LocateUserActivity
+   */
+  public static final String CITY_STRUCT = "city_struct";
+  public static final String CITY_NAME = "city_name";
+  public static final String CITY_CODE = "city_code";
+  public static final int REQUEST_CODE_START_USER_LOCATE = 3;
+  public static final int RESULT_CODE_START_USER_LOCATE = 4;
+
+  /**
+   * City List File
+   */
+  public static final String HOT_CITY = "HotCity";
+  public static final String DEFAULT_CITY_ASSETS = "city.json";
 
   /**
    * User Avatar conf
    */
-  public static final int RESULT_CODE_CANCEL = 0;
-  public static final int REQUEST_CODE_TAKE_PHOTO = 1;
-  public static final int REQUEST_CODE_GALLERY = 2;
-  public static final int REQUEST_CODE_CUT_PHOTO = 3;
+  public static final int RESULT_CODE_CANCEL = 5;
+  public static final int REQUEST_CODE_TAKE_PHOTO = 6;
+  public static final int REQUEST_CODE_GALLERY = 7;
+  public static final int REQUEST_CODE_CUT_PHOTO = 8;
   public static final String TEMP_AVATAR_NAME = "temp_user_avatar.png";
   public static final int USER_AVATAR_SIZE = 320;
 
@@ -74,8 +88,8 @@ public final class Conf {
   public static final String TEAM_ID = "team_id";
   public static final String GAME_ID = "game_id";
   public static final String LINE_ID = "line_id";
-  public static final int REQUEST_CODE_TASK_ACTIVITY = 6;
-  public static final int RESULT_CODE_TASK_ACTIVITY = 7;
+  public static final int REQUEST_CODE_TASK_ACTIVITY = 9;
+  public static final int RESULT_CODE_TASK_ACTIVITY = 10;
 
   public static final String GAME_ACTIVITY_FINISH_TYPE = "game_activity_finish_type";
   public static final String TIMING_TASK = "timing_task";
@@ -91,9 +105,9 @@ public final class Conf {
   /**
    * Message
    */
-  public static final int TIME_TYPE = 0;
-  public static final int OFFICIAL_MESSAGE = 1;
-  public static final int SYSTEM_MESSAGE = 2;
+  public static final int TIME_TYPE = 11;
+  public static final int OFFICIAL_MESSAGE = 12;
+  public static final int SYSTEM_MESSAGE = 13;
   public static final String PUSH_ACTION = "com.tanke.PUSH_ACTION";
   public static final String MESSAGE_ACTION = "com.tanke.MESSAGE_ACTION";
   public static final String PUSH_MESSAGE = "push_message";
@@ -110,10 +124,10 @@ public final class Conf {
   public static final String USER_LOCATION = "user_location";
   public static final String USER_INFO_TYPE = "user_info_type";
   public static final String USER_INFO = "user_info";
-  public static final int REQUEST_CODE_NICKNAME = 1;
-  public static final int REQUEST_CODE_HEIGHT = 2;
-  public static final int REQUEST_CODE_WEIGHT = 3;
-  public static final int REQUEST_CODE_LOCATION = 4;
+  public static final int REQUEST_CODE_NICKNAME = 14;
+  public static final int REQUEST_CODE_HEIGHT = 15;
+  public static final int REQUEST_CODE_WEIGHT = 16;
+  public static final int REQUEST_CODE_LOCATION = 17;
 
   /**
    * This method is to make up the entity name of baidu hawk eye service
