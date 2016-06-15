@@ -183,7 +183,7 @@ public class UserServiceTest {
   @Test
   // 2.11 体重、生日不能更改= =,其他的都通过了
   public void testResetUserDetails() throws Exception {
-    userService.resetUserDetails(UID, TOKEN, UserService.USER_DETAIL_HEIGHT, "65")
+    userService.resetUserDetails(UID, TOKEN, UserService.USER_DETAIL_HEIGHT, "180")
         .subscribe(new ResponseAction1(), new AssertNullAction1());
   }
 

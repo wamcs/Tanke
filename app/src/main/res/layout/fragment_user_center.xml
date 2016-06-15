@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
                 xmlns:tools="http://schemas.android.com/tools"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:orientation="vertical"
                 tools:ignore="RtlHardcoded,RtlSymmetry">
 
@@ -29,15 +29,15 @@
 
         <com.lptiyu.tanke.widget.CircularImageView
             android:id="@+id/user_avatar"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
             android:src="@mipmap/default_avatar"
             app:civ_border="true"
             app:civ_border_color="#fff"
             app:civ_border_width="5dp"
             app:civ_shadow="true"
             app:civ_shadow_color="@color/grey04"
-            app:civ_shadow_radius="1"
-            android:layout_width="80dp"
-            android:layout_height="80dp" />
+            app:civ_shadow_radius="1"/>
 
 
         <LinearLayout
@@ -51,7 +51,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
                 android:gravity="center_vertical"
-                >
+            >
 
                 <com.lptiyu.tanke.widget.CustomTextView
                     android:id="@+id/user_nickname"
@@ -59,7 +59,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="林动"
-                    />
+                />
 
                 <ImageView
                     android:id="@+id/user_sex"
@@ -73,7 +73,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="湖北武汉"
-                    />
+                />
 
             </LinearLayout>
 
@@ -116,7 +116,7 @@
                     android:layout_above="@id/user_progress"
                     android:background="@drawable/blue_round_corner"
                     android:text="LV.7"
-                    />
+                />
 
                 <com.lptiyu.tanke.widget.CustomTextView
                     android:id="@+id/user_progress_right"
@@ -127,7 +127,7 @@
                     android:layout_alignParentRight="true"
                     android:background="@drawable/purple_round_corner"
                     android:text="LV.8"
-                    />
+                />
 
                 <com.lptiyu.tanke.widget.CustomTextView
                     android:id="@+id/user_progress_name"
@@ -137,7 +137,7 @@
                     android:layout_above="@id/user_progress"
                     android:layout_centerHorizontal="true"
                     android:text="步道跑神"
-                    />
+                />
 
             </RelativeLayout>
 
@@ -146,14 +146,20 @@
 
     </LinearLayout>
 
+    <View
+        android:id="@+id/fragment_user_center_shadow"
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:layout_below="@id/user_message_layout"
+        android:background="@drawable/shadow"/>
+
     <RelativeLayout
         android:id="@+id/user_game_playing"
         android:layout_width="match_parent"
-        android:layout_height="46dp"
+        android:layout_height="@dimen/fragment_user_center_item_height"
         android:layout_below="@id/user_message_layout"
         android:gravity="center_vertical"
-        android:orientation="horizontal"
-        >
+        android:orientation="horizontal">
 
         <ImageView
             android:id="@+id/image"
@@ -161,8 +167,8 @@
             android:layout_height="@dimen/user_center_linear_layout_left_image_width"
             android:layout_centerVertical="true"
             android:layout_marginLeft="20dp"
-            android:src="@mipmap/icon_playing"
-            android:scaleType="centerInside"/>
+            android:scaleType="centerInside"
+            android:src="@mipmap/icon_playing"/>
 
         <com.lptiyu.tanke.widget.CustomTextView
             android:id="@+id/name"
@@ -174,7 +180,7 @@
             android:gravity="center"
             android:paddingLeft="20dp"
             android:text="我正在玩的"
-            />
+        />
 
         <com.lptiyu.tanke.widget.CustomTextView
             android:id="@+id/user_game_playing_num"
@@ -185,7 +191,7 @@
             android:layout_toRightOf="@id/name"
             android:paddingLeft="18dp"
             android:text="4"
-            />
+        />
 
         <ImageView
             android:layout_width="wrap_content"
@@ -195,17 +201,20 @@
             android:layout_width="wrap_content"
             android:layout_height="@dimen/user_center_linear_layout_bottom_line_height"
             android:layout_alignParentBottom="true"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
             android:background="@color/user_center_split_line"/>
+
     </RelativeLayout>
 
     <RelativeLayout
         android:id="@+id/user_game_finished"
         android:layout_width="match_parent"
-        android:layout_height="46dp"
+        android:layout_height="@dimen/fragment_user_center_item_height"
         android:layout_below="@id/user_game_playing"
         android:gravity="center_vertical"
         android:orientation="horizontal"
-        >
+    >
 
         <ImageView
             android:id="@id/image"
@@ -213,8 +222,8 @@
             android:layout_height="@dimen/user_center_linear_layout_left_image_width"
             android:layout_centerVertical="true"
             android:layout_marginLeft="20dp"
-            android:src="@mipmap/icon_finished"
-            android:scaleType="centerInside"/>
+            android:scaleType="centerInside"
+            android:src="@mipmap/icon_finished"/>
 
         <com.lptiyu.tanke.widget.CustomTextView
             android:id="@id/name"
@@ -226,7 +235,7 @@
             android:gravity="center"
             android:paddingLeft="20dp"
             android:text="我已完成的"
-            />
+        />
 
         <com.lptiyu.tanke.widget.CustomTextView
             android:id="@+id/user_game_finished_num"
@@ -237,7 +246,7 @@
             android:layout_toRightOf="@id/name"
             android:paddingLeft="18dp"
             android:text="2"
-            />
+        />
 
         <ImageView
             android:layout_width="wrap_content"
@@ -247,6 +256,8 @@
             android:layout_width="wrap_content"
             android:layout_height="@dimen/user_center_linear_layout_bottom_line_height"
             android:layout_alignParentBottom="true"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
             android:background="@color/user_center_split_line"/>
     </RelativeLayout>
 
@@ -254,11 +265,11 @@
     <RelativeLayout
         android:id="@+id/user_rewards"
         android:layout_width="match_parent"
-        android:layout_height="46dp"
+        android:layout_height="@dimen/fragment_user_center_item_height"
         android:layout_below="@id/user_game_finished"
         android:gravity="center_vertical"
         android:orientation="horizontal"
-        >
+    >
 
         <ImageView
             android:id="@id/image"
@@ -266,8 +277,8 @@
             android:layout_height="@dimen/user_center_linear_layout_left_image_width"
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/user_center_linear_layout_paddingLeft"
-            android:src="@mipmap/icon_rewards"
-            android:scaleType="centerInside"/>
+            android:scaleType="centerInside"
+            android:src="@mipmap/icon_rewards"/>
 
         <com.lptiyu.tanke.widget.CustomTextView
             android:id="@id/name"
@@ -279,7 +290,7 @@
             android:gravity="center"
             android:paddingLeft="20dp"
             android:text="我的奖励"
-            />
+        />
 
         <ImageView
             android:layout_width="wrap_content"
@@ -289,6 +300,8 @@
             android:layout_width="wrap_content"
             android:layout_height="@dimen/user_center_linear_layout_bottom_line_height"
             android:layout_alignParentBottom="true"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
             android:background="@color/user_center_split_line"/>
     </RelativeLayout>
 
@@ -296,11 +309,11 @@
     <RelativeLayout
         android:id="@+id/user_judge_game"
         android:layout_width="match_parent"
-        android:layout_height="46dp"
+        android:layout_height="@dimen/fragment_user_center_item_height"
         android:layout_below="@id/user_rewards"
         android:gravity="center_vertical"
         android:orientation="horizontal"
-        >
+    >
 
         <ImageView
             android:id="@id/image"
@@ -308,8 +321,8 @@
             android:layout_height="@dimen/user_center_linear_layout_left_image_width"
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/user_center_linear_layout_paddingLeft"
-            android:src="@mipmap/icon_judge_task"
-            android:scaleType="centerInside"/>
+            android:scaleType="centerInside"
+            android:src="@mipmap/icon_judge_task"/>
 
         <com.lptiyu.tanke.widget.CustomTextView
             android:id="@id/name"
@@ -321,7 +334,7 @@
             android:gravity="center"
             android:paddingLeft="20dp"
             android:text="我的裁判任务"
-            />
+        />
 
         <ImageView
             android:layout_width="wrap_content"
@@ -331,6 +344,8 @@
             android:layout_width="wrap_content"
             android:layout_height="@dimen/user_center_linear_layout_bottom_line_height"
             android:layout_alignParentBottom="true"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
             android:background="@color/user_center_split_line"/>
     </RelativeLayout>
 
@@ -338,20 +353,20 @@
     <RelativeLayout
         android:id="@+id/setting"
         android:layout_width="match_parent"
-        android:layout_height="46dp"
+        android:layout_height="@dimen/fragment_user_center_item_height"
         android:layout_below="@id/user_judge_game"
         android:gravity="center_vertical"
         android:orientation="horizontal"
-        >
+    >
 
         <ImageView
             android:id="@id/image"
             android:layout_width="@dimen/user_center_linear_layout_left_image_width"
             android:layout_height="@dimen/user_center_linear_layout_left_image_width"
             android:layout_centerVertical="true"
-            android:src="@mipmap/icon_setting"
             android:layout_marginLeft="@dimen/user_center_linear_layout_paddingLeft"
-            android:scaleType="centerInside"/>
+            android:scaleType="centerInside"
+            android:src="@mipmap/icon_setting"/>
 
         <com.lptiyu.tanke.widget.CustomTextView
             android:id="@id/name"
@@ -363,7 +378,7 @@
             android:gravity="center"
             android:paddingLeft="20dp"
             android:text="设置"
-            />
+        />
 
         <ImageView
             android:layout_width="wrap_content"
@@ -373,14 +388,10 @@
             android:layout_width="wrap_content"
             android:layout_height="@dimen/user_center_linear_layout_bottom_line_height"
             android:layout_alignParentBottom="true"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
             android:background="@color/user_center_split_line"/>
     </RelativeLayout>
 
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="10dp"
-        android:layout_below="@id/user_message_layout"
-        android:background="@drawable/shadow"
-        />
 </RelativeLayout>

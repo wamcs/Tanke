@@ -31,7 +31,7 @@ import rx.schedulers.Schedulers;
  */
 public class ModifyTextController extends ActivityController {
 
-  @BindView(R.id.default_tool_bar_textview)
+  @BindView(R.id.activity_modify_toolbar_textview)
   TextView mTitle;
   @BindView(R.id.modify_text_edit)
   EditText mEditText;
@@ -58,30 +58,36 @@ public class ModifyTextController extends ActivityController {
         mTitle.setText(getString(R.string.change_nickname));
         requestCode = Conf.REQUEST_CODE_NICKNAME;
         mEditText.setHint(getString(R.string.change_nickname_hint));
-        mEditText.setText(content);
+        if (content != null && content.length() != 0) {
+          mEditText.setText(content);
+        }
         break;
       case UserService.USER_DETAIL_HEIGHT:
         mTitle.setText(getString(R.string.change_height));
         requestCode = Conf.REQUEST_CODE_HEIGHT;
         mEditText.setHint(getString(R.string.change_height_hint));
         mEditText.setInputType(InputType.TYPE_CLASS_NUMBER);
-        mEditText.setText(content.substring(0, 2));
+        if (content != null && content.length() != 0) {
+          mEditText.setText(content.substring(0, 2));
+        }
         break;
       case UserService.USER_DETAIL_WEIGHT:
         mTitle.setText(getString(R.string.change_weight));
         requestCode = Conf.REQUEST_CODE_WEIGHT;
         mEditText.setHint(R.string.change_weight_hint);
         mEditText.setInputType(InputType.TYPE_CLASS_NUMBER);
-        if (content.length() == 5) {
-          mEditText.setText(content.substring(0, 2));
-        } else {
-          mEditText.setText(content.substring(0, 1));
+        if (content != null && content.length() != 0) {
+          if (content.length() == 5) {
+            mEditText.setText(content.substring(0, 2));
+          } else {
+            mEditText.setText(content.substring(0, 1));
+          }
         }
         break;
     }
   }
 
-  @OnClick(R.id.default_tool_bar_imageview)
+  @OnClick(R.id.activity_modify_toolbar_imageview_left)
   void back() {
     getActivity().setResult(0);
     finish();

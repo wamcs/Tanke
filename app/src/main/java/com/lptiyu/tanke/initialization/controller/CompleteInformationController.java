@@ -26,6 +26,8 @@ import com.lptiyu.tanke.R;
 import com.lptiyu.tanke.base.controller.ActivityController;
 import com.lptiyu.tanke.base.ui.BaseActivity;
 import com.lptiyu.tanke.global.Conf;
+import com.lptiyu.tanke.location.CityStruct;
+import com.lptiyu.tanke.location.LocateUserActivity;
 import com.lptiyu.tanke.permission.PermissionDispatcher;
 import com.lptiyu.tanke.permission.TargetMethod;
 import com.lptiyu.tanke.pojo.City;
@@ -104,8 +106,8 @@ public class CompleteInformationController extends ActivityController implements
         changeGender(MALE_TYPE);
         mUserGender = MALE_TYPE;
         city =new City();
-        UserDetails Muser = ThirdLoginHelper.getUserDetail();
-        initDataFromThirdLogin(Muser);
+        UserDetails mUser = ThirdLoginHelper.getUserDetail();
+        initDataFromThirdLogin(mUser);
 
         mLocationText.setText("定位中");
         locate();
@@ -116,7 +118,8 @@ public class CompleteInformationController extends ActivityController implements
             public boolean onTouch(View v, MotionEvent event) {
                 switch (event.getAction()){
                     case MotionEvent.ACTION_DOWN:
-                        ToastUtil.TextToast("启动选择城市列表");
+                        Intent intent = new Intent(getActivity(), LocateUserActivity.class);
+                        startActivityForResult(intent, Conf.REQUEST_CODE_START_USER_LOCATE);
 //                      PermissionDispatcher.startLocateWithCheck(((BaseActivity) getActivity()));
                         mLocationButton.animate().scaleX(0.9f).scaleY(0.9f).setInterpolator(new BounceInterpolator()).setDuration(100).start();
 
@@ -192,7 +195,7 @@ public class CompleteInformationController extends ActivityController implements
         mNumberPickerDialog.setOnNumberPickedListener(new NumberPickerDialog.OnNumberPickedListener() {
             @Override
             public void onNumberPicked(int number) {
-                mWeightText.setText(String.format("%d%s", number, "KG"));
+                mWeightText.setText(String.format("%d%s".toLowerCase(), number, "KG"));
             }
         });
         mNumberPickerDialog.withMinMaxValue(Conf.MIN_WEIGHT, Conf.MAX_WEIGHT).show();
@@ -212,7 +215,7 @@ public class CompleteInformationController extends ActivityController implements
         mNumberPickerDialog.setOnNumberPickedListener(new NumberPickerDialog.OnNumberPickedListener() {
             @Override
             public void onNumberPicked(int number) {
-                mHeightText.setText(String.format("%d%s", number, "CM"));
+                mHeightText.setText(String.format("%d%s".toLowerCase(), number, "CM"));
             }
         });
         mNumberPickerDialog.withMinMaxValue(Conf.MIN_HEIGHT, Conf.MAX_HEIGHT).show();
@@ -275,7 +278,6 @@ public class CompleteInformationController extends ActivityController implements
 //        Muser.setHeight(mHeightText.getText().toString());
 //        Muser.setWeight(mWeightText.getText().toString());
 
-
         //TODO:user avatar
     }
 
@@ -336,7 +338,19 @@ public class CompleteInformationController extends ActivityController implements
         if (null != mImageChooseDialog) {
             mImageChooseDialog.onActivityResult(requestCode, resultCode, data);
         }
-        super.onActivityResult(requestCode, resultCode, data);
+        switch (resultCode) {
+          case Conf.RESULT_CODE_START_USER_LOCATE:
+            CityStruct cityStruct = data.getParcelableExtra(Conf.CITY_STRUCT);
+            if (cityStruct == null) {
+              return;
+            }
+            mLocationText.setText(cityStruct.getmName());
+            city.setName(cityStruct.getmName());
+            city.setProvince(cityStruct.getmProvince());
+            city.setLatitude(Double.valueOf(cityStruct.getmCx()));
+            city.setLongtitude(Double.valueOf(cityStruct.getmCy()));
+            break;
+        }
     }
 
 

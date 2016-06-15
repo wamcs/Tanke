@@ -77,7 +77,8 @@ public class MapHelper implements
   private boolean isInfoWindowShown = false;
 
   // default delta value, the distance between info window and marker
-  private static final int DEFAULT_INFO_WINDOW_DELTA_Y = -70;
+  private static final int DEFAULT_INFO_WINDOW_DELTA_Y = Display.dip2px(-25);
+  public static final int DEFAULT_ANIMATION_DURATION = 1000;
 
   public MapHelper(Context context, TextureMapView view) {
     if (view == null) {
@@ -134,7 +135,7 @@ public class MapHelper implements
       return false;
     }
     MapStatusUpdate update = MapStatusUpdateFactory.newLatLngZoom(oldMapStatus.target, zoom + 1);
-    mBaiduMap.animateMapStatus(update);
+    mBaiduMap.animateMapStatus(update, DEFAULT_ANIMATION_DURATION);
     return true;
   }
 
@@ -146,7 +147,7 @@ public class MapHelper implements
       return false;
     }
     MapStatusUpdate update = MapStatusUpdateFactory.newLatLngZoom(oldMapStatus.target, zoom - 1);
-    mBaiduMap.animateMapStatus(update);
+    mBaiduMap.animateMapStatus(update, DEFAULT_ANIMATION_DURATION);
     return true;
   }
 
@@ -210,7 +211,7 @@ public class MapHelper implements
     mBaiduMap.setMyLocationData(makeUpLocationData(location));
     currentLatLng = new LatLng(location.getLatitude(), location.getLongitude());
     if (animateToCurrentPositionOnce) {
-      mBaiduMap.animateMapStatus(MapStatusUpdateFactory.newLatLngZoom(currentLatLng, 20));
+      mBaiduMap.animateMapStatus(MapStatusUpdateFactory.newLatLngZoom(currentLatLng, 20), DEFAULT_ANIMATION_DURATION);
       animateToCurrentPositionOnce = false;
     }
     if ((null != lastTimeLatLng) && (DistanceUtil.getDistance(lastTimeLatLng, currentLatLng) > Conf.LOCATION_DISTANCE_THRESHOLD_BOTTOM)
@@ -225,13 +226,13 @@ public class MapHelper implements
   }
 
   public void animateCameraToCurrentTarget() {
-    mBaiduMap.animateMapStatus(MapStatusUpdateFactory.newLatLngZoom(currentAttackPoint.getLatLng(), 20));
+    mBaiduMap.animateMapStatus(MapStatusUpdateFactory.newLatLngZoom(currentAttackPoint.getLatLng(), 20), DEFAULT_ANIMATION_DURATION);
   }
 
   public void animateCameraToMarkerByIndex(int index) {
     if (mPoints != null && index <= currentAttackPoint.getPointIndex()) {
       Point targetPoint = mPoints.get(index);
-      mBaiduMap.animateMapStatus(MapStatusUpdateFactory.newLatLngZoom(targetPoint.getLatLng(), 20));
+      mBaiduMap.animateMapStatus(MapStatusUpdateFactory.newLatLngZoom(targetPoint.getLatLng(), 20), DEFAULT_ANIMATION_DURATION);
     }
   }
 

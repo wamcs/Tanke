@@ -132,7 +132,8 @@ public interface UserService {
       USER_DETAIL_BIRTHDAY,
       USER_DETAIL_SEX,
       USER_DETAIL_HEIGHT,
-      USER_DETAIL_WEIGHT})
+      USER_DETAIL_WEIGHT,
+      USER_DETAIL_LOCATION})
   @Retention(RetentionPolicy.SOURCE)
   @interface UserDetailType {
   }
@@ -142,6 +143,7 @@ public interface UserService {
   public static final int USER_DETAIL_SEX = 3;
   public static final int USER_DETAIL_HEIGHT = 4;
   public static final int USER_DETAIL_WEIGHT = 5;
+  public static final int USER_DETAIL_LOCATION = 6;
 
 
   /**

@@ -29,7 +29,7 @@
             android:layout_margin="@dimen/layout_dialog_date_picker_margin"
             android:text="@string/year"
             android:textColor="@color/white10"
-            android:textSize="20sp"/>
+            android:textSize="16sp"/>
 
         <net.simonvt.numberpicker.NumberPicker
             android:id="@+id/layout_dialog_date_picker_month"
@@ -48,7 +48,7 @@
             android:layout_margin="@dimen/layout_dialog_date_picker_margin"
             android:text="@string/month"
             android:textColor="@color/white10"
-            android:textSize="20sp"/>
+            android:textSize="16sp"/>
 
         <net.simonvt.numberpicker.NumberPicker
             android:id="@+id/layout_dialog_date_picker_day"
@@ -66,7 +66,7 @@
             android:layout_margin="@dimen/layout_dialog_date_picker_margin"
             android:text="@string/day"
             android:textColor="@color/white10"
-            android:textSize="20sp"/>
+            android:textSize="16sp"/>
 
     </LinearLayout>
 

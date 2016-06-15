@@ -52,6 +52,14 @@ public class HistoryGamePlayingController extends GamePlayingController {
     for (RunningRecord record : recordList) {
       if (record.getPointId() == currentAttackPoint.getId()) {
         switch (record.getType()) {
+
+          case GAME_START:
+            if (currentAttackPoint.getPointIndex() == 0) {
+              onReachAttackPoint();
+              onNextPoint();
+            }
+            break;
+
           case POINT_REACH:
             onReachAttackPoint();
             break;
@@ -107,7 +115,9 @@ public class HistoryGamePlayingController extends GamePlayingController {
     List<RunningRecord> result = new ArrayList<>();
     for (RunningRecord record : records) {
       RunningRecord.RECORD_TYPE type = record.getType();
-      if (type == RunningRecord.RECORD_TYPE.POINT_REACH || type == RunningRecord.RECORD_TYPE.POINT_FINISH) {
+      if (type == RunningRecord.RECORD_TYPE.GAME_START ||
+          type == RunningRecord.RECORD_TYPE.POINT_REACH ||
+          type == RunningRecord.RECORD_TYPE.POINT_FINISH) {
         result.add(record);
       }
     }

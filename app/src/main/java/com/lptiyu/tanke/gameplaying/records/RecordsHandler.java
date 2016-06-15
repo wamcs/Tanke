@@ -6,12 +6,20 @@ import android.os.Looper;
 import android.os.Message;
 
 import com.baidu.mapapi.utils.DistanceUtil;
+import com.lptiyu.tanke.global.Accounts;
+import com.lptiyu.tanke.global.AppData;
+import com.lptiyu.tanke.io.net.GameService;
+import com.lptiyu.tanke.io.net.HttpService;
+import com.lptiyu.tanke.io.net.Response;
 import com.lptiyu.tanke.utils.thread;
 
 import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
+import rx.schedulers.Schedulers;
 import timber.log.Timber;
 
 /**
@@ -38,8 +46,6 @@ public class RecordsHandler extends Handler {
 
   private DiskRecords diskRecords;
 
-  private NetworkRecords networkRecords;
-
   private static AtomicInteger mPointIndex = new AtomicInteger(0);
 
   //=========================  PUBLIC INTERFACE  ===============================
@@ -51,7 +57,6 @@ public class RecordsHandler extends Handler {
     gameId = builder.gameId;
     memRecords = builder.memRecords;
     diskRecords = builder.diskRecords;
-    networkRecords = builder.networkRecords;
   }
 
   public void dispatchRunningRecord(RunningRecord record) {
@@ -108,26 +113,32 @@ public class RecordsHandler extends Handler {
     record.setIndex(mPointIndex.getAndAdd(1));
     record.setTeamId(teamId);
     if (mLastRecord != null) {
-      record.setDistance((int)DistanceUtil.getDistance(mLastRecord.getLatLng(), record.getLatLng()));
+      record.setDistance((int) DistanceUtil.getDistance(mLastRecord.getLatLng(), record.getLatLng()));
     }
 
     mLastRecord = record;
     memRecords.add(record);
 
     //TODO : upload record to server, only the special record such as arrive the point or finish the task in the point
-//    networkRecords.sendToNetwork(record, activityId, new FutureCallback<Response<List<RunningRecord>>>() {
-//      @Override
-//      public void onCompleted(final Exception e, final Response<List<RunningRecord>> result) {
-//        mainHandler.post(new Runnable() {
-//          @Override
-//          public void run() {
-//            callback.onCompleted(e, result);
-//          }
-//        });
-//      }
-//    });
-
+    uploadToServer(record);
     diskRecords.appendRecord(record);
+  }
+
+  private void uploadToServer(final RunningRecord record) {
+    HttpService.getGameService()
+        .uploadTeamGameRecords(Accounts.getId(), Accounts.getToken(),
+            gameId, record.getTeamId(), record.getPointId(), record.getTaskId(),
+            String.valueOf(record.getDistance()), String.valueOf(record.getX()), String.valueOf(record.getY()), GameService.TEAM_RECORD, GameService.RECORD_TYPE_GAME_FINISH)
+        .subscribeOn(Schedulers.io())
+        .observeOn(AndroidSchedulers.mainThread())
+        .subscribe(new Action1<Response<Void>>() {
+          @Override
+          public void call(Response<Void> voidResponse) {
+            if (voidResponse.getStatus() == 1) {
+              Timber.d(AppData.globalGson().toJson(record));
+            }
+          }
+        });
   }
 
   public MemRecords getMemRecords() {
@@ -139,8 +150,7 @@ public class RecordsHandler extends Handler {
     private long teamId = Long.MIN_VALUE;
     private MemRecords memRecords;
     private DiskRecords diskRecords;
-    private NetworkRecords networkRecords;
-//    private FutureCallback<Response<List<RunningRecord>>> callback;
+    //    private FutureCallback<Response<List<RunningRecord>>> callback;
     private Handler mainHandler;
 
     public Builder(long gameId, long teamId) {
@@ -168,18 +178,13 @@ public class RecordsHandler extends Handler {
       return this;
     }
 
-    public Builder withNetworkRecords(NetworkRecords val) {
-      networkRecords = val;
-      return this;
-    }
-
     public Builder withMainHandler(Handler val) {
       mainHandler = val;
       return this;
     }
 
     public RecordsHandler build() {
-      if (gameId == Long.MIN_VALUE|| teamId == Integer.MIN_VALUE) {
+      if (gameId == Long.MIN_VALUE || teamId == Integer.MIN_VALUE) {
         throw new IllegalArgumentException("You need to pass in activityId team_id");
       }
 
@@ -193,10 +198,6 @@ public class RecordsHandler extends Handler {
 
       if (mainHandler == null) {
         mainHandler = new Handler(Looper.getMainLooper());
-      }
-
-      if (networkRecords == null) {
-        networkRecords = new NetworkRecords();
       }
 
       HandlerThread thread = new HandlerThread("record-handler");

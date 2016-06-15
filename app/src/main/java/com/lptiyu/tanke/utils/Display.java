@@ -19,6 +19,14 @@ public class Display {
     return AppData.getContext().getResources().getDisplayMetrics();
   }
 
+  public static int width() {
+    DisplayMetrics display = display();
+    if (display == null) {
+      return 0;
+    }
+    return display.widthPixels;
+  }
+
   public static int dip2px(float dp) {
     DisplayMetrics display = display();
     if (display == null) {

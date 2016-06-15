@@ -74,6 +74,7 @@
         <activity android:name=".initialization.ui.GuideActivity">
         </activity>
         <activity android:name=".initialization.ui.CompleteInformationActivity">
+
         </activity>
         <activity android:name=".initialization.ui.SignUpActivity">
         </activity>
@@ -86,6 +87,8 @@
         <activity android:name=".userCenter.ui.UserGamePlayingListActivity">
         </activity>
         <activity android:name=".userCenter.ui.LocateActivity">
+        </activity>
+        <activity android:name=".location.LocateUserActivity">
         </activity>
         <activity android:name=".userCenter.ui.ModifyTextActivity">
         </activity>
@@ -163,6 +166,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".gameplaying.GamePlayingActivity">
+
         </activity>
         <activity android:name=".gameplaying.task.GameTaskActivity">
         </activity>
@@ -170,6 +174,7 @@
         </activity>
         <activity android:name=".gamedata.GameDataActivity">
         </activity>
+
         <service android:name="com.avos.avoscloud.PushService"/>
 
         <receiver android:name="com.avos.avoscloud.AVBroadcastReceiver">

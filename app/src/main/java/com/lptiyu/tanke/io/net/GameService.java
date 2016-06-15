@@ -73,11 +73,11 @@ public interface GameService {
       @Query("content") String content
   );
 
-  public static final int RECORD_TYPE_GAME_START = 1;
-  public static final int RECORD_TYPE_SPOT_REACHED = 2;
-  public static final int RECORD_TYPE_TASK_START = 3;
-  public static final int RECORD_TYPE_TASK_FINISH = 4;
-  public static final int RECORD_TYPE_GAME_FINISH = 5;
+  int RECORD_TYPE_GAME_START = 1;
+  int RECORD_TYPE_SPOT_REACHED = 2;
+  int RECORD_TYPE_TASK_START = 3;
+  int RECORD_TYPE_TASK_FINISH = 4;
+  int RECORD_TYPE_GAME_FINISH = 5;
 
   @IntDef({RECORD_TYPE_GAME_START,
       RECORD_TYPE_SPOT_REACHED,
@@ -86,6 +86,15 @@ public interface GameService {
       RECORD_TYPE_GAME_FINISH})
   @Retention(RetentionPolicy.SOURCE)
   public @interface RecordType {
+  }
+
+  int TEAM_RECORD = 1;
+  int USER_RECORD = 2;
+
+  @IntDef({TEAM_RECORD,
+      USER_RECORD})
+  @Retention(RetentionPolicy.SOURCE)
+  public @interface TeamOrUserRecord{
   }
 
   /**
@@ -110,12 +119,14 @@ public interface GameService {
   Observable<Response<Void>> uploadTeamGameRecords(
       @Query("uid") long uid,
       @Query("token") String token,
-      @Query("game_id") int gameId,
-      @Query("ranks_id") int rankId,
-      @Query("point_id") int pointId,
+      @Query("game_id") long gameId,
+      @Query("ranks_id") long rankId,
+      @Query("point_id") long pointId,
+      @Query("task_id") long taskId,
       @Query("distance") String distanceFromRecords,
       @Query("x") String x,
       @Query("y") String y,
+      @Query("type") @TeamOrUserRecord int type,
       @Query("state") @RecordType int state
       );
 

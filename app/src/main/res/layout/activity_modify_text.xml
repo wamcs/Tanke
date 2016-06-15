@@ -1,27 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+              android:layout_width="match_parent" android:layout_height="match_parent"
+              android:orientation="vertical">
     <android.support.v7.widget.Toolbar
-        style="@style/Toolbar"
         android:id="@id/tool_bar"
+        style="@style/Toolbar"
         >
-        <include layout="@layout/layout_default_toolbar"
-            android:layout_width="320dp"
-            android:layout_height="match_parent" />
-        <com.lptiyu.tanke.widget.CustomTextView
+        <RelativeLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_margin="10dp"
-            android:text="保存"
-            android:id="@id/modify_text_save"
-            android:gravity="center"/>
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/activity_modify_toolbar_imageview_left"
+                android:layout_width="@dimen/activity_game_share_toolbar_button_width_height"
+                android:layout_height="@dimen/activity_game_share_toolbar_button_width_height"
+                android:layout_centerVertical="true"
+                android:contentDescription="@null"
+                android:padding="@dimen/default_toolbar_imageview_padding"
+                android:src="@mipmap/img_last_white"/>
+
+            <com.lptiyu.tanke.widget.CustomTextView
+                android:id="@+id/activity_modify_toolbar_textview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/default_toolbar_textview_margin_left"
+                android:layout_toRightOf="@id/activity_modify_toolbar_imageview_left"
+                android:padding="@dimen/default_toolbar_textview_padding"
+                android:textColor="@color/default_font_color"
+                android:textSize="@dimen/default_toolbar_textview_text_size"/>
+
+            <com.lptiyu.tanke.widget.CustomTextView
+                android:id="@id/modify_text_save"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/activity_game_share_toolbar_imageview_right_margin_right"
+                android:gravity="center"
+                android:padding="@dimen/default_toolbar_imageview_padding"
+                android:text="@string/save"
+                android:textColor="@color/default_font_color"
+                android:textSize="15sp"/>
+
+        </RelativeLayout>
+
     </android.support.v7.widget.Toolbar>
 
     <EditText
+        android:id="@id/modify_text_edit"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="wrap_content"
         android:layout_margin="5dp"
-        android:id="@id/modify_text_edit"/>
+        android:background="@drawable/textfield_activated_holo_blue"
+        android:textColorHint="@color/black05"
+        android:hint="请填写相关信息"
+        android:textColor="@color/black08"
+        android:textSize="16sp"/>
 
 </LinearLayout>
