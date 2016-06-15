@@ -68,7 +68,7 @@ public class LocationFileParser {
       }
 
       if (null == isr) {
-        isr = new InputStreamReader(context.getResources().getAssets().open(Conf.DEFAULT_CITY_ASSETS));
+        isr = new InputStreamReader(context.getResources().getAssets().open(Conf.DEFAULT_CITY_FILE_NAME));
       }
       Gson gson = new Gson();
       temp = gson.fromJson(new JsonReader(isr), temp.getClass());

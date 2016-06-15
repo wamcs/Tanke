@@ -32,7 +32,7 @@ public final class Conf {
    * City List File
    */
   public static final String HOT_CITY = "HotCity";
-  public static final String DEFAULT_CITY_ASSETS = "city.json";
+  public static final String DEFAULT_CITY_FILE_NAME = "city.json";
 
   /**
    * User Avatar conf

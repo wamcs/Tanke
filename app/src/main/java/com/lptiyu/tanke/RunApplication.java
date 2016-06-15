@@ -1,6 +1,5 @@
 package com.lptiyu.tanke;
 
-import android.app.Application;
 import android.support.multidex.MultiDex;
 import android.support.multidex.MultiDexApplication;
 
@@ -9,7 +8,6 @@ import com.avos.avoscloud.AVOSCloud;
 import com.avos.avoscloud.PushService;
 import com.baidu.mapapi.SDKInitializer;
 import com.facebook.drawee.backends.pipeline.Fresco;
-import com.lptiyu.tanke.database.DBHelper;
 import com.lptiyu.tanke.global.Accounts;
 import com.lptiyu.tanke.global.AppData;
 import com.lptiyu.tanke.global.Conf;
@@ -65,11 +63,11 @@ public class RunApplication extends MultiDexApplication {
   }
 
   private void readLocationFile() {
-    if (LocationFileParser.init(getApplicationContext(), LocationFileParser.FILE_TYPE_FROM_DIR, Conf.DEFAULT_CITY_ASSETS)) {
+    if (LocationFileParser.init(getApplicationContext(), LocationFileParser.FILE_TYPE_FROM_DIR, Conf.DEFAULT_CITY_FILE_NAME)) {
       Timber.d("Loading Location file from Dir success");
     } else {
       Timber.d("Start Loading Default Assert");
-      LocationFileParser.init(getApplicationContext(), LocationFileParser.FILE_TYPE_FROM_ASSETS, Conf.DEFAULT_CITY_ASSETS);
+      LocationFileParser.init(getApplicationContext(), LocationFileParser.FILE_TYPE_FROM_ASSETS, Conf.DEFAULT_CITY_FILE_NAME);
     }
   }
 }

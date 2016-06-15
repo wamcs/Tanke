@@ -12,6 +12,7 @@ import com.lptiyu.tanke.MainActivityController;
 import com.lptiyu.tanke.R;
 import com.lptiyu.tanke.base.recyclerview.BaseListFragmentController;
 import com.lptiyu.tanke.global.Accounts;
+import com.lptiyu.tanke.global.Conf;
 import com.lptiyu.tanke.io.net.HttpService;
 import com.lptiyu.tanke.io.net.Response;
 import com.lptiyu.tanke.pojo.City;
@@ -48,8 +49,6 @@ public class GameDisplayController extends BaseListFragmentController<GameDispla
   GameDisplayAdapter adapter;
 
   private String requestLocation;
-
-  public static final int LOCATION_REQUEST_CODE = 0x1;
 
   public static final int SCANNER_REQUEST_CODE = 0x2;
 
@@ -213,7 +212,7 @@ public class GameDisplayController extends BaseListFragmentController<GameDispla
 
   @OnClick(R.id.location)
   void clickLocation() {
-    startActivityForResult(new Intent(getContext(), LocateActivity.class), LOCATION_REQUEST_CODE);
+    startActivityForResult(new Intent(getContext(), LocateActivity.class), Conf.REQUEST_CODE_LOCATION);
   }
 
   @OnClick(R.id.scanner)
@@ -231,7 +230,7 @@ public class GameDisplayController extends BaseListFragmentController<GameDispla
       return;
     }
     switch (requestCode) {
-      case LOCATION_REQUEST_CODE:
+      case Conf.REQUEST_CODE_LOCATION:
         String loc = data.getStringExtra(getString(R.string.main_page_location_key));
         if (loc == null) {
           break;

@@ -8,6 +8,7 @@ import android.widget.TextView;
 import com.lptiyu.tanke.R;
 import com.lptiyu.tanke.pojo.City;
 import com.lptiyu.tanke.utils.Inflater;
+import com.lptiyu.tanke.widget.CustomTextView;
 
 import java.util.List;
 
@@ -24,7 +25,7 @@ public class LocateListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     public class CityViewHolder extends RecyclerView.ViewHolder{
 
         @BindView(R.id.locate_activity_list_normal_item)
-        TextView mCity;
+        CustomTextView mCity;
 
         public CityViewHolder(View itemView) {
             super(itemView);
@@ -47,12 +48,13 @@ public class LocateListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        final CityViewHolder holder1 = (CityViewHolder) holder;
-        holder1.mCity.setText(list.get(position).getName());
+        CityViewHolder holder1 = (CityViewHolder) holder;
+        final int positionFinal = holder1.getAdapterPosition();
+        holder1.mCity.setText(list.get(positionFinal).getName());
         holder1.mCity.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                listener.OnCityItemClick(holder1.getAdapterPosition());
+                listener.OnCityItemClick(positionFinal);
             }
         });
     }

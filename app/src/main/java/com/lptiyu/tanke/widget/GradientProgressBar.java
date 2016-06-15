@@ -9,6 +9,8 @@ import android.view.View;
 
 import com.lptiyu.tanke.R;
 
+import timber.log.Timber;
+
 /**
  * EMAIL : danxionglei@foxmail.com
  * DATE : 16/6/4
@@ -56,5 +58,6 @@ public class GradientProgressBar extends View {
 
   public void setProgress(float progress) {
     this.progress = progress;
+    invalidate();
   }
 }
