@@ -22,7 +22,7 @@
             style="@style/NPWidget.Holo.Light.NumberPicker"
             />
 
-        <TextView
+        <com.lptiyu.tanke.widget.CustomTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
@@ -41,7 +41,7 @@
             />
 
 
-        <TextView
+        <com.lptiyu.tanke.widget.CustomTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
@@ -59,7 +59,7 @@
             style= "@style/NPWidget.Holo.Light.NumberPicker"
             />
 
-        <TextView
+        <com.lptiyu.tanke.widget.CustomTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
@@ -80,7 +80,7 @@
         android:padding="5dp">
 
 
-        <TextView
+        <com.lptiyu.tanke.widget.CustomTextView
             android:id="@+id/layout_dialog_date_picker_cancel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -88,7 +88,7 @@
             android:padding="8dp"
             android:text="取消"/>
 
-        <TextView
+        <com.lptiyu.tanke.widget.CustomTextView
             android:id="@+id/layout_dialog_date_picker_ensure"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

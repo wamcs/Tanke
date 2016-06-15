@@ -15,12 +15,12 @@
         android:background="@color/label_header_bg_color"
         android:clickable="false"
         android:orientation="vertical">
-        <TextView
+        <com.lptiyu.tanke.widget.CustomTextView
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="@color/divider_color"/>
 
-        <TextView
+        <com.lptiyu.tanke.widget.CustomTextView
             android:layout_width="wrap_content"
             android:clickable="false"
             android:layout_height="wrap_content"
@@ -44,7 +44,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-        <TextView
+        <com.lptiyu.tanke.widget.CustomTextView
             android:id="@id/locate_activity_locate_city"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -56,7 +56,7 @@
             android:textColor="@color/black08"
             android:textSize="18sp"/>
 
-        <TextView
+        <com.lptiyu.tanke.widget.CustomTextView
             android:id="@id/locate_activity_locate_error_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -75,12 +75,12 @@
         android:background="@color/label_header_bg_color"
         android:clickable="false"
         android:orientation="vertical">
-        <TextView
+        <com.lptiyu.tanke.widget.CustomTextView
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="@color/divider_color"/>
 
-        <TextView
+        <com.lptiyu.tanke.widget.CustomTextView
             android:layout_width="wrap_content"
             android:clickable="false"
             android:layout_height="wrap_content"

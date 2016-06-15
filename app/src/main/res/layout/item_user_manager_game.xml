@@ -21,14 +21,14 @@
         android:layout_toRightOf="@id/image_view"
         android:orientation="horizontal">
 
-        <TextView
+        <com.lptiyu.tanke.widget.CustomTextView
             android:id="@+id/game_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="游戏名称"
             />
 
-        <TextView
+        <com.lptiyu.tanke.widget.CustomTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingLeft="10dp"
@@ -36,7 +36,7 @@
             android:text=":"
             />
 
-        <TextView
+        <com.lptiyu.tanke.widget.CustomTextView
             android:id="@+id/task_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -45,7 +45,7 @@
 
     </LinearLayout>
 
-    <TextView
+    <com.lptiyu.tanke.widget.CustomTextView
         android:id="@+id/detail_message"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

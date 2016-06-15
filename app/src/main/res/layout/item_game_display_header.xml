@@ -29,7 +29,7 @@
             app:civ_shadow_color="@color/purple_shadow_color"
             />
 
-        <TextView
+        <com.lptiyu.tanke.widget.CustomTextView
             android:id="@+id/middle_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -59,7 +59,7 @@
             app:civ_shadow_color="@color/purple_shadow_color"
             />
 
-        <TextView
+        <com.lptiyu.tanke.widget.CustomTextView
             android:id="@+id/left_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -90,7 +90,7 @@
             app:civ_shadow_radius="15"
             />
 
-        <TextView
+        <com.lptiyu.tanke.widget.CustomTextView
             android:id="@+id/right_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

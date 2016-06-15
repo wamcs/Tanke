@@ -22,7 +22,7 @@
         android:orientation="horizontal"
         android:padding="5dp">
 
-        <TextView
+        <com.lptiyu.tanke.widget.CustomTextView
             android:id="@+id/layout_dialog_number_picker_cancel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -30,7 +30,7 @@
             android:padding="8dp"
             android:text="@string/dismiss"/>
 
-        <TextView
+        <com.lptiyu.tanke.widget.CustomTextView
             android:id="@+id/layout_dialog_number_picker_ensure"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

@@ -7,7 +7,7 @@
     android:background="@drawable/img_infowindow_bg"
     android:orientation="horizontal">
 
-    <TextView
+    <com.lptiyu.tanke.widget.CustomTextView
         android:id="@+id/start_task"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

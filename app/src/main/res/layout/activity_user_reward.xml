@@ -7,7 +7,7 @@
     android:orientation="vertical"
     tools:context="com.lptiyu.tanke.userCenter.UserRewardActivity">
 
-    <TextView
+    <com.lptiyu.tanke.widget.CustomTextView
         style="@style/TextAppearance.Toolbar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/default_toolbar_height"

@@ -20,7 +20,7 @@
             android:layout_centerVertical="true"
             android:src="@mipmap/img_last_blue" />
 
-        <TextView
+        <com.lptiyu.tanke.widget.CustomTextView
             android:textColor="@color/grey01"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -48,7 +48,7 @@
         android:orientation="vertical"
         android:layout_alignParentBottom="true">
 
-        <TextView
+        <com.lptiyu.tanke.widget.CustomTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/next"
@@ -58,7 +58,7 @@
             android:textColor="@color/white10"
             />
 
-        <TextView
+        <com.lptiyu.tanke.widget.CustomTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/ps"

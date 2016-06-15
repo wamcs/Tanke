@@ -20,8 +20,8 @@ import com.lptiyu.tanke.pojo.UserDetails;
 import com.lptiyu.tanke.userCenter.ui.UserGameFinishedListActivity;
 import com.lptiyu.tanke.userCenter.ui.UserGamePlayingListActivity;
 import com.lptiyu.tanke.userCenter.ui.ModifyUserInfoActivity;
+import com.lptiyu.tanke.widget.CircularImageView;
 import com.lptiyu.tanke.widget.GradientProgressBar;
-import com.mikhaellopez.circularimageview.CircularImageView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

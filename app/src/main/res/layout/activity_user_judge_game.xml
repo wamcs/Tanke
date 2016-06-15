@@ -6,7 +6,7 @@
     android:orientation="vertical">
 
 
-    <TextView
+    <com.lptiyu.tanke.widget.CustomTextView
         android:id="@+id/tool_bar_textView"
         style="@style/TextAppearance.Toolbar"
         android:layout_width="match_parent"

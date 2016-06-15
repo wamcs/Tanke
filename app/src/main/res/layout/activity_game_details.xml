@@ -18,19 +18,19 @@
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="10dp"
+            android:layout_marginLeft="20dp"
             android:background="@null"
             android:scaleType="centerInside"
             android:src="@mipmap/game_details_go_back_btn"
             />
 
-        <TextView
+        <com.lptiyu.tanke.widget.CustomTextView
             android:id="@+id/game_detail_title"
+            style="@style/TextAppearance.Toolbar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:text="华科森林记"
-            style="@style/TextAppearance.Toolbar"
             />
 
         <ImageView
@@ -39,26 +39,32 @@
             android:layout_height="20dp"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_marginRight="10dp"
+            android:layout_marginRight="20dp"
             android:scaleType="centerInside"
             android:src="@mipmap/game_details_share_btn"
             />
     </RelativeLayout>
 
-    <ImageView
-        android:id="@+id/image_cover"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="179dp"
-        android:layout_below="@id/relative_layout"
-        android:contentDescription="@string/content_description"
-        android:scaleType="centerCrop"
-        android:src="@mipmap/need_to_remove_4_so_big"
-        />
+        android:layout_below="@id/relative_layout">
 
-    <TextView
+        <ImageView
+            android:id="@+id/image_cover"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:contentDescription="@string/content_description"
+            android:scaleType="centerCrop"
+            android:src="@mipmap/need_to_remove_4_so_big"
+            />
+
+    </RelativeLayout>
+
+    <com.lptiyu.tanke.widget.CustomTextView
         android:id="@+id/team_type_text"
         android:layout_width="match_parent"
-        android:layout_height="17dp"
+        android:layout_height="20dp"
         android:layout_below="@id/relative_layout"
         android:background="#befafafa"
         android:gravity="center"
@@ -67,7 +73,7 @@
         android:textSize="13sp"
         />
 
-    <TextView
+    <com.lptiyu.tanke.widget.CustomTextView
         android:id="@+id/game_detail_ensure"
         android:layout_width="match_parent"
         android:layout_height="48dp"
@@ -88,7 +94,7 @@
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="25dp"
+            android:layout_marginTop="33dp"
             android:background="@drawable/game_detail_bg"
             android:overScrollMode="never"
             android:paddingTop="15dp">
@@ -101,7 +107,13 @@
                 android:paddingRight="20dp"
                 >
 
-                <TextView
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                </LinearLayout>
+
+                <com.lptiyu.tanke.widget.CustomTextView
                     android:id="@+id/game_detail_location"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -112,7 +124,7 @@
                     android:textColor="@color/grey05"
                     android:textSize="15sp"/>
 
-                <TextView
+                <com.lptiyu.tanke.widget.CustomTextView
                     android:id="@+id/game_detail_time"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -125,19 +137,19 @@
                     android:textSize="14.5sp"
                     />
 
-                <TextView
+                <com.lptiyu.tanke.widget.CustomTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="15dp"
-                    android:drawableLeft="@mipmap/game_detail_dot"
+                    android:drawableLeft="@mipmap/game_details_1"
                     android:drawablePadding="10dp"
                     android:gravity="center_vertical"
                     android:text="简介"
-                    android:textColor="@color/grey05"
+                    android:textColor="@color/grey02"
                     android:textSize="15sp"
                     android:textStyle="bold"/>
 
-                <TextView
+                <com.lptiyu.tanke.widget.CustomTextView
                     android:id="@+id/game_detail_intro"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -148,19 +160,19 @@
                     android:textColor="@color/grey05"
                     android:textSize="14sp"/>
 
-                <TextView
+                <com.lptiyu.tanke.widget.CustomTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="15dp"
-                    android:drawableLeft="@mipmap/game_detail_dot"
+                    android:drawableLeft="@mipmap/game_details_2"
                     android:drawablePadding="10dp"
                     android:gravity="center_vertical"
                     android:text="规则"
-                    android:textColor="@color/grey05"
+                    android:textColor="@color/grey02"
                     android:textSize="15sp"
                     android:textStyle="bold"/>
 
-                <TextView
+                <com.lptiyu.tanke.widget.CustomTextView
                     android:id="@+id/game_detail_rule"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -176,35 +188,41 @@
         </ScrollView>
 
         <RelativeLayout
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="68dp"
+            android:layout_height="68dp"
             android:layout_alignParentRight="true"
-            android:layout_marginRight="22dp"
-            android:background="@drawable/game_details_num_playing_bg">
+            android:layout_marginRight="20dp">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="fitCenter"
+                android:src="@mipmap/blue_round_bg"/>
 
             <LinearLayout
                 android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:orientation="vertical"
-                android:layout_height="wrap_content">
+                android:paddingBottom="5dp">
 
-                <TextView
+                <com.lptiyu.tanke.widget.CustomTextView
                     android:id="@+id/num_playing"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
                     android:maxLines="1"
                     android:text="1"
-                    android:layout_gravity="center_horizontal"
                     android:textColor="@color/white10"
                     android:textSize="18sp"
                     />
 
-                <TextView
+                <com.lptiyu.tanke.widget.CustomTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="人在玩"
                     android:textColor="@color/white07"
-                    android:textSize="10sp"/>
+                    android:textSize="9sp"/>
 
             </LinearLayout>
 

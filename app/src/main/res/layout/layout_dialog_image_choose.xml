@@ -7,7 +7,7 @@
     android:layout_marginRight="@dimen/layout_dialog_margin_left_right"
     android:orientation="vertical">
 
-    <TextView
+    <com.lptiyu.tanke.widget.CustomTextView
         android:id="@id/dialog_user_avatar_take_photo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -23,7 +23,7 @@
         android:paddingRight="10dp"
         android:src="@color/black01"/>
 
-    <TextView
+    <com.lptiyu.tanke.widget.CustomTextView
         android:id="@id/dialog_user_avatar_gallery"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

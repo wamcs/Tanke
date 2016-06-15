@@ -41,7 +41,7 @@
                     android:layout_marginTop="@dimen/complete_arrow_button_margin_y"
                     android:orientation="horizontal">
 
-                    <TextView
+                    <com.lptiyu.tanke.widget.CustomTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
@@ -121,7 +121,7 @@
                 android:layout_gravity="center"
                 android:layout_weight="56">
 
-                <TextView
+                <com.lptiyu.tanke.widget.CustomTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="30dp"
@@ -129,7 +129,7 @@
                     android:textColor="@color/base_text_color"
                     android:textSize="@dimen/complete_gender_text_size" />
 
-                <TextView
+                <com.lptiyu.tanke.widget.CustomTextView
                     android:id="@id/complete_gender_male_button"
                     android:layout_width="@dimen/complete_gender_text_height"
                     android:layout_height="@dimen/complete_gender_text_height"
@@ -140,7 +140,7 @@
                     android:textColor="@color/white10"
                     android:textSize="@dimen/complete_gender_text_size" />
 
-                <TextView
+                <com.lptiyu.tanke.widget.CustomTextView
                     android:id="@id/complete_gender_female_button"
                     android:layout_width="@dimen/complete_gender_text_height"
                     android:layout_height="@dimen/complete_gender_text_height"
@@ -166,11 +166,11 @@
                     android:background="@mipmap/img_complete_item_side"
                     android:orientation="vertical">
 
-                    <TextView
+                    <com.lptiyu.tanke.widget.CustomTextView
                         style="@style/CompleteItemTitle"
                         android:text="@string/height" />
 
-                    <TextView
+                    <com.lptiyu.tanke.widget.CustomTextView
                         android:id="@id/complete_height_text"
                         style="@style/CompleteItemContent"
                         android:text="170CM" />
@@ -190,11 +190,11 @@
                     android:background="@mipmap/img_complete_item_center"
                     android:orientation="vertical">
 
-                    <TextView
+                    <com.lptiyu.tanke.widget.CustomTextView
                         style="@style/CompleteItemTitle"
                         android:text="@string/birthday" />
 
-                    <TextView
+                    <com.lptiyu.tanke.widget.CustomTextView
                         android:id="@id/complete_birthday_text"
                         style="@style/CompleteItemContent"
                         android:text="1980.01.01" />
@@ -214,11 +214,11 @@
                     android:background="@mipmap/img_complete_item_side"
                     android:orientation="vertical">
 
-                    <TextView
+                    <com.lptiyu.tanke.widget.CustomTextView
                         style="@style/CompleteItemTitle"
                         android:text="@string/weight" />
 
-                    <TextView
+                    <com.lptiyu.tanke.widget.CustomTextView
                         android:id="@id/complete_weight_text"
                         style="@style/CompleteItemContent"
                         android:text="60KG" />
@@ -251,7 +251,7 @@
                         android:layout_gravity="center"
                         android:background="@mipmap/img_complete_location" />
 
-                    <TextView
+                    <com.lptiyu.tanke.widget.CustomTextView
                         android:id="@id/complete_location_text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -261,7 +261,7 @@
                         android:textColor="@color/white10"
                         android:textSize="@dimen/complete_location_text_size" />
 
-                    <TextView
+                    <com.lptiyu.tanke.widget.CustomTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"

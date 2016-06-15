@@ -32,14 +32,14 @@
             android:paddingRight="@dimen/item_game_data_task_root_padding_right_left"
             android:paddingTop="@dimen/item_game_data_task_root_padding_top_bottom">
 
-            <TextView
+            <com.lptiyu.tanke.widget.CustomTextView
                 android:id="@+id/item_game_data_task_name"
                 style="@style/GameDataItemText"
                 android:text="小桥流水"
                 android:textColor="@color/colorPrimary"
                 android:textSize="16sp"/>
 
-            <TextView
+            <com.lptiyu.tanke.widget.CustomTextView
                 android:id="@+id/item_game_data_task_type"
                 style="@style/GameDataItemText"
                 android:layout_toRightOf="@id/item_game_data_task_name"
@@ -47,7 +47,7 @@
                 android:textColor="@color/grey04"
                 android:textSize="13sp"/>
 
-            <TextView
+            <com.lptiyu.tanke.widget.CustomTextView
                 android:id="@+id/item_game_data_task_complete_person_num"
                 style="@style/GameDataItemText"
                 android:layout_alignParentRight="true"
@@ -55,7 +55,7 @@
                 android:textColor="@color/colorPrimary"
                 android:textSize="13sp"/>
 
-            <TextView
+            <com.lptiyu.tanke.widget.CustomTextView
                 android:id="@+id/item_game_data_task_complete_time"
                 style="@style/GameDataItemText"
                 android:layout_below="@id/item_game_data_task_name"
@@ -65,7 +65,7 @@
                 android:textColor="@color/grey07"
                 android:textSize="13sp"/>
 
-            <TextView
+            <com.lptiyu.tanke.widget.CustomTextView
                 style="@style/GameDataItemText"
                 android:layout_alignTop="@id/item_game_data_task_complete_time"
                 android:layout_toRightOf="@id/item_game_data_task_complete_time"
@@ -73,7 +73,7 @@
                 android:textColor="@color/colorPrimary"
                 android:textSize="12sp"/>
 
-            <TextView
+            <com.lptiyu.tanke.widget.CustomTextView
                 android:id="@+id/item_game_data_task_complete_consuming_time_pre"
                 style="@style/GameDataItemText"
                 android:layout_below="@id/item_game_data_task_complete_time"
@@ -81,7 +81,7 @@
                 android:textColor="@color/grey04"
                 android:textSize="15sp"/>
 
-            <TextView
+            <com.lptiyu.tanke.widget.CustomTextView
                 android:id="@+id/item_game_data_task_complete_consuming_time"
                 style="@style/GameDataItemText"
                 android:layout_alignTop="@id/item_game_data_task_complete_consuming_time_pre"
@@ -90,7 +90,7 @@
                 android:textColor="@color/grey04"
                 android:textSize="15sp"/>
 
-            <TextView
+            <com.lptiyu.tanke.widget.CustomTextView
                 android:id="@+id/item_game_data_task_exp_pre"
                 style="@style/GameDataItemText"
                 android:layout_below="@id/item_game_data_task_complete_time"
@@ -99,7 +99,7 @@
                 android:textColor="@color/grey06"
                 android:textSize="15sp"/>
 
-            <TextView
+            <com.lptiyu.tanke.widget.CustomTextView
                 android:id="@+id/item_game_data_task_exp"
                 style="@style/GameDataItemText"
                 android:layout_alignTop="@id/item_game_data_task_exp_pre"

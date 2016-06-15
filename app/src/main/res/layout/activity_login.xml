@@ -23,7 +23,7 @@
         android:background="@mipmap/img_login_backgroud"
         android:orientation="vertical">
 
-        <TextView
+        <com.lptiyu.tanke.widget.CustomTextView
             android:id="@+id/login_activity_title"
             android:layout_width="@dimen/login_title_size"
             android:layout_height="0dp"
@@ -79,7 +79,7 @@
                 android:layout_below="@id/login_input_password"
                 android:padding="10dp">
 
-                <TextView
+                <com.lptiyu.tanke.widget.CustomTextView
                     style="@style/loginActivityButton"
                     android:text="@string/login_new_user"
                     />
@@ -94,7 +94,7 @@
                 android:layout_alignParentRight="true"
                 android:layout_height="wrap_content">
 
-                <TextView
+                <com.lptiyu.tanke.widget.CustomTextView
                     style="@style/loginActivityButton"
                     android:layout="@id/login_sign_up_button"
                     android:text="@string/login_forget_password"
@@ -116,7 +116,7 @@
             android:layout_weight="90"
             android:orientation="vertical">
 
-            <TextView
+            <com.lptiyu.tanke.widget.CustomTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"

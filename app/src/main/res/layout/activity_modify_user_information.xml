@@ -14,7 +14,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="60dp">
-        <TextView
+        <com.lptiyu.tanke.widget.CustomTextView
             style="@style/ModifyUserInfoItemTitle"
             android:text="@string/avatar"/>
 
@@ -51,7 +51,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/modify_user_info_item_height">
 
-        <TextView
+        <com.lptiyu.tanke.widget.CustomTextView
             style="@style/ModifyUserInfoItemTitle"
             android:text="@string/nickname"/>
 
@@ -61,7 +61,7 @@
             android:layout_marginRight="@dimen/modify_user_info_item_content_margin"
             android:id="@id/modify_user_info_nickname_button"
             android:layout_alignParentRight="true">
-            <TextView
+            <com.lptiyu.tanke.widget.CustomTextView
                 style="@style/ModifyUserInfoItemText"
                 android:text="狂战士"
                 android:id="@id/modify_user_info_nickname_text"
@@ -86,7 +86,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/modify_user_info_item_height">
 
-        <TextView
+        <com.lptiyu.tanke.widget.CustomTextView
             style="@style/ModifyUserInfoItemTitle"
             android:text="生日"/>
 
@@ -96,7 +96,7 @@
             android:layout_marginRight="@dimen/modify_user_info_item_content_margin"
             android:id="@id/modify_user_info_birthday_button"
             android:layout_alignParentRight="true">
-            <TextView
+            <com.lptiyu.tanke.widget.CustomTextView
                 style="@style/ModifyUserInfoItemText"
                 android:text="1970-01-01"
                 android:id="@id/modify_user_info_birthday_text"
@@ -121,7 +121,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/modify_user_info_item_height">
 
-        <TextView
+        <com.lptiyu.tanke.widget.CustomTextView
             style="@style/ModifyUserInfoItemTitle"
             android:text="@string/gender"/>
 
@@ -131,7 +131,7 @@
             android:layout_marginRight="@dimen/modify_user_info_item_content_margin"
             android:id="@id/modify_user_info_gender_button"
             android:layout_alignParentRight="true">
-            <TextView
+            <com.lptiyu.tanke.widget.CustomTextView
                 style="@style/ModifyUserInfoItemText"
                 android:text="男"
                 android:id="@id/modify_user_info_gender_text"
@@ -156,7 +156,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/modify_user_info_item_height">
 
-        <TextView
+        <com.lptiyu.tanke.widget.CustomTextView
             style="@style/ModifyUserInfoItemTitle"
             android:text="@string/height"/>
 
@@ -166,7 +166,7 @@
             android:layout_marginRight="@dimen/modify_user_info_item_content_margin"
             android:id="@id/modify_user_info_height_button"
             android:layout_alignParentRight="true">
-            <TextView
+            <com.lptiyu.tanke.widget.CustomTextView
                 style="@style/ModifyUserInfoItemText"
                 android:text="177cm"
                 android:id="@id/modify_user_info_height_text"
@@ -191,7 +191,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/modify_user_info_item_height">
 
-        <TextView
+        <com.lptiyu.tanke.widget.CustomTextView
             style="@style/ModifyUserInfoItemTitle"
             android:text="@string/weight"/>
 
@@ -201,7 +201,7 @@
             android:layout_marginRight="@dimen/modify_user_info_item_content_margin"
             android:id="@id/modify_user_info_weight_button"
             android:layout_alignParentRight="true">
-            <TextView
+            <com.lptiyu.tanke.widget.CustomTextView
                 style="@style/ModifyUserInfoItemText"
                 android:text="75kg"
                 android:id="@id/modify_user_info_weight_text"
@@ -226,7 +226,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/modify_user_info_item_height">
 
-        <TextView
+        <com.lptiyu.tanke.widget.CustomTextView
             style="@style/ModifyUserInfoItemTitle"
             android:text="所在地"/>
 
@@ -236,7 +236,7 @@
             android:layout_marginRight="@dimen/modify_user_info_item_content_margin"
             android:id="@id/modify_user_info_location_button"
             android:layout_alignParentRight="true">
-            <TextView
+            <com.lptiyu.tanke.widget.CustomTextView
                 style="@style/ModifyUserInfoItemText"
                 android:text="湖北武汉"
                 android:id="@id/modify_user_info_location_text"

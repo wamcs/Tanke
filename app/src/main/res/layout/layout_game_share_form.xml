@@ -17,12 +17,12 @@
             android:layout_height="wrap_content"
             android:layout_weight="1">
 
-            <TextView
+            <com.lptiyu.tanke.widget.CustomTextView
                 android:id="@+id/layout_game_share_form_time"
                 style="@style/ShareActivityTextData"
                 android:text="00:03:07"/>
 
-            <TextView
+            <com.lptiyu.tanke.widget.CustomTextView
                 style="@style/ShareActivityTextTitle"
                 android:layout_below="@id/layout_game_share_form_time"
                 android:text="@string/total_time"/>
@@ -36,12 +36,12 @@
             android:layout_height="wrap_content"
             android:layout_weight="1">
 
-            <TextView
+            <com.lptiyu.tanke.widget.CustomTextView
                 android:id="@+id/layout_game_share_form_speed"
                 style="@style/ShareActivityTextData"
                 android:text="275'41''"/>
 
-            <TextView
+            <com.lptiyu.tanke.widget.CustomTextView
                 style="@style/ShareActivityTextTitle"
                 android:layout_below="@id/layout_game_share_form_speed"
                 android:text="@string/avarange_speed"/>
@@ -55,12 +55,12 @@
             android:layout_height="wrap_content"
             android:layout_weight="1">
 
-            <TextView
+            <com.lptiyu.tanke.widget.CustomTextView
                 android:id="@+id/layout_game_share_form_calorie"
                 style="@style/ShareActivityTextData"
                 android:text="25.6"/>
 
-            <TextView
+            <com.lptiyu.tanke.widget.CustomTextView
                 style="@style/ShareActivityTextTitle"
                 android:layout_below="@id/layout_game_share_form_calorie"
                 android:text="@string/calorie"/>
@@ -74,12 +74,12 @@
             android:layout_height="wrap_content"
             android:layout_weight="1">
 
-            <TextView
+            <com.lptiyu.tanke.widget.CustomTextView
                 android:id="@+id/layout_game_share_form_exp"
                 style="@style/ShareActivityTextData"
                 android:text="60 exp"/>
 
-            <TextView
+            <com.lptiyu.tanke.widget.CustomTextView
                 style="@style/ShareActivityTextTitle"
                 android:layout_below="@id/layout_game_share_form_exp"
                 android:text="@string/total_exp"/>
@@ -97,7 +97,7 @@
         android:layout_marginBottom="20dp"
         android:paddingLeft="25dp">
 
-        <TextView
+        <com.lptiyu.tanke.widget.CustomTextView
             android:id="@+id/layout_game_share_form_distance"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -105,7 +105,7 @@
             android:textColor="@color/default_font_color"
             android:textSize="30sp"/>
 
-        <TextView
+        <com.lptiyu.tanke.widget.CustomTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toRightOf="@id/layout_game_share_form_distance"
@@ -114,7 +114,7 @@
             android:textColor="@color/default_font_color"
             android:textSize="30sp"/>
 
-        <TextView
+        <com.lptiyu.tanke.widget.CustomTextView
             android:id="@+id/layout_game_share_form_other_team_info"
             style="@style/ShareActivityTextData"
             android:layout_alignLeft="@id/layout_game_share_form_distance"
