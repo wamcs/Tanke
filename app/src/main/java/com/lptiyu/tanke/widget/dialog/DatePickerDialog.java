@@ -45,7 +45,6 @@ public class DatePickerDialog extends BaseDialog {
     init();
   }
 
-
   private void init() {
     mYearPicker.setMaxValue(Conf.MAX_BIIRTHDAY_YEAR);
     mYearPicker.setMinValue(Conf.MIN_BIRTHDAY_YEAR);
@@ -89,7 +88,6 @@ public class DatePickerDialog extends BaseDialog {
     }
   }
 
-
   @Override
   public BaseDialog setCustomView(int resId, Context context) {
     View v = Inflater.inflate(resId, null, false);
@@ -102,8 +100,6 @@ public class DatePickerDialog extends BaseDialog {
     return super.setCustomView(view, context);
   }
 
-
-
   public void setOnDateChoosedListener(OnDateChoosedListener listener) {
     mListener = listener;
   }
@@ -115,8 +111,10 @@ public class DatePickerDialog extends BaseDialog {
 
   @OnClick(R.id.layout_dialog_date_picker_ensure)
   void clickEnsure() {
-    String date = mYearPicker.getValue() + "." + mMonthPicker.getValue() + "." + mDayPicker.getValue();
-    mListener.onDateChoosed(date);
+    if (mListener != null) {
+      String date = mYearPicker.getValue() + "." + mMonthPicker.getValue() + "." + mDayPicker.getValue();
+      mListener.onDateChoosed(date);
+    }
     dismiss();
   }
 

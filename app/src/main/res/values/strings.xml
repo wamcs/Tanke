@@ -149,6 +149,7 @@
     <string name="meter">米</string>
 
     <!-- ModifyInfo Text Area-->
+    <string name="save">保存</string>
     <string name="change_nickname">更改姓名</string>
     <string name="change_height">更改身高</string>
     <string name="change_weight">更改体重</string>

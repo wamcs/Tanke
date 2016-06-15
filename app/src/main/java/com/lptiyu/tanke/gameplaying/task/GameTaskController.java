@@ -87,7 +87,6 @@ public class GameTaskController extends ActivityController {
     mToolbarTitle.setText(currentTask.getTaskName());
     resumeFromMemRecords();
     initViewPager();
-    RecordsUtils.cleanCachedRecords();
   }
 
   private void resumeFromMemRecords() {

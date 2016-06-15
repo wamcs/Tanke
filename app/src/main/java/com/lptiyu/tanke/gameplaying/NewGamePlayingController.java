@@ -23,6 +23,5 @@ public class NewGamePlayingController extends GamePlayingController {
     currentAttackPoint = mPoints.get(currentAttackPointIndex);
     mapHelper.initMapFlow();
     mLoadingDialog.dismiss();
-    RecordsUtils.dispatchTypeRecord(currentAttackPointIndex, currentAttackPoint.getId(), 0, RunningRecord.RECORD_TYPE.GAME_START);
   }
 }

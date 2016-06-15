@@ -31,7 +31,7 @@ import rx.schedulers.Schedulers;
  */
 public class ModifyTextController extends ActivityController {
 
-  @BindView(R.id.default_tool_bar_textview)
+  @BindView(R.id.activity_modify_toolbar_textview)
   TextView mTitle;
   @BindView(R.id.modify_text_edit)
   EditText mEditText;
@@ -81,7 +81,7 @@ public class ModifyTextController extends ActivityController {
     }
   }
 
-  @OnClick(R.id.default_tool_bar_imageview)
+  @OnClick(R.id.activity_modify_toolbar_imageview_left)
   void back() {
     getActivity().setResult(0);
     finish();

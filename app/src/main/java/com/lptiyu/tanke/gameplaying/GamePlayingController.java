@@ -180,7 +180,7 @@ public abstract class GamePlayingController extends ActivityController implement
       ToastUtil.TextToast("您已经完成了所有的攻击点");
       mTracingHelper.stop();
       if (!RecordsUtils.isGameFinishedFromDisk(gameId)) {
-        RecordsUtils.dispatchTypeRecord(new RunningRecord.Builder().type(RunningRecord.RECORD_TYPE.GAME_FINISH).build());
+        RecordsUtils.dispatchTypeRecord(currentAttackPointIndex, currentAttackPoint.getId(), 0, RunningRecord.RECORD_TYPE.GAME_FINISH);
         startGameDataActivity();
       }
     }
@@ -332,6 +332,11 @@ public abstract class GamePlayingController extends ActivityController implement
         ToastUtil.TextToast("您还未到达该攻击点");
         return;
       }
+    } else {
+      if (point.getPointIndex() == 0) {
+        ToastUtil.TextToast("游戏已经开始");
+        return;
+      }
     }
     if (mTimingTaskHelper.isTimingTask()) {
       ToastUtil.TextToast("请先完成当前定时任务");
@@ -360,13 +365,20 @@ public abstract class GamePlayingController extends ActivityController implement
             break;
 
           case USER_ACTION:
+            if (isGameFinished) {
+              return;
+            }
             int clickedPointIndex = data.getIntExtra(Conf.IS_POINT_TASK_ALL_FINISHED_INDEX, -1);
             if (clickedPointIndex != currentAttackPointIndex) {
               return;
             }
             boolean isAllTaskFinished = data.getBooleanExtra(Conf.IS_POINT_TASK_ALL_FINISHED, false);
             if (isAllTaskFinished) {
-              RecordsUtils.dispatchTypeRecord(currentAttackPointIndex, mPoints.get(currentAttackPointIndex).getId(), 0, RunningRecord.RECORD_TYPE.POINT_FINISH);
+              if (currentAttackPointIndex == 0) {
+                RecordsUtils.dispatchTypeRecord(currentAttackPointIndex, currentAttackPoint.getId(), 0, RunningRecord.RECORD_TYPE.GAME_START);
+              } else {
+                RecordsUtils.dispatchTypeRecord(currentAttackPointIndex, mPoints.get(currentAttackPointIndex).getId(), 0, RunningRecord.RECORD_TYPE.POINT_FINISH);
+              }
               onNextPoint();
               mapHelper.animateCameraToCurrentTarget();
             }

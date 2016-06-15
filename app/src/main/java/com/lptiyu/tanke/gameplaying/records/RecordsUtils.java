@@ -20,7 +20,6 @@ public class RecordsUtils {
   private static RunningRecord.Builder runningRecordBuilder;
   private static RecordsHandler mRecordsHandler;
   private static LatLng currentLatLng = new LatLng(0, 0);
-  private static List<RunningRecord> mCachedRecords;
 
   private RecordsUtils() {
   }
@@ -28,39 +27,17 @@ public class RecordsUtils {
   public static void initRecordsHandler(RecordsHandler recordsHandler) {
     mRecordsHandler = recordsHandler;
     runningRecordBuilder = new RunningRecord.Builder();
-    mCachedRecords = new ArrayList<>();
   }
 
   public static void setCurrentLatLng(LatLng currentLatLng) {
     RecordsUtils.currentLatLng = currentLatLng;
   }
 
-  public static void cacheTypeRecord(RunningRecord record) {
-    if (record == null) {
-      return;
-    }
-    mCachedRecords.add(record);
-  }
-
-  public static void cleanCachedRecords() {
-    if (mCachedRecords != null) {
-      mCachedRecords.clear();
-    }
-  }
-
-  public static void dispatchCachedRecords() {
-    for (RunningRecord record : mCachedRecords) {
-      dispatchTypeRecord(record);
-    }
-    cleanCachedRecords();
-  }
-
   public static void dispatchTypeRecord(int pointIndex, long pointId, long taskId, RunningRecord.RECORD_TYPE type) {
     RunningRecord record = initPointRecord(currentLatLng.latitude, currentLatLng.longitude, pointId, taskId, type);
     if (pointIndex == 0) {
-      cacheTypeRecord(record);
-      if (type == RunningRecord.RECORD_TYPE.POINT_FINISH) {
-        dispatchCachedRecords();
+      if (type == RunningRecord.RECORD_TYPE.GAME_START) {
+        dispatchTypeRecord(record);
       }
     } else {
       dispatchTypeRecord(record);

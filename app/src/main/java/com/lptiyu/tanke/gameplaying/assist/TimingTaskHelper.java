@@ -89,8 +89,13 @@ public class TimingTaskHelper implements
         if (taskIds != null && taskIds.size() != 0) {
           long pointId = lastPoint.getId();
           long taskId = Long.valueOf(taskIds.get(taskIds.size() - 1));
-          RecordsUtils.dispatchTypeRecord(lastPoint.getPointIndex(), pointId, taskId, RunningRecord.RECORD_TYPE.TASK_FINISH);
-          RecordsUtils.dispatchTypeRecord(lastPoint.getPointIndex(), pointId, 0, RunningRecord.RECORD_TYPE.POINT_FINISH);
+          int pointIndex = lastPoint.getPointIndex();
+          RecordsUtils.dispatchTypeRecord(pointIndex, pointId, taskId, RunningRecord.RECORD_TYPE.TASK_FINISH);
+          if (pointIndex == 0) {
+            RecordsUtils.dispatchTypeRecord(pointIndex, pointId, 0, RunningRecord.RECORD_TYPE.GAME_START);
+          } else {
+            RecordsUtils.dispatchTypeRecord(pointIndex, pointId, 0, RunningRecord.RECORD_TYPE.POINT_FINISH);
+          }
         }
       }
     }
