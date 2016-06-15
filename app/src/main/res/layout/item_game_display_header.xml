@@ -4,35 +4,36 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/jelly_view"
     android:layout_width="match_parent"
-    android:layout_height="150dp"
+    android:layout_height="172dp"
     >
 
     <LinearLayout
         android:id="@+id/middle_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="6dp"
+        android:layout_marginRight="6dp"
         android:gravity="center_horizontal"
         android:orientation="vertical">
 
         <com.lptiyu.tanke.widget.CircularImageView
             android:id="@+id/middle_image_view"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
+            android:layout_width="125dp"
+            android:layout_height="125dp"
             app:civ_border_color="#fff"
-            app:civ_border_width="3dp"
+            app:civ_border_width="4.5dp"
             app:civ_shadow="true"
-            app:civ_shadow_radius="1"
-            app:civ_shadow_color="@color/grey04"
+            app:civ_shadow_radius="15"
+            app:civ_shadow_color="@color/purple_shadow_color"
             />
 
         <TextView
             android:id="@+id/middle_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="2dp"
             android:lines="1"
             android:maxLength="6"
             />
@@ -42,27 +43,28 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
+        android:layout_marginTop="25dp"
         android:layout_toLeftOf="@id/middle_layout"
         android:gravity="center_horizontal"
         android:orientation="vertical">
 
         <com.lptiyu.tanke.widget.CircularImageView
             android:id="@+id/left_image_view"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
             app:civ_border_color="#fff"
-            app:civ_border_width="3dp"
+            app:civ_border_width="4.5dp"
             app:civ_shadow="true"
-            app:civ_shadow_radius="1"
-            app:civ_shadow_color="@color/grey04"
+            app:civ_shadow_radius="15"
+            app:civ_shadow_color="@color/purple_shadow_color"
             />
 
         <TextView
             android:id="@+id/left_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="3dp"
+            android:textSize="13sp"
             android:lines="1"
             android:maxLength="6"
             />
@@ -72,27 +74,28 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
         android:layout_toRightOf="@id/middle_layout"
         android:gravity="center_horizontal"
+        android:layout_marginTop="25dp"
         android:orientation="vertical">
 
         <com.lptiyu.tanke.widget.CircularImageView
             android:id="@+id/right_image_view"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
             app:civ_border_color="#fff"
-            app:civ_border_width="3dp"
+            app:civ_border_width="4.5dp"
             app:civ_shadow="true"
-            app:civ_shadow_color="@color/grey04"
-            app:civ_shadow_radius="1"
+            app:civ_shadow_color="@color/purple_shadow_color"
+            app:civ_shadow_radius="15"
             />
 
         <TextView
             android:id="@+id/right_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="3dp"
+            android:textSize="13sp"
             android:lines="1"
             android:maxLength="6"
             />

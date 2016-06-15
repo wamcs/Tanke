@@ -178,7 +178,7 @@ public class CircularImageView extends ImageView {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
       setLayerType(LAYER_TYPE_SOFTWARE, null);
     }
-    paintBorder.setShadowLayer(shadowRadius, 0.0f, shadowRadius / 2, shadowColor);
+    paintBorder.setShadowLayer(shadowRadius, 0.0f, 0.0f, shadowColor);
   }
 
   private void updateShader() {

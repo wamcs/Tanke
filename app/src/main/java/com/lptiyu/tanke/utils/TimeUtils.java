@@ -19,7 +19,6 @@ import java.util.Locale;
  */
 public class TimeUtils {
 
-
     public final static long ONE_MINUTE_TIME = 60000L;
     public final static long ONE_HOUR_TIME = ONE_MINUTE_TIME * 60;
     public final static long ONE_DAY_TIME = ONE_HOUR_TIME * 24;
@@ -45,6 +44,10 @@ public class TimeUtils {
         return "大于一天";
     }
 
+    public static String secondsFormat(int seconds) {
+        return timeFormatter.format(seconds);
+    }
+
 
     /**
      * @param date format was yyyy-MM-dd
@@ -68,15 +71,16 @@ public class TimeUtils {
         return timeFormatter2.format(data);
     }
 
-
     /**
      * @param time was HH:mm:ss
      */
     public static Date parseTime(String time) {
+        if (time == null) {
+            return null;
+        }
         try {
             return timeFormatter.parse(time);
         } catch (ParseException e) {
-//      e.printStackTrace();
             return null;
         }
     }

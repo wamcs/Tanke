@@ -44,6 +44,10 @@
     <color name="grey01">#191919</color>
     <color name="grey00">#FF000000</color>
 
+    <color name="purple_shadow_color">#6489849b</color>
+    <color name="main_page_shadow_color_dark">#12000000</color>
+    <color name="main_page_shadow_color_mid">#09000000</color>
+    <color name="main_page_shadpw_color_light">#0000</color>
 
     <color name="green">#40b553</color>
 

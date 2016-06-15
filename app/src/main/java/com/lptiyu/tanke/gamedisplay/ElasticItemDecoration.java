@@ -52,10 +52,6 @@ public class ElasticItemDecoration extends RecyclerView.ItemDecoration {
     float rl = parent.getPaddingLeft(); // raw left
     float rr = parent.getWidth() - parent.getPaddingRight(); // raw right
 
-    float m = (rl + rr) / 2f;
-    float factor = 0.1f; // 线占总长度的(1 - factor)
-    int left = (int) ((1 - factor) * rl + factor * m);
-    int right = (int) ((1 - factor) * rr + factor * m);
 
 
     final int childCount = parent.getChildCount();
@@ -74,7 +70,7 @@ public class ElasticItemDecoration extends RecyclerView.ItemDecoration {
         shadowDrawable.draw(c);
       } else {
         bottom = top + Display.dip2px(0.5f);
-        c.drawLine(left, top, right, bottom, linePaint);
+        c.drawLine(rl + Display.dip2px(21f), top, rr - Display.dip2px(15), bottom, linePaint);
       }
     }
 

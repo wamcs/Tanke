@@ -79,14 +79,19 @@ public class ElasticHeaderLayout extends RelativeLayout {
     return percent;
   }
 
+  /**
+   * 可以通过调整这个来调整蓝白分界线的位置
+   */
+  private static final float sLines = 0.42f;
+
   @Override
   protected void onDraw(Canvas canvas) {
     super.onDraw(canvas);
     int measuredWidth = getMeasuredWidth();
     int height = getHeight();
     path.reset();
-    path.lineTo(0, 0.5f * height);
-    path.quadTo(measuredWidth / 2f, (percent * 0.6f + 0.5f) * height, measuredWidth, 0.5f * height);
+    path.lineTo(0, sLines * height);
+    path.quadTo(measuredWidth / 2f, (percent * 0.3f + sLines) * height, measuredWidth, sLines * height);
     path.lineTo(measuredWidth, 0);
     canvas.drawPath(path, paint);
   }
