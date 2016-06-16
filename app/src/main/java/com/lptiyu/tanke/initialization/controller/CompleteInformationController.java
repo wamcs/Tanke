@@ -377,10 +377,4 @@ public class CompleteInformationController extends ActivityController implements
     mLocationButton.animate().scaleX(0.9f).scaleY(0.9f).setInterpolator(new BounceInterpolator()).setDuration(100).start();
   }
 
-  @Override
-  public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-    super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-    PermissionDispatcher.onActivityRequestPermissionsResult(((BaseActivity) getActivity()), requestCode, permissions, grantResults);
-  }
-
 }

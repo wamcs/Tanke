@@ -2,6 +2,8 @@ package com.lptiyu.tanke.gamedetails;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.support.v7.app.AlertDialog;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -73,11 +75,12 @@ public class GameDetailsController extends ActivityController {
   @BindView(R.id.num_playing)
   TextView mTextPeoplePlaying;
 
+  AlertDialog mLoadingDialog;
   ProgressDialog progressDialog;
 
   private Subscription subscription;
 
-  private long gameId = 1000000001L;
+  private long gameId;
 
   private GameDetailsEntity mGameDetailsEntity;
 
@@ -127,6 +130,7 @@ public class GameDetailsController extends ActivityController {
       subscription = null;
     }
 
+    showLoadingDialog();
     progressDialog = new ProgressDialog(getContext(), ProgressDialog.STYLE_SPINNER);
     progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
 
@@ -137,6 +141,7 @@ public class GameDetailsController extends ActivityController {
           @Override
           public GameDetailsEntity call(Response<GameDetailsEntity> response) {
             if (response.getStatus() != Response.RESPONSE_OK || response.getData() == null) {
+              mLoadingDialog.dismiss();
               Timber.e("Network Error (%d, %s)", response.getStatus(), response.getInfo());
               throw new IllegalStateException(response.getInfo());
             }
@@ -147,14 +152,29 @@ public class GameDetailsController extends ActivityController {
           @Override
           public void call(GameDetailsEntity gameDetailsEntity) {
             bind(gameDetailsEntity);
+            mLoadingDialog.dismiss();
           }
         }, new Action1<Throwable>() {
           @Override
           public void call(Throwable throwable) {
+            mLoadingDialog.dismiss();
             ToastUtil.TextToast(throwable.getMessage());
           }
         });
 
+  }
+
+  private void showLoadingDialog() {
+    if (mLoadingDialog == null) {
+      View view = LayoutInflater.from(getContext()).inflate(R.layout.layout_loading, null);
+      TextView textView = ((TextView) view.findViewById(R.id.loading_dialog_textview));
+      textView.setText(getString(R.string.loading));
+      mLoadingDialog = new AlertDialog.Builder(getActivity())
+          .setCancelable(false)
+          .setView(view)
+          .create();
+    }
+    mLoadingDialog.show();
   }
 
   @OnClick(R.id.back_btn)
@@ -189,8 +209,8 @@ public class GameDetailsController extends ActivityController {
             if (response.getStatus() != Response.RESPONSE_OK) {
               throw new RuntimeException(response.getInfo());
             }
-            String info = response.getInfo();
-            if (info == null || info.length() == 0) {
+            String data = response.getData();
+            if (data == null || data.length() == 0) {
               Timber.e("当前游戏并未提供下载连接");
               throw new RuntimeException(response.getInfo());
             }
@@ -230,7 +250,10 @@ public class GameDetailsController extends ActivityController {
           public void call(File file) {
             Intent intent = new Intent(getContext(), GamePlayingActivity.class);
             intent.putExtra(Conf.GAME_ID, gameId);
-
+            intent.putExtra(Conf.GAME_TYPE, mGameDetailsEntity.getType());
+            if (mGameDetailsEntity.getType() == GAME_TYPE.TEAMS) {
+              //TODO : need pass team id to GamePlayingActivity when the team game open
+            }
             startActivity(intent);
           }
         }, new Action1<Throwable>() {

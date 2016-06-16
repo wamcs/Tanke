@@ -12,20 +12,11 @@ public class GamePlayingActivity extends BaseActivity {
 
   private GamePlayingController mController;
 
-  //TODO : delete this params, use Long.MIN_VALUE instead
-  static final long TEMP_GAME_ID = 1000000001L;
-
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_game_playing);
-
-    long gameId = getIntent().getLongExtra(Conf.GAME_ID, TEMP_GAME_ID);
-    if (RecordsUtils.isGameStartedFromDisk(gameId)) {
-      mController = new HistoryGamePlayingController(this, getWindow().getDecorView());
-    } else {
-      mController = new NewGamePlayingController(this, getWindow().getDecorView());
-    }
+    mController = new GamePlayingController(this, getWindow().getDecorView());
   }
 
   @Override

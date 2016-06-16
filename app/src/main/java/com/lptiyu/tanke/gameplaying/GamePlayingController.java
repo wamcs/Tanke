@@ -40,6 +40,7 @@ import com.lptiyu.tanke.permission.TargetMethod;
 import com.lptiyu.tanke.trace.tracing.ITracingHelper;
 import com.lptiyu.tanke.trace.tracing.TracingCallback;
 import com.lptiyu.tanke.trace.tracing.TracingHelper;
+import com.lptiyu.tanke.utils.TimeUtils;
 import com.lptiyu.tanke.utils.ToastUtil;
 import com.lptiyu.tanke.utils.VibrateUtils;
 import com.lptiyu.tanke.widget.BaseSpotScrollView;
@@ -58,7 +59,7 @@ import timber.log.Timber;
  *         date: 16-5-22
  *         email: wonderfulifeel@gmail.com
  */
-public abstract class GamePlayingController extends ActivityController implements
+public class GamePlayingController extends ActivityController implements
     BDLocationListener,
     TracingCallback,
     MapHelper.OnMapMarkerClickListener,
@@ -72,7 +73,6 @@ public abstract class GamePlayingController extends ActivityController implement
   ImageView mZoomIn;
   @BindView(R.id.zoom_out)
   ImageView mZoomOut;
-
 
   boolean isReachedAttackPoint = false;
   boolean isGameFinished = false;
@@ -153,11 +153,151 @@ public abstract class GamePlayingController extends ActivityController implement
   }
 
   /**
+   * This method is to resume point history and task history
+   * if the records file of this game exist
+   */
+  private void initRecords() {
+    currentAttackPoint = mPoints.get(currentAttackPointIndex);
+    mapHelper.initMapFlow();
+    if (RecordsUtils.isGameStartedFromDisk(gameId) && RecordsUtils.getmRecordsHandler() != null) {
+      RecordsUtils.getmRecordsHandler().dispatchResumeFromDisc(new RecordsHandler.ResumeCallback() {
+        @Override
+        public void dataResumed(List<RunningRecord> recordList) {
+          if (recordList == null) {
+            Timber.e("Resume from history records error");
+            return;
+          }
+          resumePointRecords(recordList);
+          resumeCurrentPointTaskRecords(recordList);
+          mLoadingDialog.dismiss();
+        }
+      });
+    }
+  }
+
+  /**
+   * Resume point history according to the record list
+   *
+   * @param recordList the records read from rile
+   */
+  private void resumePointRecords(List<RunningRecord> recordList) {
+    recordList = findAppropriateRecords(recordList);
+    for (RunningRecord record : recordList) {
+      if (record.getPointId() == currentAttackPoint.getId()) {
+        switch (record.getType()) {
+
+          case GAME_START:
+            if (currentAttackPoint.getPointIndex() == 0) {
+              onReachAttackPoint();
+              onNextPoint();
+            }
+            break;
+
+          case POINT_REACH:
+            onReachAttackPoint();
+            break;
+
+          case POINT_FINISH:
+            onNextPoint();
+            break;
+        }
+      } else {
+        //TODO : the records are mixed = =, i don't what to do
+      }
+    }
+  }
+
+  /**
+   * Resume the current attack point task record
+   * in order to avoid user exit app when timing task start
+   * according to the task start record, timing task's ending time can be calculate
+   *
+   * @param recordList all task records relate to this attack point
+   */
+  private void resumeCurrentPointTaskRecords(List<RunningRecord> recordList) {
+    recordList = findCurrentPointTaskRecords(recordList);
+    if (recordList != null && recordList.size() != 0) {
+      RunningRecord record = recordList.get(recordList.size() - 1);
+      if (record == null || record.getType() != RunningRecord.RECORD_TYPE.TASK_START) {
+        return;
+      }
+      long currentTaskId = record.getTaskId();
+      Task resultTask = checkIfIsTimingTask(currentTaskId);
+      if (resultTask == null) {
+        return;
+      }
+      long startTimeMillis = record.getCreateTime();
+      long expectEndTimeMillis = Integer.valueOf(resultTask.getPwd()) * TimeUtils.ONE_MINUTE_TIME + startTimeMillis;
+      if (System.currentTimeMillis() < expectEndTimeMillis) {
+        mTimingTaskHelper.startTimingTaskFlow(resultTask, startTimeMillis);
+      } else {
+        mTimingTaskHelper.startTimingTaskFlow(resultTask, Long.MIN_VALUE);
+      }
+      onNextPoint();
+    }
+  }
+
+  /**
+   * This method is to find records about point reach
+   * in the aspect of map, only need to read about point reach record
+   *
+   * @param records all records from disk file
+   * @return the record list about point reach
+   */
+  private List<RunningRecord> findAppropriateRecords(List<RunningRecord> records) {
+    List<RunningRecord> result = new ArrayList<>();
+    for (RunningRecord record : records) {
+      RunningRecord.RECORD_TYPE type = record.getType();
+      if (type == RunningRecord.RECORD_TYPE.GAME_START ||
+          type == RunningRecord.RECORD_TYPE.POINT_REACH ||
+          type == RunningRecord.RECORD_TYPE.POINT_FINISH) {
+        result.add(record);
+      }
+    }
+    return result;
+  }
+
+  /**
+   * This method is to find all records about current attack point
+   *
+   * @param records all records
+   * @return return the record list
+   */
+  private List<RunningRecord> findCurrentPointTaskRecords(List<RunningRecord> records) {
+    List<RunningRecord> result = new ArrayList<>();
+    for (RunningRecord record : records) {
+      RunningRecord.RECORD_TYPE type = record.getType();
+      if ((record.getPointId() == currentAttackPoint.getId()) && (type == RunningRecord.RECORD_TYPE.TASK_START || type == RunningRecord.RECORD_TYPE.TASK_FINISH)) {
+        result.add(record);
+      }
+    }
+    return result;
+  }
+
+  /**
+   * Check whether the task is timing task
+   *
+   * @param taskId
+   * @return null for false, task instance for true
+   */
+  private Task checkIfIsTimingTask(long taskId) {
+    String taskIdStr = String.valueOf(taskId);
+    Task task = currentAttackPoint.getTaskMap().get(taskIdStr);
+    if (task == null) {
+      return null;
+    }
+    if (task.getType() == Task.TASK_TYPE.TIMING) {
+      return task;
+    }
+    return null;
+  }
+
+  /**
    * This method to notify user when they first arrive the attack point
    * vibrate and show the dialog to tell them click the nail in the map
    * then begin the tasks in this attack point
    */
-  void onReachAttackPoint() {
+  private void onReachAttackPoint() {
     if (currentAttackPoint == null || currentAttackPointIndex < 0) {
       Timber.e("current attack point is error");
       return;
@@ -168,7 +308,7 @@ public abstract class GamePlayingController extends ActivityController implement
     mapHelper.animateCameraToCurrentTarget();
   }
 
-  void onNextPoint() {
+  private void onNextPoint() {
     if (currentAttackPointIndex < mPoints.size() - 1) {
       currentAttackPointIndex++;
       currentAttackPoint = mPoints.get(currentAttackPointIndex);
@@ -187,7 +327,7 @@ public abstract class GamePlayingController extends ActivityController implement
     }
   }
 
-  void showAlertDialog(String message) {
+  private void showAlertDialog(String message) {
     if (mAlertDialog == null) {
       mAlertDialog = new AlertDialog.Builder(getActivity())
           .setPositiveButton(getString(R.string.ensure), new DialogInterface.OnClickListener() {
@@ -202,7 +342,7 @@ public abstract class GamePlayingController extends ActivityController implement
     mAlertDialog.show();
   }
 
-  void showLoadingDialog() {
+  private void showLoadingDialog() {
     if (mLoadingDialog == null) {
       View view = LayoutInflater.from(getContext()).inflate(R.layout.layout_loading, null);
       TextView textView = ((TextView) view.findViewById(R.id.loading_dialog_textview));
@@ -390,12 +530,6 @@ public abstract class GamePlayingController extends ActivityController implement
   }
 
   @Override
-  public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-    super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-    PermissionDispatcher.onActivityRequestPermissionsResult(((BaseActivity) getActivity()), requestCode, permissions, grantResults);
-  }
-
-  @Override
   public void onTraceStart() {
     Timber.e("hawk eye service start");
   }
@@ -450,5 +584,4 @@ public abstract class GamePlayingController extends ActivityController implement
     return false;
   }
 
-  protected abstract void initRecords();
 }

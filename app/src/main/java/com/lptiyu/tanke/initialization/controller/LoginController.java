@@ -193,10 +193,10 @@ public class LoginController extends ActivityController {
         final String phoneNumber = mInputPhoneEditText.getText().toString();
         final String password = mInputPasswordEditText.getText().toString();
 
-
         HttpService.getUserService().login(phoneNumber,password)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Action1<Response<UserEntity>>() {
                     @Override
                     public void call(Response<UserEntity> userEntityResponse) {
