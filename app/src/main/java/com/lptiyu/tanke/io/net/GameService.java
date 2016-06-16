@@ -129,8 +129,25 @@ public interface GameService {
       @Query("type") @TeamOrUserRecord int type,
       @Query("state") @RecordType int state
       );
+  /**
+   * 2.34 下载个人赛zip包
+   */
+  @GET("Home/game_zip?type=0")
+  Observable<Response<String>> getIndividualGameZipUrl(@Query("uid")long uid,
+                                                  @Query("token") String token,
+                                                  @Query("game_id") long gameId
+  );
 
 
+  /**
+   * 2.34 下载团队赛zip包
+   */
+  @GET("Home/game_zip?type=1")
+  Observable<Response<String>> getTeamGameZipUrl(@Query("uid")long uid,
+                                                  @Query("token") String token,
+                                                  @Query("game_id") long gameId,
+                                                  @Query("ranks_id") long ranksId
+  );
 
   @Streaming
   @GET("Home/game_zip")
