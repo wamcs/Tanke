@@ -182,6 +182,28 @@
     <!-- UserCenterFragment Dimens-->
     <dimen name="fragment_user_center_item_height">50dp</dimen>
 
+    <!-- SettingActivity Dimens Area-->
+    <dimen name="setting_activity_item_margin_top">30dp</dimen>
+    <dimen name="setting_activity_arrow_margin_right">10dp</dimen>
+
+    <dimen name="setting_activity_item_text_padding_top_bottom">12dp</dimen>
+    <dimen name="setting_activity_item_text_padding_left_right">22dp</dimen>
+    <dimen name="setting_activity_item_text_size">18sp</dimen>
+
+    <dimen name="settting_activity_logout_height">45dp</dimen>
+    <dimen name="setting_activity_logout_text_size">18sp</dimen>
+    <dimen name="setting_activity_logo_margin_bottom">30dp</dimen>
+
+    <!--SwitchButton Dimens Area-->
+    <dimen name="ksw_md_thumb_ripple_size">42dp</dimen>
+    <dimen name="ksw_md_thumb_solid_inset">11dp</dimen>
+    <dimen name="ksw_md_thumb_shadow_inset">11dp</dimen>
+    <dimen name="ksw_md_thumb_shadow_inset_top">11dp</dimen>
+    <dimen name="ksw_md_thumb_shadow_inset_bottom">10dp</dimen>
+    <dimen name="ksw_md_thumb_solid_size">20dp</dimen>
+    <dimen name="ksw_md_thumb_shadow_size">21dp</dimen>
+    <dimen name="ksw_md_thumb_shadow_offset">2dp</dimen>
+
     <!-- Modify User Info Dimes-->
     <dimen name="activity_modify_user_information_user_avatar_root_height">80dp</dimen>
     <dimen name="activity_modify_user_information_avatar_width_height">60dp</dimen>

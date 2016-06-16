@@ -169,5 +169,38 @@
         <item name="android:layout_marginRight">@dimen/modify_user_info_item_content_margin</item>
     </style>
 
+    <!-- SettingActivity Theme Area-->
+    <style name="SettingActivityItemTextBase">
+        <item name="android:paddingTop">@dimen/setting_activity_item_text_padding_top_bottom</item>
+        <item name="android:paddingBottom">@dimen/setting_activity_item_text_padding_top_bottom</item>
+        <item name="android:paddingLeft">@dimen/setting_activity_item_text_padding_left_right</item>
+        <item name="android:paddingRight">@dimen/setting_activity_item_text_padding_left_right</item>
+        <item name="android:textColor">@color/black09</item>
+        <item name="android:textSize">@dimen/setting_activity_item_text_size</item>
+    </style>
+
+    <style name="SettingActivityItemTextNormal" parent="SettingActivityItemTextBase">
+        <item name="android:clickable">true</item>
+        <item name="android:background">@drawable/style_locate_activity_list_item</item>
+    </style>
+
+    <!-- SwitchButton Theme Area-->
+    <style name="SwitchButtonMD">
+        <item name="kswThumbDrawable">@drawable/ksw_md_thumb</item>
+        <item name="kswBackColor">@color/ksw_md_back_color</item>
+        <item name="kswBackMeasureRatio">1.45</item>
+        <item name="kswThumbMarginLeft">-16dp</item>
+        <item name="kswThumbMarginTop">-14dp</item>
+        <item name="kswThumbMarginRight">-16dp</item>
+        <item name="kswThumbMarginBottom">-14dp</item>
+    </style>
+
+    <style name="SwitchButtonStyleMD" parent="SwitchButtonMD">
+        <item name="android:paddingLeft">10dp</item>
+        <item name="android:paddingRight">10dp</item>
+        <item name="android:paddingTop">4dp</item>
+        <item name="android:paddingBottom">4dp</item>
+    </style>
+
 
 </resources>

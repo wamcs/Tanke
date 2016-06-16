@@ -13,17 +13,17 @@ import com.lptiyu.tanke.userCenter.controller.SettingController;
  * email:kaili@hustunique.com
  */
 public class SettingActivity extends BaseActivity {
-    ActivityController activityController;
+  ActivityController activityController;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_setting);
-        activityController = new SettingController(this,getWindow().getDecorView());
-    }
+  @Override
+  protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    setContentView(R.layout.activity_setting);
+    activityController = new SettingController(this, getWindow().getDecorView());
+  }
 
-    @Override
-    public ActivityController getController() {
-        return activityController;
-    }
+  @Override
+  public ActivityController getController() {
+    return activityController;
+  }
 }

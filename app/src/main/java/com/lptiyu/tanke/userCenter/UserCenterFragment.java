@@ -18,6 +18,7 @@ import com.lptiyu.tanke.global.Conf;
 import com.lptiyu.tanke.io.net.HttpService;
 import com.lptiyu.tanke.io.net.Response;
 import com.lptiyu.tanke.pojo.UserDetails;
+import com.lptiyu.tanke.userCenter.ui.SettingActivity;
 import com.lptiyu.tanke.userCenter.ui.UserGameFinishedListActivity;
 import com.lptiyu.tanke.userCenter.ui.UserGamePlayingListActivity;
 import com.lptiyu.tanke.userCenter.ui.ModifyUserInfoActivity;
@@ -147,7 +148,7 @@ public class UserCenterFragment extends BaseFragment {
 
   @OnClick(R.id.setting)
   public void setting() {
-
+    startActivity(new Intent(getContext(), SettingActivity.class));
   }
 
   @OnClick(R.id.user_judge_game)
