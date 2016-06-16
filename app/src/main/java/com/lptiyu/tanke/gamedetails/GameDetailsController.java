@@ -14,7 +14,6 @@ import com.lptiyu.tanke.R;
 import com.lptiyu.tanke.base.controller.ActivityController;
 import com.lptiyu.tanke.gameplaying.GamePlayingActivity;
 import com.lptiyu.tanke.global.Accounts;
-import com.lptiyu.tanke.global.AppData;
 import com.lptiyu.tanke.global.Conf;
 import com.lptiyu.tanke.io.net.HttpService;
 import com.lptiyu.tanke.io.net.Response;
@@ -187,6 +186,8 @@ public class GameDetailsController extends ActivityController {
 
   }
 
+  private String tempGameZipUrl;
+
   @OnClick(R.id.game_detail_ensure)
   public void ensureClicked() {
     if (mGameDetailsEntity == null) {
@@ -214,13 +215,15 @@ public class GameDetailsController extends ActivityController {
               Timber.e("当前游戏并未提供下载连接");
               throw new RuntimeException(response.getInfo());
             }
+            tempGameZipUrl = response.getData();
             return HttpService.getGameService().downloadGameZip(response.getData());
           }
         })
         .map(new Func1<retrofit2.Response<ResponseBody>, File>() {
           @Override
           public File call(retrofit2.Response<ResponseBody> response) {
-            String url = mGameDetailsEntity.getZipUrl();
+            String url = tempGameZipUrl;
+            System.out.println("url = " + url);
             String[] segs = url.split("/");
             if (segs.length == 0) {
               throw new IllegalStateException("Wrong url can not split file name");

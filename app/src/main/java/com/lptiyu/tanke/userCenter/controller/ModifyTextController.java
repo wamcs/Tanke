@@ -16,6 +16,7 @@ import com.lptiyu.tanke.io.net.HttpService;
 import com.lptiyu.tanke.io.net.Response;
 import com.lptiyu.tanke.io.net.UserService;
 import com.lptiyu.tanke.utils.ToastUtil;
+import com.lptiyu.tanke.utils.rx.ToastExceptionAction;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -68,7 +69,7 @@ public class ModifyTextController extends ActivityController {
         mEditText.setHint(getString(R.string.change_height_hint));
         mEditText.setInputType(InputType.TYPE_CLASS_NUMBER);
         if (content != null && content.length() != 0) {
-          mEditText.setText(content.substring(0, 2));
+          mEditText.setText(content);
         }
         break;
       case UserService.USER_DETAIL_WEIGHT:
@@ -77,11 +78,7 @@ public class ModifyTextController extends ActivityController {
         mEditText.setHint(R.string.change_weight_hint);
         mEditText.setInputType(InputType.TYPE_CLASS_NUMBER);
         if (content != null && content.length() != 0) {
-          if (content.length() == 5) {
-            mEditText.setText(content.substring(0, 2));
-          } else {
-            mEditText.setText(content.substring(0, 1));
-          }
+          mEditText.setText(content);
         }
         break;
     }
@@ -131,15 +128,14 @@ public class ModifyTextController extends ActivityController {
           public void call(Response<Void> voidResponse) {
             int status = voidResponse.getStatus();
             if (status != 1) {
-              ToastUtil.TextToast(voidResponse.getInfo());
-              return;
+              throw new RuntimeException(voidResponse.getInfo());
             }
             Intent intent = new Intent();
             intent.putExtra(Conf.USER_INFO, content);
             getActivity().setResult(requestCode, intent);
             finish();
           }
-        });
+        }, new ToastExceptionAction(getContext()));
   }
 
   @Override
