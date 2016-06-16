@@ -40,7 +40,7 @@ public enum RECOMMENDED_TYPE implements JsonSerializer<RECOMMENDED_TYPE>,
 
     if (BuildConfig.DEBUG) {
       throw new IllegalStateException(
-          String.format("The item (%d) for GAME_STATE is unexpected.",
+          String.format("The item (%d) for GAME_STATE is unexpected.".toLowerCase(),
               item));
     }
     return NORMAL;
