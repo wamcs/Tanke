@@ -27,4 +27,9 @@ public class LoginActivity extends BaseActivity {
     public ActivityController getController() {
         return controller;
     }
+
+    @Override
+    public void onBackPressed() {
+      System.exit(0);
+    }
 }

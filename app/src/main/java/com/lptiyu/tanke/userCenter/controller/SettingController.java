@@ -3,7 +3,6 @@ package com.lptiyu.tanke.userCenter.controller;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.TextView;
 
 import com.lptiyu.tanke.R;
 import com.lptiyu.tanke.base.controller.ActivityController;
@@ -57,6 +56,7 @@ public class SettingController extends ActivityController {
   @OnClick(R.id.setting_activity_feedback)
   void onFeedback() {
     //TODO : leancloud feed back platform
+
   }
 
   @OnClick(R.id.setting_activity_logout)
@@ -64,7 +64,6 @@ public class SettingController extends ActivityController {
     Accounts.logOut();
     Intent intent = new Intent(getActivity(), LoginActivity.class);
     startActivity(intent);
-    finish();
   }
 
   @OnClick(R.id.default_tool_bar_imageview)

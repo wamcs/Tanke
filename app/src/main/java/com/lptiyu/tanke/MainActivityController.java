@@ -8,6 +8,7 @@ import com.lptiyu.tanke.base.controller.ActivityController;
 import com.lptiyu.tanke.gamedisplay.GameDisplayFragment;
 import com.lptiyu.tanke.messagesystem.MessageListFragment;
 import com.lptiyu.tanke.userCenter.UserCenterFragment;
+import com.lptiyu.tanke.utils.ToastUtil;
 
 import java.util.ArrayList;
 
@@ -26,6 +27,7 @@ public class MainActivityController extends ActivityController {
 
   MainActivity activity;
 
+  private long exitTime = 0;
   int mCurrentIndex = -1;
 
   Fragment mCurrentFragment;
@@ -92,4 +94,14 @@ public class MainActivityController extends ActivityController {
     ft.commit();
   }
 
+  @Override
+  public boolean onBackPressed() {
+    if ((System.currentTimeMillis() - exitTime) > 2000) {
+      ToastUtil.TextToast(getString(R.string.exit));
+      exitTime = System.currentTimeMillis();
+    } else {
+      System.exit(0);
+    }
+    return true;
+  }
 }

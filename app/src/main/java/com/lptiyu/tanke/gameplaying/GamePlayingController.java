@@ -91,6 +91,7 @@ public class GamePlayingController extends ActivityController implements
   ITracingHelper mTracingHelper;
   TimingTaskHelper mTimingTaskHelper;
 
+  AlertDialog mErrorDialog;
   AlertDialog mAlertDialog;
   AlertDialog mLoadingDialog;
 
@@ -109,15 +110,12 @@ public class GamePlayingController extends ActivityController implements
     Intent intent = getIntent();
     gameId = intent.getLongExtra(Conf.GAME_ID, Conf.TEMP_GAME_ID);
     teamId = intent.getLongExtra(Conf.TEAM_ID, Conf.TEMP_TEAM_ID);
-
     if (!gameZipHelper.checkAndParseGameZip(gameId) || gameZipHelper.getmPoints().size() == 0) {
-      ToastUtil.TextToast("游戏包加载失败");
       mLoadingDialog.dismiss();
+      showErrorDialog();
       return;
-      //TODO : notice user that the game zip is damaged, please download again,then finish this activity
     }
     ToastUtil.TextToast("游戏包加载完成");
-
     mPoints = gameZipHelper.getmPoints();
     mapHelper = new MapHelper(getActivity(), mapView);
     mapHelper.bindData(mPoints);
@@ -340,6 +338,23 @@ public class GamePlayingController extends ActivityController implements
           .create();
     }
     mAlertDialog.show();
+  }
+
+  private void showErrorDialog() {
+    if (mErrorDialog == null) {
+      mErrorDialog = new AlertDialog.Builder(getActivity())
+          .setPositiveButton(getString(R.string.ensure), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+              mErrorDialog.dismiss();
+              finish();
+            }
+          })
+          .setCancelable(false)
+          .setMessage(getString(R.string.parse_zip_error))
+          .create();
+    }
+    mErrorDialog.show();
   }
 
   private void showLoadingDialog() {

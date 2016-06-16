@@ -81,14 +81,6 @@ public class SignUpController extends ActivityController {
         return false;
     }
 
-
-    @Override
-    public boolean onBackPressed() {
-        super.onBackPressed();
-        finish();
-        return true;
-    }
-
     @OnClick(R.id.sign_up_return_button)
     void back() {
         finish();

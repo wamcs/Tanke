@@ -63,8 +63,7 @@
         </service>
 
         <activity android:name=".MainActivity"/>
-        <activity android:name=".initialization.ui.LoginActivity"
-                  android:launchMode="singleTask"/>
+        <activity android:name=".initialization.ui.LoginActivity"/>
         <activity android:name=".initialization.ui.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>

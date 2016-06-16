@@ -5,9 +5,7 @@
     <string name="no_camera_permission">请您打开相机权限</string>
     <string name="no_location_permission">请您打开定位权限</string>
     <string name="camera_permission_rationale">我们需要使用您的相机来进行扫描二维码的功能，请点击确认前往授权，谢谢^_^</string>
-    <string name="location_permission_rationale">
-        我们需要使用您的位置信息，为了继续为您提供服务，清点击确认前往授权，谢谢^_^"，请点击确认前往授权，谢谢^_^
-    </string>
+    <string name="location_permission_rationale">我们需要使用您的位置信息，为了继续为您提供服务，清点击确认前往授权，谢谢^_^</string>
     <string name="loading_error">加载失败，请稍后再试</string>
     <string name="loading">拼命加载中…</string>
     <string name="content_description">Image</string>
@@ -114,6 +112,7 @@
     <!-- GamePlayingActivity Text Area -->
     <string name="reach_attack_point">已到达攻击点，点击该点开始任务</string>
     <string name="start_task">开始任务</string>
+    <string name="parse_zip_error">游戏包解析错误</string>
 
     <!-- GameDataActivity Text Area-->
     <string name="complete_person_num_formatter" formatted="false">%d人已完成</string>
@@ -171,7 +170,8 @@
     <string name="change_nickname">更改姓名</string>
     <string name="change_height">更改身高</string>
 
-    <string name="change_nickname_hint">取一个好的昵称能让朋友更容易记住你</string>    <string name="change_weight">更改体重</string>
+    <string name="change_nickname_hint">取一个好的昵称能让朋友更容易记住你</string>
+    <string name="change_weight">更改体重</string>
     <string name="change_nickname_error">昵称格式错误</string>
     <string name="change_height_hint">写下你的身高吧，单位是CM</string>
     <string name="change_height_error" formatted="false">身高规定范围为%dCM~%dCM,填写超出范围</string>

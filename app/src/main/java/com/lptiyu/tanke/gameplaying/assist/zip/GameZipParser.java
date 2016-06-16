@@ -107,7 +107,12 @@ public class GameZipParser {
     }
 
     Map<String, Task> taskMap = new HashMap<>();
-    for (String taskName : point.getTaskId()) {
+    List<String> taskIds = point.getTaskId();
+    if (taskIds == null) {
+      Timber.e("task ids is null");
+      return null;
+    }
+    for (String taskName : taskIds) {
       String taskDirPath = pointRootDir + "/" + taskName;
       Task task = checkAndParsePointMission(taskDirPath);
       if (task == null) {
