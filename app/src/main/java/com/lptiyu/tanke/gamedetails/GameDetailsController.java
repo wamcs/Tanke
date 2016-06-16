@@ -11,6 +11,7 @@ import com.bumptech.glide.Glide;
 import com.lptiyu.tanke.R;
 import com.lptiyu.tanke.base.controller.ActivityController;
 import com.lptiyu.tanke.gameplaying.GamePlayingActivity;
+import com.lptiyu.tanke.global.Accounts;
 import com.lptiyu.tanke.global.AppData;
 import com.lptiyu.tanke.global.Conf;
 import com.lptiyu.tanke.io.net.HttpService;
@@ -18,7 +19,6 @@ import com.lptiyu.tanke.io.net.Response;
 import com.lptiyu.tanke.pojo.GAME_TYPE;
 import com.lptiyu.tanke.pojo.GameDetailsEntity;
 import com.lptiyu.tanke.utils.DirUtils;
-import com.lptiyu.tanke.utils.Strings;
 import com.lptiyu.tanke.utils.TimeUtils;
 import com.lptiyu.tanke.utils.ToastUtil;
 
@@ -35,6 +35,7 @@ import rx.Observable;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.exceptions.Exceptions;
+import rx.functions.Action0;
 import rx.functions.Action1;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
@@ -174,17 +175,25 @@ public class GameDetailsController extends ActivityController {
       return;
     }
 
-    if (!Strings.valid(mGameDetailsEntity.getZipUrl())) {
-      Toast.makeText(getContext(), "无法获取到游戏包", Toast.LENGTH_SHORT).show();
-      return;
-    }
     progressDialog.show();
-    HttpService.getGameService().downloadGameZip(mGameDetailsEntity.getZipUrl())
+    HttpService.getGameService()
+        .getIndividualGameZipUrl(Accounts.getId(),
+            Accounts.getToken(),
+            mGameDetailsEntity.getGameId())
+        .flatMap(new Func1<Response<String>, Observable<retrofit2.Response<ResponseBody>>>() {
+          @Override
+          public Observable<retrofit2.Response<ResponseBody>> call(Response<String> response) {
+            if (response.getStatus() != Response.RESPONSE_OK) {
+              throw new RuntimeException(response.getInfo());
+            }
+            return HttpService.getGameService().downloadGameZip(response.getData());
+          }
+        })
         .map(new Func1<retrofit2.Response<ResponseBody>, File>() {
           @Override
           public File call(retrofit2.Response<ResponseBody> response) {
             String url = mGameDetailsEntity.getZipUrl();
-            String[] segs =  url.split("/");
+            String[] segs = url.split("/");
             if (segs.length == 0) {
               throw new IllegalStateException("Wrong url can not split file name");
             }
@@ -213,7 +222,6 @@ public class GameDetailsController extends ActivityController {
         .subscribe(new Action1<File>() {
           @Override
           public void call(File file) {
-            progressDialog.dismiss();
             Intent intent = new Intent(getContext(), GamePlayingActivity.class);
             intent.putExtra(Conf.GAME_ID, gameId);
             startActivity(intent);
@@ -222,6 +230,11 @@ public class GameDetailsController extends ActivityController {
           @Override
           public void call(Throwable throwable) {
             ToastUtil.TextToast(throwable.getMessage());
+          }
+        }, new Action0() {
+          @Override
+          public void call() {
+            progressDialog.dismiss();
           }
         });
   }
