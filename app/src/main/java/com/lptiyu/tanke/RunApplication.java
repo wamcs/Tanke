@@ -38,7 +38,7 @@ public class RunApplication extends MultiDexApplication {
 
     try {
       ShareSDK.initSDK(this, "1276c2d783264");
-      AVOSCloud.initialize(AppData.getContext(),"Wqseclbr8wx2kFAS7YseVc5n-gzGzoHsz","1z4GofW1zaArBjcj53u3oBm1");
+      AVOSCloud.initialize(AppData.getContext(), "Wqseclbr8wx2kFAS7YseVc5n-gzGzoHsz", "1z4GofW1zaArBjcj53u3oBm1");
       PushService.setDefaultPushCallback(this, MessageActivity.class);
       SDKInitializer.initialize(this);
       DirUtils.init(this);
