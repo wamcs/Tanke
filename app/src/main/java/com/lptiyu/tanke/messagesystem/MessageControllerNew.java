@@ -13,7 +13,6 @@ import com.lptiyu.tanke.base.controller.ActivityController;
 import com.lptiyu.tanke.base.recyclerview.BaseAdapter;
 import com.lptiyu.tanke.base.recyclerview.BaseListFragmentController;
 import com.lptiyu.tanke.base.recyclerview.BaseViewHolder;
-import com.lptiyu.tanke.database.Message;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +26,7 @@ import rx.Observable;
  *
  * @author ldx
  */
-public class MessageControllerNew extends BaseListFragmentController<MessageEntity>{
+public class MessageControllerNew extends BaseListFragmentController<MessageEntity> {
 
   @BindView(R.id.recycler_view)
   RecyclerView recyclerView;
@@ -62,6 +61,7 @@ public class MessageControllerNew extends BaseListFragmentController<MessageEnti
   }
 
   public static final List<MessageEntity> dummyData = new ArrayList<>();
+
   static {
     MessageEntity entity = new MessageEntity();
   }

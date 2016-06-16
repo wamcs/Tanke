@@ -20,15 +20,19 @@ import com.lptiyu.tanke.base.ui.BaseFragment;
  */
 public class MessageFragmentNew extends BaseFragment {
 
+  private MessageControllerNew controller;
+
   @Nullable
   @Override
   public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-    return fromResLayout(inflater, container, R.layout.fragment_message_new);
+    View view =  fromResLayout(inflater, container, R.layout.fragment_message_new);
+    controller = new MessageControllerNew(this, getActivityController(), view);
+    return view;
   }
 
   @Override
   public FragmentController getController() {
-    return null;
+    return controller;
   }
 
 }
