@@ -176,4 +176,15 @@ public interface GameService {
       @Query("ranks_id") long teamId
   );
 
+  /**
+   * 2.35 获取任务完成的人数
+   *
+   * @param taskId 目标任务Id
+   * @return Response, Integer 该任务完成的人数
+   */
+  @GET("System/Task_num")
+  Observable<Response<Integer>> getTaskFinishedNum(
+      @Query("task_id") long taskId
+  );
+
 }

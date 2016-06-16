@@ -32,11 +32,14 @@ public class GameDisplayEntity {
   @SerializedName("end_time")
   protected String endTime = "";
 
+  @SerializedName("state")
   protected GAME_STATE state = GAME_STATE.NORMAL;
 
   //TODO 不需要Recommended字段了，推荐将单独作为一个字段
+  @SerializedName("recommend")
   protected RECOMMENDED_TYPE recommend = RECOMMENDED_TYPE.NORMAL;
 
+  @SerializedName("type")
   protected GAME_TYPE type = GAME_TYPE.INDIVIDUALS;
 
   public long getId() {

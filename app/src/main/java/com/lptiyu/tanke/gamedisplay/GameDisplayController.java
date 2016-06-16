@@ -12,6 +12,7 @@ import com.lptiyu.tanke.MainActivityController;
 import com.lptiyu.tanke.R;
 import com.lptiyu.tanke.base.recyclerview.BaseListFragmentController;
 import com.lptiyu.tanke.global.Accounts;
+import com.lptiyu.tanke.global.AppData;
 import com.lptiyu.tanke.global.Conf;
 import com.lptiyu.tanke.io.net.HttpService;
 import com.lptiyu.tanke.io.net.Response;
@@ -106,6 +107,9 @@ public class GameDisplayController extends BaseListFragmentController<GameDispla
             if (listResponse.getStatus() != Response.RESPONSE_OK) {
               throw new RuntimeException(listResponse.getInfo());
             }
+
+            Timber.e(AppData.globalGson().toJson(listResponse.getData()));
+
             return listResponse.getData();
           }
         });

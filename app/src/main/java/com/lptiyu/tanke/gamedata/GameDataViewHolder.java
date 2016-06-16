@@ -6,6 +6,9 @@ import android.widget.TextView;
 
 import com.lptiyu.tanke.R;
 import com.lptiyu.tanke.base.recyclerview.BaseViewHolder;
+import com.lptiyu.tanke.io.net.GameService;
+import com.lptiyu.tanke.io.net.HttpService;
+import com.lptiyu.tanke.io.net.Response;
 import com.lptiyu.tanke.pojo.GameDataEntity;
 import com.lptiyu.tanke.utils.TimeUtils;
 
@@ -14,6 +17,11 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import rx.Scheduler;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
+import rx.schedulers.Schedulers;
+import timber.log.Timber;
 
 /**
  * @author : xiaoxiaoda
@@ -41,16 +49,13 @@ public class GameDataViewHolder extends BaseViewHolder<GameDataEntity> {
   }
 
   @Override
-  public void bind(GameDataEntity entity) {
+  public void bind(final GameDataEntity entity) {
     taskName.setText(entity.getTaskName());
-    Context context = itemView.getContext();
+    final Context context = itemView.getContext();
 
     String completeConsumingTimeFormatter = context.getString(R.string.complete_consuming_time_formatter);
     Date date = new Date(entity.getCompleteConsumingTime());
     completeConsumingTime.setText(String.format(completeConsumingTimeFormatter, date.getMinutes(), date.getSeconds()));
-
-    String completePersonNumFormatter = context.getString(R.string.complete_person_num_formatter);
-    completePersonNum.setText(String.format(completePersonNumFormatter, entity.getCompletePersonNum()));
 
     String expFormatter = context.getString(R.string.get_exp_formatter);
     taskExp.setText(String.format(expFormatter, entity.getExp()));
@@ -80,6 +85,21 @@ public class GameDataViewHolder extends BaseViewHolder<GameDataEntity> {
         break;
     }
     taskType.setText(typeStr);
+    HttpService.getGameService().getTaskFinishedNum(entity.getTaskId())
+        .subscribeOn(Schedulers.io())
+        .observeOn(AndroidSchedulers.mainThread())
+        .subscribe(new Action1<Response<Integer>>() {
+          @Override
+          public void call(Response<Integer> integerResponse) {
+            String completePersonNumFormatter = context.getString(R.string.complete_person_num_formatter);
+            if (integerResponse == null || integerResponse.getStatus() != 1) {
+              completePersonNum.setText(String.format(completePersonNumFormatter, 0));
+              return;
+            }
+            entity.setCompletePersonNum(integerResponse.getData());
+            completePersonNum.setText(String.format(completePersonNumFormatter, entity.getCompletePersonNum()));
+          }
+        });
   }
 
   public void bind(List<GameDataEntity> entities) {

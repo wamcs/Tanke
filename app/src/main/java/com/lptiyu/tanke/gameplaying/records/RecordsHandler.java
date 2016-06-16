@@ -134,7 +134,7 @@ public class RecordsHandler extends Handler {
         .subscribe(new Action1<Response<Void>>() {
           @Override
           public void call(Response<Void> voidResponse) {
-            if (voidResponse.getStatus() == 1) {
+            if (voidResponse.getStatus() == Response.RESPONSE_OK) {
               Timber.d(AppData.globalGson().toJson(record));
             }
           }

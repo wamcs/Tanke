@@ -23,8 +23,7 @@ public enum RECOMMENDED_TYPE implements JsonSerializer<RECOMMENDED_TYPE>,
   NORMAL(0),
   RECOMMENDED(1);
 
-
-  public final int value;
+  public int value;
 
   RECOMMENDED_TYPE(int value) {
     this.value = value;

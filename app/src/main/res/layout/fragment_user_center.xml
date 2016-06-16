@@ -42,6 +42,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:paddingTop="10dp"
+            android:paddingBottom="10dp"
             android:layout_height="match_parent"
             android:layout_marginLeft="10dp"
             android:orientation="vertical">
@@ -103,7 +104,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="5dp"
                     android:background="@drawable/fragment_user_center_progress_bar_bg"
-                    app:src="@drawable/gradient_rect_style"
+                    app:src="@color/colorPrimary"
                     android:layout_alignParentBottom="true"
                     android:layout_marginTop="5dp"/>
 

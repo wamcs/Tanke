@@ -172,8 +172,8 @@ public class LocateController extends ActivityController implements BDLocationLi
     }
     client.stop();
 
-    if (list == null || list.size() == 0 || list.indexOf(city) == -1) {
-      mLocateErrorText.setVisibility(View.VISIBLE);
-    }
+//    if (list == null || list.size() == 0) {
+//      mLocateErrorText.setVisibility(View.VISIBLE);
+//    }
   }
 }

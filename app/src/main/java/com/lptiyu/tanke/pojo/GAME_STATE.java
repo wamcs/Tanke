@@ -21,9 +21,10 @@ public enum GAME_STATE implements JsonSerializer<GAME_STATE>, JsonDeserializer<G
   NORMAL(0),
   ALPHA_TEST(1),
   MAINTAINING(2),
-  FINISHED(3);
+  FINISHED(3),
+  WTF(4);
 
-  public final int value;
+  public int value;
 
   GAME_STATE(int value) {
     this.value = value;
