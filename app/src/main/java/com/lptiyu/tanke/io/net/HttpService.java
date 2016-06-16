@@ -62,11 +62,9 @@ public final class HttpService {
     httpClientBuilder.connectTimeout(DEFAULT_TIMEOUT, TimeUnit.SECONDS);
     httpClientBuilder.cache(new Cache(AppData.cacheDir("network"), 1024 * 1024 * 100));
 
-    GsonConverterFactory.create(AppData.globalGson());
-
     Retrofit retrofit = new Retrofit.Builder()
         .client(httpClientBuilder.build())
-        .addConverterFactory(GsonConverterFactory.create())
+        .addConverterFactory(GsonConverterFactory.create(AppData.globalGson()))
         .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
         .baseUrl(BASE_URL)
         .build();

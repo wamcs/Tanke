@@ -108,8 +108,6 @@ public class GameDisplayController extends BaseListFragmentController<GameDispla
               throw new RuntimeException(listResponse.getInfo());
             }
 
-            Timber.e(AppData.globalGson().toJson(listResponse.getData()));
-
             return listResponse.getData();
           }
         });

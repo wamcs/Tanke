@@ -18,11 +18,10 @@ import java.lang.reflect.Type;
  * @author ldx
  */
 public enum GAME_STATE implements JsonSerializer<GAME_STATE>, JsonDeserializer<GAME_STATE> {
-  NORMAL(0),
+  NORMAL(4),
   ALPHA_TEST(1),
   MAINTAINING(2),
-  FINISHED(3),
-  WTF(4);
+  FINISHED(3);
 
   public int value;
 
@@ -46,7 +45,7 @@ public enum GAME_STATE implements JsonSerializer<GAME_STATE>, JsonDeserializer<G
 
     if (BuildConfig.DEBUG) {
       throw new IllegalStateException(
-          String.format("The item (%d) for GAME_STATE is unexpected.",
+          String.format("The item (%d) for GAME_STATE is unexpected.".toLowerCase(),
               item));
     }
     return NORMAL;
