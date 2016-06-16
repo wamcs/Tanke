@@ -33,6 +33,7 @@ import com.lptiyu.tanke.gameplaying.records.RecordsHandler;
 import com.lptiyu.tanke.gameplaying.records.RecordsUtils;
 import com.lptiyu.tanke.gameplaying.records.RunningRecord;
 import com.lptiyu.tanke.gameplaying.task.GameTaskActivity;
+import com.lptiyu.tanke.global.Accounts;
 import com.lptiyu.tanke.global.Conf;
 import com.lptiyu.tanke.permission.PermissionDispatcher;
 import com.lptiyu.tanke.permission.TargetMethod;
@@ -124,7 +125,7 @@ public abstract class GamePlayingController extends ActivityController implement
     consoleHelper = new ConsoleHelper(getActivity(), view, mPoints);
     consoleHelper.setOnSpotClickListener(this);
     mTracingHelper = new TracingHelper(getActivity().getApplicationContext(), this);
-    mTracingHelper.entityName(Conf.makeUpTrackEntityName(gameId, teamId));
+    mTracingHelper.entityName(Conf.makeUpTrackEntityName(gameId, Accounts.getId()));
     locateHelper = new LocateHelper(getActivity().getApplicationContext());
     locateHelper.registerLocationListener(this);
 

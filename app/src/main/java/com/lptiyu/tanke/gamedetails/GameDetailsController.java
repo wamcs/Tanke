@@ -173,8 +173,11 @@ public class GameDetailsController extends ActivityController {
       Toast.makeText(getContext(), "获取游戏信息失败", Toast.LENGTH_SHORT).show();
       return;
     }
+    if (mGameDetailsEntity.getType() == GAME_TYPE.TEAMS) {
+      ToastUtil.TextToast("团队赛正在开发中");
+      return;
+    }
     mGameDetailsEntity.setGameId(gameId);
-
     progressDialog.show();
     HttpService.getGameService()
         .getIndividualGameZipUrl(Accounts.getId(),
@@ -184,6 +187,11 @@ public class GameDetailsController extends ActivityController {
           @Override
           public Observable<retrofit2.Response<ResponseBody>> call(Response<String> response) {
             if (response.getStatus() != Response.RESPONSE_OK) {
+              throw new RuntimeException(response.getInfo());
+            }
+            String info = response.getInfo();
+            if (info == null || info.length() == 0) {
+              Timber.e("当前游戏并未提供下载连接");
               throw new RuntimeException(response.getInfo());
             }
             return HttpService.getGameService().downloadGameZip(response.getData());
@@ -197,9 +205,7 @@ public class GameDetailsController extends ActivityController {
             if (segs.length == 0) {
               throw new IllegalStateException("Wrong url can not split file name");
             }
-
             File file = new File(DirUtils.getTempDirectory(), segs[segs.length - 1]);
-
             try {
               if (!file.exists() && !file.createNewFile()) {
                 throw new IOException("Create file failed.");
@@ -224,6 +230,7 @@ public class GameDetailsController extends ActivityController {
           public void call(File file) {
             Intent intent = new Intent(getContext(), GamePlayingActivity.class);
             intent.putExtra(Conf.GAME_ID, gameId);
+
             startActivity(intent);
           }
         }, new Action1<Throwable>() {
