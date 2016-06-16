@@ -35,6 +35,9 @@
     <string name="user_level" formatted="false">LV.%d</string>
     <!--UserCenter finished-->
 
+    <!-- UserReward-->
+    <string name="user_reward">我的奖励</string>
+
 
     <string name="name">步 道 运 动</string>
     <string name="please_input_password">请输入密码</string>
@@ -172,6 +175,7 @@
     <!-- LocateActivity Text Area-->
     <string name="city_not_open">(该城市尚未开通)</string>
     <string name="current_city_not_open">当前城市尚未开通</string>
+    <string name="is_locating">正在定位中...</string>
 
     <!--LocateUserActivity Text Area-->
     <string name="all_location">全部地区</string>

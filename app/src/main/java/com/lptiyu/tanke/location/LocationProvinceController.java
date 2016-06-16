@@ -14,6 +14,7 @@ import com.lptiyu.tanke.base.controller.ContextController;
 import com.lptiyu.tanke.global.AppData;
 import com.lptiyu.tanke.global.Conf;
 import com.lptiyu.tanke.utils.Display;
+import com.lptiyu.tanke.utils.ToastUtil;
 
 import java.util.List;
 
@@ -63,9 +64,11 @@ public class LocationProvinceController extends ContextController implements Loc
     adapter.setLocationListener(new LocationProvinceAdapter.LocationListener() {
       @Override
       public void onClick(View view, CityStruct cityStruct) {
-        if (null != cityStruct) {
-          setResultAndFinish(cityStruct);
+        if (null == cityStruct) {
+          ToastUtil.TextToast(getString(R.string.is_locating));
+          return;
         }
+        setResultAndFinish(cityStruct);
       }
     });
     mListView.setAdapter(adapter);
@@ -90,7 +93,6 @@ public class LocationProvinceController extends ContextController implements Loc
     mLocationClientOption.setLocationMode(LocationClientOption.LocationMode.Battery_Saving);
     mLocationClientOption.setIsNeedAddress(true);
     mLocationClient.setLocOption(mLocationClientOption);
-    mLocationClient.start();
   }
 
   @Override
@@ -105,6 +107,12 @@ public class LocationProvinceController extends ContextController implements Loc
         adapter.setLocateItem(struct, sb.toString());
       }
       mLocationClient.stop();
+    }
+  }
+
+  public void startLocate() {
+    if (mLocationClient != null) {
+      mLocationClient.start();
     }
   }
 

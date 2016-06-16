@@ -12,14 +12,18 @@ import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
 import com.lptiyu.tanke.R;
 import com.lptiyu.tanke.base.controller.ActivityController;
+import com.lptiyu.tanke.base.ui.BaseActivity;
 import com.lptiyu.tanke.global.Conf;
 import com.lptiyu.tanke.io.net.HttpService;
 import com.lptiyu.tanke.io.net.Response;
+import com.lptiyu.tanke.permission.PermissionDispatcher;
+import com.lptiyu.tanke.permission.TargetMethod;
 import com.lptiyu.tanke.pojo.City;
 import com.lptiyu.tanke.userCenter.adapter.LocateListAdapter;
 import com.lptiyu.tanke.utils.ToastUtil;
 import com.lptiyu.tanke.widget.CustomTextView;
 
+import java.lang.annotation.Target;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -52,7 +56,7 @@ public class LocateController extends ActivityController implements BDLocationLi
   private List<City> list = new ArrayList<>();
   private LocateListAdapter adapter;
   private LocationClient client;
-  private City city;
+  private City city = null;
 
   public LocateController(AppCompatActivity activity, View view) {
     super(activity, view);
@@ -61,7 +65,6 @@ public class LocateController extends ActivityController implements BDLocationLi
   }
 
   private void init() {
-    city = new City();
     mTitle.setText("选择城市");
     mLocateCity.setText("定位中...");
     mLocateErrorText.setVisibility(View.GONE);
@@ -90,17 +93,10 @@ public class LocateController extends ActivityController implements BDLocationLi
             list.clear();
             list.addAll(listResponse.getData());
             adapter.notifyDataSetChanged();
-            locate();
+            PermissionDispatcher.startLocateWithCheck(((BaseActivity) getActivity()));
           }
         });
     mRecyclerView.setAdapter(adapter);
-  }
-
-  private void locate() {
-    client = new LocationClient(getContext());
-    initLocation();
-    client.registerLocationListener(this);
-    client.start();
   }
 
   private void initLocation() {
@@ -117,6 +113,13 @@ public class LocateController extends ActivityController implements BDLocationLi
     client.setLocOption(option);
   }
 
+  @TargetMethod(requestCode = PermissionDispatcher.PERMISSION_REQUEST_CODE_LOCATION)
+  public void locate() {
+    client = new LocationClient(getContext());
+    initLocation();
+    client.registerLocationListener(this);
+    client.start();
+  }
 
   @OnClick(R.id.default_tool_bar_imageview)
   void back() {
@@ -125,6 +128,10 @@ public class LocateController extends ActivityController implements BDLocationLi
 
   @OnClick(R.id.locate_activity_locate_layout)
   void clickLocation() {
+    if (city == null) {
+      ToastUtil.TextToast(getString(R.string.is_locating));
+      return;
+    }
     if (isLocateCityOpened) {
       Intent intent = new Intent();
       intent.putExtra(Conf.USER_LOCATION, city.getName());
@@ -153,6 +160,9 @@ public class LocateController extends ActivityController implements BDLocationLi
   }
 
   public void onReceiveLocation(BDLocation bdLocation) {
+    if (city == null) {
+      city = new City();
+    }
     if (bdLocation.getLocType() == BDLocation.TypeGpsLocation
         || bdLocation.getLocType() == BDLocation.TypeNetWorkLocation) {
       mLocateCity.setText(bdLocation.getCity());
@@ -161,7 +171,6 @@ public class LocateController extends ActivityController implements BDLocationLi
       city.setLatitude(bdLocation.getLatitude());
       city.setLongtitude(bdLocation.getLongitude());
       ToastUtil.TextToast("定位成功");
-
     } else {
       ToastUtil.TextToast("定位失败");
       mLocateCity.setText("武汉");

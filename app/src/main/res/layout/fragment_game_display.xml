@@ -27,7 +27,9 @@
         <com.lptiyu.tanke.widget.CustomTextView
             style="@style/TextAppearance.Toolbar"
             android:layout_width="wrap_content"
+            android:textSize="@dimen/default_toolbar_textview_text_size"
             android:layout_height="wrap_content"
+            android:textColor="@color/default_font_color"
             android:layout_centerInParent="true"
             android:text="热门推荐"
         />

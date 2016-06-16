@@ -10,6 +10,8 @@ import android.view.View;
 import android.view.Window;
 
 import com.lptiyu.tanke.R;
+import com.lptiyu.tanke.base.ui.BaseActivity;
+import com.lptiyu.tanke.permission.PermissionDispatcher;
 
 
 /**
@@ -110,7 +112,7 @@ public abstract class ActivityController extends ContextController {
   }
 
   public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-
+    PermissionDispatcher.onActivityRequestPermissionsResult(((BaseActivity) getActivity()), requestCode, permissions, grantResults);
   }
 
   public View getRootView() {

@@ -7,11 +7,15 @@ import android.widget.TextView;
 
 import com.lptiyu.tanke.R;
 import com.lptiyu.tanke.base.controller.ActivityController;
+import com.lptiyu.tanke.base.ui.BaseActivity;
+import com.lptiyu.tanke.permission.PermissionDispatcher;
+import com.lptiyu.tanke.permission.TargetMethod;
 import com.lptiyu.tanke.utils.thread;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import timber.log.Timber;
 
 /**
  * @author: xiaoxiaoda
@@ -27,7 +31,7 @@ public class LocateUserActivityController extends ActivityController {
   private AppCompatActivity mActivity;
 
   private int currentPage = LOCATION_PAGE_PROVINCE;
-  private LocationScroll provinceList;
+  private LocationProvinceController provinceList;
   private LocationScroll cityList;
 
   public static final int LOCATION_PAGE_PROVINCE = 1;
@@ -41,6 +45,12 @@ public class LocateUserActivityController extends ActivityController {
 
     provinceList = new LocationProvinceController(this, view);
     cityList = new LocationCityController(this, view);
+  }
+
+  public void startLocate() {
+    if (provinceList != null) {
+      provinceList.startLocate();
+    }
   }
 
   public void moveToList(int page, String msg) {

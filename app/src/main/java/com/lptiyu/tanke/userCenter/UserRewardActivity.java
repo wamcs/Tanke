@@ -25,6 +25,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import rx.Observable;
 import rx.functions.Func1;
 
@@ -47,6 +48,8 @@ public class UserRewardActivity extends BaseActivity {
 
   public static class UserRewardActivityController extends BaseListActivityController<Reward> {
 
+    @BindView(R.id.default_tool_bar_textview)
+    TextView mToolbarTitle;
     @BindView(R.id.swipe_refresh_layout)
     SwipeRefreshLayout swipeRefreshLayout;
 
@@ -58,7 +61,7 @@ public class UserRewardActivity extends BaseActivity {
     public UserRewardActivityController(UserRewardActivity activity, View view) {
       super(activity, view);
       ButterKnife.bind(this, view);
-
+      mToolbarTitle.setText(getString(R.string.user_reward));
       swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
         @Override
         public void onRefresh() {
@@ -96,6 +99,17 @@ public class UserRewardActivity extends BaseActivity {
       swipeRefreshLayout.setRefreshing(isRefreshing);
     }
 
+    @OnClick(R.id.default_tool_bar_imageview)
+    public void back() {
+      finish();
+    }
+
+    @Override
+    public boolean onBackPressed() {
+      back();
+      return true;
+    }
+
     @Override
     public void onError(Throwable t) {
       ToastUtil.TextToast(t.getMessage());
@@ -109,7 +123,6 @@ public class UserRewardActivity extends BaseActivity {
       return new UserRewardHolder(parent, R.layout.item_reward);
     }
   }
-
 
   public static class UserRewardHolder extends BaseViewHolder<Reward> {
 

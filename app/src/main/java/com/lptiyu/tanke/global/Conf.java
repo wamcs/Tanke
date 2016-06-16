@@ -88,6 +88,7 @@ public final class Conf {
   public static final String TEAM_ID = "team_id";
   public static final String GAME_ID = "game_id";
   public static final String LINE_ID = "line_id";
+  public static final String GAME_TYPE = "game_type";
   public static final int REQUEST_CODE_TASK_ACTIVITY = 9;
   public static final int RESULT_CODE_TASK_ACTIVITY = 10;
 
@@ -139,7 +140,7 @@ public final class Conf {
     return String.format("%d_%d".toLowerCase(), gameId, teamId);
   }
 
-  public static final long TEMP_GAME_ID = 1000000001L;
-  public static final long TEMP_LINE_ID = 2000000001L;
-  public static final long TEMP_TEAM_ID = 9000000001L;
+  public static final long TEMP_GAME_ID = -1;
+  public static final long TEMP_LINE_ID = -1;
+  public static final long TEMP_TEAM_ID = -1;
 }

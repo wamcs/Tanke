@@ -5,6 +5,8 @@ import android.os.Bundle;
 import com.lptiyu.tanke.R;
 import com.lptiyu.tanke.base.controller.ActivityController;
 import com.lptiyu.tanke.base.ui.BaseActivity;
+import com.lptiyu.tanke.permission.PermissionDispatcher;
+import com.lptiyu.tanke.permission.TargetMethod;
 
 
 /**
@@ -20,6 +22,14 @@ public class LocateUserActivity extends BaseActivity {
     setContentView(R.layout.activity_user_locate);
 
     mController = new LocateUserActivityController(this, getWindow().getDecorView());
+    PermissionDispatcher.startLocateWithCheck(this);
+  }
+
+  @TargetMethod(requestCode = PermissionDispatcher.PERMISSION_REQUEST_CODE_LOCATION)
+  public void startLocateUserCity() {
+    if (mController != null) {
+      mController.startLocate();
+    }
   }
 
   @Override
