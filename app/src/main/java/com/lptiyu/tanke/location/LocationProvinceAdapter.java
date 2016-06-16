@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.lptiyu.tanke.R;
 import com.lptiyu.tanke.utils.Inflater;
+import com.lptiyu.tanke.widget.CustomTextView;
 import com.lptiyu.tanke.widget.LabelButton;
 
 import java.util.List;
@@ -136,12 +137,12 @@ public class LocationProvinceAdapter extends BaseAdapter {
 
       case VIEW_TYPE_HEADER:
         view = Inflater.inflate(R.layout.item_locate_activity_list_header, parent, false);
-        ((TextView) view.findViewById(R.id.locate_activity_list_header)).setText(String.valueOf(getItem(position)));
+        ((CustomTextView) view.findViewById(R.id.locate_activity_list_header)).setText(String.valueOf(getItem(position)));
         break;
 
       case VIEW_TYPE_NORMAL:
         view = Inflater.inflate(R.layout.item_locate_activity_list_normal, parent, false);
-        ((TextView) view.findViewById(R.id.locate_activity_list_normal_item)).setText(String.valueOf(getItem(position)));
+        ((CustomTextView) view.findViewById(R.id.locate_activity_list_normal_item)).setText(String.valueOf(getItem(position)));
         break;
 
       case VIEW_TYPE_HOT:

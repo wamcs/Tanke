@@ -10,7 +10,7 @@
         android:layout_height="1dp"
         android:background="@color/divider_color"/>
 
-    <TextView
+    <com.lptiyu.tanke.widget.CustomTextView
         android:id="@+id/locate_activity_list_header"
         android:layout_width="wrap_content"
         android:clickable="false"

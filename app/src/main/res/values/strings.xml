@@ -38,6 +38,9 @@
     <!-- UserReward-->
     <string name="user_reward">我的奖励</string>
 
+    <!-- UserManagerGame-->
+    <string name="user_manager">裁判任务</string>
+
 
     <string name="name">步 道 运 动</string>
     <string name="please_input_password">请输入密码</string>

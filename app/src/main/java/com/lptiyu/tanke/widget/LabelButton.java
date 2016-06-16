@@ -16,7 +16,7 @@ import com.lptiyu.tanke.utils.Display;
  * date:2015/12/26
  * email:kaili@hustunique.com
  */
-public class LabelButton extends TextView {
+public class LabelButton extends CustomTextView {
 
   public LabelButton(Context context) {
     super(context);
@@ -30,12 +30,6 @@ public class LabelButton extends TextView {
 
   public LabelButton(Context context, AttributeSet attrs, int defStyleAttr) {
     super(context, attrs, defStyleAttr);
-    init(context);
-  }
-
-  @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-  public LabelButton(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
-    super(context, attrs, defStyleAttr, defStyleRes);
     init(context);
   }
 

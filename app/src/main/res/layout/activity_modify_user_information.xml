@@ -34,7 +34,12 @@
 
     </RelativeLayout>
 
-    <View style="@style/UnderLineStyle"/>
+    <View
+        android:layout_marginLeft="@dimen/under_line_margin_left_right"
+        android:layout_marginRight="@dimen/under_line_margin_left_right"
+        android:layout_height="@dimen/user_center_linear_layout_bottom_line_height"
+        android:background="@color/user_center_split_line"
+        android:layout_width="wrap_content"/>
 
     <RelativeLayout
         android:id="@id/modify_user_info_nickname_button"
@@ -53,7 +58,12 @@
 
     </RelativeLayout>
 
-    <View style="@style/UnderLineStyle"/>
+    <View
+        android:layout_marginLeft="@dimen/under_line_margin_left_right"
+        android:layout_marginRight="@dimen/under_line_margin_left_right"
+        android:layout_height="@dimen/user_center_linear_layout_bottom_line_height"
+        android:background="@color/user_center_split_line"
+        android:layout_width="wrap_content"/>
 
     <RelativeLayout
         android:id="@id/modify_user_info_birthday_button"
@@ -73,7 +83,12 @@
 
     </RelativeLayout>
 
-    <View style="@style/UnderLineStyle"/>
+    <View
+        android:layout_marginLeft="@dimen/under_line_margin_left_right"
+        android:layout_marginRight="@dimen/under_line_margin_left_right"
+        android:layout_height="@dimen/user_center_linear_layout_bottom_line_height"
+        android:background="@color/user_center_split_line"
+        android:layout_width="wrap_content"/>
 
     <RelativeLayout
         android:id="@id/modify_user_info_gender_button"
@@ -93,7 +108,12 @@
 
     </RelativeLayout>
 
-    <View style="@style/UnderLineStyle"/>
+    <View
+        android:layout_marginLeft="@dimen/under_line_margin_left_right"
+        android:layout_marginRight="@dimen/under_line_margin_left_right"
+        android:layout_height="@dimen/user_center_linear_layout_bottom_line_height"
+        android:background="@color/user_center_split_line"
+        android:layout_width="wrap_content"/>
 
     <RelativeLayout
         android:id="@id/modify_user_info_height_button"
@@ -112,7 +132,12 @@
 
     </RelativeLayout>
 
-    <View style="@style/UnderLineStyle"/>
+    <View
+        android:layout_marginLeft="@dimen/under_line_margin_left_right"
+        android:layout_marginRight="@dimen/under_line_margin_left_right"
+        android:layout_height="@dimen/user_center_linear_layout_bottom_line_height"
+        android:background="@color/user_center_split_line"
+        android:layout_width="wrap_content"/>
 
     <RelativeLayout
         android:id="@id/modify_user_info_weight_button"
@@ -131,7 +156,12 @@
 
     </RelativeLayout>
 
-    <View style="@style/UnderLineStyle"/>
+    <View
+        android:layout_marginLeft="@dimen/under_line_margin_left_right"
+        android:layout_marginRight="@dimen/under_line_margin_left_right"
+        android:layout_height="@dimen/user_center_linear_layout_bottom_line_height"
+        android:background="@color/user_center_split_line"
+        android:layout_width="wrap_content"/>
 
     <RelativeLayout
         android:id="@id/modify_user_info_location_button"
@@ -150,6 +180,11 @@
 
     </RelativeLayout>
 
-    <View style="@style/UnderLineStyle"/>
+    <View
+        android:layout_marginLeft="@dimen/under_line_margin_left_right"
+        android:layout_marginRight="@dimen/under_line_margin_left_right"
+        android:layout_height="@dimen/user_center_linear_layout_bottom_line_height"
+        android:background="@color/user_center_split_line"
+        android:layout_width="wrap_content"/>
 
 </LinearLayout>
