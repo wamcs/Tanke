@@ -130,8 +130,10 @@ public interface GameService {
       @Query("state") @RecordType int state
       );
 
+
+
   @Streaming
-  @GET
+  @GET("Home/game_zip")
   Observable<retrofit2.Response<ResponseBody>> downloadGameZip(@Url String url);
 
   /**

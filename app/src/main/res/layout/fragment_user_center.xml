@@ -101,7 +101,9 @@
                 <com.lptiyu.tanke.widget.GradientProgressBar
                     android:id="@+id/user_progress"
                     android:layout_width="match_parent"
-                    android:layout_height="3dp"
+                    android:layout_height="5dp"
+                    android:background="@drawable/fragment_user_center_progress_bar_bg"
+                    app:src="@drawable/gradient_rect_style"
                     android:layout_alignParentBottom="true"
                     android:layout_marginTop="5dp"/>
 

@@ -115,7 +115,7 @@ public class UserCenterFragment extends BaseFragment {
     mUserUid.setText(String.valueOf(Accounts.getId()));
     mUserProgressLeft.setText(getString(R.string.user_level, 10));
     mUserProgressRight.setText(getString(R.string.user_level, 10 + 1));
-    mUserProgress.setProgress(10f / 1000);
+    mUserProgress.setProgress(500f / 1000);
     mUserProgressName.setText("步道跑神");
     mUserGamePlayingNum.setText(String.valueOf(details.getPlayingGameNum()));
     mUserGameFinishedNum.setText(String.valueOf(details.getFinishedGameNum()));

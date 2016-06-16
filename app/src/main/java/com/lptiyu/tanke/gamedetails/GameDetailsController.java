@@ -11,6 +11,7 @@ import com.bumptech.glide.Glide;
 import com.lptiyu.tanke.R;
 import com.lptiyu.tanke.base.controller.ActivityController;
 import com.lptiyu.tanke.gameplaying.GamePlayingActivity;
+import com.lptiyu.tanke.global.AppData;
 import com.lptiyu.tanke.global.Conf;
 import com.lptiyu.tanke.io.net.HttpService;
 import com.lptiyu.tanke.io.net.Response;
@@ -87,6 +88,7 @@ public class GameDetailsController extends ActivityController {
   }
 
   private void bind(GameDetailsEntity entity) {
+    Timber.e(AppData.globalGson().toJson(entity));
     this.mGameDetailsEntity = entity;
     mTextTitle.setText(entity.getTitle());
     Glide.with(getActivity()).load(entity.getImg()).centerCrop().into(mImageCover);

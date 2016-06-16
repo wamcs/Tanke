@@ -87,7 +87,6 @@ public class GameServiceTest {
   @Test
   public void testDownloadGameZip() throws Exception {
     // 尚未测试
-
   }
 
   @Test // success

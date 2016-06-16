@@ -169,13 +169,16 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_user_judge_game">UserJudgeGameActivity</string>
 
+    <!-- LocateActivity Text Area-->
+    <string name="city_not_open">(该城市尚未开通)</string>
+    <string name="current_city_not_open">当前城市尚未开通</string>
+
     <!--LocateUserActivity Text Area-->
     <string name="all_location">全部地区</string>
     <string name="choose_area">选择地区</string>
     <string name="hot_location">热门城市</string>
     <string name="current_location">当前位置</string>
     <string name="open_location">开通城市</string>
-    <string name="city_not_open">(该城市尚未开通)</string>
 
     <!-- gameList Text Area-->
     <string name="game_progress">游戏进度</string>
