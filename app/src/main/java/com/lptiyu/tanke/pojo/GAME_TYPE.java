@@ -22,7 +22,7 @@ public enum GAME_TYPE implements JsonSerializer<GAME_TYPE>,
   INDIVIDUALS(0),
   TEAMS(1);
 
-  public final int value;
+  public int value;
 
   GAME_TYPE(int value) {
     this.value = value;

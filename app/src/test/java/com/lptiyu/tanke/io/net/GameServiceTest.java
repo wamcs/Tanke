@@ -85,6 +85,18 @@ public class GameServiceTest {
   }
 
   @Test
+  public void testGetIndividualGameZipUrl() throws Exception {
+    HttpService.getGameService().getIndividualGameZipUrl(1, "11", 5)
+        .subscribe(new ResponseAction1(), new AssertNullAction1());
+  }
+
+  @Test
+  public void testGetTeamGameZipUrl() throws Exception {
+    HttpService.getGameService().getTeamGameZipUrl(1, "11", 17, 1)
+        .subscribe(new ResponseAction1(), new AssertNullAction1());
+  }
+
+  @Test
   public void testDownloadGameZip() throws Exception {
     // 尚未测试
   }

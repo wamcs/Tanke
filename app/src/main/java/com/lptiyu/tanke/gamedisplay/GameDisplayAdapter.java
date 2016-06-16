@@ -6,8 +6,6 @@ import com.lptiyu.tanke.base.recyclerview.BaseAdapter;
 import com.lptiyu.tanke.base.recyclerview.BaseViewHolder;
 import com.lptiyu.tanke.pojo.GameDisplayEntity;
 
-import java.util.List;
-
 /**
  * EMAIL : danxionglei@foxmail.com
  * DATE : 16/5/18
@@ -35,9 +33,17 @@ public class GameDisplayAdapter extends BaseAdapter<GameDisplayEntity> {
   @Override
   public void onBindViewHolder(BaseViewHolder<GameDisplayEntity> holder, int position) {
     if (position == 0) {
-      ((ElasticHeaderViewHolder) holder).bind(dataList.subList(0, 3));
+      if (dataList.size() >= 3) {
+        ((ElasticHeaderViewHolder) holder).bind(dataList.subList(0, 3));
+      } else {
+        ((ElasticHeaderViewHolder) holder).bind(dataList);
+      }
     } else {
-      holder.bind(dataList.get(position - 1));
+      if (dataList.size() >= 3) {
+        holder.bind(dataList.get(position + 2));
+      } else {
+        holder.bind(dataList.get(position - 1));
+      }
     }
   }
 

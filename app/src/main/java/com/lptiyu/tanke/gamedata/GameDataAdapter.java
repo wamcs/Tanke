@@ -4,10 +4,13 @@ import android.view.ViewGroup;
 
 import com.lptiyu.tanke.base.recyclerview.BaseAdapter;
 import com.lptiyu.tanke.base.recyclerview.BaseViewHolder;
+import com.lptiyu.tanke.global.AppData;
 import com.lptiyu.tanke.pojo.GameDataEntity;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import timber.log.Timber;
 
 /**
  * @author : xiaoxiaoda

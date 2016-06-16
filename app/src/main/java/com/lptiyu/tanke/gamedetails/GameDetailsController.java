@@ -89,7 +89,6 @@ public class GameDetailsController extends ActivityController {
   }
 
   private void bind(GameDetailsEntity entity) {
-    Timber.e(AppData.globalGson().toJson(entity));
     this.mGameDetailsEntity = entity;
     mTextTitle.setText(entity.getTitle());
     Glide.with(getActivity()).load(entity.getImg()).centerCrop().into(mImageCover);
@@ -174,6 +173,7 @@ public class GameDetailsController extends ActivityController {
       Toast.makeText(getContext(), "获取游戏信息失败", Toast.LENGTH_SHORT).show();
       return;
     }
+    mGameDetailsEntity.setGameId(gameId);
 
     progressDialog.show();
     HttpService.getGameService()
