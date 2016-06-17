@@ -1,11 +1,14 @@
 package com.lptiyu.tanke.io.net;
 
 import com.lptiyu.tanke.BuildConfig;
+import com.lptiyu.tanke.global.Accounts;
 import com.lptiyu.tanke.pojo.GameDetailsEntity;
 import com.lptiyu.tanke.pojo.GameDisplayEntity;
+import com.lptiyu.tanke.pojo.UserDetails;
 
 import junit.framework.Assert;
 
+import org.apache.tools.ant.taskdefs.condition.Http;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -14,6 +17,7 @@ import org.robolectric.annotation.Config;
 
 import java.util.List;
 
+import okhttp3.ResponseBody;
 import rx.functions.Action1;
 
 /**
@@ -86,7 +90,7 @@ public class GameServiceTest {
 
   @Test
   public void testGetIndividualGameZipUrl() throws Exception {
-    HttpService.getGameService().getIndividualGameZipUrl(1, "11", 5)
+    HttpService.getGameService().getIndividualGameZipUrl(UserServiceTest.UID, UserServiceTest.TOKEN, 17)
         .subscribe(new ResponseAction1(), new AssertNullAction1());
   }
 
@@ -98,7 +102,6 @@ public class GameServiceTest {
 
   @Test
   public void testDownloadGameZip() throws Exception {
-    // 尚未测试
   }
 
   @Test // success

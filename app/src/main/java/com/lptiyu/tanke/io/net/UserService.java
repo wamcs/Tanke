@@ -125,6 +125,22 @@ public interface UserService {
       @Part("image") RequestBody file);
 
   /**
+   * 2.33 修改用户宣布信息
+   */
+  @GET("User/Update_userall")
+  Observable<Response<Void>> resetUserDetailsAll(
+      @Query("uid") long uid,
+      @Query("token") String token,
+      @Query("name") String name,
+      @Query("birthday") String birthday,
+      @Query("sex") String sex,
+      @Query("height") String height,
+      @Query("weight") String weight,
+      @Query("address") String address
+  );
+
+
+  /**
    * 完善信息上传
    */
   @IntDef({
