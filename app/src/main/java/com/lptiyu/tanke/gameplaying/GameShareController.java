@@ -34,6 +34,7 @@ import com.lptiyu.tanke.trace.history.HistoryTrackHelper;
 import com.lptiyu.tanke.trace.history.IHistoryTrackHelper;
 import com.lptiyu.tanke.utils.TimeUtils;
 import com.lptiyu.tanke.utils.ToastUtil;
+import com.lptiyu.tanke.utils.thread;
 import com.lptiyu.tanke.widget.dialog.ShareDialog;
 
 import java.util.ArrayList;
@@ -106,7 +107,6 @@ public class GameShareController extends ActivityController implements
   }
 
   private void init() {
-    Timber.e("1");
     mToolbarTitle.setText(getString(R.string.game_share));
     showLoadingDialog();
     initMap();
@@ -114,7 +114,6 @@ public class GameShareController extends ActivityController implements
     mMap.setOnMapLoadedCallback(new BaiduMap.OnMapLoadedCallback() {
       @Override
       public void onMapLoaded() {
-        Timber.e("2");
         mTrackHelper.queryHistoryTrack(Conf.makeUpTrackEntityName(gameId, teamId));
       }
     });
@@ -128,9 +127,7 @@ public class GameShareController extends ActivityController implements
   }
 
   private void resumeFromRecords() {
-    Timber.e("9");
     if (RecordsUtils.isGameStartedFromDisk(gameId) && RecordsUtils.getmRecordsHandler() != null) {
-      Timber.e("10");
       RecordsUtils.getmRecordsHandler().dispatchResumeFromDisc(new RecordsHandler.ResumeCallback() {
         @Override
         public void dataResumed(List<RunningRecord> recordList) {
@@ -218,7 +215,6 @@ public class GameShareController extends ActivityController implements
       TextView textView = ((TextView) view.findViewById(R.id.loading_dialog_textview));
       textView.setText(getString(R.string.loading));
       mLoadingDialog = new AlertDialog.Builder(getActivity())
-          .setCancelable(false)
           .setView(view)
           .create();
     }
@@ -232,7 +228,6 @@ public class GameShareController extends ActivityController implements
           .color(Color.RED).points(points);
       totalDistance = (int) distance;
       mMap.addOverlay(polyline);
-      animateToPointsBounds();
     }
   }
 
@@ -247,24 +242,35 @@ public class GameShareController extends ActivityController implements
 
   @Override
   public void onQueryHistoryTrackCallback(HistoryTrackData historyTrackData) {
-    Timber.e("3");
     List<LatLng> latLngList = new ArrayList<>();
     if (historyTrackData != null && historyTrackData.getStatus() == 0) {
-      Timber.e("4");
-      if (historyTrackData.getListPoints() != null) {
-        Timber.e("5");
-        latLngList.addAll(historyTrackData.getListPoints());
+      List<LatLng> points = historyTrackData.getListPoints();
+      if (points != null && mPoints.size() > 0) {
+        latLngList.addAll(points);
+        drawHistoryTrack(latLngList, historyTrackData.distance);
       } else {
-        Timber.e("6");
+        thread.mainThread(new Runnable() {
+          @Override
+          public void run() {
+            ToastUtil.TextToast("无历史轨迹");
+          }
+        });
       }
-      // 绘制历史轨迹
-      Timber.e("7");
-      drawHistoryTrack(latLngList, historyTrackData.distance);
     } else {
-      ToastUtil.TextToast("无历史轨迹");
+      thread.mainThread(new Runnable() {
+        @Override
+        public void run() {
+          ToastUtil.TextToast("无历史轨迹");
+        }
+      });
     }
-    Timber.e("8");
-    resumeFromRecords();
+    thread.mainThread(new Runnable() {
+      @Override
+      public void run() {
+        animateToPointsBounds();
+        resumeFromRecords();
+      }
+    });
   }
 
   @Override

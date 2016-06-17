@@ -182,6 +182,7 @@ public class UserServiceTest {
         });
   }
 
+  // 2.33 完善用户信息接口
   @Test
   public void testResetUserDetailsAll() {
     userService.resetUserDetailsAll(UID, TOKEN,

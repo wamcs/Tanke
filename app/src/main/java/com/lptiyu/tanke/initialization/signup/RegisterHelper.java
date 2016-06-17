@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.view.View;
 
+import com.lptiyu.tanke.MainActivity;
 import com.lptiyu.tanke.R;
 import com.lptiyu.tanke.global.Accounts;
 import com.lptiyu.tanke.initialization.ui.CompleteInformationActivity;
@@ -96,7 +97,8 @@ public class RegisterHelper extends SignUpHelper {
               Accounts.setToken(entity.getToken());
               //Accounts.setPhoneNumber(entity.getPhone());
               Intent intent = new Intent();
-              intent.setClass(context, CompleteInformationActivity.class);
+              intent.setClass(context, MainActivity.class);
+//              intent.setClass(context, CompleteInformationActivity.class);
               context.startActivity(intent);
             }
           }, new ToastExceptionAction(context.getApplicationContext()));
@@ -118,7 +120,8 @@ public class RegisterHelper extends SignUpHelper {
               Accounts.setToken(entity.getToken());
               //Accounts.setPhoneNumber(entity.getPhone());
               Intent intent = new Intent();
-              intent.setClass(context, CompleteInformationActivity.class);
+              intent.setClass(context, MainActivity.class);
+//              intent.setClass(context, CompleteInformationActivity.class);
               context.startActivity(intent);
             }
           }, new ToastExceptionAction(context.getApplicationContext()));
