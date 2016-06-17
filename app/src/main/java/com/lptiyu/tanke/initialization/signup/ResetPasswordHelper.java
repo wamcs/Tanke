@@ -78,16 +78,21 @@ public class ResetPasswordHelper extends SignUpHelper {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Action1<Response<Void>>() {
-                    @Override
-                    public void call(Response<Void> voidResponse) {
-                        int status = voidResponse.getStatus();
-                        if (status != 1) {
-                            ToastUtil.TextToast(voidResponse.getInfo());
-                            return;
-                        }
-                        ToastUtil.TextToast(voidResponse.getInfo());
-                        context.finish();
+                  @Override
+                  public void call(Response<Void> voidResponse) {
+                    int status = voidResponse.getStatus();
+                    if (status != 1) {
+                      ToastUtil.TextToast(voidResponse.getInfo());
+                      return;
                     }
+                    ToastUtil.TextToast(voidResponse.getInfo());
+                    context.finish();
+                  }
+                }, new Action1<Throwable>() {
+                  @Override
+                  public void call(Throwable throwable) {
+                    ToastUtil.TextToast("提交失败");
+                  }
                 });
         return true;
     }

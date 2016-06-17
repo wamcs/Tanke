@@ -33,6 +33,7 @@ import com.lptiyu.tanke.trace.history.HistoryTrackCallback;
 import com.lptiyu.tanke.trace.history.HistoryTrackHelper;
 import com.lptiyu.tanke.trace.history.IHistoryTrackHelper;
 import com.lptiyu.tanke.utils.TimeUtils;
+import com.lptiyu.tanke.utils.ToastUtil;
 import com.lptiyu.tanke.widget.dialog.ShareDialog;
 
 import java.util.ArrayList;
@@ -309,6 +310,11 @@ public class GameShareController extends ActivityController implements
               shareDialog.setShareContent(SHARE_TITLE, SHARE_CONTENT, null, stringResponse.getData());
             }
             shareDialog.show();
+          }
+        }, new Action1<Throwable>() {
+          @Override
+          public void call(Throwable throwable) {
+            ToastUtil.TextToast("分享失败");
           }
         });
 

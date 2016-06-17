@@ -102,26 +102,31 @@ public class ThirdLoginHelper implements PlatformActionListener {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Action1<Response<UserEntity>>() {
-                    @Override
-                    public void call(Response<UserEntity> userEntityResponse) {
-                        int status = userEntityResponse.getStatus();
-                        if (status != 1){
-                            ToastUtil.TextToast(userEntityResponse.getInfo());
-                            return;
-                        }
-                        UserEntity entity = userEntityResponse.getData();
-                        Accounts.setId(entity.getUid());
-                        Accounts.setToken(entity.getToken());
-                        //Accounts.setPhoneNumber(entity.getPhone());
-                        //Accounts.setNickName(entity.getNickname());
-                        //Accounts.setAvatar(entity.getAvatar());
-                        if (entity.getIsNewUserThirdParty() == 1){
-
-                            context.startActivity(intentToSignUP);
-                        }else{
-                            //TODO:jump to main activity
-                        }
+                  @Override
+                  public void call(Response<UserEntity> userEntityResponse) {
+                    int status = userEntityResponse.getStatus();
+                    if (status != 1) {
+                      ToastUtil.TextToast(userEntityResponse.getInfo());
+                      return;
                     }
+                    UserEntity entity = userEntityResponse.getData();
+                    Accounts.setId(entity.getUid());
+                    Accounts.setToken(entity.getToken());
+                    //Accounts.setPhoneNumber(entity.getPhone());
+                    //Accounts.setNickName(entity.getNickname());
+                    //Accounts.setAvatar(entity.getAvatar());
+                    if (entity.getIsNewUserThirdParty() == 1) {
+
+                      context.startActivity(intentToSignUP);
+                    } else {
+                      //TODO:jump to main activity
+                    }
+                  }
+                }, new Action1<Throwable>() {
+                  @Override
+                  public void call(Throwable throwable) {
+                    ToastUtil.TextToast("第三方登录失败");
+                  }
                 });
     }
 

@@ -37,12 +37,12 @@ public class Task implements Parcelable {
   private String pwd;
 
   public enum TASK_TYPE implements JsonSerializer<TASK_TYPE>, JsonDeserializer<TASK_TYPE> {
-    SCAN_CODE(0), // scan the QRCode
+    SCAN_CODE(4), // scan the QRCode
     LOCATE(1), // locate the position
     RIDDLE(2), // Secret mission
-    DISTINGUISH(3), // take the photo and distinguish
-    TIMING(4),
-    FINISH(5);
+    DISTINGUISH(5), // take the photo and distinguish
+    TIMING(0),
+    FINISH(3);
 
     private int type;
 

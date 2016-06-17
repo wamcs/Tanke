@@ -94,7 +94,7 @@ public class RegisterHelper extends SignUpHelper {
                         //Accounts.setPhoneNumber(entity.getPhone());
                         uploadInstallationId(entity.getUid(),entity.getToken());
                     }
-                }, new ToastExceptionAction(signUpPhoneEditText.getContext().getApplicationContext()));
+                }, new ToastExceptionAction(context.getApplicationContext()));
         return true;
     }
 
@@ -114,6 +114,6 @@ public class RegisterHelper extends SignUpHelper {
                         intent.setClass(context, CompleteInformationActivity.class);
                         context.startActivity(intent);
                     }
-                });
+                }, new ToastExceptionAction(context.getApplicationContext()));
     }
 }

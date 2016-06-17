@@ -262,7 +262,8 @@ public class GameDetailsController extends ActivityController {
         }, new Action1<Throwable>() {
           @Override
           public void call(Throwable throwable) {
-            ToastUtil.TextToast(throwable.getMessage());
+            ToastUtil.TextToast("游戏包下载出错");
+            progressDialog.dismiss();
           }
         }, new Action0() {
           @Override

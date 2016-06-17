@@ -130,6 +130,11 @@ public class ModifyUserInfoController extends ActivityController {
                   }
                   mAvatarImage.setImageURI(Uri.parse(stringResponse.getData()));
                 }
+              }, new Action1<Throwable>() {
+                @Override
+                public void call(Throwable throwable) {
+                  ToastUtil.TextToast("上传头像失败");
+                }
               });
 
         }
@@ -171,6 +176,11 @@ public class ModifyUserInfoController extends ActivityController {
                   }
                   mBirthdayText.setText(mData);
                 }
+              }, new Action1<Throwable>() {
+                @Override
+                public void call(Throwable throwable) {
+                  ToastUtil.TextToast("修改生日信息失败");
+                }
               });
         }
       });
@@ -202,6 +212,11 @@ public class ModifyUserInfoController extends ActivityController {
                     return;
                   }
                   mGenderText.setText(sex);
+                }
+              }, new Action1<Throwable>() {
+                @Override
+                public void call(Throwable throwable) {
+                  ToastUtil.TextToast("修改性别失败");
                 }
               });
         }
@@ -282,6 +297,11 @@ public class ModifyUserInfoController extends ActivityController {
                     return;
                   }
                   mLocationText.setText(details.getAddress());
+                }
+              }, new Action1<Throwable>() {
+                @Override
+                public void call(Throwable throwable) {
+                  ToastUtil.TextToast("修改地区失败");
                 }
               });
         }

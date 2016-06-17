@@ -99,6 +99,12 @@ public class GameDataViewHolder extends BaseViewHolder<GameDataEntity> {
             entity.setCompletePersonNum(integerResponse.getData());
             completePersonNum.setText(String.format(completePersonNumFormatter, entity.getCompletePersonNum()));
           }
+        }, new Action1<Throwable>() {
+          @Override
+          public void call(Throwable throwable) {
+            entity.setCompletePersonNum(0);
+            completePersonNum.setText(String.format(context.getString(R.string.complete_person_num_formatter), entity.getCompletePersonNum()));
+          }
         });
   }
 

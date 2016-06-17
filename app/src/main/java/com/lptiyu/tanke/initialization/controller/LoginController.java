@@ -195,26 +195,31 @@ public class LoginController extends ActivityController {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Action1<Response<UserEntity>>() {
-                    @Override
-                    public void call(Response<UserEntity> userEntityResponse) {
-                        int status = userEntityResponse.getStatus();
-                        if (status != 1){
-                            ToastUtil.TextToast(userEntityResponse.getInfo());
-                            return;
-                        }
-
-                        UserEntity entity = userEntityResponse.getData();
-                        Accounts.setId(entity.getUid());
-                        Accounts.setToken(entity.getToken());
-                        Accounts.setPhoneNumber(entity.getPhone());
-                        //Accounts.setNickName(entity.getNickname());
-                        //Accounts.setAvatar(entity.getAvatar());
-                        //nickname 和 avatar 干什么用？不造
-                        //TODO:jump to main activity
-                        Intent intent = new Intent(getActivity(), MainActivity.class);
-                        startActivity(intent);
-                        finish();
+                  @Override
+                  public void call(Response<UserEntity> userEntityResponse) {
+                    int status = userEntityResponse.getStatus();
+                    if (status != 1) {
+                      ToastUtil.TextToast(userEntityResponse.getInfo());
+                      return;
                     }
+
+                    UserEntity entity = userEntityResponse.getData();
+                    Accounts.setId(entity.getUid());
+                    Accounts.setToken(entity.getToken());
+                    Accounts.setPhoneNumber(entity.getPhone());
+                    //Accounts.setNickName(entity.getNickname());
+                    //Accounts.setAvatar(entity.getAvatar());
+                    //nickname 和 avatar 干什么用？不造
+                    //TODO:jump to main activity
+                    Intent intent = new Intent(getActivity(), MainActivity.class);
+                    startActivity(intent);
+                    finish();
+                  }
+                }, new Action1<Throwable>() {
+                  @Override
+                  public void call(Throwable throwable) {
+                    ToastUtil.TextToast("登录失败");
+                  }
                 });
 
     }
