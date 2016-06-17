@@ -13,6 +13,7 @@
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
         android:paddingTop="13dp"
+        android:textColor="@color/grey07"
         android:text="昨天 下午 8:50"
         />
 
