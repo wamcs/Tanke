@@ -61,7 +61,7 @@ public class LoginController extends ActivityController {
     }
 
     private void init(){
-        helper=new ThirdLoginHelper();
+        helper=new ThirdLoginHelper(getActivity());
         initClickEvent();
 
     }
@@ -202,7 +202,6 @@ public class LoginController extends ActivityController {
                       ToastUtil.TextToast(userEntityResponse.getInfo());
                       return;
                     }
-
                     UserEntity entity = userEntityResponse.getData();
                     Accounts.setId(entity.getUid());
                     Accounts.setToken(entity.getToken());

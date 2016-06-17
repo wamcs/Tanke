@@ -31,7 +31,6 @@ public class ResetPasswordHelper extends SignUpHelper {
         super.init();
         signUpTitle.setText(R.string.reset_password_title);
         signUpNextButton.setText(R.string.ensure);
-
     }
 
 

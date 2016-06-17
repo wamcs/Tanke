@@ -46,8 +46,25 @@ public interface UserService {
   @GET("Login/Register")
   Observable<Response<UserEntity>> register(@Query("phone") String phone, // 手机号
                                             @Query("pwd") String pwd, // 密码
-                                            @Query("code") String code,
-                                            @Query("type") @UserType int type); // 验证码
+                                            @Query("code") String code,  // 验证码
+                                            @Query("type") @UserType int type);
+
+  /**
+   * 第三方登录的注册接口
+   *
+   * @param phone
+   * @param pwd
+   * @param code
+   * @param type
+   * @return
+   */
+  @GET("Login/Register")
+  Observable<Response<UserEntity>> registerThird(@Query("phone") String phone, // 手机号
+                                                 @Query("pwd") String pwd, // 密码
+                                                 @Query("code") String code,  // 验证码
+                                                 @Query("type") @UserType int type,
+                                                 @Query("openid") String openId,
+                                                 @Query("name") String name);
 
   /**
    * 2.3 登录

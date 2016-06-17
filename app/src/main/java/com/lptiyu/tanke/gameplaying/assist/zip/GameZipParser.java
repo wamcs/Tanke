@@ -71,8 +71,9 @@ public class GameZipParser {
       mPoints = new ArrayList<>();
     }
 
-    for (String pointDir : pointDirs) {
-      String absolutePointDir = unzippedDir + "/" + pointDir;
+    for(int i = 0; i < pointCountInFile; i++) {
+      String absolutePointDir = unzippedDir + "/" + i;
+      Timber.e(absolutePointDir);
       Point point = checkAndParsePointDir(absolutePointDir);
       if (point == null) {
         return false;
