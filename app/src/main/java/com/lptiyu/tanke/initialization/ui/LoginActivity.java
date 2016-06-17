@@ -3,9 +3,12 @@ package com.lptiyu.tanke.initialization.ui;
 import android.os.Bundle;
 
 import com.lptiyu.tanke.R;
+import com.lptiyu.tanke.RunApplication;
 import com.lptiyu.tanke.base.controller.ActivityController;
 import com.lptiyu.tanke.base.ui.BaseActivity;
 import com.lptiyu.tanke.initialization.controller.LoginController;
+
+import timber.log.Timber;
 
 /**
  * author:wamcs
@@ -30,6 +33,6 @@ public class LoginActivity extends BaseActivity {
 
     @Override
     public void onBackPressed() {
-      System.exit(0);
+      RunApplication.getInstance().AppExit();
     }
 }

@@ -100,7 +100,7 @@ public class MainActivityController extends ActivityController {
       ToastUtil.TextToast(getString(R.string.exit));
       exitTime = System.currentTimeMillis();
     } else {
-      System.exit(0);
+      RunApplication.getInstance().AppExit();
     }
     return true;
   }

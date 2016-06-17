@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 
+import com.lptiyu.tanke.RunApplication;
 import com.lptiyu.tanke.base.controller.ActivityController;
 import com.lptiyu.tanke.base.controller.ControllerHolder;
 
@@ -22,6 +23,7 @@ public abstract class BaseActivity extends AppCompatActivity implements Controll
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+    RunApplication.getInstance().addActivity(this);
   }
 
   @Override
@@ -71,6 +73,7 @@ public abstract class BaseActivity extends AppCompatActivity implements Controll
     if (controller != null) {
       controller.onDestroy();
     }
+    RunApplication.getInstance().finishActivity(this);
   }
 
   @Override
