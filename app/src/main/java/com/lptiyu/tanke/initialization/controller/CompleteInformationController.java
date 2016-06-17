@@ -86,7 +86,6 @@ public class CompleteInformationController extends ActivityController implements
     private final static int MALE_TYPE = 1;
     private final static int FEMALE_TYPE = 2;
 
-
     private Context context;
     private LocationClient client;
     private City city;

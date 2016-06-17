@@ -21,6 +21,7 @@ import com.lptiyu.tanke.permission.TargetMethod;
 import com.lptiyu.tanke.pojo.City;
 import com.lptiyu.tanke.userCenter.adapter.LocateListAdapter;
 import com.lptiyu.tanke.utils.ToastUtil;
+import com.lptiyu.tanke.utils.rx.ToastExceptionAction;
 import com.lptiyu.tanke.widget.CustomTextView;
 
 import java.lang.annotation.Target;
@@ -94,6 +95,11 @@ public class LocateController extends ActivityController implements BDLocationLi
             list.addAll(listResponse.getData());
             adapter.notifyDataSetChanged();
             PermissionDispatcher.startLocateWithCheck(((BaseActivity) getActivity()));
+          }
+        }, new Action1<Throwable>() {
+          @Override
+          public void call(Throwable throwable) {
+            ToastUtil.TextToast("获取城市列表失败");
           }
         });
     mRecyclerView.setAdapter(adapter);

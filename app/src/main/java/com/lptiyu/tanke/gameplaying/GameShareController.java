@@ -33,6 +33,8 @@ import com.lptiyu.tanke.trace.history.HistoryTrackCallback;
 import com.lptiyu.tanke.trace.history.HistoryTrackHelper;
 import com.lptiyu.tanke.trace.history.IHistoryTrackHelper;
 import com.lptiyu.tanke.utils.TimeUtils;
+import com.lptiyu.tanke.utils.ToastUtil;
+import com.lptiyu.tanke.utils.thread;
 import com.lptiyu.tanke.widget.dialog.ShareDialog;
 
 import java.util.ArrayList;
@@ -131,6 +133,7 @@ public class GameShareController extends ActivityController implements
         public void dataResumed(List<RunningRecord> recordList) {
           if (recordList == null) {
             Timber.e("Resume from history records error");
+            mLoadingDialog.dismiss();
             return;
           }
           resumePointRecords(recordList);
@@ -142,6 +145,8 @@ public class GameShareController extends ActivityController implements
           mLoadingDialog.dismiss();
         }
       });
+    } else {
+      mLoadingDialog.dismiss();
     }
   }
 
@@ -210,7 +215,6 @@ public class GameShareController extends ActivityController implements
       TextView textView = ((TextView) view.findViewById(R.id.loading_dialog_textview));
       textView.setText(getString(R.string.loading));
       mLoadingDialog = new AlertDialog.Builder(getActivity())
-          .setCancelable(false)
           .setView(view)
           .create();
     }
@@ -224,9 +228,7 @@ public class GameShareController extends ActivityController implements
           .color(Color.RED).points(points);
       totalDistance = (int) distance;
       mMap.addOverlay(polyline);
-      animateToPointsBounds();
     }
-    resumeFromRecords();
   }
 
   private void animateToPointsBounds() {
@@ -242,12 +244,33 @@ public class GameShareController extends ActivityController implements
   public void onQueryHistoryTrackCallback(HistoryTrackData historyTrackData) {
     List<LatLng> latLngList = new ArrayList<>();
     if (historyTrackData != null && historyTrackData.getStatus() == 0) {
-      if (historyTrackData.getListPoints() != null) {
-        latLngList.addAll(historyTrackData.getListPoints());
+      List<LatLng> points = historyTrackData.getListPoints();
+      if (points != null && mPoints.size() > 0) {
+        latLngList.addAll(points);
+        drawHistoryTrack(latLngList, historyTrackData.distance);
+      } else {
+        thread.mainThread(new Runnable() {
+          @Override
+          public void run() {
+            ToastUtil.TextToast("无历史轨迹");
+          }
+        });
       }
-      // 绘制历史轨迹
-      drawHistoryTrack(latLngList, historyTrackData.distance);
+    } else {
+      thread.mainThread(new Runnable() {
+        @Override
+        public void run() {
+          ToastUtil.TextToast("无历史轨迹");
+        }
+      });
     }
+    thread.mainThread(new Runnable() {
+      @Override
+      public void run() {
+        animateToPointsBounds();
+        resumeFromRecords();
+      }
+    });
   }
 
   @Override
@@ -309,6 +332,11 @@ public class GameShareController extends ActivityController implements
               shareDialog.setShareContent(SHARE_TITLE, SHARE_CONTENT, null, stringResponse.getData());
             }
             shareDialog.show();
+          }
+        }, new Action1<Throwable>() {
+          @Override
+          public void call(Throwable throwable) {
+            ToastUtil.TextToast("分享失败");
           }
         });
 

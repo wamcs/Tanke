@@ -1,11 +1,19 @@
 package com.lptiyu.tanke;
 
+import android.accounts.Account;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.IntDef;
 import android.widget.ImageView;
 
 import com.lptiyu.tanke.base.controller.ActivityController;
 import com.lptiyu.tanke.base.ui.BaseActivity;
+import com.lptiyu.tanke.global.Accounts;
+import com.lptiyu.tanke.initialization.ui.CompleteInformationActivity;
+import com.lptiyu.tanke.io.net.HttpService;
+import com.lptiyu.tanke.io.net.Response;
+import com.lptiyu.tanke.utils.ToastUtil;
+import com.lptiyu.tanke.utils.rx.ToastExceptionAction;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -14,6 +22,10 @@ import java.lang.annotation.Target;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
+import rx.schedulers.Schedulers;
+import timber.log.Timber;
 
 public class MainActivity extends BaseActivity {
 
@@ -40,6 +52,7 @@ public class MainActivity extends BaseActivity {
     ButterKnife.bind(this);
     mController = new MainActivityController(this, getWindow().getDecorView());
     init();
+    uploadInstallationId(Accounts.getId(), Accounts.getToken());
   }
 
   @Override
@@ -75,6 +88,22 @@ public class MainActivity extends BaseActivity {
     } else {
       view.setImageResource(resUnselected);
     }
+  }
+
+  private void uploadInstallationId(long id,String token){
+    HttpService.getUserService().registerInstallation(id, token, Accounts.getInstallationId())
+        .subscribeOn(Schedulers.io())
+        .observeOn(AndroidSchedulers.mainThread())
+        .subscribe(new Action1<Response<Void>>() {
+          @Override
+          public void call(Response<Void> voidResponse) {
+            int status = voidResponse.getStatus();
+            if (status != 1) {
+              ToastUtil.TextToast(voidResponse.getInfo());
+            }
+            Timber.d("绑定installationId成功");
+          }
+        }, new ToastExceptionAction(getApplicationContext()));
   }
 
 }

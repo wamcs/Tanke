@@ -22,6 +22,7 @@ import com.lptiyu.tanke.pojo.GameDetailsEntity;
 import com.lptiyu.tanke.utils.DirUtils;
 import com.lptiyu.tanke.utils.TimeUtils;
 import com.lptiyu.tanke.utils.ToastUtil;
+import com.lptiyu.tanke.widget.dialog.ShareDialog;
 
 import java.io.File;
 import java.io.IOException;
@@ -80,6 +81,7 @@ public class GameDetailsController extends ActivityController {
   private Subscription subscription;
 
   private long gameId;
+  private ShareDialog shareDialog;
 
   private GameDetailsEntity mGameDetailsEntity;
 
@@ -183,7 +185,11 @@ public class GameDetailsController extends ActivityController {
 
   @OnClick(R.id.share_btn)
   public void shareClicked() {
-
+    if (null == shareDialog) {
+      shareDialog = new ShareDialog(getContext());
+      shareDialog.setShareContent(mGameDetailsEntity.getTitle(), mGameDetailsEntity.getGameIntro(), null, mGameDetailsEntity.getShareUrl());
+    }
+    shareDialog.show();
   }
 
   private String tempGameZipUrl;
@@ -262,7 +268,8 @@ public class GameDetailsController extends ActivityController {
         }, new Action1<Throwable>() {
           @Override
           public void call(Throwable throwable) {
-            ToastUtil.TextToast(throwable.getMessage());
+            ToastUtil.TextToast("游戏包下载出错");
+            progressDialog.dismiss();
           }
         }, new Action0() {
           @Override

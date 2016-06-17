@@ -27,6 +27,7 @@ import com.baidu.mapapi.model.LatLng;
 import com.baidu.mapapi.utils.DistanceUtil;
 import com.lptiyu.tanke.R;
 import com.lptiyu.tanke.gameplaying.pojo.Point;
+import com.lptiyu.tanke.global.AppData;
 import com.lptiyu.tanke.global.Conf;
 import com.lptiyu.tanke.utils.Display;
 import com.lptiyu.tanke.widget.NumNail;
@@ -198,6 +199,9 @@ public class MapHelper implements
       return;
     }
     currentAttackPoint = mPoints.get(index);
+
+    Timber.e(AppData.globalGson().toJson(currentAttackPoint));
+
     setNail(currentAttackPoint, index, NumNail.NailType.RED);
   }
 

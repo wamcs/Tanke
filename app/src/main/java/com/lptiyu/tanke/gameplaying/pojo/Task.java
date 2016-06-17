@@ -29,7 +29,7 @@ public class Task implements Parcelable {
 
   private int exp;
 
-  @SerializedName("task_name")
+  @SerializedName("mission_name")
   private String taskName;
 
   private String content;
@@ -37,12 +37,12 @@ public class Task implements Parcelable {
   private String pwd;
 
   public enum TASK_TYPE implements JsonSerializer<TASK_TYPE>, JsonDeserializer<TASK_TYPE> {
-    SCAN_CODE(0), // scan the QRCode
+    SCAN_CODE(4), // scan the QRCode
     LOCATE(1), // locate the position
-    RIDDLE(2), // Secret mission
-    DISTINGUISH(3), // take the photo and distinguish
-    TIMING(4),
-    FINISH(5);
+    RIDDLE(3), // Secret mission
+    DISTINGUISH(5), // take the photo and distinguish
+    TIMING(0),
+    FINISH(2);
 
     private int type;
 

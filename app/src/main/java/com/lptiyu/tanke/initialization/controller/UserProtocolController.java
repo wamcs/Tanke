@@ -44,14 +44,19 @@ public class UserProtocolController extends ActivityController {
         HttpService.getUserService().userProtocol().subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(new Action1<Response<String>>() {
-                @Override
-                public void call(Response<String> stringResponse) {
-                    if (stringResponse.getStatus() != Response.RESPONSE_OK) {
-                        ToastUtil.TextToast(stringResponse.getInfo());
-                        return;
-                    }
-                    mWebView.loadUrl(stringResponse.getData());
+              @Override
+              public void call(Response<String> stringResponse) {
+                if (stringResponse.getStatus() != Response.RESPONSE_OK) {
+                  ToastUtil.TextToast(stringResponse.getInfo());
+                  return;
                 }
+                mWebView.loadUrl(stringResponse.getData());
+              }
+            }, new Action1<Throwable>() {
+              @Override
+              public void call(Throwable throwable) {
+                ToastUtil.TextToast("获取用户协议失败");
+              }
             });
     }
 
