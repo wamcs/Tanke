@@ -15,7 +15,6 @@ import butterknife.ButterKnife;
  */
 public class MessageViewHolder extends BaseViewHolder<MessageEntity> {
 
-
   public MessageViewHolder(ViewGroup parent) {
     super(fromResLayout(parent, R.layout.item_message_layout));
     ButterKnife.bind(this, itemView);

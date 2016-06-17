@@ -7,12 +7,14 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.lptiyu.tanke.R;
 import com.lptiyu.tanke.base.controller.ActivityController;
 import com.lptiyu.tanke.base.recyclerview.BaseAdapter;
 import com.lptiyu.tanke.base.recyclerview.BaseListFragmentController;
 import com.lptiyu.tanke.base.recyclerview.BaseViewHolder;
+import com.lptiyu.tanke.global.AppData;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,7 +38,6 @@ public class MessageControllerNew extends BaseListFragmentController<MessageEnti
 
   public MessageControllerNew(Fragment fragment, ActivityController controller, View view) {
     super(fragment, controller, view);
-
     recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
     recyclerView.setAdapter(adapter);
     swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -57,13 +58,18 @@ public class MessageControllerNew extends BaseListFragmentController<MessageEnti
 
   @Override
   public Observable<List<MessageEntity>> requestData(int page) {
-    return null;
+    return Observable.just(dummyData);
   }
 
   public static final List<MessageEntity> dummyData = new ArrayList<>();
 
   static {
     MessageEntity entity = new MessageEntity();
+    entity.setTitle("步道路线：绝望光谷真的『绝望』吗？");
+    entity.setTime(System.currentTimeMillis());
+    entity.setImage("android.resource://" + AppData.getContext().getPackageName()
+        + "/" + R.mipmap.need_to_remove_4_so_big);
+    dummyData.add(entity);
   }
 
   @NonNull
@@ -74,12 +80,12 @@ public class MessageControllerNew extends BaseListFragmentController<MessageEnti
 
   @Override
   public void onRefreshStateChanged(boolean isRefreshing) {
-
+    swipeRefreshLayout.setRefreshing(isRefreshing);
   }
 
   @Override
   public void onError(Throwable t) {
-
+    Toast.makeText(getContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
   }
 
 

@@ -3,6 +3,7 @@ package com.lptiyu.tanke.global;
 import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.content.res.Resources;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -42,6 +43,10 @@ public class AppData {
 
   public static Context getContext() {
     return sContext;
+  }
+
+  public static Resources getResources() {
+    return sContext.getResources();
   }
 
   public static Gson globalGson() {

@@ -1,5 +1,7 @@
 package com.lptiyu.tanke.io.net;
 
+import android.support.v4.media.MediaMetadataCompat;
+
 import com.lptiyu.tanke.BuildConfig;
 import com.lptiyu.tanke.pojo.UserDetails;
 import com.lptiyu.tanke.pojo.UserEntity;
@@ -62,7 +64,7 @@ public class UserServiceTest {
 
   @Test //success 2.3
   public void testLogin() throws Exception {
-    userService.login("13006180386", "123qwe")
+    userService.login("13006180386", "123")
         .subscribe(new Action1<Response<UserEntity>>() {
           @Override
           public void call(Response<UserEntity> userResponse) {
@@ -181,7 +183,18 @@ public class UserServiceTest {
   }
 
   @Test
-  // 2.11 体重、生日不能更改= =,其他的都通过了
+  public void testResetUserDetailsAll() {
+    userService.resetUserDetailsAll(UID, TOKEN,
+        "雷丹雄",
+        "1994-12-12",
+        "男",
+        "170",
+        "65",
+        "武汉"
+        ).subscribe(new ResponseAction1(), new AssertNullAction1());
+  }
+
+  @Test
   public void testResetUserDetails() throws Exception {
     userService.resetUserDetails(UID, TOKEN, UserService.USER_DETAIL_HEIGHT, "180")
         .subscribe(new ResponseAction1(), new AssertNullAction1());
