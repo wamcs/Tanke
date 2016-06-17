@@ -5,16 +5,15 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-
-    <com.lptiyu.tanke.widget.CustomTextView
-        android:id="@+id/tool_bar_textView"
-        style="@style/TextAppearance.Toolbar"
+    <android.support.v7.widget.Toolbar
+        android:id="@id/tool_bar"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/default_toolbar_height"
-        android:background="@drawable/toolbar_gradient"
-        android:gravity="center"
-        android:text="游戏管理"
-        />
+        style="@style/Toolbar"
+        android:layout_height="wrap_content">
+
+        <include layout="@layout/layout_default_toolbar"/>
+
+    </android.support.v7.widget.Toolbar>
 
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/swipe_refresh_layout"

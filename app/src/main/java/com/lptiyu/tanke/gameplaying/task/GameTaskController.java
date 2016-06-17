@@ -203,12 +203,6 @@ public class GameTaskController extends ActivityController {
   }
 
   @Override
-  public boolean onBackPressed() {
-    back();
-    return true;
-  }
-
-  @Override
   public void onPause() {
     super.onPause();
   }

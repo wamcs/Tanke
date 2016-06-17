@@ -49,7 +49,6 @@ public class LoginController extends ActivityController {
     @BindView(R.id.login_weibo_button)
     ImageView mWeiboLogin;
 
-
     private boolean isButtonEnable=true;
 
     private ThirdLoginHelper helper;
@@ -173,8 +172,6 @@ public class LoginController extends ActivityController {
 
     @OnClick(R.id.login_login_button)
     void login(){
-
-
         if (mInputPhoneEditText.getText().length() == 0){
             ToastUtil.TextToast(getString(R.string.none_user_phone));
             return;
@@ -220,13 +217,9 @@ public class LoginController extends ActivityController {
                     }
                 });
 
-
-
-
     }
 
-
-    @Override
+  @Override
     protected boolean isToolbarEnable() {
         return false;
     }

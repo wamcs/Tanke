@@ -42,6 +42,8 @@ import rx.functions.Func1;
  */
 public class UserManagerGameController extends BaseListActivityController<GameManageEntity> {
 
+  @BindView(R.id.default_tool_bar_textview)
+  TextView mToolbarTitle;
   @BindView(R.id.swipe_refresh_layout)
   SwipeRefreshLayout swipeRefreshLayout;
 
@@ -58,6 +60,7 @@ public class UserManagerGameController extends BaseListActivityController<GameMa
   }
 
   private void init() {
+    mToolbarTitle.setText(getString(R.string.user_manager));
     swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
       @Override
       public void onRefresh() {
@@ -93,6 +96,11 @@ public class UserManagerGameController extends BaseListActivityController<GameMa
   @Override
   public void onRefreshStateChanged(boolean isRefreshing) {
     swipeRefreshLayout.setRefreshing(isRefreshing);
+  }
+
+  @OnClick(R.id.default_tool_bar_imageview)
+  void back() {
+    finish();
   }
 
   @Override

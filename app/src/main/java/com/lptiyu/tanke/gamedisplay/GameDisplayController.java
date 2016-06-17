@@ -107,7 +107,6 @@ public class GameDisplayController extends BaseListFragmentController<GameDispla
             if (listResponse.getStatus() != Response.RESPONSE_OK) {
               throw new RuntimeException(listResponse.getInfo());
             }
-
             return listResponse.getData();
           }
         });

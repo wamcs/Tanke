@@ -189,11 +189,4 @@ public class GameDataController extends BaseListActivityController<GameDataEntit
     finish();
   }
 
-  @Override
-  public boolean onBackPressed() {
-    super.onBackPressed();
-    back();
-    return true;
-  }
-
 }

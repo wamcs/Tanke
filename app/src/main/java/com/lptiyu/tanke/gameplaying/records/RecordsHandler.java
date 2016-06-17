@@ -138,6 +138,11 @@ public class RecordsHandler extends Handler {
               Timber.d(AppData.globalGson().toJson(record));
             }
           }
+        }, new Action1<Throwable>() {
+          @Override
+          public void call(Throwable throwable) {
+            Timber.e("upload records error");
+          }
         });
   }
 

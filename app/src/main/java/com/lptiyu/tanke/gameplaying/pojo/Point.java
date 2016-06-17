@@ -29,7 +29,7 @@ public class Point implements Parcelable {
 
   private double longitude;
 
-  @SerializedName("task_id")
+  @SerializedName("task")
   private List<String> taskId;
 
   private Map<String, Task> taskMap;

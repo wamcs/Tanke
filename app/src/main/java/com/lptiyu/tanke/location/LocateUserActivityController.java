@@ -11,6 +11,7 @@ import com.lptiyu.tanke.base.ui.BaseActivity;
 import com.lptiyu.tanke.permission.PermissionDispatcher;
 import com.lptiyu.tanke.permission.TargetMethod;
 import com.lptiyu.tanke.utils.thread;
+import com.lptiyu.tanke.widget.CustomTextView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -26,7 +27,7 @@ import timber.log.Timber;
 public class LocateUserActivityController extends ActivityController {
 
   @BindView(R.id.default_tool_bar_textview)
-  TextView mToolbarText;
+  CustomTextView mToolbarText;
 
   private AppCompatActivity mActivity;
 
