@@ -62,7 +62,7 @@ public class UserServiceTest {
 
   @Test //success 2.3
   public void testLogin() throws Exception {
-    userService.login("13006180386", "123qwe")
+    userService.login("13006180386", "123")
         .subscribe(new Action1<Response<UserEntity>>() {
           @Override
           public void call(Response<UserEntity> userResponse) {
