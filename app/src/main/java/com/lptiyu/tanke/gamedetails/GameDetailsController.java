@@ -14,6 +14,7 @@ import com.bumptech.glide.Glide;
 import com.lptiyu.tanke.R;
 import com.lptiyu.tanke.base.controller.ActivityController;
 import com.lptiyu.tanke.gameplaying.GamePlayingActivity;
+import com.lptiyu.tanke.gameplaying.assist.zip.GameZipScanner;
 import com.lptiyu.tanke.global.Accounts;
 import com.lptiyu.tanke.global.Conf;
 import com.lptiyu.tanke.io.net.HttpService;
@@ -85,6 +86,8 @@ public class GameDetailsController extends ActivityController {
   private String tempGameZipUrl;
   private ShareDialog shareDialog;
 
+  private GameZipScanner mGameZipScanner;
+
   private GameDetailsEntity mGameDetailsEntity;
 
   public GameDetailsController(GameDetailsActivity activity, View view) {
@@ -139,6 +142,7 @@ public class GameDetailsController extends ActivityController {
     }
 
     showLoadingDialog();
+    mGameZipScanner = new GameZipScanner();
     progressDialog = new ProgressDialog(getContext(), ProgressDialog.STYLE_SPINNER);
     progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
 
@@ -172,50 +176,31 @@ public class GameDetailsController extends ActivityController {
 
   }
 
-  private void showLoadingDialog() {
-    if (mLoadingDialog == null) {
-      View view = LayoutInflater.from(getContext()).inflate(R.layout.layout_loading, null);
-      TextView textView = ((TextView) view.findViewById(R.id.loading_dialog_textview));
-      textView.setText(getString(R.string.loading));
-      mLoadingDialog = new AlertDialog.Builder(getActivity())
-          .setCancelable(false)
-          .setView(view)
-          .create();
+  /**
+   * This method is to check whether the game zip has been download
+   * and the game zip is out of date or not
+   *
+   * If the unix timestamp is not match with server's, then must
+   * clean the game records、zip package、game dir etc
+   */
+  private void checkDiskAndNextStep() {
+
+    // first scan the dir and check the zip is exist or not
+    if (mGameZipScanner == null) {
+      mGameZipScanner = new GameZipScanner();
     }
-    mLoadingDialog.show();
+    long timeStamp = mGameZipScanner.getGameZipFileTimeStamp(gameId);
+    if (timeStamp == GameZipScanner.ZIP_FILE_NOT_FOUND_TIMESTAMP) {
+      // it means that the game zip is not exist, need download
+      startGetGameZipUrlAndDownload();
+    } else {
+      // the zip is exist, then check is it out of date
+      //TODO : invoke api to check whether the zio is out of date
+      startPlayingGame();
+    }
   }
 
-  @OnClick(R.id.back_btn)
-  public void goBackClicked() {
-    finish();
-  }
-
-  @OnClick(R.id.share_btn)
-  public void shareClicked() {
-    if (null == shareDialog) {
-      shareDialog = new ShareDialog(getContext());
-      shareDialog.setShareContent(mGameDetailsEntity.getTitle(), mGameDetailsEntity.getGameIntro(), null, mGameDetailsEntity.getShareUrl());
-    }
-    shareDialog.show();
-  }
-
-  @OnClick(R.id.game_detail_location)
-  public void startLocationDetailMap() {
-    Intent intent = new Intent(getActivity(), GameDetailsLocationActivity.class);
-    startActivity(intent);
-  }
-
-
-  @OnClick(R.id.game_detail_ensure)
-  public void ensureClicked() {
-    if (mGameDetailsEntity == null) {
-      Toast.makeText(getContext(), "获取游戏信息失败", Toast.LENGTH_SHORT).show();
-      return;
-    }
-    if (mGameDetailsEntity.getType() == GAME_TYPE.TEAMS) {
-      ToastUtil.TextToast("团队赛正在开发中");
-      return;
-    }
+  private void startGetGameZipUrlAndDownload() {
     mGameDetailsEntity.setGameId(gameId);
     progressDialog.show();
     HttpService.getGameService()
@@ -269,13 +254,7 @@ public class GameDetailsController extends ActivityController {
         .subscribe(new Action1<File>() {
           @Override
           public void call(File file) {
-            Intent intent = new Intent(getContext(), GamePlayingActivity.class);
-            intent.putExtra(Conf.GAME_ID, gameId);
-            intent.putExtra(Conf.GAME_TYPE, mGameDetailsEntity.getType());
-            if (mGameDetailsEntity.getType() == GAME_TYPE.TEAMS) {
-              //TODO : need pass team id to GamePlayingActivity when the team game open
-            }
-            startActivity(intent);
+            startPlayingGame();
           }
         }, new Action1<Throwable>() {
           @Override
@@ -289,6 +268,62 @@ public class GameDetailsController extends ActivityController {
             progressDialog.dismiss();
           }
         });
+  }
+
+  private void startPlayingGame() {
+    Intent intent = new Intent(getContext(), GamePlayingActivity.class);
+    intent.putExtra(Conf.GAME_ID, gameId);
+    intent.putExtra(Conf.GAME_TYPE, mGameDetailsEntity.getType());
+    if (mGameDetailsEntity.getType() == GAME_TYPE.TEAMS) {
+      //TODO : need pass team id to GamePlayingActivity when the team game open
+    }
+    startActivity(intent);
+  }
+
+  private void showLoadingDialog() {
+    if (mLoadingDialog == null) {
+      View view = LayoutInflater.from(getContext()).inflate(R.layout.layout_loading, null);
+      TextView textView = ((TextView) view.findViewById(R.id.loading_dialog_textview));
+      textView.setText(getString(R.string.loading));
+      mLoadingDialog = new AlertDialog.Builder(getActivity())
+          .setCancelable(false)
+          .setView(view)
+          .create();
+    }
+    mLoadingDialog.show();
+  }
+
+  @OnClick(R.id.back_btn)
+  public void goBackClicked() {
+    finish();
+  }
+
+  @OnClick(R.id.share_btn)
+  public void shareClicked() {
+    if (null == shareDialog) {
+      shareDialog = new ShareDialog(getContext());
+      shareDialog.setShareContent(mGameDetailsEntity.getTitle(), mGameDetailsEntity.getGameIntro(), null, mGameDetailsEntity.getShareUrl());
+    }
+    shareDialog.show();
+  }
+
+  @OnClick(R.id.game_detail_location)
+  public void startLocationDetailMap() {
+    Intent intent = new Intent(getActivity(), GameDetailsLocationActivity.class);
+    startActivity(intent);
+  }
+
+  @OnClick(R.id.game_detail_ensure)
+  public void ensureClicked() {
+    if (mGameDetailsEntity == null) {
+      ToastUtil.TextToast("获取游戏信息失败");
+      return;
+    }
+    if (mGameDetailsEntity.getType() == GAME_TYPE.TEAMS) {
+      ToastUtil.TextToast("团队赛正在开发中");
+      return;
+    }
+    checkDiskAndNextStep();
   }
 
   @Override

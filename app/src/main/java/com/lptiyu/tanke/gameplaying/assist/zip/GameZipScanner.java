@@ -34,6 +34,14 @@ public class GameZipScanner {
     scanGameUnzippedDir();
   }
 
+  public void reload() {
+    gameIdZipFileMap.clear();
+    gameIdTimeStampMap.clear();
+    gameIdUnzippedDirMap.clear();
+    scanGameZipFiles();
+    scanGameUnzippedDir();
+  }
+
   /**
    * if the zip file is exist, return the timestamp
    * if not exist, return -1
@@ -60,6 +68,14 @@ public class GameZipScanner {
     return DirUtils.getTempDirectory() + "/" + result;
   }
 
+  /**
+   * This method will return the unix timestamp of game zip
+   *
+   * @param gameId the target game's id
+   * @return if the zip of gameId is exist, return the timestamp
+   *         if not exist, return {ZIP_FILE_NOT_FOUND_TIMESTAMP : -1}
+   *
+   */
   public long getGameZipFileTimeStamp(long gameId) {
     if (gameIdTimeStampMap.get(gameId) == null) {
       return ZIP_FILE_NOT_FOUND_TIMESTAMP;

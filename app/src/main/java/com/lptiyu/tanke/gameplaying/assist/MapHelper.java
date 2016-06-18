@@ -237,6 +237,8 @@ public class MapHelper implements
     if (mPoints != null && index <= currentAttackPoint.getPointIndex()) {
       Point targetPoint = mPoints.get(index);
       mBaiduMap.animateMapStatus(MapStatusUpdateFactory.newLatLngZoom(targetPoint.getLatLng(), 20), DEFAULT_ANIMATION_DURATION);
+    } else {
+
     }
   }
 

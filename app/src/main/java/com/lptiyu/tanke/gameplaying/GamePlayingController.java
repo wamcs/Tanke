@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
+import com.baidu.mapapi.map.MapStatusUpdateFactory;
 import com.baidu.mapapi.map.TextureMapView;
 import com.baidu.mapapi.model.LatLng;
 import com.baidu.mapapi.utils.DistanceUtil;
@@ -115,7 +116,6 @@ public class GamePlayingController extends ActivityController implements
       showErrorDialog();
       return;
     }
-    ToastUtil.TextToast("游戏包加载完成");
     mPoints = gameZipHelper.getmPoints();
     mapHelper = new MapHelper(getActivity(), mapView);
     mapHelper.bindData(mPoints);
@@ -473,7 +473,17 @@ public class GamePlayingController extends ActivityController implements
    */
   @Override
   public void onSpotItemClick(View view, int position) {
-    mapHelper.animateCameraToMarkerByIndex(position);
+    if (mPoints == null) {
+      return;
+    }
+    int result = position - currentAttackPoint.getPointIndex();
+    if (result < 0) {
+      mapHelper.animateCameraToMarkerByIndex(position);
+    } else if (result == 0) {
+      onMarkerClicked(currentAttackPoint);
+    } else {
+      ToastUtil.TextToast("攻击点还未开启");
+    }
   }
 
   @TargetMethod(requestCode = PermissionDispatcher.PERMISSION_REQUEST_CODE_LOCATION)
