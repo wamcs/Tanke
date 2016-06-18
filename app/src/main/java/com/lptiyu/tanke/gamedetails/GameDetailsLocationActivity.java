@@ -2,6 +2,7 @@ package com.lptiyu.tanke.gamedetails;
 
 import android.os.Bundle;
 
+import com.lptiyu.tanke.R;
 import com.lptiyu.tanke.base.controller.ActivityController;
 import com.lptiyu.tanke.base.ui.BaseActivity;
 
@@ -17,6 +18,7 @@ public class GameDetailsLocationActivity extends BaseActivity {
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+    setContentView(R.layout.activity_game_details_location);
     mController = new GameDetailsLocationController(this, getWindow().getDecorView());
   }
 

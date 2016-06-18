@@ -28,6 +28,9 @@
 
     <!--Game details-->
 
+    <!-- GameDetailsLocation Text Area-->
+    <string name="game_details_location">活动地点</string>
+
     <!--UserCenter start-->
     <string name="userCenter">我的</string>
     <string name="user_level" formatted="false">LV.%d</string>

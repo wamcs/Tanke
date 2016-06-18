@@ -82,6 +82,7 @@ public class GameDetailsController extends ActivityController {
   private Subscription subscription;
 
   private long gameId;
+  private String tempGameZipUrl;
   private ShareDialog shareDialog;
 
   private GameDetailsEntity mGameDetailsEntity;
@@ -200,11 +201,10 @@ public class GameDetailsController extends ActivityController {
 
   @OnClick(R.id.game_detail_location)
   public void startLocationDetailMap() {
-    startActivity(new Intent(getActivity(), GameDetailsLocationActivity.class));
+    Intent intent = new Intent(getActivity(), GameDetailsLocationActivity.class);
+    startActivity(intent);
   }
 
-
-  private String tempGameZipUrl;
 
   @OnClick(R.id.game_detail_ensure)
   public void ensureClicked() {
