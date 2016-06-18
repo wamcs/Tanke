@@ -56,7 +56,6 @@ public class RunApplication extends MultiDexApplication {
         Accounts.setInstallationId(installationId);
         Timber.d("this device installation is %s", installationId);
       }
-
     } catch (Exception e) {
       // To test it automatically.
       Timber.e(e, e.getMessage());

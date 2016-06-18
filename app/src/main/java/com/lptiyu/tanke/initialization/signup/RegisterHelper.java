@@ -97,8 +97,8 @@ public class RegisterHelper extends SignUpHelper {
               Accounts.setToken(entity.getToken());
               //Accounts.setPhoneNumber(entity.getPhone());
               Intent intent = new Intent();
-              intent.setClass(context, MainActivity.class);
-//              intent.setClass(context, CompleteInformationActivity.class);
+//              intent.setClass(context, MainActivity.class);
+              intent.setClass(context, CompleteInformationActivity.class);
               context.startActivity(intent);
             }
           }, new ToastExceptionAction(context.getApplicationContext()));
@@ -120,8 +120,8 @@ public class RegisterHelper extends SignUpHelper {
               Accounts.setToken(entity.getToken());
               //Accounts.setPhoneNumber(entity.getPhone());
               Intent intent = new Intent();
-              intent.setClass(context, MainActivity.class);
-//              intent.setClass(context, CompleteInformationActivity.class);
+//              intent.setClass(context, MainActivity.class);
+              intent.setClass(context, CompleteInformationActivity.class);
               context.startActivity(intent);
             }
           }, new ToastExceptionAction(context.getApplicationContext()));
