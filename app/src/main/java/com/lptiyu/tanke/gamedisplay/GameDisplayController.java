@@ -1,6 +1,5 @@
 package com.lptiyu.tanke.gamedisplay;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.view.View;
 
@@ -12,7 +11,6 @@ import com.lptiyu.tanke.MainActivityController;
 import com.lptiyu.tanke.R;
 import com.lptiyu.tanke.base.recyclerview.BaseListFragmentController;
 import com.lptiyu.tanke.global.Accounts;
-import com.lptiyu.tanke.global.AppData;
 import com.lptiyu.tanke.global.Conf;
 import com.lptiyu.tanke.io.net.HttpService;
 import com.lptiyu.tanke.io.net.Response;
@@ -23,7 +21,6 @@ import com.lptiyu.tanke.utils.NetworkUtil;
 import com.lptiyu.tanke.utils.ShaPrefer;
 import com.lptiyu.tanke.utils.ToastUtil;
 import com.lptiyu.tanke.widget.CustomTextView;
-import com.lptiyu.zxinglib.android.CaptureActivity;
 
 import java.util.List;
 
