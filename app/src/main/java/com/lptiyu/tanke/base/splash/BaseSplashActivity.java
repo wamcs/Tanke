@@ -70,12 +70,12 @@ public abstract class BaseSplashActivity extends BaseActivity {
       startActivity(new Intent(this, GuideActivity.class));
       finish();
     } else {
-//      if (isImageValid()) {
-//        Glide.with(this).load(imageFile).into(splashView);
-//        smoothStartNext();
-//      } else {
+      if (isImageValid()) {
+        Glide.with(this).load(imageFile).into(splashView);
+        smoothStartNext();
+      } else {
         startNext();
-//      }
+      }
     }
 
 //    fetchSplashUrl()

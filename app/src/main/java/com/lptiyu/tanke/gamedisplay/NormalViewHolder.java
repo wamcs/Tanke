@@ -116,9 +116,18 @@ public class NormalViewHolder extends BaseViewHolder<GameDisplayEntity> {
   }
 
   private void parseTag(GameDisplayEntity entity) {
-    switch (entity.getRecommend()) {
-      case RECOMMENDED:
-        tag.setText("推荐");
+    switch (entity.getState()) {
+      case NORMAL:
+        tag.setText("");
+        return;
+      case ALPHA_TEST:
+        tag.setText("内测中");
+        return;
+      case MAINTAINING:
+        tag.setText("维护中");
+        return;
+      case FINISHED:
+        tag.setText("已结束");
         return;
       default:
     }
@@ -129,7 +138,9 @@ public class NormalViewHolder extends BaseViewHolder<GameDisplayEntity> {
     if (entity.getType() == GAME_TYPE.TEAMS) {
       teamType.setText(fragment.getString(R.string.team_type_team));
     } else {
-      teamType.setText(fragment.getString(R.string.team_type_individule));
+      //个人赛不需要展示标签
+//      teamType.setText(fragment.getString(R.string.team_type_individule));
+      teamType.setText("");
     }
   }
 
@@ -140,7 +151,6 @@ public class NormalViewHolder extends BaseViewHolder<GameDisplayEntity> {
       Timber.e("GameDisplayFragment get Controller is null");
       return;
     }
-
     controller.onItemClick(gameDisplayEntity);
   }
 }

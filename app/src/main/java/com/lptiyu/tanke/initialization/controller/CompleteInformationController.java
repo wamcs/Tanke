@@ -20,6 +20,7 @@ import com.baidu.location.LocationClientOption;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.facebook.imagepipeline.core.ImagePipeline;
+import com.lptiyu.tanke.MainActivity;
 import com.lptiyu.tanke.R;
 import com.lptiyu.tanke.base.controller.ActivityController;
 import com.lptiyu.tanke.base.ui.BaseActivity;
@@ -290,8 +291,8 @@ public class CompleteInformationController extends ActivityController implements
 
     HttpService.getUserService().resetUserDetailsAll(Accounts.getId(), Accounts.getToken(),
         "雷丹雄", "1994-12-12", "男", "170", "65", "武汉")
-        .observeOn(Schedulers.io())
-        .subscribeOn(AndroidSchedulers.mainThread())
+        .subscribeOn(Schedulers.io())
+        .observeOn(AndroidSchedulers.mainThread())
         .subscribe(new Action1<Response<Void>>() {
           @Override
           public void call(Response<Void> voidResponse) {
@@ -301,6 +302,9 @@ public class CompleteInformationController extends ActivityController implements
             }
             if (voidResponse.getStatus() == 1) {
               ToastUtil.TextToast("上传信息成功");
+              Intent intent = new Intent(getActivity(), MainActivity.class);
+              startActivity(intent);
+              finish();
             } else {
               ToastUtil.TextToast(voidResponse.getInfo());
             }
@@ -381,9 +385,6 @@ public class CompleteInformationController extends ActivityController implements
         mUserDetails.setAddress(cityStruct.getmName());
         mLocationText.setText(cityStruct.getmName());
         city.setName(cityStruct.getmName());
-        city.setProvince(cityStruct.getmProvince());
-        city.setLatitude(Double.valueOf(cityStruct.getmCx()));
-        city.setLongtitude(Double.valueOf(cityStruct.getmCy()));
         break;
     }
   }

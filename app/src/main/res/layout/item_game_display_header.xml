@@ -34,8 +34,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="2dp"
-            android:lines="1"
-            android:maxLength="6"
+            android:textSize="15sp"
+            android:maxWidth="110dp"
+            android:text="今天天天天拉动官方"
+            android:singleLine="true"
             />
     </LinearLayout>
 
@@ -65,9 +67,10 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="3dp"
             android:textSize="13sp"
-            android:lines="1"
-            android:maxLength="6"
-            />
+            android:singleLine="true"
+            android:maxWidth="100dp"
+            android:text="今天天天天拉动官方"
+        />
     </LinearLayout>
 
 
@@ -96,9 +99,10 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="3dp"
             android:textSize="13sp"
-            android:lines="1"
-            android:maxLength="6"
-            />
+            android:singleLine="true"
+            android:maxWidth="100dp"
+            android:text="今天天天天拉动官方"
+        />
 
     </LinearLayout>
 

@@ -64,13 +64,13 @@
     <com.lptiyu.tanke.widget.CustomTextView
         android:id="@+id/team_type_text"
         android:layout_width="match_parent"
-        android:layout_height="20dp"
+        android:layout_height="40dp"
         android:layout_below="@id/relative_layout"
         android:background="#befafafa"
         android:gravity="center"
         android:text="5人团队赛"
         android:textColor="@color/middle_blue"
-        android:textSize="13sp"
+        android:textSize="15sp"
         />
 
     <com.lptiyu.tanke.widget.CustomTextView

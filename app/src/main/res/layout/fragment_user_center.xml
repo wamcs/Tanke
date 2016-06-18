@@ -23,7 +23,7 @@
         android:layout_below="@id/header_layout"
         android:orientation="horizontal"
         android:paddingLeft="20dp"
-        android:paddingRight="20dp" >
+        android:paddingRight="20dp">
 
         <com.lptiyu.tanke.widget.CircularImageView
             android:id="@+id/user_avatar"
@@ -41,11 +41,11 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp"
             android:layout_height="match_parent"
             android:layout_marginLeft="10dp"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp">
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -103,10 +103,10 @@
                     android:id="@+id/user_progress"
                     android:layout_width="match_parent"
                     android:layout_height="5dp"
-                    android:background="@drawable/fragment_user_center_progress_bar_bg"
-                    app:src="@color/colorPrimary"
                     android:layout_alignParentBottom="true"
-                    android:layout_marginTop="5dp"/>
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/fragment_user_center_progress_bar_bg"
+                    app:src="@color/colorPrimary"/>
 
                 <com.lptiyu.tanke.widget.CustomTextView
                     android:id="@+id/user_progress_left"
@@ -130,17 +130,16 @@
                 />
 
                 <com.lptiyu.tanke.widget.CustomTextView
-                    android:id="@+id/user_progress_name"
+                    android:id="@+id/user_progress_need_exp"
                     style="@style/TextAppearance.UserCenter.small"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_above="@id/user_progress"
                     android:layout_centerHorizontal="true"
-                    android:text="步道跑神"
+                    android:text="距离下一级80点"
                 />
 
             </RelativeLayout>
-
 
         </LinearLayout>
 

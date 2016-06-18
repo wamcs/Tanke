@@ -22,6 +22,8 @@ import com.lptiyu.tanke.userCenter.ui.SettingActivity;
 import com.lptiyu.tanke.userCenter.ui.UserGameFinishedListActivity;
 import com.lptiyu.tanke.userCenter.ui.UserGamePlayingListActivity;
 import com.lptiyu.tanke.userCenter.ui.ModifyUserInfoActivity;
+import com.lptiyu.tanke.utils.NetworkUtil;
+import com.lptiyu.tanke.utils.ToastUtil;
 import com.lptiyu.tanke.widget.CircularImageView;
 import com.lptiyu.tanke.widget.GradientProgressBar;
 
@@ -64,8 +66,8 @@ public class UserCenterFragment extends BaseFragment {
   @BindView(R.id.user_progress_right)
   TextView mUserProgressRight;
 
-  @BindView(R.id.user_progress_name)
-  TextView mUserProgressName;
+  @BindView(R.id.user_progress_need_exp)
+  TextView mUserProgressNeedExp;
 
   @BindView(R.id.user_game_playing_num)
   TextView mUserGamePlayingNum;
@@ -102,7 +104,11 @@ public class UserCenterFragment extends BaseFragment {
         }, new Action1<Throwable>() {
           @Override
           public void call(Throwable throwable) {
-            throw new RuntimeException(throwable);
+            if (!NetworkUtil.checkIsNetworkConnected()) {
+              ToastUtil.TextToast(R.string.no_network);
+              return;
+            }
+            ToastUtil.TextToast("获取用户信息失败");
           }
         });
   }
@@ -117,7 +123,7 @@ public class UserCenterFragment extends BaseFragment {
     mUserProgressLeft.setText(getString(R.string.user_level, 10));
     mUserProgressRight.setText(getString(R.string.user_level, 10 + 1));
     mUserProgress.setProgress(500f / 1000);
-    mUserProgressName.setText("步道跑神");
+    mUserProgressNeedExp.setText(getString(R.string.need_exp, 80));
     mUserGamePlayingNum.setText(String.valueOf(details.getPlayingGameNum()));
     mUserGameFinishedNum.setText(String.valueOf(details.getFinishedGameNum()));
   }

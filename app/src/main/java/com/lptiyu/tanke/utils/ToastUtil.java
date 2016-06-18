@@ -35,11 +35,8 @@ public class ToastUtil {
    * @param text
    */
   public static void TextToast(CharSequence text) {
-    Timber.e("text1");
     toast = Toast.makeText(CONTEXT, text, LENGTH_SHORT);
-    Timber.e("text2");
     toast.show();
-    Timber.e("text3");
   }
 
   public static void TextToast(int resId) {

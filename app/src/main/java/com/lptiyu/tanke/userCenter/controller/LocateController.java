@@ -34,6 +34,7 @@ import butterknife.OnClick;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.schedulers.Schedulers;
+import timber.log.Timber;
 
 /**
  * author:wamcs
@@ -140,7 +141,7 @@ public class LocateController extends ActivityController implements BDLocationLi
     }
     if (isLocateCityOpened) {
       Intent intent = new Intent();
-      intent.putExtra(Conf.USER_LOCATION, city.getName());
+      intent.putExtra(getString(R.string.main_page_location_key), city.getName());
       getActivity().setResult(Conf.REQUEST_CODE_LOCATION, intent);
       finish();
     } else {

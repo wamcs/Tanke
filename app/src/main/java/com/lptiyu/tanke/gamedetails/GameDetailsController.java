@@ -2,6 +2,7 @@ package com.lptiyu.tanke.gamedetails;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Paint;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -98,11 +99,16 @@ public class GameDetailsController extends ActivityController {
     Glide.with(getActivity()).load(entity.getImg()).centerCrop().into(mImageCover);
     mTextGameIntro.setText(entity.getGameIntro());
     mTextRule.setText(entity.getRule());
+    mTextLocation.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG); //下划线
+    mTextLocation.getPaint().setAntiAlias(true);//抗锯齿
     mTextLocation.setText(entity.getArea());
-    mTextTeamType.setText(entity.getType() == GAME_TYPE.INDIVIDUALS ?
-        getString(R.string.team_type_individule) : getString(R.string.team_type_team));
     mTextPeoplePlaying.setText(String.valueOf(entity.getPeoplePlaying()));
     parseTime(mTextTime, entity);
+    if (entity.getType() == GAME_TYPE.INDIVIDUALS) {
+      mTextTeamType.setVisibility(View.GONE);
+    } else {
+      mTextTeamType.setText(getString(R.string.team_type_team));
+    }
   }
 
   public void parseTime(final TextView textView, GameDetailsEntity entity) {
@@ -191,6 +197,12 @@ public class GameDetailsController extends ActivityController {
     }
     shareDialog.show();
   }
+
+  @OnClick(R.id.game_detail_location)
+  public void startLocationDetailMap() {
+    startActivity(new Intent(getActivity(), GameDetailsLocationActivity.class));
+  }
+
 
   private String tempGameZipUrl;
 

@@ -31,6 +31,7 @@
     <!--UserCenter start-->
     <string name="userCenter">我的</string>
     <string name="user_level" formatted="false">LV.%d</string>
+    <string name="need_exp" formatter="false">距离下一级%d点</string>
     <!--UserCenter finished-->
 
     <!--SettingActivity Text Area-->

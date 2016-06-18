@@ -22,10 +22,12 @@ import com.lptiyu.tanke.userCenter.ui.LocateActivity;
 import com.lptiyu.tanke.utils.NetworkUtil;
 import com.lptiyu.tanke.utils.ShaPrefer;
 import com.lptiyu.tanke.utils.ToastUtil;
+import com.lptiyu.tanke.widget.CustomTextView;
 import com.lptiyu.zxinglib.android.CaptureActivity;
 
 import java.util.List;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import rx.Observable;
@@ -43,6 +45,9 @@ import timber.log.Timber;
  * @author ldx
  */
 public class GameDisplayController extends BaseListFragmentController<GameDisplayEntity> {
+
+  @BindView(R.id.location)
+  CustomTextView mLocate;
 
   //As a view controller
   GameDisplayFragment fragment;
@@ -178,7 +183,6 @@ public class GameDisplayController extends BaseListFragmentController<GameDispla
 
                     List<City> cities = response.getData();
                     // 是否有bdLocation.getCity()
-
                     for (City city : cities) {
                       if (city.getName().equals(bdLocation.getCity())) {
                         return city;
@@ -206,6 +210,10 @@ public class GameDisplayController extends BaseListFragmentController<GameDispla
         }, new Action1<Throwable>() {
           @Override
           public void call(Throwable throwable) {
+            if (!NetworkUtil.checkIsNetworkConnected()) {
+              ToastUtil.TextToast(R.string.no_network);
+              return;
+            }
             fragment.loadingError(throwable);
           }
         });
@@ -218,7 +226,7 @@ public class GameDisplayController extends BaseListFragmentController<GameDispla
 
   @OnClick(R.id.scanner)
   void scanner() {
-    startActivityForResult(new Intent(getContext(), CaptureActivity.class), SCANNER_REQUEST_CODE);
+//    startActivityForResult(new Intent(getContext(), CaptureActivity.class), SCANNER_REQUEST_CODE);
   }
 
   void onItemClick(GameDisplayEntity gameDisplayEntity) {
@@ -227,16 +235,15 @@ public class GameDisplayController extends BaseListFragmentController<GameDispla
 
   @Override
   public void onActivityResult(int requestCode, int resultCode, Intent data) {
-    if (resultCode != Activity.RESULT_OK) {
-      return;
-    }
     switch (requestCode) {
       case Conf.REQUEST_CODE_LOCATION:
         String loc = data.getStringExtra(getString(R.string.main_page_location_key));
         if (loc == null) {
           break;
         }
+        Timber.e(loc);
         requestLocation = loc;
+        mLocate.setText(requestLocation);
         refreshTop();
         break;
       case SCANNER_REQUEST_CODE:

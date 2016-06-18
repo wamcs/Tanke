@@ -14,6 +14,7 @@ import com.lptiyu.tanke.gamedetails.GameDetailsController;
 import com.lptiyu.tanke.global.Conf;
 import com.lptiyu.tanke.pojo.GameDisplayEntity;
 import com.lptiyu.tanke.widget.CircularImageView;
+import com.lptiyu.tanke.widget.CustomTextView;
 
 import java.util.List;
 
@@ -41,13 +42,13 @@ public class ElasticHeaderViewHolder extends BaseViewHolder<GameDisplayEntity> {
   CircularImageView rightImageView;
 
   @BindView(R.id.left_title)
-  TextView leftTitle;
+  CustomTextView leftTitle;
 
   @BindView(R.id.middle_title)
-  TextView middleTitle;
+  CustomTextView middleTitle;
 
   @BindView(R.id.right_title)
-  TextView rightTitle;
+  CustomTextView rightTitle;
 
   GameDisplayFragment fragment;
 

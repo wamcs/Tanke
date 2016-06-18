@@ -149,7 +149,6 @@ public class LocationProvinceController extends ContextController implements Loc
   private void setResultAndFinish(CityStruct cityStruct) {
     Intent intent = new Intent();
     intent.putExtra(Conf.CITY_STRUCT, cityStruct);
-    Timber.e(AppData.globalGson().toJson(cityStruct));
     mController.setResult(Conf.RESULT_CODE_START_USER_LOCATE, intent);
     mController.finish();
   }
