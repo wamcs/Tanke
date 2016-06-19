@@ -4,6 +4,9 @@
     <item name="default_tool_bar_imageview" type="id"/>
     <item name="default_tool_bar_textview" type="id"/>
 
+    <item name="load_data_error_imageview" type="id"/>
+    <item name="no_data_imageview" type="id"/>
+
     <!-- login Activity ids-->
     <item name="login_input_phone" type="id"/>
     <item name="login_input_password" type="id"/>

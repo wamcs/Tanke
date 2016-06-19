@@ -115,8 +115,7 @@
                     android:layout_height="wrap_content"
                     android:layout_above="@id/user_progress"
                     android:background="@drawable/blue_round_corner"
-                    android:text="LV.7"
-                />
+                    android:text="LV.7"/>
 
                 <com.lptiyu.tanke.widget.CustomTextView
                     android:id="@+id/user_progress_right"
@@ -204,6 +203,14 @@
             android:layout_marginRight="10dp"
             android:background="@color/user_center_split_line"/>
 
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/setting_activity_arrow_margin_right"
+            android:src="@mipmap/arrow_left_black"/>
+
     </RelativeLayout>
 
     <RelativeLayout
@@ -258,6 +265,15 @@
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:background="@color/user_center_split_line"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/setting_activity_arrow_margin_right"
+            android:src="@mipmap/arrow_left_black"/>
+
     </RelativeLayout>
 
 
@@ -302,6 +318,14 @@
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:background="@color/user_center_split_line"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/setting_activity_arrow_margin_right"
+            android:src="@mipmap/arrow_left_black"/>
     </RelativeLayout>
 
 
@@ -346,6 +370,14 @@
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:background="@color/user_center_split_line"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/setting_activity_arrow_margin_right"
+            android:src="@mipmap/arrow_left_black"/>
     </RelativeLayout>
 
 
@@ -390,6 +422,14 @@
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:background="@color/user_center_split_line"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/setting_activity_arrow_margin_right"
+            android:src="@mipmap/arrow_left_black"/>
     </RelativeLayout>
 
 

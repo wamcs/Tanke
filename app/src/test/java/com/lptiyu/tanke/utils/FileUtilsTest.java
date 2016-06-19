@@ -26,4 +26,9 @@ public class FileUtilsTest {
     GameDisplayEntity entity = AppData.globalGson().fromJson(testJson, GameDisplayEntity.class);
     System.out.println(AppData.globalGson().toJson(entity));
   }
+
+  @Test
+  public void testExpUtils() {
+      System.out.println(ExpUtils.calculateCurrentLevel(101));
+  }
 }

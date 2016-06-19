@@ -21,6 +21,7 @@ import com.lptiyu.tanke.io.net.HttpService;
 import com.lptiyu.tanke.io.net.Response;
 import com.lptiyu.tanke.pojo.GameManageEntity;
 import com.lptiyu.tanke.utils.ToastUtil;
+import com.lptiyu.tanke.utils.thread;
 import com.lptiyu.zxinglib.android.Contents;
 import com.lptiyu.zxinglib.android.Intents;
 import com.lptiyu.zxinglib.android.encode.EncodeActivity;
@@ -44,6 +45,8 @@ public class UserManagerGameController extends BaseListActivityController<GameMa
 
   @BindView(R.id.default_tool_bar_textview)
   TextView mToolbarTitle;
+  @BindView(R.id.no_data_imageview)
+  ImageView mNoDataImage;
   @BindView(R.id.swipe_refresh_layout)
   SwipeRefreshLayout swipeRefreshLayout;
 
@@ -82,7 +85,27 @@ public class UserManagerGameController extends BaseListActivityController<GameMa
                 if (gameManageEntityResponse.getStatus() != Response.RESPONSE_OK) {
                   throw new RuntimeException(gameManageEntityResponse.getInfo());
                 }
-                return gameManageEntityResponse.getData();
+                List<GameManageEntity> result = gameManageEntityResponse.getData();
+                if (result.size() == 0) {
+                  if (mNoDataImage != null) {
+                    thread.mainThread(new Runnable() {
+                      @Override
+                      public void run() {
+                        mNoDataImage.setVisibility(View.VISIBLE);
+                      }
+                    });
+                  }
+                } else {
+                  if (mNoDataImage != null) {
+                    thread.mainThread(new Runnable() {
+                      @Override
+                      public void run() {
+                        mNoDataImage.setVisibility(View.GONE);
+                      }
+                    });
+                  }
+                }
+                return result;
               }
             });
   }

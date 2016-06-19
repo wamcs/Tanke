@@ -22,6 +22,7 @@ import com.lptiyu.tanke.userCenter.ui.SettingActivity;
 import com.lptiyu.tanke.userCenter.ui.UserGameFinishedListActivity;
 import com.lptiyu.tanke.userCenter.ui.UserGamePlayingListActivity;
 import com.lptiyu.tanke.userCenter.ui.ModifyUserInfoActivity;
+import com.lptiyu.tanke.utils.ExpUtils;
 import com.lptiyu.tanke.utils.NetworkUtil;
 import com.lptiyu.tanke.utils.ToastUtil;
 import com.lptiyu.tanke.widget.CircularImageView;
@@ -34,6 +35,7 @@ import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.schedulers.Schedulers;
+import timber.log.Timber;
 
 /**
  * author:wamcs
@@ -120,12 +122,19 @@ public class UserCenterFragment extends BaseFragment {
     mUserSex.setImageDrawable(null);
     mUserLocation.setText(details.getAddress());
     mUserUid.setText(String.valueOf(Accounts.getId()));
-    mUserProgressLeft.setText(getString(R.string.user_level, 10));
-    mUserProgressRight.setText(getString(R.string.user_level, 10 + 1));
-    mUserProgress.setProgress(500f / 1000);
-    mUserProgressNeedExp.setText(getString(R.string.need_exp, 80));
     mUserGamePlayingNum.setText(String.valueOf(details.getPlayingGameNum()));
     mUserGameFinishedNum.setText(String.valueOf(details.getFinishedGameNum()));
+    parseLevelAndExp(101);
+  }
+
+  private void parseLevelAndExp(int exp) {
+    int currentLevel = ExpUtils.calculateCurrentLevel(exp);
+    int currentLevelNeedExp = ExpUtils.calculateExpByLevel(currentLevel);
+    int nextLevelNeedExp = ExpUtils.calculateExpByLevel(currentLevel + 1);
+    mUserProgressLeft.setText(getString(R.string.user_level, currentLevel));
+    mUserProgressRight.setText(getString(R.string.user_level, currentLevel + 1));
+    mUserProgress.setProgress(((float) (exp - currentLevelNeedExp) / (float) (nextLevelNeedExp - currentLevelNeedExp)));
+    mUserProgressNeedExp.setText(getString(R.string.need_exp, nextLevelNeedExp - exp));
   }
 
   @OnClick(R.id.user_message_layout)

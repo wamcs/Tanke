@@ -10,8 +10,7 @@
         android:id="@+id/relative_layout"
         android:layout_width="match_parent"
         android:layout_height="@dimen/default_toolbar_height"
-        android:background="@drawable/toolbar_gradient"
-    >
+        android:background="@drawable/toolbar_gradient">
 
         <com.lptiyu.tanke.widget.CustomTextView
             android:id="@+id/location"
@@ -49,7 +48,6 @@
 
     </RelativeLayout>
 
-
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"
@@ -57,5 +55,13 @@
         android:layout_below="@id/relative_layout"
         android:overScrollMode="never"/>
 
+    <ImageView
+        android:contentDescription="@string/content_description"
+        android:visibility="gone"
+        android:id="@id/load_data_error_imageview"
+        android:src="@mipmap/img_temp_load_data_error"
+        android:padding="100dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
 
 </RelativeLayout>

@@ -1,7 +1,6 @@
 package com.lptiyu.tanke.gamedisplay;
 
 import android.content.DialogInterface;
-import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
@@ -10,20 +9,18 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.lptiyu.tanke.MainActivityController;
 import com.lptiyu.tanke.R;
 import com.lptiyu.tanke.base.ui.BaseFragment;
 import com.lptiyu.tanke.pojo.City;
-import com.lptiyu.tanke.pojo.GameDisplayEntity;
 import com.lptiyu.tanke.utils.ToastUtil;
-import com.lptiyu.tanke.widget.CustomTextView;
-
-import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import timber.log.Timber;
 
 /**
@@ -38,6 +35,8 @@ public class GameDisplayFragment extends BaseFragment {
 
   @BindView(R.id.relative_layout)
   RelativeLayout toolBar;
+  @BindView(R.id.load_data_error_imageview)
+  ImageView mNoDataImage;
 
   @BindView(R.id.recycler_view)
   RecyclerView recyclerView;
@@ -94,16 +93,29 @@ public class GameDisplayFragment extends BaseFragment {
 
   public void loading(boolean enable) {
     if (enable) {
+      if (mNoDataImage != null) {
+        mNoDataImage.setVisibility(View.GONE);
+      }
       ToastUtil.TextToast(getString(R.string.loading));
     }
   }
 
   public void loadingError(Throwable t) {
-    ToastUtil.TextToast(t.getMessage());
+    if (mNoDataImage != null) {
+      mNoDataImage.setVisibility(View.VISIBLE);
+    }
+//    ToastUtil.TextToast(t.getMessage());
   }
 
   @Override
   public GameDisplayController getController() {
     return controller;
+  }
+
+  @OnClick(R.id.load_data_error_imageview)
+  public void reLoadDataWhenError() {
+    if (!controller.isRefreshing()) {
+      controller.refreshTop();
+    }
   }
 }

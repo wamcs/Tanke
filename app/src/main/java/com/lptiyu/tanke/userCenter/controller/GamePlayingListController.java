@@ -32,72 +32,72 @@ import rx.functions.Func1;
  * email:kaili@hustunique.com
  */
 public class GamePlayingListController extends BaseListActivityController<GamePlayingEntity> implements
-        SwipeRefreshLayout.OnRefreshListener {
+    SwipeRefreshLayout.OnRefreshListener {
 
-    @BindView(R.id.default_tool_bar_textview)
-    TextView mTitle;
+  @BindView(R.id.default_tool_bar_textview)
+  TextView mTitle;
 
-    @BindView(R.id.GameListRecyclerView)
-    RecyclerView recyclerView;
+  @BindView(R.id.GameListRecyclerView)
+  RecyclerView recyclerView;
 
-    @BindView(R.id.GameListRefreshLayout)
-    SwipeRefreshLayout swipeRefreshLayout;
+  @BindView(R.id.GameListRefreshLayout)
+  SwipeRefreshLayout swipeRefreshLayout;
 
-    GamePlayingAdapter adapter = new GamePlayingAdapter();
+  GamePlayingAdapter adapter = new GamePlayingAdapter();
 
-    public GamePlayingListController(AppCompatActivity activity, View view) {
-        super(activity, view);
-        ButterKnife.bind(this, view);
-        init();
-    }
+  public GamePlayingListController(AppCompatActivity activity, View view) {
+    super(activity, view);
+    ButterKnife.bind(this, view);
+    init();
+  }
 
-    private void init(){
-        mTitle.setText("正在进行");
-        swipeRefreshLayout.setOnRefreshListener(this);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        recyclerView.setAdapter(adapter);
-        refreshTop();
-    }
+  private void init() {
+    mTitle.setText("正在进行");
+    swipeRefreshLayout.setOnRefreshListener(this);
+    recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+    recyclerView.setAdapter(adapter);
+    refreshTop();
+  }
 
 
-    @Override
-    public Observable<List<GamePlayingEntity>> requestData(int page) {
-        return HttpService.getUserService()
-            .gamePlaying(Accounts.getId(), Accounts.getToken(), page)
-            .map(new Func1<Response<List<GamePlayingEntity>>, List<GamePlayingEntity>>() {
-                @Override
-                public List<GamePlayingEntity> call(Response<List<GamePlayingEntity>> response) {
-                    if (response.getStatus() != Response.RESPONSE_OK) {
-                        throw new RuntimeException(response.getInfo());
-                    }
-                    return response.getData();
-                }
-            });
-    }
+  @Override
+  public Observable<List<GamePlayingEntity>> requestData(int page) {
+    return HttpService.getUserService()
+        .gamePlaying(Accounts.getId(), Accounts.getToken(), page)
+        .map(new Func1<Response<List<GamePlayingEntity>>, List<GamePlayingEntity>>() {
+          @Override
+          public List<GamePlayingEntity> call(Response<List<GamePlayingEntity>> response) {
+            if (response.getStatus() != Response.RESPONSE_OK) {
+              throw new RuntimeException(response.getInfo());
+            }
+            return response.getData();
+          }
+        });
+  }
 
-    @NonNull
-    @Override
-    public BaseAdapter<GamePlayingEntity> getAdapter() {
-        return adapter;
-    }
+  @NonNull
+  @Override
+  public BaseAdapter<GamePlayingEntity> getAdapter() {
+    return adapter;
+  }
 
-    @Override
-    public void onRefreshStateChanged(boolean isRefreshing) {
-        swipeRefreshLayout.setRefreshing(isRefreshing);
-    }
+  @Override
+  public void onRefreshStateChanged(boolean isRefreshing) {
+    swipeRefreshLayout.setRefreshing(isRefreshing);
+  }
 
-    @Override
-    public void onError(Throwable t) {
-        ToastUtil.TextToast(t.getMessage());
-    }
+  @Override
+  public void onError(Throwable t) {
+    ToastUtil.TextToast(t.getMessage());
+  }
 
-    @OnClick(R.id.default_tool_bar_imageview)
-    void back(){
-        finish();
-    }
+  @OnClick(R.id.default_tool_bar_imageview)
+  void back() {
+    finish();
+  }
 
-    @Override
-    public void onRefresh() {
-        refreshTop();
-    }
+  @Override
+  public void onRefresh() {
+    refreshTop();
+  }
 }

@@ -6,11 +6,7 @@ import com.google.gson.Gson;
 import com.google.gson.internal.LinkedTreeMap;
 import com.google.gson.stream.JsonReader;
 import com.lptiyu.tanke.global.Conf;
-import com.lptiyu.tanke.utils.DirUtils;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -49,27 +45,11 @@ public class LocationFileParser {
    * Cache the city info
    *
    * @param context
-   * @param fileType
    * @param fileName
    */
-  public static boolean init(Context context, int fileType, String fileName) {
-    InputStreamReader isr = null;
+  public static boolean init(Context context, String fileName) {
     try {
-      switch (fileType) {
-        case FILE_TYPE_FROM_ASSETS:
-          isr = new InputStreamReader(context.getResources().getAssets().open(fileName));
-          break;
-        case FILE_TYPE_FROM_DIR:
-          File file = new File(DirUtils.getResDirectory(), fileName);
-          InputStream is = new FileInputStream(file);
-          isr = new InputStreamReader(is);
-          //TODO : ready to read city file from directory
-          break;
-      }
-
-      if (null == isr) {
-        isr = new InputStreamReader(context.getResources().getAssets().open(Conf.DEFAULT_CITY_FILE_NAME));
-      }
+      InputStreamReader isr = new InputStreamReader(context.getResources().getAssets().open(fileName));
       Gson gson = new Gson();
       temp = gson.fromJson(new JsonReader(isr), temp.getClass());
       for (int i = 0; i < temp.size(); i++) {

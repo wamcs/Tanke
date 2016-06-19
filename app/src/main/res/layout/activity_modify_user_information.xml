@@ -187,4 +187,28 @@
         android:background="@color/user_center_split_line"
         android:layout_width="wrap_content"/>
 
+    <RelativeLayout
+        android:id="@+id/modify_user_info_phone_button"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/modify_user_info_item_height">
+
+        <com.lptiyu.tanke.widget.CustomTextView
+            style="@style/ModifyUserInfoItemTitle"
+            android:text="绑定手机号"/>
+
+        <com.lptiyu.tanke.widget.CustomTextView
+            android:id="@+id/modify_user_info_phone_text"
+            style="@style/ModifyUserInfoItemText"
+            android:layout_alignParentRight="true"
+            android:text="18062145623"/>
+
+    </RelativeLayout>
+
+    <View
+        android:layout_marginLeft="@dimen/under_line_margin_left_right"
+        android:layout_marginRight="@dimen/under_line_margin_left_right"
+        android:layout_height="@dimen/user_center_linear_layout_bottom_line_height"
+        android:background="@color/user_center_split_line"
+        android:layout_width="wrap_content"/>
+
 </LinearLayout>

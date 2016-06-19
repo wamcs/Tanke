@@ -64,18 +64,9 @@ public class RunApplication extends MultiDexApplication {
     thread.background(new Runnable() {
       @Override
       public void run() {
-        readLocationFile();
+        LocationFileParser.init(getApplicationContext(), Conf.DEFAULT_CITY_FILE_NAME);
       }
     });
-  }
-
-  private void readLocationFile() {
-    if (LocationFileParser.init(getApplicationContext(), LocationFileParser.FILE_TYPE_FROM_DIR, Conf.DEFAULT_CITY_FILE_NAME)) {
-      Timber.d("Loading Location file from Dir success");
-    } else {
-      Timber.d("Start Loading Default Assert");
-      LocationFileParser.init(getApplicationContext(), LocationFileParser.FILE_TYPE_FROM_ASSETS, Conf.DEFAULT_CITY_FILE_NAME);
-    }
   }
 
   // Returns the application instance

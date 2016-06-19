@@ -21,6 +21,7 @@ import com.lptiyu.tanke.location.LocateUserActivity;
 import com.lptiyu.tanke.pojo.UserDetails;
 import com.lptiyu.tanke.userCenter.ui.ModifyTextActivity;
 import com.lptiyu.tanke.utils.ToastUtil;
+import com.lptiyu.tanke.widget.CustomTextView;
 import com.lptiyu.tanke.widget.dialog.DatePickerDialog;
 import com.lptiyu.tanke.widget.dialog.GenderChooseDialog;
 import com.lptiyu.tanke.widget.dialog.ImageChooseDialog;
@@ -47,28 +48,31 @@ public class ModifyUserInfoController extends ActivityController {
 
 
   @BindView(R.id.default_tool_bar_textview)
-  TextView mTitle;
+  CustomTextView mTitle;
 
   @BindView(R.id.modify_user_info_avatar_image)
   SimpleDraweeView mAvatarImage;
 
   @BindView(R.id.modify_user_info_nickname_text)
-  TextView mNicknameText;
+  CustomTextView mNicknameText;
 
   @BindView(R.id.modify_user_info_birthday_text)
-  TextView mBirthdayText;
+  CustomTextView mBirthdayText;
 
   @BindView(R.id.modify_user_info_gender_text)
-  TextView mGenderText;
+  CustomTextView mGenderText;
 
   @BindView(R.id.modify_user_info_height_text)
-  TextView mHeightText;
+  CustomTextView mHeightText;
 
   @BindView(R.id.modify_user_info_weight_text)
-  TextView mWeightText;
+  CustomTextView mWeightText;
 
   @BindView(R.id.modify_user_info_location_text)
-  TextView mLocationText;
+  CustomTextView mLocationText;
+
+  @BindView(R.id.modify_user_info_phone_text)
+  CustomTextView mPhoneText;
 
   private ImageChooseDialog mImageChooseDialog;
   private GenderChooseDialog mGenderChooseDialog;
@@ -101,6 +105,7 @@ public class ModifyUserInfoController extends ActivityController {
     mHeightText.setText(details.getHeight());
     mWeightText.setText(details.getWeight());
     mLocationText.setText(details.getAddress());
+    mPhoneText.setText(Accounts.getPhoneNumber());
     mLoadingDialog = new LoadingDialog(getContext());
     userId = Accounts.getId();
     token = Accounts.getToken();
@@ -245,6 +250,11 @@ public class ModifyUserInfoController extends ActivityController {
   void modifyLocation() {
     Intent intent = new Intent(getActivity(), LocateUserActivity.class);
     startActivityForResult(intent, Conf.REQUEST_CODE_START_USER_LOCATE);
+  }
+
+  @OnClick(R.id.modify_user_info_phone_button)
+  void modifyPhone() {
+    ToastUtil.TextToast("暂未开放此功能");
   }
 
   @OnClick(R.id.default_tool_bar_imageview)
