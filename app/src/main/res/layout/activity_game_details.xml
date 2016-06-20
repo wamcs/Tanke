@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/default_toolbar_height"
         android:background="@drawable/toolbar_gradient"
-        >
+    >
 
         <ImageView
             android:id="@+id/back_btn"
@@ -22,7 +22,7 @@
             android:background="@null"
             android:scaleType="centerInside"
             android:src="@mipmap/game_details_go_back_btn"
-            />
+        />
 
         <com.lptiyu.tanke.widget.CustomTextView
             android:id="@+id/game_detail_title"
@@ -31,7 +31,7 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:text="华科森林记"
-            />
+        />
 
         <ImageView
             android:id="@+id/share_btn"
@@ -42,36 +42,8 @@
             android:layout_marginRight="20dp"
             android:scaleType="centerInside"
             android:src="@mipmap/game_details_share_btn"
-            />
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="179dp"
-        android:layout_below="@id/relative_layout">
-
-        <ImageView
-            android:id="@+id/image_cover"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:contentDescription="@string/content_description"
-            android:scaleType="centerCrop"
-            android:src="@mipmap/need_to_remove_4_so_big"
-            />
-
-    </RelativeLayout>
-
-    <com.lptiyu.tanke.widget.CustomTextView
-        android:id="@+id/team_type_text"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_below="@id/relative_layout"
-        android:background="#befafafa"
-        android:gravity="center"
-        android:text="5人团队赛"
-        android:textColor="@color/middle_blue"
-        android:textSize="15sp"
         />
+    </RelativeLayout>
 
     <com.lptiyu.tanke.widget.CustomTextView
         android:id="@+id/game_detail_ensure"
@@ -88,146 +60,164 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@id/game_detail_ensure"
-        android:layout_below="@id/relative_layout"
-        android:layout_marginTop="130dp">
+        android:layout_below="@id/relative_layout">
 
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="33dp"
+            android:scrollbars="none"
             android:background="@drawable/game_detail_bg"
-            android:overScrollMode="never"
-            android:paddingTop="15dp">
+            android:overScrollMode="never">
 
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:paddingLeft="20dp"
-                android:paddingRight="20dp"
-                >
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/image_cover"
+                    android:layout_width="match_parent"
+                    android:layout_height="180dp"
+                    android:contentDescription="@string/content_description"
+                    android:scaleType="centerCrop"
+                    android:src="@mipmap/need_to_remove_4_so_big"/>
+
+                <RelativeLayout
+                    android:id="@+id/game_details_playing_num"
+                    android:layout_width="68dp"
+                    android:layout_height="68dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginTop="146dp">
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scaleType="fitCenter"
+                        android:src="@mipmap/blue_round_bg"/>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:orientation="vertical"
+                        android:paddingBottom="5dp">
+
+                        <com.lptiyu.tanke.widget.CustomTextView
+                            android:id="@+id/num_playing"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:maxLines="1"
+                            android:text="1"
+                            android:textColor="@color/white10"
+                            android:textSize="18sp"
+                        />
+
+                        <com.lptiyu.tanke.widget.CustomTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="人在玩"
+                            android:textColor="@color/white07"
+                            android:textSize="9sp"/>
+
+                    </LinearLayout>
+
+                </RelativeLayout>
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_below="@id/image_cover"
+                    android:orientation="vertical"
+                    android:paddingLeft="20dp"
+                    android:paddingRight="20dp"
+                    android:paddingTop="20dp">
 
-                </LinearLayout>
+                    <com.lptiyu.tanke.widget.CustomTextView
+                        android:id="@+id/game_detail_location"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawableLeft="@mipmap/game_detail_loc"
+                        android:drawablePadding="10dp"
+                        android:gravity="center_vertical"
+                        android:text="洪山区-华科校区"
+                        android:textColor="@color/grey05"
+                        android:textSize="15sp"/>
 
-                <com.lptiyu.tanke.widget.CustomTextView
-                    android:id="@+id/game_detail_location"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:drawableLeft="@mipmap/game_detail_loc"
-                    android:drawablePadding="10dp"
-                    android:gravity="center_vertical"
-                    android:text="洪山区-华科校区"
-                    android:textColor="@color/grey05"
-                    android:textSize="15sp"/>
-
-                <com.lptiyu.tanke.widget.CustomTextView
-                    android:id="@+id/game_detail_time"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:drawableLeft="@mipmap/game_detail_time"
-                    android:drawablePadding="10dp"
-                    android:gravity="center_vertical"
-                    android:text="2016.04.10 - 2016.04.12"
-                    android:textColor="@color/grey06"
-                    android:textSize="14.5sp"
+                    <com.lptiyu.tanke.widget.CustomTextView
+                        android:id="@+id/game_detail_time"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:drawableLeft="@mipmap/game_detail_time"
+                        android:drawablePadding="10dp"
+                        android:gravity="center_vertical"
+                        android:text="2016.04.10 - 2016.04.12"
+                        android:textColor="@color/grey06"
+                        android:textSize="14.5sp"
                     />
 
-                <com.lptiyu.tanke.widget.CustomTextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="15dp"
-                    android:drawableLeft="@mipmap/game_details_1"
-                    android:drawablePadding="10dp"
-                    android:gravity="center_vertical"
-                    android:text="简介"
-                    android:textColor="@color/grey02"
-                    android:textSize="15sp"
-                    android:textStyle="bold"/>
+                    <com.lptiyu.tanke.widget.CustomTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="15dp"
+                        android:drawableLeft="@mipmap/game_details_1"
+                        android:drawablePadding="10dp"
+                        android:gravity="center_vertical"
+                        android:text="简介"
+                        android:textColor="@color/grey02"
+                        android:textSize="15sp"
+                        android:textStyle="bold"/>
 
-                <com.lptiyu.tanke.widget.CustomTextView
-                    android:id="@+id/game_detail_intro"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingLeft="5dp"
-                    android:paddingRight="5dp"
-                    android:paddingTop="7dp"
-                    android:text="从荒芜到一片森林，从东到西。一段神秘旅途，在绝望中看到光线，在这里开启你的探险之路"
-                    android:textColor="@color/grey05"
-                    android:textSize="14sp"/>
+                    <com.lptiyu.tanke.widget.CustomTextView
+                        android:id="@+id/game_detail_intro"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="5dp"
+                        android:paddingRight="5dp"
+                        android:paddingTop="7dp"
+                        android:text="从荒芜到一片森林，从东到西。一段神秘旅途，在绝望中看到光线，在这里开启你的探险之路"
+                        android:textColor="@color/grey05"
+                        android:textSize="14sp"/>
 
-                <com.lptiyu.tanke.widget.CustomTextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="15dp"
-                    android:drawableLeft="@mipmap/game_details_2"
-                    android:drawablePadding="10dp"
-                    android:gravity="center_vertical"
-                    android:text="规则"
-                    android:textColor="@color/grey02"
-                    android:textSize="15sp"
-                    android:textStyle="bold"/>
+                    <com.lptiyu.tanke.widget.CustomTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="15dp"
+                        android:drawableLeft="@mipmap/game_details_2"
+                        android:drawablePadding="10dp"
+                        android:gravity="center_vertical"
+                        android:text="规则"
+                        android:textColor="@color/grey02"
+                        android:textSize="15sp"
+                        android:textStyle="bold"/>
 
-                <com.lptiyu.tanke.widget.CustomTextView
-                    android:id="@+id/game_detail_rule"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingLeft="5dp"
-                    android:paddingRight="5dp"
-                    android:paddingTop="7dp"
-                    android:text="从东小门触发，途径运园公寓，七星进入绝望坡，感受绝望破的美丽，后一路前行到西校门，在哪里与裁判朋友，扫码后完成任务"
-                    android:textColor="@color/grey05"
-                    android:textSize="14sp"/>
+                    <com.lptiyu.tanke.widget.CustomTextView
+                        android:id="@+id/game_detail_rule"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="5dp"
+                        android:paddingRight="5dp"
+                        android:paddingTop="7dp"
+                        android:text="从东小门触发，途径运园公寓，七星进入绝望坡，感受绝望破的美丽，后一路前行到西校门，在哪里与裁判朋友，扫码后完成任务"
+                        android:textColor="@color/grey05"
+                        android:textSize="14sp"/>
 
-            </LinearLayout>
+                </LinearLayout>
+            </RelativeLayout>
 
         </ScrollView>
 
-        <RelativeLayout
-            android:layout_width="68dp"
-            android:layout_height="68dp"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="20dp">
-
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:scaleType="fitCenter"
-                android:src="@mipmap/blue_round_bg"/>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:orientation="vertical"
-                android:paddingBottom="5dp">
-
-                <com.lptiyu.tanke.widget.CustomTextView
-                    android:id="@+id/num_playing"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:maxLines="1"
-                    android:text="1"
-                    android:textColor="@color/white10"
-                    android:textSize="18sp"
-                    />
-
-                <com.lptiyu.tanke.widget.CustomTextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="人在玩"
-                    android:textColor="@color/white07"
-                    android:textSize="9sp"/>
-
-            </LinearLayout>
-
-        </RelativeLayout>
-
+        <com.lptiyu.tanke.widget.CustomTextView
+            android:id="@+id/team_type_text"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:background="#befafafa"
+            android:gravity="center"
+            android:text="5人团队赛"
+            android:textColor="@color/middle_blue"
+            android:textSize="15sp"
+        />
 
     </RelativeLayout>
 

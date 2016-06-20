@@ -2,7 +2,9 @@ package com.lptiyu.tanke.base.recyclerview;
 
 import android.support.annotation.NonNull;
 
-import com.lptiyu.tanke.global.AppData;
+
+import com.lptiyu.tanke.R;
+import com.lptiyu.tanke.utils.NetworkUtil;
 import com.lptiyu.tanke.utils.ToastUtil;
 
 import java.util.List;
@@ -42,6 +44,7 @@ class BaseListControllerImpl<Data> implements ListController{
     if (isRefreshing) {
       return;
     }
+    isRefreshing = true;
     mListPage = 0;
     changeRefreshState(true);
     lastRequest = listener.requestData(mListPage)
@@ -67,6 +70,7 @@ class BaseListControllerImpl<Data> implements ListController{
     if (isRefreshing) {
       return;
     }
+    isRefreshing = true;
     mListPage++;
     changeRefreshState(true);
     lastRequest = listener.requestData(mListPage)
@@ -102,6 +106,10 @@ class BaseListControllerImpl<Data> implements ListController{
   }
 
   private void onError(Throwable t) {
+    if (!NetworkUtil.checkIsNetworkConnected()) {
+      ToastUtil.TextToast(R.string.no_network);
+      return;
+    }
     Timber.e(t, "Loading error...");
     listener.onError(t);
   }

@@ -36,7 +36,6 @@
             android:layout_marginTop="2dp"
             android:textSize="15sp"
             android:maxWidth="110dp"
-            android:text="今天天天天拉动官方"
             android:singleLine="true"
             />
     </LinearLayout>
@@ -69,7 +68,6 @@
             android:textSize="13sp"
             android:singleLine="true"
             android:maxWidth="100dp"
-            android:text="今天天天天拉动官方"
         />
     </LinearLayout>
 
@@ -101,7 +99,6 @@
             android:textSize="13sp"
             android:singleLine="true"
             android:maxWidth="100dp"
-            android:text="今天天天天拉动官方"
         />
 
     </LinearLayout>

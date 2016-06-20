@@ -46,13 +46,10 @@ public class ElasticItemDecoration extends RecyclerView.ItemDecoration {
     return context.getResources().getColor(resId);
   }
 
-
   @Override
   public void onDrawOver(Canvas c, RecyclerView parent, RecyclerView.State state) {
     float rl = parent.getPaddingLeft(); // raw left
     float rr = parent.getWidth() - parent.getPaddingRight(); // raw right
-
-
 
     final int childCount = parent.getChildCount();
     View child;

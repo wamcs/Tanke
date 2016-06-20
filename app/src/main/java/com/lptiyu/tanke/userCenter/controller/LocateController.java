@@ -80,7 +80,7 @@ public class LocateController extends ActivityController implements BDLocationLi
         city = list.get(position);
         if (city != null) {
           Intent intent = new Intent();
-          intent.putExtra(getString(R.string.main_page_location_key), city.getName());
+          intent.putExtra(getString(R.string.main_page_location_key), city.getId());
           getActivity().setResult(Conf.REQUEST_CODE_LOCATION, intent);
           finish();
         }
@@ -143,7 +143,7 @@ public class LocateController extends ActivityController implements BDLocationLi
     }
     if (isLocateCityOpened) {
       Intent intent = new Intent();
-      intent.putExtra(getString(R.string.main_page_location_key), city.getName());
+      intent.putExtra(getString(R.string.main_page_location_key), city.getId());
       getActivity().setResult(Conf.REQUEST_CODE_LOCATION, intent);
       finish();
     } else {

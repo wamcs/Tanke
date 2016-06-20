@@ -9,13 +9,13 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.lptiyu.tanke.MainActivityController;
 import com.lptiyu.tanke.R;
 import com.lptiyu.tanke.base.ui.BaseFragment;
 import com.lptiyu.tanke.pojo.City;
+import com.lptiyu.tanke.utils.NetworkUtil;
 import com.lptiyu.tanke.utils.ToastUtil;
 
 import butterknife.BindView;
@@ -35,12 +35,10 @@ public class GameDisplayFragment extends BaseFragment {
 
   @BindView(R.id.relative_layout)
   RelativeLayout toolBar;
-  @BindView(R.id.load_data_error_imageview)
-  ImageView mNoDataImage;
-
   @BindView(R.id.recycler_view)
   RecyclerView recyclerView;
 
+  private LinearLayoutManager mLayoutManager;
   private GameDisplayAdapter adapter;
 
   @Nullable
@@ -54,11 +52,30 @@ public class GameDisplayFragment extends BaseFragment {
   }
 
   private void init() {
-    recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+    recyclerView.setLayoutManager(mLayoutManager = new LinearLayoutManager(getContext()));
     recyclerView.setAdapter(adapter = new GameDisplayAdapter(this));
-    recyclerView.addItemDecoration(new ElasticItemDecoration(getContext()));
     ElasticTouchListener listener = new ElasticTouchListener();
     recyclerView.addOnItemTouchListener(listener);
+
+    recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+      @Override
+      public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+        super.onScrollStateChanged(recyclerView, newState);
+      }
+
+      @Override
+      public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+        super.onScrolled(recyclerView, dx, dy);
+        int lastVisibleItem = mLayoutManager.findLastVisibleItemPosition();
+        int totalItemCount = mLayoutManager.getItemCount();
+        if (lastVisibleItem >= totalItemCount - 1 && dy > 0) {
+          if (controller != null && !controller.isRefreshing()) {
+            controller.refreshBottom();
+          }
+        }
+      }
+    });
+
     listener.setOnRefreshListener(new ElasticTouchListener.OnRefreshListener() {
       @Override
       public void onRefresh() {
@@ -92,21 +109,15 @@ public class GameDisplayFragment extends BaseFragment {
   }
 
   public void loading(boolean enable) {
-    if (enable) {
-      if (mNoDataImage != null) {
-        mNoDataImage.setVisibility(View.GONE);
+    if (!enable) {
+      if (adapter.isFooterVisible()) {
+        adapter.hideFooter();
       }
-      ToastUtil.TextToast(getString(R.string.loading));
     }
   }
 
   public void loadingError(Throwable t) {
-    if (mNoDataImage != null) {
-      if (adapter.getItemCount() == 0) {
-        mNoDataImage.setVisibility(View.VISIBLE);
-      }
-    }
-//    ToastUtil.TextToast(t.getMessage());
+    Timber.d(t, "loading Error...");
   }
 
   @Override
@@ -114,10 +125,4 @@ public class GameDisplayFragment extends BaseFragment {
     return controller;
   }
 
-  @OnClick(R.id.load_data_error_imageview)
-  public void reLoadDataWhenError() {
-    if (!controller.isRefreshing()) {
-      controller.refreshTop();
-    }
-  }
 }

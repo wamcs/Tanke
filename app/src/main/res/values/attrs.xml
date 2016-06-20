@@ -56,5 +56,9 @@
         <attr name="src" format="reference"/>
     </declare-styleable>
 
+    <declare-styleable name="RichTextView">
+
+    </declare-styleable>
+
 
 </resources>

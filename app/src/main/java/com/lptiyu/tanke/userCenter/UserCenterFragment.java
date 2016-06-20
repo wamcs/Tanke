@@ -18,10 +18,10 @@ import com.lptiyu.tanke.global.Conf;
 import com.lptiyu.tanke.io.net.HttpService;
 import com.lptiyu.tanke.io.net.Response;
 import com.lptiyu.tanke.pojo.UserDetails;
+import com.lptiyu.tanke.userCenter.ui.ModifyUserInfoActivity;
 import com.lptiyu.tanke.userCenter.ui.SettingActivity;
 import com.lptiyu.tanke.userCenter.ui.UserGameFinishedListActivity;
 import com.lptiyu.tanke.userCenter.ui.UserGamePlayingListActivity;
-import com.lptiyu.tanke.userCenter.ui.ModifyUserInfoActivity;
 import com.lptiyu.tanke.utils.ExpUtils;
 import com.lptiyu.tanke.utils.NetworkUtil;
 import com.lptiyu.tanke.utils.ToastUtil;
@@ -35,7 +35,6 @@ import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.schedulers.Schedulers;
-import timber.log.Timber;
 
 /**
  * author:wamcs
@@ -134,7 +133,7 @@ public class UserCenterFragment extends BaseFragment {
     mUserProgressLeft.setText(getString(R.string.user_level, currentLevel));
     mUserProgressRight.setText(getString(R.string.user_level, currentLevel + 1));
     mUserProgress.setProgress(((float) (exp - currentLevelNeedExp) / (float) (nextLevelNeedExp - currentLevelNeedExp)));
-    mUserProgressNeedExp.setText(getString(R.string.need_exp, nextLevelNeedExp - exp));
+    mUserProgressNeedExp.setText(String.format(getString(R.string.need_exp_formatter), exp - currentLevelNeedExp, nextLevelNeedExp - currentLevelNeedExp));
   }
 
   @OnClick(R.id.user_message_layout)

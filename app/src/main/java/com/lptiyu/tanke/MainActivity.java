@@ -103,7 +103,12 @@ public class MainActivity extends BaseActivity {
             }
             Timber.d("绑定installationId成功");
           }
-        }, new ToastExceptionAction(getApplicationContext()));
+        }, new Action1<Throwable>() {
+          @Override
+          public void call(Throwable throwable) {
+            Timber.e(throwable, "loading error...");
+          }
+        });
   }
 
 }

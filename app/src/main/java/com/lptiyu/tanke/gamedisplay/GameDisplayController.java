@@ -75,9 +75,8 @@ public class GameDisplayController extends BaseListFragmentController<GameDispla
       ToastUtil.TextToast(R.string.no_network);
 //      return;
     }
-
-    requestLocation = ShaPrefer.getString(getString(R.string.main_page_location_key), "武汉");
-    refreshTop();
+    requestLocation = ShaPrefer.getString(getString(R.string.main_page_location_key), "027");
+//    refreshTop();
     initLocation();
   }
 
@@ -86,9 +85,20 @@ public class GameDisplayController extends BaseListFragmentController<GameDispla
       Timber.e("You want to change the city, but the city is null");
       return;
     }
-    requestLocation = c.getName();
+    requestLocation = c.getId();
     refreshTop();
-    ShaPrefer.put(getString(R.string.main_page_location_key), c.getName());
+    ShaPrefer.put(getString(R.string.main_page_location_key), c.getId());
+  }
+
+  @Override
+  public void refreshTop() {
+    super.refreshTop();
+  }
+
+  @Override
+  public void refreshBottom() {
+    super.refreshBottom();
+    adapter.showFooter();
   }
 
   @Override
@@ -215,10 +225,6 @@ public class GameDisplayController extends BaseListFragmentController<GameDispla
         }, new Action1<Throwable>() {
           @Override
           public void call(Throwable throwable) {
-            if (!NetworkUtil.checkIsNetworkConnected()) {
-              ToastUtil.TextToast(R.string.no_network);
-              return;
-            }
             fragment.loadingError(throwable);
           }
         });
@@ -246,7 +252,6 @@ public class GameDisplayController extends BaseListFragmentController<GameDispla
         if (loc == null) {
           break;
         }
-        Timber.e(loc);
         requestLocation = loc;
         mLocate.setText(requestLocation);
         refreshTop();

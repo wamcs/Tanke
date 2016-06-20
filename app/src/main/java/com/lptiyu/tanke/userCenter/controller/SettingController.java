@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
+import com.avos.avoscloud.feedback.FeedbackAgent;
 import com.lptiyu.tanke.R;
 import com.lptiyu.tanke.base.controller.ActivityController;
 import com.lptiyu.tanke.global.Accounts;
@@ -55,8 +56,8 @@ public class SettingController extends ActivityController {
 
   @OnClick(R.id.setting_activity_feedback)
   void onFeedback() {
-    //TODO : leancloud feed back platform
-
+    FeedbackAgent agent = new FeedbackAgent(getContext());
+    agent.startDefaultThreadActivity();
   }
 
   @OnClick(R.id.setting_activity_logout)
