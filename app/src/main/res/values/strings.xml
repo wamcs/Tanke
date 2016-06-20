@@ -30,6 +30,8 @@
 
     <!-- GameDetailsLocation Text Area-->
     <string name="game_details_location">活动地点</string>
+    <string name="enter_game_play">进入游戏</string>
+    <string name="enter_game_share">查看战绩</string>
 
     <!--UserCenter start-->
     <string name="userCenter">我的</string>
@@ -165,6 +167,7 @@
     <string name="calorie">卡路里</string>
     <string name="total_exp">总经验值</string>
     <string name="meter">米</string>
+    <string name="game_share_form_game_finished_num_formatter" formatter="false">有%d支队伍完成了比赛</string>
 
     <!-- ModifyInfo Text Area-->
     <string name="modify_info_height_formatter" formatter="false">%s cm</string>

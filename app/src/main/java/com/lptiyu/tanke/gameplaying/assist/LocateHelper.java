@@ -21,7 +21,7 @@ import timber.log.Timber;
 public class LocateHelper implements BDLocationListener {
 
   private static final String DEFAULT_COOR_TYPE = "bd09ll";
-  private static final int DEFAULT_SPAN = 1500;
+  private static final int DEFAULT_SPAN = 3000;
 
   private LocationClient mLocationClient;
   private BDLocationListener mBDLocationListener;

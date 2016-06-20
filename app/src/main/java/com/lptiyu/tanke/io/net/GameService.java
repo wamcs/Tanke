@@ -5,6 +5,7 @@ import android.support.annotation.IntDef;
 import com.lptiyu.tanke.pojo.City;
 import com.lptiyu.tanke.pojo.GameDetailsEntity;
 import com.lptiyu.tanke.pojo.GameDisplayEntity;
+import com.lptiyu.tanke.pojo.MessageEntity;
 import com.lptiyu.tanke.pojo.RECOMMENDED_TYPE;
 
 import java.lang.annotation.Retention;
@@ -185,6 +186,22 @@ public interface GameService {
   @GET("System/Task_num")
   Observable<Response<Integer>> getTaskFinishedNum(
       @Query("task_id") long taskId
+  );
+
+  /**
+   * 2.36 获取游戏完成的人数
+   *
+   * @param gameId 目标游戏id
+   * @return Response, Integer 该游戏完成的人数
+   */
+  @GET("System/Game_num")
+  Observable<Response<Integer>> getGameFinishedNum(
+      @Query("game_id") long gameId
+  );
+
+  @GET("System/News")
+  Observable<Response<List<MessageEntity>>> getSystemMessage(
+      @Query("uid") long userId
   );
 
 }

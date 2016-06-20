@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.lptiyu.tanke.R;
@@ -14,9 +15,11 @@ import com.lptiyu.tanke.base.recyclerview.BaseListActivityController;
 import com.lptiyu.tanke.global.Accounts;
 import com.lptiyu.tanke.io.net.HttpService;
 import com.lptiyu.tanke.io.net.Response;
+import com.lptiyu.tanke.pojo.GameFinishedEntity;
 import com.lptiyu.tanke.pojo.GamePlayingEntity;
 import com.lptiyu.tanke.userCenter.adapter.GamePlayingAdapter;
 import com.lptiyu.tanke.utils.ToastUtil;
+import com.lptiyu.tanke.utils.thread;
 
 import java.util.List;
 
@@ -36,6 +39,8 @@ public class GamePlayingListController extends BaseListActivityController<GamePl
 
   @BindView(R.id.default_tool_bar_textview)
   TextView mTitle;
+  @BindView(R.id.no_data_imageview)
+  ImageView mNoDataImage;
 
   @BindView(R.id.GameListRecyclerView)
   RecyclerView recyclerView;
@@ -70,7 +75,27 @@ public class GamePlayingListController extends BaseListActivityController<GamePl
             if (response.getStatus() != Response.RESPONSE_OK) {
               throw new RuntimeException(response.getInfo());
             }
-            return response.getData();
+            List<GamePlayingEntity> result = response.getData();
+            if (result.size() == 0) {
+              if (mNoDataImage != null) {
+                thread.mainThread(new Runnable() {
+                  @Override
+                  public void run() {
+                    mNoDataImage.setVisibility(View.VISIBLE);
+                  }
+                });
+              }
+            } else {
+              if (mNoDataImage != null) {
+                thread.mainThread(new Runnable() {
+                  @Override
+                  public void run() {
+                    mNoDataImage.setVisibility(View.GONE);
+                  }
+                });
+              }
+            }
+            return result;
           }
         });
   }

@@ -60,7 +60,6 @@ import static com.baidu.location.LocationClientOption.LocationMode;
  */
 public class CompleteInformationController extends ActivityController implements BDLocationListener {
 
-
   @BindView(R.id.complete_next_button)
   LinearLayout mCompleteNextButton;
 
@@ -290,7 +289,8 @@ public class CompleteInformationController extends ActivityController implements
     }
 
     HttpService.getUserService().resetUserDetailsAll(Accounts.getId(), Accounts.getToken(),
-        "雷丹雄", "1994-12-12", "男", "170", "65", "武汉")
+        mUserDetails.getNickname(), mUserDetails.getBirthday(), mUserGender == 1 ? "男" : "女",
+        mUserDetails.getHeight(), mUserDetails.getWeight(), mUserDetails.getAddress())
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
         .subscribe(new Action1<Response<Void>>() {

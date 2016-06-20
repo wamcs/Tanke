@@ -48,6 +48,11 @@ public class TracingHelper extends HawkEyeHelper implements
   }
 
   @Override
+  public boolean isStarted() {
+    return isTracing;
+  }
+
+  @Override
   public void stop() {
     mClient.stopTrace(mTrace, this);
   }

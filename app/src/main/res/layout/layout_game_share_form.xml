@@ -120,7 +120,7 @@
             android:layout_alignLeft="@id/layout_game_share_form_distance"
             android:layout_below="@id/layout_game_share_form_distance"
             android:padding="5dp"
-            android:text="有5支队伍完成了比赛"/>
+            android:text="@string/game_share_form_game_finished_num_formatter"/>
 
     </RelativeLayout>
 

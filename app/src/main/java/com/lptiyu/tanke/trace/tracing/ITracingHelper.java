@@ -10,6 +10,8 @@ public interface ITracingHelper {
 
   void start();
 
+  boolean isStarted();
+
   void stop();
 
   void onDestroy();

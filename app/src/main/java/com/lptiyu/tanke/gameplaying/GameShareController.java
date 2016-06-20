@@ -35,6 +35,7 @@ import com.lptiyu.tanke.trace.history.IHistoryTrackHelper;
 import com.lptiyu.tanke.utils.TimeUtils;
 import com.lptiyu.tanke.utils.ToastUtil;
 import com.lptiyu.tanke.utils.thread;
+import com.lptiyu.tanke.widget.CustomTextView;
 import com.lptiyu.tanke.widget.dialog.ShareDialog;
 
 import java.util.ArrayList;
@@ -63,19 +64,21 @@ public class GameShareController extends ActivityController implements
   @BindView(R.id.activity_game_share_form_root)
   RelativeLayout mFormRoot;
   @BindView(R.id.activity_game_share_toolbar_textview)
-  TextView mToolbarTitle;
+  CustomTextView mToolbarTitle;
   @BindView(R.id.activity_game_share_map_view)
   TextureMapView mMapView;
+  @BindView(R.id.layout_game_share_form_other_team_info)
+  CustomTextView mFormTeamInfo;
   @BindView(R.id.layout_game_share_form_time)
-  TextView mFormTime;
+  CustomTextView mFormTime;
   @BindView(R.id.layout_game_share_form_speed)
-  TextView mFormSpeed;
+  CustomTextView mFormSpeed;
   @BindView(R.id.layout_game_share_form_calorie)
-  TextView mFormCalorie;
+  CustomTextView mFormCalorie;
   @BindView(R.id.layout_game_share_form_exp)
-  TextView mFormExp;
+  CustomTextView mFormExp;
   @BindView(R.id.layout_game_share_form_distance)
-  TextView mFormDistance;
+  CustomTextView mFormDistance;
 
   private long gameId;
   private long teamId;
@@ -138,10 +141,28 @@ public class GameShareController extends ActivityController implements
           }
           resumePointRecords(recordList);
           mFormTime.setText(TimeUtils.getFriendlyTime(endTimeMillis - startTimeMillis));
-          mFormSpeed.setText(String.valueOf(totalDistance / ((endTimeMillis - startTimeMillis) / TimeUtils.ONE_MINUTE_TIME)));
-          mFormCalorie.setText("364");
+          float time = ((float) (endTimeMillis - startTimeMillis) / ((float) TimeUtils.ONE_MINUTE_TIME));
+          if (time < 1) {
+            time = TimeUtils.ONE_MINUTE_TIME;
+          }
+          mFormSpeed.setText(String.valueOf(totalDistance / time));
+          mFormCalorie.setText(String.valueOf((int) (60 * (totalDistance / 1000) * 1.036)));
           mFormExp.setText(String.valueOf(totalExp));
           mFormDistance.setText(String.valueOf(totalDistance));
+          HttpService.getGameService().getGameFinishedNum(gameId)
+              .subscribeOn(Schedulers.io())
+              .observeOn(AndroidSchedulers.mainThread())
+              .subscribe(new Action1<Response<Integer>>() {
+                @Override
+                public void call(Response<Integer> integerResponse) {
+                  mFormTeamInfo.setText(String.format(getString(R.string.game_share_form_game_finished_num_formatter), integerResponse.getData()));
+                }
+              }, new Action1<Throwable>() {
+                @Override
+                public void call(Throwable throwable) {
+                  mFormTeamInfo.setText(String.format(getString(R.string.game_share_form_game_finished_num_formatter), 0));
+                }
+              });
           mLoadingDialog.dismiss();
         }
       });
@@ -212,7 +233,7 @@ public class GameShareController extends ActivityController implements
   private void showLoadingDialog() {
     if (mLoadingDialog == null) {
       View view = LayoutInflater.from(getContext()).inflate(R.layout.layout_loading, null);
-      TextView textView = ((TextView) view.findViewById(R.id.loading_dialog_textview));
+      CustomTextView textView = ((CustomTextView) view.findViewById(R.id.loading_dialog_textview));
       textView.setText(getString(R.string.loading));
       mLoadingDialog = new AlertDialog.Builder(getActivity())
           .setView(view)

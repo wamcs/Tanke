@@ -117,8 +117,20 @@ public class GameServiceTest {
   }
 
   @Test // success
+  public void testGetGameFinishedNum() throws Exception {
+    HttpService.getGameService().getGameFinishedNum(17)
+        .subscribe(new ResponseAction1(), new AssertNullAction1());
+  }
+
+  @Test // success
   public void testGetShareUrl() throws Exception {
     HttpService.getGameService().getShareUrl(1, "11", 1, 1)
+        .subscribe(new ResponseAction1(), new AssertNullAction1());
+  }
+
+  @Test
+  public void testGetSystemMessage() throws Exception {
+    HttpService.getGameService().getSystemMessage(1)
         .subscribe(new ResponseAction1(), new AssertNullAction1());
   }
 }

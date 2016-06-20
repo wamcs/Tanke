@@ -133,8 +133,6 @@ public class GamePlayingController extends ActivityController implements
 
     initRecords();
     moveToTarget();
-
-    startLocateButtonClicked();
   }
 
   /**
@@ -488,7 +486,9 @@ public class GamePlayingController extends ActivityController implements
 
   @TargetMethod(requestCode = PermissionDispatcher.PERMISSION_REQUEST_CODE_LOCATION)
   public void startLocateService() {
-    mTracingHelper.start();
+    if (!mTracingHelper.isStarted()) {
+      mTracingHelper.start();
+    }
     locateHelper.startLocate();
     mapHelper.animateCameraToCurrentPosition();
   }

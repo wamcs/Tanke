@@ -80,7 +80,7 @@
         android:layout_alignParentBottom="true"
         android:background="@drawable/toolbar_gradient"
         android:gravity="center"
-        android:text="进入游戏"
+        android:text="@string/enter_game_play"
         android:textColor="@color/white08"
         android:textSize="17sp"/>
 

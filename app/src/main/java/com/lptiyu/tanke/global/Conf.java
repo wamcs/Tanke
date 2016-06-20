@@ -80,8 +80,8 @@ public final class Conf {
   /**
    * game playing activity
    */
-  public static final float LOCATION_DISTANCE_THRESHOLD_BOTTOM = 0.5f;
-  public static final float LOCATION_DISTANCE_THRESHOLD_TOP = 10.0f;
+  public static final float LOCATION_DISTANCE_THRESHOLD_BOTTOM = 1.0f;
+  public static final float LOCATION_DISTANCE_THRESHOLD_TOP = 20.0f;
   public static final double POINT_RADIUS = 10.0;
 
   public static final String CLICKED_POINT = "clicked_point";

@@ -28,11 +28,11 @@ class DiskRecords {
   private Gson gson = AppData.globalGson();
 
   static File generateFile(long gameId) {
-    return new File(DirUtils.getRecordDirectory(), String.format("aid=%d.run", gameId));
+    return new File(DirUtils.getRecordDirectory(), String.format("aid=%d.run".toLowerCase(), gameId));
   }
 
   static File generateMetaFile(long gameId) {
-    return new File(DirUtils.getRecordDirectory(), String.format("aid=%d.meta", gameId));
+    return new File(DirUtils.getRecordDirectory(), String.format("aid=%d.meta".toLowerCase(), gameId));
   }
 
   DiskRecords(File cacheFile) {

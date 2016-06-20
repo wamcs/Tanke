@@ -35,11 +35,12 @@
     </RelativeLayout>
 
     <View
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/user_center_linear_layout_bottom_line_height"
         android:layout_marginLeft="@dimen/under_line_margin_left_right"
         android:layout_marginRight="@dimen/under_line_margin_left_right"
-        android:layout_height="@dimen/user_center_linear_layout_bottom_line_height"
-        android:background="@color/user_center_split_line"
-        android:layout_width="wrap_content"/>
+        android:background="@color/user_center_split_line"/>
+
 
     <RelativeLayout
         android:id="@id/modify_user_info_nickname_button"
@@ -59,11 +60,11 @@
     </RelativeLayout>
 
     <View
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/user_center_linear_layout_bottom_line_height"
         android:layout_marginLeft="@dimen/under_line_margin_left_right"
         android:layout_marginRight="@dimen/under_line_margin_left_right"
-        android:layout_height="@dimen/user_center_linear_layout_bottom_line_height"
-        android:background="@color/user_center_split_line"
-        android:layout_width="wrap_content"/>
+        android:background="@color/user_center_split_line"/>
 
     <RelativeLayout
         android:id="@id/modify_user_info_birthday_button"
@@ -79,16 +80,16 @@
             style="@style/ModifyUserInfoItemText"
             android:layout_alignParentRight="true"
             android:text="1970-01-01"
-            />
+        />
 
     </RelativeLayout>
 
     <View
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/user_center_linear_layout_bottom_line_height"
         android:layout_marginLeft="@dimen/under_line_margin_left_right"
         android:layout_marginRight="@dimen/under_line_margin_left_right"
-        android:layout_height="@dimen/user_center_linear_layout_bottom_line_height"
-        android:background="@color/user_center_split_line"
-        android:layout_width="wrap_content"/>
+        android:background="@color/user_center_split_line"/>
 
     <RelativeLayout
         android:id="@id/modify_user_info_gender_button"
@@ -104,16 +105,16 @@
             style="@style/ModifyUserInfoItemText"
             android:layout_alignParentRight="true"
             android:text="男"
-            />
+        />
 
     </RelativeLayout>
 
     <View
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/user_center_linear_layout_bottom_line_height"
         android:layout_marginLeft="@dimen/under_line_margin_left_right"
         android:layout_marginRight="@dimen/under_line_margin_left_right"
-        android:layout_height="@dimen/user_center_linear_layout_bottom_line_height"
-        android:background="@color/user_center_split_line"
-        android:layout_width="wrap_content"/>
+        android:background="@color/user_center_split_line"/>
 
     <RelativeLayout
         android:id="@id/modify_user_info_height_button"
@@ -133,11 +134,11 @@
     </RelativeLayout>
 
     <View
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/user_center_linear_layout_bottom_line_height"
         android:layout_marginLeft="@dimen/under_line_margin_left_right"
         android:layout_marginRight="@dimen/under_line_margin_left_right"
-        android:layout_height="@dimen/user_center_linear_layout_bottom_line_height"
-        android:background="@color/user_center_split_line"
-        android:layout_width="wrap_content"/>
+        android:background="@color/user_center_split_line"/>
 
     <RelativeLayout
         android:id="@id/modify_user_info_weight_button"
@@ -157,11 +158,11 @@
     </RelativeLayout>
 
     <View
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/user_center_linear_layout_bottom_line_height"
         android:layout_marginLeft="@dimen/under_line_margin_left_right"
         android:layout_marginRight="@dimen/under_line_margin_left_right"
-        android:layout_height="@dimen/user_center_linear_layout_bottom_line_height"
-        android:background="@color/user_center_split_line"
-        android:layout_width="wrap_content"/>
+        android:background="@color/user_center_split_line"/>
 
     <RelativeLayout
         android:id="@id/modify_user_info_location_button"
@@ -181,11 +182,11 @@
     </RelativeLayout>
 
     <View
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/user_center_linear_layout_bottom_line_height"
         android:layout_marginLeft="@dimen/under_line_margin_left_right"
         android:layout_marginRight="@dimen/under_line_margin_left_right"
-        android:layout_height="@dimen/user_center_linear_layout_bottom_line_height"
-        android:background="@color/user_center_split_line"
-        android:layout_width="wrap_content"/>
+        android:background="@color/user_center_split_line"/>
 
     <RelativeLayout
         android:id="@+id/modify_user_info_phone_button"
@@ -194,21 +195,23 @@
 
         <com.lptiyu.tanke.widget.CustomTextView
             style="@style/ModifyUserInfoItemTitle"
-            android:text="绑定手机号"/>
+            android:text="@string/phone"
+            android:textColor="@color/grey06"/>
 
         <com.lptiyu.tanke.widget.CustomTextView
             android:id="@+id/modify_user_info_phone_text"
             style="@style/ModifyUserInfoItemText"
+            android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:text="18062145623"/>
 
     </RelativeLayout>
 
     <View
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/user_center_linear_layout_bottom_line_height"
         android:layout_marginLeft="@dimen/under_line_margin_left_right"
         android:layout_marginRight="@dimen/under_line_margin_left_right"
-        android:layout_height="@dimen/user_center_linear_layout_bottom_line_height"
-        android:background="@color/user_center_split_line"
-        android:layout_width="wrap_content"/>
+        android:background="@color/user_center_split_line"/>
 
 </LinearLayout>

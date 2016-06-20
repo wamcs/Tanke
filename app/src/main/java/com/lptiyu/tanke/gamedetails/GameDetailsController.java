@@ -7,14 +7,13 @@ import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.lptiyu.tanke.R;
 import com.lptiyu.tanke.base.controller.ActivityController;
 import com.lptiyu.tanke.gameplaying.GamePlayingActivity;
 import com.lptiyu.tanke.gameplaying.assist.zip.GameZipScanner;
+import com.lptiyu.tanke.gameplaying.records.RecordsUtils;
 import com.lptiyu.tanke.global.Accounts;
 import com.lptiyu.tanke.global.Conf;
 import com.lptiyu.tanke.io.net.HttpService;
@@ -24,6 +23,7 @@ import com.lptiyu.tanke.pojo.GameDetailsEntity;
 import com.lptiyu.tanke.utils.DirUtils;
 import com.lptiyu.tanke.utils.TimeUtils;
 import com.lptiyu.tanke.utils.ToastUtil;
+import com.lptiyu.tanke.widget.CustomTextView;
 import com.lptiyu.tanke.widget.dialog.ShareDialog;
 
 import java.io.File;
@@ -54,34 +54,41 @@ import timber.log.Timber;
 public class GameDetailsController extends ActivityController {
 
   @BindView(R.id.game_detail_title)
-  TextView mTextTitle;
+  CustomTextView mTextTitle;
 
   @BindView(R.id.image_cover)
   ImageView mImageCover;
 
   @BindView(R.id.team_type_text)
-  TextView mTextTeamType;
+  CustomTextView mTextTeamType;
 
   @BindView(R.id.game_detail_location)
-  TextView mTextLocation;
+  CustomTextView mTextLocation;
 
   @BindView(R.id.game_detail_time)
-  TextView mTextTime;
+  CustomTextView mTextTime;
 
   @BindView(R.id.game_detail_intro)
-  TextView mTextGameIntro;
+  CustomTextView mTextGameIntro;
 
   @BindView(R.id.game_detail_rule)
-  TextView mTextRule;
+  CustomTextView mTextRule;
+
+  @BindView(R.id.game_detail_ensure)
+  CustomTextView mTextEnsure;
 
   @BindView(R.id.num_playing)
-  TextView mTextPeoplePlaying;
+  CustomTextView mTextPeoplePlaying;
 
   AlertDialog mLoadingDialog;
   ProgressDialog progressDialog;
 
-  private Subscription subscription;
+  private Subscription gameDetailsSubscription;
 
+  private Observable<Boolean> isGameFinishObservable;
+  private Subscription isGameFinishSubscription;
+
+  private boolean isUserFinishedGame = false;
   private long gameId;
   private String tempGameZipUrl;
   private ShareDialog shareDialog;
@@ -115,7 +122,7 @@ public class GameDetailsController extends ActivityController {
     }
   }
 
-  public void parseTime(final TextView textView, GameDetailsEntity entity) {
+  public void parseTime(final CustomTextView textView, GameDetailsEntity entity) {
     Observable.just(entity).map(
         new Func1<GameDetailsEntity, String>() {
           @Override
@@ -136,9 +143,9 @@ public class GameDetailsController extends ActivityController {
   }
 
   private void init() {
-    if (subscription != null) {
-      subscription.unsubscribe();
-      subscription = null;
+    if (gameDetailsSubscription != null) {
+      gameDetailsSubscription.unsubscribe();
+      gameDetailsSubscription = null;
     }
 
     showLoadingDialog();
@@ -146,7 +153,16 @@ public class GameDetailsController extends ActivityController {
     progressDialog = new ProgressDialog(getContext(), ProgressDialog.STYLE_SPINNER);
     progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
 
-    subscription = HttpService.getGameService().getGameDetails(gameId)
+    isGameFinishObservable = Observable.just(gameId)
+        .map(new Func1<Long, Boolean>() {
+          @Override
+          public Boolean call(Long id) {
+            return RecordsUtils.isGameFinishedFromDisk(id);
+          }
+        });
+
+    //prepare for the network request
+    gameDetailsSubscription = HttpService.getGameService().getGameDetails(gameId)
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
         .map(new Func1<Response<GameDetailsEntity>, GameDetailsEntity>() {
@@ -179,12 +195,11 @@ public class GameDetailsController extends ActivityController {
   /**
    * This method is to check whether the game zip has been download
    * and the game zip is out of date or not
-   *
+   * <p/>
    * If the unix timestamp is not match with server's, then must
    * clean the game records、zip package、game dir etc
    */
   private void checkDiskAndNextStep() {
-
     // first scan the dir and check the zip is exist or not
     if (mGameZipScanner == null) {
       mGameZipScanner = new GameZipScanner();
@@ -254,6 +269,7 @@ public class GameDetailsController extends ActivityController {
         .subscribe(new Action1<File>() {
           @Override
           public void call(File file) {
+            mGameZipScanner.reload();
             startPlayingGame();
           }
         }, new Action1<Throwable>() {
@@ -283,7 +299,7 @@ public class GameDetailsController extends ActivityController {
   private void showLoadingDialog() {
     if (mLoadingDialog == null) {
       View view = LayoutInflater.from(getContext()).inflate(R.layout.layout_loading, null);
-      TextView textView = ((TextView) view.findViewById(R.id.loading_dialog_textview));
+      CustomTextView textView = ((CustomTextView) view.findViewById(R.id.loading_dialog_textview));
       textView.setText(getString(R.string.loading));
       mLoadingDialog = new AlertDialog.Builder(getActivity())
           .setCancelable(false)
@@ -291,6 +307,33 @@ public class GameDetailsController extends ActivityController {
           .create();
     }
     mLoadingDialog.show();
+  }
+
+  @Override
+  public void onResume() {
+    super.onResume();
+    // check whether the user start this game or not
+    isGameFinishSubscription = isGameFinishObservable
+        .subscribeOn(Schedulers.io())
+        .observeOn(AndroidSchedulers.mainThread())
+        .subscribe(new Action1<Boolean>() {
+          @Override
+          public void call(Boolean aBoolean) {
+            isUserFinishedGame = aBoolean;
+            if (isUserFinishedGame) {
+              mTextEnsure.setText(getString(R.string.enter_game_share));
+            } else {
+              mTextEnsure.setText(getString(R.string.enter_game_play));
+            }
+          }
+        }, new Action1<Throwable>() {
+          @Override
+          public void call(Throwable throwable) {
+            isUserFinishedGame = false;
+            mTextEnsure.setText(getString(R.string.enter_game_play));
+            Timber.e(throwable.toString());
+          }
+        });
   }
 
   @OnClick(R.id.back_btn)
@@ -323,14 +366,22 @@ public class GameDetailsController extends ActivityController {
       ToastUtil.TextToast("团队赛正在开发中");
       return;
     }
-    checkDiskAndNextStep();
+    if (isUserFinishedGame) {
+      // TODO : jump to the GameShareActivity
+      ToastUtil.TextToast("jump to the share activity");
+    } else {
+      checkDiskAndNextStep();
+    }
   }
 
   @Override
   public void onDestroy() {
     super.onDestroy();
-    if (subscription != null && !subscription.isUnsubscribed()) {
-      subscription.unsubscribe();
+    if (gameDetailsSubscription != null && !gameDetailsSubscription.isUnsubscribed()) {
+      gameDetailsSubscription.unsubscribe();
+    }
+    if (isGameFinishSubscription != null && !isGameFinishSubscription.isUnsubscribed()) {
+      isGameFinishSubscription.unsubscribe();
     }
   }
 }
