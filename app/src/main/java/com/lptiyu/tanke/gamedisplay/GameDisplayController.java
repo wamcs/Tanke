@@ -20,8 +20,10 @@ import com.lptiyu.tanke.userCenter.ui.LocateActivity;
 import com.lptiyu.tanke.utils.NetworkUtil;
 import com.lptiyu.tanke.utils.ShaPrefer;
 import com.lptiyu.tanke.utils.ToastUtil;
+import com.lptiyu.tanke.utils.thread;
 import com.lptiyu.tanke.widget.CustomTextView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -107,7 +109,13 @@ public class GameDisplayController extends BaseListFragmentController<GameDispla
           @Override
           public List<GameDisplayEntity> call(Response<List<GameDisplayEntity>> listResponse) {
             if (listResponse.getStatus() != Response.RESPONSE_OK) {
-              throw new RuntimeException(listResponse.getInfo());
+              thread.mainThread(new Runnable() {
+                @Override
+                public void run() {
+                  ToastUtil.TextToast("当前城市暂无游戏");
+                }
+              });
+              return new ArrayList<>();
             }
             return listResponse.getData();
           }
@@ -232,7 +240,7 @@ public class GameDisplayController extends BaseListFragmentController<GameDispla
 
   @Override
   public void onActivityResult(int requestCode, int resultCode, Intent data) {
-    switch (requestCode) {
+    switch (resultCode) {
       case Conf.REQUEST_CODE_LOCATION:
         String loc = data.getStringExtra(getString(R.string.main_page_location_key));
         if (loc == null) {

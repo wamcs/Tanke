@@ -30,6 +30,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import rx.Observable;
 import rx.functions.Func1;
+import timber.log.Timber;
 
 public class UserRewardActivity extends BaseActivity {
 

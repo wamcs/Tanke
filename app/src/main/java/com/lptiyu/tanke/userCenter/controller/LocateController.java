@@ -80,12 +80,13 @@ public class LocateController extends ActivityController implements BDLocationLi
         city = list.get(position);
         if (city != null) {
           Intent intent = new Intent();
-          intent.putExtra(Conf.USER_LOCATION, city.getName());
+          intent.putExtra(getString(R.string.main_page_location_key), city.getName());
           getActivity().setResult(Conf.REQUEST_CODE_LOCATION, intent);
           finish();
         }
       }
     });
+
     HttpService.getGameService().getSupportedCities()
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
@@ -103,6 +104,7 @@ public class LocateController extends ActivityController implements BDLocationLi
             ToastUtil.TextToast("获取城市列表失败");
           }
         });
+
     mRecyclerView.setAdapter(adapter);
   }
 

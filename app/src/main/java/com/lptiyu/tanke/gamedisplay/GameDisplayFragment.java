@@ -102,7 +102,9 @@ public class GameDisplayFragment extends BaseFragment {
 
   public void loadingError(Throwable t) {
     if (mNoDataImage != null) {
-      mNoDataImage.setVisibility(View.VISIBLE);
+      if (adapter.getItemCount() == 0) {
+        mNoDataImage.setVisibility(View.VISIBLE);
+      }
     }
 //    ToastUtil.TextToast(t.getMessage());
   }
