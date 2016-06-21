@@ -52,6 +52,17 @@ public class GameDetailsEntity {
   @SerializedName("url")
   private String shareUrl;
 
+  private String latitude;
+
+  @SerializedName("longtitude")
+  private String longitude;
+
+  @SerializedName("min")
+  private int minNum;
+
+  @SerializedName("max")
+  private int maxNum;
+
   public int getPeoplePlaying() {
     return peoplePlaying;
   }
@@ -164,6 +175,38 @@ public class GameDetailsEntity {
     this.type = type;
   }
 
+  public String getLatitude() {
+    return latitude;
+  }
+
+  public void setLatitude(String latitude) {
+    this.latitude = latitude;
+  }
+
+  public String getLongitude() {
+    return longitude;
+  }
+
+  public void setLongitude(String longitude) {
+    this.longitude = longitude;
+  }
+
+  public int getMinNum() {
+    return minNum;
+  }
+
+  public void setMinNum(int minNum) {
+    this.minNum = minNum;
+  }
+
+  public int getMaxNum() {
+    return maxNum;
+  }
+
+  public void setMaxNum(int maxNum) {
+    this.maxNum = maxNum;
+  }
+
   @Override
   public String toString() {
     return "GameDetailsEntity{" +
@@ -181,6 +224,10 @@ public class GameDetailsEntity {
         ", rule='" + rule + '\'' +
         ", zipUrl='" + zipUrl + '\'' +
         ", shareUrl='" + shareUrl + '\'' +
+        ", latitude='" + latitude + '\'' +
+        ", longitude='" + longitude + '\'' +
+        ", minNum=" + minNum +
+        ", maxNum=" + maxNum +
         '}';
   }
 }

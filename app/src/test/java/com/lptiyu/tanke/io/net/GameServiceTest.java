@@ -34,7 +34,7 @@ public class GameServiceTest {
   @Test
   // success 2.12
   public void testGetGamePage() throws Exception {
-    HttpService.getGameService().getGamePage(111, "1", "武汉", 1).subscribe(new Action1<Response<List<GameDisplayEntity>>>() {
+    HttpService.getGameService().getGamePage(111, "1", "027", 1).subscribe(new Action1<Response<List<GameDisplayEntity>>>() {
       @Override
       public void call(Response<List<GameDisplayEntity>> listResponse) {
         System.out.println("listResponse = " + listResponse);

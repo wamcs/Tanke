@@ -71,12 +71,8 @@ public class GameDisplayController extends BaseListFragmentController<GameDispla
    * 判断网络，请求数据，并开始定位及定位接下来的逻辑
    */
   private void init() {
-    if (!NetworkUtil.checkIsNetworkConnected()) {
-      ToastUtil.TextToast(R.string.no_network);
-//      return;
-    }
     requestLocation = ShaPrefer.getString(getString(R.string.main_page_location_key), "027");
-//    refreshTop();
+    refreshTop();
     initLocation();
   }
 
@@ -88,11 +84,6 @@ public class GameDisplayController extends BaseListFragmentController<GameDispla
     requestLocation = c.getId();
     refreshTop();
     ShaPrefer.put(getString(R.string.main_page_location_key), c.getId());
-  }
-
-  @Override
-  public void refreshTop() {
-    super.refreshTop();
   }
 
   @Override
@@ -177,7 +168,7 @@ public class GameDisplayController extends BaseListFragmentController<GameDispla
             // 如果一致，什么都不用做，结束，如果不一致，就继续处理
             String location = ShaPrefer.getString(getString(R.string.main_page_location_key), "");
             // If location in ShaPreference is not equal to BDLocation, emit it.
-            return !location.equals(bdLocation.getCity());
+            return !location.equals(bdLocation.getCityCode());
           }
         })
         .flatMap(new Func1<BDLocation, Observable<City>>() {

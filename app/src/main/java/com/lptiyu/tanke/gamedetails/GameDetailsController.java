@@ -118,7 +118,7 @@ public class GameDetailsController extends ActivityController {
     if (entity.getType() == GAME_TYPE.INDIVIDUALS) {
       mTextTeamType.setVisibility(View.GONE);
     } else {
-      mTextTeamType.setText(getString(R.string.team_type_team));
+      mTextTeamType.setText(String.format(getString(R.string.team_game_formatter), entity.getMinNum()));
     }
   }
 
@@ -353,6 +353,8 @@ public class GameDetailsController extends ActivityController {
   @OnClick(R.id.game_detail_location)
   public void startLocationDetailMap() {
     Intent intent = new Intent(getActivity(), GameDetailsLocationActivity.class);
+    intent.putExtra(Conf.LATITUDE, Double.valueOf(mGameDetailsEntity.getLatitude()));
+    intent.putExtra(Conf.LONGITUDE, Double.valueOf(mGameDetailsEntity.getLongitude()));
     startActivity(intent);
   }
 

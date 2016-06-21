@@ -25,6 +25,8 @@ public final class Conf {
   public static final String CITY_STRUCT = "city_struct";
   public static final String CITY_NAME = "city_name";
   public static final String CITY_CODE = "city_code";
+  public static final String LATITUDE = "latitude";
+  public static final String LONGITUDE = "longitude";
   public static final int REQUEST_CODE_START_USER_LOCATE = 3;
   public static final int RESULT_CODE_START_USER_LOCATE = 4;
 

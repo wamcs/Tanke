@@ -12,6 +12,7 @@ import com.lptiyu.tanke.global.Accounts;
 import com.lptiyu.tanke.initialization.ui.CompleteInformationActivity;
 import com.lptiyu.tanke.io.net.HttpService;
 import com.lptiyu.tanke.io.net.Response;
+import com.lptiyu.tanke.utils.NetworkUtil;
 import com.lptiyu.tanke.utils.ToastUtil;
 import com.lptiyu.tanke.utils.rx.ToastExceptionAction;
 
@@ -106,6 +107,10 @@ public class MainActivity extends BaseActivity {
         }, new Action1<Throwable>() {
           @Override
           public void call(Throwable throwable) {
+            if (!NetworkUtil.checkIsNetworkConnected()) {
+              ToastUtil.TextToast(R.string.no_network);
+              return;
+            }
             Timber.e(throwable, "loading error...");
           }
         });

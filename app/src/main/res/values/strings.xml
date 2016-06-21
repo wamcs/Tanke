@@ -25,14 +25,12 @@
     <string name="main_page_forever">白天-黑夜</string>
     <string name="team_type_team">团队赛</string>
     <string name="team_type_individule">个人赛</string>
-    <!--Game display page-->
-
-    <!--Game details-->
 
     <!-- GameDetailsLocation Text Area-->
     <string name="game_details_location">活动地点</string>
     <string name="enter_game_play">进入游戏</string>
     <string name="enter_game_share">查看战绩</string>
+    <string name="team_game_formatter" formatted="false">%d人团队赛</string>
 
     <!--UserCenter start-->
     <string name="userCenter">我的</string>

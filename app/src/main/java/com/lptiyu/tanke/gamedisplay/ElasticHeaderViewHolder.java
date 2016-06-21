@@ -115,6 +115,9 @@ public class ElasticHeaderViewHolder extends BaseViewHolder<GameDisplayEntity> {
   }
 
   public void bind(List<GameDisplayEntity> entities) {
+    if (entities == null || entities.size() == 0) {
+      return;
+    }
     bindEntity(middleImageView, middleTitle, entities.size() < 1 ? null : entities.get(0));
     bindEntity(leftImageView, leftTitle, entities.size() < 2 ? null : entities.get(1));
     bindEntity(rightImageView, rightTitle, entities.size() < 3 ? null : entities.get(2));
@@ -122,6 +125,9 @@ public class ElasticHeaderViewHolder extends BaseViewHolder<GameDisplayEntity> {
   }
 
   public void bindEntity(ImageView imageView, TextView textView, GameDisplayEntity entity) {
+    if (entity == null) {
+      return;
+    }
     Glide.with(fragment).load(entity.getImg())
         .into(imageView);
     textView.setText(entity.getTitle());

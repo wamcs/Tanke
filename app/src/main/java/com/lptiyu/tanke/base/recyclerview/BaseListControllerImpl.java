@@ -44,7 +44,6 @@ class BaseListControllerImpl<Data> implements ListController{
     if (isRefreshing) {
       return;
     }
-    isRefreshing = true;
     mListPage = 0;
     changeRefreshState(true);
     lastRequest = listener.requestData(mListPage)
@@ -70,7 +69,6 @@ class BaseListControllerImpl<Data> implements ListController{
     if (isRefreshing) {
       return;
     }
-    isRefreshing = true;
     mListPage++;
     changeRefreshState(true);
     lastRequest = listener.requestData(mListPage)
