@@ -2,6 +2,7 @@ package com.lptiyu.tanke.gamedisplay;
 
 import android.animation.ObjectAnimator;
 import android.content.Intent;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -116,8 +117,10 @@ public class ElasticHeaderViewHolder extends BaseViewHolder<GameDisplayEntity> {
 
   public void bind(List<GameDisplayEntity> entities) {
     if (entities == null || entities.size() == 0) {
+      hideHeader();
       return;
     }
+    showHeader();
     bindEntity(middleImageView, middleTitle, entities.size() < 1 ? null : entities.get(0));
     bindEntity(leftImageView, leftTitle, entities.size() < 2 ? null : entities.get(1));
     bindEntity(rightImageView, rightTitle, entities.size() < 3 ? null : entities.get(2));
@@ -136,5 +139,47 @@ public class ElasticHeaderViewHolder extends BaseViewHolder<GameDisplayEntity> {
   @Override
   public void bind(GameDisplayEntity entity) {
 
+  }
+
+  private void hideHeader() {
+    if (middleImageView != null) {
+      middleImageView.setVisibility(View.GONE);
+    }
+    if (middleTitle != null) {
+      middleTitle.setVisibility(View.GONE);
+    }
+    if (leftImageView != null) {
+      leftImageView.setVisibility(View.GONE);
+    }
+    if (leftTitle != null) {
+      leftTitle.setVisibility(View.GONE);
+    }
+    if (rightImageView != null) {
+      rightImageView.setVisibility(View.GONE);
+    }
+    if (rightTitle != null) {
+      rightTitle.setVisibility(View.GONE);
+    }
+  }
+
+  private void showHeader() {
+    if (middleImageView != null) {
+      middleImageView.setVisibility(View.VISIBLE);
+    }
+    if (middleTitle != null) {
+      middleTitle.setVisibility(View.VISIBLE);
+    }
+    if (leftImageView != null) {
+      leftImageView.setVisibility(View.VISIBLE);
+    }
+    if (leftTitle != null) {
+      leftTitle.setVisibility(View.VISIBLE);
+    }
+    if (rightImageView != null) {
+      rightImageView.setVisibility(View.VISIBLE);
+    }
+    if (rightTitle != null) {
+      rightTitle.setVisibility(View.VISIBLE);
+    }
   }
 }

@@ -39,6 +39,9 @@ public class UserDetails implements Parcelable{
   @SerializedName("Finish_num")
   private int finishedGameNum;
 
+  @SerializedName("experience")
+  private int exp;
+
   public String getNickname() {
     return nickname;
   }
@@ -119,6 +122,14 @@ public class UserDetails implements Parcelable{
     this.finishedGameNum = finishedGameNum;
   }
 
+  public int getExp() {
+    return exp;
+  }
+
+  public void setExp(int exp) {
+    this.exp = exp;
+  }
+
   @Override
   public String toString() {
     return "UserDetails{" +
@@ -132,6 +143,7 @@ public class UserDetails implements Parcelable{
         ", address='" + address + '\'' +
         ", playingGameNum=" + playingGameNum +
         ", finishedGameNum=" + finishedGameNum +
+        ", exp=" + exp +
         '}';
   }
 
@@ -152,6 +164,7 @@ public class UserDetails implements Parcelable{
     dest.writeString(this.address);
     dest.writeInt(this.playingGameNum);
     dest.writeInt(this.finishedGameNum);
+    dest.writeInt(this.exp);
   }
 
   public UserDetails() {
@@ -168,6 +181,7 @@ public class UserDetails implements Parcelable{
     this.address = in.readString();
     this.playingGameNum = in.readInt();
     this.finishedGameNum = in.readInt();
+    this.exp = in.readInt();
   }
 
   public static final Creator<UserDetails> CREATOR = new Creator<UserDetails>() {

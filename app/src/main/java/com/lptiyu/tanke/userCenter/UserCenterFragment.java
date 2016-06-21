@@ -115,6 +115,9 @@ public class UserCenterFragment extends BaseFragment {
   }
 
   private void bind(UserDetails details) {
+    if (details == null) {
+      return;
+    }
     Glide.with(this).load(details.getAvatar()).error(R.mipmap.default_avatar).into(mUserAvatar);
     mUserNickname.setText(details.getNickname());
     //TODO sex need image
@@ -123,7 +126,7 @@ public class UserCenterFragment extends BaseFragment {
     mUserUid.setText(String.valueOf(Accounts.getId()));
     mUserGamePlayingNum.setText(String.valueOf(details.getPlayingGameNum()));
     mUserGameFinishedNum.setText(String.valueOf(details.getFinishedGameNum()));
-    parseLevelAndExp(101);
+    parseLevelAndExp(details.getExp());
   }
 
   private void parseLevelAndExp(int exp) {

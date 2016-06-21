@@ -91,10 +91,7 @@ public class GameDisplayAdapter extends BaseAdapter<GameDisplayEntity> {
     if (position == 0) {
       return VIEW_TYPE_ELASTIC;
     }
-    if (dataList == null) {
-      return VIEW_TYPE_FOOTER;
-    }
-    if (position  == dataList.size() - 2) {
+    if (position == getItemCount() - 1) {
       return VIEW_TYPE_FOOTER;
     }
     return VIEW_TYPE_NORMAL;

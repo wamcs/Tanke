@@ -53,7 +53,7 @@ public class GameDisplayController extends BaseListFragmentController<GameDispla
 
   GameDisplayAdapter adapter;
 
-  private String requestLocation;
+  private City requestLocation;
 
   public static final int SCANNER_REQUEST_CODE = 0x2;
 
@@ -71,7 +71,7 @@ public class GameDisplayController extends BaseListFragmentController<GameDispla
    * 判断网络，请求数据，并开始定位及定位接下来的逻辑
    */
   private void init() {
-    requestLocation = ShaPrefer.getString(getString(R.string.main_page_location_key), "027");
+    requestLocation = ShaPrefer.getCity();
     refreshTop();
     initLocation();
   }
@@ -81,9 +81,9 @@ public class GameDisplayController extends BaseListFragmentController<GameDispla
       Timber.e("You want to change the city, but the city is null");
       return;
     }
-    requestLocation = c.getId();
+    requestLocation = c;
     refreshTop();
-    ShaPrefer.put(getString(R.string.main_page_location_key), c.getId());
+    ShaPrefer.put("", requestLocation);
   }
 
   @Override
@@ -107,7 +107,7 @@ public class GameDisplayController extends BaseListFragmentController<GameDispla
   @Override
   public Observable<List<GameDisplayEntity>> requestData(int page) {
     return HttpService.getGameService()
-        .getGamePage(Accounts.getId(), Accounts.getToken(), requestLocation, page)
+        .getGamePage(Accounts.getId(), Accounts.getToken(), requestLocation.getId(), page)
         .map(new Func1<Response<List<GameDisplayEntity>>, List<GameDisplayEntity>>() {
           @Override
           public List<GameDisplayEntity> call(Response<List<GameDisplayEntity>> listResponse) {
@@ -241,12 +241,12 @@ public class GameDisplayController extends BaseListFragmentController<GameDispla
   public void onActivityResult(int requestCode, int resultCode, Intent data) {
     switch (resultCode) {
       case Conf.REQUEST_CODE_LOCATION:
-        String loc = data.getStringExtra(getString(R.string.main_page_location_key));
+        City loc = data.getParcelableExtra(getString(R.string.main_page_location_key));
         if (loc == null) {
           break;
         }
         requestLocation = loc;
-        mLocate.setText(requestLocation);
+        mLocate.setText(requestLocation.getName());
         refreshTop();
         break;
       case SCANNER_REQUEST_CODE:

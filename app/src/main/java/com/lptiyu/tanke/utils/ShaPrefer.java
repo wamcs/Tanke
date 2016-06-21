@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import com.lptiyu.tanke.global.AppData;
+import com.lptiyu.tanke.global.Conf;
+import com.lptiyu.tanke.pojo.City;
 
 /**
  * EMAIL : danxionglei@foxmail.com
@@ -24,6 +26,14 @@ public class ShaPrefer {
   public static String getString(String key, String defValue) {
     checkDefault();
     return preferences.getString(key, defValue);
+  }
+
+  public static City getCity() {
+    checkDefault();
+    City city = new City();
+    city.setId(getString(Conf.CITY_CODE, "027"));
+    city.setName(getString(Conf.CITY_NAME, "武汉"));
+    return city;
   }
 
   public static boolean getBoolean(String key, boolean defValue) {
@@ -68,6 +78,9 @@ public class ShaPrefer {
       editor.putFloat(key, (Float) value);
     } else if (value instanceof String) {
       editor.putString(key, (String) value);
+    } else if (value instanceof City){
+      editor.putString(Conf.CITY_NAME, ((City) value).getName());
+      editor.putString(Conf.CITY_CODE, ((City) value).getId());
     } else {
       throw new IllegalArgumentException("ShaPrefer illegal argument");
     }

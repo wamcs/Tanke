@@ -80,7 +80,7 @@ public class LocateController extends ActivityController implements BDLocationLi
         city = list.get(position);
         if (city != null) {
           Intent intent = new Intent();
-          intent.putExtra(getString(R.string.main_page_location_key), city.getId());
+          intent.putExtra(getString(R.string.main_page_location_key), city);
           getActivity().setResult(Conf.REQUEST_CODE_LOCATION, intent);
           finish();
         }
@@ -143,7 +143,7 @@ public class LocateController extends ActivityController implements BDLocationLi
     }
     if (isLocateCityOpened) {
       Intent intent = new Intent();
-      intent.putExtra(getString(R.string.main_page_location_key), city.getId());
+      intent.putExtra(getString(R.string.main_page_location_key), city);
       getActivity().setResult(Conf.REQUEST_CODE_LOCATION, intent);
       finish();
     } else {
@@ -175,6 +175,7 @@ public class LocateController extends ActivityController implements BDLocationLi
     if (bdLocation.getLocType() == BDLocation.TypeGpsLocation
         || bdLocation.getLocType() == BDLocation.TypeNetWorkLocation) {
       mLocateCity.setText(bdLocation.getCity());
+      city.setId(bdLocation.getCityCode());
       city.setName(bdLocation.getCity());
       city.setProvince(bdLocation.getProvince());
       city.setLatitude(bdLocation.getLatitude());
@@ -184,6 +185,7 @@ public class LocateController extends ActivityController implements BDLocationLi
       ToastUtil.TextToast("定位失败");
       mLocateCity.setText("武汉");
       city.setName("武汉");
+      city.setId("027");
       city.setProvince("湖北");
       city.setLatitude(30.515372);
       city.setLongtitude(114.419876);

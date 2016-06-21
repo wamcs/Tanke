@@ -19,7 +19,16 @@ public class GameManageEntity {
 
   String title;
 
+  /**
+   * 任务的通关标准
+   */
   String content;
+
+  /**
+   * 游戏的标题
+   */
+  @SerializedName("name")
+  String gameTitle;
 
   /**
    * 二维码的内容，需要用此来生成二维码
@@ -57,6 +66,14 @@ public class GameManageEntity {
 
   public void setContent(String content) {
     this.content = content;
+  }
+
+  public String getGameTitle() {
+    return gameTitle;
+  }
+
+  public void setGameTitle(String gameTitle) {
+    this.gameTitle = gameTitle;
   }
 
   public String getQrcode() {

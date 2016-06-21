@@ -1,12 +1,15 @@
 package com.lptiyu.tanke.pojo;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * EMAIL : danxionglei@foxmail.com
  * DATE : 16/5/24
  *
  * @author ldx
  */
-public class City {
+public class City implements Parcelable{
 
   private String id;
   private String name;
@@ -64,4 +67,42 @@ public class City {
         ", longitude=" + longitude +
         '}';
   }
+
+
+  @Override
+  public int describeContents() {
+    return 0;
+  }
+
+  @Override
+  public void writeToParcel(Parcel dest, int flags) {
+    dest.writeString(this.id);
+    dest.writeString(this.name);
+    dest.writeString(this.province);
+    dest.writeDouble(this.latitude);
+    dest.writeDouble(this.longitude);
+  }
+
+  public City() {
+  }
+
+  protected City(Parcel in) {
+    this.id = in.readString();
+    this.name = in.readString();
+    this.province = in.readString();
+    this.latitude = in.readDouble();
+    this.longitude = in.readDouble();
+  }
+
+  public static final Creator<City> CREATOR = new Creator<City>() {
+    @Override
+    public City createFromParcel(Parcel source) {
+      return new City(source);
+    }
+
+    @Override
+    public City[] newArray(int size) {
+      return new City[size];
+    }
+  };
 }
