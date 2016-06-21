@@ -110,7 +110,7 @@ public class GameDisplayAdapter extends BaseAdapter<GameDisplayEntity> {
   }
 
   public boolean isFooterVisible() {
-    return footerHolder.mRoot.getVisibility() == View.VISIBLE;
+    return footerHolder != null && footerHolder.mRoot.getVisibility() == View.VISIBLE;
   }
 
   public void hideFooter() {

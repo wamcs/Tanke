@@ -94,7 +94,9 @@ public class GameDisplayController extends BaseListFragmentController<GameDispla
 
   @Override
   public void onRefreshStateChanged(boolean refreshing) {
-    fragment.loading(refreshing);
+    if (fragment != null) {
+      fragment.loading(refreshing);
+    }
   }
 
   @Override
