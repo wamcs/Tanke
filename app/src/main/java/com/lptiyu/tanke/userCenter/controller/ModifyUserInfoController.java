@@ -8,9 +8,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.TextView;
 
+import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.facebook.imagepipeline.core.ImagePipeline;
 import com.lptiyu.tanke.R;
 import com.lptiyu.tanke.base.controller.ActivityController;
+import com.lptiyu.tanke.base.ui.BaseActivity;
 import com.lptiyu.tanke.global.Accounts;
 import com.lptiyu.tanke.global.Conf;
 import com.lptiyu.tanke.io.net.HttpService;
@@ -18,6 +21,8 @@ import com.lptiyu.tanke.io.net.Response;
 import com.lptiyu.tanke.io.net.UserService;
 import com.lptiyu.tanke.location.CityStruct;
 import com.lptiyu.tanke.location.LocateUserActivity;
+import com.lptiyu.tanke.permission.PermissionDispatcher;
+import com.lptiyu.tanke.permission.TargetMethod;
 import com.lptiyu.tanke.pojo.UserDetails;
 import com.lptiyu.tanke.userCenter.ui.ModifyTextActivity;
 import com.lptiyu.tanke.utils.ToastUtil;
@@ -113,39 +118,7 @@ public class ModifyUserInfoController extends ActivityController {
 
   @OnClick(R.id.modify_user_info_avatar_button)
   void modifyAvatar() {
-    if (null == mImageChooseDialog) {
-      mImageChooseDialog = new ImageChooseDialog(getContext(), this);
-      mImageChooseDialog.setOnImageChoosedListener(new ImageChooseDialog.OnImageChoosedListener() {
-        @Override
-        public void onImageChoosed(File file) {
-          mLoadingDialog.setDialogText("图片上传中");
-          mLoadingDialog.show();
-          RequestBody body = RequestBody.create(MediaType.parse("application/x-jpg"), file);
-          HttpService.getUserService().uploadUserAvatar(userId, token, body)
-              .observeOn(AndroidSchedulers.mainThread())
-              .subscribeOn(Schedulers.io())
-              .subscribe(new Action1<Response<String>>() {
-                @Override
-                public void call(Response<String> stringResponse) {
-                  mLoadingDialog.cancel();
-                  int status = stringResponse.getStatus();
-                  if (status != 1) {
-                    ToastUtil.TextToast(stringResponse.getInfo());
-                    return;
-                  }
-                  mAvatarImage.setImageURI(Uri.parse(stringResponse.getData()));
-                }
-              }, new Action1<Throwable>() {
-                @Override
-                public void call(Throwable throwable) {
-                  ToastUtil.TextToast("上传头像失败");
-                }
-              });
-
-        }
-      });
-    }
-    mImageChooseDialog.show();
+    PermissionDispatcher.showCameraWithCheck(((BaseActivity) getActivity()));
   }
 
   @OnClick(R.id.modify_user_info_nickname_button)
@@ -260,6 +233,43 @@ public class ModifyUserInfoController extends ActivityController {
   @OnClick(R.id.default_tool_bar_imageview)
   void back() {
     finish();
+  }
+
+  @TargetMethod(requestCode = PermissionDispatcher.PERMISSION_REQUEST_CODE_CAMERA)
+  public void showImageChooseDialog() {
+    if (null == mImageChooseDialog) {
+      mImageChooseDialog = new ImageChooseDialog(getContext(), this);
+      mImageChooseDialog.setOnImageChoosedListener(new ImageChooseDialog.OnImageChoosedListener() {
+        @Override
+        public void onImageChoosed(File file) {
+          mLoadingDialog.setDialogText("图片上传中");
+          mLoadingDialog.show();
+          RequestBody body = RequestBody.create(MediaType.parse("multipart/form-data"), file);
+          HttpService.getUserService().uploadUserAvatar(userId, token, body)
+              .observeOn(AndroidSchedulers.mainThread())
+              .subscribeOn(Schedulers.io())
+              .subscribe(new Action1<Response<String>>() {
+                @Override
+                public void call(Response<String> stringResponse) {
+                  mLoadingDialog.cancel();
+                  int status = stringResponse.getStatus();
+                  if (status != 1) {
+                    ToastUtil.TextToast(stringResponse.getInfo());
+                    return;
+                  }
+                  ToastUtil.TextToast(getString(R.string.upload_avatar_success));
+                  mAvatarImage.setImageURI(Uri.parse(stringResponse.getData()));
+                }
+              }, new Action1<Throwable>() {
+                @Override
+                public void call(Throwable throwable) {
+                  ToastUtil.TextToast(getString(R.string.upload_avatar_error));
+                }
+              });
+        }
+      });
+    }
+    mImageChooseDialog.show();
   }
 
   @Override

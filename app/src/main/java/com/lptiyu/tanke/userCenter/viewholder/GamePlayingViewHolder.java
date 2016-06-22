@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.lptiyu.tanke.R;
 import com.lptiyu.tanke.base.recyclerview.BaseViewHolder;
+import com.lptiyu.tanke.gamedetails.GameDetailsActivity;
 import com.lptiyu.tanke.gameplaying.GamePlayingActivity;
 import com.lptiyu.tanke.global.Conf;
 import com.lptiyu.tanke.pojo.GamePlayingEntity;
@@ -57,7 +58,7 @@ public class GamePlayingViewHolder extends BaseViewHolder<GamePlayingEntity> {
         mItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getContext(), GamePlayingActivity.class);
+                Intent intent = new Intent(getContext(), GameDetailsActivity.class);
                 intent.putExtra(Conf.GAME_ID, gameId);
                 getContext().startActivity(intent);
             }

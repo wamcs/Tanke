@@ -139,7 +139,7 @@ public interface UserService {
   Observable<Response<String>> uploadUserAvatar(
       @Query("uid") long uid,
       @Query("token") String token,
-      @Part("image") RequestBody file);
+      @Part("file\"; filename=\"image.png") RequestBody file);
 
   /**
    * 2.33 修改用户宣布信息

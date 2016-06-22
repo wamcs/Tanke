@@ -31,8 +31,8 @@ public class ShaPrefer {
   public static City getCity() {
     checkDefault();
     City city = new City();
-    city.setId(getString(Conf.CITY_CODE, "027"));
-    city.setName(getString(Conf.CITY_NAME, "武汉"));
+    city.setId(getString(Conf.CITY_CODE, "218"));
+    city.setName(getString(Conf.CITY_NAME, "武汉市"));
     return city;
   }
 

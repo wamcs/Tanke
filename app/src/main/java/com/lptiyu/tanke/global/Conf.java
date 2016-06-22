@@ -1,6 +1,7 @@
 package com.lptiyu.tanke.global;
 
 
+import com.lptiyu.tanke.pojo.City;
 import com.lptiyu.tanke.utils.TimeUtils;
 
 /**
@@ -145,4 +146,5 @@ public final class Conf {
   public static final long TEMP_GAME_ID = -1;
   public static final long TEMP_LINE_ID = -1;
   public static final long TEMP_TEAM_ID = -1;
+
 }

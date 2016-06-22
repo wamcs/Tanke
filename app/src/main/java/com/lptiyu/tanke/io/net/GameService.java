@@ -2,6 +2,7 @@ package com.lptiyu.tanke.io.net;
 
 import android.support.annotation.IntDef;
 
+import com.lptiyu.tanke.gameplaying.records.RunningRecord;
 import com.lptiyu.tanke.pojo.City;
 import com.lptiyu.tanke.pojo.GameDetailsEntity;
 import com.lptiyu.tanke.pojo.GameDisplayEntity;
@@ -78,12 +79,14 @@ public interface GameService {
   int RECORD_TYPE_SPOT_REACHED = 2;
   int RECORD_TYPE_TASK_START = 3;
   int RECORD_TYPE_TASK_FINISH = 4;
-  int RECORD_TYPE_GAME_FINISH = 5;
+  int RECORD_TYPE_SPOT_FINISHED = 5;
+  int RECORD_TYPE_GAME_FINISH = 6;
 
   @IntDef({RECORD_TYPE_GAME_START,
       RECORD_TYPE_SPOT_REACHED,
       RECORD_TYPE_TASK_START,
       RECORD_TYPE_TASK_FINISH,
+      RECORD_TYPE_SPOT_FINISHED,
       RECORD_TYPE_GAME_FINISH})
   @Retention(RetentionPolicy.SOURCE)
   public @interface RecordType {
@@ -128,12 +131,12 @@ public interface GameService {
       @Query("x") String x,
       @Query("y") String y,
       @Query("type") @TeamOrUserRecord int type,
-      @Query("state") @RecordType int state
+      @Query("state") int state
       );
   /**
    * 2.34 下载个人赛zip包
    */
-  @GET("Home/game_zip?type=0")
+  @GET("Home/game_zip?type=2")
   Observable<Response<String>> getIndividualGameZipUrl(@Query("uid")long uid,
                                                   @Query("token") String token,
                                                   @Query("game_id") long gameId
@@ -202,6 +205,13 @@ public interface GameService {
   @GET("System/News")
   Observable<Response<List<MessageEntity>>> getSystemMessage(
       @Query("uid") long userId
+  );
+
+  @GET("System/Getrankslog")
+  Observable<Response<List<RunningRecord>>> getRunningRecords(
+      @Query("uid") long userId,
+      @Query("game_id") long gameId,
+      @Query("type") int gameType
   );
 
 }

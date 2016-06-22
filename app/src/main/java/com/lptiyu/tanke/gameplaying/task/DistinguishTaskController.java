@@ -48,9 +48,9 @@ public class DistinguishTaskController extends MultiplyTaskController {
       mAnswerArea.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-          finishTask();
-          mActivityController.openNextTaskIfExist();
-//          PermissionDispatcher.showCameraWithCheck(((BaseFragment) getFragment()));
+//          finishTask();
+//          mActivityController.openNextTaskIfExist();
+          PermissionDispatcher.showCameraWithCheck(((BaseFragment) getFragment()));
         }
       });
       mWebView.loadUrl(mTask.getContent());

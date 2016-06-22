@@ -112,6 +112,7 @@
     <string name="please_select_avatar">请选择头像</string>
     <string name="please_input_nick_name">请填写昵称</string>
     <string name="upload_avatar_error">上传头像失败</string>
+    <string name="upload_avatar_success">上传头像成功</string>
 
 
     <!-- GamePlayingActivity Text Area -->
@@ -194,6 +195,8 @@
     <string name="city_not_open">(该城市尚未开通)</string>
     <string name="current_city_not_open">当前城市尚未开通</string>
     <string name="is_locating">正在定位中...</string>
+    <string name="locate_success">定位成功</string>
+    <string name="locate_failed">定位失败</string>
 
     <!--LocateUserActivity Text Area-->
     <string name="all_location">全部地区</string>

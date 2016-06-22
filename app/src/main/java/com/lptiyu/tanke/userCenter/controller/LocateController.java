@@ -13,6 +13,7 @@ import com.baidu.location.LocationClientOption;
 import com.lptiyu.tanke.R;
 import com.lptiyu.tanke.base.controller.ActivityController;
 import com.lptiyu.tanke.base.ui.BaseActivity;
+import com.lptiyu.tanke.global.AppData;
 import com.lptiyu.tanke.global.Conf;
 import com.lptiyu.tanke.io.net.HttpService;
 import com.lptiyu.tanke.io.net.Response;
@@ -176,24 +177,35 @@ public class LocateController extends ActivityController implements BDLocationLi
         || bdLocation.getLocType() == BDLocation.TypeNetWorkLocation) {
       mLocateCity.setText(bdLocation.getCity());
       city.setId(bdLocation.getCityCode());
+
+      Timber.e(AppData.globalGson().toJson(bdLocation));
+
       city.setName(bdLocation.getCity());
       city.setProvince(bdLocation.getProvince());
       city.setLatitude(bdLocation.getLatitude());
       city.setLongtitude(bdLocation.getLongitude());
-      ToastUtil.TextToast("定位成功");
+      ToastUtil.TextToast(getString(R.string.locate_success));
     } else {
-      ToastUtil.TextToast("定位失败");
+      ToastUtil.TextToast(getString(R.string.locate_failed));
       mLocateCity.setText("武汉");
       city.setName("武汉");
-      city.setId("027");
+      city.setId("218");
       city.setProvince("湖北");
       city.setLatitude(30.515372);
       city.setLongtitude(114.419876);
     }
     client.stop();
-
-//    if (list == null || list.size() == 0) {
-//      mLocateErrorText.setVisibility(View.VISIBLE);
-//    }
+    if (list == null || list.size() == 0) {
+      isLocateCityOpened = false;
+      mLocateErrorText.setVisibility(View.VISIBLE);
+    } else {
+      for (City c : list) {
+        if (c != null && c.getId().equals(city.getId())) {
+          isLocateCityOpened = true;
+          mLocateErrorText.setVisibility(View.GONE);
+          return;
+        }
+      }
+    }
   }
 }

@@ -9,6 +9,8 @@ import java.io.FilenameFilter;
 import java.util.HashMap;
 import java.util.Map;
 
+import rx.Observable;
+import rx.schedulers.Schedulers;
 import timber.log.Timber;
 
 /**

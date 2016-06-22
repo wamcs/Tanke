@@ -1,12 +1,14 @@
 package com.lptiyu.tanke.gameplaying.records;
 
 import com.baidu.mapapi.model.LatLng;
-import com.lptiyu.tanke.global.AppData;
+import com.lptiyu.tanke.global.Accounts;
+import com.lptiyu.tanke.io.net.HttpService;
+import com.lptiyu.tanke.io.net.Response;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
+import rx.functions.Action1;
 import timber.log.Timber;
 
 /**
@@ -33,10 +35,10 @@ public class RecordsUtils {
     RecordsUtils.currentLatLng = currentLatLng;
   }
 
-  public static void dispatchTypeRecord(int pointIndex, long pointId, long taskId, RunningRecord.RECORD_TYPE type) {
-    RunningRecord record = initPointRecord(currentLatLng.latitude, currentLatLng.longitude, pointId, taskId, type);
+  public static void dispatchTypeRecord(int pointIndex, long pointId, long taskId, RunningRecord.RECORD_TYPE state) {
+    RunningRecord record = initPointRecord(currentLatLng.latitude, currentLatLng.longitude, pointId, taskId, state);
     if (pointIndex == 0) {
-      if (type == RunningRecord.RECORD_TYPE.GAME_START) {
+      if (state == RunningRecord.RECORD_TYPE.GAME_START) {
         dispatchTypeRecord(record);
       }
     } else {
@@ -53,12 +55,12 @@ public class RecordsUtils {
 
   public static boolean isGameFinishedFromMemory(MemRecords memRecords) {
     RunningRecord record = memRecords.last();
-    return record != null && record.getType() == RunningRecord.RECORD_TYPE.GAME_FINISH;
+    return record != null && record.getState() == RunningRecord.RECORD_TYPE.GAME_FINISH;
   }
 
   public static boolean isGameStartedFromMemory(MemRecords memRecords) {
     RunningRecord record = memRecords.first();
-    return record != null && record.getType() == RunningRecord.RECORD_TYPE.GAME_START;
+    return record != null && record.getState() == RunningRecord.RECORD_TYPE.GAME_START;
   }
 
   /**
@@ -102,8 +104,7 @@ public class RecordsUtils {
     } catch (IOException e) {
       e.printStackTrace();
     }
-
-    return record != null && record.getType() == RunningRecord.RECORD_TYPE.GAME_START;
+    return record != null && record.getState() == RunningRecord.RECORD_TYPE.GAME_START;
   }
 
   /**
@@ -128,20 +129,20 @@ public class RecordsUtils {
     } catch (IOException e) {
       e.printStackTrace();
     }
-    return ((record != null) && (record.getType() == RunningRecord.RECORD_TYPE.GAME_FINISH));
+    return ((record != null) && (record.getState() == RunningRecord.RECORD_TYPE.GAME_FINISH));
   }
 
   public static RecordsHandler getmRecordsHandler() {
     return mRecordsHandler;
   }
 
-  private static RunningRecord initPointRecord(double x, double y, long pointId, long taskId, RunningRecord.RECORD_TYPE type) {
+  private static RunningRecord initPointRecord(double x, double y, long pointId, long taskId, RunningRecord.RECORD_TYPE state) {
     return runningRecordBuilder
-        .x(x)
-        .y(y)
+        .x(String.valueOf(x))
+        .y(String.valueOf(y))
         .pointId(pointId)
         .taskId(taskId)
-        .type(type)
+        .state(state)
         .createTime(System.currentTimeMillis())
         .build();
   }

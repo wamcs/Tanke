@@ -25,13 +25,15 @@ import timber.log.Timber;
  */
 class BaseListControllerImpl<Data> implements ListController{
 
-  private int mListPage = 0;
+  private int mListPage = INIT_PAGE;
 
   private Subscription lastRequest;
 
   private boolean isRefreshing = false;
 
   private DataInteractionListener<Data> listener;
+
+  private static final int INIT_PAGE = 1;
 
   public BaseListControllerImpl(DataInteractionListener<Data> listener) {
     if (listener == null) {
@@ -45,7 +47,7 @@ class BaseListControllerImpl<Data> implements ListController{
     if (isRefreshing) {
       return;
     }
-    mListPage = 0;
+    mListPage = INIT_PAGE;
     changeRefreshState(true);
     lastRequest = listener.requestData(mListPage)
         .subscribeOn(Schedulers.io())

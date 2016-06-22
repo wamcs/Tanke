@@ -182,7 +182,7 @@ public class GamePlayingController extends ActivityController implements
     recordList = findAppropriateRecords(recordList);
     for (RunningRecord record : recordList) {
       if (record.getPointId() == currentAttackPoint.getId()) {
-        switch (record.getType()) {
+        switch (record.getState()) {
 
           case GAME_START:
             if (currentAttackPoint.getPointIndex() == 0) {
@@ -216,7 +216,7 @@ public class GamePlayingController extends ActivityController implements
     recordList = findCurrentPointTaskRecords(recordList);
     if (recordList != null && recordList.size() != 0) {
       RunningRecord record = recordList.get(recordList.size() - 1);
-      if (record == null || record.getType() != RunningRecord.RECORD_TYPE.TASK_START) {
+      if (record == null || record.getState() != RunningRecord.RECORD_TYPE.TASK_START) {
         return;
       }
       long currentTaskId = record.getTaskId();
@@ -245,7 +245,7 @@ public class GamePlayingController extends ActivityController implements
   private List<RunningRecord> findAppropriateRecords(List<RunningRecord> records) {
     List<RunningRecord> result = new ArrayList<>();
     for (RunningRecord record : records) {
-      RunningRecord.RECORD_TYPE type = record.getType();
+      RunningRecord.RECORD_TYPE type = record.getState();
       if (type == RunningRecord.RECORD_TYPE.GAME_START ||
           type == RunningRecord.RECORD_TYPE.POINT_REACH ||
           type == RunningRecord.RECORD_TYPE.POINT_FINISH) {
@@ -264,7 +264,7 @@ public class GamePlayingController extends ActivityController implements
   private List<RunningRecord> findCurrentPointTaskRecords(List<RunningRecord> records) {
     List<RunningRecord> result = new ArrayList<>();
     for (RunningRecord record : records) {
-      RunningRecord.RECORD_TYPE type = record.getType();
+      RunningRecord.RECORD_TYPE type = record.getState();
       if ((record.getPointId() == currentAttackPoint.getId()) && (type == RunningRecord.RECORD_TYPE.TASK_START || type == RunningRecord.RECORD_TYPE.TASK_FINISH)) {
         result.add(record);
       }
@@ -478,6 +478,7 @@ public class GamePlayingController extends ActivityController implements
     if (result < 0) {
       mapHelper.animateCameraToMarkerByIndex(position);
     } else if (result == 0) {
+      mapHelper.animateCameraToMarkerByIndex(position);
       onMarkerClicked(currentAttackPoint);
     } else {
       ToastUtil.TextToast("攻击点还未开启");

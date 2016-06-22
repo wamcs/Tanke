@@ -16,6 +16,9 @@ import com.lptiyu.tanke.permission.PermissionDispatcher;
 import com.lptiyu.tanke.permission.TargetMethod;
 import com.lptiyu.tanke.utils.ToastUtil;
 import com.lptiyu.zxinglib.android.CaptureActivity;
+import com.lptiyu.zxinglib.android.Intents;
+
+import timber.log.Timber;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -43,9 +46,9 @@ public class ScanTaskController extends MultiplyTaskController {
       mAnswerArea.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-          finishTask();
-          mActivityController.openNextTaskIfExist();
-//          PermissionDispatcher.showCameraWithCheck(((BaseFragment) getFragment()));
+//          finishTask();
+//          mActivityController.openNextTaskIfExist();
+          PermissionDispatcher.showCameraWithCheck(((BaseFragment) getFragment()));
         }
       });
       mWebView.loadUrl(mTask.getContent());
@@ -64,12 +67,23 @@ public class ScanTaskController extends MultiplyTaskController {
     super.onActivityResult(requestCode, resultCode, data);
     if (resultCode == RESULT_OK) {
       Bundle b = data.getExtras();
-      String str = b.getString("data");
-      if (str == null|| str.length() == 0) {
+      String str = b.getString(CaptureActivity.QR_CODE_DATA);
+      if (str == null || str.length() == 0) {
         ToastUtil.TextToast(getString(R.string.scan_error));
         return;
       }
-      //TODO : upload str to server to check pwd
+      String pwd = mTask.getPwd();
+      if (pwd == null || pwd.length() == 0) {
+        throw new IllegalArgumentException("the pwd must not be null or \"\" ");
+      }
+
+      Timber.e("str : " + str);
+      Timber.e("pwd : " + pwd);
+
+      if (str.equals(mTask.getPwd())) {
+        finishTask();
+        mActivityController.openNextTaskIfExist();
+      }
     } else {
       ToastUtil.TextToast(getString(R.string.scan_error));
     }

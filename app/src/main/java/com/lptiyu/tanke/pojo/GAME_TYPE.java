@@ -19,7 +19,7 @@ import java.lang.reflect.Type;
  */
 public enum GAME_TYPE implements JsonSerializer<GAME_TYPE>,
     JsonDeserializer<GAME_TYPE> {
-  INDIVIDUALS(0),
+  INDIVIDUALS(2),
   TEAMS(1);
 
   public int value;

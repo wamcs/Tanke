@@ -8,6 +8,7 @@ import android.os.Message;
 import com.baidu.mapapi.utils.DistanceUtil;
 import com.lptiyu.tanke.global.Accounts;
 import com.lptiyu.tanke.global.AppData;
+import com.lptiyu.tanke.global.Conf;
 import com.lptiyu.tanke.io.net.GameService;
 import com.lptiyu.tanke.io.net.HttpService;
 import com.lptiyu.tanke.io.net.Response;
@@ -24,7 +25,7 @@ import timber.log.Timber;
 
 /**
  * Used to log the records when users in running game.
- * <p>
+ * <p/>
  * EMAIL : danxionglei@foxmail.com
  * DATE : 16/3/5
  *
@@ -115,12 +116,12 @@ public class RecordsHandler extends Handler {
     if (mLastRecord != null) {
       record.setDistance((int) DistanceUtil.getDistance(mLastRecord.getLatLng(), record.getLatLng()));
     }
-
     mLastRecord = record;
     memRecords.add(record);
+    uploadToServer(record);
 
     //TODO : upload record to server, only the special record such as arrive the point or finish the task in the point
-    uploadToServer(record);
+
     diskRecords.appendRecord(record);
   }
 
@@ -128,7 +129,8 @@ public class RecordsHandler extends Handler {
     HttpService.getGameService()
         .uploadTeamGameRecords(Accounts.getId(), Accounts.getToken(),
             gameId, record.getTeamId(), record.getPointId(), record.getTaskId(),
-            String.valueOf(record.getDistance()), String.valueOf(record.getX()), String.valueOf(record.getY()), GameService.TEAM_RECORD, GameService.RECORD_TYPE_GAME_FINISH)
+            String.valueOf(record.getDistance()), String.valueOf(record.getX()),
+            String.valueOf(record.getY()), teamId == Conf.TEMP_TEAM_ID ? GameService.USER_RECORD : GameService.TEAM_RECORD, record.getState().getType())
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
         .subscribe(new Action1<Response<Void>>() {

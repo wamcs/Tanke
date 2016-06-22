@@ -19,7 +19,6 @@ import com.lptiyu.tanke.gameplaying.records.MemRecords;
 import com.lptiyu.tanke.gameplaying.records.RecordsHandler;
 import com.lptiyu.tanke.gameplaying.records.RecordsUtils;
 import com.lptiyu.tanke.gameplaying.records.RunningRecord;
-import com.lptiyu.tanke.global.AppData;
 import com.lptiyu.tanke.global.Conf;
 import com.lptiyu.tanke.pojo.GameDataEntity;
 
@@ -117,10 +116,10 @@ public class GameDataController extends BaseListActivityController<GameDataEntit
     RunningRecord startRecord = null;
     RunningRecord endRecord = null;
     for (RunningRecord record : mRecords) {
-      if (record.getType() != RunningRecord.RECORD_TYPE.TASK_START && record.getType() != RunningRecord.RECORD_TYPE.TASK_FINISH) {
+      if (record.getState() != RunningRecord.RECORD_TYPE.TASK_START && record.getState() != RunningRecord.RECORD_TYPE.TASK_FINISH) {
         continue;
       }
-      if (record.getType() == RunningRecord.RECORD_TYPE.TASK_START) {
+      if (record.getState() == RunningRecord.RECORD_TYPE.TASK_START) {
         startRecord = record;
       } else {
         endRecord = record;

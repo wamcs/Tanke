@@ -10,6 +10,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.lptiyu.tanke.R;
 import com.lptiyu.tanke.base.controller.FragmentController;
 import com.lptiyu.tanke.base.ui.BaseFragment;
@@ -118,14 +121,27 @@ public class UserCenterFragment extends BaseFragment {
     if (details == null) {
       return;
     }
-    Glide.with(this).load(details.getAvatar()).error(R.mipmap.default_avatar).into(mUserAvatar);
+
+    String serverAvatar = details.getAvatar();
+    checkAndLoadUserAvatar(serverAvatar);
+
     mUserNickname.setText(details.getNickname());
-    //TODO sex need image
-    mUserSex.setImageDrawable(null);
     mUserLocation.setText(details.getAddress());
     mUserUid.setText(String.valueOf(Accounts.getId()));
     mUserGamePlayingNum.setText(String.valueOf(details.getPlayingGameNum()));
     mUserGameFinishedNum.setText(String.valueOf(details.getFinishedGameNum()));
+
+    String gender = details.getSex();
+    if (gender == null || gender.length() == 0) {
+      mUserSex.setImageResource(R.mipmap.img_gender_male);
+    } else {
+      if (gender.equals("男")) {
+        mUserSex.setImageResource(R.mipmap.img_gender_male);
+      } else {
+        mUserSex.setImageResource(R.mipmap.img_gender_female);
+      }
+    }
+
     parseLevelAndExp(details.getExp());
   }
 
@@ -137,6 +153,48 @@ public class UserCenterFragment extends BaseFragment {
     mUserProgressRight.setText(getString(R.string.user_level, currentLevel + 1));
     mUserProgress.setProgress(((float) (exp - currentLevelNeedExp) / (float) (nextLevelNeedExp - currentLevelNeedExp)));
     mUserProgressNeedExp.setText(String.format(getString(R.string.need_exp_formatter), exp - currentLevelNeedExp, nextLevelNeedExp - currentLevelNeedExp));
+  }
+
+  /**
+   * Check the cache url is equal with avatar url from server
+   * if the url is match, do nothing
+   * reload the avatar the url is not match
+   *
+   * @param serverAvatar avatar url from server
+   */
+  private void checkAndLoadUserAvatar(String serverAvatar) {
+    String avatar = Accounts.getAvatar();
+    if (avatar == null || avatar.length() == 0) {
+      loadUserAvatar(serverAvatar);
+    } else {
+      if (serverAvatar == null || serverAvatar.length() == 0) {
+        Glide.with(this).load(R.mipmap.default_avatar).into(mUserAvatar);
+      } else {
+        if (!avatar.equals(serverAvatar)) {
+          loadUserAvatar(serverAvatar);
+        }
+      }
+    }
+  }
+
+  /**
+   * Load the avatar from server and store the url
+   *
+   * @param serverAvatar avatar url from server
+   */
+  private void loadUserAvatar(String serverAvatar) {
+    Glide.with(this).load(serverAvatar).error(R.mipmap.default_avatar).listener(new RequestListener<String, GlideDrawable>() {
+      @Override
+      public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
+        return false;
+      }
+
+      @Override
+      public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+        Accounts.setAvatar(model);
+        return false;
+      }
+    }).into(mUserAvatar);
   }
 
   @OnClick(R.id.user_message_layout)

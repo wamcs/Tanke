@@ -63,14 +63,12 @@ public class ThirdLoginHelper implements PlatformActionListener {
   }
 
   private void getQzoneUserInformation(HashMap<String, Object> hashMap) {
-    Log.d("lk", "qzone login " + hashMap.toString());
     Muser.setNickname(hashMap.get("nickname").toString());
     Muser.setSex(hashMap.get("gender").toString());
-    Muser.setAddress(hashMap.get("figureurl").toString());
+    Muser.setAddress(hashMap.get("figureurl_qq_1").toString());
   }
 
   private void getWeiboUserInformation(HashMap<String, Object> hashMap) {
-    Log.d("lk", "weibo login " + hashMap.toString());
     Muser.setNickname(hashMap.get("name").toString());
     switch (hashMap.get("gender").toString()) {
       case "m":
@@ -79,14 +77,12 @@ public class ThirdLoginHelper implements PlatformActionListener {
       case "f":
         Muser.setSex("女");
         break;
-
     }
     Muser.setAddress(hashMap.get("avatar_hd").toString());
 
   }
 
   private void getWechatUserInformation(HashMap<String, Object> hashMap) {
-    Log.d("lk", "weixin login " + hashMap.toString());
     Accounts.setOpenId(String.valueOf(hashMap.get("openid")));
     Muser.setNickname(hashMap.get("nickname").toString());
     switch (String.valueOf(hashMap.get("sex"))) {

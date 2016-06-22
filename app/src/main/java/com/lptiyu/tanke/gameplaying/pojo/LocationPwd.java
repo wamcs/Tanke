@@ -16,7 +16,7 @@ public class LocationPwd implements Parcelable{
 
   private double longitude;
 
-  private int radius;
+  private double radius;
 
   private LocationPwd(Builder builder) {
     setLatitude(builder.latitude);
@@ -40,11 +40,11 @@ public class LocationPwd implements Parcelable{
     this.longitude = longitude;
   }
 
-  public int getRadius() {
+  public double getRadius() {
     return radius;
   }
 
-  public void setRadius(int radius) {
+  public void setRadius(double radius) {
     this.radius = radius;
   }
 
@@ -60,7 +60,7 @@ public class LocationPwd implements Parcelable{
   public void writeToParcel(Parcel dest, int flags) {
     dest.writeDouble(this.latitude);
     dest.writeDouble(this.longitude);
-    dest.writeInt(this.radius);
+    dest.writeDouble(this.radius);
   }
 
   public LocationPwd() {
@@ -69,7 +69,7 @@ public class LocationPwd implements Parcelable{
   protected LocationPwd(Parcel in) {
     this.latitude = in.readDouble();
     this.longitude = in.readDouble();
-    this.radius = in.readInt();
+    this.radius = in.readDouble();
   }
 
   public static final Creator<LocationPwd> CREATOR = new Creator<LocationPwd>() {
@@ -87,7 +87,7 @@ public class LocationPwd implements Parcelable{
   public static final class Builder {
     private double latitude;
     private double longitude;
-    private int radius;
+    private double radius;
 
     public Builder() {
     }
@@ -102,7 +102,7 @@ public class LocationPwd implements Parcelable{
       return this;
     }
 
-    public Builder radius(int val) {
+    public Builder radius(double val) {
       radius = val;
       return this;
     }

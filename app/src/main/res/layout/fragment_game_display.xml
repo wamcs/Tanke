@@ -32,8 +32,6 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:text="热门推荐"
-            android:textColor="@color/default_font_color"
-            android:textSize="@dimen/default_toolbar_textview_text_size"
         />
 
         <Button

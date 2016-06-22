@@ -267,7 +267,7 @@ public class MapHelper implements
     }
     options = newNailMarkerOptions();
     options.position(point.getLatLng());
-    Bitmap b = NumNail.getNailBitmap(mContext, type).bakeText("" + index).getBitmap();
+    Bitmap b = NumNail.getNailBitmap(mContext, type).bakeText(String.valueOf(index + 1)).getBitmap();
     if (b != null) {
       options.icon(BitmapDescriptorFactory.fromBitmap(b));
     }

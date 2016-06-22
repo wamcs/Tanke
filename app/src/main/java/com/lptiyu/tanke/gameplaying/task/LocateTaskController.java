@@ -20,11 +20,10 @@ import com.lptiyu.tanke.base.ui.BaseFragment;
 import com.lptiyu.tanke.gameplaying.assist.LocateHelper;
 import com.lptiyu.tanke.gameplaying.pojo.LocationPwd;
 import com.lptiyu.tanke.global.AppData;
+import com.lptiyu.tanke.global.Conf;
 import com.lptiyu.tanke.permission.PermissionDispatcher;
 import com.lptiyu.tanke.permission.TargetMethod;
 import com.lptiyu.tanke.utils.ToastUtil;
-
-import timber.log.Timber;
 
 /**
  * @author : xiaoxiaoda
@@ -55,9 +54,9 @@ public class LocateTaskController extends MultiplyTaskController implements
       mAnswerArea.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-          finishTask();
-          mActivityController.openNextTaskIfExist();
-//          PermissionDispatcher.startLocateWithCheck(((BaseFragment) getFragment()));
+//          finishTask();
+//          mActivityController.openNextTaskIfExist();
+          PermissionDispatcher.startLocateWithCheck(((BaseFragment) getFragment()));
         }
       });
       mWebView.loadUrl(mTask.getContent());
@@ -73,9 +72,11 @@ public class LocateTaskController extends MultiplyTaskController implements
     if (locationPwd == null) {
       return;
     }
+    locationPwd.setRadius(Conf.POINT_RADIUS);
     if (DistanceUtil.getDistance(locationPwd.getLatLng(), new LatLng(bdLocation.getLatitude(), bdLocation.getLongitude())) < locationPwd.getRadius()) {
       ToastUtil.TextToast(getString(R.string.right_location));
-      //TODO : finish this task and open next task or done this point
+      finishTask();
+      mActivityController.openNextTaskIfExist();
     } else {
       ToastUtil.TextToast(getString(R.string.error_location));
     }

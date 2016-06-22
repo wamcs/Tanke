@@ -24,7 +24,7 @@ public class LoadingDialog extends BaseDialog {
     super(context);
     withTitle(null)
         .isCancelableOnTouchOutside(false)
-        .withDialogColor(getContext().getResources().getColor(R.color.black01))
+        .withDialogColor(getContext().getResources().getColor(R.color.default_font_color))
         .setCustomView(R.layout.layout_dialog_loading, context);
   }
 

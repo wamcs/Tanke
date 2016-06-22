@@ -13,6 +13,7 @@ import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 import com.google.gson.annotations.SerializedName;
 import com.lptiyu.tanke.BuildConfig;
+import com.lptiyu.tanke.pojo.GAME_TYPE;
 
 import java.lang.reflect.Type;
 
@@ -24,24 +25,10 @@ import java.lang.reflect.Type;
  */
 public class RunningRecord implements Parcelable {
 
-  private int id;
-
   private int index;
 
-  @SerializedName("team_id")
+  @SerializedName("ranks_id")
   private long teamId;
-
-  @SerializedName("create_time")
-  private long createTime;
-
-  private int distance;
-
-  private double x;
-
-  private double y;
-
-  @SerializedName("type")
-  private RECORD_TYPE type;
 
   @SerializedName("point_id")
   private long pointId;
@@ -49,26 +36,36 @@ public class RunningRecord implements Parcelable {
   @SerializedName("task_id")
   private long taskId;
 
+  private int distance;
+
+  private String x;
+
+  private String y;
+
+  @SerializedName("create_time")
+  private long createTime;
+
+  private RECORD_TYPE state;
+
   private RunningRecord(Builder builder) {
-    setId(builder.id);
     setIndex(builder.index);
     setTeamId(builder.teamId);
-    setCreateTime(builder.createTime);
+    setPointId(builder.pointId);
+    setTaskId(builder.taskId);
     setDistance(builder.distance);
     setX(builder.x);
     setY(builder.y);
-    setType(builder.type);
-    setPointId(builder.pointId);
-    setTaskId(builder.taskId);
+    setCreateTime(builder.createTime);
+    setState(builder.state);
   }
 
   public enum RECORD_TYPE implements JsonSerializer<RECORD_TYPE>, JsonDeserializer<RECORD_TYPE> {
-    GAME_START(0),
-    POINT_REACH(1),
-    TASK_START(2),
-    TASK_FINISH(3),
-    POINT_FINISH(4),
-    GAME_FINISH(5);
+    GAME_START(1),
+    POINT_REACH(2),
+    TASK_START(3),
+    TASK_FINISH(4),
+    POINT_FINISH(5),
+    GAME_FINISH(6);
 
     public final int type;
 
@@ -103,14 +100,6 @@ public class RunningRecord implements Parcelable {
     }
   }
 
-  public int getId() {
-    return id;
-  }
-
-  public void setId(int id) {
-    this.id = id;
-  }
-
   public int getIndex() {
     return index;
   }
@@ -125,46 +114,6 @@ public class RunningRecord implements Parcelable {
 
   public void setTeamId(long teamId) {
     this.teamId = teamId;
-  }
-
-  public long getCreateTime() {
-    return createTime;
-  }
-
-  public void setCreateTime(long createTime) {
-    this.createTime = createTime;
-  }
-
-  public int getDistance() {
-    return distance;
-  }
-
-  public void setDistance(int distance) {
-    this.distance = distance;
-  }
-
-  public double getX() {
-    return x;
-  }
-
-  public void setX(double x) {
-    this.x = x;
-  }
-
-  public double getY() {
-    return y;
-  }
-
-  public void setY(double y) {
-    this.y = y;
-  }
-
-  public RECORD_TYPE getType() {
-    return type;
-  }
-
-  public void setType(RECORD_TYPE type) {
-    this.type = type;
   }
 
   public long getPointId() {
@@ -183,80 +132,49 @@ public class RunningRecord implements Parcelable {
     this.taskId = taskId;
   }
 
+  public int getDistance() {
+    return distance;
+  }
+
+  public void setDistance(int distance) {
+    this.distance = distance;
+  }
+
+  public String getX() {
+    return x;
+  }
+
+  public void setX(String x) {
+    this.x = x;
+  }
+
+  public String getY() {
+    return y;
+  }
+
+  public void setY(String y) {
+    this.y = y;
+  }
+
+  public long getCreateTime() {
+    return createTime;
+  }
+
+  public void setCreateTime(long createTime) {
+    this.createTime = createTime;
+  }
+
+  public RECORD_TYPE getState() {
+    return state;
+  }
+
+  public void setState(RECORD_TYPE state) {
+    this.state = state;
+  }
+
   public LatLng getLatLng() {
-    return new LatLng(x, y);
+    return new LatLng(Double.valueOf(x), Double.valueOf(y));
   }
-
-  public static final class Builder {
-    private int id;
-    private int index;
-    private int teamId;
-    private long createTime;
-    private int distance;
-    private double x;
-    private double y;
-    private RECORD_TYPE type;
-    private long pointId;
-    private long taskId;
-
-    public Builder() {
-    }
-
-    public Builder id(int val) {
-      id = val;
-      return this;
-    }
-
-    public Builder index(int val) {
-      index = val;
-      return this;
-    }
-
-    public Builder teamId(int val) {
-      teamId = val;
-      return this;
-    }
-
-    public Builder createTime(long val) {
-      createTime = val;
-      return this;
-    }
-
-    public Builder distance(int val) {
-      distance = val;
-      return this;
-    }
-
-    public Builder x(double val) {
-      x = val;
-      return this;
-    }
-
-    public Builder y(double val) {
-      y = val;
-      return this;
-    }
-
-    public Builder type(RECORD_TYPE val) {
-      type = val;
-      return this;
-    }
-
-    public Builder pointId(long val) {
-      pointId = val;
-      return this;
-    }
-
-    public Builder taskId(long val) {
-      taskId = val;
-      return this;
-    }
-
-    public RunningRecord build() {
-      return new RunningRecord(this);
-    }
-  }
-
   @Override
   public int describeContents() {
     return 0;
@@ -264,30 +182,31 @@ public class RunningRecord implements Parcelable {
 
   @Override
   public void writeToParcel(Parcel dest, int flags) {
-    dest.writeInt(this.id);
     dest.writeInt(this.index);
     dest.writeLong(this.teamId);
-    dest.writeLong(this.createTime);
-    dest.writeInt(this.distance);
-    dest.writeDouble(this.x);
-    dest.writeDouble(this.y);
-    dest.writeInt(this.type == null ? -1 : this.type.ordinal());
     dest.writeLong(this.pointId);
     dest.writeLong(this.taskId);
+    dest.writeInt(this.distance);
+    dest.writeString(this.x);
+    dest.writeString(this.y);
+    dest.writeLong(this.createTime);
+    dest.writeInt(this.state == null ? -1 : this.state.ordinal());
+  }
+
+  public RunningRecord() {
   }
 
   protected RunningRecord(Parcel in) {
-    this.id = in.readInt();
     this.index = in.readInt();
     this.teamId = in.readLong();
-    this.createTime = in.readLong();
-    this.distance = in.readInt();
-    this.x = in.readDouble();
-    this.y = in.readDouble();
-    int tmpType = in.readInt();
-    this.type = tmpType == -1 ? null : RECORD_TYPE.values()[tmpType];
     this.pointId = in.readLong();
     this.taskId = in.readLong();
+    this.distance = in.readInt();
+    this.x = in.readString();
+    this.y = in.readString();
+    this.createTime = in.readLong();
+    int tmpState = in.readInt();
+    this.state = tmpState == -1 ? null : RECORD_TYPE.values()[tmpState];
   }
 
   public static final Creator<RunningRecord> CREATOR = new Creator<RunningRecord>() {
@@ -301,4 +220,67 @@ public class RunningRecord implements Parcelable {
       return new RunningRecord[size];
     }
   };
+
+  public static final class Builder {
+    private int index;
+    private long teamId;
+    private long pointId;
+    private long taskId;
+    private int distance;
+    private String x;
+    private String y;
+    private long createTime;
+    private RECORD_TYPE state;
+
+    public Builder() {
+    }
+
+    public Builder index(int val) {
+      index = val;
+      return this;
+    }
+
+    public Builder teamId(long val) {
+      teamId = val;
+      return this;
+    }
+
+    public Builder pointId(long val) {
+      pointId = val;
+      return this;
+    }
+
+    public Builder taskId(long val) {
+      taskId = val;
+      return this;
+    }
+
+    public Builder distance(int val) {
+      distance = val;
+      return this;
+    }
+
+    public Builder x(String val) {
+      x = val;
+      return this;
+    }
+
+    public Builder y(String val) {
+      y = val;
+      return this;
+    }
+
+    public Builder createTime(long val) {
+      createTime = val;
+      return this;
+    }
+
+    public Builder state(RECORD_TYPE val) {
+      state = val;
+      return this;
+    }
+
+    public RunningRecord build() { return new RunningRecord(this);
+    }
+  }
 }

@@ -140,7 +140,7 @@ public class BaseSpotScrollView extends HorizontalScrollView {
     spotCircleView.setSpotTextSize(spotTextSize);
     spotCircleView.setmState(state);
     spotCircleView.setmRadius(spotCircleRadius);
-    spotCircleView.setmText(String.valueOf(num));
+    spotCircleView.setmText(String.valueOf(num + 1));
 
     if (num == 0) {
       spotCircleView.setFirstOne(true);
@@ -452,7 +452,7 @@ public class BaseSpotScrollView extends HorizontalScrollView {
       if (null == mListener || (!isClickable)) {
         return;
       }
-      mListener.onSpotItemClick(v, mTag);
+      mListener.onSpotItemClick(v, mTag - 1);
     }
 
   }

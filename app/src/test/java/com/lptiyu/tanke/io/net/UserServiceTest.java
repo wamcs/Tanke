@@ -163,11 +163,10 @@ public class UserServiceTest {
   @Test // failed 2.9
   public void testUploadUserAvatar() throws Exception {
     File file = new File("src/test/res/need_to_remove.png");
-    userService.uploadUserAvatar(1
+    userService.uploadUserAvatar(
+        10008
         , TOKEN
-        , RequestBody.create(
-            MediaType.parse("application/octet-stream")
-            , file))
+        , RequestBody.create(MediaType.parse("multipart/form-data"), file))
         .subscribe(new Action1<Response<String>>() {
           @Override
           public void call(Response<String> stringResponse) {

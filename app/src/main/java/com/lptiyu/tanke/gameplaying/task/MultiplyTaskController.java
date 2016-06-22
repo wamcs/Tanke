@@ -89,7 +89,7 @@ public abstract class MultiplyTaskController extends FragmentController {
       if (mTask.getId() != record.getTaskId()) {
         continue;
       }
-      switch (record.getType()) {
+      switch (record.getState()) {
 
         case GAME_START:
           break;

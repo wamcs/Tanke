@@ -42,7 +42,6 @@ public class GameFinishedListController extends BaseListActivityController<GameF
   @BindView(R.id.no_data_imageview)
   ImageView mNoDataImage;
 
-
   @BindView(R.id.GameListRecyclerView)
   RecyclerView recyclerView;
 

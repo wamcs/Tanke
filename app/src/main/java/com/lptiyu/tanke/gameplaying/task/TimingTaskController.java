@@ -45,8 +45,6 @@ public class TimingTaskController extends MultiplyTaskController implements
         @Override
         public void onClick(View v) {
           counter.startCounting();
-//          finishTask();
-//          mActivityController.openNextTaskIfExist();
         }
       });
       counter = new TimingCounter(getContext(), DEFAULT_TIMING_MILLIS, DEFAULT_TIMING_INTERVAL);

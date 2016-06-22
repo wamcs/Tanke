@@ -36,7 +36,7 @@ public class UserDetails implements Parcelable{
   @SerializedName("num")
   private int playingGameNum;
 
-  @SerializedName("Finish_num")
+  @SerializedName("finish_num")
   private int finishedGameNum;
 
   @SerializedName("experience")

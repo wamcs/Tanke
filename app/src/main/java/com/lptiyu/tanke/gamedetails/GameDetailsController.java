@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Paint;
 import android.support.v7.app.AlertDialog;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -14,7 +15,9 @@ import com.lptiyu.tanke.base.controller.ActivityController;
 import com.lptiyu.tanke.gameplaying.GamePlayingActivity;
 import com.lptiyu.tanke.gameplaying.assist.zip.GameZipScanner;
 import com.lptiyu.tanke.gameplaying.records.RecordsUtils;
+import com.lptiyu.tanke.gameplaying.records.RunningRecord;
 import com.lptiyu.tanke.global.Accounts;
+import com.lptiyu.tanke.global.AppData;
 import com.lptiyu.tanke.global.Conf;
 import com.lptiyu.tanke.io.net.HttpService;
 import com.lptiyu.tanke.io.net.Response;
@@ -28,6 +31,7 @@ import com.lptiyu.tanke.widget.dialog.ShareDialog;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -108,8 +112,6 @@ public class GameDetailsController extends ActivityController {
     this.mGameDetailsEntity = entity;
     mTextTitle.setText(entity.getTitle());
     Glide.with(getActivity()).load(entity.getImg()).centerCrop().into(mImageCover);
-    mTextGameIntro.setText(entity.getGameIntro());
-    mTextRule.setText(entity.getRule());
     mTextLocation.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG); //下划线
     mTextLocation.getPaint().setAntiAlias(true);//抗锯齿
     mTextLocation.setText(entity.getArea());
@@ -120,6 +122,33 @@ public class GameDetailsController extends ActivityController {
     } else {
       mTextTeamType.setText(String.format(getString(R.string.team_game_formatter), entity.getMinNum()));
     }
+
+    //TODO : Html image getter
+    mTextGameIntro.setText(Html.fromHtml(Html.fromHtml(entity.getGameIntro()).toString()));
+    mTextRule.setText(Html.fromHtml(Html.fromHtml(entity.getRule()).toString()));
+
+    isGameFinishSubscription = isGameFinishObservable
+        .subscribeOn(Schedulers.io())
+        .observeOn(AndroidSchedulers.mainThread())
+        .subscribe(new Action1<Boolean>() {
+          @Override
+          public void call(Boolean aBoolean) {
+            isUserFinishedGame = aBoolean;
+            if (isUserFinishedGame) {
+              mTextEnsure.setText(getString(R.string.enter_game_share));
+            } else {
+              mTextEnsure.setText(getString(R.string.enter_game_play));
+              isGameFinishedFromServer(gameId);
+            }
+          }
+        }, new Action1<Throwable>() {
+          @Override
+          public void call(Throwable throwable) {
+            isUserFinishedGame = false;
+            mTextEnsure.setText(getString(R.string.enter_game_play));
+            isGameFinishedFromServer(gameId);
+          }
+        });
   }
 
   public void parseTime(final CustomTextView textView, GameDetailsEntity entity) {
@@ -189,13 +218,58 @@ public class GameDetailsController extends ActivityController {
             ToastUtil.TextToast(throwable.getMessage());
           }
         });
+  }
 
+  /**
+   * This method is to load running records from server
+   * if the local records is damage or the records return the game is not finished
+   * reload the records from server and check
+   *
+   * @param gameId target game
+   */
+  private void isGameFinishedFromServer(long gameId) {
+    HttpService.getGameService()
+        .getRunningRecords(Accounts.getId(), gameId, mGameDetailsEntity.getType().value)
+        .map(new Func1<Response<List<RunningRecord>>, Boolean>() {
+          @Override
+          public Boolean call(Response<List<RunningRecord>> listResponse) {
+            if (listResponse == null || listResponse.getStatus() != 1) {
+              return false;
+            }
+            List<RunningRecord> records = listResponse.getData();
+            if (records == null || records.size() == 0) {
+              return false;
+            }
+
+            Timber.e(AppData.globalGson().toJson(records));
+
+            for (RunningRecord record : records) {
+              if (record.getState() == RunningRecord.RECORD_TYPE.GAME_FINISH) {
+                return true;
+              }
+            }
+            return false;
+          }
+        })
+        .subscribeOn(Schedulers.io())
+        .observeOn(AndroidSchedulers.mainThread())
+        .subscribe(new Action1<Boolean>() {
+          @Override
+          public void call(Boolean aBoolean) {
+            isUserFinishedGame = aBoolean;
+            if (isUserFinishedGame) {
+              mTextEnsure.setText(getString(R.string.enter_game_share));
+            } else {
+              mTextEnsure.setText(getString(R.string.enter_game_play));
+            }
+          }
+        });
   }
 
   /**
    * This method is to check whether the game zip has been download
    * and the game zip is out of date or not
-   * <p/>
+   * <p>
    * If the unix timestamp is not match with server's, then must
    * clean the game records、zip package、game dir etc
    */
@@ -312,28 +386,6 @@ public class GameDetailsController extends ActivityController {
   @Override
   public void onResume() {
     super.onResume();
-    // check whether the user start this game or not
-    isGameFinishSubscription = isGameFinishObservable
-        .subscribeOn(Schedulers.io())
-        .observeOn(AndroidSchedulers.mainThread())
-        .subscribe(new Action1<Boolean>() {
-          @Override
-          public void call(Boolean aBoolean) {
-            isUserFinishedGame = aBoolean;
-            if (isUserFinishedGame) {
-              mTextEnsure.setText(getString(R.string.enter_game_share));
-            } else {
-              mTextEnsure.setText(getString(R.string.enter_game_play));
-            }
-          }
-        }, new Action1<Throwable>() {
-          @Override
-          public void call(Throwable throwable) {
-            isUserFinishedGame = false;
-            mTextEnsure.setText(getString(R.string.enter_game_play));
-            Timber.e(throwable.toString());
-          }
-        });
   }
 
   @OnClick(R.id.back_btn)

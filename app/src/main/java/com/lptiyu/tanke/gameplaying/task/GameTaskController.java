@@ -92,7 +92,7 @@ public class GameTaskController extends ActivityController {
   private void resumeFromMemRecords() {
     List<RunningRecord> records = getAppropriateRecordList();
     for (RunningRecord record : records) {
-      if (RunningRecord.RECORD_TYPE.TASK_FINISH == record.getType()) {
+      if (RunningRecord.RECORD_TYPE.TASK_FINISH == record.getState()) {
         if (currentTask.getId() == record.getTaskId()) {
           onNextTask();
         }

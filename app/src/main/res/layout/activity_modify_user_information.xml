@@ -29,7 +29,6 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="@dimen/modify_user_info_item_content_margin"
-            android:background="@mipmap/splash_activity_bg_1"
             app:roundAsCircle="true"/>
 
     </RelativeLayout>
