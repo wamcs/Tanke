@@ -1,12 +1,9 @@
 package com.lptiyu.tanke.utils;
 
 import com.lptiyu.tanke.global.AppData;
-import com.lptiyu.tanke.pojo.GameDataEntity;
 import com.lptiyu.tanke.pojo.GameDisplayEntity;
 
 import org.junit.Test;
-
-import timber.log.Timber;
 
 /**
  * @author : xiaoxiaoda

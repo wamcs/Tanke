@@ -4,7 +4,8 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
 
     <!-- Default toolbar dimens-->
-    <dimen name="default_toolbar_imageview_padding">10dp</dimen>
+    <dimen name="default_toolbar_imageview_padding">15dp</dimen>
+    <dimen name="default_toolbar_imageview_padding_left">10dp</dimen>
     <dimen name="default_toolbar_textview_margin_left">15dp</dimen>
     <dimen name="default_toolbar_textview_padding">5dp</dimen>
     <dimen name="default_toolbar_textview_text_size">18sp</dimen>
@@ -156,11 +157,21 @@
     <dimen name="item_game_data_task_root_padding_top_bottom">5dp</dimen>
     <dimen name="item_game_data_task_root_padding_right_left">10dp</dimen>
 
+    <dimen name="item_game_data_start_root_padding_top_bottom">5dp</dimen>
+    <dimen name="item_game_data_start_root_padding_right_left">5dp</dimen>
+
+    <dimen name="item_game_data_start_image_margin_top">10dp</dimen>
+    <dimen name="item_game_data_start_game_title_margin_left">10dp</dimen>
+    <dimen name="item_game_data_start_game_title_margin_top">5dp</dimen>
+
+    <dimen name="item_game_data_finish_root_padding_top_bottom">5dp</dimen>
+    <dimen name="item_game_data_finish_root_padding_right_left">10dp</dimen>
 
     <dimen name="main_page_item_img_width">100dp</dimen>
     <dimen name="main_page_item_img_height">68dp</dimen>
     <dimen name="main_page_item_text_size_normal">13sp</dimen>
     <dimen name="main_page_item_text_size_small">11sp</dimen>
+
 
     <!-- GameShareActivity Dimens-->
     <dimen name="activity_game_share_toolbar_button_width_height">45dp</dimen>
@@ -217,6 +228,21 @@
 
     <!--gameList Dimens-->
     <dimen name="game_list_item_picture_size">80dp</dimen>
+
+    <!-- UserGameFinished Dimens-->
+    <dimen name="item_game_finished_root_height">100dp</dimen>
+    <dimen name="item_game_finished_img_width">100dp</dimen>
+    <dimen name="item_game_finished_img_height">69dp</dimen>
+    <dimen name="item_game_finished_img_margin_left">10dp</dimen>
+    <dimen name="item_game_finished_img_corner_radius">5dp</dimen>
+    <dimen name="item_game_finished_content_root_margin_left">10dp</dimen>
+    <dimen name="item_finished_title_padding">3dp</dimen>
+
+    <!-- UserManagerGame Dimens-->
+    <dimen name="item_user_manager_game_root_height">110dp</dimen>
+    <dimen name="item_user_manager_game_width">110dp</dimen>
+    <dimen name="item_user_manager_game_height">70dp</dimen>
+
 
 
 </resources>

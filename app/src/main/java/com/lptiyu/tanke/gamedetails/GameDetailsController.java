@@ -12,7 +12,9 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.lptiyu.tanke.R;
 import com.lptiyu.tanke.base.controller.ActivityController;
+import com.lptiyu.tanke.gamedata.GameDataActivity;
 import com.lptiyu.tanke.gameplaying.GamePlayingActivity;
+import com.lptiyu.tanke.gameplaying.GameShareActivity;
 import com.lptiyu.tanke.gameplaying.assist.zip.GameZipScanner;
 import com.lptiyu.tanke.gameplaying.records.RecordsUtils;
 import com.lptiyu.tanke.gameplaying.records.RunningRecord;
@@ -397,7 +399,11 @@ public class GameDetailsController extends ActivityController {
   public void shareClicked() {
     if (null == shareDialog) {
       shareDialog = new ShareDialog(getContext());
-      shareDialog.setShareContent(mGameDetailsEntity.getTitle(), mGameDetailsEntity.getGameIntro(), null, mGameDetailsEntity.getShareUrl());
+      shareDialog.setShareContent(
+          String.format("我正在玩定向AR游戏 %s，一起来探秘吧", mGameDetailsEntity.getTitle()),
+          Html.fromHtml(Html.fromHtml(mGameDetailsEntity.getGameIntro()).toString()).toString(),
+          mGameDetailsEntity.getImg(),
+          mGameDetailsEntity.getShareUrl());
     }
     shareDialog.show();
   }
@@ -421,8 +427,9 @@ public class GameDetailsController extends ActivityController {
       return;
     }
     if (isUserFinishedGame) {
-      // TODO : jump to the GameShareActivity
-      ToastUtil.TextToast("jump to the share activity");
+      Intent intent = new Intent(getActivity(), GameShareActivity.class);
+      intent.putExtra(Conf.GAME_ID, gameId);
+      startActivity(intent);
     } else {
       checkDiskAndNextStep();
     }

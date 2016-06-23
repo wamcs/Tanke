@@ -6,29 +6,26 @@ import android.widget.TextView;
 
 import com.lptiyu.tanke.R;
 import com.lptiyu.tanke.base.recyclerview.BaseViewHolder;
-import com.lptiyu.tanke.io.net.GameService;
 import com.lptiyu.tanke.io.net.HttpService;
 import com.lptiyu.tanke.io.net.Response;
 import com.lptiyu.tanke.pojo.GameDataEntity;
-import com.lptiyu.tanke.utils.TimeUtils;
+import com.lptiyu.tanke.pojo.GameDataNormalEntity;
 
 import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import rx.Scheduler;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.schedulers.Schedulers;
-import timber.log.Timber;
 
 /**
  * @author : xiaoxiaoda
  *         date: 16-6-6
  *         email: wonderfulifeel@gmail.com
  */
-public class GameDataViewHolder extends BaseViewHolder<GameDataEntity> {
+public class GameDataViewHolderNormal extends BaseViewHolder<GameDataEntity> {
 
   @BindView(R.id.item_game_data_task_name)
   TextView taskName;
@@ -43,13 +40,14 @@ public class GameDataViewHolder extends BaseViewHolder<GameDataEntity> {
   @BindView(R.id.item_game_data_task_exp)
   TextView taskExp;
 
-  public GameDataViewHolder(ViewGroup parent) {
-    super(fromResLayout(parent, R.layout.item_game_data_task));
+  public GameDataViewHolderNormal(ViewGroup parent) {
+    super(fromResLayout(parent, R.layout.item_game_data_normal));
     ButterKnife.bind(this, itemView);
   }
 
   @Override
-  public void bind(final GameDataEntity entity) {
+  public void bind(GameDataEntity e) {
+    final GameDataNormalEntity entity = ((GameDataNormalEntity) e);
     taskName.setText(entity.getTaskName());
     final Context context = itemView.getContext();
 
@@ -63,25 +61,25 @@ public class GameDataViewHolder extends BaseViewHolder<GameDataEntity> {
     String completeTimeFormatter = context.getString(R.string.complete_time_formatter);
     date.setTime(entity.getCompleteTime());
     completeTime.setText(String.format(completeTimeFormatter, date.getYear() + 1900, date.getMonth() + 1, date.getDate(), date.getHours(), date.getMinutes()));
-    String typeStr = "扫码任务";
+    String typeStr = context.getString(R.string.scan_task);
     switch (entity.getType()) {
       case SCAN_CODE:
-        typeStr = "扫码任务";
+        typeStr = context.getString(R.string.scan_task);
         break;
       case LOCATE:
-        typeStr = "定位任务";
+        typeStr = context.getString(R.string.locate_task);
         break;
       case RIDDLE:
-        typeStr = "谜底任务";
+        typeStr = context.getString(R.string.riddle_task);
         break;
       case DISTINGUISH:
-        typeStr = "扫描任务";
+        typeStr = context.getString(R.string.distinguish_task);
         break;
       case TIMING:
-        typeStr = "定时任务";
+        typeStr = context.getString(R.string.timing_task);
         break;
       case FINISH:
-        typeStr = "结束任务";
+        typeStr = context.getString(R.string.finish_task);
         break;
     }
     taskType.setText(typeStr);

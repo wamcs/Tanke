@@ -18,6 +18,10 @@ import com.lptiyu.tanke.gamedetails.GameDetailsActivity;
 import com.lptiyu.tanke.gameplaying.GamePlayingActivity;
 import com.lptiyu.tanke.global.Conf;
 import com.lptiyu.tanke.pojo.GameFinishedEntity;
+import com.lptiyu.tanke.widget.CustomTextView;
+import com.makeramen.roundedimageview.RoundedImageView;
+
+import java.util.Date;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -32,13 +36,22 @@ import timber.log.Timber;
 public class UserGameFinishedHolder extends BaseViewHolder<GameFinishedEntity>{
 
   @BindView(R.id.image_view)
-  SimpleDraweeView imageView;
+  RoundedImageView mItemPicture;
 
   @BindView(R.id.item_finished_title)
-  TextView title;
+  CustomTextView title;
 
-  @BindView(R.id.item_finished_content)
-  TextView content;
+  @BindView(R.id.item_finished_type)
+  CustomTextView type;
+
+  @BindView(R.id.item_finished_complete_time)
+  CustomTextView completeTime;
+
+  @BindView(R.id.item_finished_consuming_time)
+  CustomTextView comsumingTime;
+
+  @BindView(R.id.item_finished_exp)
+  CustomTextView exp;
 
   @BindView(R.id.game_finished_list_item)
   RelativeLayout mItem;
@@ -50,13 +63,24 @@ public class UserGameFinishedHolder extends BaseViewHolder<GameFinishedEntity>{
 
   @Override
   public void bind(GameFinishedEntity entity) {
-    if (entity == null || imageView == null) {
+    if (entity == null || mItemPicture == null) {
       return;
     }
     final long gameId = entity.getGameId();
-    imageView.setImageURI(Uri.parse(entity.getImg()));
+    Glide.with(getContext()).load(entity.getImg()).into(mItemPicture);
+
     title.setText(entity.getName());
-    content.setText(String.format("获得经验值%d 用时%s ".toLowerCase(), entity.getExpPoints(), entity.getTime()));
+    type.setText("");
+    Date date = new Date();
+    completeTime.setText(String.format(getContext().getString(R.string.complete_time_formatter),
+        date.getYear() + 1900,
+        date.getMonth() + 1,
+        date.getDate(),
+        date.getHours(),
+        date.getMinutes()));
+    comsumingTime.setText("1小时55分");
+    exp.setText(String.valueOf(entity.getExpPoints()));
+
     mItem.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {

@@ -1,81 +1,86 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:orientation="vertical">
 
-    <ImageView
-        android:id="@+id/image_view"
-        android:layout_width="@dimen/main_page_item_img_width"
-        android:layout_height="@dimen/main_page_item_img_height"
-        android:layout_margin="10dp"
-        android:contentDescription="@string/content_description"
-        android:scaleType="centerCrop"
-        android:src="@mipmap/need_to_remove"
-        />
-
-    <LinearLayout
-        android:id="@+id/game_task_name"
-        android:layout_width="wrap_content"
+    <RelativeLayout
+        android:id="@+id/item_user_manager_game_content_root"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_toRightOf="@id/image_view"
-        android:orientation="horizontal">
+        android:paddingTop="10dp">
+
+        <com.makeramen.roundedimageview.RoundedImageView
+            android:id="@id/image_view"
+            android:layout_width="@dimen/item_user_manager_game_width"
+            android:layout_height="@dimen/item_user_manager_game_height"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:contentDescription="@string/content_description"
+            android:scaleType="centerCrop"
+            android:src="@mipmap/need_to_remove"
+            app:riv_corner_radius="5dp"/>
 
         <com.lptiyu.tanke.widget.CustomTextView
             android:id="@+id/game_title"
+            android:padding="3dp"
+            android:textColor="@color/grey04"
+            android:textSize="13sp"
+            android:layout_toRightOf="@id/image_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="游戏名称"
-            />
-
-        <com.lptiyu.tanke.widget.CustomTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            android:text=":"
-            />
+            android:text="游戏名称 : "
+        />
 
         <com.lptiyu.tanke.widget.CustomTextView
             android:id="@+id/task_title"
             android:layout_width="wrap_content"
+            android:padding="3dp"
+            android:textColor="@color/colorPrimary"
+            android:textSize="13sp"
             android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/game_title"
             android:text="任务名称"
-            />
-
-    </LinearLayout>
-
-    <com.lptiyu.tanke.widget.CustomTextView
-        android:id="@+id/detail_message"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/game_task_name"
-        android:layout_marginTop="5dp"
-        android:layout_toRightOf="@id/image_view"
-        android:padding="3dp"
-        android:text="您是该任务的游戏管理员，请确认玩家完成任务后，出示二维码。"
         />
+
+        <com.lptiyu.tanke.widget.CustomTextView
+            android:id="@+id/detail_message"
+            android:layout_width="wrap_content"
+            android:layout_toRightOf="@id/image_view"
+            android:textColor="@color/grey04"
+            android:textSize="13sp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/game_title"
+            android:layout_marginTop="5dp"
+            android:padding="3dp"
+            android:text="您是该任务的游戏管理员，请确认玩家完成任务后，出示二维码。"
+        />
+
+    </RelativeLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/image_view">
+        android:layout_below="@id/item_user_manager_game_content_root">
 
         <Button
-            android:id="@+id/game_rule"
+            android:id="@+id/game_location"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:padding="0dp"
-            android:text="通关规则"
-            />
+            android:text="任务地点"
+        />
 
         <Button
             android:id="@+id/game_qrcode"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="出示二维码"
-            />
+            android:text="通关密钥"
+        />
     </LinearLayout>
-</RelativeLayout>
+
+
+</LinearLayout>

@@ -21,6 +21,9 @@ import com.lptiyu.tanke.gameplaying.records.RecordsUtils;
 import com.lptiyu.tanke.gameplaying.records.RunningRecord;
 import com.lptiyu.tanke.global.Conf;
 import com.lptiyu.tanke.pojo.GameDataEntity;
+import com.lptiyu.tanke.pojo.GameDataFinishEntity;
+import com.lptiyu.tanke.pojo.GameDataNormalEntity;
+import com.lptiyu.tanke.pojo.GameDataStartEntity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -31,6 +34,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import rx.Observable;
+import rx.functions.Func1;
 import timber.log.Timber;
 
 /**
@@ -50,9 +54,12 @@ public class GameDataController extends BaseListActivityController<GameDataEntit
 
   private long gameId;
 
-  private GameDataEntity.Builder gameDataEntityBuilder;
+  private GameDataNormalEntity.Builder gameDataEntityBuilder;
 
+  private GameDataStartEntity gameDataStartEntity;
+  private GameDataFinishEntity gameDataFinishEntity;
   private List<GameDataEntity> gameDataEntities;
+
   private List<Point> mPoints;
   private Map<Long, Point> pointMap;
   private List<RunningRecord> mRecords;
@@ -80,21 +87,9 @@ public class GameDataController extends BaseListActivityController<GameDataEntit
     Intent intent = getIntent();
     gameId = intent.getLongExtra(Conf.GAME_ID, Long.MIN_VALUE);
     gameDataEntities = new ArrayList<>();
-    gameDataEntityBuilder = new GameDataEntity.Builder();
+    gameDataEntityBuilder = new GameDataNormalEntity.Builder();
     mPoints = intent.getParcelableArrayListExtra(Conf.GAME_POINTS);
     mRecords = intent.getParcelableArrayListExtra(Conf.GAME_RECORDS);
-    if (mPoints == null || mRecords == null) {
-      if (gameId != Long.MIN_VALUE) {
-        loadGameDataFromDisk();
-      }
-    }
-    if (mPoints == null || mRecords == null) {
-      return;
-    }
-    for (Point p : mPoints) {
-      pointMap.put(p.getId(), p);
-    }
-    resumeGameData();
   }
 
   private void loadGameDataFromDisk() {
@@ -113,42 +108,81 @@ public class GameDataController extends BaseListActivityController<GameDataEntit
   }
 
   private void resumeGameData() {
-    RunningRecord startRecord = null;
-    RunningRecord endRecord = null;
+    RunningRecord taskStartRecord = null;
+    RunningRecord taskEndRecord = null;
+    long gameStartTime = 0L;
+    int totalExp = 0;
     for (RunningRecord record : mRecords) {
-      if (record.getState() != RunningRecord.RECORD_TYPE.TASK_START && record.getState() != RunningRecord.RECORD_TYPE.TASK_FINISH) {
+      RunningRecord.RECORD_TYPE type = record.getState();
+      if (type == RunningRecord.RECORD_TYPE.POINT_REACH
+          || type == RunningRecord.RECORD_TYPE.POINT_FINISH) {
         continue;
       }
-      if (record.getState() == RunningRecord.RECORD_TYPE.TASK_START) {
-        startRecord = record;
-      } else {
-        endRecord = record;
-        if (startRecord == null) {
-          return;
-        }
-        if (endRecord.getPointId() != startRecord.getPointId()) {
-          Timber.e("there is an error in running records");
-          return;
-        }
-        Point p = pointMap.get(endRecord.getPointId());
-        if (p != null) {
-          Map<String, Task> map = p.getTaskMap();
-          if (map != null) {
-            Task task = map.get(String.valueOf(endRecord.getTaskId()));
-            if (task != null) {
-              gameDataEntityBuilder
-                  .taskId(task.getId())
-                  .taskName(task.getTaskName())
-                  .type(task.getType())
-                  .completePersonNum(0)
-                  .completeTime(endRecord.getCreateTime())
-                  .completeComsumingTime(endRecord.getCreateTime() - startRecord.getCreateTime())
-                  .exp(task.getExp());
-              gameDataEntities.add(gameDataEntityBuilder.build());
+
+      switch (type) {
+        case GAME_START:
+          gameDataStartEntity = new GameDataStartEntity();
+          gameStartTime = record.getCreateTime();
+          gameDataStartEntity.setGameId(gameId);
+          gameDataStartEntity.setStartTime(record.getCreateTime());
+          if (mPoints != null) {
+            Point p = mPoints.get(0);
+            List<String> taskIds = p.getTaskId();
+            if (taskIds != null) {
+              Map<String, Task> map = p.getTaskMap();
+              if (map != null) {
+                Task task = map.get(taskIds.get(0));
+                if (task != null) {
+                  totalExp += task.getExp();
+                }
+              }
             }
           }
-        }
+          break;
+
+        case TASK_START:
+          taskStartRecord = record;
+          break;
+
+        case TASK_FINISH:
+          taskEndRecord = record;
+          if (taskStartRecord == null) {
+            return;
+          }
+          if (taskEndRecord.getPointId() != taskStartRecord.getPointId()) {
+            Timber.e("there is an error in running records");
+            return;
+          }
+          Point p = pointMap.get(taskEndRecord.getPointId());
+          if (p != null) {
+            Map<String, Task> map = p.getTaskMap();
+            if (map != null) {
+              Task task = map.get(String.valueOf(taskEndRecord.getTaskId()));
+              if (task != null) {
+                gameDataEntityBuilder
+                    .taskId(task.getId())
+                    .taskName(task.getTaskName())
+                    .type(task.getType())
+                    .completePersonNum(0)
+                    .completeTime(taskEndRecord.getCreateTime())
+                    .completeComsumingTime(taskEndRecord.getCreateTime() - taskStartRecord.getCreateTime())
+                    .exp(task.getExp());
+                gameDataEntities.add(gameDataEntityBuilder.build());
+                totalExp += task.getExp();
+              }
+            }
+          }
+          break;
+
+        case GAME_FINISH:
+          gameDataFinishEntity = new GameDataFinishEntity();
+          gameDataFinishEntity.setCompleteTime(record.getCreateTime());
+          gameDataFinishEntity.setConsumingTime(record.getCreateTime() - gameStartTime);
+          break;
       }
+    }
+    if (gameDataFinishEntity != null) {
+      gameDataFinishEntity.setTotalExp(totalExp);
     }
   }
 
@@ -161,8 +195,27 @@ public class GameDataController extends BaseListActivityController<GameDataEntit
 
   @Override
   public Observable<List<GameDataEntity>> requestData(int page) {
-    //TODO : reload records and points info from disk "resumeGameDataFromDisk()"
-    return Observable.just(gameDataEntities);
+    return Observable.just(gameId)
+        .map(new Func1<Long, List<GameDataEntity>>() {
+
+          @Override
+          public List<GameDataEntity> call(Long aLong) {
+            if (mPoints == null || mRecords == null) {
+              if (gameId != Long.MIN_VALUE) {
+                loadGameDataFromDisk();
+              }
+            }
+            if (mPoints == null || mRecords == null) {
+              return new ArrayList<>();
+            }
+            for (Point p : mPoints) {
+              pointMap.put(p.getId(), p);
+            }
+            resumeGameData();
+            mAdapter.bindStartEntityAndFinishEntity(gameDataStartEntity, gameDataFinishEntity);
+            return gameDataEntities;
+          }
+        });
   }
 
   @NonNull

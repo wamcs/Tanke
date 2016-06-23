@@ -5,18 +5,20 @@ import android.support.annotation.NonNull;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.lptiyu.tanke.R;
 import com.lptiyu.tanke.base.recyclerview.BaseAdapter;
 import com.lptiyu.tanke.base.recyclerview.BaseListActivityController;
 import com.lptiyu.tanke.base.recyclerview.BaseViewHolder;
+import com.lptiyu.tanke.gamedetails.GameDetailsLocationActivity;
 import com.lptiyu.tanke.global.Accounts;
+import com.lptiyu.tanke.global.Conf;
 import com.lptiyu.tanke.io.net.HttpService;
 import com.lptiyu.tanke.io.net.Response;
 import com.lptiyu.tanke.pojo.GameManageEntity;
@@ -161,9 +163,12 @@ public class UserManagerGameController extends BaseListActivityController<GameMa
       ButterKnife.bind(this, itemView);
     }
 
-    @OnClick(R.id.game_rule)
+    @OnClick(R.id.game_location)
     public void game_rule() {
-      Toast.makeText(getContext(), "尚未实现", Toast.LENGTH_SHORT).show();
+      Intent intent = new Intent(getContext(), GameDetailsLocationActivity.class);
+      intent.putExtra(Conf.LATITUDE, Double.valueOf(entity.getLatitude()));
+      intent.putExtra(Conf.LONGITUDE, Double.valueOf(entity.getLongtitude()));
+      getContext().startActivity(intent);
     }
 
     @OnClick(R.id.game_qrcode)
@@ -182,7 +187,7 @@ public class UserManagerGameController extends BaseListActivityController<GameMa
       this.entity = entity;
       Glide.with(itemView.getContext()).load(entity.getImg()).into(gameImage);
       gameTitle.setText(entity.getTitle());
-      gameDetailMessage.setText(entity.getContent());
+      gameDetailMessage.setText(Html.fromHtml(Html.fromHtml(entity.getContent()).toString()));
     }
   }
 }

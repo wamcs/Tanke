@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">探客天下</string>
+    <string name="app_name">步道探秘</string>
     <string name="scanner">扫一扫</string>
     <string name="no_network">当前没有网络</string>
     <string name="no_camera_permission">请您打开相机权限</string>
@@ -124,7 +124,14 @@
     <string name="complete_person_num_formatter" formatted="false">%d人已完成</string>
     <string name="complete_consuming_time_formatter" formatted="false">%d分%d秒</string>
     <string name="complete_time_formatter" formatted="false">%04d.%02d.%02d %02d:%02d</string>
-    <string name="get_exp_formatter" formatted="false">%d经验值</string>
+    <string name="get_exp_formatter" formatted="false">获得%d经验值</string>
+    <string name="scan_task">扫码任务</string>
+    <string name="locate_task">定位任务</string>
+    <string name="riddle_task">谜底任务</string>
+    <string name="distinguish_task">扫描任务</string>
+    <string name="timing_task">定时任务</string>
+    <string name="finish_task">结束任务</string>
+    <string name="consume_time">总共用时 : </string>
 
 
     <!-- Protocol Activity Text Area-->

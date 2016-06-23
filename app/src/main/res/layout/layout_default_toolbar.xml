@@ -10,7 +10,10 @@
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:contentDescription="@null"
-        android:padding="@dimen/default_toolbar_imageview_padding"
+        android:paddingTop="@dimen/default_toolbar_imageview_padding"
+        android:paddingBottom="@dimen/default_toolbar_imageview_padding"
+        android:paddingRight="@dimen/default_toolbar_imageview_padding"
+        android:paddingLeft="@dimen/default_toolbar_imageview_padding_left"
         android:src="@mipmap/img_last_white"/>
 
     <com.lptiyu.tanke.widget.CustomTextView

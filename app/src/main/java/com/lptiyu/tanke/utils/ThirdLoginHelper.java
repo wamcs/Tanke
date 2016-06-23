@@ -120,9 +120,9 @@ public class ThirdLoginHelper implements PlatformActionListener {
               intentToSignUP.putExtra(Conf.SIGN_UP_CODE,Conf.REGISTER_CODE);
               intentToSignUP.putExtra(Conf.SIGN_UP_TYPE, plantType);
             } else {
-              intentToSignUP.setClass(activity, MainActivity.class);
               Accounts.setId(entity.getUid());
               Accounts.setToken(entity.getToken());
+              intentToSignUP.setClass(activity, MainActivity.class);
             }
             activity.startActivity(intentToSignUP);
           }

@@ -288,6 +288,11 @@ public class CompleteInformationController extends ActivityController implements
       return;
     }
 
+    if (mNicknameText.getText() != null && mNicknameText.getText().length() != 0) {
+      mUserDetails.setNickname(mNicknameText.getText().toString());
+    }
+
+
     HttpService.getUserService().resetUserDetailsAll(Accounts.getId(), Accounts.getToken(),
         mUserDetails.getNickname(), mUserDetails.getBirthday(), mUserGender == 1 ? "男" : "女",
         mUserDetails.getHeight(), mUserDetails.getWeight(), mUserDetails.getAddress())
@@ -353,6 +358,7 @@ public class CompleteInformationController extends ActivityController implements
   public void onReceiveLocation(BDLocation bdLocation) {
     if (bdLocation.getLocType() == BDLocation.TypeGpsLocation
         || bdLocation.getLocType() == BDLocation.TypeNetWorkLocation) {
+      mUserDetails.setAddress(bdLocation.getCity());
       mLocationText.setText(bdLocation.getCity());
       city.setName(bdLocation.getCity());
       city.setProvince(bdLocation.getProvince());
@@ -363,6 +369,7 @@ public class CompleteInformationController extends ActivityController implements
     } else {
       ToastUtil.TextToast("定位失败");
       mLocationText.setText("武汉");
+      mUserDetails.setAddress("武汉");
       city.setName("武汉");
       city.setProvince("湖北");
       city.setLatitude(30.515372);

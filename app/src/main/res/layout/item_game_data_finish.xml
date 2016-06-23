@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="10dp"
+    android:layout_marginLeft="20dp"
+    android:layout_marginRight="20dp"
+    android:layout_marginTop="10dp"
+    app:cardBackgroundColor="@color/transparent"
+    app:cardCornerRadius="5dp"
+    app:cardElevation="1dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/transparent"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/item_game_data_task_header_height"
+            android:contentDescription="@string/content_description"
+            android:src="@drawable/item_game_data_header_style"/>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="@dimen/item_game_data_finish_root_padding_top_bottom"
+            android:paddingLeft="@dimen/item_game_data_finish_root_padding_right_left"
+            android:paddingRight="@dimen/item_game_data_finish_root_padding_right_left"
+            android:paddingTop="@dimen/item_game_data_finish_root_padding_top_bottom">
+
+            <com.lptiyu.tanke.widget.CustomTextView
+                android:id="@+id/item_game_data_task_finish_enter_game"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="3dp"
+                android:text="游戏结束"
+                android:textColor="@color/colorAccent"
+                android:textSize="13sp"/>
+
+            <com.lptiyu.tanke.widget.CustomTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/item_game_data_task_finish_enter_game"
+                android:padding="3dp"
+                android:text="所有任务完成"
+                android:textColor="@color/grey06"
+                android:textSize="12sp"/>
+
+            <com.lptiyu.tanke.widget.CustomTextView
+                android:id="@+id/item_game_data_finish_complete_person_num"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_alignTop="@id/item_game_data_task_finish_enter_game"
+                android:text="@string/complete_person_num_formatter"
+                android:textColor="@color/colorPrimary"
+                android:textSize="13sp"/>
+
+
+            <com.lptiyu.tanke.widget.CustomTextView
+                android:id="@+id/item_game_data_finish_complete_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/item_game_data_task_finish_enter_game"
+                android:layout_marginTop="5dp"
+                android:drawableLeft="@mipmap/game_detail_time"
+                android:drawablePadding="5dp"
+                android:padding="3dp"
+                android:text="2016.05.23  14:45"
+                android:textColor="@color/grey07"
+                android:textSize="13sp"/>
+
+            <com.lptiyu.tanke.widget.CustomTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@id/item_game_data_finish_complete_time"
+                android:layout_toRightOf="@id/item_game_data_finish_complete_time"
+                android:padding="3dp"
+                android:text="完成"
+                android:textColor="@color/colorPrimary"
+                android:textSize="12sp"/>
+
+            <com.lptiyu.tanke.widget.CustomTextView
+                android:id="@+id/item_game_data_finish_comsume_time_pre"
+                android:text="@string/consume_time"
+                android:textColor="@color/grey06"
+                android:textSize="13dp"
+                android:padding="3dp"
+                android:layout_marginTop="5dp"
+                android:layout_below="@id/item_game_data_finish_complete_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <com.lptiyu.tanke.widget.CustomTextView
+                android:id="@+id/item_game_data_finish_comsume_time"
+                android:text="1小时55分"
+                android:textColor="@color/grey06"
+                android:textSize="13dp"
+                android:padding="3dp"
+                android:layout_marginTop="5dp"
+                android:layout_toRightOf="@id/item_game_data_finish_comsume_time_pre"
+                android:layout_below="@id/item_game_data_finish_complete_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <com.lptiyu.tanke.widget.CustomTextView
+                android:id="@+id/item_game_data_finish_total_exp"
+                android:text="获得 : 65经验值"
+                android:textColor="@color/grey08"
+                android:textSize="13dp"
+                android:padding="3dp"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="5dp"
+                android:layout_below="@id/item_game_data_finish_complete_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <RelativeLayout
+                android:layout_below="@id/item_game_data_finish_comsume_time_pre"
+                android:layout_marginTop="5dp"
+                android:layout_width="match_parent"
+                android:padding="3dp"
+                android:layout_height="35dp">
+
+                <com.lptiyu.tanke.widget.GradientProgressBar
+                    android:id="@+id/item_game_data_finish_exp_progress"
+                    android:layout_width="match_parent"
+                    android:layout_height="5dp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/fragment_user_center_progress_bar_bg"
+                    app:src="@color/colorPrimary"/>
+
+                <com.lptiyu.tanke.widget.CustomTextView
+                    android:id="@+id/item_game_data_finish_progress_left"
+                    style="@style/TextAppearance.UserCenter.TAG"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_above="@id/user_progress"
+                    android:background="@drawable/blue_round_corner"
+                    android:text="LV.7"/>
+
+                <com.lptiyu.tanke.widget.CustomTextView
+                    android:id="@+id/item_game_data_finish_progress_right"
+                    style="@style/TextAppearance.UserCenter.TAG"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_above="@id/user_progress"
+                    android:layout_alignParentRight="true"
+                    android:background="@drawable/purple_round_corner"
+                    android:text="LV.8"
+                />
+
+                <com.lptiyu.tanke.widget.CustomTextView
+                    android:id="@+id/item_game_data_finish_progress_exp_detail"
+                    style="@style/TextAppearance.UserCenter.small"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_above="@id/item_game_data_finish_exp_progress"
+                    android:layout_centerHorizontal="true"
+                    android:text="100 + 65 / 200点经验值"
+                />
+
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+</android.support.v7.widget.CardView>

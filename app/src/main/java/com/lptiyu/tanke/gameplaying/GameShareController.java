@@ -8,7 +8,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import com.baidu.mapapi.map.BaiduMap;
 import com.baidu.mapapi.map.MapStatusUpdate;
@@ -20,11 +19,13 @@ import com.baidu.mapapi.model.LatLngBounds;
 import com.lptiyu.tanke.R;
 import com.lptiyu.tanke.base.controller.ActivityController;
 import com.lptiyu.tanke.gameplaying.assist.MapHelper;
+import com.lptiyu.tanke.gameplaying.assist.zip.GameZipHelper;
 import com.lptiyu.tanke.gameplaying.pojo.Point;
 import com.lptiyu.tanke.gameplaying.pojo.Task;
 import com.lptiyu.tanke.gameplaying.records.RecordsHandler;
 import com.lptiyu.tanke.gameplaying.records.RecordsUtils;
 import com.lptiyu.tanke.gameplaying.records.RunningRecord;
+import com.lptiyu.tanke.global.Accounts;
 import com.lptiyu.tanke.global.Conf;
 import com.lptiyu.tanke.io.net.HttpService;
 import com.lptiyu.tanke.io.net.Response;
@@ -106,7 +107,28 @@ public class GameShareController extends ActivityController implements
     gameId = intent.getLongExtra(Conf.GAME_ID, Conf.TEMP_GAME_ID);
     teamId = intent.getLongExtra(Conf.TEAM_ID, Conf.TEMP_TEAM_ID);
     mPoints = intent.getParcelableArrayListExtra(Conf.GAME_POINTS);
+    checkAndResumeGameData();
     init();
+  }
+
+  private void checkAndResumeGameData() {
+    if (mPoints == null) {
+      if (gameId != Long.MIN_VALUE) {
+        loadGameDataFromDisk();
+      }
+    }
+    if (mPoints == null) {
+      //TODO : the game zip is not exist
+      finish();
+    }
+  }
+
+  private void loadGameDataFromDisk() {
+    GameZipHelper zipHelper = new GameZipHelper();
+    if (!zipHelper.checkAndParseGameZip(gameId) || zipHelper.getmPoints().size() == 0) {
+      return;
+    }
+    mPoints = zipHelper.getmPoints();
   }
 
   private void init() {
@@ -117,7 +139,7 @@ public class GameShareController extends ActivityController implements
     mMap.setOnMapLoadedCallback(new BaiduMap.OnMapLoadedCallback() {
       @Override
       public void onMapLoaded() {
-        mTrackHelper.queryHistoryTrack(Conf.makeUpTrackEntityName(gameId, teamId));
+        mTrackHelper.queryHistoryTrack(Conf.makeUpTrackEntityName(gameId, Accounts.getId()));
       }
     });
   }
@@ -177,10 +199,12 @@ public class GameShareController extends ActivityController implements
       switch (type) {
         case GAME_START:
           startTimeMillis = record.getCreateTime();
+          startPoint(record);
+          finishPoint(record);
           break;
 
         case POINT_REACH:
-          mapHelper.updateNextPoint(getIndexByPointId(record.getPointId()));
+          startPoint(record);
           break;
 
         case TASK_START:
@@ -192,11 +216,7 @@ public class GameShareController extends ActivityController implements
           break;
 
         case POINT_FINISH:
-          int index = getIndexByPointId(record.getPointId());
-          mapHelper.onReachAttackPoint(index);
-          if (index >= 0 && mPoints != null && index < mPoints.size()) {
-            totalExp += getPointTotalExp(mPoints.get(index));
-          }
+          finishPoint(record);
           break;
 
         case GAME_FINISH:
@@ -228,6 +248,18 @@ public class GameShareController extends ActivityController implements
       }
     }
     return -1;
+  }
+
+  private void startPoint(RunningRecord record) {
+    mapHelper.updateNextPoint(getIndexByPointId(record.getPointId()));
+  }
+
+  private void finishPoint(RunningRecord record) {
+    int index = getIndexByPointId(record.getPointId());
+    mapHelper.onReachAttackPoint(index);
+    if (index >= 0 && mPoints != null && index < mPoints.size()) {
+      totalExp += getPointTotalExp(mPoints.get(index));
+    }
   }
 
   private void showLoadingDialog() {
@@ -340,7 +372,7 @@ public class GameShareController extends ActivityController implements
   @OnClick(R.id.activity_game_share_toolbar_imageview_right)
   public void onShareButtonClicked() {
 
-    HttpService.getGameService().getShareUrl(1, "11", gameId, teamId)
+    HttpService.getGameService().getShareUrl(Accounts.getId(), Accounts.getToken(), gameId, teamId)
         .observeOn(AndroidSchedulers.mainThread())
         .subscribeOn(Schedulers.io())
         .subscribe(new Action1<Response<String>>() {

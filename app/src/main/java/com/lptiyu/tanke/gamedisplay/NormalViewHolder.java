@@ -14,6 +14,7 @@ import com.lptiyu.tanke.global.Conf;
 import com.lptiyu.tanke.pojo.GAME_TYPE;
 import com.lptiyu.tanke.pojo.GameDisplayEntity;
 import com.lptiyu.tanke.utils.TimeUtils;
+import com.makeramen.roundedimageview.RoundedImageView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -34,7 +35,7 @@ import timber.log.Timber;
 public class NormalViewHolder extends BaseViewHolder<GameDisplayEntity> {
 
   @BindView(R.id.image_view)
-  ImageView imageView;
+  RoundedImageView imageView;
 
   @BindView(R.id.title)
   TextView title;

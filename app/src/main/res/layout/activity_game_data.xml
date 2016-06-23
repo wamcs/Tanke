@@ -19,8 +19,8 @@
 
             <ImageView
                 android:id="@+id/activity_game_data_toolbar_imageview_left"
-                android:layout_width="@dimen/activity_game_data_toolbar_button_width_height"
-                android:layout_height="@dimen/activity_game_data_toolbar_button_width_height"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:contentDescription="@null"
                 android:padding="@dimen/default_toolbar_imageview_padding"
@@ -30,9 +30,7 @@
                 android:id="@+id/activity_game_data_toolbar_textview"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="@dimen/default_toolbar_textview_margin_left"
-                android:layout_toRightOf="@id/activity_game_data_toolbar_imageview_left"
+                android:layout_centerInParent="true"
                 android:padding="@dimen/default_toolbar_textview_padding"
                 android:textColor="@color/default_font_color"
                 android:textSize="@dimen/default_toolbar_textview_text_size"/>
@@ -41,18 +39,18 @@
 
     </android.support.v7.widget.Toolbar>
 
-    <android.support.v4.widget.SwipeRefreshLayout
-        android:id="@+id/swipe_refresh_layout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/tool_bar">
+    <!--<android.support.v4.widget.SwipeRefreshLayout-->
+        <!--android:id="@+id/swipe_refresh_layout"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:layout_below="@id/tool_bar">-->
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/recycler_view"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:overScrollMode="never"/>
+        <!--<android.support.v7.widget.RecyclerView-->
+            <!--android:id="@+id/recycler_view"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:overScrollMode="never"/>-->
 
-    </android.support.v4.widget.SwipeRefreshLayout>
+    <!--</android.support.v4.widget.SwipeRefreshLayout>-->
 
 </RelativeLayout>
