@@ -195,7 +195,9 @@ public class GameShareController extends ActivityController implements
 
   private void resumePointRecords(List<RunningRecord> recordList) {
     for (RunningRecord record : recordList) {
+
       RunningRecord.RECORD_TYPE type = record.getState();
+
       switch (type) {
         case GAME_START:
           startTimeMillis = record.getCreateTime();

@@ -61,11 +61,9 @@ public class ElasticHeaderLayout extends RelativeLayout {
             , null,
             Shader.TileMode.REPEAT
         ));
-
         invalidate();
       }
     });
-
     paint.setAntiAlias(true);
   }
 

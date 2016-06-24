@@ -12,9 +12,7 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.lptiyu.tanke.R;
 import com.lptiyu.tanke.base.controller.ActivityController;
-import com.lptiyu.tanke.gamedata.GameDataActivity;
 import com.lptiyu.tanke.gameplaying.GamePlayingActivity;
-import com.lptiyu.tanke.gameplaying.GameShareActivity;
 import com.lptiyu.tanke.gameplaying.assist.zip.GameZipScanner;
 import com.lptiyu.tanke.gameplaying.records.RecordsUtils;
 import com.lptiyu.tanke.gameplaying.records.RunningRecord;
@@ -94,7 +92,6 @@ public class GameDetailsController extends ActivityController {
   private Observable<Boolean> isGameFinishObservable;
   private Subscription isGameFinishSubscription;
 
-  private boolean isUserFinishedGame = false;
   private long gameId;
   private String tempGameZipUrl;
   private ShareDialog shareDialog;
@@ -113,7 +110,6 @@ public class GameDetailsController extends ActivityController {
   private void bind(GameDetailsEntity entity) {
     this.mGameDetailsEntity = entity;
     mTextTitle.setText(entity.getTitle());
-    Glide.with(getActivity()).load(entity.getImg()).centerCrop().into(mImageCover);
     mTextLocation.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG); //下划线
     mTextLocation.getPaint().setAntiAlias(true);//抗锯齿
     mTextLocation.setText(entity.getArea());
@@ -135,8 +131,7 @@ public class GameDetailsController extends ActivityController {
         .subscribe(new Action1<Boolean>() {
           @Override
           public void call(Boolean aBoolean) {
-            isUserFinishedGame = aBoolean;
-            if (isUserFinishedGame) {
+            if (aBoolean) {
               mTextEnsure.setText(getString(R.string.enter_game_share));
             } else {
               mTextEnsure.setText(getString(R.string.enter_game_play));
@@ -146,11 +141,12 @@ public class GameDetailsController extends ActivityController {
         }, new Action1<Throwable>() {
           @Override
           public void call(Throwable throwable) {
-            isUserFinishedGame = false;
             mTextEnsure.setText(getString(R.string.enter_game_play));
             isGameFinishedFromServer(gameId);
           }
         });
+
+    Glide.with(getActivity()).load(entity.getImg()).error(R.mipmap.need_to_remove).centerCrop().into(mImageCover);
   }
 
   public void parseTime(final CustomTextView textView, GameDetailsEntity entity) {
@@ -258,8 +254,7 @@ public class GameDetailsController extends ActivityController {
         .subscribe(new Action1<Boolean>() {
           @Override
           public void call(Boolean aBoolean) {
-            isUserFinishedGame = aBoolean;
-            if (isUserFinishedGame) {
+            if (aBoolean) {
               mTextEnsure.setText(getString(R.string.enter_game_share));
             } else {
               mTextEnsure.setText(getString(R.string.enter_game_play));
@@ -426,13 +421,7 @@ public class GameDetailsController extends ActivityController {
       ToastUtil.TextToast("团队赛正在开发中");
       return;
     }
-    if (isUserFinishedGame) {
-      Intent intent = new Intent(getActivity(), GameShareActivity.class);
-      intent.putExtra(Conf.GAME_ID, gameId);
-      startActivity(intent);
-    } else {
-      checkDiskAndNextStep();
-    }
+    checkDiskAndNextStep();
   }
 
   @Override

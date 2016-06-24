@@ -215,4 +215,7 @@
     <!-- gameList Text Area-->
     <string name="game_progress">游戏进度</string>
 
+    <!-- UserGameFinishedList Text Area-->
+    <string name="user_game_finished_get_exp_formatter">%d经验值</string>
+
 </resources>

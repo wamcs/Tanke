@@ -117,7 +117,7 @@
     <dimen name="running_spot_view_root_height">48dp</dimen>
     <dimen name="running_spot_view_text_size">12sp</dimen>
     <dimen name="running_spot_view_item_line_width">35dp</dimen>
-    <dimen name="running_spot_view_item_line_height">8dp</dimen>
+    <dimen name="running_spot_view_item_line_height">10dp</dimen>
     <dimen name="running_spot_view_radius">12dp</dimen>
 
     <dimen name="tick_view_margin_top">50dp</dimen>
@@ -131,6 +131,22 @@
     <dimen name="task_fragment_tab_indicator_thick">36dp</dimen>
     <dimen name="task_fragment_tab_text_size">16sp</dimen>
     <dimen name="task_fragment_tab_indicator_width">20dp</dimen>
+
+    <!-- GameDisplayActivity Dimens-->
+    <dimen name="item_game_display_header_height">172dp</dimen>
+    <dimen name="middle_layout_margin_top">10dp</dimen>
+    <dimen name="middle_layout_margin_left_right">6dp</dimen>
+    <dimen name="middle_image_view_width_height">125dp</dimen>
+    <dimen name="middle_image_view_width_height_civ_border_width">4.5dp</dimen>
+    <dimen name="middle_title_margin_top">2dp</dimen>
+    <dimen name="middle_title_max_width">115dp</dimen>
+    <dimen name="left_right_image_root_margin_top">25dp</dimen>
+    <dimen name="left_right_image_view_width_height">100dp</dimen>
+    <dimen name="left_right_image_view_civ_border_width">4.5dp</dimen>
+    <dimen name="left_right_title_margin_top">3dp</dimen>
+    <dimen name="left_right_title_max_width">100dp</dimen>
+    <dimen name="item_game_display_header_shadow_margin_top">8dp</dimen>
+    <dimen name="item_game_display_header_shadow_height">20dp</dimen>
 
     <!-- GamePlayingActivity Dimens-->
     <dimen name="activity_game_playing_button_width_height">40dp</dimen>
@@ -148,18 +164,35 @@
     <dimen name="activity_game_playing_zoom_out_padding">10dp</dimen>
     <dimen name="activity_game_playing_zoom_out_margin_end">5dp</dimen>
     <dimen name="activity_game_playing_zoom_in_padding">10dp</dimen>
+
     <!-- GameDataActivity Dimens-->
     <dimen name="activity_game_data_toolbar_button_width_height">45dp</dimen>
     <dimen name="activity_game_data_toolbar_imageview_right_margin_right">10dp</dimen>
     <dimen name="item_game_data_task_name_task_type_height">30dp</dimen>
-    <dimen name="item_game_data_task_name_task_type_padding">5dp</dimen>
-    <dimen name="item_game_data_task_header_height">15dp</dimen>
+    <dimen name="item_game_data_task_name_task_type_padding">2dp</dimen>
+    <dimen name="item_game_data_task_header_height">10dp</dimen>
     <dimen name="item_game_data_task_root_padding_top_bottom">5dp</dimen>
     <dimen name="item_game_data_task_root_padding_right_left">10dp</dimen>
 
+    <dimen name="item_game_data_start_root_margin_top_bottom">10dp</dimen>
+    <dimen name="item_game_data_start_root_margin_left_right">20dp</dimen>
+    <dimen name="item_game_data_start_root_corner_radius">5dp</dimen>
+    <dimen name="item_game_data_start_root_elevation">1dp</dimen>
+    <dimen name="item_game_data_start_img_width">100dp</dimen>
+    <dimen name="item_game_data_start_img_height">70dp</dimen>
+    <dimen name="item_game_data_start_game_title_padding">3dp</dimen>
+    <dimen name="item_game_data_start_game_location_root_padding">3dp</dimen>
+    <dimen name="item_game_data_start_game_location_image_width_height">15dp</dimen>
+    <dimen name="item_game_data_start_game_location_padding">3dp</dimen>
+    <dimen name="item_game_data_start_game_complete_num_padding">3dp</dimen>
+    <dimen name="item_game_data_task_enter_game_margin_top">10dp</dimen>
+    <dimen name="item_game_data_task_enter_game_padding">3dp</dimen>
+    <dimen name="item_game_data_task_complete_time_root_padding">3dp</dimen>
+    <dimen name="item_game_data_task_complete_time_image_width_height">12dp</dimen>
+    <dimen name="item_game_data_task_complete_time_margin_left">5dp</dimen>
+
     <dimen name="item_game_data_start_root_padding_top_bottom">5dp</dimen>
     <dimen name="item_game_data_start_root_padding_right_left">5dp</dimen>
-
     <dimen name="item_game_data_start_image_margin_top">10dp</dimen>
     <dimen name="item_game_data_start_game_title_margin_left">10dp</dimen>
     <dimen name="item_game_data_start_game_title_margin_top">5dp</dimen>
@@ -171,7 +204,6 @@
     <dimen name="main_page_item_img_height">68dp</dimen>
     <dimen name="main_page_item_text_size_normal">13sp</dimen>
     <dimen name="main_page_item_text_size_small">11sp</dimen>
-
 
     <!-- GameShareActivity Dimens-->
     <dimen name="activity_game_share_toolbar_button_width_height">45dp</dimen>
@@ -229,7 +261,11 @@
     <!--gameList Dimens-->
     <dimen name="game_list_item_picture_size">80dp</dimen>
 
+    <!-- UserGamePlaying Dimens-->
+    <dimen name="item_game_playing_under_line_margin_left_right">20dp</dimen>
+
     <!-- UserGameFinished Dimens-->
+    <dimen name="item_game_finished_root_padding_left_right">10dp</dimen>
     <dimen name="item_game_finished_root_height">100dp</dimen>
     <dimen name="item_game_finished_img_width">100dp</dimen>
     <dimen name="item_game_finished_img_height">69dp</dimen>
@@ -237,6 +273,8 @@
     <dimen name="item_game_finished_img_corner_radius">5dp</dimen>
     <dimen name="item_game_finished_content_root_margin_left">10dp</dimen>
     <dimen name="item_finished_title_padding">3dp</dimen>
+    <dimen name="item_game_finished_time_image">12dp</dimen>
+    <dimen name="item_finished_complete_time_margin_left">3dp</dimen>
 
     <!-- UserManagerGame Dimens-->
     <dimen name="item_user_manager_game_root_height">110dp</dimen>

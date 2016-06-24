@@ -19,7 +19,10 @@ public class ExpUtils {
     if (exp < 50) {
       return 1;
     }
-    int level = 0;
+    if (exp < 100) {
+      return 2;
+    }
+    int level = 3;
     while (calculateExpByLevel(level) < exp) {
       level++;
     }
@@ -33,8 +36,10 @@ public class ExpUtils {
     if (level == 1) {
       return 1;
     }
-    int temp = level * (level - 1) / 2;
-    return temp * BASE_EXP;
+    if (level == 2) {
+      return 50;
+    }
+    return calculateExpByLevel(level - 1) + (level - 2) * 50;
   }
 
 }

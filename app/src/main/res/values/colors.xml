@@ -58,9 +58,6 @@
     <color name="middle_blue">#5682e7</color>
     <color name="dark_blue">#3868da</color>
 
-    <color name="purple">#8151ea</color>
-
-
     <color name="user_center_split_line">@color/grey09</color>
 
     <!-- LoginEditText colors-->
@@ -69,7 +66,6 @@
 
     <!-- LoginActivity colors-->
     <color name="login_activity_title_color">#769df6</color>
-
 
     <!-- GuideActivity colors-->
     <color name="guide_activity_indicator_solid_color">#8d48db</color>
@@ -103,5 +99,22 @@
     <color name="ksw_md_solid_checked">#019285</color>
     <color name="ksw_md_solid_disable">#FFFFFF</color>
     <color name="ksw_md_solid_checked_disable">#aaaaaa</color>
+
+    <!-- UserCenter Colors-->
+    <color name="user_exp_progress_bg">#99dddbdd</color>
+    <color name="user_avatar_shadow_color">#e4e4e4</color>
+    <color name="user_center_level_right_background_color">#cf9ade</color>
+
+    <!-- GamePlayingActivity Colors-->
+    <color name="game_playing_spot_scrollview_line_color">#aa3560ca</color>
+    <color name="game_playing_spot_done_color">#5482ee</color>
+    <color name="game_playing_spot_doing_color">#e65a5a</color>
+    <color name="game_playing_spot_to_do_color">#eeeeee</color>
+    <color name="game_playing_spot_to_do_text_color">#adadad</color>
+
+    <!-- GameDataActivity Colors-->
+    <color name="game_data_activity_item_top_color">#2F5FD0</color>
+
+
 
 </resources>

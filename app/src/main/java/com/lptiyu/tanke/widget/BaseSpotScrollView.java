@@ -420,8 +420,8 @@ public class BaseSpotScrollView extends HorizontalScrollView {
           break;
 
         case STATE_DOING:
-          mPaint.setColor(getResources().getColor(R.color.default_font_color));
-          canvas.drawCircle(mWidth / 2, mHeight / 2, mRadius + Display.dip2px(3), mPaint);
+//          mPaint.setColor(getResources().getColor(R.color.default_font_color));
+//          canvas.drawCircle(mWidth / 2, mHeight / 2, mRadius + Display.dip2px(3), mPaint);
           mPaint.setColor(spotDoingColor);
           canvas.drawCircle(mWidth / 2, mHeight / 2, mRadius, mPaint);
           break;
@@ -439,7 +439,7 @@ public class BaseSpotScrollView extends HorizontalScrollView {
       mPaint.setTextSize(spotTextSize);
       mPaint.getTextBounds(mText, 0, mText.length(), mBounds);
       if (mState == STATE.STATE_TO_DO) {
-        mPaint.setColor(getResources().getColor(R.color.grey05));
+        mPaint.setColor(getResources().getColor(R.color.game_playing_spot_to_do_text_color));
       } else {
         mPaint.setColor(getResources().getColor(R.color.default_font_color));
       }

@@ -45,23 +45,25 @@ public class RiddleTaskController extends MultiplyTaskController implements
 
   @Override
   public void onClick(View v) {
-    switch (v.getId()) {
-      case R.id.riddle_task_ensure:
-        Editable editable = editText.getText();
-        if (editable == null || editable.length() == 0) {
-          ToastUtil.TextToast(getString(R.string.error_input));
-          return;
-        }
-        String userResult = editable.toString();
-        if (mTask.getPwd().equals(userResult)) {
-          ToastUtil.TextToast(getString(R.string.right_answer));
-          finishTask();
-          mActivityController.openNextTaskIfExist();
-        } else {
-          ToastUtil.TextToast(getString(R.string.error_answer));
-        }
-        break;
-    }
+    finishTask();
+    mActivityController.openNextTaskIfExist();
+//    switch (v.getId()) {
+//      case R.id.riddle_task_ensure:
+//        Editable editable = editText.getText();
+//        if (editable == null || editable.length() == 0) {
+//          ToastUtil.TextToast(getString(R.string.error_input));
+//          return;
+//        }
+//        String userResult = editable.toString();
+//        if (mTask.getPwd().equals(userResult)) {
+//          ToastUtil.TextToast(getString(R.string.right_answer));
+//          finishTask();
+//          mActivityController.openNextTaskIfExist();
+//        } else {
+//          ToastUtil.TextToast(getString(R.string.error_answer));
+//        }
+//        break;
+//    }
   }
 
 }

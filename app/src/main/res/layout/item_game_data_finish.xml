@@ -151,7 +151,7 @@
                     android:layout_height="wrap_content"
                     android:layout_above="@id/user_progress"
                     android:layout_alignParentRight="true"
-                    android:background="@drawable/purple_round_corner"
+                    android:background="@drawable/user_center_level_right_background"
                     android:text="LV.8"
                 />
 

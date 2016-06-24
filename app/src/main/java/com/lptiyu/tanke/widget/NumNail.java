@@ -130,6 +130,7 @@ public abstract class NumNail {
     //In vivo, it's 13
     //In nexus, it's width = 16 and height = 25
     PointF pointF = new PointF();
+
     pointF.x = rectF.left + (rectF.width() - width) / 2f;
     pointF.y = rectF.bottom - (rectF.height() - bounds.height()) / 2f;
     return pointF;
@@ -195,7 +196,7 @@ public abstract class NumNail {
 
     protected Bitmap getCache() {
       if (cache == null || cache.isRecycled()) {
-        cache = BitmapFactory.decodeResource(getContext().getResources(), R.mipmap.nail_grey);
+        cache = BitmapFactory.decodeResource(getContext().getResources(), R.mipmap.spot_to_do);
       }
       return cache;
     }
@@ -230,7 +231,7 @@ public abstract class NumNail {
 
     protected Bitmap getCache() {
       if (cache == null || cache.isRecycled()) {
-        cache = BitmapFactory.decodeResource(getContext().getResources(), R.mipmap.nail_green);
+        cache = BitmapFactory.decodeResource(getContext().getResources(), R.mipmap.spot_finished);
       }
       return cache;
     }
@@ -265,7 +266,7 @@ public abstract class NumNail {
 
     protected Bitmap getCache() {
       if (cache == null || cache.isRecycled()) {
-        cache = BitmapFactory.decodeResource(getContext().getResources(), R.mipmap.nail_red);
+        cache = BitmapFactory.decodeResource(getContext().getResources(), R.mipmap.spot_doing);
         Timber.d("The length of cache width = %d height = %d", cache.getWidth(), cache.getHeight());
         //In Nexus(1080 * 1920), the cache's width is 80 and height is 89
         //And in vivo(an 720p android phone), the cache's width is 40 and height is 45

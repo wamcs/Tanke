@@ -54,9 +54,9 @@ public class LocateTaskController extends MultiplyTaskController implements
       mAnswerArea.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-//          finishTask();
-//          mActivityController.openNextTaskIfExist();
-          PermissionDispatcher.startLocateWithCheck(((BaseFragment) getFragment()));
+          finishTask();
+          mActivityController.openNextTaskIfExist();
+//          PermissionDispatcher.startLocateWithCheck(((BaseFragment) getFragment()));
         }
       });
       mWebView.loadUrl(mTask.getContent());

@@ -1,21 +1,14 @@
 package com.lptiyu.tanke.userCenter.viewholder;
 
 import android.content.Intent;
-import android.net.Uri;
-import android.support.v4.media.MediaMetadataCompat;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.facebook.drawee.view.SimpleDraweeView;
 import com.lptiyu.tanke.R;
 import com.lptiyu.tanke.base.recyclerview.BaseViewHolder;
 import com.lptiyu.tanke.gamedetails.GameDetailsActivity;
-import com.lptiyu.tanke.gameplaying.GamePlayingActivity;
 import com.lptiyu.tanke.global.Conf;
 import com.lptiyu.tanke.pojo.GameFinishedEntity;
 import com.lptiyu.tanke.widget.CustomTextView;
@@ -25,7 +18,6 @@ import java.util.Date;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import timber.log.Timber;
 
 /**
  * EMAIL : danxionglei@foxmail.com
@@ -48,7 +40,7 @@ public class UserGameFinishedHolder extends BaseViewHolder<GameFinishedEntity>{
   CustomTextView completeTime;
 
   @BindView(R.id.item_finished_consuming_time)
-  CustomTextView comsumingTime;
+  CustomTextView consumingTime;
 
   @BindView(R.id.item_finished_exp)
   CustomTextView exp;
@@ -67,8 +59,7 @@ public class UserGameFinishedHolder extends BaseViewHolder<GameFinishedEntity>{
       return;
     }
     final long gameId = entity.getGameId();
-    Glide.with(getContext()).load(entity.getImg()).into(mItemPicture);
-
+    Glide.with(getContext()).load(entity.getImg()).error(R.mipmap.need_to_remove).into(mItemPicture);
     title.setText(entity.getName());
     type.setText("");
     Date date = new Date();
@@ -78,8 +69,8 @@ public class UserGameFinishedHolder extends BaseViewHolder<GameFinishedEntity>{
         date.getDate(),
         date.getHours(),
         date.getMinutes()));
-    comsumingTime.setText("1小时55分");
-    exp.setText(String.valueOf(entity.getExpPoints()));
+    consumingTime.setText("1小时55分");
+    exp.setText(String.format(getContext().getString(R.string.user_game_finished_get_exp_formatter), entity.getExpPoints()));
 
     mItem.setOnClickListener(new View.OnClickListener() {
       @Override

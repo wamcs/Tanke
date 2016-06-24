@@ -5,8 +5,6 @@
     <corners
         android:topLeftRadius="5dp"
         android:topRightRadius="5dp"/>
-    <gradient android:endColor="@color/register_activity_gradient_end"
-              android:startColor="@color/register_activity_gradient_start"/>
-
+    <solid android:color="@color/game_data_activity_item_top_color"/>
 </shape>
 

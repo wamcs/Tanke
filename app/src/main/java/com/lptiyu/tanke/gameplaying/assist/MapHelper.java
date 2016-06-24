@@ -110,6 +110,7 @@ public class MapHelper implements
     mapView.setLogoPosition(LogoPosition.logoPostionRightTop);
     mapView.showZoomControls(false);
     mapView.showScaleControl(false);
+    hideBaiduLogo();
   }
 
   private void initEvent() {
@@ -316,8 +317,7 @@ public class MapHelper implements
     MarkerOptions options = new MarkerOptions();
     options
         .title("Nail")
-        .draggable(false)
-        .anchor(0.28f, 0.85f);
+        .draggable(false);
     return options;
   }
 

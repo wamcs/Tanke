@@ -1,6 +1,7 @@
 package com.lptiyu.tanke.userCenter;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -38,6 +39,7 @@ import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.schedulers.Schedulers;
+import timber.log.Timber;
 
 /**
  * author:wamcs
@@ -163,18 +165,26 @@ public class UserCenterFragment extends BaseFragment {
    * @param serverAvatar avatar url from server
    */
   private void checkAndLoadUserAvatar(String serverAvatar) {
-    String avatar = Accounts.getAvatar();
-    if (avatar == null || avatar.length() == 0) {
-      loadUserAvatar(serverAvatar);
-    } else {
-      if (serverAvatar == null || serverAvatar.length() == 0) {
-        Glide.with(this).load(R.mipmap.default_avatar).into(mUserAvatar);
-      } else {
-        if (!avatar.equals(serverAvatar)) {
+//    String avatar = Accounts.getAvatar();
+//    Timber.e("1");
+//    if (avatar == null || avatar.length() == 0) {
+//      Timber.e("2");
+//      // local url is null or not exist, load avatar from server
+//      loadUserAvatar(serverAvatar);
+//    } else {
+//      Timber.e("3");
+//      // the local url is exist, check is need load serverAvatar or not
+//      if (serverAvatar == null || serverAvatar.length() == 0) {
+//        Timber.e("4");
+//        Glide.with(this).load(Uri.parse(avatar)).error(R.mipmap.default_avatar).into(mUserAvatar);
+//      } else {
+//        Timber.e("5");
+//        if (!avatar.equals(serverAvatar)) {
+//          Timber.e("6");
           loadUserAvatar(serverAvatar);
-        }
-      }
-    }
+//        }
+//      }
+//    }
   }
 
   /**

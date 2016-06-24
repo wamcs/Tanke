@@ -21,72 +21,70 @@
             android:layout_height="@dimen/main_page_item_img_height"
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="10dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
             android:contentDescription="@string/content_description"
             android:scaleType="centerCrop"
             android:src="@mipmap/need_to_remove"
             app:riv_corner_radius="5dp"/>
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:padding="5dp">
+            android:layout_marginTop="2dp"
+            android:layout_height="@dimen/main_page_item_img_height"
+            android:paddingRight="10dp"
+            android:layout_gravity="center_vertical"
+            android:paddingLeft="20dp">
+
+            <com.lptiyu.tanke.widget.CustomTextView
+                android:id="@+id/game_playing_list_item_progress_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="5dp"
+                android:text="@string/game_progress"
+                android:textColor="@color/grey06"
+                android:textSize="13sp"/>
+
+            <com.lptiyu.tanke.widget.CustomTextView
+                android:id="@id/game_playing_list_item_progress_number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@id/game_playing_list_item_progress_text"
+                android:layout_centerHorizontal="true"
+                android:text="13.0%"
+                android:textColor="@color/grey06"
+                android:textSize="13sp"/>
 
             <com.lptiyu.tanke.widget.CustomTextView
                 android:id="@id/game_playing_list_item_name"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_above="@id/game_playing_list_item_progress_text"
                 android:gravity="center_vertical"
                 android:maxLines="1"
-                android:textColor="@color/grey06"
-                android:textSize="17sp"/>
+                android:text="华科校园"
+                android:textColor="@color/colorPrimary"
+                android:textSize="15sp"/>
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
+            <com.lptiyu.tanke.widget.GradientProgressBar
+                android:id="@id/game_playing_list_item_progress"
+                android:layout_width="wrap_content"
+                android:layout_height="6dp"
+                android:layout_below="@id/game_playing_list_item_progress_text"
+                android:layout_centerVertical="true"
+                app:src="@color/colorPrimary"/>
 
-                <com.lptiyu.tanke.widget.CustomTextView
-                    android:id="@+id/game_playing_list_item_progress_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginRight="5dp"
-                    android:text="@string/game_progress"
-                    android:textColor="@color/grey06"
-                    android:textSize="13sp"/>
-
-                <com.lptiyu.tanke.widget.CustomTextView
-                    android:id="@id/game_playing_list_item_progress_number"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:text="13.0%"
-                    android:textColor="@color/grey06"
-                    android:textSize="13sp"/>
-
-                <com.lptiyu.tanke.widget.GradientProgressBar
-                    android:id="@id/game_playing_list_item_progress"
-                    android:layout_width="wrap_content"
-                    android:layout_height="10dp"
-                    android:layout_centerVertical="true"
-                    android:layout_marginRight="5dp"
-                    android:layout_toLeftOf="@id/game_playing_list_item_progress_number"
-                    android:layout_toRightOf="@id/game_playing_list_item_progress_text"
-                    android:background="@drawable/fragment_user_center_progress_bar_bg"
-                    app:src="@color/colorPrimary"/>
-
-            </RelativeLayout>
-
-        </LinearLayout>
+        </RelativeLayout>
 
     </LinearLayout>
 
     <View
         android:layout_width="wrap_content"
         android:layout_height="@dimen/user_center_linear_layout_bottom_line_height"
-        android:layout_marginLeft="@dimen/under_line_margin_left_right"
-        android:layout_marginRight="@dimen/under_line_margin_left_right"
+        android:layout_marginLeft="@dimen/item_game_playing_under_line_margin_left_right"
+        android:layout_marginRight="@dimen/item_game_playing_under_line_margin_left_right"
         android:background="@color/user_center_split_line"/>
 
 </LinearLayout>

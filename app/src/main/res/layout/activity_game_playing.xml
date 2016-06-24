@@ -101,13 +101,13 @@
         android:layout_alignParentBottom="true"
         android:background="@drawable/gradient_rect_style"
         app:spotCircleRadius="@dimen/running_spot_view_radius"
-        app:spotDoingColor="@color/colorPrimary"
-        app:spotDoneColor="@color/green"
-        app:spotItemLineColor="@color/colorPrimary"
+        app:spotDoingColor="@color/game_playing_spot_doing_color"
+        app:spotDoneColor="@color/game_playing_spot_done_color"
+        app:spotItemLineColor="@color/game_playing_spot_scrollview_line_color"
         app:spotItemLineHeight="@dimen/running_spot_view_item_line_height"
         app:spotItemLineWidth="@dimen/running_spot_view_item_line_width"
         app:spotTextSize="@dimen/running_spot_view_text_size"
-        app:spotToDoColor="@color/white09"/>
+        app:spotToDoColor="@color/game_playing_spot_to_do_color"/>
 
 
     <com.lptiyu.tanke.widget.TickView

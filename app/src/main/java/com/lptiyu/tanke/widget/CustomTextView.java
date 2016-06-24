@@ -31,10 +31,10 @@ public class CustomTextView extends TextView{
   }
 
   private void init() {
-//    if (typeface == null) {
-//      typeface = Typeface.createFromAsset(getContext().getAssets(), "DroidPingFang.ttf");
-//    }
-//    setTypeface(typeface);
+    if (typeface == null) {
+      typeface = Typeface.createFromAsset(getContext().getAssets(), "DroidPingFang.ttf");
+    }
+    setTypeface(typeface);
   }
 
 }
