@@ -30,6 +30,5 @@ public class MyDaoGenerator {
         messageList.addLongProperty("userId");//用户ID，只对用户有效，第一版暂时不用，根据id获取头像
         messageList.addLongProperty("time");//Unix 时间戳
         messageList.addIntProperty("type").primaryKey();//1.官方资讯 2.系统推送 3.用户消息
-
     }
 }

@@ -6,7 +6,6 @@ import android.view.View;
 
 import com.lptiyu.tanke.base.controller.ActivityController;
 import com.lptiyu.tanke.gamedisplay.GameDisplayFragment;
-import com.lptiyu.tanke.messagesystem.MessageFragmentNew;
 import com.lptiyu.tanke.messagesystem.MessageListFragment;
 import com.lptiyu.tanke.userCenter.UserCenterFragment;
 import com.lptiyu.tanke.utils.ToastUtil;
@@ -42,7 +41,7 @@ public class MainActivityController extends ActivityController {
 
   private void init() {
     fragments.add(new GameDisplayFragment());
-    fragments.add(new MessageFragmentNew());
+    fragments.add(new MessageListFragment());
     fragments.add(new UserCenterFragment());
     changeTab(0);
   }

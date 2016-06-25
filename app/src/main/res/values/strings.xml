@@ -33,10 +33,12 @@
     <string name="team_game_formatter" formatted="false">%d人团队赛</string>
 
     <!--UserCenter start-->
-    <string name="userCenter">我的</string>
+    <string name="userCenter">用户中心</string>
     <string name="user_level" formatted="false">LV.%d</string>
     <string name="need_exp_formatter" formatted="false">%d / %d 经验值</string>
-    <!--UserCenter finished-->
+
+    <!-- MessageList Text Area-->
+    <string name="messageList">消息中心</string>
 
     <!--SettingActivity Text Area-->
     <string name="setting">设置</string>

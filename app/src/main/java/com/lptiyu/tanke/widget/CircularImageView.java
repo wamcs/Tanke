@@ -16,6 +16,8 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.widget.ImageView;
 
+import com.lptiyu.tanke.R;
+
 /**
  * EMAIL : danxionglei@foxmail.com
  * DATE : 16/6/14
@@ -64,21 +66,20 @@ public class CircularImageView extends ImageView {
     paintBorder.setAntiAlias(true);
 
     // Load the styled attributes and set their properties
-    TypedArray attributes = context.obtainStyledAttributes(attrs, com.mikhaellopez.circularimageview.R.styleable.CircularImageView, defStyleAttr, 0);
+    TypedArray attributes = context.obtainStyledAttributes(attrs, R.styleable.CircularImageView, defStyleAttr, 0);
 
     // Init Border
-    if (attributes.getBoolean(com.mikhaellopez.circularimageview.R.styleable.CircularImageView_civ_border, true)) {
+    if (attributes.getBoolean(R.styleable.CircularImageView_civ_border, true)) {
       float defaultBorderSize = DEFAULT_BORDER_WIDTH * getContext().getResources().getDisplayMetrics().density;
-      setBorderWidth(attributes.getDimension(com.mikhaellopez.circularimageview.R.styleable.CircularImageView_civ_border_width, defaultBorderSize));
-      setBorderColor(attributes.getColor(com.mikhaellopez.circularimageview.R.styleable.CircularImageView_civ_border_color, Color.WHITE));
+      setBorderWidth(attributes.getDimension(R.styleable.CircularImageView_civ_border_width, defaultBorderSize));
+      setBorderColor(attributes.getColor(R.styleable.CircularImageView_civ_border_color, Color.WHITE));
     }
 
     // Init Shadow
-    if (attributes.getBoolean(com.mikhaellopez.circularimageview.R.styleable.CircularImageView_civ_shadow, false)) {
+    if (attributes.getBoolean(R.styleable.CircularImageView_civ_shadow, false)) {
       shadowRadius = DEFAULT_SHADOW_RADIUS;
-      drawShadow(attributes.getFloat(com.mikhaellopez.circularimageview.R.styleable.CircularImageView_civ_shadow_radius, shadowRadius), attributes.getColor(com.mikhaellopez.circularimageview.R.styleable.CircularImageView_civ_shadow_color, shadowColor));
+      drawShadow(attributes.getFloat(R.styleable.CircularImageView_civ_shadow_radius, shadowRadius), attributes.getColor(R.styleable.CircularImageView_civ_shadow_color, shadowColor));
     }
-
     attributes.recycle();
   }
   //endregion

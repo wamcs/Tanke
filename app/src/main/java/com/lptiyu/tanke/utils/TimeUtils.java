@@ -25,10 +25,10 @@ public class TimeUtils {
   public final static long ONE_HOUR_TIME = ONE_MINUTE_TIME * 60;
   public final static long ONE_DAY_TIME = ONE_HOUR_TIME * 24;
 
+  public static final SimpleDateFormat totalFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.CHINA);
   public static final DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd", Locale.CHINA);
   public static final DateFormat timeFormatter = new SimpleDateFormat("HH:mm:ss", Locale.CHINA);
   public static final DateFormat timeFormatter2 = new SimpleDateFormat("HH:mm", Locale.CHINA);
-
 
   public static String getFriendlyTime(long time) {
     if (ONE_MINUTE_TIME > time) {
@@ -71,10 +71,10 @@ public class TimeUtils {
   /**
    * @param date format was yyyy-MM-dd
    */
-  public static Date parseDate(String date) {
+  public static Date parseDate(String date, DateFormat format) {
     if (date == null) return null;
     try {
-      return dateFormatter.parse(date);
+      return format.parse(date);
     } catch (ParseException e) {
       return null;
     }
@@ -106,20 +106,30 @@ public class TimeUtils {
     }
   }
 
+  /**
+   * Parse time for GameDisplayFragment and GameDetailsActivity
+   *
+   * @param context
+   * @param startDate
+   * @param endDate
+   * @param startTime
+   * @param endTime
+   * @return
+   */
   public static String parseTime(final Context context,
                                  String startDate, String endDate,
                                  String startTime, String endTime) {
     String result;
     Calendar calendar = Calendar.getInstance();
 
-    Date date = TimeUtils.parseDate(startDate);
+    Date date = TimeUtils.parseDate(startDate, TimeUtils.dateFormatter);
     if (date == null) {
       result = "";
     } else {
       calendar.setTime(date);
       int _startMonth = calendar.get(Calendar.MONTH);
       int _startDate = calendar.get(Calendar.DATE);
-      date = TimeUtils.parseDate(endDate);
+      date = TimeUtils.parseDate(endDate, TimeUtils.dateFormatter);
       calendar.setTime(date);
       int _endMonth = calendar.get(Calendar.MONTH);
       int _endDate = calendar.get(Calendar.DATE);
@@ -137,6 +147,11 @@ public class TimeUtils {
     }
 
     return result;
+  }
+
+  public static String parseTimeForMessageSystem(long timeStamp) {
+    Date date = new Date(timeStamp);
+    return "昨天21:34";
   }
 
 

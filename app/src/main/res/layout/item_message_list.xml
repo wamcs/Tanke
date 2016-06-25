@@ -1,72 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
     android:id="@+id/message_list_item_layout"
-    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
-    <LinearLayout
-        android:padding="10dp"
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="80dp">
-        <RelativeLayout
-            android:layout_width="60dp"
-            android:layout_height="60dp">
+    android:layout_height="80dp"
+    android:paddingBottom="5dp"
+    android:paddingLeft="18dp"
+    android:paddingRight="18dp"
+    android:paddingTop="5dp">
 
-            <com.facebook.drawee.view.SimpleDraweeView
-                android:layout_width="60dp"
-                app:roundAsCircle="true"
-                android:id="@+id/message_list_item_picture"
-                android:layout_height="60dp" />
-            <com.mikhaellopez.circularimageview.CircularImageView
-                android:id="@+id/message_list_item_tag"
-                android:layout_width="10dp"
-                android:layout_alignParentRight="true"
-                android:layout_marginTop="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_height="10dp"
-                android:src="#ff0000"
-                />
+    <com.lptiyu.tanke.widget.CircularImageView
+        android:id="@+id/message_list_item_picture"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginRight="10dp"
+        android:src="@mipmap/default_avatar"/>
 
-        </RelativeLayout>
+    <com.lptiyu.tanke.widget.CustomTextView
+        android:id="@+id/message_list_item_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_toRightOf="@id/message_list_item_picture"
+        android:padding="3dp"
+        android:text="官方资讯"
+        android:textSize="16sp"
+        android:textStyle="bold"
+    />
 
-        <LinearLayout
-            android:layout_width="230dp"
-            android:orientation="vertical"
-            android:padding="5dp"
-            android:layout_height="match_parent">
-            <com.lptiyu.tanke.widget.CustomTextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/message_list_item_name"
-                android:textSize="24sp"
-                />
+    <com.lptiyu.tanke.widget.CustomTextView
+        android:id="@+id/message_list_item_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@id/message_list_item_name"
+        android:padding="3dp"
+        android:text="10:01"
+        android:textColor="@color/grey06"
+        android:textSize="14sp"/>
 
-            <com.lptiyu.tanke.widget.CustomTextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/message_list_item_content"
-                android:textSize="16sp"
-                android:textColor="@color/grey06"
-                />
+    <com.lptiyu.tanke.widget.CustomTextView
+        android:id="@+id/message_list_item_content"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/message_list_item_name"
+        android:layout_marginTop="3dp"
+        android:layout_toRightOf="@id/message_list_item_picture"
+        android:maxLines="1"
+        android:padding="3dp"
+        android:text="今天这个实则呢吗好似阿斯顿两个空间塑料袋反馈给多人"
+        android:textColor="@color/grey06"
+        android:textSize="14sp"/>
 
-        </LinearLayout>
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/user_center_linear_layout_bottom_line_height"
+        android:layout_alignParentBottom="true"
+        android:background="@color/user_center_split_line"/>
 
-        <com.lptiyu.tanke.widget.CustomTextView
-            android:id="@+id/message_list_item_time"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="@color/grey06"
-            android:layout_marginTop="15dp"
-            android:textSize="14sp"
-            android:text="2016-06-06"/>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0.5dp"
-        android:background="@color/black06"/>
-</LinearLayout>
+</RelativeLayout>

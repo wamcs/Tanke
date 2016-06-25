@@ -70,7 +70,6 @@ public class PushHelper extends MessageHelper implements
         loadMessage();
         adapter =new PushAdapter(context,messageList);
         mRecyclerView.setAdapter(adapter);
-
     }
 
     private void registerReceiver(){

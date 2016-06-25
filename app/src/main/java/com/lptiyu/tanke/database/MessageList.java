@@ -9,9 +9,9 @@ public class MessageList {
     private String name;
     private Boolean isRead;
     private String content;
-    private Long userId; //只有IM时有用
+    private Long userId;
     private Long time;
-    private Integer type; //1.官方资讯 2.系统推送 3... IM
+    private Integer type;
 
     public MessageList() {
     }

@@ -56,9 +56,13 @@
         <attr name="src" format="reference"/>
     </declare-styleable>
 
-    <declare-styleable name="RichTextView">
-
+    <declare-styleable name="CircularImageView">
+        <attr name="civ_border" format="boolean"/>
+        <attr name="civ_border_width" format="dimension"/>
+        <attr name="civ_border_color" format="color|reference"/>
+        <attr name="civ_shadow" format="boolean"/>
+        <attr name="civ_shadow_radius" format="integer"/>
+        <attr name="civ_shadow_color" format="color|reference"/>
     </declare-styleable>
-
 
 </resources>

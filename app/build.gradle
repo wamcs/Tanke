@@ -119,7 +119,6 @@ dependencies {
     compile 'com.facebook.fresco:fresco:0.6.0'
     compile 'org.greenrobot:greendao:2.2.1'
     compile 'com.google.code.gson:gson:2.6.2'
-    compile 'com.mikhaellopez:circularimageview:3.0.2'
     compile 'com.ogaclejapan.smarttablayout:library:1.6.1@aar'
     compile 'com.ogaclejapan.smarttablayout:utils-v4:1.6.1@aar'
     compile 'com.android.support:recyclerview-v7:23.4.0'
