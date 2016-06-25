@@ -28,7 +28,6 @@ import timber.log.Timber;
 public class PushHelper extends MessageHelper implements
         SwipeRefreshLayout.OnRefreshListener {
 
-
     private int loadMessageSumNumber;
     private int loadMessageNumber;
     private int tableItemNumber;
