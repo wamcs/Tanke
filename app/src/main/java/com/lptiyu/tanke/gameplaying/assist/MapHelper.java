@@ -200,9 +200,6 @@ public class MapHelper implements
       return;
     }
     currentAttackPoint = mPoints.get(index);
-
-    Timber.e(AppData.globalGson().toJson(currentAttackPoint));
-
     setNail(currentAttackPoint, index, NumNail.NailType.RED);
   }
 

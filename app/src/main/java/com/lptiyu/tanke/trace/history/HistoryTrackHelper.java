@@ -9,6 +9,8 @@ import com.lptiyu.tanke.trace.bean.HistoryTrackData;
 
 import java.lang.ref.WeakReference;
 
+import timber.log.Timber;
+
 /**
  * @author : xiaoxiaoda
  *         date: 16-5-18
@@ -90,7 +92,12 @@ public class HistoryTrackHelper extends HawkEyeHelper implements
   }
 
   private void queryProcessedHistoryTrack(long serviceId, String entityName, int simpleReturn, int isProcessed, int startTime, int endTime, int pageSize, int pageIndex) {
-    mClient.queryProcessedHistoryTrack(serviceId, entityName, simpleReturn, isProcessed,
+    Timber.e("start : %d, end : %d", startTime, endTime);
+    mClient.queryProcessedHistoryTrack(
+        serviceId,
+        entityName,
+        simpleReturn,
+        isProcessed,
         startTime, endTime,
         pageSize,
         pageIndex,

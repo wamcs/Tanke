@@ -16,6 +16,7 @@ import com.baidu.mapapi.map.PolylineOptions;
 import com.baidu.mapapi.map.TextureMapView;
 import com.baidu.mapapi.model.LatLng;
 import com.baidu.mapapi.model.LatLngBounds;
+import com.bumptech.glide.Glide;
 import com.lptiyu.tanke.R;
 import com.lptiyu.tanke.base.controller.ActivityController;
 import com.lptiyu.tanke.gameplaying.assist.MapHelper;
@@ -36,6 +37,7 @@ import com.lptiyu.tanke.trace.history.IHistoryTrackHelper;
 import com.lptiyu.tanke.utils.TimeUtils;
 import com.lptiyu.tanke.utils.ToastUtil;
 import com.lptiyu.tanke.utils.thread;
+import com.lptiyu.tanke.widget.CircularImageView;
 import com.lptiyu.tanke.widget.CustomTextView;
 import com.lptiyu.tanke.widget.dialog.ShareDialog;
 
@@ -72,14 +74,18 @@ public class GameShareController extends ActivityController implements
   CustomTextView mFormTeamInfo;
   @BindView(R.id.layout_game_share_form_time)
   CustomTextView mFormTime;
-  @BindView(R.id.layout_game_share_form_speed)
-  CustomTextView mFormSpeed;
-  @BindView(R.id.layout_game_share_form_calorie)
-  CustomTextView mFormCalorie;
-  @BindView(R.id.layout_game_share_form_exp)
-  CustomTextView mFormExp;
   @BindView(R.id.layout_game_share_form_distance)
   CustomTextView mFormDistance;
+  @BindView(R.id.layout_game_share_form_task_num)
+  CustomTextView mFormTaskNum;
+  @BindView(R.id.layout_game_share_form_complete_time)
+  CustomTextView mFormCompleteTime;
+  @BindView(R.id.layout_game_share_form_get_exp)
+  CustomTextView mFormGetExp;
+  @BindView(R.id.layout_game_share_user_avatar)
+  CircularImageView mUserAvatar;
+  @BindView(R.id.layout_game_share_form_nickname)
+  CustomTextView mNickName;
 
   private long gameId;
   private long teamId;
@@ -87,6 +93,7 @@ public class GameShareController extends ActivityController implements
 
   private long startTimeMillis;
   private long endTimeMillis;
+  private int totalTaskNum;
   private int totalDistance;
   private int totalExp;
 
@@ -139,7 +146,7 @@ public class GameShareController extends ActivityController implements
     mMap.setOnMapLoadedCallback(new BaiduMap.OnMapLoadedCallback() {
       @Override
       public void onMapLoaded() {
-        mTrackHelper.queryHistoryTrack(Conf.makeUpTrackEntityName(gameId, Accounts.getId()));
+        resumeFromRecords();
       }
     });
   }
@@ -162,14 +169,12 @@ public class GameShareController extends ActivityController implements
             return;
           }
           resumePointRecords(recordList);
-          mFormTime.setText(TimeUtils.getFriendlyTime(endTimeMillis - startTimeMillis));
-          float time = ((float) (endTimeMillis - startTimeMillis) / ((float) TimeUtils.ONE_MINUTE_TIME));
-          if (time < 1) {
-            time = TimeUtils.ONE_MINUTE_TIME;
-          }
-          mFormSpeed.setText(String.valueOf(totalDistance / time));
-          mFormCalorie.setText(String.valueOf((int) (60 * (totalDistance / 1000) * 1.036)));
-          mFormExp.setText(String.valueOf(totalExp));
+          Glide.with(getActivity()).load(Accounts.getAvatar()).error(R.mipmap.default_avatar).into(mUserAvatar);
+          mNickName.setText(Accounts.getNickName());
+          mFormTime.setText(String.valueOf((endTimeMillis - startTimeMillis) / TimeUtils.ONE_MINUTE_TIME));
+          mFormCompleteTime.setText(TimeUtils.getDateTimeWithoutYear(endTimeMillis));
+          mFormTaskNum.setText(String.valueOf(totalTaskNum));
+          mFormGetExp.setText(String.valueOf(totalExp));
           mFormDistance.setText(String.valueOf(totalDistance));
           HttpService.getGameService().getGameFinishedNum(gameId)
               .subscribeOn(Schedulers.io())
@@ -185,11 +190,12 @@ public class GameShareController extends ActivityController implements
                   mFormTeamInfo.setText(String.format(getString(R.string.game_share_form_game_finished_num_formatter), 0));
                 }
               });
-          mLoadingDialog.dismiss();
+          mTrackHelper.queryHistoryTrack(
+              Conf.makeUpTrackEntityName(gameId, Accounts.getId()),
+              (int)(startTimeMillis / TimeUtils.ONE_SECOND_TIME),
+              (int)(endTimeMillis / TimeUtils.ONE_SECOND_TIME));
         }
       });
-    } else {
-      mLoadingDialog.dismiss();
     }
   }
 
@@ -201,6 +207,7 @@ public class GameShareController extends ActivityController implements
       switch (type) {
         case GAME_START:
           startTimeMillis = record.getCreateTime();
+          totalTaskNum += 1;
           startPoint(record);
           finishPoint(record);
           break;
@@ -214,7 +221,7 @@ public class GameShareController extends ActivityController implements
           break;
 
         case TASK_FINISH:
-
+          totalTaskNum += 1;
           break;
 
         case POINT_FINISH:
@@ -278,6 +285,7 @@ public class GameShareController extends ActivityController implements
 
   private void drawHistoryTrack(final List<LatLng> points, double distance) {
     if (points == null || points.size() == 0) {
+
     } else if (points.size() > 1) {
       polyline = new PolylineOptions().width(10)
           .color(Color.RED).points(points);
@@ -303,11 +311,18 @@ public class GameShareController extends ActivityController implements
       if (points != null && mPoints.size() > 0) {
         latLngList.addAll(points);
         drawHistoryTrack(latLngList, historyTrackData.distance);
+        thread.mainThread(new Runnable() {
+          @Override
+          public void run() {
+            mLoadingDialog.dismiss();
+          }
+        });
       } else {
         thread.mainThread(new Runnable() {
           @Override
           public void run() {
             ToastUtil.TextToast("无历史轨迹");
+            mLoadingDialog.dismiss();
           }
         });
       }
@@ -316,6 +331,7 @@ public class GameShareController extends ActivityController implements
         @Override
         public void run() {
           ToastUtil.TextToast("无历史轨迹");
+          mLoadingDialog.dismiss();
         }
       });
     }
@@ -323,7 +339,6 @@ public class GameShareController extends ActivityController implements
       @Override
       public void run() {
         animateToPointsBounds();
-        resumeFromRecords();
       }
     });
   }

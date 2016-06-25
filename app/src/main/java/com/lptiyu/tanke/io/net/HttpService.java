@@ -23,7 +23,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * @author ldx
  */
 public final class HttpService {
-  public static final String BASE_URL = "http://test.360guanggu.com/lepao/api.php/";
+  public static final String BASE_URL = "http://api.lptiyu.com/lepao/api.php/";
 
   private static final int DEFAULT_TIMEOUT = 10;
 

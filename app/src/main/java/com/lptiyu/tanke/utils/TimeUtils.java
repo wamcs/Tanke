@@ -4,6 +4,7 @@ package com.lptiyu.tanke.utils;
 import android.content.Context;
 
 import com.lptiyu.tanke.R;
+import com.lptiyu.tanke.global.AppData;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -19,30 +20,53 @@ import java.util.Locale;
  */
 public class TimeUtils {
 
-    public final static long ONE_MINUTE_TIME = 60000L;
-    public final static long ONE_HOUR_TIME = ONE_MINUTE_TIME * 60;
-    public final static long ONE_DAY_TIME = ONE_HOUR_TIME * 24;
+  public static final long ONE_SECOND_TIME = 1000L;
+  public final static long ONE_MINUTE_TIME = 60 * ONE_SECOND_TIME;
+  public final static long ONE_HOUR_TIME = ONE_MINUTE_TIME * 60;
+  public final static long ONE_DAY_TIME = ONE_HOUR_TIME * 24;
 
-    public static final DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd", Locale.CHINA);
-    public static final DateFormat timeFormatter = new SimpleDateFormat("HH:mm:ss", Locale.CHINA);
-    public static final DateFormat timeFormatter2 = new SimpleDateFormat("HH:mm", Locale.CHINA);
+  public static final DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd", Locale.CHINA);
+  public static final DateFormat timeFormatter = new SimpleDateFormat("HH:mm:ss", Locale.CHINA);
+  public static final DateFormat timeFormatter2 = new SimpleDateFormat("HH:mm", Locale.CHINA);
 
 
-
-    public static String getFriendlyTime(long time) {
-        if (ONE_MINUTE_TIME > time) {
-            return String.format("00 : %2d".toLowerCase(), time / 1000);
-        }
-        if (ONE_HOUR_TIME > time) {
-            int min = (int) (time / ONE_MINUTE_TIME);
-            int sec = (int) ((time % ONE_MINUTE_TIME) / 1000);
-            return String.format("%02d : %02d".toLowerCase(), min, sec);
-        }
-        if (ONE_DAY_TIME > time) {
-            return String.format("大约还有%d小时".toLowerCase(), time / ONE_HOUR_TIME);
-        }
-        return "大于一天";
+  public static String getFriendlyTime(long time) {
+    if (ONE_MINUTE_TIME > time) {
+      return String.format("00 : %2d".toLowerCase(), time / 1000);
     }
+    if (ONE_HOUR_TIME > time) {
+      int min = (int) (time / ONE_MINUTE_TIME);
+      int sec = (int) ((time % ONE_MINUTE_TIME) / 1000);
+      return String.format("%02d : %02d".toLowerCase(), min, sec);
+    }
+    if (ONE_DAY_TIME > time) {
+      return String.format("大约还有%d小时".toLowerCase(), time / ONE_HOUR_TIME);
+    }
+    return "大于一天";
+  }
+
+  public static String getDateTimeWithoutYear(long time) {
+    Date date = new Date(time);
+    return String.format(
+        AppData.getContext().getString(R.string.complete_time_without_year_formatter),
+        date.getMonth() + 1,
+        date.getDate(),
+        date.getHours(),
+        date.getMinutes()
+    );
+  }
+
+  public static String getDateTime(long time) {
+    Date date = new Date(time);
+    return String.format(
+        AppData.getContext().getString(R.string.complete_time_formatter),
+        date.getYear() + 1900,
+        date.getMonth() + 1,
+        date.getDate(),
+        date.getHours(),
+        date.getMinutes()
+    );
+  }
 
   /**
    * @param date format was yyyy-MM-dd

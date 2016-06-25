@@ -208,7 +208,6 @@
     <!-- GameShareActivity Dimens-->
     <dimen name="activity_game_share_toolbar_button_width_height">45dp</dimen>
     <dimen name="activity_game_share_toolbar_imageview_right_margin_right">10dp</dimen>
-    <dimen name="layout_game_share_form_padding_bottom">20dp</dimen>
     <dimen name="layout_game_share_form_text_base_padding">2dp</dimen>
 
 

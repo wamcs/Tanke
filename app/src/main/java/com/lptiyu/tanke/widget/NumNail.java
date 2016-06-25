@@ -210,7 +210,7 @@ public abstract class NumNail {
     @Override
     public RectF getDrawingRect() {
       int densityDpi = getContext().getResources().getDisplayMetrics().densityDpi;
-      return new RectF(0, 0, 48 * densityDpi / 480f, 48 * densityDpi / 480f);
+      return new RectF(0, 0, 60 * densityDpi / 480f, 60 * densityDpi / 480f);
     }
 
   }
@@ -245,7 +245,7 @@ public abstract class NumNail {
     @Override
     public RectF getDrawingRect() {
       int densityDpi = getContext().getResources().getDisplayMetrics().densityDpi;
-      return new RectF(0, 0, 48 * densityDpi / 480f, 48 * densityDpi / 480f);
+      return new RectF(0, 0, 60 * densityDpi / 480f, 60 * densityDpi / 480f);
     }
   }
 
@@ -292,7 +292,7 @@ public abstract class NumNail {
     @Override
     public RectF getDrawingRect() {
       int densityDpi = getContext().getResources().getDisplayMetrics().densityDpi;
-      return new RectF(0, 0, 48 * densityDpi / 480f, 48 * densityDpi / 480f);
+      return new RectF(0, 0, 60 * densityDpi / 480f, 60 * densityDpi / 480f);
     }
   }
 

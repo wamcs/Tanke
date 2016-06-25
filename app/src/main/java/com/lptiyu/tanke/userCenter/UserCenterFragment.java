@@ -1,5 +1,6 @@
 package com.lptiyu.tanke.userCenter;
 
+import android.accounts.Account;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -126,6 +127,7 @@ public class UserCenterFragment extends BaseFragment {
 
     String serverAvatar = details.getAvatar();
     checkAndLoadUserAvatar(serverAvatar);
+    Accounts.setNickName(details.getNickname());
 
     mUserNickname.setText(details.getNickname());
     mUserLocation.setText(details.getAddress());
