@@ -14,6 +14,14 @@
     <string name="exit">再按一次退出</string>
     <string name="has_downloaded_mask">has_downloaded_mask_%d</string>
 
+    <!-- SplashActivity Text Area-->
+    <string name="splash_title_1">你熟悉的世界&#160;&#160;&#160;&#160;隐藏着更多秘密</string>
+    <string name="splash_brief_1">或隐藏于市井,或流传于民间众口,都等待着你去发掘,这可能需要你的不懈努力</string>
+    <string name="splash_brief_2">谁也不知道这条路通向哪里,途中你也许会绝望,但终点的绝景与心境,一定让你不虚此行</string>
+    <string name="splash_title_2">一条未知路线&#160;&#160;&#160;&#160;挑战智慧和勇气</string>
+    <string name="splash_brief_3">只有经历过汗水的洗礼，才能更加体会到达终点的喜悦</string>
+    <string name="splash_title_3">你的参与&#160;&#160;&#160;&#160;让生活更精彩</string>
+
     <!--Game display page-->
     <string name="change_city_dialog_message">是否需要切换到当前城市(%s)?</string>
     <string name="main_page_location_key">main_page_location</string>

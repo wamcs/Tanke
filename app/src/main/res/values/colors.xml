@@ -68,8 +68,8 @@
     <color name="login_activity_title_color">#769df6</color>
 
     <!-- GuideActivity colors-->
-    <color name="guide_activity_indicator_solid_color">#8d48db</color>
-    <color name="guide_activity_indicator_stroke_color">#FFFAF0</color>
+    <color name="guide_activity_indicator_solid_color">#FF4081</color>
+    <color name="guide_activity_indicator_stroke_color">#769df6</color>
 
     <!-- registerActivity colors-->
     <color name="register_activity_gradient_start">#6d99ff</color>

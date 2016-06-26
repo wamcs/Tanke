@@ -71,9 +71,9 @@ public class AppData {
 
   public static boolean isFirstInApp() {
     // 如果获取不到这个键，就返回true, 则判断为第一次进入这个App
-    if (ShaPrefer.getBoolean("firstInApp", true)) {
+    if (ShaPrefer.getBoolean(Conf.IS_FIRST_IN_APP, true)) {
       // 现在把该值变成false, 即，以后进入不是第一次进入
-      ShaPrefer.put("firstInApp", false);
+      ShaPrefer.put(Conf.IS_FIRST_IN_APP, false);
       return true;
     } else {
       return false;

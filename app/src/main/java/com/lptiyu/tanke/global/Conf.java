@@ -12,6 +12,7 @@ import com.lptiyu.tanke.utils.TimeUtils;
 
 public final class Conf {
 
+  public static final String IS_FIRST_IN_APP = "is_first_in_app";
   /**
    * Sign up conf
    */

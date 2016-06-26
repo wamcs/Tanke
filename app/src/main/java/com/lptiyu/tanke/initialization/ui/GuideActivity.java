@@ -14,17 +14,18 @@ import com.lptiyu.tanke.initialization.controller.GuideController;
  */
 public class GuideActivity extends BaseActivity {
 
-  ActivityController controller;
+  GuideController mController;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_guide);
-    controller = new GuideController(this, getWindow().getDecorView());
+    mController = new GuideController(this, getWindow().getDecorView());
   }
 
   @Override
   public ActivityController getController() {
-    return controller;
+    return mController;
   }
+
 }

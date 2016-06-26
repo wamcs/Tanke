@@ -70,12 +70,8 @@ public abstract class BaseSplashActivity extends BaseActivity {
       startActivity(new Intent(this, GuideActivity.class));
       finish();
     } else {
-      if (isImageValid()) {
-        Glide.with(this).load(imageFile).into(splashView);
-        smoothStartNext();
-      } else {
-        startNext();
-      }
+      Glide.with(this).load(imageFile).error(R.mipmap.img_splash_bg).into(splashView);
+      smoothStartNext();
     }
 
 //    fetchSplashUrl()
@@ -89,17 +85,6 @@ public abstract class BaseSplashActivity extends BaseActivity {
 //            }
 //          }
 //        });
-  }
-
-  protected void startNext() {
-    Intent intent = new Intent();
-    if (isAccountsValid()) {
-      intent.setClass(this, MainActivity.class);
-    } else {
-      intent.setClass(this, LoginActivity.class);
-    }
-    startActivity(intent);
-    finish();
   }
 
   protected void smoothStartNext() {
@@ -122,11 +107,6 @@ public abstract class BaseSplashActivity extends BaseActivity {
           }
         });
   }
-
-  protected boolean isImageValid() {
-    return imageFile.exists() && imageFile.isFile();
-  }
-
 
   private File createStorageFile() {
     return imageFile = new File(getCacheDir(), "splash.jpg");

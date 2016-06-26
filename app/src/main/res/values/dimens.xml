@@ -34,6 +34,9 @@
     <dimen name="login_edit_layout_button_width">85dp</dimen>
     <dimen name="login_edit_layout_button_height">20dp</dimen>
 
+    <!-- SplashActivity Dimens-->
+    <dimen name="splash_activity_logo_width">60dp</dimen>
+    <dimen name="splash_activity_logo_height">108dp</dimen>
 
     <!--User Center-->
     <dimen name="user_center_linear_layout_height">20dp</dimen>
