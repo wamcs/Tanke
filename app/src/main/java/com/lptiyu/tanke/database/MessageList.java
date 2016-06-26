@@ -16,8 +16,8 @@ public class MessageList {
     public MessageList() {
     }
 
-    public MessageList(Integer type) {
-        this.type = type;
+    public MessageList(Long userId) {
+        this.userId = userId;
     }
 
     public MessageList(String name, Boolean isRead, String content, Long userId, Long time, Integer type) {

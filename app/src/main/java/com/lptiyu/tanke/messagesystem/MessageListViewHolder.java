@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.text.Html;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.lptiyu.tanke.R;
@@ -38,6 +39,8 @@ public class MessageListViewHolder extends BaseViewHolder<MessageList> {
   CustomTextView mTime;
   @BindView(R.id.message_list_item_layout)
   RelativeLayout mLayout;
+  @BindView(R.id.message_list_item_red_spot)
+  ImageView mRedSpot;
 
   private WeakReference<MessageListDao> daoWeakReference;
 
@@ -53,22 +56,26 @@ public class MessageListViewHolder extends BaseViewHolder<MessageList> {
     mName.setText(item.getName());
     mContent.setText(Html.fromHtml(Html.fromHtml(item.getContent()).toString()).toString());
     mTime.setText(TimeUtils.parsePartTime(item.getTime()));
-
+    if (entity.getIsRead()) {
+      mRedSpot.setVisibility(View.GONE);
+    } else {
+      mRedSpot.setVisibility(View.VISIBLE);
+    }
     switch (item.getType()) {
-      case Conf.OFFICIAL_MESSAGE:
+      case Conf.MESSAGE_LIST_TYPE_OFFICIAL:
         mLayout.setOnClickListener(new View.OnClickListener() {
           @Override
           public void onClick(View v) {
-            jumpToMessage(item, Conf.OFFICIAL_MESSAGE);
+            jumpToMessage(item, Conf.MESSAGE_LIST_TYPE_OFFICIAL);
           }
         });
         mPicture.setBackgroundResource(R.mipmap.ic_launcher);
         break;
-      case Conf.SYSTEM_MESSAGE:
+      case Conf.MESSAGE_LIST_TYPE_SYSTEM:
         mLayout.setOnClickListener(new View.OnClickListener() {
           @Override
           public void onClick(View v) {
-            jumpToMessage(item, Conf.SYSTEM_MESSAGE);
+            jumpToMessage(item, Conf.MESSAGE_LIST_TYPE_SYSTEM);
           }
         });
         mPicture.setBackgroundResource(R.mipmap.default_avatar);
@@ -77,8 +84,12 @@ public class MessageListViewHolder extends BaseViewHolder<MessageList> {
   }
 
   private void jumpToMessage(MessageList item, int type) {
-    if (daoWeakReference != null && daoWeakReference.get() != null) {
-      daoWeakReference.get().update(item);
+    if (!item.getIsRead()) {
+      mRedSpot.setVisibility(View.GONE);
+      if (daoWeakReference != null && daoWeakReference.get() != null) {
+        item.setIsRead(true);
+        daoWeakReference.get().update(item);
+      }
     }
     Context context = getContext();
     Intent intent = new Intent(context, MessageActivity.class);

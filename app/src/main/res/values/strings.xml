@@ -47,6 +47,10 @@
 
     <!-- MessageList Text Area-->
     <string name="messageList">消息中心</string>
+    <string name="message_type_official">步道官方</string>
+
+    <!-- MessageActivity Text Area-->
+    <string name="message_type_system">系统推送</string>
 
     <!--SettingActivity Text Area-->
     <string name="setting">设置</string>

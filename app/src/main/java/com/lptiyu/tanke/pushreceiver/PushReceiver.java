@@ -11,12 +11,12 @@ import android.util.Log;
 
 import com.avos.avoscloud.AVOSCloud;
 import com.google.gson.Gson;
+import com.lptiyu.tanke.MainActivity;
 import com.lptiyu.tanke.R;
 import com.lptiyu.tanke.database.DBHelper;
 import com.lptiyu.tanke.database.Message;
 import com.lptiyu.tanke.database.MessageList;
 import com.lptiyu.tanke.global.Conf;
-import com.lptiyu.tanke.messagesystem.MessageActivity;
 
 import timber.log.Timber;
 
@@ -37,8 +37,9 @@ public class PushReceiver extends BroadcastReceiver {
             Timber.d("push data json is %s",jsonString);
             Message message = new Gson().fromJson(jsonString,Message.class);
 
-            Intent resultIntent = new Intent(this.context, MessageActivity.class);
-            resultIntent.putExtra(Conf.MESSAGE_TYPE,message.getType());
+//            Intent resultIntent = new Intent(this.context, MessageActivity.class);
+            Intent resultIntent = new Intent(this.context, MainActivity.class);
+//            resultIntent.putExtra(Conf.MESSAGE_TYPE,message.getType());
             PendingIntent pendingIntent = PendingIntent.getActivity(this.context,0, resultIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
             //add date into table Message
@@ -77,10 +78,10 @@ public class PushReceiver extends BroadcastReceiver {
         messageList.setIsRead(false);
         messageList.setType(message.getType());
         switch (message.getType()){
-            case Conf.OFFICIAL_MESSAGE:
+            case Conf.MESSAGE_LIST_TYPE_OFFICIAL:
                 messageList.setName("官方资讯");
                 break;
-            case Conf.SYSTEM_MESSAGE:
+            case Conf.MESSAGE_LIST_TYPE_SYSTEM:
                 messageList.setName("系统消息");
                 break;
         }

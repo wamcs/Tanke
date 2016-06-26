@@ -13,42 +13,40 @@ import de.greenrobot.dao.async.AsyncSession;
 public class DBHelper {
 
 
-    private volatile static DBHelper helper;
+  private volatile static DBHelper helper;
 
-
-
-    public static DBHelper getInstance(){
-        if (null == helper){
-            synchronized (DBHelper.class){
-                if (null == helper){
-                    helper = new DBHelper();
-                }
-            }
+  public static DBHelper getInstance() {
+    if (null == helper) {
+      synchronized (DBHelper.class) {
+        if (null == helper) {
+          helper = new DBHelper();
         }
-        return helper;
+      }
     }
+    return helper;
+  }
 
-    private static final String DB_NAME = "tanke.db";
-    private DaoSession daoSession;
-    private AsyncSession asyncSession;
+  private static final String DB_NAME = "tanke.db";
+  private DaoSession daoSession;
+  private AsyncSession asyncSession;
 
-    private DBHelper(){
-        DaoMaster.DevOpenHelper helper = new DaoMaster.DevOpenHelper(AppData.getContext(),DB_NAME,null);
-        DaoMaster master = new DaoMaster(helper.getWritableDatabase());
-        daoSession = master.newSession();
-        asyncSession = daoSession.startAsyncSession();
-    }
+  private DBHelper() {
+    DaoMaster.DevOpenHelper helper = new DaoMaster.DevOpenHelper(AppData.getContext(), DB_NAME, null);
+    DaoMaster master = new DaoMaster(helper.getWritableDatabase());
+    daoSession = master.newSession();
+    asyncSession = daoSession.startAsyncSession();
+  }
 
-    public MessageDao getPushMessageDao(){
-        return daoSession.getMessageDao();
-    }
+  public MessageDao getPushMessageDao() {
+    return daoSession.getMessageDao();
+  }
 
-    public MessageListDao getMessageListDao(){
-        return daoSession.getMessageListDao();
-    }
+  public MessageListDao getMessageListDao() {
+    return daoSession.getMessageListDao();
+  }
 
-    //用于处理异步任务
-    public AsyncSession getAsyncSession(){
-        return asyncSession;
-    }
+  //用于处理异步任务
+  public AsyncSession getAsyncSession() {
+    return asyncSession;
+  }
 }

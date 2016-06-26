@@ -1,15 +1,12 @@
 package com.lptiyu.tanke.widget.dialog;
 
 import android.content.Context;
-import android.support.v7.app.AlertDialog;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
 
 import com.lptiyu.tanke.R;
 import com.lptiyu.tanke.global.Conf;
 import com.lptiyu.tanke.utils.Inflater;
-
 
 import net.simonvt.numberpicker.NumberPicker;
 
@@ -19,8 +16,8 @@ import butterknife.OnClick;
 
 /**
  * @author : xiaoxiaoda
- * date: 16-1-20
- * email: daque@hustunique.com
+ *         date: 16-1-20
+ *         email: daque@hustunique.com
  */
 public class DatePickerDialog extends BaseDialog {
 
@@ -41,7 +38,8 @@ public class DatePickerDialog extends BaseDialog {
   public DatePickerDialog(Context context) {
     super(context);
     this.withTitle(context.getString(R.string.birthday))                                  //.withTitle(null)  no title
-            . setCustomView(R.layout.layout_dialog_date_picker, context);
+        .isCancelableOnTouchOutside(false)
+        .setCustomView(R.layout.layout_dialog_date_picker, context);
     init();
   }
 
@@ -119,7 +117,7 @@ public class DatePickerDialog extends BaseDialog {
   }
 
   public interface OnDateChoosedListener {
-     void onDateChoosed(String date);
+    void onDateChoosed(String date);
   }
 
 }

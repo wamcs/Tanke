@@ -14,7 +14,7 @@ import com.lptiyu.tanke.database.MessageList;
 /** 
  * DAO for table "MESSAGE_LIST".
 */
-public class MessageListDao extends AbstractDao<MessageList, Integer> {
+public class MessageListDao extends AbstractDao<MessageList, Long> {
 
     public static final String TABLENAME = "MESSAGE_LIST";
 
@@ -26,9 +26,9 @@ public class MessageListDao extends AbstractDao<MessageList, Integer> {
         public final static Property Name = new Property(0, String.class, "name", false, "NAME");
         public final static Property IsRead = new Property(1, Boolean.class, "isRead", false, "IS_READ");
         public final static Property Content = new Property(2, String.class, "content", false, "CONTENT");
-        public final static Property UserId = new Property(3, Long.class, "userId", false, "USER_ID");
+        public final static Property UserId = new Property(3, Long.class, "userId", true, "USER_ID");
         public final static Property Time = new Property(4, Long.class, "time", false, "TIME");
-        public final static Property Type = new Property(5, Integer.class, "type", true, "TYPE");
+        public final static Property Type = new Property(5, Integer.class, "type", false, "TYPE");
     };
 
 
@@ -47,9 +47,9 @@ public class MessageListDao extends AbstractDao<MessageList, Integer> {
                 "\"NAME\" TEXT," + // 0: name
                 "\"IS_READ\" INTEGER," + // 1: isRead
                 "\"CONTENT\" TEXT," + // 2: content
-                "\"USER_ID\" INTEGER," + // 3: userId
+                "\"USER_ID\" INTEGER PRIMARY KEY ," + // 3: userId
                 "\"TIME\" INTEGER," + // 4: time
-                "\"TYPE\" INTEGER PRIMARY KEY );"); // 5: type
+                "\"TYPE\" INTEGER);"); // 5: type
     }
 
     /** Drops the underlying database table. */
@@ -96,8 +96,8 @@ public class MessageListDao extends AbstractDao<MessageList, Integer> {
 
     /** @inheritdoc */
     @Override
-    public Integer readKey(Cursor cursor, int offset) {
-        return cursor.isNull(offset + 5) ? null : cursor.getInt(offset + 5);
+    public Long readKey(Cursor cursor, int offset) {
+        return cursor.isNull(offset + 3) ? null : cursor.getLong(offset + 3);
     }    
 
     /** @inheritdoc */
@@ -127,15 +127,16 @@ public class MessageListDao extends AbstractDao<MessageList, Integer> {
     
     /** @inheritdoc */
     @Override
-    protected Integer updateKeyAfterInsert(MessageList entity, long rowId) {
-        return entity.getType();
+    protected Long updateKeyAfterInsert(MessageList entity, long rowId) {
+        entity.setUserId(rowId);
+        return rowId;
     }
     
     /** @inheritdoc */
     @Override
-    public Integer getKey(MessageList entity) {
+    public Long getKey(MessageList entity) {
         if(entity != null) {
-            return entity.getType();
+            return entity.getUserId();
         } else {
             return null;
         }

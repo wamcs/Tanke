@@ -12,6 +12,9 @@ import android.view.ViewGroup;
 import com.lptiyu.tanke.R;
 import com.lptiyu.tanke.base.controller.FragmentController;
 import com.lptiyu.tanke.base.ui.BaseFragment;
+import com.lptiyu.tanke.database.DBHelper;
+import com.lptiyu.tanke.database.Message;
+import com.lptiyu.tanke.database.MessageDao;
 import com.lptiyu.tanke.database.MessageList;
 import com.lptiyu.tanke.global.Accounts;
 import com.lptiyu.tanke.global.Conf;
@@ -22,7 +25,6 @@ import com.lptiyu.tanke.pojo.MessageEntity;
 import com.lptiyu.tanke.utils.TimeUtils;
 import com.lptiyu.tanke.utils.ToastUtil;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -31,7 +33,6 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
-import timber.log.Timber;
 
 /**
  * author:wamcs
@@ -74,35 +75,51 @@ public class MessageListFragment extends BaseFragment implements
     HttpService.getGameService().getSystemMessage(Accounts.getId())
         .observeOn(AndroidSchedulers.mainThread())
         .subscribeOn(Schedulers.io())
-        .map(new Func1<Response<List<MessageEntity>>, List<MessageList>>() {
+        .map(new Func1<Response<List<MessageEntity>>, MessageList>() {
           @Override
-          public List<MessageList> call(Response<List<MessageEntity>> listResponse) {
-            List<MessageList> result = new ArrayList<>();
+          public MessageList call(Response<List<MessageEntity>> listResponse) {
+            MessageList result;
             if (listResponse == null || listResponse.getStatus() == 0) {
               ToastUtil.TextToast("获取消息失败");
-              return result;
+              return null;
             }
             List<MessageEntity> serverMessageDatas = listResponse.getData();
             if (serverMessageDatas == null || serverMessageDatas.size() == 0) {
-              return result;
+              return null;
             }
-            MessageList tempMessage = new MessageList();
+            // add official msg to message table
+            Message message = new Message();
+            MessageDao messageDao = DBHelper.getInstance().getPushMessageDao();
             for (MessageEntity me : serverMessageDatas) {
-              tempMessage.setName("步道官方");
-              tempMessage.setIsRead(false);
-              tempMessage.setContent(me.getContent());
-              tempMessage.setTime(TimeUtils.parseDate(me.getCreateTime(), TimeUtils.totalFormat).getTime());
-              result.add(tempMessage);
+              message.setId(me.getId());
+              message.setType(Conf.MESSAGE_LIST_TYPE_OFFICIAL);
+              message.setImage(me.getImgUrl());
+              message.setTitle(me.getTitle());
+              message.setAlert(me.getContent());
+              message.setTime(TimeUtils.parseDate(me.getCreateTime(), TimeUtils.totalFormat).getTime());
+              messageDao.insertOrReplace(message);
             }
+
+            //update the official msg item
+            MessageEntity lastMsg = serverMessageDatas.get(serverMessageDatas.size() - 1);
+            result = new MessageList();
+            result.setName(getString(R.string.message_type_official));
+            result.setIsRead(false);
+            result.setContent(lastMsg.getContent());
+            result.setUserId(Conf.MESSAGE_LIST_USERID_OFFICIAL);
+            result.setType(Conf.MESSAGE_LIST_TYPE_OFFICIAL);
+            result.setTime(TimeUtils.parseDate(lastMsg.getCreateTime(), TimeUtils.totalFormat).getTime());
             return result;
           }
         })
-        .subscribe(new Action1<List<MessageList>>() {
+        .subscribe(new Action1<MessageList>() {
           @Override
-          public void call(List<MessageList> messageLists) {
+          public void call(MessageList messageList) {
             isRefreshing = false;
             swipeRefreshLayout.setRefreshing(false);
-            adapter.updateMessageData(messageLists);
+            if (messageList != null) {
+              adapter.updateMessageData(messageList);
+            }
           }
         }, new Action1<Throwable>() {
           @Override

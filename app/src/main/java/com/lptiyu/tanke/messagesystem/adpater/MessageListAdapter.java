@@ -11,6 +11,8 @@ import com.lptiyu.tanke.messagesystem.MessageListViewHolder;
 
 import java.util.List;
 
+import de.greenrobot.dao.query.QueryBuilder;
+
 /**
  * author:wamcs
  * date:2016/6/13
@@ -40,11 +42,21 @@ public class MessageListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     holder1.bind(item);
   }
 
-  public void updateMessageData(List<MessageList> messageList) {
-    if (messageList == null || messageList.size() == 0) {
+  public void updateMessageData(MessageList messageList) {
+    if (messageList == null) {
       return;
     }
-    dao.insertOrReplaceInTx(messageList);
+    int type = messageList.getType();
+    QueryBuilder<MessageList> builder = dao.queryBuilder();
+    builder.where(MessageListDao.Properties.Type.eq(type));
+    List<MessageList> result = builder.list();
+    if (result == null || result.size() == 0) {
+      dao.insertOrReplace(messageList);
+    } else {
+      if (messageList.getTime() > result.get(0).getTime()) {
+        dao.update(messageList);
+      }
+    }
     mMessageList = dao.loadAll();
     notifyDataSetChanged();
   }

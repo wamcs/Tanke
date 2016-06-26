@@ -4,7 +4,6 @@ import android.content.Context;
 import android.view.View;
 import android.widget.TextView;
 
-
 import com.lptiyu.tanke.R;
 import com.lptiyu.tanke.utils.Inflater;
 
@@ -32,7 +31,8 @@ public class NumberPickerDialog extends BaseDialog {
 
   public NumberPickerDialog(Context context) {
     super(context);
-    this.setCustomView(R.layout.layout_dialog_number_picker, context);
+    this.setCustomView(R.layout.layout_dialog_number_picker, context)
+        .isCancelableOnTouchOutside(false);
   }
 
   @Override

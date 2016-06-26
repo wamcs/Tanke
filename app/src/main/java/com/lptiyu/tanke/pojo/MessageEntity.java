@@ -10,6 +10,10 @@ import com.google.gson.annotations.SerializedName;
  *         date: 16-6-20
  *         email: wonderfulifeel@gmail.com
  */
+
+/**
+ * This pojo is match with lepao server
+ */
 public class MessageEntity implements Parcelable {
 
   private long id;

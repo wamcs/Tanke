@@ -110,9 +110,13 @@ public final class Conf {
   /**
    * Message
    */
+
   public static final int TIME_TYPE = 11;
-  public static final int OFFICIAL_MESSAGE = 12;
-  public static final int SYSTEM_MESSAGE = 13;
+  public static final int MESSAGE_LIST_TYPE_OFFICIAL = -1;
+  public static final int MESSAGE_LIST_TYPE_SYSTEM = -2;
+  public static final int MESSAGE_LIST_TYPE_USER = -3;
+  public static final long MESSAGE_LIST_USERID_OFFICIAL = -1L;
+  public static final long MESSAGE_LIST_USERID_SYSTEM = -2L;
   public static final String PUSH_ACTION = "com.tanke.PUSH_ACTION";
   public static final String MESSAGE_ACTION = "com.tanke.MESSAGE_ACTION";
   public static final String PUSH_MESSAGE = "push_message";
