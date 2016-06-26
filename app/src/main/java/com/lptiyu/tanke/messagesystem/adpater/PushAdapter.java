@@ -34,6 +34,7 @@ public class PushAdapter extends MessageBaseAdapter {
     this.messageList = messageList;
     this.context = context;
     currentTime = TimeUtils.getCurrentDate();
+
   }
 
   @Override
