@@ -66,7 +66,6 @@ public class PushAdapter extends MessageBaseAdapter {
         Glide.with(context).load(message.getImage()).error(R.mipmap.need_to_remove_4_so_big).into(holder2.mImage);
         holder2.mTitle.setText(message.getTitle());
         holder2.mContent.setText(Html.fromHtml(Html.fromHtml(message.getAlert()).toString()));
-
         break;
     }
   }

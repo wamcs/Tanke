@@ -115,11 +115,13 @@ public class PushHelper extends MessageHelper implements
     }
     isRefreshing = true;
     mSwipeRefreshLayout.setRefreshing(true);
-    //获取list
     Observable.just(type)
         .map(new Func1<Integer, List<Message>>() {
           @Override
           public List<Message> call(Integer integer) {
+            if (mCurrentMsgIndex < 0) {
+              return null;
+            }
             List<Message> result;
             result = decorateMessageList(messageDao.queryBuilder()
                 .where(MessageDao.Properties.Type.eq(integer))
@@ -137,6 +139,7 @@ public class PushHelper extends MessageHelper implements
             isRefreshing = false;
             mSwipeRefreshLayout.setRefreshing(false);
             if (messages == null) {
+              ToastUtil.TextToast("暂无历史消息");
               return;
             }
             messageList.addAll(messages);
@@ -144,7 +147,7 @@ public class PushHelper extends MessageHelper implements
             if (mCurrentPage > 0) {
               mCurrentPage -= 1;
             }
-            if (mCurrentMsgIndex > 0) {
+            if (mCurrentMsgIndex >= 0) {
               mCurrentMsgIndex -= messages.size();
             }
           }

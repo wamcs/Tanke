@@ -220,8 +220,8 @@
     <dimen name="message_margin">30dp</dimen>
     <dimen name="message_padding">5dp</dimen>
     <dimen name="message_text_size">16sp</dimen>
+    <dimen name="message_item_text_padding_top">10dp</dimen>
     <dimen name="message_time_text_size">14sp</dimen>
-    <dimen name="message_time_text_view_height">20dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
 
     <!-- UserCenterFragment Dimens-->

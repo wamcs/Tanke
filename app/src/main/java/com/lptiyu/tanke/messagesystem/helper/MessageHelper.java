@@ -25,7 +25,8 @@ import static android.support.v7.widget.LinearLayoutManager.VERTICAL;
  * date:2016/6/4
  * email:kaili@hustunique.com
  */
-public class MessageHelper {
+public class MessageHelper implements
+    SwipeRefreshLayout.OnRefreshListener {
 
   @BindView(R.id.message_recycler_view)
   RecyclerView mRecyclerView;
@@ -51,6 +52,7 @@ public class MessageHelper {
     LinearLayoutManager layoutManager = new LinearLayoutManager(context);
     layoutManager.setOrientation(VERTICAL);
     mRecyclerView.setLayoutManager(layoutManager);
+    mSwipeRefreshLayout.setOnRefreshListener(this);
   }
 
   protected List<Message> decorateMessageList(List<Message> list) {
@@ -80,6 +82,11 @@ public class MessageHelper {
 
     }
     return messages;
+  }
+
+  @Override
+  public void onRefresh() {
+
   }
 
   public void finish() {
