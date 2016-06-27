@@ -39,8 +39,7 @@ public class MessageHelper implements
 
   protected AppCompatActivity context;
   protected static final long LIMIT_TIME = 300000L;//5 minutes
-  protected static final int MESSAGE_NUM_EVERY_PAGE = 5;
-
+  protected static final int MESSAGE_NUM_EVERY_PAGE = 3;
 
   public MessageHelper(AppCompatActivity activity, View view, int type) {
     context = activity;

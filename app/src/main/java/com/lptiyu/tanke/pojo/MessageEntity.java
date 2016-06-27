@@ -28,7 +28,7 @@ public class MessageEntity implements Parcelable {
   private String url;
 
   @SerializedName("create_time")
-  private String createTime;
+  private long createTime;
 
   public long getId() {
     return id;
@@ -70,11 +70,11 @@ public class MessageEntity implements Parcelable {
     this.url = url;
   }
 
-  public String getCreateTime() {
+  public long getCreateTime() {
     return createTime;
   }
 
-  public void setCreateTime(String createTime) {
+  public void setCreateTime(long createTime) {
     this.createTime = createTime;
   }
 
@@ -90,7 +90,7 @@ public class MessageEntity implements Parcelable {
     dest.writeString(this.imgUrl);
     dest.writeString(this.content);
     dest.writeString(this.url);
-    dest.writeString(this.createTime);
+    dest.writeLong(this.createTime);
   }
 
   public MessageEntity() {
@@ -102,7 +102,7 @@ public class MessageEntity implements Parcelable {
     this.imgUrl = in.readString();
     this.content = in.readString();
     this.url = in.readString();
-    this.createTime = in.readString();
+    this.createTime = in.readLong();
   }
 
   public static final Creator<MessageEntity> CREATOR = new Creator<MessageEntity>() {

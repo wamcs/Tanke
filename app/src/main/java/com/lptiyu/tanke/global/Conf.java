@@ -117,6 +117,8 @@ public final class Conf {
   public static final int MESSAGE_LIST_TYPE_USER = -3;
   public static final long MESSAGE_LIST_USERID_OFFICIAL = -1L;
   public static final long MESSAGE_LIST_USERID_SYSTEM = -2L;
+  public static final String MESSAGE_URL = "message_url";
+  public static final String MESSAGE_TITLE = "message_title";
   public static final String PUSH_ACTION = "com.tanke.PUSH_ACTION";
   public static final String MESSAGE_ACTION = "com.tanke.MESSAGE_ACTION";
   public static final String PUSH_MESSAGE = "push_message";

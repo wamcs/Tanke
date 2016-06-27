@@ -14,7 +14,9 @@ import com.lptiyu.tanke.database.DBHelper;
 import com.lptiyu.tanke.database.Message;
 import com.lptiyu.tanke.database.MessageDao;
 import com.lptiyu.tanke.database.MessageList;
+import com.lptiyu.tanke.global.AppData;
 import com.lptiyu.tanke.global.Conf;
+import com.lptiyu.tanke.messagesystem.SystemWebActivity;
 import com.lptiyu.tanke.messagesystem.adpater.MessageBaseAdapter;
 import com.lptiyu.tanke.messagesystem.adpater.PushAdapter;
 import com.lptiyu.tanke.utils.ToastUtil;
@@ -77,7 +79,7 @@ public class PushHelper extends MessageHelper implements
         .map(new Func1<Integer, Integer>() {
           @Override
           public Integer call(Integer integer) {
-             return (int)messageDao.queryBuilder()
+             return (int) messageDao.queryBuilder()
                 .where(MessageDao.Properties.Type.eq(integer))
                 .count();
           }
@@ -88,7 +90,11 @@ public class PushHelper extends MessageHelper implements
           @Override
           public void call(Integer result) {
             mTotalMsgCount = result;
-            mTotalMsgPageCount = mTotalMsgCount / MESSAGE_NUM_EVERY_PAGE + 1;
+            if (mTotalMsgCount % MESSAGE_NUM_EVERY_PAGE == 0) {
+              mTotalMsgPageCount = mTotalMsgCount / MESSAGE_NUM_EVERY_PAGE;
+            } else {
+              mTotalMsgPageCount = mTotalMsgCount / MESSAGE_NUM_EVERY_PAGE + 1;
+            }
             mCurrentPage = mTotalMsgPageCount - 1;
             mCurrentMsgIndex = mTotalMsgCount - 1;
             loadMessage();
@@ -142,7 +148,7 @@ public class PushHelper extends MessageHelper implements
               ToastUtil.TextToast("暂无历史消息");
               return;
             }
-            messageList.addAll(messages);
+            messageList.addAll(0, messages);
             adapter.notifyDataSetChanged();
             if (mCurrentPage > 0) {
               mCurrentPage -= 1;
@@ -171,7 +177,17 @@ public class PushHelper extends MessageHelper implements
 
   @Override
   public void onMessageItemClicked(int position) {
-    ToastUtil.TextToast("clicked " + position);
+    if (messageList == null || messageList.size() == 0 || messageList.size() < position) {
+      return;
+    }
+    Message message = messageList.get(position);
+    if (message == null) {
+      return;
+    }
+    Intent intent = new Intent(context, SystemWebActivity.class);
+    intent.putExtra(Conf.MESSAGE_URL, message.getUrl());
+    intent.putExtra(Conf.MESSAGE_TITLE, message.getTitle());
+    context.startActivity(intent);
   }
 
   @Override

@@ -80,8 +80,10 @@ public class GuideController extends ActivityController implements ViewPager.OnP
   @Override
   public void onPageSelected(int position) {
     if (2 == position) {
+      mIndicatorParent.setVisibility(View.GONE);
       mSkip.setVisibility(View.GONE);
     } else {
+      mIndicatorParent.setVisibility(View.VISIBLE);
       mSkip.setVisibility(View.VISIBLE);
     }
     mIndicators.get(mCurrentIndex).setEnabled(true);

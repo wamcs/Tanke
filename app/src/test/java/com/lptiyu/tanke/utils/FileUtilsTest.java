@@ -35,24 +35,8 @@ public class FileUtilsTest {
 
   @Test
   public void testTime() {
-    String dateStr = "2015-09-27 12:15:31";
-    try {
-      // 用parse方法，可能会异常，所以要try-catch
-      Date date = TimeUtils.totalFormat.parse(dateStr);
-      // 获取日期实例
-      Calendar calendar = Calendar.getInstance();
-      // 将日历设置为指定的时间
-      calendar.setTime(date);
-      // 获取年
-      int year = calendar.get(Calendar.YEAR);
-      // 这里要注意，月份是从0开始。
-      int month = calendar.get(Calendar.MONTH);
-      // 获取天
-      int day = calendar.get(Calendar.DAY_OF_MONTH);
-
-    } catch (ParseException e) {
-      e.printStackTrace();
-    }
+    Long time = Long.valueOf("1466162339");
+    System.out.println(TimeUtils.parseCompleteTime(time));
   }
 
 }

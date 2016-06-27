@@ -6,6 +6,7 @@ import android.text.Spanned;
 import android.text.style.URLSpan;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -34,9 +35,11 @@ public class MessageBaseAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
   class MessageViewHolder extends RecyclerView.ViewHolder {
 
     @BindView(R.id.message_item_image_view)
-    RoundedImageView mImage;
+    ImageView mImage;
     @BindView(R.id.message_item_title)
     CustomTextView mTitle;
+    @BindView(R.id.message_item_time)
+    CustomTextView mTime;
     @BindView(R.id.message_item_content)
     CustomTextView mContent;
 

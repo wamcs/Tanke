@@ -14,6 +14,8 @@ import com.lptiyu.tanke.utils.TimeUtils;
 
 import java.util.List;
 
+import timber.log.Timber;
+
 
 /**
  * author:wamcs
@@ -26,6 +28,8 @@ public class PushAdapter extends MessageBaseAdapter {
 
   private static final int VIEW_TYPE_TIME = 1;
   private static final int VIEW_TYPE_MESSAGE = 2;
+  private static final int VIEW_TYPE_LOADING_MORE = 3;
+
   private long currentTime;
   private Context context;
 
@@ -66,6 +70,7 @@ public class PushAdapter extends MessageBaseAdapter {
         MessageViewHolder holder2 = (MessageViewHolder) holder;
         Glide.with(context).load(message.getImage()).error(R.mipmap.need_to_remove_4_so_big).into(holder2.mImage);
         holder2.mTitle.setText(message.getTitle());
+        holder2.mTime.setText(TimeUtils.parseCompleteTime(message.getTime()));
         holder2.mContent.setText(Html.fromHtml(Html.fromHtml(message.getAlert()).toString()));
         break;
     }

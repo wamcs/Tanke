@@ -81,12 +81,14 @@ public class TimeUtils {
   }
 
   public static String parseCompleteTime(long time) {
-    Date date = new Date(time);
+    Long timestamp = Long.parseLong(String.valueOf(time)) * 1000;
+    Date date = new Date(timestamp);
     return dateFormatter.format(date);
   }
 
   public static String parsePartTime(long time) {
-    Date data = new Date(time);
+    Long timestamp = Long.parseLong(String.valueOf(time)) * 1000;
+    Date data = new Date(timestamp);
     return timeFormatter2.format(data);
   }
 
@@ -148,12 +150,6 @@ public class TimeUtils {
 
     return result;
   }
-
-  public static String parseTimeForMessageSystem(long timeStamp) {
-    Date date = new Date(timeStamp);
-    return "昨天21:34";
-  }
-
 
   public static String formatHourMinute(String content) {
     Date parsed = parseTime(content);

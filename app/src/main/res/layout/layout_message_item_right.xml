@@ -2,49 +2,54 @@
 <RelativeLayout
     android:id="@+id/layout_message_item_right_root"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/shadow_message"
->
-
-    <com.makeramen.roundedimageview.RoundedImageView
-        android:id="@+id/message_item_image_view"
-        android:layout_width="match_parent"
-        android:layout_height="150dp"
-        android:scaleType="centerCrop"
-        android:src="@mipmap/need_to_remove_4_so_big"
-        app:riv_corner_radius_bottom_left="0dp"
-        app:riv_corner_radius_bottom_right="0dp"
-        app:riv_corner_radius_top_left="5dp"
-        app:riv_corner_radius_top_right="5dp"
-    />
+    android:layout_marginBottom="@dimen/message_item_right_margin_top_bottom"
+    android:layout_marginLeft="@dimen/message_item_right_margin_left_right"
+    android:layout_marginRight="@dimen/message_item_right_margin_left_right"
+    android:layout_marginTop="@dimen/message_item_right_margin_top_bottom"
+    android:background="@drawable/message_item_right_bg_style">
 
     <com.lptiyu.tanke.widget.CustomTextView
         android:id="@+id/message_item_title"
         style="@style/TextAppearance.UserCenter.middle"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/message_item_image_view"
-        android:padding="10dp"
+        android:layout_marginTop="7dp"
+        android:layout_marginLeft="@dimen/message_item_title_margin_left"
+        android:padding="@dimen/message_item_title_padding"
         android:text="阅读原文"/>
 
-    <View
-        android:layout_below="@id/message_item_title"
+    <com.lptiyu.tanke.widget.CustomTextView
+        android:id="@+id/message_item_time"
+        style="@style/TextAppearance.UserCenter.small"
         android:layout_width="wrap_content"
-        android:layout_height="@dimen/user_center_linear_layout_bottom_line_height"
-        android:background="@color/user_center_split_line"/>
+        android:layout_height="wrap_content"
+        android:layout_below="@id/message_item_title"
+        android:layout_marginLeft="@dimen/message_item_time_margin_left"
+        android:padding="@dimen/message_item_time_padding"
+        android:text="6月25日"/>
+
+    <ImageView
+        android:id="@+id/message_item_image_view"
+        android:layout_width="match_parent"
+        android:scaleType="centerCrop"
+        android:layout_below="@id/message_item_time"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:src="@mipmap/need_to_remove_4_so_big"
+        android:layout_height="@dimen/message_item_right_imageview_height"/>
 
     <com.lptiyu.tanke.widget.CustomTextView
         android:id="@+id/message_item_content"
         style="@style/TextAppearance.UserCenter.small"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/message_item_title"
-        android:paddingTop="5dp"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        android:paddingBottom="5dp"
+        android:layout_marginBottom="7dp"
+        android:layout_marginTop="7dp"
+        android:layout_alignLeft="@id/message_item_title"
+        android:layout_below="@id/message_item_image_view"
+        android:padding="@dimen/message_item_content_padding"
         android:text="测试"
     />
 

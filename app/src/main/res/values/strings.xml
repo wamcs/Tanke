@@ -52,6 +52,9 @@
     <!-- MessageActivity Text Area-->
     <string name="message_type_system">系统推送</string>
 
+    <!-- SystemWebActivity Text Area-->
+    <string name="system_web_activity">系统消息</string>
+
     <!--SettingActivity Text Area-->
     <string name="setting">设置</string>
     <string name="setting_activity_set_account">账号设置</string>
@@ -138,7 +141,8 @@
     <string name="complete_person_num_formatter" formatted="false">%d人已完成</string>
     <string name="complete_consuming_time_formatter" formatted="false">%d分%d秒</string>
     <string name="complete_time_formatter" formatted="false">%04d.%02d.%02d %02d:%02d</string>
-    <string name="complete_time_without_year_formatter" formatted="false">%02d.%02d %02d:%02d</string>
+    <string name="complete_time_without_year_formatter" formatted="false">%02d.%02d %02d:%02d
+    </string>
     <string name="get_exp_formatter" formatted="false">获得%d经验值</string>
     <string name="scan_task">扫码任务</string>
     <string name="locate_task">定位任务</string>
@@ -146,7 +150,7 @@
     <string name="distinguish_task">扫描任务</string>
     <string name="timing_task">定时任务</string>
     <string name="finish_task">结束任务</string>
-    <string name="consume_time">总共用时 : </string>
+    <string name="consume_time">总共用时 :</string>
 
 
     <!-- Protocol Activity Text Area-->
@@ -189,7 +193,8 @@
     <string name="task_num">任务完成</string>
     <string name="get_exp">获得经验</string>
     <string name="meter">米</string>
-    <string name="game_share_form_game_finished_num_formatter" formatter="false">有%d支队伍完成了比赛</string>
+    <string name="game_share_form_game_finished_num_formatter" formatter="false">有%d支队伍完成了比赛
+    </string>
     <string name="game_share_minute">分钟</string>
     <string name="game_share_distance">公里</string>
     <string name="task_unit">个任务</string>

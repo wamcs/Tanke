@@ -22,7 +22,6 @@ import com.lptiyu.tanke.io.net.HttpService;
 import com.lptiyu.tanke.io.net.Response;
 import com.lptiyu.tanke.messagesystem.adpater.MessageListAdapter;
 import com.lptiyu.tanke.pojo.MessageEntity;
-import com.lptiyu.tanke.utils.TimeUtils;
 import com.lptiyu.tanke.utils.ToastUtil;
 
 import java.util.List;
@@ -33,6 +32,7 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
+import timber.log.Timber;
 
 /**
  * author:wamcs
@@ -88,15 +88,16 @@ public class MessageListFragment extends BaseFragment implements
               return null;
             }
             // add official msg to message table
-            Message message = new Message();
             MessageDao messageDao = DBHelper.getInstance().getPushMessageDao();
             for (MessageEntity me : serverMessageDatas) {
+              Message message = new Message();
               message.setId(me.getId());
-              message.setType(Conf.MESSAGE_LIST_TYPE_OFFICIAL);
-              message.setImage(me.getImgUrl());
               message.setTitle(me.getTitle());
+              message.setImage(me.getImgUrl());
               message.setAlert(me.getContent());
-              message.setTime(TimeUtils.parseDate(me.getCreateTime(), TimeUtils.totalFormat).getTime());
+              message.setUrl(me.getUrl());
+              message.setTime(me.getCreateTime());
+              message.setType(Conf.MESSAGE_LIST_TYPE_OFFICIAL);
               messageDao.insertOrReplace(message);
             }
 
@@ -108,7 +109,7 @@ public class MessageListFragment extends BaseFragment implements
             result.setContent(lastMsg.getContent());
             result.setUserId(Conf.MESSAGE_LIST_USERID_OFFICIAL);
             result.setType(Conf.MESSAGE_LIST_TYPE_OFFICIAL);
-            result.setTime(TimeUtils.parseDate(lastMsg.getCreateTime(), TimeUtils.totalFormat).getTime());
+            result.setTime(lastMsg.getCreateTime());
             return result;
           }
         })
@@ -127,6 +128,7 @@ public class MessageListFragment extends BaseFragment implements
             isRefreshing = false;
             swipeRefreshLayout.setRefreshing(false);
             ToastUtil.TextToast("获取消息失败");
+            Timber.e(throwable, "here");
           }
         });
   }

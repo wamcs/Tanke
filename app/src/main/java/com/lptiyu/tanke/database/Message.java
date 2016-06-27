@@ -13,6 +13,7 @@ public class Message {
     private Long time;
     private Integer type;
     private String image;
+    private String url;
 
     public Message() {
     }
@@ -21,13 +22,14 @@ public class Message {
         this.id = id;
     }
 
-    public Message(Long id, String alert, String title, Long time, Integer type, String image) {
+    public Message(Long id, String alert, String title, Long time, Integer type, String image, String url) {
         this.id = id;
         this.alert = alert;
         this.title = title;
         this.time = time;
         this.type = type;
         this.image = image;
+        this.url = url;
     }
 
     public Long getId() {
@@ -78,6 +80,14 @@ public class Message {
 
     public void setImage(String image) {
         this.image = image;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
     }
 
 }

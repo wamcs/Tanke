@@ -63,7 +63,6 @@
     <!-- LoginEditText colors-->
     <color name="custom_edit_color">#7c99d6</color>
 
-
     <!-- LoginActivity colors-->
     <color name="login_activity_title_color">#769df6</color>
 
@@ -81,8 +80,10 @@
     <color name="complete_female_button_bg_color">#ff546d</color>
     <color name="complete_item_title_color">#d9e2f6</color>
 
-    <!-- messageActivity colors-->
+    <!-- MessageActivity colors-->
     <color name="message_text_bg_color">#e1e3e9</color>
+    <color name="message_activity_bg_color">#e8e8e8</color>
+    <color name="message_item_bg">#fdfdfd</color>
 
     <!-- locationActivity colors-->
     <color name="divider_color">#dddddd</color>

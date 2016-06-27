@@ -72,7 +72,6 @@
             </intent-filter>
         </activity>
         <activity android:name=".initialization.ui.GuideActivity">
-
         </activity>
         <activity android:name=".initialization.ui.CompleteInformationActivity">
         </activity>
@@ -122,7 +121,7 @@
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
 
-        <!-- 用户反馈-->
+        <!-- 用户反馈 -->
         <activity android:name="com.avos.avoscloud.feedback.ThreadActivity">
         </activity>
         <activity
@@ -184,7 +183,6 @@
                 <action android:name="android.intent.action.USER_PRESENT"/>
             </intent-filter>
         </receiver>
-
         <receiver android:name=".pushreceiver.PushReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED"/>
@@ -201,6 +199,8 @@
         <activity android:name=".userCenter.UserRewardActivity">
         </activity>
         <activity android:name=".gameplaying.GameShareActivity">
+        </activity>
+        <activity android:name=".messagesystem.SystemWebActivity">
         </activity>
     </application>
 

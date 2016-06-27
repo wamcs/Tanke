@@ -3,6 +3,7 @@ package com.lptiyu.tanke.messagesystem;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import com.lptiyu.tanke.R;
 import com.lptiyu.tanke.base.controller.ActivityController;
@@ -22,9 +23,6 @@ import timber.log.Timber;
  */
 public class MessageController extends ActivityController {
 
-  @BindView(R.id.message_bottom_bar)
-  LinearLayout bottomBar;
-
   private MessageHelper helper;
 
   public MessageController(AppCompatActivity activity, View view) {
@@ -42,11 +40,9 @@ public class MessageController extends ActivityController {
     switch (type) {
       case Conf.MESSAGE_LIST_TYPE_OFFICIAL:
         helper = new PushHelper(activity, view, Conf.MESSAGE_LIST_TYPE_OFFICIAL);
-        bottomBar.setVisibility(View.GONE);
         break;
       case Conf.MESSAGE_LIST_TYPE_SYSTEM:
         helper = new PushHelper(activity, view, Conf.MESSAGE_LIST_TYPE_SYSTEM);
-        bottomBar.setVisibility(View.GONE);
         break;
     }
   }
