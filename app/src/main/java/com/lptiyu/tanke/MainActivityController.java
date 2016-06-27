@@ -1,12 +1,20 @@
 package com.lptiyu.tanke;
 
+import android.content.Context;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 
 import com.lptiyu.tanke.base.controller.ActivityController;
 import com.lptiyu.tanke.gamedisplay.GameDisplayFragment;
+import com.lptiyu.tanke.io.net.HttpService;
+import com.lptiyu.tanke.io.net.Response;
 import com.lptiyu.tanke.messagesystem.MessageListFragment;
+import com.lptiyu.tanke.update.UpdateHelper;
+import com.lptiyu.tanke.update.VersionEntity;
 import com.lptiyu.tanke.userCenter.UserCenterFragment;
 import com.lptiyu.tanke.utils.ToastUtil;
 
@@ -26,6 +34,7 @@ public class MainActivityController extends ActivityController {
   ArrayList<Fragment> fragments = new ArrayList<>(3);
 
   MainActivity activity;
+  private UpdateHelper updateHelper;
 
   private long exitTime = 0;
   int mCurrentIndex = -1;
@@ -44,6 +53,8 @@ public class MainActivityController extends ActivityController {
     fragments.add(new MessageListFragment());
     fragments.add(new UserCenterFragment());
     changeTab(0);
+    updateHelper = new UpdateHelper(getActivity());
+    updateHelper.checkForUpdate();
   }
 
   @OnClick(R.id.page_1)
@@ -104,4 +115,5 @@ public class MainActivityController extends ActivityController {
     }
     return true;
   }
+
 }

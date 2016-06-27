@@ -9,7 +9,6 @@ import com.avos.avoscloud.AVOSCloud;
 import com.avos.avoscloud.PushService;
 import com.baidu.mapapi.SDKInitializer;
 import com.facebook.drawee.backends.pipeline.Fresco;
-import com.lptiyu.tanke.base.ui.BaseActivity;
 import com.lptiyu.tanke.global.Accounts;
 import com.lptiyu.tanke.global.AppData;
 import com.lptiyu.tanke.global.Conf;
@@ -17,6 +16,10 @@ import com.lptiyu.tanke.location.LocationFileParser;
 import com.lptiyu.tanke.messagesystem.MessageActivity;
 import com.lptiyu.tanke.utils.DirUtils;
 import com.lptiyu.tanke.utils.thread;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.json.JSONTokener;
 
 import java.util.Stack;
 
@@ -37,7 +40,7 @@ public class RunApplication extends MultiDexApplication {
   @Override
   public void onCreate() {
     super.onCreate();
-    singleton=this;
+    singleton = this;
 
     MultiDex.install(this);
 
@@ -51,11 +54,13 @@ public class RunApplication extends MultiDexApplication {
       SDKInitializer.initialize(this);
       DirUtils.init(this);
       Fresco.initialize(this);
+
       if (Accounts.getInstallationId().isEmpty()) {
         String installationId = AVInstallation.getCurrentInstallation().getInstallationId();
         Accounts.setInstallationId(installationId);
         Timber.d("this device installation is %s", installationId);
       }
+
     } catch (Exception e) {
       // To test it automatically.
       Timber.e(e, e.getMessage());
@@ -77,12 +82,13 @@ public class RunApplication extends MultiDexApplication {
   /**
    * add Activity 添加Activity到栈
    */
-  public void addActivity(Activity activity){
-    if(activityStack ==null){
-      activityStack =new Stack<Activity>();
+  public void addActivity(Activity activity) {
+    if (activityStack == null) {
+      activityStack = new Stack<Activity>();
     }
     activityStack.add(activity);
   }
+
   /**
    * get current Activity 获取当前Activity（栈中最后一个压入的）
    */
@@ -90,6 +96,7 @@ public class RunApplication extends MultiDexApplication {
     Activity activity = activityStack.lastElement();
     return activity;
   }
+
   /**
    * 结束当前Activity（栈中最后一个压入的）
    */
@@ -141,4 +148,5 @@ public class RunApplication extends MultiDexApplication {
     } catch (Exception e) {
     }
   }
+
 }

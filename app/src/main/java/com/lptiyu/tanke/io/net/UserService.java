@@ -9,17 +9,21 @@ import com.lptiyu.tanke.pojo.GamePlayingEntity;
 import com.lptiyu.tanke.pojo.Reward;
 import com.lptiyu.tanke.pojo.UserDetails;
 import com.lptiyu.tanke.pojo.UserEntity;
+import com.lptiyu.tanke.update.VersionEntity;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.util.List;
 
 import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
 import retrofit2.http.GET;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
 import retrofit2.http.Query;
+import retrofit2.http.Streaming;
+import retrofit2.http.Url;
 import rx.Observable;
 
 /**
@@ -276,6 +280,10 @@ public interface UserService {
       @Query("uid") long uid,
       @Query("token") String token,
       @Query("installation_id") String installationId
+  );
+
+  @GET("System/index")
+  Observable<Response<VersionEntity>> getAppVersion(
   );
 
 }

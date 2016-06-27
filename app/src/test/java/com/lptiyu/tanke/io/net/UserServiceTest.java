@@ -19,7 +19,10 @@ import java.io.File;
 
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
+import retrofit2.Call;
 import rx.functions.Action1;
+import timber.log.Timber;
 
 /**
  * EMAIL : danxionglei@foxmail.com
@@ -246,6 +249,25 @@ public class UserServiceTest {
   public void testRegisterInstallation() throws Exception {
     userService.registerInstallation(UID, TOKEN, "i12303234")
         .subscribe(new ResponseAction1(), new AssertNullAction1());
+  }
+
+  @Test
+  public void testGetAppVersion() throws Exception {
+    userService.getAppVersion()
+    .subscribe(new ResponseAction1(), new AssertNullAction1());
+  }
+
+  @Test
+  public void testDownloadApk() throws Exception {
+    userService.downloadApk("http://115.156.188.230/d2.eoemarket.com/app0/135/135199/apk/1482208.apk?channel_id=426")
+    .subscribe(new Action1<retrofit2.Response<ResponseBody>>() {
+      @Override
+      public void call(retrofit2.Response<ResponseBody> responseBodyResponse) {
+
+        Timber.e("isSuccess : " + responseBodyResponse.isSuccessful());
+
+      }
+    }, new AssertNullAction1());
   }
 
 }
