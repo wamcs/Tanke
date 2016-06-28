@@ -187,13 +187,14 @@ public class UserServiceTest {
   // 2.33 完善用户信息接口
   @Test
   public void testResetUserDetailsAll() {
-    userService.resetUserDetailsAll(UID, TOKEN,
-        "雷丹雄",
-        "1994-12-12",
+    userService.resetUserDetailsAll(10008, TOKEN,
+        ":-)",
+        "1996-02-25",
         "男",
-        "170",
-        "65",
-        "武汉"
+        "180",
+        "60",
+        "北京",
+        "http://api.lptiyu.com/run/Public/Upload/pic/backimg/2016-06-23/thumb_576c04742bdfe.jpg"
         ).subscribe(new ResponseAction1(), new AssertNullAction1());
   }
 
@@ -255,19 +256,6 @@ public class UserServiceTest {
   public void testGetAppVersion() throws Exception {
     userService.getAppVersion()
     .subscribe(new ResponseAction1(), new AssertNullAction1());
-  }
-
-  @Test
-  public void testDownloadApk() throws Exception {
-    userService.downloadApk("http://115.156.188.230/d2.eoemarket.com/app0/135/135199/apk/1482208.apk?channel_id=426")
-    .subscribe(new Action1<retrofit2.Response<ResponseBody>>() {
-      @Override
-      public void call(retrofit2.Response<ResponseBody> responseBodyResponse) {
-
-        Timber.e("isSuccess : " + responseBodyResponse.isSuccessful());
-
-      }
-    }, new AssertNullAction1());
   }
 
 }

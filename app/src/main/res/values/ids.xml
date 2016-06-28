@@ -57,7 +57,6 @@
     <!-- Protocol Activity Ids Area-->
     <item name="protocol_last_button" type="id"/>
     <item name="protocol_web_view" type="id"/>
-    <item name="protocol_next_button" type="id"/>
 
     <!-- message activity ids area-->
     <item name="message_recycler_view" type="id"/>

@@ -120,8 +120,6 @@ public class GameDetailsController extends ActivityController {
     } else {
       mTextTeamType.setText(String.format(getString(R.string.team_game_formatter), entity.getMinNum()));
     }
-
-    //TODO : Html image getter
     mTextGameIntro.setText(Html.fromHtml(Html.fromHtml(entity.getGameIntro()).toString()));
     mTextRule.setText(Html.fromHtml(Html.fromHtml(entity.getRule()).toString()));
 
@@ -226,21 +224,20 @@ public class GameDetailsController extends ActivityController {
    * @param gameId target game
    */
   private void isGameFinishedFromServer(long gameId) {
+    final long gameIdInner = gameId;
     HttpService.getGameService()
         .getRunningRecords(Accounts.getId(), gameId, mGameDetailsEntity.getType().value)
         .map(new Func1<Response<List<RunningRecord>>, Boolean>() {
           @Override
           public Boolean call(Response<List<RunningRecord>> listResponse) {
-            if (listResponse == null || listResponse.getStatus() != 1) {
+            if (listResponse == null || listResponse.getStatus() == 0) {
               return false;
             }
             List<RunningRecord> records = listResponse.getData();
             if (records == null || records.size() == 0) {
               return false;
             }
-
-            Timber.e(AppData.globalGson().toJson(records));
-
+            RecordsUtils.cacheServerRecordsInLocal(gameIdInner, records);
             for (RunningRecord record : records) {
               if (record.getState() == RunningRecord.RECORD_TYPE.GAME_FINISH) {
                 return true;
@@ -259,6 +256,11 @@ public class GameDetailsController extends ActivityController {
             } else {
               mTextEnsure.setText(getString(R.string.enter_game_play));
             }
+          }
+        }, new Action1<Throwable>() {
+          @Override
+          public void call(Throwable throwable) {
+            Timber.e(throwable, "here");
           }
         });
   }

@@ -65,7 +65,7 @@ public class ThirdLoginHelper implements PlatformActionListener {
   private void getQzoneUserInformation(HashMap<String, Object> hashMap) {
     Muser.setNickname(hashMap.get("nickname").toString());
     Muser.setSex(hashMap.get("gender").toString());
-    Muser.setAddress(hashMap.get("figureurl_qq_1").toString());
+    Muser.setAvatar(hashMap.get("figureurl_qq_1").toString());
   }
 
   private void getWeiboUserInformation(HashMap<String, Object> hashMap) {
@@ -78,7 +78,7 @@ public class ThirdLoginHelper implements PlatformActionListener {
         Muser.setSex("女");
         break;
     }
-    Muser.setAddress(hashMap.get("avatar_hd").toString());
+    Muser.setAvatar(hashMap.get("avatar_hd").toString());
 
   }
 
@@ -94,7 +94,7 @@ public class ThirdLoginHelper implements PlatformActionListener {
         break;
 
     }
-    Muser.setAddress(hashMap.get("headimgurl").toString());
+    Muser.setAvatar(hashMap.get("headimgurl").toString());
   }
 
   public void login(String id, int platformType) {

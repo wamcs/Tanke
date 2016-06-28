@@ -123,6 +123,7 @@ public interface GameService {
   Observable<Response<Void>> uploadTeamGameRecords(
       @Query("uid") long uid,
       @Query("token") String token,
+      @Query("index") int index,
       @Query("game_id") long gameId,
       @Query("ranks_id") long rankId,
       @Query("point_id") long pointId,

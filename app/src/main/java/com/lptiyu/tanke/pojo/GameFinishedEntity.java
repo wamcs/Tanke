@@ -18,8 +18,13 @@ public class GameFinishedEntity {
   @SerializedName("name")
   String name;
 
-  @SerializedName("time")
-  int time; //秒
+  @SerializedName("start_time")
+  String startTime;
+
+  @SerializedName("end_time")
+  String endTime;
+
+  int type;
 
   @SerializedName("values")
   int expPoints;
@@ -48,12 +53,28 @@ public class GameFinishedEntity {
     this.name = name;
   }
 
-  public int getTime() {
-    return time;
+  public String getStartTime() {
+    return startTime;
   }
 
-  public void setTime(int time) {
-    this.time = time;
+  public void setStartTime(String startTime) {
+    this.startTime = startTime;
+  }
+
+  public String getEndTime() {
+    return endTime;
+  }
+
+  public void setEndTime(String endTime) {
+    this.endTime = endTime;
+  }
+
+  public int getType() {
+    return type;
+  }
+
+  public void setType(int type) {
+    this.type = type;
   }
 
   public int getExpPoints() {

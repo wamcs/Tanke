@@ -95,9 +95,8 @@ public class RegisterHelper extends SignUpHelper {
               UserEntity entity = userEntityResponse.getData();
               Accounts.setId(entity.getUid());
               Accounts.setToken(entity.getToken());
-              //Accounts.setPhoneNumber(entity.getPhone());
+              Accounts.setPhoneNumber(entity.getPhone());
               Intent intent = new Intent();
-//              intent.setClass(context, MainActivity.class);
               intent.setClass(context, CompleteInformationActivity.class);
               context.startActivity(intent);
             }
@@ -118,9 +117,8 @@ public class RegisterHelper extends SignUpHelper {
               UserEntity entity = userEntityResponse.getData();
               Accounts.setId(entity.getUid());
               Accounts.setToken(entity.getToken());
-              //Accounts.setPhoneNumber(entity.getPhone());
+              Accounts.setPhoneNumber(entity.getPhone());
               Intent intent = new Intent();
-//              intent.setClass(context, MainActivity.class);
               intent.setClass(context, CompleteInformationActivity.class);
               context.startActivity(intent);
             }

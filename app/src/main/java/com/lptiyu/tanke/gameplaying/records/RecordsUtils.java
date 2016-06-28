@@ -132,6 +132,16 @@ public class RecordsUtils {
     return ((record != null) && (record.getState() == RunningRecord.RECORD_TYPE.GAME_FINISH));
   }
 
+  public static void cacheServerRecordsInLocal(long gameId, List<RunningRecord> records) {
+    if (gameId == Long.MIN_VALUE) {
+      Timber.d("ActivityID is null or is empty string.");
+      return;
+    }
+    // Now you have the ref of the records in disk.
+    DiskRecords diskRecords = new DiskRecords(DiskRecords.generateFile(gameId));
+    diskRecords.appendRecords(records);
+  }
+
   public static RecordsHandler getmRecordsHandler() {
     return mRecordsHandler;
   }

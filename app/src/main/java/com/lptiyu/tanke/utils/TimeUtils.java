@@ -13,6 +13,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
+import timber.log.Timber;
+
 /**
  * author:wamcs
  * date:2016/5/25
@@ -90,6 +92,16 @@ public class TimeUtils {
     Long timestamp = Long.parseLong(String.valueOf(time)) * 1000;
     Date data = new Date(timestamp);
     return timeFormatter2.format(data);
+  }
+
+  public static String getConsumingTime(long time) {
+
+    Timber.e("time : %d", time);
+
+    long hour = time / ONE_HOUR_TIME;
+    long minute = (time - hour * ONE_HOUR_TIME) / ONE_MINUTE_TIME;
+    String formatter = AppData.getContext().getString(R.string.complete_game_consuming_time_formatter);
+    return String.format(formatter, hour, minute);
   }
 
 

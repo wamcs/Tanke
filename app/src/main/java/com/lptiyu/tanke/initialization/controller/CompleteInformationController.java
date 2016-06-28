@@ -45,6 +45,8 @@ import java.io.File;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
 import rx.Scheduler;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
@@ -97,6 +99,7 @@ public class CompleteInformationController extends ActivityController implements
   private City city;
 
   private int mUserGender;
+  private File mImageFile;
   private UserDetails mUserDetails;
   private boolean isAvatarSet;
 
@@ -292,10 +295,41 @@ public class CompleteInformationController extends ActivityController implements
       mUserDetails.setNickname(mNicknameText.getText().toString());
     }
 
+    if (mImageFile != null) {
+      HttpService.getUserService().
+          uploadUserAvatar(Accounts.getId(), Accounts.getToken(), RequestBody.create(MediaType.parse("multipart/form-data"), mImageFile))
+          .subscribeOn(Schedulers.io())
+          .observeOn(AndroidSchedulers.mainThread())
+          .subscribe(new Action1<Response<String>>() {
+            @Override
+            public void call(Response<String> stringResponse) {
+              if (stringResponse == null) {
+                return;
+              }
+              mUserDetails.setAvatar(stringResponse.getData());
+              uploadAllUserInfo();
+            }
+          }, new Action1<Throwable>() {
+            @Override
+            public void call(Throwable throwable) {
+            }
+          });
+    } else {
+      uploadAllUserInfo();
+    }
+  }
 
+  private void locate() {
+    client = new LocationClient(getContext());
+    initLocation();
+    client.registerLocationListener(this);
+    client.start();
+  }
+
+  private void uploadAllUserInfo() {
     HttpService.getUserService().resetUserDetailsAll(Accounts.getId(), Accounts.getToken(),
         mUserDetails.getNickname(), mUserDetails.getBirthday(), mUserGender == 1 ? "男" : "女",
-        mUserDetails.getHeight(), mUserDetails.getWeight(), mUserDetails.getAddress())
+        mUserDetails.getHeight(), mUserDetails.getWeight(), mUserDetails.getAddress(), mUserDetails.getAvatar())
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
         .subscribe(new Action1<Response<Void>>() {
@@ -320,15 +354,6 @@ public class CompleteInformationController extends ActivityController implements
             Timber.e(throwable.toString());
           }
         });
-
-    //TODO:user avatar
-  }
-
-  private void locate() {
-    client = new LocationClient(getContext());
-    initLocation();
-    client.registerLocationListener(this);
-    client.start();
   }
 
   private void initLocation() {
@@ -346,7 +371,6 @@ public class CompleteInformationController extends ActivityController implements
     option.setEnableSimulateGps(false);//可选，默认false，设置是否需要过滤gps仿真结果，默认需要
     client.setLocOption(option);
   }
-
 
   @Override
   protected boolean isToolbarEnable() {
@@ -407,6 +431,7 @@ public class CompleteInformationController extends ActivityController implements
           ImagePipeline pipeline = Fresco.getImagePipeline();
           pipeline.evictFromCache(Uri.fromFile(file));
           mAvatarImageView.setImageURI(Uri.fromFile(file));
+          mImageFile = file;
           isAvatarSet = true;
         }
       });

@@ -36,6 +36,8 @@ import com.lptiyu.tanke.gameplaying.task.GameTaskActivity;
 import com.lptiyu.tanke.global.Accounts;
 import com.lptiyu.tanke.global.AppData;
 import com.lptiyu.tanke.global.Conf;
+import com.lptiyu.tanke.io.net.HttpService;
+import com.lptiyu.tanke.io.net.Response;
 import com.lptiyu.tanke.permission.PermissionDispatcher;
 import com.lptiyu.tanke.permission.TargetMethod;
 import com.lptiyu.tanke.trace.tracing.ITracingHelper;
@@ -53,6 +55,10 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
+import rx.functions.Func1;
+import rx.schedulers.Schedulers;
 import timber.log.Timber;
 
 /**

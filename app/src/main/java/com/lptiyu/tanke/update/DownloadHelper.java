@@ -1,12 +1,17 @@
 package com.lptiyu.tanke.update;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 
+import com.lptiyu.tanke.RunApplication;
 import com.lptiyu.tanke.global.AppData;
+import com.lptiyu.tanke.io.net.HttpService;
 import com.lptiyu.tanke.utils.DirUtils;
+import com.lptiyu.tanke.utils.NetworkUtil;
 import com.lptiyu.tanke.utils.ToastUtil;
 
 import java.io.File;
@@ -15,7 +20,6 @@ import java.lang.ref.WeakReference;
 
 import okhttp3.OkHttpClient;
 import okhttp3.ResponseBody;
-import okhttp3.logging.HttpLoggingInterceptor;
 import okio.BufferedSink;
 import okio.Okio;
 import retrofit2.Response;
@@ -28,7 +32,6 @@ import retrofit2.http.Url;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.exceptions.Exceptions;
-import rx.functions.Action0;
 import rx.functions.Action1;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
@@ -42,12 +45,15 @@ import timber.log.Timber;
 public class DownloadHelper implements
     DownloadProgressInterceptor.DownloadProgressListener {
 
+  private AlertDialog mNetworkDialog;
   private ProgressDialog mDownloadDialog;
 
   private DownloadApi downloadApi;
   private WeakReference<Context> weakReference;
+  private String apkUrl;
 
   private static final double ONE_MILLION_BYTE = 1024 * 1024.0;
+  private static final String APK_NAME = "update.apk";
 
   public DownloadHelper(Context context) {
     weakReference = new WeakReference<>(context);
@@ -56,16 +62,18 @@ public class DownloadHelper implements
   }
 
   public void startDownload(String url) {
+    apkUrl = url;
+    if (!NetworkUtil.isWlanAvailable()) {
+      showNetworkDialog();
+      return;
+    }
     if (!mDownloadDialog.isShowing()) {
       mDownloadDialog.show();
     }
-    downloadApi.downloadApk(url).map(new Func1<Response<ResponseBody>, File>() {
+    downloadApi.downloadApk(apkUrl).map(new Func1<Response<ResponseBody>, File>() {
       @Override
       public File call(Response<ResponseBody> response) {
-
-        Timber.e(AppData.globalGson().toJson(response.headers()));
-
-        File file = new File(DirUtils.getTempDirectory(), "update.apk");
+        File file = new File(DirUtils.getTempDirectory(), APK_NAME);
         try {
           if (!file.exists() && !file.createNewFile()) {
             throw new IOException("Create file failed.");
@@ -88,12 +96,13 @@ public class DownloadHelper implements
         .subscribe(new Action1<File>() {
           @Override
           public void call(File file) {
+            mDownloadDialog.setMessage("下载完成");
             update(file);
-            mDownloadDialog.dismiss();
           }
         }, new Action1<Throwable>() {
           @Override
           public void call(Throwable throwable) {
+            Timber.e(throwable, "ehre");
             ToastUtil.TextToast("下载出错");
           }
         });
@@ -120,19 +129,12 @@ public class DownloadHelper implements
 
   private void initRetrofit() {
     OkHttpClient.Builder httpClientBuilder = new OkHttpClient.Builder();
-    HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor(new HttpLoggingInterceptor.Logger() {
-      @Override
-      public void log(String message) {
-        System.out.println("message = " + message);
-      }
-    });
-    interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
     httpClientBuilder.addNetworkInterceptor(new DownloadProgressInterceptor(this));
     Retrofit retrofit = new Retrofit.Builder()
         .client(httpClientBuilder.build())
         .addConverterFactory(GsonConverterFactory.create(AppData.globalGson()))
         .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
-        .baseUrl("http://115.156.188.230/d2.eoemarket.com/")
+        .baseUrl(HttpService.BASE_URL)
         .build();
     downloadApi = retrofit.create(DownloadApi.class);
   }
@@ -145,6 +147,22 @@ public class DownloadHelper implements
       mDownloadDialog.setMessage("正在下载，请稍后...");
       mDownloadDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
       mDownloadDialog.setCancelable(false);
+    }
+  }
+
+  private void showNetworkDialog() {
+    if (mNetworkDialog == null) {
+      mNetworkDialog = new AlertDialog.Builder(weakReference.get())
+          .setTitle("WLAN未连接")
+          .setCancelable(false)
+          .setMessage("为了节省您的流量，请连接wifi之后再试试吧:-)")
+          .setPositiveButton("好的", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+              RunApplication.getInstance().AppExit();
+            }
+          }).create();
+      mNetworkDialog.show();
     }
   }
 

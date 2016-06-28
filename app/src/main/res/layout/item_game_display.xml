@@ -72,6 +72,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingLeft="5dp"
+                android:maxLines="1"
                 android:textColor="@color/grey06"
                 android:textSize="@dimen/main_page_item_text_size_small"/>
         </LinearLayout>
@@ -95,6 +96,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingLeft="5dp"
+                android:maxLines="1"
                 android:textColor="@color/grey06"
                 android:textSize="@dimen/main_page_item_text_size_small"
                 />

@@ -2,6 +2,7 @@ package com.lptiyu.tanke.io.net;
 
 
 import android.support.annotation.IntDef;
+import android.support.annotation.Nullable;
 
 import com.lptiyu.tanke.pojo.GameFinishedEntity;
 import com.lptiyu.tanke.pojo.GameManageEntity;
@@ -157,7 +158,8 @@ public interface UserService {
       @Query("sex") String sex,
       @Query("height") String height,
       @Query("weight") String weight,
-      @Query("address") String address
+      @Query("address") String address,
+      @Query("pic") String imageUrl
   );
 
 
@@ -282,7 +284,7 @@ public interface UserService {
       @Query("installation_id") String installationId
   );
 
-  @GET("System/index")
+  @GET("System/update")
   Observable<Response<VersionEntity>> getAppVersion(
   );
 

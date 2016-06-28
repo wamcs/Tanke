@@ -35,38 +35,8 @@
         android:id="@id/protocol_web_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/protocol_next_button"
         android:layout_below="@+id/RelativeLayout">
 
     </WebView>
-
-    <LinearLayout
-        android:background="@drawable/gradient_rect_style"
-        android:id="@id/protocol_next_button"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/protocol_next_button_height"
-        android:orientation="vertical"
-        android:layout_alignParentBottom="true">
-
-        <com.lptiyu.tanke.widget.CustomTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/next"
-            android:textSize="@dimen/protocol_next_button_text_size"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="13dp"
-            android:textColor="@color/white10"
-            />
-
-        <com.lptiyu.tanke.widget.CustomTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/ps"
-            android:textSize="@dimen/protocol_ps_text_size"
-            android:paddingTop="5dp"
-            android:layout_gravity="center_horizontal"
-            android:textColor="@color/white10"
-            />
-    </LinearLayout>
 
 </RelativeLayout>

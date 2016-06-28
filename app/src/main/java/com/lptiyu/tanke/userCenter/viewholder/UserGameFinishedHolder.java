@@ -11,9 +11,11 @@ import com.lptiyu.tanke.base.recyclerview.BaseViewHolder;
 import com.lptiyu.tanke.gamedetails.GameDetailsActivity;
 import com.lptiyu.tanke.global.Conf;
 import com.lptiyu.tanke.pojo.GameFinishedEntity;
+import com.lptiyu.tanke.utils.TimeUtils;
 import com.lptiyu.tanke.widget.CustomTextView;
 import com.makeramen.roundedimageview.RoundedImageView;
 
+import java.sql.Time;
 import java.util.Date;
 
 import butterknife.BindView;
@@ -62,14 +64,17 @@ public class UserGameFinishedHolder extends BaseViewHolder<GameFinishedEntity>{
     Glide.with(getContext()).load(entity.getImg()).error(R.mipmap.need_to_remove).into(mItemPicture);
     title.setText(entity.getName());
     type.setText("");
-    Date date = new Date();
-    completeTime.setText(String.format(getContext().getString(R.string.complete_time_formatter),
-        date.getYear() + 1900,
-        date.getMonth() + 1,
-        date.getDate(),
-        date.getHours(),
-        date.getMinutes()));
-    consumingTime.setText("1小时55分");
+    completeTime.setText(entity.getEndTime());
+    Date startTimeDate = TimeUtils.parseDate(entity.getStartTime(), TimeUtils.totalFormat);
+    Date endTimeDate = TimeUtils.parseDate(entity.getEndTime(), TimeUtils.totalFormat);
+    if (startTimeDate == null) {
+      startTimeDate = new Date();
+    }
+    if (endTimeDate == null) {
+      endTimeDate = new Date();
+    }
+    long consumeTime = endTimeDate.getTime() - startTimeDate.getTime();
+    consumingTime.setText(TimeUtils.getConsumingTime(consumeTime));
     exp.setText(String.format(getContext().getString(R.string.user_game_finished_get_exp_formatter), entity.getExpPoints()));
 
     mItem.setOnClickListener(new View.OnClickListener() {

@@ -47,7 +47,7 @@ public class RecordsHandler extends Handler {
 
   private DiskRecords diskRecords;
 
-  private static AtomicInteger mPointIndex = new AtomicInteger(0);
+  private static AtomicInteger mPointIndex = new AtomicInteger(1);
 
   //=========================  PUBLIC INTERFACE  ===============================
 
@@ -127,7 +127,7 @@ public class RecordsHandler extends Handler {
 
   private void uploadToServer(final RunningRecord record) {
     HttpService.getGameService()
-        .uploadTeamGameRecords(Accounts.getId(), Accounts.getToken(),
+        .uploadTeamGameRecords(Accounts.getId(), Accounts.getToken(), record.getIndex(),
             gameId, record.getTeamId(), record.getPointId(), record.getTaskId(),
             String.valueOf(record.getDistance()), String.valueOf(record.getX()),
             String.valueOf(record.getY()), teamId == Conf.TEMP_TEAM_ID ? GameService.USER_RECORD : GameService.TEAM_RECORD, record.getState().getType())

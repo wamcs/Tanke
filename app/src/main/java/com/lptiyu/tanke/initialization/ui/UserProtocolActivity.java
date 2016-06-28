@@ -12,20 +12,20 @@ import com.lptiyu.tanke.initialization.controller.UserProtocolController;
  * date:2016/5/19
  * email:kaili@hustunique.com
  */
-public class UserProtocolActivity extends BaseActivity{
+public class UserProtocolActivity extends BaseActivity {
 
-    ActivityController controller;
+  ActivityController controller;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_protocol);
-        controller = new UserProtocolController(this,getWindow().getDecorView());
+  @Override
+  protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    setContentView(R.layout.activity_protocol);
+    controller = new UserProtocolController(this, getWindow().getDecorView());
 
-    }
+  }
 
-    @Override
-    public ActivityController getController() {
-        return controller;
-    }
+  @Override
+  public ActivityController getController() {
+    return controller;
+  }
 }

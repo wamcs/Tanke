@@ -4,7 +4,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
-
     >
 
     <android.support.v7.widget.Toolbar
@@ -23,16 +22,15 @@
         android:background="@mipmap/img_login_backgroud"
         android:orientation="vertical">
 
-        <com.lptiyu.tanke.widget.CustomTextView
+        <ImageView
             android:id="@+id/login_activity_title"
+            android:src="@mipmap/img_splash_logo"
             android:layout_width="@dimen/login_title_size"
             android:layout_height="0dp"
+            android:padding="20dp"
             android:layout_gravity="center"
             android:layout_weight="194"
-            android:gravity="center"
-            android:text="@string/name"
-            android:textColor="@color/login_activity_title_color"
-            android:textSize="@dimen/login_title_text_size"/>
+            />
 
         <RelativeLayout
             android:id="@+id/relative_layout"

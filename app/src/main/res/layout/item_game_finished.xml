@@ -20,6 +20,8 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/image_view"
+        android:layout_alignTop="@id/image_view"
         android:layout_centerVertical="true"
         android:layout_marginLeft="@dimen/item_game_finished_content_root_margin_left"
         android:layout_toRightOf="@id/image_view"
@@ -65,9 +67,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
+                android:layout_marginLeft="@dimen/item_finished_complete_time_margin_left"
                 android:gravity="center_vertical"
                 android:padding="@dimen/item_finished_title_padding"
-                android:layout_marginLeft="@dimen/item_finished_complete_time_margin_left"
                 android:text="2016.06.21 18:36"
                 android:textColor="@color/grey06"
                 android:textSize="13sp"
@@ -85,40 +87,51 @@
 
         </LinearLayout>
 
-        <com.lptiyu.tanke.widget.CustomTextView
-            android:id="@+id/item_finished_consuming_time_pre"
-            style="@style/GameDataItemText"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_below="@id/item_game_finished_time_root"
-            android:text="用时 : "
-            android:textColor="@color/grey06"
-            android:textSize="12sp"/>
+            android:paddingLeft="3dp"
+            android:paddingTop="2dp"
+            android:paddingBottom="2dp"
+            android:layout_alignLeft="@id/item_game_finished_time_root"
+            android:orientation="horizontal">
 
-        <com.lptiyu.tanke.widget.CustomTextView
-            android:id="@+id/item_finished_consuming_time"
-            style="@style/GameDataItemText"
-            android:layout_alignTop="@id/item_finished_consuming_time_pre"
-            android:layout_toRightOf="@id/item_finished_consuming_time_pre"
-            android:text="45分钟"
-            android:textColor="@color/grey04"
-            android:textSize="12sp"/>
+            <com.lptiyu.tanke.widget.CustomTextView
+                android:id="@+id/item_finished_consuming_time_pre"
+                android:layout_gravity="center_vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="用时 : "
+                android:textColor="@color/grey06"
+                android:textSize="12sp"/>
 
-        <com.lptiyu.tanke.widget.CustomTextView
-            android:id="@+id/item_finished_exp"
-            style="@style/GameDataItemText"
-            android:layout_alignParentRight="true"
-            android:layout_alignTop="@id/item_finished_consuming_time"
-            android:text="112经验值"
-            android:textColor="@color/user_center_level_right_background_color"
-            android:textSize="12sp"/>
+            <com.lptiyu.tanke.widget.CustomTextView
+                android:id="@+id/item_finished_consuming_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="45分钟"
+                android:textColor="@color/grey04"
+                android:textSize="12sp"/>
 
-        <com.lptiyu.tanke.widget.CustomTextView
-            android:id="@+id/item_finished_exp_pre"
-            style="@style/GameDataItemText"
-            android:layout_alignTop="@id/item_finished_exp"
-            android:layout_toLeftOf="@id/item_finished_exp"
-            android:text="获得 : "
-            android:textColor="@color/grey06"
-            android:textSize="12sp"/>
+            <com.lptiyu.tanke.widget.CustomTextView
+                android:id="@+id/item_finished_exp_pre"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="获得 : "
+                android:textColor="@color/grey06"
+                android:layout_marginLeft="6dp"
+                android:textSize="12sp"/>
+
+            <com.lptiyu.tanke.widget.CustomTextView
+                android:id="@+id/item_finished_exp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="112经验值"
+                android:textColor="@color/user_center_level_right_background_color"
+                android:textSize="12sp"/>
+
+        </LinearLayout>
 
     </RelativeLayout>
 

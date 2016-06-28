@@ -51,7 +51,7 @@ public class GameDataViewHolderNormal extends BaseViewHolder<GameDataEntity> {
     taskName.setText(entity.getTaskName());
     final Context context = itemView.getContext();
 
-    String completeConsumingTimeFormatter = context.getString(R.string.complete_consuming_time_formatter);
+    String completeConsumingTimeFormatter = context.getString(R.string.complete_task_consuming_time_formatter);
     Date date = new Date(entity.getCompleteConsumingTime());
     completeConsumingTime.setText(String.format(completeConsumingTimeFormatter, date.getMinutes(), date.getSeconds()));
 

@@ -9,7 +9,6 @@ import android.content.pm.PackageManager;
 import com.lptiyu.tanke.RunApplication;
 import com.lptiyu.tanke.io.net.HttpService;
 import com.lptiyu.tanke.io.net.Response;
-import com.lptiyu.tanke.utils.ToastUtil;
 
 import java.lang.ref.WeakReference;
 
@@ -50,11 +49,7 @@ public class UpdateHelper {
             if (entity == null) {
               return null;
             }
-            VersionEntity entity1 = new VersionEntity();
-            entity1.setUrl("app0/135/135199/apk/1482208.apk?channel_id=426");
-            entity1.setVersionCode(2);
-            entity1.setVersionName("2.0.1");
-            return entity1;
+            return entity;
           }
         })
         .observeOn(AndroidSchedulers.mainThread())
@@ -98,7 +93,6 @@ public class UpdateHelper {
             @Override
             public void onClick(DialogInterface dialog, int which) {
               downloadHelper.startDownload(apkUrl);
-              dialog.dismiss();
             }
           })
           .setNegativeButton("取消", new DialogInterface.OnClickListener() {

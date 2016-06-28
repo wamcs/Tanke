@@ -139,7 +139,7 @@
 
     <!-- GameDataActivity Text Area-->
     <string name="complete_person_num_formatter" formatted="false">%d人已完成</string>
-    <string name="complete_consuming_time_formatter" formatted="false">%d分%d秒</string>
+    <string name="complete_task_consuming_time_formatter" formatted="false">%d分%d秒</string>
     <string name="complete_time_formatter" formatted="false">%04d.%02d.%02d %02d:%02d</string>
     <string name="complete_time_without_year_formatter" formatted="false">%02d.%02d %02d:%02d
     </string>
@@ -242,5 +242,7 @@
 
     <!-- UserGameFinishedList Text Area-->
     <string name="user_game_finished_get_exp_formatter">%d经验值</string>
+    <string name="complete_game_consuming_time_formatter" formatted="false">%d小时%d分钟</string>
+
 
 </resources>
