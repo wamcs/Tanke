@@ -24,6 +24,7 @@ import com.lptiyu.tanke.pojo.GameDataEntity;
 import com.lptiyu.tanke.pojo.GameDataFinishEntity;
 import com.lptiyu.tanke.pojo.GameDataNormalEntity;
 import com.lptiyu.tanke.pojo.GameDataStartEntity;
+import com.lptiyu.tanke.pojo.GameDetailsEntity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -53,6 +54,7 @@ public class GameDataController extends BaseListActivityController<GameDataEntit
   RecyclerView mRecyclerView;
 
   private long gameId;
+  private GameDetailsEntity mGameDetailsEntity;
 
   private GameDataNormalEntity.Builder gameDataEntityBuilder;
 
@@ -86,6 +88,7 @@ public class GameDataController extends BaseListActivityController<GameDataEntit
   private void checkAndResumeGameData() {
     Intent intent = getIntent();
     gameId = intent.getLongExtra(Conf.GAME_ID, Long.MIN_VALUE);
+    mGameDetailsEntity = intent.getParcelableExtra(Conf.GAME_DETAIL);
     gameDataEntities = new ArrayList<>();
     gameDataEntityBuilder = new GameDataNormalEntity.Builder();
     mPoints = intent.getParcelableArrayListExtra(Conf.GAME_POINTS);
@@ -212,6 +215,9 @@ public class GameDataController extends BaseListActivityController<GameDataEntit
               pointMap.put(p.getId(), p);
             }
             resumeGameData();
+            gameDataStartEntity.setGameImage(mGameDetailsEntity.getImg());
+            gameDataStartEntity.setGameLoc(mGameDetailsEntity.getArea());
+            gameDataStartEntity.setGameTitle(mGameDetailsEntity.getTitle());
             mAdapter.bindStartEntityAndFinishEntity(gameDataStartEntity, gameDataFinishEntity);
             return gameDataEntities;
           }

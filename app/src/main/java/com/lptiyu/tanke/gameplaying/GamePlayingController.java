@@ -40,6 +40,7 @@ import com.lptiyu.tanke.io.net.HttpService;
 import com.lptiyu.tanke.io.net.Response;
 import com.lptiyu.tanke.permission.PermissionDispatcher;
 import com.lptiyu.tanke.permission.TargetMethod;
+import com.lptiyu.tanke.pojo.GameDetailsEntity;
 import com.lptiyu.tanke.trace.tracing.ITracingHelper;
 import com.lptiyu.tanke.trace.tracing.TracingCallback;
 import com.lptiyu.tanke.trace.tracing.TracingHelper;
@@ -90,6 +91,7 @@ public class GamePlayingController extends ActivityController implements
   int currentAttackPointIndex = 0;
   Point currentAttackPoint;
   List<Point> mPoints;
+  GameDetailsEntity mGameDetailsEntity;
 
   MapHelper mapHelper;
   LocateHelper locateHelper;
@@ -116,6 +118,7 @@ public class GamePlayingController extends ActivityController implements
 
     Intent intent = getIntent();
     gameId = intent.getLongExtra(Conf.GAME_ID, Conf.TEMP_GAME_ID);
+    mGameDetailsEntity = intent.getParcelableExtra(Conf.GAME_DETAIL);
     teamId = intent.getLongExtra(Conf.TEAM_ID, Conf.TEMP_TEAM_ID);
     if (!gameZipHelper.checkAndParseGameZip(gameId) || gameZipHelper.getmPoints().size() == 0) {
       mLoadingDialog.dismiss();
@@ -382,6 +385,9 @@ public class GamePlayingController extends ActivityController implements
     intent.putExtra(Conf.GAME_ID, gameId);
     if (mPoints != null && mPoints instanceof ArrayList) {
       intent.putParcelableArrayListExtra(Conf.GAME_POINTS, ((ArrayList<? extends Parcelable>) mPoints));
+    }
+    if (mGameDetailsEntity != null) {
+      intent.putExtra(Conf.GAME_DETAIL, mGameDetailsEntity);
     }
     if (isGameFinished) {
       intent.setClass(getActivity(), GameShareActivity.class);

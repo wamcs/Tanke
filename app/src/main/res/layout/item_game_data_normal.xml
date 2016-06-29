@@ -35,6 +35,8 @@
             <com.lptiyu.tanke.widget.CustomTextView
                 android:id="@+id/item_game_data_task_name"
                 style="@style/GameDataItemText"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/item_game_data_task_name_task_type_height"
                 android:text="小桥流水"
                 android:textColor="@color/colorPrimary"
                 android:textSize="16sp"/>
@@ -42,6 +44,8 @@
             <com.lptiyu.tanke.widget.CustomTextView
                 android:id="@+id/item_game_data_task_type"
                 style="@style/GameDataItemText"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/item_game_data_task_name_task_type_height"
                 android:layout_toRightOf="@id/item_game_data_task_name"
                 android:text="扫码任务"
                 android:textColor="@color/grey04"
@@ -50,25 +54,45 @@
             <com.lptiyu.tanke.widget.CustomTextView
                 android:id="@+id/item_game_data_task_complete_person_num"
                 style="@style/GameDataItemText"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/item_game_data_task_name_task_type_height"
                 android:layout_alignParentRight="true"
                 android:text="@string/complete_person_num_formatter"
                 android:textColor="@color/colorPrimary"
                 android:textSize="13sp"/>
 
-            <com.lptiyu.tanke.widget.CustomTextView
-                android:id="@+id/item_game_data_task_complete_time"
-                style="@style/GameDataItemText"
+            <LinearLayout
+                android:id="@+id/item_game_data_task_complete_time_root"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_below="@id/item_game_data_task_name"
-                android:drawableLeft="@mipmap/game_detail_time"
-                android:drawablePadding="@dimen/x13"
-                android:text="2016.05.23  14:45"
-                android:textColor="@color/grey07"
-                android:textSize="13sp"/>
+                android:padding="@dimen/item_game_data_task_complete_time_root_padding">
+
+                <ImageView
+                    android:id="@+id/item_game_data_task_complete_time_imagee"
+                    android:layout_width="@dimen/item_game_data_task_complete_time_image_width_height"
+                    android:layout_height="@dimen/item_game_data_task_complete_time_image_width_height"
+                    android:layout_gravity="center_vertical"
+                    android:src="@mipmap/game_detail_time"/>
+
+                <com.lptiyu.tanke.widget.CustomTextView
+                    android:id="@+id/item_game_data_task_complete_time"
+                    style="@style/GameDataItemText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/item_game_data_task_name_task_type_height"
+                    android:layout_marginLeft="@dimen/x5"
+                    android:text="2016.05.23  14:45"
+                    android:textColor="@color/grey07"
+                    android:textSize="13sp"/>
+
+            </LinearLayout>
 
             <com.lptiyu.tanke.widget.CustomTextView
                 style="@style/GameDataItemText"
-                android:layout_alignTop="@id/item_game_data_task_complete_time"
-                android:layout_toRightOf="@id/item_game_data_task_complete_time"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/item_game_data_task_name_task_type_height"
+                android:layout_alignTop="@id/item_game_data_task_complete_time_root"
+                android:layout_toRightOf="@id/item_game_data_task_complete_time_root"
                 android:text="完成"
                 android:textColor="@color/colorPrimary"
                 android:textSize="12sp"/>
@@ -76,7 +100,9 @@
             <com.lptiyu.tanke.widget.CustomTextView
                 android:id="@+id/item_game_data_task_complete_consuming_time_pre"
                 style="@style/GameDataItemText"
-                android:layout_below="@id/item_game_data_task_complete_time"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/item_game_data_task_name_task_type_height"
+                android:layout_below="@id/item_game_data_task_complete_time_root"
                 android:text="用时 : "
                 android:textColor="@color/grey04"
                 android:textSize="15sp"/>
@@ -84,6 +110,8 @@
             <com.lptiyu.tanke.widget.CustomTextView
                 android:id="@+id/item_game_data_task_complete_consuming_time"
                 style="@style/GameDataItemText"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/item_game_data_task_name_task_type_height"
                 android:layout_alignTop="@id/item_game_data_task_complete_consuming_time_pre"
                 android:layout_toRightOf="@id/item_game_data_task_complete_consuming_time_pre"
                 android:text="45分钟"
@@ -91,22 +119,29 @@
                 android:textSize="15sp"/>
 
             <com.lptiyu.tanke.widget.CustomTextView
-                android:id="@+id/item_game_data_task_exp_pre"
+                android:id="@+id/item_game_data_task_exp"
                 style="@style/GameDataItemText"
-                android:layout_below="@id/item_game_data_task_complete_time"
-                android:layout_toRightOf="@id/item_game_data_task_complete_consuming_time"
-                android:text="获得 : "
+                android:layout_width="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_height="@dimen/item_game_data_task_name_task_type_height"
+                android:layout_alignTop="@id/item_game_data_task_complete_consuming_time_pre"
+                android:text="112经验值"
                 android:textColor="@color/grey06"
                 android:textSize="15sp"/>
 
             <com.lptiyu.tanke.widget.CustomTextView
-                android:id="@+id/item_game_data_task_exp"
+                android:id="@+id/item_game_data_task_exp_pre"
                 style="@style/GameDataItemText"
-                android:layout_alignTop="@id/item_game_data_task_exp_pre"
-                android:layout_toRightOf="@id/item_game_data_task_exp_pre"
-                android:text="112经验值"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/item_game_data_task_name_task_type_height"
+                android:layout_below="@id/item_game_data_task_complete_time_root"
+                android:layout_alignTop="@id/item_game_data_task_complete_consuming_time_pre"
+                android:layout_toLeftOf="@id/item_game_data_task_exp"
+                android:text="获得 : "
                 android:textColor="@color/grey06"
                 android:textSize="15sp"/>
+
+
 
         </RelativeLayout>
 

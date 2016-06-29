@@ -1,5 +1,8 @@
 package com.lptiyu.tanke.pojo;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.SerializedName;
 
 /**
@@ -8,7 +11,7 @@ import com.google.gson.annotations.SerializedName;
  *
  * @author ldx
  */
-public class GameDetailsEntity {
+public class GameDetailsEntity implements Parcelable {
 
   @SerializedName("id")
   private long gameId;
@@ -62,6 +65,7 @@ public class GameDetailsEntity {
 
   @SerializedName("max")
   private int maxNum;
+
 
   public int getPeoplePlaying() {
     return peoplePlaying;
@@ -230,4 +234,68 @@ public class GameDetailsEntity {
         ", maxNum=" + maxNum +
         '}';
   }
+
+  @Override
+  public int describeContents() {
+    return 0;
+  }
+
+  @Override
+  public void writeToParcel(Parcel dest, int flags) {
+    dest.writeLong(this.gameId);
+    dest.writeString(this.img);
+    dest.writeString(this.title);
+    dest.writeString(this.area);
+    dest.writeString(this.startDate);
+    dest.writeString(this.endDate);
+    dest.writeString(this.startTime);
+    dest.writeString(this.endTime);
+    dest.writeInt(this.type == null ? -1 : this.type.ordinal());
+    dest.writeInt(this.peoplePlaying);
+    dest.writeString(this.gameIntro);
+    dest.writeString(this.rule);
+    dest.writeString(this.zipUrl);
+    dest.writeString(this.shareUrl);
+    dest.writeString(this.latitude);
+    dest.writeString(this.longitude);
+    dest.writeInt(this.minNum);
+    dest.writeInt(this.maxNum);
+  }
+
+  public GameDetailsEntity() {
+  }
+
+  protected GameDetailsEntity(Parcel in) {
+    this.gameId = in.readLong();
+    this.img = in.readString();
+    this.title = in.readString();
+    this.area = in.readString();
+    this.startDate = in.readString();
+    this.endDate = in.readString();
+    this.startTime = in.readString();
+    this.endTime = in.readString();
+    int tmpType = in.readInt();
+    this.type = tmpType == -1 ? null : GAME_TYPE.values()[tmpType];
+    this.peoplePlaying = in.readInt();
+    this.gameIntro = in.readString();
+    this.rule = in.readString();
+    this.zipUrl = in.readString();
+    this.shareUrl = in.readString();
+    this.latitude = in.readString();
+    this.longitude = in.readString();
+    this.minNum = in.readInt();
+    this.maxNum = in.readInt();
+  }
+
+  public static final Creator<GameDetailsEntity> CREATOR = new Creator<GameDetailsEntity>() {
+    @Override
+    public GameDetailsEntity createFromParcel(Parcel source) {
+      return new GameDetailsEntity(source);
+    }
+
+    @Override
+    public GameDetailsEntity[] newArray(int size) {
+      return new GameDetailsEntity[size];
+    }
+  };
 }

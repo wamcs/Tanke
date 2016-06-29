@@ -8,7 +8,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/y105"
+        android:layout_marginTop="@dimen/y170"
         android:background="@color/default_font_color"
         android:paddingBottom="@dimen/y13"
         android:paddingTop="@dimen/y105">
@@ -43,7 +43,7 @@
             android:layout_below="@id/layout_game_share_form_other_team_info"
             android:layout_marginTop="@dimen/y13"
             android:orientation="horizontal"
-            android:padding="@dimen/x13@dimen/x13">
+            android:padding="@dimen/x13">
 
             <RelativeLayout
                 android:layout_width="0dp"
@@ -253,8 +253,8 @@
 
     <com.lptiyu.tanke.widget.CircularImageView
         android:id="@+id/layout_game_share_user_avatar"
-        android:layout_width="@dimen/x210"
-        android:layout_height="@dimen/y210"
+        android:layout_width="@dimen/x300"
+        android:layout_height="@dimen/x300"
         android:layout_centerHorizontal="true"
         android:src="@mipmap/default_avatar"
         app:civ_border="true"

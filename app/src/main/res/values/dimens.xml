@@ -20,10 +20,10 @@
     <dimen name="under_line_margin_left_right">@dimen/x26</dimen>
 
     <!-- LoginEditText Dimens-->
-    <dimen name="custom_edit_height">@dimen/y105</dimen>
+    <dimen name="custom_edit_height">@dimen/y130</dimen>
     <dimen name="custom_edit_distance">@dimen/x42</dimen>
-    <dimen name="custom_edit_text_size">12sp</dimen>
-    <dimen name="custom_edit_inner_height">@dimen/y26</dimen>
+    <dimen name="custom_edit_text_size">15sp</dimen>
+    <dimen name="custom_edit_inner_height">@dimen/y60</dimen>
 
     <!-- Login Activity Dimens-->
     <dimen name="login_title_size">@dimen/x210</dimen>
@@ -32,7 +32,7 @@
     <dimen name="login_edit_layout_item_distance">@dimen/x39</dimen>
     <dimen name="login_edit_layout_edit_to_button">@dimen/x52</dimen>
     <dimen name="login_edit_layout_button_width">@dimen/x223</dimen>
-    <dimen name="login_edit_layout_button_height">@dimen/y52</dimen>
+    <dimen name="login_edit_layout_button_height">@dimen/y60</dimen>
 
     <!-- SplashActivity Dimens-->
     <dimen name="splash_activity_logo_width">@dimen/x157</dimen>
@@ -41,23 +41,23 @@
     <!--User Center-->
     <dimen name="user_center_linear_layout_height">@dimen/y52</dimen>
     <dimen name="user_center_linear_layout_paddingLeft">@dimen/x52</dimen>
-    <dimen name="user_center_linear_layout_left_image_width">@dimen/x79</dimen>
-    <dimen name="user_center_linear_layout_left_image_height">@dimen/y79</dimen>
+    <dimen name="user_center_linear_layout_left_image_width">@dimen/x80</dimen>
+    <dimen name="user_center_linear_layout_left_image_height">@dimen/y80</dimen>
     <dimen name="user_center_linear_layout_paddingRight">@dimen/x79</dimen>
     <dimen name="user_center_linear_layout_bottom_line_height">@dimen/y1</dimen>
 
 
     <!-- Register Activity Dimens-->
-    <dimen name="sign_up_toolbar_height">@dimen/y383</dimen>
+    <dimen name="sign_up_toolbar_height">@dimen/y405</dimen>
     <dimen name="sign_up_return_button_size">@dimen/x52</dimen>
     <dimen name="sign_up_return_button_margin_left">0dp</dimen>
     <dimen name="sign_up_title_margin_top">@dimen/y92</dimen>
     <dimen name="sign_up_edit_margin_top">@dimen/y273</dimen>
     <dimen name="sign_up_edit_margin">@dimen/x52</dimen>
-    <dimen name="sign_up_edit_height">@dimen/y105</dimen>
+    <dimen name="sign_up_edit_height">@dimen/y140</dimen>
     <dimen name="sign_up_edit_left_text_margin_left">@dimen/x63</dimen>
     <dimen name="sign_up_edit_left_text_margin_right">@dimen/x97</dimen>
-    <dimen name="sign_up_edit_text_size">12sp</dimen>
+    <dimen name="sign_up_edit_text_size">15sp</dimen>
     <dimen name="sign_up_edit_hint_text_size">11sp</dimen>
     <dimen name="sign_up_edit_margin_bottom">@dimen/y60</dimen>
     <dimen name="sign_up_next_button_text_size">14sp</dimen>
@@ -117,19 +117,19 @@
     <dimen name="layout_map_infowindow_content_padding">@dimen/x13</dimen>
 
     <!-- PlayingActivity Dimens -->
-    <dimen name="running_spot_view_root_height">@dimen/y126</dimen>
+    <dimen name="running_spot_view_root_height">@dimen/y140</dimen>
     <dimen name="running_spot_view_text_size">12sp</dimen>
     <dimen name="running_spot_view_item_line_width">@dimen/x92</dimen>
     <dimen name="running_spot_view_item_line_height">@dimen/y26</dimen>
     <dimen name="running_spot_view_radius">@dimen/x31</dimen>
 
-    <dimen name="tick_view_margin_top">@dimen/y131</dimen>
+    <dimen name="tick_view_margin_top">@dimen/y140</dimen>
 
     <!-- TaskActivity Dimens-->
     <dimen name="task_content_height">@dimen/y105</dimen>
-    <dimen name="task_answer_area_height">@dimen/y126</dimen>
+    <dimen name="task_answer_area_height">@dimen/y140</dimen>
 
-    <dimen name="task_fragment_tab_height">@dimen/y126</dimen>
+    <dimen name="task_fragment_tab_height">@dimen/y130</dimen>
     <dimen name="task_fragment_tab_corner_radius">@dimen/x47</dimen>
     <dimen name="task_fragment_tab_indicator_thick">@dimen/x94</dimen>
     <dimen name="task_fragment_tab_text_size">16sp</dimen>
@@ -138,21 +138,21 @@
     <!-- GameDisplayActivity Dimens-->
     <dimen name="item_game_display_header_height">@dimen/y451</dimen>
     <dimen name="middle_layout_margin_top">@dimen/y26</dimen>
-    <dimen name="middle_layout_margin_left_right">@dimen/x16</dimen>
-    <dimen name="middle_image_view_width_height">@dimen/y328</dimen>
+    <dimen name="middle_layout_margin_left_right">@dimen/x10</dimen>
+    <dimen name="middle_image_view_width_height">@dimen/y380</dimen>
     <dimen name="middle_image_view_width_height_civ_border_width">@dimen/x12</dimen>
     <dimen name="middle_title_margin_top">@dimen/y5</dimen>
     <dimen name="middle_title_max_width">@dimen/x302</dimen>
     <dimen name="left_right_image_root_margin_top">@dimen/y66</dimen>
-    <dimen name="left_right_image_view_width_height">@dimen/y262</dimen>
-    <dimen name="left_right_image_view_civ_border_width">@dimen/x12</dimen>
+    <dimen name="left_right_image_view_width_height">@dimen/y300</dimen>
+    <dimen name="left_right_image_view_civ_border_width">@dimen/x10</dimen>
     <dimen name="left_right_title_margin_top">@dimen/y8</dimen>
     <dimen name="left_right_title_max_width">@dimen/x262</dimen>
-    <dimen name="item_game_display_header_shadow_margin_top">@dimen/y21</dimen>
-    <dimen name="item_game_display_header_shadow_height">@dimen/y52</dimen>
+    <dimen name="item_game_display_header_shadow_margin_top">@dimen/y10</dimen>
+    <dimen name="item_game_display_header_shadow_height">@dimen/y30</dimen>
 
     <!-- GamePlayingActivity Dimens-->
-    <dimen name="activity_game_playing_button_width_height">@dimen/x105</dimen>
+    <dimen name="activity_game_playing_button_width_height">@dimen/x120</dimen>
     <dimen name="activity_game_playing_button_left">@dimen/x13</dimen>
     <dimen name="activity_game_playing_move_to_target_margin_bottom">@dimen/y13</dimen>
     <dimen name="activity_game_playing_move_to_target_margin_left">@dimen/x13</dimen>
@@ -181,8 +181,8 @@
     <dimen name="item_game_data_start_root_margin_left_right">@dimen/x52</dimen>
     <dimen name="item_game_data_start_root_corner_radius">@dimen/x13</dimen>
     <dimen name="item_game_data_start_root_elevation">@dimen/x2</dimen>
-    <dimen name="item_game_data_start_img_width">@dimen/x262</dimen>
-    <dimen name="item_game_data_start_img_height">@dimen/y184</dimen>
+    <dimen name="item_game_data_start_img_width">@dimen/x320</dimen>
+    <dimen name="item_game_data_start_img_height">@dimen/y220</dimen>
     <dimen name="item_game_data_start_game_title_padding">@dimen/x8</dimen>
     <dimen name="item_game_data_start_game_location_root_padding">@dimen/x8</dimen>
     <dimen name="item_game_data_start_game_location_image_width_height">@dimen/y39</dimen>
@@ -191,7 +191,7 @@
     <dimen name="item_game_data_task_enter_game_margin_top">@dimen/y26</dimen>
     <dimen name="item_game_data_task_enter_game_padding">@dimen/x8</dimen>
     <dimen name="item_game_data_task_complete_time_root_padding">@dimen/x8</dimen>
-    <dimen name="item_game_data_task_complete_time_image_width_height">@dimen/y31</dimen>
+    <dimen name="item_game_data_task_complete_time_image_width_height">@dimen/y40</dimen>
     <dimen name="item_game_data_task_complete_time_margin_left">@dimen/x13</dimen>
 
     <dimen name="item_game_data_start_root_padding_top_bottom">@dimen/y13</dimen>
@@ -203,8 +203,8 @@
     <dimen name="item_game_data_finish_root_padding_top_bottom">@dimen/y13</dimen>
     <dimen name="item_game_data_finish_root_padding_right_left">@dimen/x26</dimen>
 
-    <dimen name="main_page_item_img_width">@dimen/x262</dimen>
-    <dimen name="main_page_item_img_height">@dimen/y178</dimen>
+    <dimen name="main_page_item_img_width">@dimen/x320</dimen>
+    <dimen name="main_page_item_img_height">@dimen/y230</dimen>
     <dimen name="main_page_item_text_size_normal">13sp</dimen>
     <dimen name="main_page_item_text_size_small">11sp</dimen>
 
@@ -237,9 +237,10 @@
 
 
     <!-- UserCenterFragment Dimens-->
-    <dimen name="fragment_user_center_item_height">@dimen/y131</dimen>
+    <dimen name="fragment_user_center_item_height">@dimen/y150</dimen>
 
     <!-- SettingActivity Dimens Area-->
+    <dimen name="activity_setting_item_height">@dimen/y140</dimen>
     <dimen name="setting_activity_item_margin_top">@dimen/y79</dimen>
     <dimen name="setting_activity_arrow_margin_right">@dimen/x26</dimen>
 
@@ -247,7 +248,6 @@
     <dimen name="setting_activity_item_text_padding_left_right">@dimen/x58</dimen>
     <dimen name="setting_activity_item_text_size">16sp</dimen>
 
-    <dimen name="settting_activity_logout_height">@dimen/y118</dimen>
     <dimen name="setting_activity_logout_text_size">16sp</dimen>
     <dimen name="setting_activity_logo_margin_bottom">@dimen/y79</dimen>
 
@@ -262,9 +262,9 @@
     <dimen name="ksw_md_thumb_shadow_offset">@dimen/x5</dimen>
 
     <!-- Modify User Info Dimes-->
-    <dimen name="activity_modify_user_information_user_avatar_root_height">@dimen/y210</dimen>
-    <dimen name="activity_modify_user_information_avatar_width_height">@dimen/x157</dimen>
-    <dimen name="modify_user_info_item_height">@dimen/y131</dimen>
+    <dimen name="activity_modify_user_information_user_avatar_root_height">@dimen/y240</dimen>
+    <dimen name="activity_modify_user_information_avatar_width_height">@dimen/x200</dimen>
+    <dimen name="modify_user_info_item_height">@dimen/y150</dimen>
     <dimen name="modify_user_info_item_text_size">16sp</dimen>
     <dimen name="modify_user_info_item_content_margin">@dimen/x52</dimen>
 

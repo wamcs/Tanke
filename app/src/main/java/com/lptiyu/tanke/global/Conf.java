@@ -93,6 +93,7 @@ public final class Conf {
   public static final String GAME_ID = "game_id";
   public static final String LINE_ID = "line_id";
   public static final String GAME_TYPE = "game_type";
+  public static final String GAME_DETAIL = "game_detail";
   public static final int REQUEST_CODE_TASK_ACTIVITY = 9;
   public static final int RESULT_CODE_TASK_ACTIVITY = 10;
 

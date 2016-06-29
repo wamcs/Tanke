@@ -80,7 +80,7 @@ public class ElasticHeaderLayout extends RelativeLayout {
   /**
    * 可以通过调整这个来调整蓝白分界线的位置
    */
-  private static final float sLines = 0.42f;
+  private static final float sLines = 0.48f;
 
   @Override
   protected void onDraw(Canvas canvas) {

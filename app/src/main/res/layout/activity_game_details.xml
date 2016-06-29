@@ -43,10 +43,10 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:paddingBottom="@dimen/y45"
-                android:paddingLeft="@dimen/x45"
-                android:paddingRight="@dimen/x45"
-                android:paddingTop="@dimen/y45"
+                android:paddingBottom="@dimen/y50"
+                android:paddingLeft="@dimen/x50"
+                android:paddingRight="@dimen/x50"
+                android:paddingTop="@dimen/y50"
                 android:src="@mipmap/game_details_share_btn"
             />
 
@@ -57,7 +57,7 @@
     <com.lptiyu.tanke.widget.CustomTextView
         android:id="@+id/game_detail_ensure"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/y126"
+        android:layout_height="@dimen/y130"
         android:layout_alignParentBottom="true"
         android:background="@drawable/toolbar_gradient"
         android:gravity="center"
@@ -85,17 +85,17 @@
                 <ImageView
                     android:id="@+id/image_cover"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/y472"
+                    android:layout_height="@dimen/y500"
                     android:contentDescription="@string/content_description"
                     android:scaleType="centerCrop"/>
 
                 <RelativeLayout
                     android:id="@+id/game_details_playing_num"
-                    android:layout_width="@dimen/x178"
-                    android:layout_height="@dimen/x178"
+                    android:layout_width="@dimen/x200"
+                    android:layout_height="@dimen/x200"
                     android:layout_alignParentRight="true"
-                    android:layout_marginRight="@dimen/x52"
-                    android:layout_marginTop="@dimen/y383">
+                    android:layout_marginRight="@dimen/x55"
+                    android:layout_marginTop="@dimen/y400">
 
                     <ImageView
                         android:layout_width="match_parent"
@@ -146,7 +146,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:drawableLeft="@mipmap/game_detail_loc"
-                        android:drawablePadding="@dimen/x26"
+                        android:drawablePadding="@dimen/x52"
                         android:gravity="center_vertical"
                         android:text="洪山区-华科校区"
                         android:textColor="@color/grey05"
@@ -170,7 +170,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/y39"
                         android:drawableLeft="@mipmap/game_details_1"
-                        android:drawablePadding="@dimen/x26"
+                        android:drawablePadding="@dimen/x30"
                         android:gravity="center_vertical"
                         android:text="简介"
                         android:textColor="@color/grey02"
@@ -193,7 +193,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/y39"
                         android:drawableLeft="@mipmap/game_details_2"
-                        android:drawablePadding="@dimen/x26"
+                        android:drawablePadding="@dimen/x30"
                         android:gravity="center_vertical"
                         android:text="规则"
                         android:textColor="@color/grey02"

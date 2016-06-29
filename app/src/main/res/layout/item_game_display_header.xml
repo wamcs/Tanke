@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/jelly_view"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/y451"
+    android:layout_height="@dimen/y490"
     >
 
     <LinearLayout
@@ -40,7 +40,6 @@
             />
     </LinearLayout>
 
-
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -70,7 +69,6 @@
             android:maxWidth="@dimen/left_right_title_max_width"
         />
     </LinearLayout>
-
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -105,8 +103,8 @@
 
     <ImageView
         android:src="@drawable/shadow"
-        android:layout_marginTop="@dimen/item_game_display_header_shadow_margin_top"
         android:layout_alignParentBottom="true"
+        android:layout_marginTop="@dimen/y5"
         android:contentDescription="@string/content_description"
         android:layout_below="@id/middle_layout"
         android:layout_width="match_parent"

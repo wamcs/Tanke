@@ -105,7 +105,7 @@
             <com.lptiyu.tanke.widget.CustomTextView
                 android:id="@id/sign_up_get_code_button"
                 android:layout_width="wrap_content"
-                android:layout_height="@dimen/y60"
+                android:layout_height="@dimen/y80"
                 android:layout_gravity="center_vertical|end"
                 android:layout_marginRight="@dimen/x39"
                 android:background="@drawable/gradient_oval_style"
@@ -116,7 +116,7 @@
                 android:paddingTop="@dimen/y13"
                 android:text="@string/get_verify_code"
                 android:textColor="@color/white10"
-                android:textSize="9sp"
+                android:textSize="12sp"
                 />
 
         </LinearLayout>

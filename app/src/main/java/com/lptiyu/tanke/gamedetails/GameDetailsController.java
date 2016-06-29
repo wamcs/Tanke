@@ -362,7 +362,7 @@ public class GameDetailsController extends ActivityController {
   private void startPlayingGame() {
     Intent intent = new Intent(getContext(), GamePlayingActivity.class);
     intent.putExtra(Conf.GAME_ID, gameId);
-    intent.putExtra(Conf.GAME_TYPE, mGameDetailsEntity.getType());
+    intent.putExtra(Conf.GAME_DETAIL, mGameDetailsEntity);
     if (mGameDetailsEntity.getType() == GAME_TYPE.TEAMS) {
       //TODO : need pass team id to GamePlayingActivity when the team game open
     }

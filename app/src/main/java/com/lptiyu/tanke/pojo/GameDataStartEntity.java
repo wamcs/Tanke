@@ -12,6 +12,8 @@ public class GameDataStartEntity extends GameDataEntity implements Parcelable {
 
   private long gameId;
 
+  private String gameTitle;
+
   private String gameImage;
 
   private String gameLoc;
@@ -22,6 +24,14 @@ public class GameDataStartEntity extends GameDataEntity implements Parcelable {
 
   public long getGameId() {
     return gameId;
+  }
+
+  public String getGameTitle() {
+    return gameTitle;
+  }
+
+  public void setGameTitle(String gameTitle) {
+    this.gameTitle = gameTitle;
   }
 
   public void setGameId(long gameId) {
@@ -60,6 +70,7 @@ public class GameDataStartEntity extends GameDataEntity implements Parcelable {
     this.startTime = startTime;
   }
 
+
   @Override
   public int describeContents() {
     return 0;
@@ -68,6 +79,7 @@ public class GameDataStartEntity extends GameDataEntity implements Parcelable {
   @Override
   public void writeToParcel(Parcel dest, int flags) {
     dest.writeLong(this.gameId);
+    dest.writeString(this.gameTitle);
     dest.writeString(this.gameImage);
     dest.writeString(this.gameLoc);
     dest.writeInt(this.finishedNum);
@@ -79,6 +91,7 @@ public class GameDataStartEntity extends GameDataEntity implements Parcelable {
 
   protected GameDataStartEntity(Parcel in) {
     this.gameId = in.readLong();
+    this.gameTitle = in.readString();
     this.gameImage = in.readString();
     this.gameLoc = in.readString();
     this.finishedNum = in.readInt();

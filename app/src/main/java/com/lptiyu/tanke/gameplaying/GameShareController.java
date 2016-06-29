@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.RelativeLayout;
@@ -30,6 +31,7 @@ import com.lptiyu.tanke.global.Accounts;
 import com.lptiyu.tanke.global.Conf;
 import com.lptiyu.tanke.io.net.HttpService;
 import com.lptiyu.tanke.io.net.Response;
+import com.lptiyu.tanke.pojo.GameDetailsEntity;
 import com.lptiyu.tanke.trace.bean.HistoryTrackData;
 import com.lptiyu.tanke.trace.history.HistoryTrackCallback;
 import com.lptiyu.tanke.trace.history.HistoryTrackHelper;
@@ -90,11 +92,12 @@ public class GameShareController extends ActivityController implements
   private long gameId;
   private long teamId;
   private List<Point> mPoints;
+  private GameDetailsEntity mGameDetailsEntity;
 
-  private long startTimeMillis;
-  private long endTimeMillis;
+  private long startTimeSecond;
+  private long endTimeSecond;
   private int totalTaskNum;
-  private int totalDistance;
+  private double totalDistance;
   private int totalExp;
 
   private PolylineOptions polyline;
@@ -112,8 +115,9 @@ public class GameShareController extends ActivityController implements
     ButterKnife.bind(this, view);
     Intent intent = getIntent();
     gameId = intent.getLongExtra(Conf.GAME_ID, Conf.TEMP_GAME_ID);
-    teamId = intent.getLongExtra(Conf.TEAM_ID, Conf.TEMP_TEAM_ID);
+    mGameDetailsEntity = intent.getParcelableExtra(Conf.GAME_DETAIL);
     mPoints = intent.getParcelableArrayListExtra(Conf.GAME_POINTS);
+    teamId = intent.getLongExtra(Conf.TEAM_ID, Conf.TEMP_TEAM_ID);
     checkAndResumeGameData();
     init();
   }
@@ -171,11 +175,10 @@ public class GameShareController extends ActivityController implements
           resumePointRecords(recordList);
           Glide.with(getActivity()).load(Accounts.getAvatar()).error(R.mipmap.default_avatar).into(mUserAvatar);
           mNickName.setText(Accounts.getNickName());
-          mFormTime.setText(String.valueOf((endTimeMillis - startTimeMillis) / TimeUtils.ONE_MINUTE_TIME));
-          mFormCompleteTime.setText(TimeUtils.getDateTimeWithoutYear(endTimeMillis));
+          mFormTime.setText(String.valueOf((endTimeSecond - startTimeSecond) / 60));
+          mFormCompleteTime.setText(TimeUtils.getDateTimeWithoutYear(endTimeSecond * 1000));
           mFormTaskNum.setText(String.valueOf(totalTaskNum));
           mFormGetExp.setText(String.valueOf(totalExp));
-          mFormDistance.setText(String.valueOf(totalDistance));
           HttpService.getGameService().getGameFinishedNum(gameId)
               .subscribeOn(Schedulers.io())
               .observeOn(AndroidSchedulers.mainThread())
@@ -192,8 +195,8 @@ public class GameShareController extends ActivityController implements
               });
           mTrackHelper.queryHistoryTrack(
               Conf.makeUpTrackEntityName(gameId, Accounts.getId()),
-              (int)(startTimeMillis / TimeUtils.ONE_SECOND_TIME),
-              (int)(endTimeMillis / TimeUtils.ONE_SECOND_TIME));
+              (int)(startTimeSecond),
+              (int)(endTimeSecond));
         }
       });
     }
@@ -206,7 +209,7 @@ public class GameShareController extends ActivityController implements
 
       switch (type) {
         case GAME_START:
-          startTimeMillis = record.getCreateTime();
+          startTimeSecond = record.getCreateTime();
           totalTaskNum += 1;
           startPoint(record);
           finishPoint(record);
@@ -229,7 +232,7 @@ public class GameShareController extends ActivityController implements
           break;
 
         case GAME_FINISH:
-          endTimeMillis = record.getCreateTime();
+          endTimeSecond = record.getCreateTime();
           break;
       }
     }
@@ -283,13 +286,12 @@ public class GameShareController extends ActivityController implements
     mLoadingDialog.show();
   }
 
-  private void drawHistoryTrack(final List<LatLng> points, double distance) {
+  private void drawHistoryTrack(final List<LatLng> points) {
     if (points == null || points.size() == 0) {
 
     } else if (points.size() > 1) {
       polyline = new PolylineOptions().width(10)
           .color(Color.RED).points(points);
-      totalDistance = (int) distance;
       mMap.addOverlay(polyline);
     }
   }
@@ -310,10 +312,12 @@ public class GameShareController extends ActivityController implements
       List<LatLng> points = historyTrackData.getListPoints();
       if (points != null && mPoints.size() > 0) {
         latLngList.addAll(points);
-        drawHistoryTrack(latLngList, historyTrackData.distance);
+        totalDistance = historyTrackData.distance / 1000;
+        drawHistoryTrack(latLngList);
         thread.mainThread(new Runnable() {
           @Override
           public void run() {
+            mFormDistance.setText(String.format("%2.1f".toLowerCase(), totalDistance));
             mLoadingDialog.dismiss();
           }
         });
@@ -321,6 +325,7 @@ public class GameShareController extends ActivityController implements
         thread.mainThread(new Runnable() {
           @Override
           public void run() {
+            mFormDistance.setText(String.valueOf(0));
             ToastUtil.TextToast("无历史轨迹");
             mLoadingDialog.dismiss();
           }
@@ -330,6 +335,7 @@ public class GameShareController extends ActivityController implements
       thread.mainThread(new Runnable() {
         @Override
         public void run() {
+          mFormDistance.setText(String.valueOf(0));
           ToastUtil.TextToast("无历史轨迹");
           mLoadingDialog.dismiss();
         }
@@ -388,18 +394,17 @@ public class GameShareController extends ActivityController implements
 
   @OnClick(R.id.activity_game_share_toolbar_imageview_right)
   public void onShareButtonClicked() {
-
     HttpService.getGameService().getShareUrl(Accounts.getId(), Accounts.getToken(), gameId, teamId)
         .observeOn(AndroidSchedulers.mainThread())
         .subscribeOn(Schedulers.io())
         .subscribe(new Action1<Response<String>>() {
           @Override
           public void call(Response<String> stringResponse) {
-            String SHARE_TITLE = "测试标题";
-            String SHARE_CONTENT = "测试内容";
+            String SHARE_TITLE = String.format("我正在玩定向AR游戏 %s，一起来探秘吧", mGameDetailsEntity.getTitle());
+            String SHARE_CONTENT = Html.fromHtml(Html.fromHtml(mGameDetailsEntity.getGameIntro()).toString()).toString();
             if (null == shareDialog) {
               shareDialog = new ShareDialog(getContext());
-              shareDialog.setShareContent(SHARE_TITLE, SHARE_CONTENT, null, stringResponse.getData());
+              shareDialog.setShareContent(SHARE_TITLE, SHARE_CONTENT, mGameDetailsEntity.getImg(), stringResponse.getData());
             }
             shareDialog.show();
           }

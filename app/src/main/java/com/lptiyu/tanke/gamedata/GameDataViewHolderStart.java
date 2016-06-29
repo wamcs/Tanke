@@ -51,7 +51,7 @@ public class GameDataViewHolderStart extends BaseViewHolder<GameDataEntity> {
   public void bind(final GameDataEntity entity) {
     GameDataStartEntity startEntity = ((GameDataStartEntity) entity);
     gameCompleteTime.setText(TimeUtils.getDateTime(startEntity.getStartTime()));
-    HttpService.getGameService().getGameFinishedNum(((GameDataStartEntity) entity).getGameId())
+    HttpService.getGameService().getGameFinishedNum(startEntity.getGameId())
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
         .subscribe(new Action1<Response<Integer>>() {
@@ -72,36 +72,9 @@ public class GameDataViewHolderStart extends BaseViewHolder<GameDataEntity> {
           }
         });
 
-    HttpService.getGameService().getGameDetails(((GameDataStartEntity) entity).getGameId())
-        .subscribeOn(Schedulers.io())
-        .observeOn(AndroidSchedulers.mainThread())
-        .subscribe(new Action1<Response<GameDetailsEntity>>() {
-          @Override
-          public void call(Response<GameDetailsEntity> gameDetailsEntityResponse) {
-            if (gameDetailsEntityResponse == null || gameDetailsEntityResponse.getStatus() == 0) {
-              loadDefaultData();
-              return;
-            }
-            GameDetailsEntity entity1 = gameDetailsEntityResponse.getData();
-            if (entity1 == null) {
-              loadDefaultData();
-              return;
-            }
-            Glide.with(getContext()).load(Uri.parse(entity1.getImg())).error(R.mipmap.need_to_remove_4_so_big).into(roundedImageView);
-            gameTitle.setText(entity1.getTitle());
-            gameLocation.setText(entity1.getArea());
-          }
-        }, new Action1<Throwable>() {
-          @Override
-          public void call(Throwable throwable) {
-            loadDefaultData();
-          }
-        });
+    Glide.with(getContext()).load(Uri.parse(startEntity.getGameImage())).error(R.mipmap.need_to_remove_4_so_big).into(roundedImageView);
+    gameTitle.setText(startEntity.getGameTitle());
+    gameLocation.setText(startEntity.getGameLoc());
   }
 
-  private void loadDefaultData() {
-    Glide.with(getContext()).load(R.mipmap.need_to_remove_4_so_big).into(roundedImageView);
-    gameTitle.setText("游戏正式开始");
-    gameLocation.setText("武汉市");
-  }
 }

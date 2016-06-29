@@ -10,7 +10,6 @@
         android:id="@id/tool_bar"
         style="@style/Toolbar">
 
-
     </android.support.v7.widget.Toolbar>
 
     <com.baidu.mapapi.map.TextureMapView

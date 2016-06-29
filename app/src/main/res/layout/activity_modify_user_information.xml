@@ -16,6 +16,7 @@
     <RelativeLayout
         android:id="@id/modify_user_info_avatar_button"
         android:layout_width="match_parent"
+        android:background="@drawable/fragment_user_center_item_bg"
         android:layout_height="@dimen/activity_modify_user_information_user_avatar_root_height">
 
         <com.lptiyu.tanke.widget.CustomTextView
@@ -40,10 +41,10 @@
         android:layout_marginRight="@dimen/under_line_margin_left_right"
         android:background="@color/user_center_split_line"/>
 
-
     <RelativeLayout
         android:id="@id/modify_user_info_nickname_button"
         android:layout_width="match_parent"
+        android:background="@drawable/fragment_user_center_item_bg"
         android:layout_height="@dimen/modify_user_info_item_height">
 
         <com.lptiyu.tanke.widget.CustomTextView
@@ -68,6 +69,7 @@
     <RelativeLayout
         android:id="@id/modify_user_info_birthday_button"
         android:layout_width="match_parent"
+        android:background="@drawable/fragment_user_center_item_bg"
         android:layout_height="@dimen/modify_user_info_item_height">
 
         <com.lptiyu.tanke.widget.CustomTextView
@@ -93,6 +95,7 @@
     <RelativeLayout
         android:id="@id/modify_user_info_gender_button"
         android:layout_width="match_parent"
+        android:background="@drawable/fragment_user_center_item_bg"
         android:layout_height="@dimen/modify_user_info_item_height">
 
         <com.lptiyu.tanke.widget.CustomTextView
@@ -118,6 +121,7 @@
     <RelativeLayout
         android:id="@id/modify_user_info_height_button"
         android:layout_width="match_parent"
+        android:background="@drawable/fragment_user_center_item_bg"
         android:layout_height="@dimen/modify_user_info_item_height">
 
         <com.lptiyu.tanke.widget.CustomTextView
@@ -142,6 +146,7 @@
     <RelativeLayout
         android:id="@id/modify_user_info_weight_button"
         android:layout_width="match_parent"
+        android:background="@drawable/fragment_user_center_item_bg"
         android:layout_height="@dimen/modify_user_info_item_height">
 
         <com.lptiyu.tanke.widget.CustomTextView
@@ -166,6 +171,7 @@
     <RelativeLayout
         android:id="@id/modify_user_info_location_button"
         android:layout_width="match_parent"
+        android:background="@drawable/fragment_user_center_item_bg"
         android:layout_height="@dimen/modify_user_info_item_height">
 
         <com.lptiyu.tanke.widget.CustomTextView

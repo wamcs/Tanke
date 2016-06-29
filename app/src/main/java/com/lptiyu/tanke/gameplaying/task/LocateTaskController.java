@@ -25,6 +25,8 @@ import com.lptiyu.tanke.permission.PermissionDispatcher;
 import com.lptiyu.tanke.permission.TargetMethod;
 import com.lptiyu.tanke.utils.ToastUtil;
 
+import timber.log.Timber;
+
 /**
  * @author : xiaoxiaoda
  *         date: 16-5-30
@@ -54,9 +56,9 @@ public class LocateTaskController extends MultiplyTaskController implements
       mAnswerArea.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-          finishTask();
-          mActivityController.openNextTaskIfExist();
-//          PermissionDispatcher.startLocateWithCheck(((BaseFragment) getFragment()));
+//          finishTask();
+//          mActivityController.openNextTaskIfExist();
+          PermissionDispatcher.startLocateWithCheck(((BaseFragment) getFragment()));
         }
       });
       mWebView.loadUrl(mTask.getContent());
@@ -73,6 +75,10 @@ public class LocateTaskController extends MultiplyTaskController implements
       return;
     }
     locationPwd.setRadius(Conf.POINT_RADIUS);
+
+    Timber.e("target : (%f, %f)", bdLocation.getLatitude(), bdLocation.getLongitude());
+    Timber.e("distance : %f", DistanceUtil.getDistance(locationPwd.getLatLng(), new LatLng(bdLocation.getLatitude(), bdLocation.getLongitude())));
+
     if (DistanceUtil.getDistance(locationPwd.getLatLng(), new LatLng(bdLocation.getLatitude(), bdLocation.getLongitude())) < locationPwd.getRadius()) {
       ToastUtil.TextToast(getString(R.string.right_location));
       finishTask();

@@ -4,6 +4,7 @@ import com.baidu.mapapi.model.LatLng;
 import com.lptiyu.tanke.global.Accounts;
 import com.lptiyu.tanke.io.net.HttpService;
 import com.lptiyu.tanke.io.net.Response;
+import com.lptiyu.tanke.utils.TimeUtils;
 
 import java.io.IOException;
 import java.util.List;
@@ -153,7 +154,7 @@ public class RecordsUtils {
         .pointId(pointId)
         .taskId(taskId)
         .state(state)
-        .createTime(System.currentTimeMillis())
+        .createTime(System.currentTimeMillis() / TimeUtils.ONE_SECOND_TIME)
         .build();
   }
 

@@ -19,7 +19,7 @@
     <LinearLayout
         android:id="@+id/user_message_layout"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/y316"
+        android:layout_height="@dimen/y350"
         android:layout_below="@id/header_layout"
         android:orientation="horizontal"
         android:paddingLeft="@dimen/x53"
@@ -27,20 +27,20 @@
 
         <com.lptiyu.tanke.widget.CircularImageView
             android:id="@+id/user_avatar"
-            android:layout_width="@dimen/x289"
-            android:layout_height="@dimen/x289"
+            android:layout_width="@dimen/x300"
+            android:layout_height="@dimen/x300"
             android:layout_gravity="center_vertical"
             android:src="@mipmap/default_avatar"
             app:civ_border="true"
             app:civ_border_color="#fff"
-            app:civ_border_width="@dimen/x13"
+            app:civ_border_width="@dimen/x10"
             app:civ_shadow="true"
             app:civ_shadow_color="@color/user_avatar_shadow_color"
             app:civ_shadow_radius="15"/>
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/y262"
+            android:layout_height="@dimen/y300"
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="@dimen/x26"
             android:paddingBottom="@dimen/y21">
@@ -68,7 +68,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/y52"
                 android:layout_above="@id/user_id_pre"
-                android:layout_marginBottom="8dp"
+                android:layout_marginBottom="@dimen/y21"
                 android:gravity="center_vertical"
                 android:text="狂战术"/>
 
@@ -93,7 +93,7 @@
             />
 
             <RelativeLayout
-                android:layout_width="180dp"
+                android:layout_width="@dimen/x500"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/user_id_pre"
                 android:layout_marginTop="@dimen/y21">
@@ -129,7 +129,7 @@
                 <com.lptiyu.tanke.widget.GradientProgressBar
                     android:id="@+id/user_progress"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/y10"
+                    android:layout_height="@dimen/y15"
                     android:layout_below="@id/user_progress_left"
                     android:layout_marginTop="@dimen/y13"
                     app:src="@drawable/user_center_exp_progress_bar_solid"/>
@@ -150,6 +150,7 @@
     <RelativeLayout
         android:id="@+id/user_game_playing"
         android:layout_width="match_parent"
+        android:background="@drawable/fragment_user_center_item_bg"
         android:layout_height="@dimen/fragment_user_center_item_height"
         android:layout_below="@id/user_message_layout"
         android:gravity="center_vertical"
@@ -213,6 +214,7 @@
         android:id="@+id/user_game_finished"
         android:layout_width="match_parent"
         android:layout_height="@dimen/fragment_user_center_item_height"
+        android:background="@drawable/fragment_user_center_item_bg"
         android:layout_below="@id/user_game_playing"
         android:gravity="center_vertical"
         android:orientation="horizontal"
@@ -278,6 +280,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/fragment_user_center_item_height"
         android:layout_below="@id/user_game_finished"
+        android:background="@drawable/fragment_user_center_item_bg"
         android:gravity="center_vertical"
         android:orientation="horizontal"
     >
@@ -330,6 +333,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/fragment_user_center_item_height"
         android:layout_below="@id/user_rewards"
+        android:background="@drawable/fragment_user_center_item_bg"
         android:gravity="center_vertical"
         android:orientation="horizontal"
     >
@@ -382,6 +386,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/fragment_user_center_item_height"
         android:layout_below="@id/user_judge_game"
+        android:background="@drawable/fragment_user_center_item_bg"
         android:gravity="center_vertical"
         android:orientation="horizontal"
     >

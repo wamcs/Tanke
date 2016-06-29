@@ -18,10 +18,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:src="@mipmap/img_last_blue" />
+            android:src="@mipmap/img_last_white" />
 
         <com.lptiyu.tanke.widget.CustomTextView
-            android:textColor="@color/grey01"
+            android:textColor="@color/default_font_color"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/user_protocol"

@@ -13,6 +13,8 @@ import com.lptiyu.tanke.R;
 import com.lptiyu.tanke.base.controller.ActivityController;
 import com.lptiyu.tanke.utils.ToastUtil;
 
+import timber.log.Timber;
+
 /**
  * @author : xiaoxiaoda
  *         date: 16-5-30
@@ -45,25 +47,29 @@ public class RiddleTaskController extends MultiplyTaskController implements
 
   @Override
   public void onClick(View v) {
-    finishTask();
-    mActivityController.openNextTaskIfExist();
-//    switch (v.getId()) {
-//      case R.id.riddle_task_ensure:
-//        Editable editable = editText.getText();
-//        if (editable == null || editable.length() == 0) {
-//          ToastUtil.TextToast(getString(R.string.error_input));
-//          return;
-//        }
-//        String userResult = editable.toString();
-//        if (mTask.getPwd().equals(userResult)) {
-//          ToastUtil.TextToast(getString(R.string.right_answer));
-//          finishTask();
-//          mActivityController.openNextTaskIfExist();
-//        } else {
-//          ToastUtil.TextToast(getString(R.string.error_answer));
-//        }
-//        break;
-//    }
+//    finishTask();
+//    mActivityController.openNextTaskIfExist();
+    switch (v.getId()) {
+      case R.id.riddle_task_ensure:
+        Editable editable = editText.getText();
+        if (editable == null || editable.length() == 0) {
+          ToastUtil.TextToast(getString(R.string.error_input));
+          return;
+        }
+        String userResult = editable.toString();
+
+        Timber.e("input : %s", userResult);
+        Timber.e("answer : %s", mTask.getPwd());
+
+        if (mTask.getPwd().equals(userResult)) {
+          ToastUtil.TextToast(getString(R.string.right_answer));
+          finishTask();
+          mActivityController.openNextTaskIfExist();
+        } else {
+          ToastUtil.TextToast(getString(R.string.error_answer));
+        }
+        break;
+    }
   }
 
 }
