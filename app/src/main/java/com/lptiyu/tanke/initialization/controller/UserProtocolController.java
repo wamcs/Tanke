@@ -39,7 +39,6 @@ public class UserProtocolController extends ActivityController {
   }
 
   private void init() {
-    toolbar.setVisibility(View.GONE);
     HttpService.getUserService().userProtocol().subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
         .subscribe(new Action1<Response<String>>() {

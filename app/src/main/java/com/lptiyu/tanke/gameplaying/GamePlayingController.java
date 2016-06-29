@@ -337,6 +337,7 @@ public class GamePlayingController extends ActivityController implements
   private void showAlertDialog(String message) {
     if (mAlertDialog == null) {
       mAlertDialog = new AlertDialog.Builder(getActivity())
+          .setCancelable(false)
           .setPositiveButton(getString(R.string.ensure), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {

@@ -244,5 +244,7 @@
     <string name="user_game_finished_get_exp_formatter">%d经验值</string>
     <string name="complete_game_consuming_time_formatter" formatted="false">%d小时%d分钟</string>
 
+    <!-- AboutUsActivity Text Area-->
+    <string name="about_us_activity">关于我们</string>
 
 </resources>

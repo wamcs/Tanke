@@ -9,6 +9,7 @@ import com.lptiyu.tanke.R;
 import com.lptiyu.tanke.base.controller.ActivityController;
 import com.lptiyu.tanke.global.Accounts;
 import com.lptiyu.tanke.initialization.ui.LoginActivity;
+import com.lptiyu.tanke.userCenter.ui.AboutUsActivity;
 import com.lptiyu.tanke.utils.ShaPreferManager;
 import com.lptiyu.tanke.widget.CustomTextView;
 import com.lptiyu.tanke.widget.SwitchButton;
@@ -33,9 +34,6 @@ public class SettingController extends ActivityController {
   SwitchButton mVibrate;
   @BindView(R.id.setting_activity_screen_light)
   SwitchButton mScreenLight;
-
-  @BindView(R.id.setting_activity_about_us)
-  CustomTextView mAboutUs;
 
   @BindView(R.id.setting_activity_logout)
   CustomTextView mLogout;
@@ -97,6 +95,11 @@ public class SettingController extends ActivityController {
     } else {
       ShaPreferManager.setScreenLight(false);
     }
+  }
+
+  @OnClick(R.id.setting_activity_about_us)
+  void startAboutUs() {
+    startActivity(new Intent(getActivity(), AboutUsActivity.class));
   }
 
 }
