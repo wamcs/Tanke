@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/jelly_view"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/item_game_display_header_height"
+    android:layout_height="@dimen/y451"
     >
 
     <LinearLayout

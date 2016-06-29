@@ -45,7 +45,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:layout_marginRight="4dp"
+                        android:layout_marginRight="@dimen/x10"
                         android:text="@string/complete"
                         android:textColor="@color/complete_next_button_text_color"
                         android:textSize="@dimen/complete_arrow_button_text_size" />
@@ -54,7 +54,7 @@
 
                         android:layout_width="@dimen/complete_arrow_button_size"
                         android:layout_height="@dimen/complete_arrow_button_size"
-                        android:drawablePadding="4dp"
+                        android:drawablePadding="@dimen/x10"
                         android:src="@mipmap/img_next_bule" />
                 </LinearLayout>
             </RelativeLayout>
@@ -124,7 +124,7 @@
                 <com.lptiyu.tanke.widget.CustomTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="30dp"
+                    android:layout_marginRight="@dimen/x79"
                     android:text="@string/gender"
                     android:textColor="@color/base_text_color"
                     android:textSize="@dimen/complete_gender_text_size" />
@@ -133,7 +133,7 @@
                     android:id="@id/complete_gender_male_button"
                     android:layout_width="@dimen/complete_gender_text_height"
                     android:layout_height="@dimen/complete_gender_text_height"
-                    android:layout_marginRight="42dp"
+                    android:layout_marginRight="@dimen/x110"
                     android:background="@drawable/male_select_style"
                     android:gravity="center"
                     android:text="@string/male"
@@ -265,7 +265,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:layout_marginTop="17dp"
+                        android:layout_marginTop="@dimen/y45"
                         android:text="@string/change_city"
                         android:textColor="@color/grey09"
                         android:textSize="5sp" />

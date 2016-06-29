@@ -17,10 +17,10 @@
         android:textSize="18sp"/>
 
     <ImageView
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
+        android:layout_marginLeft="@dimen/x39"
+        android:layout_marginRight="@dimen/x39"
         android:src="@color/black01"
         android:layout_width="match_parent"
-        android:layout_height="0.5dp"/>
+        android:layout_height="@dimen/y1"/>
 
 </LinearLayout>

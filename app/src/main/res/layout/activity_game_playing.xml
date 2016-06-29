@@ -117,13 +117,13 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/tick_view_margin_top"
-        android:padding="5dp"
+        android:padding="@dimen/x13"
         android:visibility="gone"
         app:tickFillColor="@color/colorAccent"
         app:tickInnerCircleColor="@color/colorPrimaryDark"
-        app:tickInnerCircleRadius="31dp"
+        app:tickInnerCircleRadius="@dimen/x81"
         app:tickOuterCircleColor="@color/colorPrimary"
-        app:tickOuterCircleRadius="35dp"
+        app:tickOuterCircleRadius="@dimen/x92"
         app:tickTextColor="@color/default_font_color"
         app:tickTextSize="10sp"/>
 

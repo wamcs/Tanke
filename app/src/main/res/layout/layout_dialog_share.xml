@@ -12,12 +12,14 @@
         android:layout_height="wrap_content"
         android:background="@color/default_font_color"
         android:gravity="center"
-        android:horizontalSpacing="1dp"
+        android:horizontalSpacing="@dimen/x3"
         android:numColumns="2"
-        android:paddingBottom="10dp"
-        android:paddingTop="15dp"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        android:verticalSpacing="1dp">
+        android:paddingBottom="@dimen/y26"
+        android:paddingTop="@dimen/y39"
+        android:paddingLeft="@dimen/x26"
+        android:paddingRight="@dimen/x26"
+        android:verticalSpacing="@dimen/x3">
+
     </GridView>
+
 </LinearLayout>

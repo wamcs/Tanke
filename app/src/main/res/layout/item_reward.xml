@@ -4,13 +4,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="10dp"
-    android:layout_marginLeft="20dp"
-    android:layout_marginRight="20dp"
-    android:layout_marginTop="10dp"
+    android:layout_marginBottom="@dimen/y26"
+    android:layout_marginLeft="@dimen/x52"
+    android:layout_marginRight="@dimen/x52"
+    android:layout_marginTop="@dimen/y26"
     app:cardBackgroundColor="@color/transparent"
-    app:cardCornerRadius="5dp"
-    app:cardElevation="1dp">
+    app:cardCornerRadius="@dimen/x13"
+    app:cardElevation="@dimen/x3">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -19,7 +19,7 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="30dp"
+            android:layout_height="@dimen/y79"
             android:background="@drawable/toolbar_gradient">
 
             <com.lptiyu.tanke.widget.CustomTextView
@@ -28,8 +28,8 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:text="哈哈哈"
-                android:padding="5dp"
-                android:layout_marginLeft="5dp"
+                android:padding="@dimen/x13"
+                android:layout_marginLeft="@dimen/x13"
                 android:textColor="@color/default_font_color"
                 android:textSize="17sp"
                 android:textStyle="bold"/>
@@ -38,8 +38,8 @@
                 android:id="@+id/reward_time"
                 android:textColor="@color/default_font_color"
                 android:layout_width="wrap_content"
-                android:padding="5dp"
-                android:layout_marginLeft="5dp"
+                android:padding="@dimen/x13"
+                android:layout_marginLeft="@dimen/x13"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
@@ -52,8 +52,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/white10"
-            android:minHeight="100dp"
-            android:padding="10dp"
+            android:minHeight="@dimen/y262"
+            android:padding="@dimen/x26"
             android:text="这是你的奖励奖励奖励，就是一个奖励，科科"
         />
 

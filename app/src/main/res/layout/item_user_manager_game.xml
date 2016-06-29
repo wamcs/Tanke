@@ -9,22 +9,22 @@
         android:id="@+id/item_user_manager_game_content_root"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="10dp">
+        android:paddingTop="@dimen/y26">
 
         <com.makeramen.roundedimageview.RoundedImageView
             android:id="@id/image_view"
             android:layout_width="@dimen/item_user_manager_game_width"
             android:layout_height="@dimen/item_user_manager_game_height"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="10dp"
+            android:layout_marginLeft="@dimen/x26"
             android:contentDescription="@string/content_description"
             android:scaleType="centerCrop"
             android:src="@mipmap/need_to_remove"
-            app:riv_corner_radius="5dp"/>
+            app:riv_corner_radius="@dimen/x13"/>
 
         <com.lptiyu.tanke.widget.CustomTextView
             android:id="@+id/game_title"
-            android:padding="3dp"
+            android:padding="@dimen/x8"
             android:textColor="@color/grey04"
             android:textSize="13sp"
             android:layout_toRightOf="@id/image_view"
@@ -36,7 +36,7 @@
         <com.lptiyu.tanke.widget.CustomTextView
             android:id="@+id/task_title"
             android:layout_width="wrap_content"
-            android:padding="3dp"
+            android:padding="@dimen/x8"
             android:textColor="@color/colorPrimary"
             android:textSize="13sp"
             android:layout_height="wrap_content"
@@ -52,8 +52,8 @@
             android:textSize="13sp"
             android:layout_height="wrap_content"
             android:layout_below="@id/game_title"
-            android:layout_marginTop="5dp"
-            android:padding="3dp"
+            android:layout_marginTop="@dimen/y13"
+            android:padding="@dimen/x8"
             android:text="您是该任务的游戏管理员，请确认玩家完成任务后，出示二维码。"
         />
 

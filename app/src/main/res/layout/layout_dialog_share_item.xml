@@ -3,12 +3,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="#00ffffff"
-                android:padding="20dp">
+                android:padding="@dimen/x52">
 
     <ImageView
         android:id="@+id/dialog_share_item"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="@dimen/x131"
+        android:layout_height="@dimen/y131"
         android:layout_centerHorizontal="true"
         android:src="@mipmap/ic_launcher"/>
 

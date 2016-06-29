@@ -10,8 +10,8 @@
         android:layout_centerInParent="true"
         android:layout_gravity="center"
         android:drawableLeft="@mipmap/img_qr_code"
-        android:drawablePadding="10dp"
-        android:padding="5dp"
+        android:drawablePadding="@dimen/x26"
+        android:padding="@dimen/x13"
         android:text="@string/scan_game_manager_qrcode"
         android:textColor="@color/default_font_color"
         android:textSize="16sp"/>

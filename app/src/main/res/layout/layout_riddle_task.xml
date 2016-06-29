@@ -10,7 +10,7 @@
         android:layout_height="@dimen/task_content_height"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-        android:padding="5dp"
+        android:padding="@dimen/y13"
         android:src="@mipmap/img_riddle_task_ensure"/>
 
     <EditText

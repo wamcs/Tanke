@@ -8,11 +8,10 @@
     <com.lptiyu.tanke.widget.CustomTextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
         android:layout_gravity="center"
         android:drawableLeft="@mipmap/img_camera"
-        android:drawablePadding="10dp"
-        android:padding="5dp"
+        android:drawablePadding="@dimen/x26"
+        android:padding="@dimen/x13"
         android:text="@string/distinguish_photo"
         android:textColor="@color/default_font_color"
         android:textSize="16sp"/>

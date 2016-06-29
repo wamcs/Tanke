@@ -4,12 +4,12 @@
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
                 android:orientation="vertical"
-                android:padding="15dp">
+                android:padding="@dimen/x39">
 
     <ImageView
         android:id="@+id/layout_dialog_timing_task_image"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
+        android:layout_width="@dimen/x79"
+        android:layout_height="@dimen/y79"
         android:layout_centerVertical="true"
         android:src="@mipmap/img_timing_clock"/>
 
@@ -21,7 +21,7 @@
         android:layout_toEndOf="@id/layout_dialog_timing_task_image"
         android:layout_toRightOf="@id/layout_dialog_timing_task_image"
         android:textColor="@color/colorPrimary"
-        android:padding="10dp"
+        android:padding="@dimen/x26"
         android:textSize="16sp"/>
 
 

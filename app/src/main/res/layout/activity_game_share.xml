@@ -45,10 +45,10 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:paddingBottom="17dp"
-                android:paddingLeft="17dp"
-                android:paddingRight="17dp"
-                android:paddingTop="17dp"
+                android:paddingBottom="@dimen/y45"
+                android:paddingLeft="@dimen/x45"
+                android:paddingRight="@dimen/x45"
+                android:paddingTop="@dimen/y45"
                 android:src="@mipmap/game_details_share_btn"
             />
 

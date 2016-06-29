@@ -15,25 +15,26 @@
         android:background="@color/label_header_bg_color"
         android:clickable="false"
         android:orientation="vertical">
+
         <com.lptiyu.tanke.widget.CustomTextView
             android:layout_width="match_parent"
-            android:layout_height="1dp"
+            android:layout_height="@dimen/y3"
             android:background="@color/divider_color"/>
 
         <com.lptiyu.tanke.widget.CustomTextView
             android:layout_width="wrap_content"
             android:clickable="false"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="25dp"
-            android:layout_marginTop="15dp"
-            android:paddingBottom="5dp"
-            android:paddingTop="5dp"
+            android:layout_marginLeft="@dimen/x66"
+            android:layout_marginTop="@dimen/y39"
+            android:paddingBottom="@dimen/y13"
+            android:paddingTop="@dimen/y13"
             android:text="@string/current_location"
             android:textColor="@color/label_header_color"/>
 
         <ImageView
             android:layout_width="match_parent"
-            android:layout_height="1dp"
+            android:layout_height="@dimen/y3"
             android:src="@color/divider_color"/>
 
     </LinearLayout>
@@ -61,7 +62,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingBottom="@dimen/item_locate_activity_list_item_padding_top_bottom"
-            android:paddingLeft="15dp"
+            android:paddingLeft="@dimen/x39"
             android:textSize="12sp"
             android:textColor="#ff0000"
             android:text="@string/city_not_open"
@@ -77,28 +78,26 @@
         android:orientation="vertical">
         <com.lptiyu.tanke.widget.CustomTextView
             android:layout_width="match_parent"
-            android:layout_height="1dp"
+            android:layout_height="@dimen/y3"
             android:background="@color/divider_color"/>
 
         <com.lptiyu.tanke.widget.CustomTextView
             android:layout_width="wrap_content"
             android:clickable="false"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="25dp"
-            android:layout_marginTop="15dp"
-            android:paddingBottom="5dp"
-            android:paddingTop="5dp"
+            android:layout_marginLeft="@dimen/x66"
+            android:layout_marginTop="@dimen/y39"
+            android:paddingBottom="@dimen/y13"
+            android:paddingTop="@dimen/y13"
             android:text="@string/open_location"
             android:textColor="@color/label_header_color"/>
 
         <ImageView
             android:layout_width="match_parent"
-            android:layout_height="1dp"
+            android:layout_height="@dimen/y3"
             android:src="@color/divider_color"/>
 
     </LinearLayout>
-
-
 
     <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"

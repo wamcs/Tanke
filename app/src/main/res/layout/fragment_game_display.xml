@@ -18,10 +18,10 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="10dp"
+            android:layout_marginLeft="@dimen/x26"
             android:drawableRight="@mipmap/img_arrow_down"
-            android:padding="5dp"
-            android:drawablePadding="5dp"
+            android:padding="@dimen/x13"
+            android:drawablePadding="@dimen/x13"
             android:text="武汉"
             android:textColor="@color/default_font_color"
             android:textSize="16sp"/>
@@ -36,8 +36,8 @@
 
         <Button
             android:id="@+id/scanner"
-            android:layout_width="36dp"
-            android:layout_height="40dp"
+            android:layout_width="@dimen/x94"
+            android:layout_height="@dimen/y105"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:text="扫一扫"

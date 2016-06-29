@@ -52,7 +52,7 @@
     <com.lptiyu.tanke.widget.GradientProgressBar
         android:id="@+id/web_view_progress_bar"
         android:layout_width="match_parent"
-        android:layout_height="3dp"
+        android:layout_height="@dimen/y8"
         android:layout_below="@id/tool_bar"
         app:src="@drawable/user_center_exp_progress_bar_solid"/>
 

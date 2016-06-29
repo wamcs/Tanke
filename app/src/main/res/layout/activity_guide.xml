@@ -22,9 +22,9 @@
         android:textSize="18sp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="10dp"
-        android:layout_marginBottom="10dp"
-        android:layout_marginRight="10dp"
+        android:padding="@dimen/x26"
+        android:layout_marginBottom="@dimen/y26"
+        android:layout_marginRight="@dimen/x26"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:drawableLeft="@mipmap/img_three_arrow"/>
@@ -35,7 +35,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="20dp"
+        android:layout_marginBottom="@dimen/y52"
         android:orientation="horizontal">
 
         <ImageView
@@ -44,7 +44,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:clickable="true"
-            android:padding="5dp"
+            android:padding="@dimen/x13"
             android:src="@drawable/guide_activity_indicator_style"/>
 
         <ImageView
@@ -53,7 +53,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:clickable="true"
-            android:padding="5dp"
+            android:padding="@dimen/x13"
             android:src="@drawable/guide_activity_indicator_style"/>
 
         <ImageView
@@ -62,7 +62,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:clickable="true"
-            android:padding="5dp"
+            android:padding="@dimen/x13"
             android:src="@drawable/guide_activity_indicator_style"/>
 
     </LinearLayout>

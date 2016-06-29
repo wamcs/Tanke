@@ -75,25 +75,25 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_below="@id/layout_dialog_date_picker_picker_root"
-        android:layout_margin="5dp"
+        android:layout_margin="@dimen/x13"
         android:orientation="horizontal"
-        android:padding="5dp">
+        android:padding="@dimen/x13">
 
 
         <com.lptiyu.tanke.widget.CustomTextView
             android:id="@+id/layout_dialog_date_picker_cancel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:padding="8dp"
+            android:layout_margin="@dimen/x13"
+            android:padding="@dimen/x21"
             android:text="取消"/>
 
         <com.lptiyu.tanke.widget.CustomTextView
             android:id="@+id/layout_dialog_date_picker_ensure"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:padding="8dp"
+            android:layout_margin="@dimen/x13"
+            android:padding="@dimen/x21"
             android:text="确定"/>
 
     </LinearLayout>

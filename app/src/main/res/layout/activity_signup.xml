@@ -17,8 +17,8 @@
             android:id="@id/sign_up_return_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="15dp"
-            android:layout_marginTop="19dp"
+            android:padding="@dimen/x39"
+            android:layout_marginTop="@dimen/y50"
             android:src="@mipmap/img_last_white"/>
 
 
@@ -61,14 +61,14 @@
 
             <com.lptiyu.tanke.widget.CustomTextView
                 style="@style/signUpText"
-                android:layout_marginRight="4dp"
+                android:layout_marginRight="@dimen/x10"
                 android:text="@string/area_code"
                 />
 
             <EditText
                 android:id="@id/sign_up_phone_edit_text"
                 style="@style/signUpEditText"
-                android:layout_marginRight="4dp"
+                android:layout_marginRight="@dimen/x10"
                 android:hint="@string/input_phone"
                 android:inputType="phone"/>
 
@@ -76,9 +76,9 @@
 
         <View
             android:layout_width="match_parent"
-            android:layout_height="0.5dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
+            android:layout_height="@dimen/y1"
+            android:layout_marginLeft="@dimen/x26"
+            android:layout_marginRight="@dimen/x26"
             android:background="@color/grey05"/>
 
         <LinearLayout
@@ -96,7 +96,7 @@
             <EditText
                 android:id="@id/sign_up_code_edit_text"
                 style="@style/signUpEditText"
-                android:layout_marginRight="10dp"
+                android:layout_marginRight="@dimen/x26"
                 android:layout_weight="1"
                 android:hint="@string/input_verify_code"
                 android:inputType="phone"
@@ -105,15 +105,15 @@
             <com.lptiyu.tanke.widget.CustomTextView
                 android:id="@id/sign_up_get_code_button"
                 android:layout_width="wrap_content"
-                android:layout_height="23dp"
+                android:layout_height="@dimen/y60"
                 android:layout_gravity="center_vertical|end"
-                android:layout_marginRight="15dp"
+                android:layout_marginRight="@dimen/x39"
                 android:background="@drawable/gradient_oval_style"
                 android:gravity="center"
-                android:paddingBottom="5dp"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp"
-                android:paddingTop="5dp"
+                android:paddingBottom="@dimen/y13"
+                android:paddingLeft="@dimen/x26"
+                android:paddingRight="@dimen/x26"
+                android:paddingTop="@dimen/y13"
                 android:text="@string/get_verify_code"
                 android:textColor="@color/white10"
                 android:textSize="9sp"
@@ -143,7 +143,7 @@
         <EditText
             android:id="@id/sign_up_password_edit_text"
             style="@style/signUpEditText"
-            android:layout_marginRight="10dp"
+            android:layout_marginRight="@dimen/x26"
             android:hint="@string/input_password"
             android:inputType="textPassword"/>
 
@@ -152,7 +152,7 @@
     <Button
         android:id="@id/sign_up_next_button"
         android:layout_width="match_parent"
-        android:layout_height="35dp"
+        android:layout_height="@dimen/x92"
         android:layout_below="@+id/linearLayout2"
         android:layout_marginLeft="@dimen/sign_up_edit_margin"
         android:layout_marginRight="@dimen/sign_up_edit_margin"
@@ -167,7 +167,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/sign_up_next_button"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="@dimen/y26"
         android:text="@string/click_user_protocol"
         android:textColor="@color/grey05"/>
 

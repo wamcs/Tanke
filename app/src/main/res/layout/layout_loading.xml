@@ -17,7 +17,7 @@
         android:layout_centerVertical="true"
         android:layout_toEndOf="@id/progress_bar"
         android:layout_toRightOf="@id/progress_bar"
-        android:padding="10dp"
+        android:padding="@dimen/x26"
         android:textSize="16sp"/>
 
 </RelativeLayout>

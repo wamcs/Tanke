@@ -15,7 +15,7 @@
         style="@style/TextAppearance.UserCenter.middle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="7dp"
+        android:layout_marginTop="@dimen/y18"
         android:layout_marginLeft="@dimen/message_item_title_margin_left"
         android:padding="@dimen/message_item_title_padding"
         android:text="阅读原文"/>
@@ -35,8 +35,8 @@
         android:layout_width="match_parent"
         android:scaleType="centerCrop"
         android:layout_below="@id/message_item_time"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
+        android:layout_marginLeft="@dimen/x26"
+        android:layout_marginRight="@dimen/x26"
         android:src="@mipmap/need_to_remove_4_so_big"
         android:layout_height="@dimen/message_item_right_imageview_height"/>
 
@@ -45,8 +45,8 @@
         style="@style/TextAppearance.UserCenter.small"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="7dp"
-        android:layout_marginTop="7dp"
+        android:layout_marginBottom="@dimen/y18"
+        android:layout_marginTop="@dimen/y18"
         android:layout_alignLeft="@id/message_item_title"
         android:layout_below="@id/message_item_image_view"
         android:padding="@dimen/message_item_content_padding"

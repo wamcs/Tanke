@@ -9,7 +9,7 @@
     <LinearLayout
         android:id="@+id/bottom_button_layout"
         android:layout_width="match_parent"
-        android:layout_height="46dp"
+        android:layout_height="@dimen/y121"
         android:gravity="center_vertical"
         android:layout_alignParentBottom="true">
 
@@ -50,7 +50,7 @@
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="10dp"
+        android:layout_height="@dimen/y26"
         android:layout_above="@id/bottom_button_layout"
         android:background="@drawable/shadow_reverse"/>
 
