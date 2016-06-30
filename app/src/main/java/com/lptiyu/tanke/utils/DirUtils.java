@@ -39,6 +39,12 @@ public class DirUtils {
     DATA_ROOT_DIR = context.getFilesDir().toString();
   }
 
+  /**
+   *
+   * @param rootDir
+   * @param type
+   * @return
+     */
   public static File getDirectory(String rootDir, String type) {
     if (SDCARD_ROOT_DIR == null || DATA_ROOT_DIR == null) {
       Timber.e("you should invoke init() method before use DirUtils");

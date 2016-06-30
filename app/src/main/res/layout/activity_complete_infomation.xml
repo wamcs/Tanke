@@ -89,13 +89,12 @@
                     android:layout_height="@dimen/complete_user_avatar_layout_size"
                     android:background="@mipmap/img_avatar_border">
 
-                    <com.facebook.drawee.view.SimpleDraweeView
+                    <com.lptiyu.tanke.widget.CircularImageView
                         android:id="@id/complete_avatar_image_view"
                         android:layout_width="@dimen/complete_user_avatar_size"
                         android:layout_height="@dimen/complete_user_avatar_size"
                         android:layout_gravity="center"
-                        android:background="@mipmap/img_male"
-                        app:roundAsCircle="true" />
+                        android:background="@mipmap/img_male" />
                 </FrameLayout>
             </LinearLayout>
 
@@ -117,9 +116,9 @@
 
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
-                android:gravity="center"
                 android:layout_gravity="center"
-                android:layout_weight="56">
+                android:layout_weight="56"
+                android:gravity="center">
 
                 <com.lptiyu.tanke.widget.CustomTextView
                     android:layout_width="wrap_content"
