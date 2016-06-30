@@ -246,5 +246,6 @@
 
     <!-- AboutUsActivity Text Area-->
     <string name="about_us_activity">关于我们</string>
+    <string name="jason">jason</string>
 
 </resources>
