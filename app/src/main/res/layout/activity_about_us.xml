@@ -35,7 +35,7 @@
         android:gravity="center_horizontal"
         android:text="步道探秘"
         android:textColor="@color/grey06"
-        android:textSize="23sp"/>
+        android:textSize="18sp"/>
 
     <com.lptiyu.tanke.widget.CustomTextView
         android:id="@+id/activity_about_us_version"
@@ -46,7 +46,7 @@
         android:gravity="center_horizontal"
         android:text="v1.0.1"
         android:textColor="@color/grey07"
-        android:textSize="18sp"/>
+        android:textSize="13sp"/>
 
     <com.lptiyu.tanke.widget.CustomTextView
         android:id="@+id/activity_about_us_intro"
@@ -57,7 +57,7 @@
         android:layout_centerHorizontal="true"
         android:text="时尚有趣的定向运动APP"
         android:textColor="@color/colorPrimary"
-        android:textSize="18sp"/>
+        android:textSize="15sp"/>
 
     <com.lptiyu.tanke.widget.CustomTextView
         android:id="@+id/activity_about_us_user_company"
@@ -68,7 +68,7 @@
         android:text="乐跑体育公司 版权所有"
         android:layout_marginBottom="@dimen/y50"
         android:textColor="@color/grey06"
-        android:textSize="14sp"/>
+        android:textSize="12sp"/>
 
     <com.lptiyu.tanke.widget.CustomTextView
         android:id="@+id/activity_about_us_user_protocol"
@@ -79,7 +79,7 @@
         android:layout_marginBottom="@dimen/y10"
         android:text="用户协议"
         android:textColor="@color/colorPrimary"
-        android:textSize="18sp"/>
+        android:textSize="12sp"/>
 
 
 

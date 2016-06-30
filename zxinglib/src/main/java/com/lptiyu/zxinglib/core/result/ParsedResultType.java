@@ -23,18 +23,5 @@ package com.lptiyu.zxinglib.core.result;
  * @author Sean Owen
  */
 public enum ParsedResultType {
-
-  ADDRESSBOOK,
-  EMAIL_ADDRESS,
-  PRODUCT,
-  URI,
   TEXT,
-  GEO,
-  TEL,
-  SMS,
-  CALENDAR,
-  WIFI,
-  ISBN,
-  VIN,
-
 }

@@ -32,7 +32,6 @@ import com.lptiyu.zxinglib.android.Contents;
 import com.lptiyu.zxinglib.android.Intents;
 import com.lptiyu.zxinglib.android.LocaleManager;
 import com.lptiyu.zxinglib.android.PreferencesActivity;
-import com.lptiyu.zxinglib.android.book.SearchBookContentsActivity;
 import com.lptiyu.zxinglib.core.Result;
 import com.lptiyu.zxinglib.core.result.ParsedResult;
 import com.lptiyu.zxinglib.core.result.ParsedResultType;
@@ -411,13 +410,6 @@ public abstract class ResultHandler {
     Uri uri = Uri.parse("http://books.google." + LocaleManager.getBookSearchCountryTLD(activity) +
         "/books?vid=isbn" + isbn);
     launchIntent(new Intent(Intent.ACTION_VIEW, uri));
-  }
-
-  final void searchBookContents(String isbnOrUrl) {
-    Intent intent = new Intent(Intents.SearchBookContents.ACTION);
-    intent.setClassName(activity, SearchBookContentsActivity.class.getName());
-    putExtra(intent, Intents.SearchBookContents.ISBN, isbnOrUrl);
-    launchIntent(intent);
   }
 
   final void openURL(String url) {

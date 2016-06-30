@@ -10,13 +10,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:paddingBottom="@dimen/y13"
-        android:paddingRight="@dimen/x13"
-        android:paddingTop="@dimen/y13"
+        android:paddingBottom="5dp"
+        android:paddingRight="5dp"
+        android:paddingTop="5dp"
         android:layout_marginLeft="-8dp"
         android:src="@drawable/avoscloud_feedback_thread_actionbar_back" />
 
-    <com.lptiyu.tanke.widget.CustomTextView
+    <TextView
         android:id="@+id/avoscloud_feedback_actionbar_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

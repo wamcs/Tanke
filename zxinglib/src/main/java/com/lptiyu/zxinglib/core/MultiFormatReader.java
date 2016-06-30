@@ -16,11 +16,6 @@
 
 package com.lptiyu.zxinglib.core;
 
-import com.lptiyu.zxinglib.core.aztec.AztecReader;
-import com.lptiyu.zxinglib.core.datamatrix.DataMatrixReader;
-import com.lptiyu.zxinglib.core.maxicode.MaxiCodeReader;
-import com.lptiyu.zxinglib.core.oned.MultiFormatOneDReader;
-import com.lptiyu.zxinglib.core.pdf417.PDF417Reader;
 import com.lptiyu.zxinglib.core.qrcode.QRCodeReader;
 
 import java.util.ArrayList;
@@ -114,43 +109,12 @@ public final class MultiFormatReader implements Reader {
           formats.contains(BarcodeFormat.RSS_14) ||
           formats.contains(BarcodeFormat.RSS_EXPANDED);
       // Put 1D readers upfront in "normal" mode
-      if (addOneDReader && !tryHarder) {
-        readers.add(new MultiFormatOneDReader(hints));
-      }
       if (formats.contains(BarcodeFormat.QR_CODE)) {
         readers.add(new QRCodeReader());
       }
-      if (formats.contains(BarcodeFormat.DATA_MATRIX)) {
-        readers.add(new DataMatrixReader());
-      }
-      if (formats.contains(BarcodeFormat.AZTEC)) {
-        readers.add(new AztecReader());
-      }
-      if (formats.contains(BarcodeFormat.PDF_417)) {
-         readers.add(new PDF417Reader());
-      }
-      if (formats.contains(BarcodeFormat.MAXICODE)) {
-         readers.add(new MaxiCodeReader());
-      }
-      // At end in "try harder" mode
-      if (addOneDReader && tryHarder) {
-        readers.add(new MultiFormatOneDReader(hints));
-      }
     }
     if (readers.isEmpty()) {
-      if (!tryHarder) {
-        readers.add(new MultiFormatOneDReader(hints));
-      }
-
       readers.add(new QRCodeReader());
-      readers.add(new DataMatrixReader());
-      readers.add(new AztecReader());
-      readers.add(new PDF417Reader());
-      readers.add(new MaxiCodeReader());
-
-      if (tryHarder) {
-        readers.add(new MultiFormatOneDReader(hints));
-      }
     }
     this.readers = readers.toArray(new Reader[readers.size()]);
   }

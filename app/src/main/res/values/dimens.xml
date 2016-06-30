@@ -58,7 +58,7 @@
     <dimen name="sign_up_edit_left_text_margin_left">@dimen/x63</dimen>
     <dimen name="sign_up_edit_left_text_margin_right">@dimen/x97</dimen>
     <dimen name="sign_up_edit_text_size">15sp</dimen>
-    <dimen name="sign_up_edit_hint_text_size">11sp</dimen>
+    <dimen name="sign_up_edit_hint_text_size">14sp</dimen>
     <dimen name="sign_up_edit_margin_bottom">@dimen/y60</dimen>
     <dimen name="sign_up_next_button_text_size">14sp</dimen>
     <dimen name="sign_up_title_text_size">16sp</dimen>
