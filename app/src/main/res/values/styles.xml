@@ -2,10 +2,207 @@
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowBackground">@android:color/white</item>
     </style>
+
+    <!--Toolbar Theme Area-->
+    <style name="Toolbar">
+        <item name="android:layout_height">?attr/actionBarSize</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:background">@drawable/gradient_rect_style</item>
+        <item name="contentInsetStart">10dp</item>
+    </style>
+
+    <!-- Number Picker Style -->
+    <style name="numberPickerStyle" parent="NPWidget.Holo.Light.NumberPicker">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_margin">@dimen/number_picker_margin</item>
+    </style>
+
+    <!-- Login Activity Style-->
+    <style name="loginActivityButton">
+        <item name="android:layout_height">@dimen/login_edit_layout_button_height</item>
+        <item name="android:layout_width">@dimen/login_edit_layout_button_width</item>
+        <item name="android:textSize">10sp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@color/white10</item>
+        <item name="android:background">@drawable/login_little_button_bg</item>
+    </style>
+
+    <!-- sign up activity style-->
+    <style name="signUpText">
+        <item name="android:textColor">@color/base_text_color</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:textSize">@dimen/sign_up_edit_text_size</item>
+        <item name="android:layout_gravity">center_vertical</item>
+    </style>
+
+    <style name="signUpEditText">
+        <item name="android:textColor">@color/base_text_color</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textCursorDrawable">@drawable/cursor</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:background">@color/white10</item>
+        <item name="android:padding">@dimen/x8</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:textSize">@dimen/sign_up_edit_hint_text_size</item>
+        <item name="android:textColorHint">@color/grey07</item>
+        <item name="android:layout_gravity">center_vertical</item>
+    </style>
+
+    <!-- CompleteInformationActivity Style Area-->
+    <style name="CompleteItemTitle">
+        <item name="android:textColor">@color/complete_item_title_color</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_gravity">center_horizontal</item>
+        <item name="android:textSize">@dimen/complete_item_title_text_size</item>
+        <item name="android:layout_marginBottom">@dimen/complete_item_title_margin_bottom</item>
+        <item name="android:layout_marginTop">@dimen/complete_item_title_margin_top</item>
+    </style>
+
+    <style name="CompleteItemContent">
+        <item name="android:textColor">@color/base_text_color</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_gravity">center_horizontal</item>
+        <item name="android:textSize">@dimen/complete_item_content_text_size</item>
+        <item name="android:layout_marginBottom">@dimen/complete_item_content_margin_bottom</item>
+    </style>
+
+    <!-- GamePlayingActivity Style Area-->
+
+    <!-- GameDataActivity Style Area-->
+    <style name="GameDataItemText">
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:padding">@dimen/item_game_data_task_name_task_type_padding</item>
+
+    </style>
+
+    <!-- GameShareActivity Theme Area-->
+    <style name="ShareActivityTextBase">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:padding">@dimen/layout_game_share_form_text_base_padding</item>
+        <item name="android:layout_centerHorizontal">true</item>
+    </style>
+
+    <style name="ShareActivityTextData" parent="ShareActivityTextBase">
+        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:textSize">20sp</item>
+
+    </style>
+
+    <style name="ShareActivityTextTitle" parent="ShareActivityTextBase">
+        <item name="android:layout_marginTop">5dp</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/black06</item>
+    </style>
+
+    <style name="ShareActivityTextLine">
+        <item name="android:layout_width">0.5dp</item>
+        <item name="android:layout_height">40dp</item>
+        <item name="android:layout_alignParentRight">true</item>
+        <item name="android:layout_centerVertical">true</item>
+        <item name="android:background">@color/white03</item>
+    </style>
+
+
+    <style name="TextAppearance">
+    </style>
+
+    <style name="TextAppearance.Toolbar">
+        <item name="android:textColor">@color/default_font_color</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+
+    <style name="TextAppearance.UserCenter"/>
+
+    <style name="TextAppearance.UserCenter.middle" parent="TextAppearance">
+        <item name="android:textSize">15sp</item>
+        <item name="android:textColor">@color/grey03</item>
+    </style>
+
+    <style name="TextAppearance.UserCenter.small" parent="TextAppearance">
+        <item name="android:textSize">13sp</item>
+        <item name="android:textColor">@color/grey06</item>
+    </style>
+
+    <style name="TextAppearance.UserCenter.TAG">
+        <item name="android:textSize">11sp</item>
+        <item name="android:textColor">@color/white10</item>
+        <item name="android:paddingLeft">2dp</item>
+        <item name="android:paddingRight">2dp</item>
+    </style>
+
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
+    <!-- Modify User Info-->
+    <style name="ModifyUserInfoItemTitle">
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:textSize">@dimen/modify_user_info_item_text_size</item>
+        <item name="android:textColor">@color/black08</item>
+        <item name="android:layout_marginLeft">@dimen/modify_user_info_item_content_margin</item>
+    </style>
+
+    <style name="ModifyUserInfoItemText">
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">@dimen/modify_user_info_item_text_size</item>
+        <item name="android:textColor">@color/grey06</item>
+        <item name="android:layout_marginRight">@dimen/modify_user_info_item_content_margin</item>
+    </style>
+
+    <!-- SettingActivity Theme Area-->
+    <style name="SettingActivityItemTextBase">
+        <item name="android:paddingTop">@dimen/setting_activity_item_text_padding_top_bottom</item>
+        <item name="android:paddingBottom">@dimen/setting_activity_item_text_padding_top_bottom</item>
+        <item name="android:paddingLeft">@dimen/setting_activity_item_text_padding_left_right</item>
+        <item name="android:paddingRight">@dimen/setting_activity_item_text_padding_left_right</item>
+        <item name="android:textColor">@color/black09</item>
+        <item name="android:textSize">@dimen/setting_activity_item_text_size</item>
+    </style>
+
+    <style name="SettingActivityItemTextNormal" parent="SettingActivityItemTextBase">
+        <item name="android:clickable">true</item>
+        <item name="android:background">@drawable/style_locate_activity_list_item</item>
+    </style>
+
+    <!-- SwitchButton Theme Area-->
+    <style name="SwitchButtonMD">
+        <item name="kswThumbDrawable">@drawable/ksw_md_thumb</item>
+        <item name="kswBackColor">@color/ksw_md_back_color</item>
+        <item name="kswBackMeasureRatio">1.45</item>
+        <item name="kswThumbMarginLeft">-16dp</item>
+        <item name="kswThumbMarginTop">-14dp</item>
+        <item name="kswThumbMarginRight">-16dp</item>
+        <item name="kswThumbMarginBottom">-14dp</item>
+    </style>
+
+    <style name="SwitchButtonStyleMD" parent="SwitchButtonMD">
+        <item name="android:paddingLeft">10dp</item>
+        <item name="android:paddingRight">10dp</item>
+        <item name="android:paddingTop">4dp</item>
+        <item name="android:paddingBottom">4dp</item>
+    </style>
+
 
 </resources>

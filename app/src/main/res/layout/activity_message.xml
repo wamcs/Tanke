@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@id/tool_bar"
+        style="@style/Toolbar">
+
+        <include layout="@layout/layout_default_toolbar"/>
+
+    </android.support.v7.widget.Toolbar>
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:layout_below="@id/tool_bar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@id/message_refresh_layout"
+        >
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@id/message_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/message_activity_bg_color"
+            />
+    </android.support.v4.widget.SwipeRefreshLayout>
+
+
+
+</RelativeLayout>

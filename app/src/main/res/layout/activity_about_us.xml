@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.lptiyu.tanke.userCenter.ui.AboutUsActivity">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@id/tool_bar"
+        style="@style/Toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <include layout="@layout/layout_default_toolbar"/>
+    </android.support.v7.widget.Toolbar>
+
+    <ImageView
+        android:id="@+id/activity_about_us_logo"
+        android:layout_width="@dimen/login_title_size"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/y80"
+        android:padding="@dimen/x30"
+        android:layout_below="@id/tool_bar"
+        android:src="@mipmap/img_splash_logo"
+    />
+
+    <com.lptiyu.tanke.widget.CustomTextView
+        android:id="@+id/activity_about_us_name"
+        android:layout_below="@id/activity_about_us_logo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:gravity="center_horizontal"
+        android:text="步道探秘"
+        android:textColor="@color/grey06"
+        android:textSize="23sp"/>
+
+    <com.lptiyu.tanke.widget.CustomTextView
+        android:id="@+id/activity_about_us_version"
+        android:layout_below="@id/activity_about_us_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:gravity="center_horizontal"
+        android:text="v1.0.1"
+        android:textColor="@color/grey07"
+        android:textSize="18sp"/>
+
+    <com.lptiyu.tanke.widget.CustomTextView
+        android:id="@+id/activity_about_us_intro"
+        android:layout_below="@id/activity_about_us_version"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/y100"
+        android:layout_centerHorizontal="true"
+        android:text="时尚有趣的定向运动APP"
+        android:textColor="@color/colorPrimary"
+        android:textSize="18sp"/>
+
+    <com.lptiyu.tanke.widget.CustomTextView
+        android:id="@+id/activity_about_us_user_company"
+        android:layout_alignParentBottom="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:text="乐跑体育公司 版权所有"
+        android:layout_marginBottom="@dimen/y50"
+        android:textColor="@color/grey06"
+        android:textSize="14sp"/>
+
+    <com.lptiyu.tanke.widget.CustomTextView
+        android:id="@+id/activity_about_us_user_protocol"
+        android:layout_width="wrap_content"
+        android:layout_above="@id/activity_about_us_user_company"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="@dimen/y10"
+        android:text="用户协议"
+        android:textColor="@color/colorPrimary"
+        android:textSize="18sp"/>
+
+
+
+
+</RelativeLayout>

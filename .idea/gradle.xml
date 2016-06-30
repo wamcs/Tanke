@@ -10,12 +10,20 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
+            <option value="$PROJECT_DIR$/daogenerator" />
+            <option value="$PROJECT_DIR$/nifty" />
+            <option value="$PROJECT_DIR$/number_picker" />
+            <option value="$PROJECT_DIR$/zxinglib" />
           </set>
         </option>
         <option name="myModules">
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
+            <option value="$PROJECT_DIR$/daogenerator" />
+            <option value="$PROJECT_DIR$/nifty" />
+            <option value="$PROJECT_DIR$/number_picker" />
+            <option value="$PROJECT_DIR$/zxinglib" />
           </set>
         </option>
       </GradleProjectSettings>

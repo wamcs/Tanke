@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.lptiyu.tanke.gameplaying.GamePlayingActivity">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@id/tool_bar"
+        style="@style/Toolbar">
+
+    </android.support.v7.widget.Toolbar>
+
+    <com.baidu.mapapi.map.TextureMapView
+        android:id="@+id/map_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+    <ImageView
+        android:id="@+id/start_locate"
+        android:layout_width="@dimen/activity_game_playing_button_width_height"
+        android:layout_height="@dimen/activity_game_playing_button_width_height"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_marginBottom="@dimen/activity_game_playing_start_locate_margin_bottom"
+        android:layout_marginLeft="@dimen/activity_game_playing_start_locate_margin_left"
+        android:background="@drawable/map_button_style"
+        android:contentDescription="@string/content_description"
+        android:src="@mipmap/img_locate"/>
+
+    <ImageView
+        android:id="@+id/move_to_target"
+        android:layout_width="@dimen/activity_game_playing_button_width_height"
+        android:layout_height="@dimen/activity_game_playing_button_width_height"
+        android:layout_above="@id/start_locate"
+        android:layout_alignParentLeft="true"
+        android:layout_marginBottom="@dimen/activity_game_playing_move_to_target_margin_bottom"
+        android:layout_marginLeft="@dimen/activity_game_playing_move_to_target_margin_left"
+        android:background="@drawable/map_button_style"
+        android:contentDescription="@string/content_description"
+        android:padding="@dimen/activity_game_playing_move_to_target_padding"
+        android:src="@mipmap/img_target"/>
+
+    <ImageView
+        android:id="@+id/game_data"
+        android:layout_width="@dimen/activity_game_playing_button_width_height"
+        android:layout_height="@dimen/activity_game_playing_button_width_height"
+        android:layout_above="@id/move_to_target"
+        android:layout_alignParentLeft="true"
+        android:layout_marginBottom="@dimen/activity_game_playing_game_data_margin_bottom"
+        android:layout_marginLeft="@dimen/activity_game_playing_game_data_margin_left"
+        android:background="@drawable/map_button_style"
+        android:contentDescription="@string/content_description"
+        android:padding="@dimen/activity_game_playing_game_data_padding"
+        android:src="@mipmap/img_game_data"/>
+
+    <ImageView
+        android:id="@+id/zoom_out"
+        android:layout_width="@dimen/activity_game_playing_button_width_height"
+        android:layout_height="@dimen/activity_game_playing_button_width_height"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="@dimen/activity_game_playing_zoom_out_margin_bottom"
+        android:layout_marginRight="@dimen/activity_game_playing_zoom_out_margin_right"
+        android:padding="@dimen/activity_game_playing_zoom_out_padding"
+        android:layout_marginEnd="@dimen/activity_game_playing_zoom_out_margin_end"
+        android:background="@drawable/map_zoom_out_button_bg"
+        android:contentDescription="@string/content_description"
+        android:src="@drawable/map_zoom_out_button"/>
+
+
+    <ImageView
+        android:id="@+id/zoom_in"
+        android:layout_width="@dimen/activity_game_playing_button_width_height"
+        android:layout_height="@dimen/activity_game_playing_button_width_height"
+        android:layout_above="@id/zoom_out"
+        android:padding="@dimen/activity_game_playing_zoom_in_padding"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginEnd="@dimen/activity_game_playing_zoom_out_margin_end"
+        android:layout_marginRight="@dimen/activity_game_playing_zoom_out_margin_right"
+        android:background="@drawable/map_zoom_in_button_bg"
+        android:contentDescription="@string/content_description"
+        android:src="@drawable/map_zoom_in_button"/>
+
+
+    <Button
+        android:id="@+id/start_animate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="下一个"/>
+
+    <com.lptiyu.tanke.widget.RunningSpotScrollView
+        android:id="@+id/running_scroll_view"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/running_spot_view_root_height"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/gradient_rect_style"
+        app:spotCircleRadius="@dimen/running_spot_view_radius"
+        app:spotDoingColor="@color/game_playing_spot_doing_color"
+        app:spotDoneColor="@color/game_playing_spot_done_color"
+        app:spotItemLineColor="@color/game_playing_spot_scrollview_line_color"
+        app:spotItemLineHeight="@dimen/running_spot_view_item_line_height"
+        app:spotItemLineWidth="@dimen/running_spot_view_item_line_width"
+        app:spotTextSize="@dimen/running_spot_view_text_size"
+        app:spotToDoColor="@color/game_playing_spot_to_do_color"/>
+
+
+    <com.lptiyu.tanke.widget.TickView
+        android:id="@+id/tick_view"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/tick_view_margin_top"
+        android:padding="@dimen/x13"
+        android:visibility="gone"
+        app:tickFillColor="@color/colorAccent"
+        app:tickInnerCircleColor="@color/colorPrimaryDark"
+        app:tickInnerCircleRadius="@dimen/x81"
+        app:tickOuterCircleColor="@color/colorPrimary"
+        app:tickOuterCircleRadius="@dimen/x92"
+        app:tickTextColor="@color/default_font_color"
+        app:tickTextSize="10sp"/>
+
+</RelativeLayout>

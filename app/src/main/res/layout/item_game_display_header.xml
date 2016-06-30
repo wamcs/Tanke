@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.lptiyu.tanke.gamedisplay.ElasticHeaderLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/jelly_view"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/y490"
+    >
+
+    <LinearLayout
+        android:id="@+id/middle_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/middle_layout_margin_top"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="@dimen/middle_layout_margin_left_right"
+        android:layout_marginRight="@dimen/middle_layout_margin_left_right"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <com.lptiyu.tanke.widget.CircularImageView
+            android:id="@+id/middle_image_view"
+            android:layout_width="@dimen/middle_image_view_width_height"
+            android:layout_height="@dimen/middle_image_view_width_height"
+            app:civ_border_color="#fff"
+            app:civ_border_width="@dimen/middle_image_view_width_height_civ_border_width"
+            app:civ_shadow="true"
+            app:civ_shadow_radius="15"
+            app:civ_shadow_color="@color/purple_shadow_color"
+            />
+
+        <com.lptiyu.tanke.widget.CustomTextView
+            android:id="@+id/middle_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/middle_title_margin_top"
+            android:textSize="15sp"
+            android:maxWidth="@dimen/middle_title_max_width"
+            android:singleLine="true"
+            />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/left_right_image_root_margin_top"
+        android:layout_toLeftOf="@id/middle_layout"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <com.lptiyu.tanke.widget.CircularImageView
+            android:id="@+id/left_image_view"
+            android:layout_width="@dimen/left_right_image_view_width_height"
+            android:layout_height="@dimen/left_right_image_view_width_height"
+            app:civ_border_color="#fff"
+            app:civ_border_width="@dimen/left_right_image_view_civ_border_width"
+            app:civ_shadow="true"
+            app:civ_shadow_radius="15"
+            app:civ_shadow_color="@color/purple_shadow_color"
+            />
+
+        <com.lptiyu.tanke.widget.CustomTextView
+            android:id="@+id/left_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/left_right_title_margin_top"
+            android:textSize="13sp"
+            android:singleLine="true"
+            android:maxWidth="@dimen/left_right_title_max_width"
+        />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/middle_layout"
+        android:gravity="center_horizontal"
+        android:layout_marginTop="@dimen/left_right_image_root_margin_top"
+        android:orientation="vertical">
+
+        <com.lptiyu.tanke.widget.CircularImageView
+            android:id="@+id/right_image_view"
+            android:layout_width="@dimen/left_right_image_view_width_height"
+            android:layout_height="@dimen/left_right_image_view_width_height"
+            app:civ_border_color="#fff"
+            app:civ_border_width="@dimen/left_right_image_view_civ_border_width"
+            app:civ_shadow="true"
+            app:civ_shadow_color="@color/purple_shadow_color"
+            app:civ_shadow_radius="15"
+            />
+
+        <com.lptiyu.tanke.widget.CustomTextView
+            android:id="@+id/right_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/left_right_title_margin_top"
+            android:textSize="13sp"
+            android:singleLine="true"
+            android:maxWidth="@dimen/left_right_title_max_width"
+        />
+
+    </LinearLayout>
+
+    <ImageView
+        android:src="@drawable/shadow"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="@dimen/y5"
+        android:contentDescription="@string/content_description"
+        android:layout_below="@id/middle_layout"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/item_game_display_header_shadow_height"/>
+
+</com.lptiyu.tanke.gamedisplay.ElasticHeaderLayout>

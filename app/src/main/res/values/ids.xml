@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="tool_bar" type="id"/>
+    <item name="default_tool_bar_imageview" type="id"/>
+    <item name="default_tool_bar_textview" type="id"/>
+
+    <item name="load_data_error_imageview" type="id"/>
+    <item name="no_data_imageview" type="id"/>
+
+    <!-- login Activity ids-->
+    <item name="login_input_phone" type="id"/>
+    <item name="login_input_password" type="id"/>
+    <item name="login_forget_password_button" type="id"/>
+    <item name="login_sign_up_button" type="id"/>
+    <item name="login_weibo_button" type="id"/>
+    <item name="login_weixin_button" type="id"/>
+    <item name="login_qq_button" type="id"/>
+    <item name="login_login_button" type="id"/>
+
+    <!-- guide Activity ids-->
+    <item name="guide_view_pager" type="id"/>
+    <item name="guide_indicator_1" type="id"/>
+    <item name="guide_indicator_2" type="id"/>
+    <item name="guide_viewpager_indicator" type="id"/>
+    <item name="guide_skip_button" type="id"/>
+    <item name="guide_next_button" type="id"/>
+
+    <!-- register and resetPassword Activity ids-->
+    <item name="sign_up_title" type="id"/>
+    <item name="sign_up_return_button" type="id"/>
+    <item name="sign_up_phone_edit_text" type="id"/>
+    <item name="sign_up_code_edit_text" type="id" />
+    <item name="sign_up_password_edit_text" type="id"/>
+    <item name="sign_up_get_code_button" type="id"/>
+    <item name="sign_up_next_button" type="id"/>
+
+    <!-- ImageChooseDialog Ids Area-->
+    <item name="dialog_user_avatar_take_photo" type="id"/>
+    <item name="dialog_user_avatar_gallery" type="id"/>
+    
+    <!-- CompleteInformationActivity Ids Area-->
+    <item name="complete_last_button" type="id"/>
+    <item name="complete_next_button" type="id"/>
+    <item name="complete_avatar_image_view" type="id"/>
+    <item name="complete_nickname_text" type="id"/>
+    <item name="complete_gender_male_button" type="id"/>
+    <item name="complete_gender_female_button" type="id"/>
+    <item name="complete_height_text" type="id"/>
+    <item name="complete_height_button" type="id"/>
+    <item name="complete_weight_text" type="id"/>
+    <item name="complete_weight_button" type="id"/>
+    <item name="complete_birthday_text" type="id"/>
+    <item name="complete_birthday_button" type="id"/>
+    <item name="complete_location_text" type="id"/>
+    <item name="complete_location_button" type="id"/>
+    
+    <!-- Protocol Activity Ids Area-->
+    <item name="protocol_last_button" type="id"/>
+    <item name="protocol_web_view" type="id"/>
+
+    <!-- message activity ids area-->
+    <item name="message_recycler_view" type="id"/>
+    <item name="message_bottom_bar" type="id"/>
+    <item name="message_item_image_view" type="id"/>
+    <item name="message_item_text_view" type="id"/>
+    <item name="message_item_time_text" type="id"/>
+    <item name="message_refresh_layout" type="id"/>
+
+    <!-- modify user information ids area-->
+    <item name="modify_user_info_avatar_button" type="id"/>
+    <item name="modify_user_info_nickname_button" type="id"/>
+    <item name="modify_user_info_birthday_button" type="id"/>
+    <item name="modify_user_info_gender_button" type="id"/>
+    <item name="modify_user_info_height_button" type="id"/>
+    <item name="modify_user_info_weight_button" type="id"/>
+    <item name="modify_user_info_location_button" type="id"/>
+    <item name="modify_user_info_avatar_image" type="id"/>
+    <item name="modify_user_info_nickname_text" type="id"/>
+    <item name="modify_user_info_birthday_text" type="id"/>
+    <item name="modify_user_info_gender_text" type="id"/>
+    <item name="modify_user_info_height_text" type="id"/>
+    <item name="modify_user_info_weight_text" type="id"/>
+    <item name="modify_user_info_location_text" type="id"/>
+
+    <item name="modify_text_edit" type="id"/>
+    <item name="modify_text_save" type="id"/>
+
+    <!-- locationActivity ids-->
+    <item name="locate_activity_list_normal_item" type="id"/>
+    <item name="locate_activity_locate_city" type="id"/>
+    <item name="locate_activity_locate_layout" type="id"/>
+    <item name="locate_activity_locate_error_text" type="id"/>
+
+    <!--gameList ids-->
+    <item name="game_playing_list_item" type="id"/>
+    <item name="game_playing_list_item_picture" type="id"/>
+    <item name="game_playing_list_item_name" type="id"/>
+    <item name="game_playing_list_item_progress" type="id"/>
+    <item name="game_playing_list_item_progress_number" type="id"/>
+    <item name="game_finished_list_item" type="id"/>
+    <item name="game_finished_list_item_picture" type="id"/>
+    <item name="game_finished_list_item_name" type="id"/>
+    <item name="game_finished_list_item_time" type="id"/>
+    <item name="game_finished_list_item_values" type="id"/>
+
+</resources>
