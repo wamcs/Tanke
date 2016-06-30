@@ -1,2 +1,1 @@
-
-include ':app', ':zxinglib', ':number_picker', ':nifty', ':daogenerator', ':daogenerator'
+include ':app', ':zxinglib', ':number_picker', ':nifty', ':daogenerator'
