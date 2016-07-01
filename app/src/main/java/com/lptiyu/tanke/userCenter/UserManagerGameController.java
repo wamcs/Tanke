@@ -1,11 +1,11 @@
 package com.lptiyu.tanke.userCenter;
 
 import android.content.Intent;
+import android.graphics.Paint;
 import android.support.annotation.NonNull;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.Html;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -24,10 +24,12 @@ import com.lptiyu.tanke.io.net.Response;
 import com.lptiyu.tanke.pojo.GameManageEntity;
 import com.lptiyu.tanke.utils.ToastUtil;
 import com.lptiyu.tanke.utils.thread;
+import com.lptiyu.tanke.widget.CustomTextView;
 import com.lptiyu.zxinglib.android.Contents;
 import com.lptiyu.zxinglib.android.Intents;
 import com.lptiyu.zxinglib.android.encode.EncodeActivity;
 import com.lptiyu.zxinglib.core.BarcodeFormat;
+import com.makeramen.roundedimageview.RoundedImageView;
 
 import java.util.List;
 
@@ -139,22 +141,21 @@ public class UserManagerGameController extends BaseListActivityController<GameMa
     public BaseViewHolder<GameManageEntity> onCreateViewHolder(ViewGroup parent, int viewType) {
       return new GameManagerGameHolder(parent);
     }
-
   }
 
   static final class GameManagerGameHolder extends BaseViewHolder<GameManageEntity> {
 
     @BindView(R.id.image_view)
-    ImageView gameImage;
-
-    @BindView(R.id.detail_message)
-    TextView gameDetailMessage;
+    RoundedImageView gameImage;
 
     @BindView(R.id.task_title)
-    TextView taskTitle;
+    CustomTextView taskTitle;
 
     @BindView(R.id.game_title)
-    TextView gameTitle;
+    CustomTextView gameTitle;
+
+    @BindView(R.id.task_location)
+    CustomTextView taskLocation;
 
     GameManageEntity entity;
 
@@ -163,13 +164,19 @@ public class UserManagerGameController extends BaseListActivityController<GameMa
       ButterKnife.bind(this, itemView);
     }
 
-    @OnClick(R.id.game_location)
+    @OnClick(R.id.task_location)
     public void game_rule() {
       Intent intent = new Intent(getContext(), GameDetailsLocationActivity.class);
       intent.putExtra(Conf.LATITUDE, Double.valueOf(entity.getLatitude()));
       intent.putExtra(Conf.LONGITUDE, Double.valueOf(entity.getLongtitude()));
       getContext().startActivity(intent);
     }
+
+    @OnClick(R.id.game_pass_rule)
+    void showGamePassRule() {
+
+    }
+
 
     @OnClick(R.id.game_qrcode)
     public void game_qrcode() {
@@ -186,8 +193,11 @@ public class UserManagerGameController extends BaseListActivityController<GameMa
     public void bind(GameManageEntity entity) {
       this.entity = entity;
       Glide.with(itemView.getContext()).load(entity.getImg()).into(gameImage);
-      gameTitle.setText(entity.getTitle());
-      gameDetailMessage.setText(Html.fromHtml(Html.fromHtml(entity.getContent()).toString()));
+      gameTitle.setText(entity.getGameTitle());
+      taskTitle.setText(entity.getTitle());
+      taskLocation.setPaintFlags(Paint.UNDERLINE_TEXT_FLAG);
+      taskLocation.setText(entity.getAddress());
     }
+
   }
 }

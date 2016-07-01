@@ -228,10 +228,10 @@ public class UserCenterFragment extends BaseFragment {
     startActivity(new Intent(getContext(), UserGameFinishedListActivity.class));
   }
 
-  @OnClick(R.id.user_rewards)
-  void user_rewards() {
-    startActivity(new Intent(getContext(), UserRewardActivity.class));
-  }
+//  @OnClick(R.id.user_rewards)
+//  void user_rewards() {
+//    startActivity(new Intent(getContext(), UserRewardActivity.class));
+//  }
 
   @OnClick(R.id.setting)
   public void setting() {

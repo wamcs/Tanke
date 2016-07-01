@@ -269,6 +269,7 @@
 
     <RelativeLayout
         android:id="@+id/user_rewards"
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="@dimen/fragment_user_center_item_height"
         android:layout_below="@id/user_game_finished"

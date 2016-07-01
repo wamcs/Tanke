@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
-import com.avos.avoscloud.feedback.FeedbackAgent;
 import com.lptiyu.tanke.R;
 import com.lptiyu.tanke.base.controller.ActivityController;
 import com.lptiyu.tanke.global.Accounts;
@@ -28,12 +27,12 @@ public class SettingController extends ActivityController {
   @BindView(R.id.default_tool_bar_textview)
   CustomTextView mToolbarText;
 
-  @BindView(R.id.setting_activity_msg_push)
-  SwitchButton mMsgPush;
+//  @BindView(R.id.setting_activity_msg_push)
+//  SwitchButton mMsgPush;
   @BindView(R.id.setting_activity_mobile_vibrate)
   SwitchButton mVibrate;
-  @BindView(R.id.setting_activity_screen_light)
-  SwitchButton mScreenLight;
+//  @BindView(R.id.setting_activity_screen_light)
+//  SwitchButton mScreenLight;
 
   @BindView(R.id.setting_activity_logout)
   CustomTextView mLogout;
@@ -47,16 +46,16 @@ public class SettingController extends ActivityController {
   }
 
   private void init() {
-    mMsgPush.setChecked(ShaPreferManager.getMsgPush());
+//    mMsgPush.setChecked(ShaPreferManager.getMsgPush());
     mVibrate.setChecked(ShaPreferManager.getMobileVibrate());
-    mScreenLight.setChecked(ShaPreferManager.getScreenLight());
+//    mScreenLight.setChecked(ShaPreferManager.getScreenLight());
   }
 
-  @OnClick(R.id.setting_activity_feedback)
-  void onFeedback() {
-    FeedbackAgent agent = new FeedbackAgent(getContext());
-    agent.startDefaultThreadActivity();
-  }
+//  @OnClick(R.id.setting_activity_feedback)
+//  void onFeedback() {
+//    FeedbackAgent agent = new FeedbackAgent(getContext());
+//    agent.startDefaultThreadActivity();
+//  }
 
   @OnClick(R.id.setting_activity_logout)
   void onLogoutClicked() {
@@ -70,14 +69,14 @@ public class SettingController extends ActivityController {
     finish();
   }
 
-  @OnClick(R.id.setting_activity_msg_push)
-  void msgPush() {
-    if (mMsgPush.isChecked()) {
-      ShaPreferManager.setMsgPush(true);
-    } else {
-      ShaPreferManager.setMsgPush(false);
-    }
-  }
+//  @OnClick(R.id.setting_activity_msg_push)
+//  void msgPush() {
+//    if (mMsgPush.isChecked()) {
+//      ShaPreferManager.setMsgPush(true);
+//    } else {
+//      ShaPreferManager.setMsgPush(false);
+//    }
+//  }
 
   @OnClick(R.id.setting_activity_mobile_vibrate)
   void mobileVirate() {
@@ -88,14 +87,14 @@ public class SettingController extends ActivityController {
     }
   }
 
-  @OnClick(R.id.setting_activity_screen_light)
-  void screenLight() {
-    if (mScreenLight.isChecked()) {
-      ShaPreferManager.setScreenLight(true);
-    } else {
-      ShaPreferManager.setScreenLight(false);
-    }
-  }
+//  @OnClick(R.id.setting_activity_screen_light)
+//  void screenLight() {
+//    if (mScreenLight.isChecked()) {
+//      ShaPreferManager.setScreenLight(true);
+//    } else {
+//      ShaPreferManager.setScreenLight(false);
+//    }
+//  }
 
   @OnClick(R.id.setting_activity_about_us)
   void startAboutUs() {

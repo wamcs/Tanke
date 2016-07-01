@@ -5,7 +5,6 @@ import android.graphics.Color;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.RelativeLayout;
@@ -96,12 +95,14 @@ public class GameShareController extends ActivityController implements
 
   private long startTimeSecond;
   private long endTimeSecond;
+  private int consumeTimeMinute;
   private int totalTaskNum;
   private double totalDistance;
   private int totalExp;
 
   private PolylineOptions polyline;
   private MapStatusUpdate msUpdate;
+
 
   private MapHelper mapHelper;
   private BaiduMap mMap;
@@ -175,7 +176,8 @@ public class GameShareController extends ActivityController implements
           resumePointRecords(recordList);
           Glide.with(getActivity()).load(Accounts.getAvatar()).error(R.mipmap.default_avatar).into(mUserAvatar);
           mNickName.setText(Accounts.getNickName());
-          mFormTime.setText(String.valueOf((endTimeSecond - startTimeSecond) / 60));
+          consumeTimeMinute = ((int) (endTimeSecond - startTimeSecond) / 60);
+          mFormTime.setText(String.valueOf(consumeTimeMinute));
           mFormCompleteTime.setText(TimeUtils.getDateTimeWithoutYear(endTimeSecond * 1000));
           mFormTaskNum.setText(String.valueOf(totalTaskNum));
           mFormGetExp.setText(String.valueOf(totalExp));
@@ -400,8 +402,11 @@ public class GameShareController extends ActivityController implements
         .subscribe(new Action1<Response<String>>() {
           @Override
           public void call(Response<String> stringResponse) {
-            String SHARE_TITLE = String.format("我正在玩定向AR游戏 %s，一起来探秘吧", mGameDetailsEntity.getTitle());
-            String SHARE_CONTENT = Html.fromHtml(Html.fromHtml(mGameDetailsEntity.getGameIntro()).toString()).toString();
+            String SHARE_TITLE = String.format("我%s完成了%s，快和我一起来探秘吧".toLowerCase(), mGameDetailsEntity.getTitle());
+            String SHARE_CONTENT = String.format("探秘耗时%d分钟\n完成了%d个任务\n跋山涉水%s公里".toLowerCase(),
+                consumeTimeMinute,
+                totalTaskNum,
+                String.format("%2.1f".toLowerCase(), totalDistance));
             if (null == shareDialog) {
               shareDialog = new ShareDialog(getContext());
               shareDialog.setShareContent(SHARE_TITLE, SHARE_CONTENT, mGameDetailsEntity.getImg(), stringResponse.getData());
@@ -414,27 +419,6 @@ public class GameShareController extends ActivityController implements
             ToastUtil.TextToast("分享失败");
           }
         });
-
-//    showLoadingDialog();
-//    ScreenUtils.captureScreen(mToolbar, mFormRoot, mMapView, new ScreenUtils.ScreenCallBack() {
-//      @Override
-//      public void onScreenShot(String filePath) {
-//        mLoadingDialog.dismiss();
-//        if (null == filePath) {
-//          Timber.d("capture screen error");
-//          return;
-//        }
-//        String SHARE_TITLE = "测试标题";
-//        String SHARE_CONTENT = "测试内容";
-////        String SHARE_URL = "http://www.baidu.com";
-//        if (null == shareDialog) {
-//          shareDialog = new ShareDialog(getContext());
-//          shareDialog.setShareContent(SHARE_TITLE, SHARE_CONTENT, filePath, null);
-//          Timber.e(filePath);
-//        }
-//        shareDialog.show();
-//      }
-//    });
   }
 
 }

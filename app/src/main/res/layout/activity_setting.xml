@@ -24,26 +24,26 @@
         android:background="@color/default_font_color"
         android:orientation="vertical">
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/activity_setting_item_height">
+        <!--<RelativeLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="@dimen/activity_setting_item_height">-->
 
-            <com.lptiyu.tanke.widget.CustomTextView
-                style="@style/SettingActivityItemTextBase"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_centerVertical="true"
-                android:text="@string/setting_activity_push_msg"/>
+            <!--<com.lptiyu.tanke.widget.CustomTextView-->
+                <!--style="@style/SettingActivityItemTextBase"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="match_parent"-->
+                <!--android:layout_centerVertical="true"-->
+                <!--android:text="@string/setting_activity_push_msg"/>-->
 
-            <com.lptiyu.tanke.widget.SwitchButton
-                android:id="@+id/setting_activity_msg_push"
-                style="@style/SwitchButtonStyleMD"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"/>
+            <!--<com.lptiyu.tanke.widget.SwitchButton-->
+                <!--android:id="@+id/setting_activity_msg_push"-->
+                <!--style="@style/SwitchButtonStyleMD"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_alignParentRight="true"-->
+                <!--android:layout_centerVertical="true"/>-->
 
-        </RelativeLayout>
+        <!--</RelativeLayout>-->
 
         <View
             android:layout_width="wrap_content"
@@ -60,8 +60,8 @@
             <com.lptiyu.tanke.widget.CustomTextView
                 style="@style/SettingActivityItemTextBase"
                 android:layout_width="match_parent"
-                android:layout_centerVertical="true"
                 android:layout_height="match_parent"
+                android:layout_centerVertical="true"
                 android:text="@string/setting_activity_vibrate_mobile"/>
 
             <com.lptiyu.tanke.widget.SwitchButton
@@ -82,26 +82,26 @@
             android:layout_marginRight="@dimen/x26"
             android:background="@color/user_center_split_line"/>
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/activity_setting_item_height">
+        <!--<RelativeLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="@dimen/activity_setting_item_height">-->
 
-            <com.lptiyu.tanke.widget.CustomTextView
-                style="@style/SettingActivityItemTextBase"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_centerVertical="true"
-                android:text="@string/setting_activity_light_screen"/>
+            <!--<com.lptiyu.tanke.widget.CustomTextView-->
+                <!--style="@style/SettingActivityItemTextBase"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="match_parent"-->
+                <!--android:layout_centerVertical="true"-->
+                <!--android:text="@string/setting_activity_light_screen"/>-->
 
-            <com.lptiyu.tanke.widget.SwitchButton
-                android:id="@+id/setting_activity_screen_light"
-                style="@style/SwitchButtonStyleMD"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"/>
+            <!--<com.lptiyu.tanke.widget.SwitchButton-->
+                <!--android:id="@+id/setting_activity_screen_light"-->
+                <!--style="@style/SwitchButtonStyleMD"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_alignParentRight="true"-->
+                <!--android:layout_centerVertical="true"/>-->
 
-        </RelativeLayout>
+        <!--</RelativeLayout>-->
 
         <ImageView
             android:layout_width="match_parent"
@@ -116,9 +116,9 @@
         android:id="@+id/setting_activity_information_block"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/default_font_color"
         android:layout_below="@id/setting_activity_set_block"
         android:layout_marginTop="@dimen/setting_activity_item_margin_top"
+        android:background="@color/default_font_color"
         android:orientation="vertical">
 
         <RelativeLayout
@@ -129,24 +129,58 @@
                 android:id="@+id/setting_activity_feedback"
                 style="@style/SettingActivityItemTextNormal"
                 android:layout_width="match_parent"
-                android:layout_centerVertical="true"
                 android:layout_height="match_parent"
+                android:layout_centerVertical="true"
                 android:text="@string/setting_activity_feedback"/>
 
-            <ImageView
+            <com.lptiyu.tanke.widget.CustomTextView
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
+                android:text="@string/app_mail"
+                android:layout_marginRight="@dimen/x20"
+                android:gravity="center_vertical"
+                android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="@dimen/setting_activity_arrow_margin_right"
-                android:src="@mipmap/arrow_left_black"/>
+                android:textColor="@color/grey06"
+                android:textSize="16sp"/>
 
         </RelativeLayout>
 
         <View
             android:layout_width="wrap_content"
             android:layout_height="@dimen/user_center_linear_layout_bottom_line_height"
-            android:layout_alignParentBottom="true"
+            android:layout_marginLeft="@dimen/x26"
+            android:layout_marginRight="@dimen/x26"
+            android:background="@color/user_center_split_line"/>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/activity_setting_item_height">
+
+            <com.lptiyu.tanke.widget.CustomTextView
+                android:id="@+id/setting_activity_wechat_public"
+                style="@style/SettingActivityItemTextNormal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_centerVertical="true"
+                android:text="@string/setting_activity_wechat_public"/>
+
+            <com.lptiyu.tanke.widget.CustomTextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="@string/wechat_public"
+                android:layout_marginRight="@dimen/x20"
+                android:gravity="center_vertical"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:textColor="@color/grey06"
+                android:textSize="16sp"/>
+
+        </RelativeLayout>
+
+        <View
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/user_center_linear_layout_bottom_line_height"
             android:layout_marginLeft="@dimen/x26"
             android:layout_marginRight="@dimen/x26"
             android:background="@color/user_center_split_line"/>
@@ -159,8 +193,8 @@
                 android:id="@+id/setting_activity_about_us"
                 style="@style/SettingActivityItemTextNormal"
                 android:layout_width="match_parent"
-                android:layout_centerVertical="true"
                 android:layout_height="match_parent"
+                android:layout_centerVertical="true"
                 android:text="@string/setting_activity_about_us"/>
 
             <ImageView

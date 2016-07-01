@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">步道探秘</string>
+    <string name="app_mail">hello@lptiyu.com</string>
+    <string name="wechat_public">步道探秘</string>
     <string name="scanner">扫一扫</string>
     <string name="no_network">当前没有网络</string>
     <string name="no_camera_permission">请您打开相机权限</string>
@@ -63,6 +65,7 @@
     <string name="setting_activity_light_screen">运动时手机常亮</string>
     <string name="setting_activity_feedback">意见反馈</string>
     <string name="setting_activity_about_us">关于我们</string>
+    <string name="setting_activity_wechat_public">微信公众号</string>
 
     <string name="setting_activity_logout">退出登录</string>
 

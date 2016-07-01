@@ -203,6 +203,21 @@
         <item name="android:paddingTop">4dp</item>
         <item name="android:paddingBottom">4dp</item>
     </style>
+    
+    <!-- UserManagerGameActivity Theme Area-->
+    <style name="UserManagerGameItemTextBaseStyle">
+        <item name="android:padding">@dimen/x5</item>
+        <item name="android:textSize">13sp</item>
+        <item name="android:maxLines">1</item>
+    </style>
 
 
+    <style name="UserManagerGameItemTextPreStyle" parent="UserManagerGameItemTextBaseStyle">
+        <item name="android:textColor">@color/grey04</item>
+    </style>
+
+    <style name="UserManagerGameItemTextTitleStyle" parent="UserManagerGameItemTextBaseStyle">
+        <item name="android:layout_marginLeft">@dimen/x10</item>
+        <item name="android:textColor">@color/colorPrimary</item>
+    </style>
 </resources>

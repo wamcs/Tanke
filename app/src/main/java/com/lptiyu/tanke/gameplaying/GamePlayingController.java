@@ -12,7 +12,6 @@ import android.widget.TextView;
 
 import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
-import com.baidu.mapapi.map.MapStatusUpdateFactory;
 import com.baidu.mapapi.map.TextureMapView;
 import com.baidu.mapapi.model.LatLng;
 import com.baidu.mapapi.utils.DistanceUtil;
@@ -34,16 +33,14 @@ import com.lptiyu.tanke.gameplaying.records.RecordsUtils;
 import com.lptiyu.tanke.gameplaying.records.RunningRecord;
 import com.lptiyu.tanke.gameplaying.task.GameTaskActivity;
 import com.lptiyu.tanke.global.Accounts;
-import com.lptiyu.tanke.global.AppData;
 import com.lptiyu.tanke.global.Conf;
-import com.lptiyu.tanke.io.net.HttpService;
-import com.lptiyu.tanke.io.net.Response;
 import com.lptiyu.tanke.permission.PermissionDispatcher;
 import com.lptiyu.tanke.permission.TargetMethod;
 import com.lptiyu.tanke.pojo.GameDetailsEntity;
 import com.lptiyu.tanke.trace.tracing.ITracingHelper;
 import com.lptiyu.tanke.trace.tracing.TracingCallback;
 import com.lptiyu.tanke.trace.tracing.TracingHelper;
+import com.lptiyu.tanke.utils.ShaPreferManager;
 import com.lptiyu.tanke.utils.TimeUtils;
 import com.lptiyu.tanke.utils.ToastUtil;
 import com.lptiyu.tanke.utils.VibrateUtils;
@@ -56,10 +53,6 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
-import rx.functions.Func1;
-import rx.schedulers.Schedulers;
 import timber.log.Timber;
 
 /**
@@ -341,7 +334,9 @@ public class GamePlayingController extends ActivityController implements
           .setPositiveButton(getString(R.string.ensure), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-              VibrateUtils.cancel();
+              if (ShaPreferManager.getMobileVibrate()) {
+                VibrateUtils.cancel();
+              }
             }
           })
           .setMessage(message)
@@ -463,9 +458,10 @@ public class GamePlayingController extends ActivityController implements
       if (checkIfReachAttackPoint(location)) {
         mTimingTaskHelper.finishTimingTask();
         onReachAttackPoint();
-        VibrateUtils.vibrate();
+        if (ShaPreferManager.getMobileVibrate()) {
+          VibrateUtils.vibrate();
+        }
         showAlertDialog(getString(R.string.reach_attack_point));
-
         // if the last point has the timing task, it should be finish either
         if (mTimingTaskHelper.isTimingTask()) {
           mTimingTaskHelper.dispatchTimingTaskRecord();

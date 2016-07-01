@@ -290,9 +290,9 @@
     <dimen name="item_finished_complete_time_margin_left">@dimen/x8</dimen>
 
     <!-- UserManagerGame Dimens-->
-    <dimen name="item_user_manager_game_root_height">@dimen/y289</dimen>
-    <dimen name="item_user_manager_game_width">@dimen/x289</dimen>
-    <dimen name="item_user_manager_game_height">@dimen/y184</dimen>
+    <dimen name="item_user_manager_game_root_height">@dimen/y300</dimen>
+    <dimen name="item_user_manager_game_width">@dimen/x320</dimen>
+    <dimen name="item_user_manager_game_height">@dimen/y220</dimen>
 
 
 </resources>

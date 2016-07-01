@@ -1,15 +1,12 @@
 package com.lptiyu.tanke.gameplaying.records;
 
 import com.baidu.mapapi.model.LatLng;
-import com.lptiyu.tanke.global.Accounts;
-import com.lptiyu.tanke.io.net.HttpService;
-import com.lptiyu.tanke.io.net.Response;
 import com.lptiyu.tanke.utils.TimeUtils;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
-import rx.functions.Action1;
 import timber.log.Timber;
 
 /**
@@ -106,6 +103,11 @@ public class RecordsUtils {
       e.printStackTrace();
     }
     return record != null && record.getState() == RunningRecord.RECORD_TYPE.GAME_START;
+  }
+
+  public static boolean isGameRecordsFileExist(long gameId) {
+    File file = DiskRecords.generateFile(gameId);
+    return file.exists();
   }
 
   /**

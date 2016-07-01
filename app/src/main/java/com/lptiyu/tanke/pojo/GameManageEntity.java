@@ -36,6 +36,8 @@ public class GameManageEntity {
   @SerializedName("img")
   String qrcode;
 
+  String address;
+
   @SerializedName("longtitude")
   String longtitude;
 
@@ -96,6 +98,14 @@ public class GameManageEntity {
 
   public void setLatitude(String latitude) {
     this.latitude = latitude;
+  }
+
+  public String getAddress() {
+    return address;
+  }
+
+  public void setAddress(String address) {
+    this.address = address;
   }
 
   public String getLongtitude() {

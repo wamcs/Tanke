@@ -12,15 +12,17 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.lptiyu.tanke.R;
 import com.lptiyu.tanke.base.controller.ActivityController;
+import com.lptiyu.tanke.base.ui.BaseActivity;
 import com.lptiyu.tanke.gameplaying.GamePlayingActivity;
 import com.lptiyu.tanke.gameplaying.assist.zip.GameZipScanner;
 import com.lptiyu.tanke.gameplaying.records.RecordsUtils;
 import com.lptiyu.tanke.gameplaying.records.RunningRecord;
 import com.lptiyu.tanke.global.Accounts;
-import com.lptiyu.tanke.global.AppData;
 import com.lptiyu.tanke.global.Conf;
 import com.lptiyu.tanke.io.net.HttpService;
 import com.lptiyu.tanke.io.net.Response;
+import com.lptiyu.tanke.permission.PermissionDispatcher;
+import com.lptiyu.tanke.permission.TargetMethod;
 import com.lptiyu.tanke.pojo.GAME_TYPE;
 import com.lptiyu.tanke.pojo.GameDetailsEntity;
 import com.lptiyu.tanke.utils.DirUtils;
@@ -92,6 +94,9 @@ public class GameDetailsController extends ActivityController {
   private Observable<Boolean> isGameFinishObservable;
   private Subscription isGameFinishSubscription;
 
+  //这个变量用来标志下载出错的次数，为0的时候停止重试下载
+  private int gameZipDownloadFailedNum = 3;
+
   private long gameId;
   private String tempGameZipUrl;
   private ShareDialog shareDialog;
@@ -107,66 +112,10 @@ public class GameDetailsController extends ActivityController {
     init();
   }
 
-  private void bind(GameDetailsEntity entity) {
-    this.mGameDetailsEntity = entity;
-    mTextTitle.setText(entity.getTitle());
-    mTextLocation.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG); //下划线
-    mTextLocation.getPaint().setAntiAlias(true);//抗锯齿
-    mTextLocation.setText(entity.getArea());
-    mTextPeoplePlaying.setText(String.valueOf(entity.getPeoplePlaying()));
-    parseTime(mTextTime, entity);
-    if (entity.getType() == GAME_TYPE.INDIVIDUALS) {
-      mTextTeamType.setVisibility(View.GONE);
-    } else {
-      mTextTeamType.setText(String.format(getString(R.string.team_game_formatter), entity.getMinNum()));
-    }
-    mTextGameIntro.setText(Html.fromHtml(Html.fromHtml(entity.getGameIntro()).toString()));
-    mTextRule.setText(Html.fromHtml(Html.fromHtml(entity.getRule()).toString()));
-
-    isGameFinishSubscription = isGameFinishObservable
-        .subscribeOn(Schedulers.io())
-        .observeOn(AndroidSchedulers.mainThread())
-        .subscribe(new Action1<Boolean>() {
-          @Override
-          public void call(Boolean aBoolean) {
-            if (aBoolean) {
-              mTextEnsure.setText(getString(R.string.enter_game_share));
-            } else {
-              mTextEnsure.setText(getString(R.string.enter_game_play));
-              isGameFinishedFromServer(gameId);
-            }
-          }
-        }, new Action1<Throwable>() {
-          @Override
-          public void call(Throwable throwable) {
-            mTextEnsure.setText(getString(R.string.enter_game_play));
-            isGameFinishedFromServer(gameId);
-          }
-        });
-
-    Glide.with(getActivity()).load(entity.getImg()).error(R.mipmap.need_to_remove).centerCrop().into(mImageCover);
-  }
-
-  public void parseTime(final CustomTextView textView, GameDetailsEntity entity) {
-    Observable.just(entity).map(
-        new Func1<GameDetailsEntity, String>() {
-          @Override
-          public String call(GameDetailsEntity entity) {
-            return TimeUtils.parseTime(getContext(),
-                entity.getStartDate(), entity.getEndDate(),
-                entity.getStartTime(), entity.getEndTime());
-          }
-        })
-        .subscribeOn(Schedulers.computation())
-        .observeOn(AndroidSchedulers.mainThread())
-        .subscribe(new Action1<String>() {
-          @Override
-          public void call(String s) {
-            textView.setText(s);
-          }
-        });
-  }
-
+  /**
+   * 对整个界面进行初始化的操作，还有根据gameId从服务器获取游戏详情的数据json
+   * 获取成功之后用{@link GameDetailsController#bind(GameDetailsEntity)}方法来进行数据的绑定操作
+   */
   private void init() {
     if (gameDetailsSubscription != null) {
       gameDetailsSubscription.unsubscribe();
@@ -217,9 +166,80 @@ public class GameDetailsController extends ActivityController {
   }
 
   /**
+   * 从服务器上获取到游戏的详情数据之后，在这个方法里面进行一系列的数据绑定操作
+   *
+   * @param entity
+   */
+  private void bind(GameDetailsEntity entity) {
+    this.mGameDetailsEntity = entity;
+    mTextTitle.setText(entity.getTitle());
+    mTextLocation.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG); //下划线
+    mTextLocation.getPaint().setAntiAlias(true);//抗锯齿
+    mTextLocation.setText(entity.getArea());
+    mTextPeoplePlaying.setText(String.valueOf(entity.getPeoplePlaying()));
+    parseTime(mTextTime, entity);
+    if (entity.getType() == GAME_TYPE.INDIVIDUALS) {
+      mTextTeamType.setVisibility(View.GONE);
+    } else {
+      mTextTeamType.setText(String.format(getString(R.string.team_game_formatter), entity.getMinNum()));
+    }
+    mTextGameIntro.setText(Html.fromHtml(Html.fromHtml(entity.getGameIntro()).toString()));
+    mTextRule.setText(Html.fromHtml(Html.fromHtml(entity.getRule()).toString()));
+
+    isGameFinishSubscription = isGameFinishObservable
+        .subscribeOn(Schedulers.io())
+        .observeOn(AndroidSchedulers.mainThread())
+        .subscribe(new Action1<Boolean>() {
+          @Override
+          public void call(Boolean aBoolean) {
+            if (aBoolean) {
+              mTextEnsure.setText(getString(R.string.enter_game_share));
+              return;
+            }
+            isGameFinishedFromServer(gameId);
+          }
+        }, new Action1<Throwable>() {
+          @Override
+          public void call(Throwable throwable) {
+            Timber.e(throwable, "get records from server error... ");
+            isGameFinishedFromServer(gameId);
+          }
+        });
+    Glide.with(getActivity()).load(entity.getImg()).error(R.mipmap.need_to_remove).centerCrop().into(mImageCover);
+  }
+
+  /**
+   * 用来解析游戏规定的时间
+   *
+   * @param textView
+   * @param entity
+   */
+  public void parseTime(final CustomTextView textView, GameDetailsEntity entity) {
+    Observable.just(entity).map(
+        new Func1<GameDetailsEntity, String>() {
+          @Override
+          public String call(GameDetailsEntity entity) {
+            return TimeUtils.parseTime(getContext(),
+                entity.getStartDate(), entity.getEndDate(),
+                entity.getStartTime(), entity.getEndTime());
+          }
+        })
+        .subscribeOn(Schedulers.computation())
+        .observeOn(AndroidSchedulers.mainThread())
+        .subscribe(new Action1<String>() {
+          @Override
+          public void call(String s) {
+            textView.setText(s);
+          }
+        });
+  }
+
+  /**
    * This method is to load running records from server
    * if the local records is damage or the records return the game is not finished
    * reload the records from server and check
+   * <p/>
+   * 这个方法是用来从服务器请求该用户对于该游戏的记录，并分析用户是否已经完成此游戏
    *
    * @param gameId target game
    */
@@ -237,7 +257,10 @@ public class GameDetailsController extends ActivityController {
             if (records == null || records.size() == 0) {
               return false;
             }
-            RecordsUtils.cacheServerRecordsInLocal(gameIdInner, records);
+            // 如果检测到本地日志文件不存在，则将服务器的日志文件写入到本地
+            if (!RecordsUtils.isGameRecordsFileExist(gameIdInner)) {
+              RecordsUtils.cacheServerRecordsInLocal(gameIdInner, records);
+            }
             for (RunningRecord record : records) {
               if (record.getState() == RunningRecord.RECORD_TYPE.GAME_FINISH) {
                 return true;
@@ -268,9 +291,12 @@ public class GameDetailsController extends ActivityController {
   /**
    * This method is to check whether the game zip has been download
    * and the game zip is out of date or not
-   * <p>
+   * <p/>
    * If the unix timestamp is not match with server's, then must
    * clean the game records、zip package、game dir etc
+   * <p/>
+   * 这个是用来扫描本地文件夹，查看该游戏的游戏包是否已经下载过了，如果没有下载过，启动下载；
+   * 下载过之后，请求定位权限并进入游戏中
    */
   private void checkDiskAndNextStep() {
     // first scan the dir and check the zip is exist or not
@@ -284,10 +310,15 @@ public class GameDetailsController extends ActivityController {
     } else {
       // the zip is exist, then check is it out of date
       //TODO : invoke api to check whether the zio is out of date
-      startPlayingGame();
+      PermissionDispatcher.startLocateWithCheck(((BaseActivity) getActivity()));
     }
   }
 
+  /**
+   * 检测到本地没有游戏包之后，开始向服务器请求游戏包的下载url
+   * 并下载相应的zip包保存在本地
+   * 这里可能出现游戏包第一次下载失败的情况，失败之后再次请求，失败超过三次则停止请求
+   */
   private void startGetGameZipUrlAndDownload() {
     mGameDetailsEntity.setGameId(gameId);
     progressDialog.show();
@@ -343,13 +374,18 @@ public class GameDetailsController extends ActivityController {
           @Override
           public void call(File file) {
             mGameZipScanner.reload();
-            startPlayingGame();
+            PermissionDispatcher.startLocateWithCheck(((BaseActivity) getActivity()));
           }
         }, new Action1<Throwable>() {
           @Override
           public void call(Throwable throwable) {
-            ToastUtil.TextToast("游戏包下载出错");
-            progressDialog.dismiss();
+            Timber.e(throwable, "game zip download error.....redownload");
+            if (gameZipDownloadFailedNum > 0) {
+              startGetGameZipUrlAndDownload();
+              gameZipDownloadFailedNum--;
+            } else {
+              ToastUtil.TextToast("游戏包下载出错");
+            }
           }
         }, new Action0() {
           @Override
@@ -359,7 +395,8 @@ public class GameDetailsController extends ActivityController {
         });
   }
 
-  private void startPlayingGame() {
+  @TargetMethod(requestCode = PermissionDispatcher.PERMISSION_REQUEST_CODE_LOCATION)
+  public void startPlayingGame() {
     Intent intent = new Intent(getContext(), GamePlayingActivity.class);
     intent.putExtra(Conf.GAME_ID, gameId);
     intent.putExtra(Conf.GAME_DETAIL, mGameDetailsEntity);
