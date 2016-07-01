@@ -16,7 +16,6 @@ import butterknife.OnClick;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
 /**
- * @author : xiaoxiaoda
  *         date: 16-1-20
  *         email: daque@hustunique.com
  */

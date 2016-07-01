@@ -1,1 +1,1 @@
-include ':app', ':zxinglib', ':number_picker', ':nifty', ':daogenerator'
+include ':app', ':zxinglib', ':number_picker', ':nifty', ':daogenerator', ':sweet-alert-dialog'

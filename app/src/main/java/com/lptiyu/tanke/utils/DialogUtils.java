@@ -9,6 +9,7 @@ import cn.pedant.SweetAlert.SweetAlertDialog;
 /**
  * Created by Jason on 2016/7/1.
  */
+
 public class DialogUtils {
     private static DialogUtils dialog;
 
