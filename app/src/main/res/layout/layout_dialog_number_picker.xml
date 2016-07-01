@@ -27,6 +27,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/x13"
+            android:textColor="@color/colorPrimary"
             android:padding="@dimen/x21"
             android:text="@string/dismiss"/>
 
@@ -34,6 +35,7 @@
             android:id="@+id/layout_dialog_number_picker_ensure"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textColor="@color/colorPrimary"
             android:layout_margin="@dimen/x13"
             android:padding="@dimen/x21"
             android:text="@string/ensure"/>
