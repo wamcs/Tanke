@@ -100,7 +100,6 @@ public class ModifyUserInfoController extends ActivityController {
         if (details == null) {
             return;
         }
-//    mAvatarImage.setImageURI(Uri.parse(details.getAvatar()));
         Glide.with(getActivity()).load(details.getAvatar()).error(R.mipmap.default_avatar).into(mAvatarImage);
         mBirthdayText.setText(details.getBirthday());
         mNicknameText.setText(details.getNickname());
@@ -163,6 +162,7 @@ public class ModifyUserInfoController extends ActivityController {
                 }
             });
         }
+      mDatePickerDialog.show();
     }
 
     @OnClick(R.id.modify_user_info_gender_button)

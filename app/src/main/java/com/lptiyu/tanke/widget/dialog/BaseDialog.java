@@ -27,13 +27,12 @@ public abstract class BaseDialog extends Dialog {
     super(context);
     mContext = context;
     mBuilder = NiftyDialogBuilder.getInstance(context);
-    mBuilder.withTitleColor(context.getResources().getColor(R.color.white10))                                  //def
-        .withMessage(null)
-        .withDividerColor("#11000000")                              //def
-        .withDialogColor("#7c99d6")                               //def  | withDialogColor(int resid)
+    mBuilder.withTitleColor(getColor(R.color.colorPrimary))                                  //def
+        .withDividerColor(getColor(R.color.colorAccent))                              //def
+        .withDialogColor(getColor(R.color.default_font_color))                               //def  | withDialogColor(int resid)
         .withDuration(300)
         .isCancelableOnTouchOutside(true)
-        .withEffect(Effectstype.RotateBottom);
+        .withEffect(Effectstype.SlideBottom);
   }
 
   public BaseDialog withDividerColor(String colorString) {
@@ -144,6 +143,10 @@ public abstract class BaseDialog extends Dialog {
   public BaseDialog setCustomView(View view, Context context) {
     mBuilder.setCustomView(view, context);
     return this;
+  }
+
+  protected int getColor(int resId) {
+    return getContext().getResources().getColor(resId);
   }
 
   @Override

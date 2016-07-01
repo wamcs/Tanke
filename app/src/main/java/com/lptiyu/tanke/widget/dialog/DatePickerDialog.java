@@ -1,12 +1,12 @@
 package com.lptiyu.tanke.widget.dialog;
 
 import android.content.Context;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
 
 import com.lptiyu.tanke.R;
 import com.lptiyu.tanke.global.Conf;
+import com.lptiyu.tanke.utils.Inflater;
 
 import net.simonvt.numberpicker.NumberPicker;
 
@@ -36,12 +36,9 @@ public class DatePickerDialog extends BaseDialog {
 
     public DatePickerDialog(Context context) {
         super(context);
-        this.setTitle(context.getString(R.string.birthday));
-        View view = LayoutInflater.from(context).inflate(R.layout.layout_dialog_date_picker, null);
-        ButterKnife.bind(this, view);
-        this.setContentView(view);
-        this.setCancelable(false);
-
+      this.withTitle(context.getString(R.string.birthday))                                  //.withTitle(null)  no title
+          .isCancelableOnTouchOutside(false)
+          .setCustomView(R.layout.layout_dialog_date_picker, context);
         init();
     }
 
@@ -87,6 +84,18 @@ public class DatePickerDialog extends BaseDialog {
             }
         }
     }
+
+  @Override
+  public BaseDialog setCustomView(int resId, Context context) {
+    View v = Inflater.inflate(resId, null, false);
+    return setCustomView(v, context);
+  }
+
+  @Override
+  public BaseDialog setCustomView(View view, Context context) {
+    ButterKnife.bind(this, view);
+    return super.setCustomView(view, context);
+  }
 
     public void setOnDateChoosedListener(OnDateChoosedListener listener) {
         mListener = listener;
