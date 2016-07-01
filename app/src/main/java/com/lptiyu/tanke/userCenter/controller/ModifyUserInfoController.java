@@ -129,8 +129,6 @@ public class ModifyUserInfoController extends ActivityController {
     @OnClick(R.id.modify_user_info_birthday_button)
     void modifyBirthday() {
         if (null == mDatePickerDialog) {
-            mDatePickerDialog=new DatePickerDialog(getContext());
-            mDatePickerDialog.show();
             mDatePickerDialog = new DatePickerDialog(getContext());
             mDatePickerDialog.setOnDateChoosedListener(new DatePickerDialog.OnDateChoosedListener() {
                 @Override
@@ -162,6 +160,7 @@ public class ModifyUserInfoController extends ActivityController {
                 }
             });
         }
+      mDatePickerDialog.scrollToDefaultValue();
       mDatePickerDialog.show();
     }
 

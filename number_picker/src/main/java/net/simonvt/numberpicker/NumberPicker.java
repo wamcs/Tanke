@@ -216,7 +216,7 @@ public class NumberPicker extends LinearLayout {
     /**
      * The text for showing the current value.
      */
-    private final EditText mInputText;
+    private final TextView mInputText;
 
     /**
      * The distance between the two selection dividers.
@@ -351,7 +351,7 @@ public class NumberPicker extends LinearLayout {
     /**
      * Handle to the reusable command for setting the input text selection.
      */
-    private SetSelectionCommand mSetSelectionCommand;
+//    private SetSelectionCommand mSetSelectionCommand;
 
     /**
      * Handle to the reusable command for changing the current value from long
@@ -678,13 +678,13 @@ public class NumberPicker extends LinearLayout {
         }
 
         // input text
-        mInputText = (EditText) findViewById(R.id.np__numberpicker_input);
+        mInputText = (TextView) findViewById(R.id.np__numberpicker_input);
         mInputText.setOnFocusChangeListener(new OnFocusChangeListener() {
             public void onFocusChange(View v, boolean hasFocus) {
                 if (hasFocus) {
-                    mInputText.selectAll();
+//                    mInputText.selectAll();
                 } else {
-                    mInputText.setSelection(0, 0);
+//                    mInputText.setSelection(0, 0);
                     validateInputTextView(v);
                 }
             }
@@ -710,8 +710,9 @@ public class NumberPicker extends LinearLayout {
         paint.setTextAlign(Align.CENTER);
         paint.setTextSize(mTextSize);
         paint.setTypeface(mInputText.getTypeface());
-        ColorStateList colors = mInputText.getTextColors();
-        int color = colors.getColorForState(ENABLED_STATE_SET, Color.WHITE);
+//        ColorStateList colors = mInputText.getTextColors();
+//      int color = colors.getColorForState(ENABLED_STATE_SET, getContext().getResources().getColor(R.color.colorPrimary));
+        int color = getContext().getResources().getColor(R.color.colorPrimary);
         paint.setColor(color);
         mSelectorWheelPaint = paint;
 
@@ -1907,9 +1908,9 @@ public class NumberPicker extends LinearLayout {
         if (mChangeCurrentByOneFromLongPressCommand != null) {
             removeCallbacks(mChangeCurrentByOneFromLongPressCommand);
         }
-        if (mSetSelectionCommand != null) {
-            removeCallbacks(mSetSelectionCommand);
-        }
+//        if (mSetSelectionCommand != null) {
+//            removeCallbacks(mSetSelectionCommand);
+//        }
         if (mBeginSoftInputOnLongPressCommand != null) {
             removeCallbacks(mBeginSoftInputOnLongPressCommand);
         }
@@ -1953,16 +1954,16 @@ public class NumberPicker extends LinearLayout {
      * Posts an {@link SetSelectionCommand} from the given <code>selectionStart
      * </code> to <code>selectionEnd</code>.
      */
-    private void postSetSelectionCommand(int selectionStart, int selectionEnd) {
-        if (mSetSelectionCommand == null) {
-            mSetSelectionCommand = new SetSelectionCommand();
-        } else {
-            removeCallbacks(mSetSelectionCommand);
-        }
-        mSetSelectionCommand.mSelectionStart = selectionStart;
-        mSetSelectionCommand.mSelectionEnd = selectionEnd;
-        post(mSetSelectionCommand);
-    }
+//    private void postSetSelectionCommand(int selectionStart, int selectionEnd) {
+//        if (mSetSelectionCommand == null) {
+//            mSetSelectionCommand = new SetSelectionCommand();
+//        } else {
+//            removeCallbacks(mSetSelectionCommand);
+//        }
+//        mSetSelectionCommand.mSelectionStart = selectionStart;
+//        mSetSelectionCommand.mSelectionEnd = selectionEnd;
+//        post(mSetSelectionCommand);
+//    }
 
     /**
      * The numbers accepted by the input text's {@link Filter}
@@ -2033,7 +2034,7 @@ public class NumberPicker extends LinearLayout {
                 for (String val : mDisplayedValues) {
                     String valLowerCase = val.toLowerCase();
                     if (valLowerCase.startsWith(str)) {
-                        postSetSelectionCommand(result.length(), val.length());
+//                        postSetSelectionCommand(result.length(), val.length());
                         return val.subSequence(dstart, val.length());
                     }
                 }
@@ -2143,15 +2144,15 @@ public class NumberPicker extends LinearLayout {
     /**
      * Command for setting the input text selection.
      */
-    class SetSelectionCommand implements Runnable {
-        private int mSelectionStart;
-
-        private int mSelectionEnd;
-
-        public void run() {
-            mInputText.setSelection(mSelectionStart, mSelectionEnd);
-        }
-    }
+//    class SetSelectionCommand implements Runnable {
+//        private int mSelectionStart;
+//
+//        private int mSelectionEnd;
+//
+//        public void run() {
+//            mInputText.setSelection(mSelectionStart, mSelectionEnd);
+//        }
+//    }
 
     /**
      * Command for changing the current value from a long press by one.
@@ -2167,24 +2168,6 @@ public class NumberPicker extends LinearLayout {
         public void run() {
             changeValueByOne(mIncrement);
             postDelayed(this, mLongPressUpdateInterval);
-        }
-    }
-
-    /**
-     * @hide
-     */
-    public static class CustomEditText extends EditText {
-
-        public CustomEditText(Context context, AttributeSet attrs) {
-            super(context, attrs);
-        }
-
-        @Override
-        public void onEditorAction(int actionCode) {
-            super.onEditorAction(actionCode);
-            if (actionCode == EditorInfo.IME_ACTION_DONE) {
-                clearFocus();
-            }
         }
     }
 

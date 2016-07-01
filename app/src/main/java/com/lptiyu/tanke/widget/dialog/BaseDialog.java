@@ -27,8 +27,8 @@ public abstract class BaseDialog extends Dialog {
     super(context);
     mContext = context;
     mBuilder = NiftyDialogBuilder.getInstance(context);
-    mBuilder.withTitleColor(getColor(R.color.colorPrimary))                                  //def
-        .withDividerColor(getColor(R.color.colorAccent))                              //def
+    mBuilder.withTitleColor(getColor(R.color.default_font_color))                                  //def
+        .withDividerColor(getColor(R.color.transparent))                              //def
         .withDialogColor(getColor(R.color.default_font_color))                               //def  | withDialogColor(int resid)
         .withDuration(300)
         .isCancelableOnTouchOutside(true)

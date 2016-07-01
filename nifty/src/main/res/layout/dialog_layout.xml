@@ -40,7 +40,7 @@ https://github.com/android/platform_frameworks_base/blob/master/core/res/res/lay
             android:id="@+id/topPanel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#22000000"
+            android:background="@drawable/dialog_title_bg"
             android:orientation="vertical">
 
             <RelativeLayout

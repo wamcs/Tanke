@@ -28,7 +28,7 @@
             android:layout_gravity="center_vertical"
             android:layout_margin="@dimen/layout_dialog_date_picker_margin"
             android:text="@string/year"
-            android:textColor="@color/white10"
+            android:textColor="@color/black06"
             android:textSize="16sp"/>
 
         <net.simonvt.numberpicker.NumberPicker
@@ -47,7 +47,7 @@
             android:layout_gravity="center_vertical"
             android:layout_margin="@dimen/layout_dialog_date_picker_margin"
             android:text="@string/month"
-            android:textColor="@color/white10"
+            android:textColor="@color/black06"
             android:textSize="16sp"/>
 
         <net.simonvt.numberpicker.NumberPicker
@@ -65,7 +65,7 @@
             android:layout_gravity="center_vertical"
             android:layout_margin="@dimen/layout_dialog_date_picker_margin"
             android:text="@string/day"
-            android:textColor="@color/white10"
+            android:textColor="@color/black06"
             android:textSize="16sp"/>
 
     </LinearLayout>
@@ -86,6 +86,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/x13"
             android:padding="@dimen/x21"
+            android:textColor="@color/colorPrimary"
             android:text="取消"/>
 
         <com.lptiyu.tanke.widget.CustomTextView
@@ -93,6 +94,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/x13"
+            android:textColor="@color/colorPrimary"
             android:padding="@dimen/x21"
             android:text="确定"/>
 
