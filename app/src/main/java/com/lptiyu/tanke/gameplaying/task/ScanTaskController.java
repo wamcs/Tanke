@@ -16,9 +16,6 @@ import com.lptiyu.tanke.permission.PermissionDispatcher;
 import com.lptiyu.tanke.permission.TargetMethod;
 import com.lptiyu.tanke.utils.ToastUtil;
 import com.lptiyu.zxinglib.android.CaptureActivity;
-import com.lptiyu.zxinglib.android.Intents;
-
-import timber.log.Timber;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -76,10 +73,6 @@ public class ScanTaskController extends MultiplyTaskController {
       if (pwd == null || pwd.length() == 0) {
         throw new IllegalArgumentException("the pwd must not be null or \"\" ");
       }
-
-      Timber.e("str : " + str);
-      Timber.e("pwd : " + pwd);
-
       if (str.equals(mTask.getPwd())) {
         finishTask();
         mActivityController.openNextTaskIfExist();

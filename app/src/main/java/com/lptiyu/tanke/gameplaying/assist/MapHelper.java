@@ -24,11 +24,8 @@ import com.baidu.mapapi.map.PolylineOptions;
 import com.baidu.mapapi.map.TextureMapView;
 import com.baidu.mapapi.map.UiSettings;
 import com.baidu.mapapi.model.LatLng;
-import com.baidu.mapapi.utils.DistanceUtil;
 import com.lptiyu.tanke.R;
 import com.lptiyu.tanke.gameplaying.pojo.Point;
-import com.lptiyu.tanke.global.AppData;
-import com.lptiyu.tanke.global.Conf;
 import com.lptiyu.tanke.utils.Display;
 import com.lptiyu.tanke.widget.NumNail;
 
@@ -36,8 +33,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import timber.log.Timber;
 
 /**
  * @author : xiaoxiaoda
@@ -216,12 +211,12 @@ public class MapHelper implements
       mBaiduMap.animateMapStatus(MapStatusUpdateFactory.newLatLngZoom(currentLatLng, 20), DEFAULT_ANIMATION_DURATION);
       animateToCurrentPositionOnce = false;
     }
-    if (currentAttackPoint != null && currentAttackPoint.getPointIndex() != 0) {
-      if ((null != lastTimeLatLng) && (DistanceUtil.getDistance(lastTimeLatLng, currentLatLng) > Conf.LOCATION_DISTANCE_THRESHOLD_BOTTOM)
-          && (DistanceUtil.getDistance(lastTimeLatLng, currentLatLng) < Conf.LOCATION_DISTANCE_THRESHOLD_TOP)) {
-        drawPolyLine(lastTimeLatLng, currentLatLng);
-      }
-    }
+//    if (currentAttackPoint != null && currentAttackPoint.getPointIndex() != 0) {
+//      if ((null != lastTimeLatLng) && (DistanceUtil.getDistance(lastTimeLatLng, currentLatLng) > Conf.LOCATION_DISTANCE_THRESHOLD_BOTTOM)
+//          && (DistanceUtil.getDistance(lastTimeLatLng, currentLatLng) < Conf.LOCATION_DISTANCE_THRESHOLD_TOP)) {
+//        drawPolyLine(lastTimeLatLng, currentLatLng);
+//      }
+//    }
     lastTimeLatLng = currentLatLng;
   }
 

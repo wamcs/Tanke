@@ -25,8 +25,6 @@ import com.lptiyu.tanke.permission.PermissionDispatcher;
 import com.lptiyu.tanke.permission.TargetMethod;
 import com.lptiyu.tanke.utils.ToastUtil;
 
-import timber.log.Timber;
-
 /**
  * @author : xiaoxiaoda
  *         date: 16-5-30
@@ -74,11 +72,7 @@ public class LocateTaskController extends MultiplyTaskController implements
     if (locationPwd == null) {
       return;
     }
-    locationPwd.setRadius(Conf.POINT_RADIUS);
-
-    Timber.e("target : (%f, %f)", bdLocation.getLatitude(), bdLocation.getLongitude());
-    Timber.e("distance : %f", DistanceUtil.getDistance(locationPwd.getLatLng(), new LatLng(bdLocation.getLatitude(), bdLocation.getLongitude())));
-
+    locationPwd.setRadius(Conf.LOCATE_TASK_POINT_RADIUS);
     if (DistanceUtil.getDistance(locationPwd.getLatLng(), new LatLng(bdLocation.getLatitude(), bdLocation.getLongitude())) < locationPwd.getRadius()) {
       ToastUtil.TextToast(getString(R.string.right_location));
       finishTask();

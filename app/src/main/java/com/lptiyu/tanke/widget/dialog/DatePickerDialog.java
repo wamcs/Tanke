@@ -13,13 +13,12 @@ import net.simonvt.numberpicker.NumberPicker;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import cn.pedant.SweetAlert.SweetAlertDialog;
 
 /**
  *         date: 16-1-20
  *         email: daque@hustunique.com
  */
-public class DatePickerDialog extends SweetAlertDialog {
+public class DatePickerDialog extends BaseDialog {
 
     @BindView(R.id.layout_dialog_date_picker_year)
     NumberPicker mYearPicker;
@@ -36,7 +35,7 @@ public class DatePickerDialog extends SweetAlertDialog {
     private OnDateChoosedListener mListener;
 
     public DatePickerDialog(Context context) {
-        super(context, SweetAlertDialog.NORMAL_TYPE);
+        super(context);
         this.setTitle(context.getString(R.string.birthday));
         View view = LayoutInflater.from(context).inflate(R.layout.layout_dialog_date_picker, null);
         ButterKnife.bind(this, view);

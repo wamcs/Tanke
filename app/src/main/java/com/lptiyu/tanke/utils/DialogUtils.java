@@ -1,11 +1,5 @@
 package com.lptiyu.tanke.utils;
 
-import android.content.Context;
-
-import com.lptiyu.tanke.widget.dialog.DatePickerDialog;
-
-import cn.pedant.SweetAlert.SweetAlertDialog;
-
 /**
  * Created by Jason on 2016/7/1.
  */
@@ -24,7 +18,4 @@ public class DialogUtils {
         }
     }
 
-    private SweetAlertDialog getDatePickerDialog(Context context) {
-        return new DatePickerDialog(context);
-    }
 }
