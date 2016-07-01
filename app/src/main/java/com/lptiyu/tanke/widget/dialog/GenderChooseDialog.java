@@ -4,7 +4,6 @@ import android.content.Context;
 import android.view.View;
 import android.widget.RadioButton;
 
-
 import com.lptiyu.tanke.R;
 import com.lptiyu.tanke.utils.Inflater;
 
