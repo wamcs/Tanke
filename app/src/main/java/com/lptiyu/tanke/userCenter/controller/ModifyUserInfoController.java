@@ -2,6 +2,7 @@ package com.lptiyu.tanke.userCenter.controller;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -131,44 +132,44 @@ public class ModifyUserInfoController extends ActivityController {
     @OnClick(R.id.modify_user_info_birthday_button)
     void modifyBirthday() {
         SweetAlertDialog pDialog = new SweetAlertDialog(getActivity(), SweetAlertDialog.NORMAL_TYPE);
-//        pDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
+        pDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
         pDialog.setTitleText("测试中");
         pDialog.setCancelable(false);
         pDialog.setContentView(R.layout.layout_dialog_date_picker);
         pDialog.show();
         if (null == mDatePickerDialog) {
-//            mDatePickerDialog=new DatePickerDialog(getContext());
-//            mDatePickerDialog.show();
-//            mDatePickerDialog = new DatePickerDialog(getContext());
-//            mDatePickerDialog.setOnDateChoosedListener(new DatePickerDialog.OnDateChoosedListener() {
-//                @Override
-//                public void onDateChoosed(String date) {
-//                    final String mData = date;
-//                    mLoadingDialog.setDialogText("生日修改中");
-//                    mLoadingDialog.show();
-//                    HttpService.getUserService()
-//                            .resetUserDetails(userId, token, UserService.USER_DETAIL_BIRTHDAY, date)
-//                            .observeOn(AndroidSchedulers.mainThread())
-//                            .subscribeOn(Schedulers.io())
-//                            .subscribe(new Action1<Response<Void>>() {
-//                                @Override
-//                                public void call(Response<Void> voidResponse) {
-//                                    mLoadingDialog.cancel();
-//                                    int status = voidResponse.getStatus();
-//                                    if (status != 1) {
-//                                        ToastUtil.TextToast(voidResponse.getInfo());
-//                                        return;
-//                                    }
-//                                    mBirthdayText.setText(mData);
-//                                }
-//                            }, new Action1<Throwable>() {
-//                                @Override
-//                                public void call(Throwable throwable) {
-//                                    ToastUtil.TextToast("修改生日信息失败");
-//                                }
-//                            });
-//                }
-//            });
+            mDatePickerDialog=new DatePickerDialog(getContext());
+            mDatePickerDialog.show();
+            mDatePickerDialog = new DatePickerDialog(getContext());
+            mDatePickerDialog.setOnDateChoosedListener(new DatePickerDialog.OnDateChoosedListener() {
+                @Override
+                public void onDateChoosed(String date) {
+                    final String mData = date;
+                    mLoadingDialog.setDialogText("生日修改中");
+                    mLoadingDialog.show();
+                    HttpService.getUserService()
+                            .resetUserDetails(userId, token, UserService.USER_DETAIL_BIRTHDAY, date)
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribeOn(Schedulers.io())
+                            .subscribe(new Action1<Response<Void>>() {
+                                @Override
+                                public void call(Response<Void> voidResponse) {
+                                    mLoadingDialog.cancel();
+                                    int status = voidResponse.getStatus();
+                                    if (status != 1) {
+                                        ToastUtil.TextToast(voidResponse.getInfo());
+                                        return;
+                                    }
+                                    mBirthdayText.setText(mData);
+                                }
+                            }, new Action1<Throwable>() {
+                                @Override
+                                public void call(Throwable throwable) {
+                                    ToastUtil.TextToast("修改生日信息失败");
+                                }
+                            });
+                }
+            });
         }
     }
 
