@@ -42,7 +42,6 @@ public class RunningSpotScrollView extends BaseSpotScrollView {
     if (mCurrentCircle == null || spotList.size() == 0 || index < 0 || index >=  spotList.size()) {
       throw new IllegalArgumentException("Index not legal");
     }
-
     spotList.get(index).setmState(state);
   }
 

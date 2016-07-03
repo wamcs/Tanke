@@ -1,25 +1,25 @@
 package com.lptiyu.tanke.widget;
 
+import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
-
 
 import com.lptiyu.tanke.R;
 import com.lptiyu.tanke.utils.Display;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import timber.log.Timber;
 
 /**
  * @author: xiaoxiaoda
@@ -185,11 +185,13 @@ public class BaseSpotScrollView extends HorizontalScrollView {
   class SpotCircleView extends View implements OnClickListener {
 
     private int spotDoingColor;
+    private int spotDoingAnimationColor;
     private int spotDoneColor;
     private int spotToDoColor;
     private int spotItemLineColor;
 
     private float mRadius;
+    private float spotDoingAnimationRadius;
     private float spotItemLineWidth;
     private float spotItemLineHeight;
     private float spotTextSize;
@@ -208,6 +210,8 @@ public class BaseSpotScrollView extends HorizontalScrollView {
     private Rect mBounds;
     private Paint mPaint;
 
+    private CircleAnimator circleAnimator;
+
     public SpotCircleView(Context context) {
       this(context, null);
     }
@@ -218,6 +222,7 @@ public class BaseSpotScrollView extends HorizontalScrollView {
 
     public SpotCircleView(Context context, AttributeSet attrs, int defStyleAttr) {
       super(context, attrs, defStyleAttr);
+      circleAnimator = new CircleAnimator();
       init();
     }
 
@@ -268,6 +273,13 @@ public class BaseSpotScrollView extends HorizontalScrollView {
 
     public void setmState(STATE mState) {
       this.mState = mState;
+      if (mState == STATE.STATE_DOING) {
+        circleAnimator.start();
+      } else {
+        circleAnimator.reset();
+        spotDoingAnimationRadius = 0;
+        invalidate();
+      }
     }
 
     public float getmRadius() {
@@ -276,6 +288,7 @@ public class BaseSpotScrollView extends HorizontalScrollView {
 
     public void setmRadius(float mRadius) {
       this.mRadius = mRadius;
+      spotDoingAnimationRadius = mRadius;
     }
 
     public float getSpotItemLineWidth() {
@@ -329,6 +342,7 @@ public class BaseSpotScrollView extends HorizontalScrollView {
     }
 
     private void init() {
+      spotDoingAnimationColor = getContext().getResources().getColor(R.color.colorAccent);
       mBounds = new Rect();
       mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
       if (isClickable) {
@@ -423,7 +437,9 @@ public class BaseSpotScrollView extends HorizontalScrollView {
 //          mPaint.setColor(getResources().getColor(R.color.default_font_color));
 //          canvas.drawCircle(mWidth / 2, mHeight / 2, mRadius + Display.dip2px(3), mPaint);
           mPaint.setColor(spotDoingColor);
-          canvas.drawCircle(mWidth / 2, mHeight / 2, mRadius, mPaint);
+          canvas.drawCircle(mWidth / 2, mHeight / 2, mRadius + Display.dip2px(3), mPaint);
+          mPaint.setColor(spotDoingAnimationColor);
+          canvas.drawCircle(mWidth / 2, mHeight / 2, spotDoingAnimationRadius + Display.dip2px(3), mPaint);
           break;
 
         case STATE_TO_DO:
@@ -453,6 +469,66 @@ public class BaseSpotScrollView extends HorizontalScrollView {
         return;
       }
       mListener.onSpotItemClick(v, mTag - 1);
+    }
+
+    class CircleAnimator {
+
+      /**
+       * The max radius of the circle, the unit is metre.
+       */
+      private float maxRadius = 40;
+      private final int maxColor = spotDoingAnimationColor;
+
+      private final ValueAnimator animator = generateAnimation();
+
+      private final ValueAnimator.AnimatorUpdateListener animatorUpdateListener = new ValueAnimator.AnimatorUpdateListener() {
+
+        @Override
+        public void onAnimationUpdate(ValueAnimator animation) {
+          float percent = (Float) animation.getAnimatedValue();
+          spotDoingAnimationRadius = percent * maxRadius + mRadius;
+          int colorAlpha = (int) (255 * (1 - percent));
+          spotDoingAnimationColor = Color.argb(
+              colorAlpha,
+              Color.red(maxColor),
+              Color.green(maxColor),
+              Color.blue(maxColor));
+          invalidate();
+        }
+      };
+
+      private ValueAnimator generateAnimation() {
+        ValueAnimator animator = ValueAnimator.ofFloat(0.3f, 1.0f);
+        animator.setDuration(3000);
+        animator.setInterpolator(new AccelerateDecelerateInterpolator());
+        animator.setRepeatCount(ValueAnimator.INFINITE);
+        animator.setRepeatMode(ValueAnimator.RESTART);
+        return animator;
+      }
+
+      public void setMaxRadius(float maxRadius) {
+        if (maxRadius <= 0) {
+          throw new IllegalArgumentException("Wrong max radius");
+        }
+        this.maxRadius = maxRadius;
+      }
+
+      public float getMaxRadius() {
+        return maxRadius;
+      }
+
+      public void start() {
+        if (animator.isStarted()) {
+          reset();
+        }
+        animator.addUpdateListener(animatorUpdateListener);
+        animator.start();
+      }
+
+      public void reset() {
+        animator.removeAllUpdateListeners();
+        animator.cancel();
+      }
     }
 
   }
