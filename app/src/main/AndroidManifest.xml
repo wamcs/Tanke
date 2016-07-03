@@ -75,7 +75,6 @@
         <activity android:name=".userCenter.ui.UserGamePlayingListActivity"></activity>
         <activity android:name=".userCenter.ui.LocateActivity"></activity>
         <activity android:name=".location.LocateUserActivity"></activity>
-        <activity android:name=".userCenter.ui.ModifyTextActivity"></activity>
         <activity android:name=".userCenter.ui.ModifyUserInfoActivity"></activity>
         <activity android:name=".userCenter.ui.OtherUserInformationActivity"></activity>
         <activity android:name=".userCenter.ui.SettingActivity"></activity>

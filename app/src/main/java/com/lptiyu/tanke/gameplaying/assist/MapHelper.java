@@ -2,6 +2,7 @@ package com.lptiyu.tanke.gameplaying.assist;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -52,6 +53,7 @@ public class MapHelper implements
   private List<Point> mPoints;
   private Point currentAttackPoint;
   private Point clickedPoint;
+  private PolylineOptions polyline;
   private Map<Point, Marker> nailMarkerContainer = new HashMap<>();
 
   private LatLng currentLatLng;
@@ -59,8 +61,7 @@ public class MapHelper implements
   private List<LatLng> trackLatLngs;
 
   // info window content and info window, show when user arrive the attack point
-  private InfoWindow mTaskEntryInfoWindow;
-  private View mTaskEntryInfoWindowView;
+  private Map<Marker, InfoWindow> markerInfoWindowMap;
 
   private MyLocationData.Builder mLocationDataBuilder;
 
@@ -89,10 +90,11 @@ public class MapHelper implements
   private void init() {
     trackLatLngs = new ArrayList<>(2);
     mSensorHelper = new SensorHelper(mContext);
-    mTaskEntryInfoWindowView = LayoutInflater.from(mContext).inflate(R.layout.layout_map_infowindow, null);
+    markerInfoWindowMap = new HashMap<>();
 
     initMap();
     initEvent();
+
   }
 
   private void initMap() {
@@ -165,19 +167,36 @@ public class MapHelper implements
       return true;
     }
 
-    mTaskEntryInfoWindowView.findViewById(R.id.start_task).setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View v) {
-        if (mMapMarkerClickListener != null) {
-          mMapMarkerClickListener.onMarkerClicked(clickedPoint);
-          mBaiduMap.hideInfoWindow();
+    InfoWindow infoWindow = markerInfoWindowMap.get(marker);
+    if (infoWindow == null) {
+      View infoWindowView = LayoutInflater.from(mContext).inflate(R.layout.layout_map_infowindow, null);
+      ImageView imageView = ((ImageView) infoWindowView.findViewById(R.id.start_task));
+      imageView.setImageResource(R.mipmap.need_to_remove);
+      imageView.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+          if (mMapMarkerClickListener != null) {
+            mMapMarkerClickListener.onMarkerClicked(clickedPoint);
+            mBaiduMap.hideInfoWindow();
+          }
         }
-      }
-    });
-    mTaskEntryInfoWindow = new InfoWindow(mTaskEntryInfoWindowView, marker.getPosition(), DEFAULT_INFO_WINDOW_DELTA_Y);
-    mBaiduMap.showInfoWindow(mTaskEntryInfoWindow);
-    isInfoWindowShown = true;
+      });
+      infoWindow = new InfoWindow(infoWindowView, marker.getPosition(), DEFAULT_INFO_WINDOW_DELTA_Y);
+      markerInfoWindowMap.put(marker, infoWindow);
+      mBaiduMap.showInfoWindow(infoWindow);
+      isInfoWindowShown = true;
+    } else {
+      mBaiduMap.showInfoWindow(infoWindow);
+      isInfoWindowShown = true;
+    }
     return true;
+  }
+
+  public void showPointInfoWindow(Point point) {
+    Marker marker = nailMarkerContainer.get(point);
+    if (marker != null) {
+      onMarkerClick(marker);
+    }
   }
 
   public void onReachAttackPoint(int index) {
@@ -234,6 +253,16 @@ public class MapHelper implements
       mBaiduMap.animateMapStatus(MapStatusUpdateFactory.newLatLngZoom(targetPoint.getLatLng(), 20), DEFAULT_ANIMATION_DURATION);
     } else {
 
+    }
+  }
+
+  public void drawHistoryTrack(List<LatLng> points) {
+    if (points == null || points.size() == 0) {
+
+    } else if (points.size() > 1) {
+      polyline = new PolylineOptions().width(10)
+          .color(Color.RED).points(points);
+      mBaiduMap.addOverlay(polyline);
     }
   }
 

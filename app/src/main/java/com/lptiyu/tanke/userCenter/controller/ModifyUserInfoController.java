@@ -2,7 +2,6 @@ package com.lptiyu.tanke.userCenter.controller;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -121,6 +120,7 @@ public class ModifyUserInfoController extends ActivityController {
 
     @OnClick(R.id.modify_user_info_nickname_button)
     void modifyNickname() {
+
         Intent intent = new Intent(getActivity(), ModifyTextActivity.class);
         intent.putExtra(Conf.USER_INFO_TYPE, UserService.USER_DETAIL_NICKNAME);
         intent.putExtra(Conf.USER_INFO, details.getNickname());
@@ -204,6 +204,7 @@ public class ModifyUserInfoController extends ActivityController {
 
     @OnClick(R.id.modify_user_info_height_button)
     void modifyHeight() {
+
         Intent intent = new Intent(getActivity(), ModifyTextActivity.class);
         intent.putExtra(Conf.USER_INFO_TYPE, UserService.USER_DETAIL_HEIGHT);
         intent.putExtra(Conf.USER_INFO, details.getHeight());

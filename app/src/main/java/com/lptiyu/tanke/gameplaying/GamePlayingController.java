@@ -2,6 +2,8 @@ package com.lptiyu.tanke.gameplaying;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Handler;
+import android.os.Message;
 import android.os.Parcelable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -37,6 +39,10 @@ import com.lptiyu.tanke.global.Conf;
 import com.lptiyu.tanke.permission.PermissionDispatcher;
 import com.lptiyu.tanke.permission.TargetMethod;
 import com.lptiyu.tanke.pojo.GameDetailsEntity;
+import com.lptiyu.tanke.trace.bean.HistoryTrackData;
+import com.lptiyu.tanke.trace.history.HistoryTrackCallback;
+import com.lptiyu.tanke.trace.history.HistoryTrackHelper;
+import com.lptiyu.tanke.trace.history.IHistoryTrackHelper;
 import com.lptiyu.tanke.trace.tracing.ITracingHelper;
 import com.lptiyu.tanke.trace.tracing.TracingCallback;
 import com.lptiyu.tanke.trace.tracing.TracingHelper;
@@ -64,7 +70,8 @@ public class GamePlayingController extends ActivityController implements
     BDLocationListener,
     TracingCallback,
     MapHelper.OnMapMarkerClickListener,
-    BaseSpotScrollView.OnSpotItemClickListener {
+    BaseSpotScrollView.OnSpotItemClickListener,
+    HistoryTrackCallback {
 
   @BindView(R.id.map_view)
   TextureMapView mapView;
@@ -80,6 +87,9 @@ public class GamePlayingController extends ActivityController implements
 
   long gameId;
   long teamId;
+  String entityName;
+  long queryHistoryTrackStartTime;
+  long queryHistoryTrackEndTime;
 
   int currentAttackPointIndex = 0;
   Point currentAttackPoint;
@@ -91,11 +101,38 @@ public class GamePlayingController extends ActivityController implements
   ConsoleHelper consoleHelper;
   GameZipHelper gameZipHelper;
   ITracingHelper mTracingHelper;
+  IHistoryTrackHelper mHistoryTrackHelper;
   TimingTaskHelper mTimingTaskHelper;
 
   AlertDialog mErrorDialog;
   AlertDialog mAlertDialog;
   AlertDialog mLoadingDialog;
+
+  private static final int START_QUERY_TRACK = 1;
+  private static final int STOP_QUERT_TRACK = 2;
+  private static final long QUERY_HISTORY_TRACK_DELAY = 5000;
+
+  private Handler mHandler = new Handler(new Handler.Callback() {
+    @Override
+    public boolean handleMessage(Message msg) {
+      switch (msg.what) {
+        case START_QUERY_TRACK:
+          mHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+              mHistoryTrackHelper.queryHistoryTrack(entityName, (int) (queryHistoryTrackStartTime / TimeUtils.ONE_MINUTE_TIME),
+                  (int) (queryHistoryTrackEndTime / TimeUtils.ONE_MINUTE_TIME));
+            }
+          }, QUERY_HISTORY_TRACK_DELAY);
+          break;
+
+        case STOP_QUERT_TRACK:
+          //do nothing
+          break;
+      }
+      return false;
+    }
+  });
 
   public GamePlayingController(AppCompatActivity activity, View view) {
     super(activity, view);
@@ -112,7 +149,9 @@ public class GamePlayingController extends ActivityController implements
     Intent intent = getIntent();
     gameId = intent.getLongExtra(Conf.GAME_ID, Conf.TEMP_GAME_ID);
     mGameDetailsEntity = intent.getParcelableExtra(Conf.GAME_DETAIL);
+    queryHistoryTrackEndTime = System.currentTimeMillis() / TimeUtils.ONE_SECOND_TIME;
     teamId = intent.getLongExtra(Conf.TEAM_ID, Conf.TEMP_TEAM_ID);
+    entityName = Conf.makeUpTrackEntityName(gameId, Accounts.getId());
     if (!gameZipHelper.checkAndParseGameZip(gameId) || gameZipHelper.getmPoints().size() == 0) {
       mLoadingDialog.dismiss();
       showErrorDialog();
@@ -125,7 +164,8 @@ public class GamePlayingController extends ActivityController implements
     consoleHelper = new ConsoleHelper(getActivity(), view, mPoints);
     consoleHelper.setOnSpotClickListener(this);
     mTracingHelper = new TracingHelper(getActivity().getApplicationContext(), this);
-    mTracingHelper.entityName(Conf.makeUpTrackEntityName(gameId, Accounts.getId()));
+    mTracingHelper.entityName(entityName);
+    mHistoryTrackHelper = new HistoryTrackHelper(getActivity().getApplicationContext(), this);
     locateHelper = new LocateHelper(getActivity().getApplicationContext());
     locateHelper.registerLocationListener(this);
 
@@ -135,6 +175,8 @@ public class GamePlayingController extends ActivityController implements
 
     initRecords();
     moveToTarget();
+
+    mHandler.sendEmptyMessage(START_QUERY_TRACK);
   }
 
   /**
@@ -187,6 +229,7 @@ public class GamePlayingController extends ActivityController implements
         switch (record.getState()) {
 
           case GAME_START:
+            queryHistoryTrackStartTime = record.getCreateTime();
             if (currentAttackPoint.getPointIndex() == 0) {
               onReachAttackPoint();
               onNextPoint();
@@ -448,6 +491,30 @@ public class GamePlayingController extends ActivityController implements
   }
 
   @Override
+  public void onQueryHistoryTrackCallback(HistoryTrackData historyTrackData) {
+    List<LatLng> latLngList = new ArrayList<>();
+    if (historyTrackData != null && historyTrackData.getStatus() == 0) {
+      List<LatLng> points = historyTrackData.getListPoints();
+      if (points != null && points.size() > 0) {
+        latLngList.addAll(points);
+        if (mapHelper != null) {
+          mapHelper.drawHistoryTrack(latLngList);
+          if (isGameFinished) {
+            mHandler.sendEmptyMessage(STOP_QUERT_TRACK);
+          } else {
+            mHandler.sendEmptyMessage(START_QUERY_TRACK);
+          }
+        }
+      }
+    }
+  }
+
+  @Override
+  public void onRequestFailedCallback(String s) {
+
+  }
+
+  @Override
   public void onReceiveLocation(BDLocation location) {
     mapHelper.onReceiveLocation(location);
     /**
@@ -486,9 +553,10 @@ public class GamePlayingController extends ActivityController implements
     int result = position - currentAttackPoint.getPointIndex();
     if (result < 0) {
       mapHelper.animateCameraToMarkerByIndex(position);
+      mapHelper.showPointInfoWindow(mPoints.get(position));
     } else if (result == 0) {
       mapHelper.animateCameraToMarkerByIndex(position);
-      onMarkerClicked(currentAttackPoint);
+      mapHelper.showPointInfoWindow(mPoints.get(position));
     } else {
       ToastUtil.TextToast("攻击点还未开启");
     }
@@ -606,6 +674,10 @@ public class GamePlayingController extends ActivityController implements
       locateHelper.stopLocate();
       locateHelper.unRegisterLocationListener(this);
     }
+    if (mHandler != null) {
+      mHandler.sendEmptyMessage(STOP_QUERT_TRACK);
+    }
+
     super.onDestroy();
   }
 

@@ -427,7 +427,6 @@ public class CompleteInformationController extends ActivityController implements
                 @Override
                 public void onImageChoosed(File file) {
                     Glide.with(getActivity()).load(file).error(R.mipmap.default_avatar).into(mAvatarImageView);
-//                    mAvatarImageView.setImageURI(Uri.fromFile(file));
                     mImageFile = file;
                     isAvatarSet = true;
                 }

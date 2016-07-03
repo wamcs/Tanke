@@ -1,8 +1,12 @@
 package com.lptiyu.tanke.gamedetails;
 
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Paint;
+import android.location.LocationManager;
+import android.provider.Settings;
 import android.support.v7.app.AlertDialog;
 import android.text.Html;
 import android.view.LayoutInflater;
@@ -310,7 +314,7 @@ public class GameDetailsController extends ActivityController {
     } else {
       // the zip is exist, then check is it out of date
       //TODO : invoke api to check whether the zio is out of date
-      PermissionDispatcher.startLocateWithCheck(((BaseActivity) getActivity()));
+      initGPS();
     }
   }
 
@@ -374,7 +378,7 @@ public class GameDetailsController extends ActivityController {
           @Override
           public void call(File file) {
             mGameZipScanner.reload();
-            PermissionDispatcher.startLocateWithCheck(((BaseActivity) getActivity()));
+            initGPS();
           }
         }, new Action1<Throwable>() {
           @Override
@@ -395,17 +399,6 @@ public class GameDetailsController extends ActivityController {
         });
   }
 
-  @TargetMethod(requestCode = PermissionDispatcher.PERMISSION_REQUEST_CODE_LOCATION)
-  public void startPlayingGame() {
-    Intent intent = new Intent(getContext(), GamePlayingActivity.class);
-    intent.putExtra(Conf.GAME_ID, gameId);
-    intent.putExtra(Conf.GAME_DETAIL, mGameDetailsEntity);
-    if (mGameDetailsEntity.getType() == GAME_TYPE.TEAMS) {
-      //TODO : need pass team id to GamePlayingActivity when the team game open
-    }
-    startActivity(intent);
-  }
-
   private void showLoadingDialog() {
     if (mLoadingDialog == null) {
       View view = LayoutInflater.from(getContext()).inflate(R.layout.layout_loading, null);
@@ -417,6 +410,17 @@ public class GameDetailsController extends ActivityController {
           .create();
     }
     mLoadingDialog.show();
+  }
+
+  @TargetMethod(requestCode = PermissionDispatcher.PERMISSION_REQUEST_CODE_LOCATION)
+  public void startPlayingGame() {
+    Intent intent = new Intent(getContext(), GamePlayingActivity.class);
+    intent.putExtra(Conf.GAME_ID, gameId);
+    intent.putExtra(Conf.GAME_DETAIL, mGameDetailsEntity);
+    if (mGameDetailsEntity.getType() == GAME_TYPE.TEAMS) {
+      //TODO : need pass team id to GamePlayingActivity when the team game open
+    }
+    startActivity(intent);
   }
 
   @Override
@@ -473,4 +477,37 @@ public class GameDetailsController extends ActivityController {
       isGameFinishSubscription.unsubscribe();
     }
   }
+
+  private void initGPS() {
+    LocationManager locationManager = (LocationManager) getContext().getSystemService(Context.LOCATION_SERVICE);
+    // 判断GPS模块是否开启，如果没有则开启
+    if (!locationManager.isProviderEnabled(android.location.LocationManager.GPS_PROVIDER)) {
+      AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity());
+      dialog.setMessage("为了定位更加精确，请打开GPS");
+      dialog.setPositiveButton("确定",
+          new android.content.DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface arg0, int arg1) {
+              // 转到手机设置界面，用户设置GPS
+              Intent intent = new Intent(
+                  Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+              startActivityForResult(intent, 0); // 设置完成后返回到原来的界面
+
+            }
+          });
+      dialog.setNegativeButton("取消", new android.content.DialogInterface.OnClickListener() {
+        @Override
+        public void onClick(DialogInterface arg0, int arg1) {
+          arg0.dismiss();
+        }
+      });
+      dialog.show();
+    } else {
+      PermissionDispatcher.startLocateWithCheck(((BaseActivity) getActivity()));
+    }
+  }
+
+
 }
+

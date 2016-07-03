@@ -7,15 +7,12 @@
     android:background="@drawable/img_infowindow_bg"
     android:orientation="horizontal">
 
-    <com.lptiyu.tanke.widget.CustomTextView
+    <ImageView
         android:id="@+id/start_task"
         android:layout_width="wrap_content"
+        android:src="@mipmap/need_to_remove"
         android:layout_height="wrap_content"
-        android:padding="@dimen/layout_map_infowindow_content_padding"
-        android:text="@string/start_task"
-        android:textColor="@color/colorPrimary"
-        android:textSize="12sp"
-        android:textStyle="bold"/>
+        android:padding="@dimen/layout_map_infowindow_content_padding"/>
 
 </LinearLayout>
 
