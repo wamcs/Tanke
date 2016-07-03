@@ -137,8 +137,6 @@ public final class Conf {
   public static final String USER_INFO_TYPE = "user_info_type";
   public static final String USER_INFO = "user_info";
   public static final int REQUEST_CODE_NICKNAME = 14;
-  public static final int REQUEST_CODE_HEIGHT = 15;
-  public static final int REQUEST_CODE_WEIGHT = 16;
   public static final int REQUEST_CODE_LOCATION = 17;
 
   /**

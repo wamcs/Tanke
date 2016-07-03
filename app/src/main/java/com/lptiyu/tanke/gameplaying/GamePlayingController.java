@@ -52,6 +52,7 @@ import com.lptiyu.tanke.utils.ToastUtil;
 import com.lptiyu.tanke.utils.VibrateUtils;
 import com.lptiyu.tanke.widget.BaseSpotScrollView;
 import com.lptiyu.tanke.widget.TickView;
+import com.lptiyu.tanke.widget.dialog.TextDialog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -107,11 +108,16 @@ public class GamePlayingController extends ActivityController implements
   AlertDialog mErrorDialog;
   AlertDialog mAlertDialog;
   AlertDialog mLoadingDialog;
+  TextDialog mTextDialog;
 
   private static final int START_QUERY_TRACK = 1;
   private static final int STOP_QUERT_TRACK = 2;
-  private static final long QUERY_HISTORY_TRACK_DELAY = 5000;
+  private static final long QUERY_HISTORY_TRACK_DELAY = TimeUtils.ONE_MINUTE_TIME;
 
+  /**
+   * 这个handler用来间隔的从百度鹰眼服务获取最新的纠偏轨迹
+   * 自己纠偏的算法麻烦而且不精确，用百度纠偏好了的轨迹
+   */
   private Handler mHandler = new Handler(new Handler.Callback() {
     @Override
     public boolean handleMessage(Message msg) {
@@ -365,9 +371,28 @@ public class GamePlayingController extends ActivityController implements
       mTracingHelper.stop();
       if (!RecordsUtils.isGameFinishedFromDisk(gameId)) {
         RecordsUtils.dispatchTypeRecord(currentAttackPointIndex, currentAttackPoint.getId(), 0, RunningRecord.RECORD_TYPE.GAME_FINISH);
-        startGameDataActivity();
+        showTextDialog();
       }
     }
+  }
+
+  private void showTextDialog() {
+    if (mTextDialog == null) {
+      mTextDialog = new TextDialog(getContext());
+      mTextDialog.cancelButton.setVisibility(View.GONE);
+      mTextDialog.setmListener(new TextDialog.OnTextDialogButtonClickListener() {
+        @Override
+        public void onPositiveClicked() {
+          startGameDataActivity();
+        }
+
+        @Override
+        public void onNegtiveClicked() {
+
+        }
+      });
+    }
+    mTextDialog.withMessage("您已完成所有攻击点,点击确定查看成绩单");
   }
 
   private void showAlertDialog(String message) {
@@ -502,6 +527,8 @@ public class GamePlayingController extends ActivityController implements
           if (isGameFinished) {
             mHandler.sendEmptyMessage(STOP_QUERT_TRACK);
           } else {
+            queryHistoryTrackStartTime = queryHistoryTrackEndTime;
+            queryHistoryTrackEndTime = System.currentTimeMillis() / TimeUtils.ONE_SECOND_TIME;
             mHandler.sendEmptyMessage(START_QUERY_TRACK);
           }
         }

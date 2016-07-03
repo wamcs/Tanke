@@ -27,7 +27,8 @@ public class GenderChooseDialog extends BaseDialog {
 
   public GenderChooseDialog(Context context) {
     super(context);
-    this.withTitle(context.getString(R.string.gender))                                  //.withTitle(null)  no title
+    this.withTitle(context.getString(R.string.gender))
+        .withMessage(null)
         .isCancelableOnTouchOutside(false)
         .setCustomView(R.layout.layout_dialog_choose_gender, context);
   }

@@ -2,8 +2,6 @@ package com.lptiyu.tanke.messagesystem;
 
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 
 import com.lptiyu.tanke.R;
 import com.lptiyu.tanke.base.controller.ActivityController;
@@ -11,10 +9,8 @@ import com.lptiyu.tanke.global.Conf;
 import com.lptiyu.tanke.messagesystem.helper.MessageHelper;
 import com.lptiyu.tanke.messagesystem.helper.PushHelper;
 
-import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import timber.log.Timber;
 
 /**
  * author:wamcs
@@ -33,7 +29,6 @@ public class MessageController extends ActivityController {
 
   private void init(AppCompatActivity activity, View view) {
     int type = getIntent().getIntExtra(Conf.MESSAGE_TYPE, Integer.MIN_VALUE);
-    Timber.d("message type: %d", type);
     if (type == Integer.MIN_VALUE) {
       throw new IllegalStateException("not has this type");
     }

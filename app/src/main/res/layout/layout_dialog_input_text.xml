@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingLeft="@dimen/x30"
+                android:paddingTop="@dimen/y30"
+                android:paddingRight="@dimen/x30">
+
+    <EditText
+        android:id="@+id/input_edit_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="换一个好一点的名字"
+        android:padding="@dimen/x35"
+        android:textColor="@color/colorPrimary"
+        android:textColorHint="@color/colorAccent"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/input_edit_text"
+        android:layout_margin="@dimen/x13"
+        android:orientation="horizontal"
+        android:padding="@dimen/x13">
+
+        <com.lptiyu.tanke.widget.CustomTextView
+            android:id="@+id/cancel_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/x13"
+            android:padding="@dimen/x21"
+            android:text="@string/dismiss"
+            android:textColor="@color/colorPrimary"/>
+
+        <com.lptiyu.tanke.widget.CustomTextView
+            android:id="@+id/ensure_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/x13"
+            android:padding="@dimen/x21"
+            android:text="@string/ensure"
+            android:textColor="@color/colorPrimary"/>
+
+    </LinearLayout>
+
+</RelativeLayout>

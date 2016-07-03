@@ -1,14 +1,13 @@
 package com.lptiyu.tanke.update;
 
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 
 import com.lptiyu.tanke.RunApplication;
 import com.lptiyu.tanke.io.net.HttpService;
 import com.lptiyu.tanke.io.net.Response;
+import com.lptiyu.tanke.widget.dialog.TextDialog;
 
 import java.lang.ref.WeakReference;
 
@@ -25,7 +24,7 @@ import timber.log.Timber;
  */
 public class UpdateHelper {
 
-  private AlertDialog mNotifyUpdateDialog;
+  private TextDialog mNotifyUpdateDialog;
 
   private String apkUrl;
   private DownloadHelper downloadHelper;
@@ -80,28 +79,24 @@ public class UpdateHelper {
   }
 
   private void showAlertDialog(String oldVersionName, String newVersionName) {
-    mNotifyUpdateDialog.setMessage(String.format("当前版本号：%s\n新版本号：%s", oldVersionName, newVersionName));
-    mNotifyUpdateDialog.show();
+    mNotifyUpdateDialog.show(String.format("当前版本号：%s\n新版本号：%s", oldVersionName, newVersionName));
   }
 
   private void initDialog() {
     if (mNotifyUpdateDialog == null) {
-      mNotifyUpdateDialog = new AlertDialog.Builder(weakReference.get())
-          .setTitle("版本更新")
-          .setCancelable(false)
-          .setPositiveButton("更新", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-              downloadHelper.startDownload(apkUrl);
-            }
-          })
-          .setNegativeButton("取消", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-              RunApplication.getInstance().AppExit();
-            }
-          })
-          .create();
+      mNotifyUpdateDialog = new TextDialog(weakReference.get());
+      mNotifyUpdateDialog.withTitle("版本更新")
+          .setCancelable(false);
+      mNotifyUpdateDialog.setmListener(new TextDialog.OnTextDialogButtonClickListener() {
+        @Override
+        public void onPositiveClicked() {
+          downloadHelper.startDownload(apkUrl);
+        }
+        @Override
+        public void onNegtiveClicked() {
+          RunApplication.getInstance().AppExit();
+        }
+      });
     }
   }
 
