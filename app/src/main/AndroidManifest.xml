@@ -78,6 +78,8 @@
         <activity android:name=".userCenter.ui.ModifyUserInfoActivity"></activity>
         <activity android:name=".userCenter.ui.OtherUserInformationActivity"></activity>
         <activity android:name=".userCenter.ui.SettingActivity"></activity>
+
+
         <activity
             android:name="com.mob.tools.MobUIShell"
             android:configChanges="keyboardHidden|orientation|screenSize"
@@ -114,10 +116,6 @@
         <activity
             android:name="com.lptiyu.zxinglib.android.PreferencesActivity"
             android:label="@string/preferences_name"
-            android:stateNotNeeded="true" />
-        <activity
-            android:name="com.lptiyu.zxinglib.android.share.ShareActivity"
-            android:screenOrientation="user"
             android:stateNotNeeded="true" />
         <activity
             android:name="com.lptiyu.zxinglib.android.encode.EncodeActivity"
