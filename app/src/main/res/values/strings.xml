@@ -209,6 +209,8 @@
     <string name="modify_info_weight_formatter" formatter="false">%s kg</string>
 
     <string name="save">保存</string>
+    <string name="modify_info_failed">修改失败</string>
+    <string name="modify_info_success">修改成功</string>
     <string name="change_nickname">更改姓名</string>
     <string name="change_height">更改身高</string>
 

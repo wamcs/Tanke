@@ -14,6 +14,7 @@
         android:gravity="center"
         android:textColor="@color/colorPrimary"
         android:padding="@dimen/x26"
+        android:background="@drawable/fragment_user_center_item_bg"
         android:text="@string/dialog_user_avatar_take_photo"
         android:textSize="18sp"/>
 
@@ -27,6 +28,7 @@
     <com.lptiyu.tanke.widget.CustomTextView
         android:id="@id/dialog_user_avatar_gallery"
         android:layout_width="match_parent"
+        android:background="@drawable/fragment_user_center_item_bg"
         android:layout_height="wrap_content"
         android:textColor="@color/colorPrimary"
         android:gravity="center"

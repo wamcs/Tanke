@@ -77,8 +77,6 @@ public class ScanTaskController extends MultiplyTaskController {
         finishTask();
         mActivityController.openNextTaskIfExist();
       }
-    } else {
-      ToastUtil.TextToast(getString(R.string.scan_error));
     }
   }
 

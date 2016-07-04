@@ -64,6 +64,7 @@ public class MessageListFragment extends BaseFragment implements
     swipeRefreshLayout.setOnRefreshListener(this);
     mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
     mRecyclerView.setAdapter(adapter = new MessageListAdapter(getContext()));
+    onRefresh();
   }
 
   @Override

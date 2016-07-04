@@ -19,7 +19,7 @@ import com.lptiyu.tanke.gameplaying.records.RecordsHandler;
 import com.lptiyu.tanke.gameplaying.records.RecordsUtils;
 import com.lptiyu.tanke.gameplaying.records.RunningRecord;
 import com.lptiyu.tanke.global.Conf;
-import com.lptiyu.tanke.utils.ToastUtil;
+import com.lptiyu.tanke.widget.dialog.TextDialog;
 import com.ogaclejapan.smarttablayout.SmartTabLayout;
 import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItemAdapter;
 import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItems;
@@ -52,6 +52,7 @@ public class GameTaskController extends ActivityController {
   private long DEFAULT_GAME_ID = -1L;
 
   private AlertDialog mExitDialog;
+  private TextDialog mTextDialog;
 
   private FragmentPagerItemAdapter fragmentPagerItemAdapter;
 
@@ -165,14 +166,34 @@ public class GameTaskController extends ActivityController {
     mExitDialog.show();
   }
 
+  private void showTextDialog() {
+    if (mTextDialog == null) {
+      mTextDialog = new TextDialog(getContext());
+      mTextDialog.cancelButton.setVisibility(View.GONE);
+      mTextDialog.setmListener(new TextDialog.OnTextDialogButtonClickListener() {
+        @Override
+        public void onPositiveClicked() {
+          mTextDialog.dismiss();
+          finishGameTaskActivityByType(GAME_ACTIVITY_FINISH_TYPE.USER_ACTION, null);
+        }
+
+        @Override
+        public void onNegtiveClicked() {
+
+        }
+      });
+    }
+    mTextDialog.show("您已经完成了所有的任务,点击确定开启下一个攻击点");
+  }
+
   private boolean onNextTask() {
     if (currentTaskIndex < taskIds.size() - 1) {
       currentTaskIndex++;
       currentTask = taskMap.get(taskIds.get(currentTaskIndex));
       return true;
     } else {
-      ToastUtil.TextToast("您已经完成了此攻击点所有任务");
       isAllTaskDone = true;
+      showTextDialog();
       return false;
     }
   }
@@ -244,7 +265,6 @@ public class GameTaskController extends ActivityController {
     Intent intent = new Intent();
     intent.putExtra(Conf.GAME_ACTIVITY_FINISH_TYPE, type);
     switch (type) {
-
       case TIMING_TASK:
         intent.putExtra(Conf.TIMING_TASK, timingTask);
         break;

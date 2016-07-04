@@ -342,7 +342,7 @@ public class BaseSpotScrollView extends HorizontalScrollView {
     }
 
     private void init() {
-      spotDoingAnimationColor = getContext().getResources().getColor(R.color.colorAccent);
+      spotDoingAnimationColor = getContext().getResources().getColor(R.color.white08);
       mBounds = new Rect();
       mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
       if (isClickable) {
@@ -439,7 +439,7 @@ public class BaseSpotScrollView extends HorizontalScrollView {
           mPaint.setColor(spotDoingColor);
           canvas.drawCircle(mWidth / 2, mHeight / 2, mRadius + Display.dip2px(3), mPaint);
           mPaint.setColor(spotDoingAnimationColor);
-          canvas.drawCircle(mWidth / 2, mHeight / 2, spotDoingAnimationRadius + Display.dip2px(3), mPaint);
+          canvas.drawCircle(mWidth / 2, mHeight / 2, spotDoingAnimationRadius, mPaint);
           break;
 
         case STATE_TO_DO:
@@ -502,7 +502,7 @@ public class BaseSpotScrollView extends HorizontalScrollView {
         animator.setDuration(3000);
         animator.setInterpolator(new AccelerateDecelerateInterpolator());
         animator.setRepeatCount(ValueAnimator.INFINITE);
-        animator.setRepeatMode(ValueAnimator.RESTART);
+        animator.setRepeatMode(ValueAnimator.REVERSE);
         return animator;
       }
 

@@ -32,6 +32,7 @@ public class NumberPickerDialog extends BaseDialog {
   public NumberPickerDialog(Context context) {
     super(context);
     this.setCustomView(R.layout.layout_dialog_number_picker, context)
+        .withMessage(null)
         .isCancelableOnTouchOutside(false);
   }
 
