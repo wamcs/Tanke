@@ -14,8 +14,6 @@ import com.lptiyu.tanke.utils.TimeUtils;
 
 import java.util.List;
 
-import timber.log.Timber;
-
 
 /**
  * author:wamcs
@@ -46,9 +44,9 @@ public class PushAdapter extends MessageBaseAdapter {
       case VIEW_TYPE_TIME:
         return new TimeViewHolder(Inflater.inflate(R.layout.layout_message_time, parent, false));
       case VIEW_TYPE_MESSAGE:
-        return new MessageViewHolder(Inflater.inflate(R.layout.layout_message_item_right, parent, false));
+        return new MessageViewHolder(Inflater.inflate(R.layout.layout_message_item, parent, false));
       default:
-        return new MessageViewHolder(Inflater.inflate(R.layout.layout_message_item_right, parent, false));
+        return new MessageViewHolder(Inflater.inflate(R.layout.layout_message_item, parent, false));
     }
   }
 

@@ -6,7 +6,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.NotificationCompat;
-import android.util.Log;
 
 
 import com.avos.avoscloud.AVOSCloud;
@@ -69,18 +68,22 @@ public class PushReceiver extends BroadcastReceiver {
     private void updateMessageListDB(Message message){
         MessageList messageList = new MessageList();
         messageList.setTime(message.getTime());
-        messageList.setContent(message.getAlert());
+        messageList.setContent(message.getTitle());
         messageList.setIsRead(false);
         messageList.setType(message.getType());
         switch (message.getType()){
             case Conf.MESSAGE_LIST_TYPE_OFFICIAL:
-                messageList.setName("官方资讯");
+                messageList.setUserId(Conf.MESSAGE_LIST_USERID_OFFICIAL);
+                messageList.setName(context.getString(R.string.message_type_official));
                 break;
             case Conf.MESSAGE_LIST_TYPE_SYSTEM:
+                messageList.setUserId(Conf.MESSAGE_LIST_USERID_SYSTEM);
                 messageList.setName("系统消息");
                 break;
         }
 
-       DBHelper.getInstance().getMessageListDao().insertOrReplace(messageList);
+        DBHelper.getInstance().getMessageListDao().insertOrReplace(messageList);
     }
+
+
 }

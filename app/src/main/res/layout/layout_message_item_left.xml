@@ -31,7 +31,6 @@
             app:civ_shadow_radius="10"
             android:layout_width="@dimen/message_img_size"
             android:layout_height="@dimen/message_img_size"
-
             android:layout_marginLeft="@dimen/message_margin"
             />
     </LinearLayout>

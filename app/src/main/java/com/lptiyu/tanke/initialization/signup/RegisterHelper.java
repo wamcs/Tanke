@@ -32,11 +32,10 @@ public class RegisterHelper extends SignUpHelper {
   public RegisterHelper(AppCompatActivity activity, View view, int type) {
     super(activity, view);
     this.type = type;
+    init();
   }
 
-  @Override
   protected void init() {
-    super.init();
     signUpTitle.setText(R.string.register_title);
     signUpNextButton.setText(R.string.next);
   }
