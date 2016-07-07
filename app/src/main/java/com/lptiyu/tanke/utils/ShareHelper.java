@@ -86,7 +86,7 @@ public class ShareHelper {
     }
     shareParams.setTitle(title);
     shareParams.setText(text);
-    shareParams.setImagePath(imagePath);
+    shareParams.setImageUrl(imagePath);
     Platform wechat = ShareSDK.getPlatform(Wechat.NAME);
     wechat.setPlatformActionListener(new listener());
     wechat.share(shareParams);
@@ -102,7 +102,7 @@ public class ShareHelper {
     }
     shareParams.setTitle(title);
     shareParams.setText(text);
-    shareParams.setImagePath(imagePath);
+    shareParams.setImageUrl(imagePath);
     Platform wechat = ShareSDK.getPlatform(WechatMoments.NAME);
     wechat.setPlatformActionListener(new listener());
     wechat.share(shareParams);
