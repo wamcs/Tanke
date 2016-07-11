@@ -103,7 +103,7 @@ public class MessageListFragment extends BaseFragment implements
             }
 
             //update the official msg item
-            MessageEntity lastMsg = serverMessageDatas.get(serverMessageDatas.size() - 1);
+            MessageEntity lastMsg = serverMessageDatas.get(0);
             result = new MessageList();
             result.setName(getString(R.string.message_type_official));
             result.setIsRead(false);
@@ -120,6 +120,7 @@ public class MessageListFragment extends BaseFragment implements
             isRefreshing = false;
             swipeRefreshLayout.setRefreshing(false);
             if (messageList != null) {
+              DBHelper.getInstance().getMessageListDao().insertOrReplace(messageList);
               adapter.updateMessageData(messageList);
             }
           }

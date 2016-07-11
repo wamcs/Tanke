@@ -21,78 +21,76 @@ import rx.schedulers.Schedulers;
  */
 public class ResetPasswordHelper extends SignUpHelper {
 
-    public ResetPasswordHelper(AppCompatActivity activity, View view) {
-        super(activity, view);
+  public ResetPasswordHelper(AppCompatActivity activity, View view) {
+    super(activity, view);
+    init();
+  }
 
+  protected void init() {
+
+    signUpTitle.setText(R.string.reset_password_title);
+    signUpNextButton.setText(R.string.ensure);
+  }
+
+
+  @Override
+  public boolean getCode() {
+    if (!super.getCode()) {
+      return false;
     }
 
-    @Override
-    protected void init() {
-        super.init();
-        signUpTitle.setText(R.string.reset_password_title);
-        signUpNextButton.setText(R.string.ensure);
+    String phone = signUpPhoneEditText.getText().toString();
+    HttpService.getUserService().getVerifyCode(UserService.RESET_PSW, phone)
+        .observeOn(AndroidSchedulers.mainThread())
+        .subscribeOn(Schedulers.io())
+        .subscribe(new Action1<Response<Void>>() {
+          @Override
+          public void call(Response<Void> voidResponse) {
+            int status = voidResponse.getStatus();
+            if (status != 1) {
+              ToastUtil.TextToast(voidResponse.getInfo());
+              return;
+            }
+            signUpGetCodeButton.setEnabled(false);
+            signUpGetCodeButton.setClickable(false);
+            TimeCounter timeCounter = new TimeCounter(COUNT_DOWN_TIME, 1000);
+            timeCounter.start();
+            signUpNextButton.setEnabled(true);
+          }
+        }, new ToastExceptionAction(signUpGetCodeButton.getContext().getApplicationContext()));
+
+    return true;
+  }
+
+  @Override
+  public boolean next() {
+    if (!super.next()) {
+      return false;
     }
+    String phone = signUpPhoneEditText.getText().toString();
+    String password = signUpPasswordEditText.getText().toString();
+    String code = signUpCodeEditText.getText().toString();
 
-
-    @Override
-    public boolean getCode() {
-        if (!super.getCode()) {
-            return false;
-        }
-
-        String phone = signUpPhoneEditText.getText().toString();
-        HttpService.getUserService().getVerifyCode(UserService.RESET_PSW, phone)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io())
-                .subscribe(new Action1<Response<Void>>() {
-                    @Override
-                    public void call(Response<Void> voidResponse) {
-                        int status = voidResponse.getStatus();
-                        if (status != 1) {
-                            ToastUtil.TextToast(voidResponse.getInfo());
-                            return;
-                        }
-                        signUpGetCodeButton.setEnabled(false);
-                        signUpGetCodeButton.setClickable(false);
-                        TimeCounter timeCounter = new TimeCounter(COUNT_DOWN_TIME, 1000);
-                        timeCounter.start();
-                        signUpNextButton.setClickable(true);
-                        signUpNextButton.setEnabled(true);
-                    }
-                }, new ToastExceptionAction(signUpGetCodeButton.getContext().getApplicationContext()));
-
-        return true;
-    }
-
-    @Override
-    public boolean next() {
-        if (!super.next()) {
-            return false;
-        }
-        String phone = signUpPhoneEditText.getText().toString();
-        String password = signUpPasswordEditText.getText().toString();
-        String code = signUpCodeEditText.getText().toString();
-
-        HttpService.getUserService().forgetPassword(phone, password, code)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Action1<Response<Void>>() {
-                  @Override
-                  public void call(Response<Void> voidResponse) {
-                    int status = voidResponse.getStatus();
-                    if (status != 1) {
-                      ToastUtil.TextToast(voidResponse.getInfo());
-                      return;
-                    }
-                    ToastUtil.TextToast(voidResponse.getInfo());
-                    context.finish();
-                  }
-                }, new Action1<Throwable>() {
-                  @Override
-                  public void call(Throwable throwable) {
-                    ToastUtil.TextToast("提交失败");
-                  }
-                });
-        return true;
-    }
+    HttpService.getUserService().forgetPassword(phone, password, code)
+        .subscribeOn(Schedulers.io())
+        .observeOn(AndroidSchedulers.mainThread())
+        .subscribe(new Action1<Response<Void>>() {
+          @Override
+          public void call(Response<Void> voidResponse) {
+            int status = voidResponse.getStatus();
+            if (status != 1) {
+              ToastUtil.TextToast(voidResponse.getInfo());
+              return;
+            }
+            ToastUtil.TextToast(voidResponse.getInfo());
+            context.finish();
+          }
+        }, new Action1<Throwable>() {
+          @Override
+          public void call(Throwable throwable) {
+            ToastUtil.TextToast("提交失败");
+          }
+        });
+    return true;
+  }
 }

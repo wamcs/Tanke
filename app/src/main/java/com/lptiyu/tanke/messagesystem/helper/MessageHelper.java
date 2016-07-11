@@ -25,8 +25,7 @@ import static android.support.v7.widget.LinearLayoutManager.VERTICAL;
  * date:2016/6/4
  * email:kaili@hustunique.com
  */
-public class MessageHelper implements
-    SwipeRefreshLayout.OnRefreshListener {
+public class MessageHelper{
 
   @BindView(R.id.message_recycler_view)
   RecyclerView mRecyclerView;
@@ -38,6 +37,7 @@ public class MessageHelper implements
   TextView mTitleText;
 
   protected AppCompatActivity context;
+  protected LinearLayoutManager manager;
   protected static final long LIMIT_TIME = 300000L;//5 minutes
   protected static final int MESSAGE_NUM_EVERY_PAGE = 3;
 
@@ -48,10 +48,9 @@ public class MessageHelper implements
   }
 
   private void init() {
-    LinearLayoutManager layoutManager = new LinearLayoutManager(context);
-    layoutManager.setOrientation(VERTICAL);
-    mRecyclerView.setLayoutManager(layoutManager);
-    mSwipeRefreshLayout.setOnRefreshListener(this);
+    manager = new LinearLayoutManager(context);
+    manager.setOrientation(VERTICAL);
+    mRecyclerView.setLayoutManager(manager);
   }
 
   protected List<Message> decorateMessageList(List<Message> list) {
@@ -72,7 +71,7 @@ public class MessageHelper implements
       long time = list.get(i).getTime();
       long nextTime = list.get(i + 1).getTime();
 
-      if ((nextTime - time) >= LIMIT_TIME) {
+      if ((time - nextTime) >= LIMIT_TIME) {
         Message message = new Message();
         message.setTime(list.get(i + 1).getTime());
         message.setType(Conf.TIME_TYPE);
@@ -83,10 +82,6 @@ public class MessageHelper implements
     return messages;
   }
 
-  @Override
-  public void onRefresh() {
-
-  }
 
   public void finish() {
   }

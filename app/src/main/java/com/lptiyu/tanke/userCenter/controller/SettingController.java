@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
+import com.avos.avoscloud.feedback.FeedbackAgent;
 import com.lptiyu.tanke.R;
 import com.lptiyu.tanke.base.controller.ActivityController;
 import com.lptiyu.tanke.global.Accounts;
@@ -37,6 +38,9 @@ public class SettingController extends ActivityController {
   @BindView(R.id.setting_activity_logout)
   CustomTextView mLogout;
 
+  @BindView(R.id.setting_activity_feedback)
+  CustomTextView mFeedback;
+
   public SettingController(AppCompatActivity activity, View view) {
     super(activity, view);
     ButterKnife.bind(this, view);
@@ -51,11 +55,11 @@ public class SettingController extends ActivityController {
 //    mScreenLight.setChecked(ShaPreferManager.getScreenLight());
   }
 
-//  @OnClick(R.id.setting_activity_feedback)
-//  void onFeedback() {
-//    FeedbackAgent agent = new FeedbackAgent(getContext());
-//    agent.startDefaultThreadActivity();
-//  }
+  @OnClick(R.id.setting_activity_feedback)
+  void onFeedback() {
+    FeedbackAgent agent = new FeedbackAgent(getContext());
+    agent.startDefaultThreadActivity();
+  }
 
   @OnClick(R.id.setting_activity_logout)
   void onLogoutClicked() {

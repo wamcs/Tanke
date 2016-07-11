@@ -54,8 +54,9 @@ public class MessageListViewHolder extends BaseViewHolder<MessageList> {
   public void bind(MessageList entity) {
     final MessageList item = entity;
     mName.setText(item.getName());
-    mContent.setText(Html.fromHtml(Html.fromHtml(item.getContent()).toString()).toString());
-    mTime.setText(TimeUtils.parsePartTime(item.getTime()));
+//    mContent.setText(Html.fromHtml(Html.fromHtml(item.getContent()).toString()).toString());
+    mContent.setText(item.getName());
+    mTime.setText(TimeUtils.parseCompleteTime(item.getTime()));
     if (entity.getIsRead()) {
       mRedSpot.setVisibility(View.GONE);
     } else {

@@ -12,6 +12,7 @@ import com.lptiyu.tanke.global.Accounts;
 import com.lptiyu.tanke.global.AppData;
 import com.lptiyu.tanke.global.Conf;
 import com.lptiyu.tanke.location.LocationFileParser;
+
 import com.lptiyu.tanke.messagesystem.MessageActivity;
 import com.lptiyu.tanke.utils.DirUtils;
 import com.lptiyu.tanke.utils.thread;
@@ -48,7 +49,6 @@ public class RunApplication extends MultiDexApplication {
       PushService.setDefaultPushCallback(this, MessageActivity.class);
       SDKInitializer.initialize(this);
       DirUtils.init(this);
-
       if (Accounts.getInstallationId().isEmpty()) {
         String installationId = AVInstallation.getCurrentInstallation().getInstallationId();
         Accounts.setInstallationId(installationId);

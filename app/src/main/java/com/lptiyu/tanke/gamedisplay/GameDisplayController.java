@@ -2,6 +2,7 @@ package com.lptiyu.tanke.gamedisplay;
 
 import android.content.Intent;
 import android.view.View;
+import android.widget.ImageView;
 
 import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
@@ -47,6 +48,8 @@ public class GameDisplayController extends BaseListFragmentController<GameDispla
 
   @BindView(R.id.location)
   CustomTextView mLocate;
+  @BindView(R.id.no_data_imageview)
+  ImageView mNoDataImageView;
 
   //As a view controller
   GameDisplayFragment fragment;
@@ -57,6 +60,7 @@ public class GameDisplayController extends BaseListFragmentController<GameDispla
 
   public static final int SCANNER_REQUEST_CODE = 0x2;
 
+  private boolean isCheckData = false;
   private LocationClient locationClient;
 
   public GameDisplayController(GameDisplayFragment fragment, MainActivityController controller, View view) {
@@ -93,6 +97,11 @@ public class GameDisplayController extends BaseListFragmentController<GameDispla
   }
 
   @Override
+  public void refreshTop() {
+    super.refreshTop();
+  }
+
+  @Override
   public void onRefreshStateChanged(boolean refreshing) {
     if (fragment != null) {
       fragment.loading(refreshing);
@@ -115,10 +124,28 @@ public class GameDisplayController extends BaseListFragmentController<GameDispla
               thread.mainThread(new Runnable() {
                 @Override
                 public void run() {
-                  ToastUtil.TextToast("当前城市暂无游戏");
+                  mNoDataImageView.setVisibility(View.VISIBLE);
                 }
               });
               return new ArrayList<>();
+            }
+            if (!isCheckData) {
+              if (listResponse.getData().isEmpty()) {
+                thread.mainThread(new Runnable() {
+                  @Override
+                  public void run() {
+                    mNoDataImageView.setVisibility(View.VISIBLE);
+                  }
+                });
+              } else {
+                thread.mainThread(new Runnable() {
+                  @Override
+                  public void run() {
+                    mNoDataImageView.setVisibility(View.GONE);
+                  }
+                });
+              }
+              isCheckData = true;
             }
             return listResponse.getData();
           }
@@ -247,6 +274,7 @@ public class GameDisplayController extends BaseListFragmentController<GameDispla
         }
         requestLocation = loc;
         mLocate.setText(requestLocation.getName());
+        isCheckData = false;
         refreshTop();
         break;
       case SCANNER_REQUEST_CODE:

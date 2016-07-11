@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:orientation="vertical">
-
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
     <com.lptiyu.tanke.widget.CustomTextView
         android:id="@id/locate_activity_list_normal_item"
         android:layout_width="match_parent"
@@ -15,12 +14,11 @@
         android:background="@drawable/style_locate_activity_list_item"
         android:textColor="@color/black08"
         android:textSize="18sp"/>
-
     <ImageView
         android:layout_marginLeft="@dimen/x39"
         android:layout_marginRight="@dimen/x39"
         android:src="@color/black01"
         android:layout_width="match_parent"
         android:layout_height="@dimen/y1"/>
-
 </LinearLayout>
+

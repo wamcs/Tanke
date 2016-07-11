@@ -139,6 +139,8 @@ public final class Conf {
   public static final int REQUEST_CODE_NICKNAME = 14;
   public static final int REQUEST_CODE_LOCATION = 17;
 
+  public static final String DEFAULT_CITY_ASSETS = "city.json";
+
   /**
    * This method is to make up the entity name of baidu hawk eye service
    * @param gameId
