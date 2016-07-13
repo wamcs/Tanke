@@ -59,7 +59,7 @@ public interface TeamService {
   );
 
   /**
-   * 2.30 解散队伍
+   * 2.21 解散队伍
    */
   @GET("Home/Delranks")
   Observable<Response<Void>> dismissTeam(
