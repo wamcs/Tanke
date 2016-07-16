@@ -22,147 +22,160 @@ import java.lang.reflect.Type;
  */
 public class Task implements Parcelable {
 
-  private long id;
+    private long id;
 
-  @SerializedName("type")
-  private TASK_TYPE type;
+    @SerializedName("type")
+    private TASK_TYPE type;
 
-  private int exp;
+    private int exp;
 
-  @SerializedName("mission_name")
-  private String taskName;
+    @SerializedName("mission_name")
+    private String taskName;
 
-  private String content;
+    private String content;
 
-  private String pwd;
+    private String pwd;
 
-  public enum TASK_TYPE implements JsonSerializer<TASK_TYPE>, JsonDeserializer<TASK_TYPE> {
-    SCAN_CODE(4), // scan the QRCode
-    LOCATE(1), // locate the position
-    RIDDLE(3), // Secret mission
-    DISTINGUISH(5), // take the photo and distinguish
-    TIMING(0),
-    FINISH(2);
+    public enum TASK_TYPE implements JsonSerializer<TASK_TYPE>, JsonDeserializer<TASK_TYPE> {
+        SCAN_CODE(4), // scan the QRCode
+        LOCATE(1), // locate the position
+        RIDDLE(3), // Secret mission
+        DISTINGUISH(5), // take the photo and distinguish
+        TIMING(0),
+        FINISH(2);
 
-    private int type;
+        private int type;
 
-    TASK_TYPE(int type) {
-      this.type = type;
-    }
-
-    public int getType() {
-      return type;
-    }
-
-
-    @Override
-    public TASK_TYPE deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
-      final int item = json.getAsInt();
-      for (TASK_TYPE game_type : TASK_TYPE.values()) {
-        if (game_type.getType() == item) {
-          return game_type;
+        TASK_TYPE(int type) {
+            this.type = type;
         }
-      }
 
-      if (BuildConfig.DEBUG) {
-        throw new IllegalStateException(
-            String.format("The item (%d) for GAME_TYPE is unexpected.",
-                item));
-      }
-      return FINISH;
+        public int getType() {
+            return type;
+        }
+
+
+        @Override
+        public TASK_TYPE deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws
+                JsonParseException {
+            final int item = json.getAsInt();
+            for (TASK_TYPE game_type : TASK_TYPE.values()) {
+                if (game_type.getType() == item) {
+                    return game_type;
+                }
+            }
+
+            if (BuildConfig.DEBUG) {
+                throw new IllegalStateException(
+                        String.format("The item (%d) for GAME_TYPE is unexpected.",
+                                item));
+            }
+            return FINISH;
+        }
+
+        @Override
+        public JsonElement serialize(TASK_TYPE src, Type typeOfSrc, JsonSerializationContext context) {
+            return new JsonPrimitive(src.getType());
+        }
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public TASK_TYPE getType() {
+        return type;
+    }
+
+    public void setType(TASK_TYPE type) {
+        this.type = type;
+    }
+
+    public int getExp() {
+        return exp;
+    }
+
+    public void setExp(int exp) {
+        this.exp = exp;
+    }
+
+    public String getTaskName() {
+        return taskName;
+    }
+
+    public void setTaskName(String taskName) {
+        this.taskName = taskName;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public String getPwd() {
+        return pwd;
+    }
+
+    public void setPwd(String pwd) {
+        this.pwd = pwd;
     }
 
     @Override
-    public JsonElement serialize(TASK_TYPE src, Type typeOfSrc, JsonSerializationContext context) {
-      return new JsonPrimitive(src.getType());
-    }
-  }
-
-  public long getId() {
-    return id;
-  }
-
-  public void setId(long id) {
-    this.id = id;
-  }
-
-  public TASK_TYPE getType() {
-    return type;
-  }
-
-  public void setType(TASK_TYPE type) {
-    this.type = type;
-  }
-
-  public int getExp() {
-    return exp;
-  }
-
-  public void setExp(int exp) {
-    this.exp = exp;
-  }
-
-  public String getTaskName() {
-    return taskName;
-  }
-
-  public void setTaskName(String taskName) {
-    this.taskName = taskName;
-  }
-
-  public String getContent() {
-    return content;
-  }
-
-  public void setContent(String content) {
-    this.content = content;
-  }
-
-  public String getPwd() {
-    return pwd;
-  }
-
-  public void setPwd(String pwd) {
-    this.pwd = pwd;
-  }
-
-  @Override
-  public int describeContents() {
-    return 0;
-  }
-
-  @Override
-  public void writeToParcel(Parcel dest, int flags) {
-    dest.writeLong(this.id);
-    dest.writeInt(this.type == null ? -1 : this.type.ordinal());
-    dest.writeInt(this.exp);
-    dest.writeString(this.taskName);
-    dest.writeString(this.content);
-    dest.writeString(this.pwd);
-  }
-
-  public Task() {
-  }
-
-  protected Task(Parcel in) {
-    this.id = in.readLong();
-    int tmpType = in.readInt();
-    this.type = tmpType == -1 ? null : TASK_TYPE.values()[tmpType];
-    this.exp = in.readInt();
-    this.taskName = in.readString();
-    this.content = in.readString();
-    this.pwd = in.readString();
-  }
-
-  public static final Creator<Task> CREATOR = new Creator<Task>() {
-    @Override
-    public Task createFromParcel(Parcel source) {
-      return new Task(source);
+    public int describeContents() {
+        return 0;
     }
 
     @Override
-    public Task[] newArray(int size) {
-      return new Task[size];
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeLong(this.id);
+        dest.writeInt(this.type == null ? -1 : this.type.ordinal());
+        dest.writeInt(this.exp);
+        dest.writeString(this.taskName);
+        dest.writeString(this.content);
+        dest.writeString(this.pwd);
     }
-  };
+
+    public Task() {
+    }
+
+    protected Task(Parcel in) {
+        this.id = in.readLong();
+        int tmpType = in.readInt();
+        this.type = tmpType == -1 ? null : TASK_TYPE.values()[tmpType];
+        this.exp = in.readInt();
+        this.taskName = in.readString();
+        this.content = in.readString();
+        this.pwd = in.readString();
+    }
+
+    public static final Creator<Task> CREATOR = new Creator<Task>() {
+        @Override
+        public Task createFromParcel(Parcel source) {
+            return new Task(source);
+        }
+
+        @Override
+        public Task[] newArray(int size) {
+            return new Task[size];
+        }
+    };
+
+    @Override
+    public String toString() {
+        return "Task{" +
+                "id=" + id +
+                ", type=" + type +
+                ", exp=" + exp +
+                ", taskName='" + taskName + '\'' +
+                ", content='" + content + '\'' +
+                ", pwd='" + pwd + '\'' +
+                '}';
+    }
 }

@@ -2,6 +2,7 @@ package com.lptiyu.tanke.utils;
 
 
 import android.content.Context;
+import android.util.Log;
 
 import com.lptiyu.tanke.R;
 import com.lptiyu.tanke.global.AppData;
@@ -31,7 +32,7 @@ public class TimeUtils {
   public static final DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd", Locale.CHINA);
   public static final DateFormat timeFormatter = new SimpleDateFormat("HH:mm:ss", Locale.CHINA);
   public static final DateFormat timeFormatter2 = new SimpleDateFormat("HH:mm", Locale.CHINA);
-  public static final DateFormat timeFormatter3 = new SimpleDateFormat("mm:ss",Locale.CHINA);
+  public static final DateFormat timeFormatter3 = new SimpleDateFormat("mm:ss", Locale.CHINA);
 
   public static String getFriendlyTime(long time) {
     if (ONE_MINUTE_TIME > time) {
@@ -95,7 +96,7 @@ public class TimeUtils {
     return timeFormatter2.format(data);
   }
 
-  public static String parseLastPartTime(long time){
+  public static String parseLastPartTime(long time) {
     Long timestamp = Long.parseLong(String.valueOf(time)) * 1000;
     Date data = new Date(timestamp);
     return timeFormatter3.format(data);
@@ -214,6 +215,43 @@ public class TimeUtils {
     return date1.getTime();
   }
 
+
+  public static String parsePartTime(long time) {
+    Long timestamp = Long.parseLong(String.valueOf(time)) * 1000;
+    Date data = new Date(timestamp);
+    return timeFormatter2.format(data);
+  }
+
+
+  /**
+   * the follow three function are used for getting time (hours:minutes:seconds)
+   */
+  public static String getSeconds(long time) {
+    int s = (int) (time / 1000) % 60;
+    if (s < 10)
+      return "0" + s;
+    else
+      return s + "";
+  }
+
+  public static String getMinutes(long time) {
+
+    //总分钟数
+
+    int m = ((int) (time / 1000) / 60) % 60;
+    if (m < 10)
+      return "0" + m;
+    else
+      return m + "";
+  }
+
+  public static String getHours(long time) {
+    int h = (int) (time / 1000) / 3600;
+    if (h < 0)
+      return "0" + h;
+    else
+      return h + "";
+  }
 
 
 }

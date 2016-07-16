@@ -17,10 +17,10 @@ import com.bumptech.glide.Glide;
 import com.lptiyu.tanke.R;
 import com.lptiyu.tanke.base.controller.ActivityController;
 import com.lptiyu.tanke.base.ui.BaseActivity;
-import com.lptiyu.tanke.gameplaying.GamePlayingActivity;
 import com.lptiyu.tanke.gameplaying.assist.zip.GameZipScanner;
 import com.lptiyu.tanke.gameplaying.records.RecordsUtils;
 import com.lptiyu.tanke.gameplaying.records.RunningRecord;
+import com.lptiyu.tanke.gameplaying2.GamePlaying2Activity;
 import com.lptiyu.tanke.global.Accounts;
 import com.lptiyu.tanke.global.Conf;
 import com.lptiyu.tanke.io.net.HttpService;
@@ -101,8 +101,10 @@ public class GameDetailsController extends ActivityController {
   //这个变量用来标志下载出错的次数，为0的时候停止重试下载
   private int gameZipDownloadFailedNum = 3;
 
+
   private long gameId;
   private String tempGameZipUrl;
+
 
   private GameZipScanner mGameZipScanner;
 
@@ -126,6 +128,7 @@ public class GameDetailsController extends ActivityController {
     }
 
     showLoadingDialog();
+    //扫描游戏包中的信息
     mGameZipScanner = new GameZipScanner();
     progressDialog = new ProgressDialog(getContext(), ProgressDialog.STYLE_SPINNER);
     progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
@@ -133,7 +136,8 @@ public class GameDetailsController extends ActivityController {
     isGameFinishObservable = Observable.just(gameId)
         .map(new Func1<Long, Boolean>() {
           @Override
-          public Boolean call(Long id) {
+          public Boolean call(Long id) {//这个id就是传进来的gameId
+            //判断游戏是否结束，这里进行了IO流的操作，稍微有点儿耗时，所以需要用Rxjava来写
             return RecordsUtils.isGameFinishedFromDisk(id);
           }
         });
@@ -227,7 +231,7 @@ public class GameDetailsController extends ActivityController {
                 entity.getStartTime(), entity.getEndTime());
           }
         })
-        .subscribeOn(Schedulers.computation())
+        .subscribeOn(Schedulers.computation())//CPU密集型计算
         .observeOn(AndroidSchedulers.mainThread())
         .subscribe(new Action1<String>() {
           @Override
@@ -398,6 +402,37 @@ public class GameDetailsController extends ActivityController {
         });
   }
 
+
+  @Override
+  public void onResume() {
+    super.onResume();
+  }
+
+  @OnClick(R.id.back_btn)
+  public void goBackClicked() {
+    finish();
+  }
+
+  @OnClick(R.id.share_btn)
+  public void shareClicked() {
+    Intent intent = new Intent(getContext(), ShareDialog.class);
+    intent.putExtra(Conf.SHARE_TITLE, String.format("我正在玩定向AR游戏 %s，一起来探秘吧", mGameDetailsEntity.getTitle()));
+    intent.putExtra(Conf.SHARE_TEXT, Html.fromHtml(Html.fromHtml(mGameDetailsEntity.getGameIntro()).toString()).toString());
+    intent.putExtra(Conf.SHARE_IMG_URL, mGameDetailsEntity.getImg());
+    intent.putExtra(Conf.SHARE_URL, mGameDetailsEntity.getShareUrl());
+    startActivity(intent);
+    overridePendingTransition(R.anim.translate_in_bottom, R.anim.translate_out_bottom);
+  }
+
+  @OnClick(R.id.game_detail_location)
+  public void startLocationDetailMap() {
+    Intent intent = new Intent(getActivity(), GameDetailsLocationActivity.class);
+    intent.putExtra(Conf.LATITUDE, Double.valueOf(mGameDetailsEntity.getLatitude()));
+    intent.putExtra(Conf.LONGITUDE, Double.valueOf(mGameDetailsEntity.getLongitude()));
+    startActivity(intent);
+  }
+
+
   private void showLoadingDialog() {
     if (mLoadingDialog == null) {
       View view = LayoutInflater.from(getContext()).inflate(R.layout.layout_loading, null);
@@ -413,41 +448,12 @@ public class GameDetailsController extends ActivityController {
 
   @TargetMethod(requestCode = PermissionDispatcher.PERMISSION_REQUEST_CODE_LOCATION)
   public void startPlayingGame() {
-    Intent intent = new Intent(getContext(), GamePlayingActivity.class);
+    Intent intent = new Intent(getContext(), GamePlaying2Activity.class);
     intent.putExtra(Conf.GAME_ID, gameId);
     intent.putExtra(Conf.GAME_DETAIL, mGameDetailsEntity);
     if (mGameDetailsEntity.getType() == GAME_TYPE.TEAMS) {
       //TODO : need pass team id to GamePlayingActivity when the team game open
     }
-    startActivity(intent);
-  }
-
-  @Override
-  public void onResume() {
-    super.onResume();
-  }
-
-  @OnClick(R.id.back_btn)
-  public void goBackClicked() {
-    finish();
-  }
-
-  @OnClick(R.id.share_btn)
-  public void shareClicked() {
-    Intent intent = new Intent(getContext(),ShareDialog.class);
-    intent.putExtra(Conf.SHARE_TITLE,String.format("我正在玩定向AR游戏 %s，一起来探秘吧", mGameDetailsEntity.getTitle()));
-    intent.putExtra(Conf.SHARE_TEXT,Html.fromHtml(Html.fromHtml(mGameDetailsEntity.getGameIntro()).toString()).toString());
-    intent.putExtra(Conf.SHARE_IMG_URL,mGameDetailsEntity.getImg());
-    intent.putExtra(Conf.SHARE_URL,mGameDetailsEntity.getShareUrl());
-    startActivity(intent);
-    overridePendingTransition(R.anim.translate_in_bottom,R.anim.translate_out_bottom);
-  }
-
-  @OnClick(R.id.game_detail_location)
-  public void startLocationDetailMap() {
-    Intent intent = new Intent(getActivity(), GameDetailsLocationActivity.class);
-    intent.putExtra(Conf.LATITUDE, Double.valueOf(mGameDetailsEntity.getLatitude()));
-    intent.putExtra(Conf.LONGITUDE, Double.valueOf(mGameDetailsEntity.getLongitude()));
     startActivity(intent);
   }
 

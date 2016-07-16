@@ -2,7 +2,6 @@ package com.lptiyu.tanke.io.net;
 
 
 import android.support.annotation.IntDef;
-import android.support.annotation.Nullable;
 
 import com.lptiyu.tanke.pojo.GameFinishedEntity;
 import com.lptiyu.tanke.pojo.GameManageEntity;
@@ -17,14 +16,11 @@ import java.lang.annotation.RetentionPolicy;
 import java.util.List;
 
 import okhttp3.RequestBody;
-import okhttp3.ResponseBody;
 import retrofit2.http.GET;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
 import retrofit2.http.Query;
-import retrofit2.http.Streaming;
-import retrofit2.http.Url;
 import rx.Observable;
 
 /**
@@ -147,7 +143,7 @@ public interface UserService {
       @Part("file\"; filename=\"image.png") RequestBody file);
 
   /**
-   * 2.33 修改用户宣布信息
+   * 2.33 修改用户全部信息
    */
   @GET("User/Update_userall")
   Observable<Response<Void>> resetUserDetailsAll(

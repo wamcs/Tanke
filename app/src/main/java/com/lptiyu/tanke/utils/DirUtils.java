@@ -26,11 +26,22 @@ public class DirUtils {
   private static final String AUDIO = "/audio";
   private static final String ANDROID_RESOURCE = "android.resource://";
 
+  /**
+   * 判断SDCard是否正常挂载
+   *
+   * @return
+   */
   private static boolean hasSDCard() {
     String status = Environment.getExternalStorageState();
     return status.equals(Environment.MEDIA_MOUNTED);
   }
 
+  /**
+   * 初始化SDCard文件目录和私有文件目录
+   *
+   * @param context
+   * @throws Exception
+   */
   public static void init(Context context) throws Exception {
     File file = context.getExternalFilesDir(null);
     if (file != null) {
@@ -42,6 +53,8 @@ public class DirUtils {
   }
 
   /**
+   * 根据指定文件夹目录和类型创建文件夹
+   *
    * @param rootDir
    * @param type
    * @return
@@ -64,8 +77,10 @@ public class DirUtils {
 
   public static File getResDirectory() {
     StringBuilder stringBuilder = new StringBuilder();
-    if (hasSDCard()) stringBuilder.append(SDCARD_ROOT_DIR).append(RES);
-    else stringBuilder.append(DATA_ROOT_DIR).append(FILES).append(RES);
+    if (hasSDCard())
+      stringBuilder.append(SDCARD_ROOT_DIR).append(RES);
+    else
+      stringBuilder.append(DATA_ROOT_DIR).append(FILES).append(RES);
     File destDir = new File(stringBuilder.toString());
     if (!destDir.exists()) {
       if (destDir.mkdirs()) {
@@ -77,10 +92,20 @@ public class DirUtils {
     return destDir;
   }
 
+  /**
+   * 获取SDCard文件目录下的temp目录
+   *
+   * @return
+   */
   public static File getTempDirectory() {
     return getDirectory(SDCARD_ROOT_DIR, TEMP);
   }
 
+  /**
+   * 获取SDCard文件目录下的record目录
+   *
+   * @return
+   */
   public static File getRecordDirectory() {
     return getDirectory(SDCARD_ROOT_DIR, RECORD);
   }
@@ -93,8 +118,14 @@ public class DirUtils {
     return getDirectory(SDCARD_ROOT_DIR, AUDIO);
   }
 
+  /**
+   * 获取SDCard文件目录下的game目录
+   *
+   * @return
+   */
   public static File getGameDirectory() {
     return getDirectory(DATA_ROOT_DIR, GAME);
   }
+
 
 }
