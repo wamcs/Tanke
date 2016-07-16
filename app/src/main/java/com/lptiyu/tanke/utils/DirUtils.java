@@ -22,6 +22,8 @@ public class DirUtils {
   private static final String RES = "/res";
   private static final String RECORD = "/record";
   private static final String GAME = "/game";
+  private static final String VIDEO = "/video";
+  private static final String AUDIO = "/audio";
   private static final String ANDROID_RESOURCE = "android.resource://";
 
   private static boolean hasSDCard() {
@@ -40,11 +42,10 @@ public class DirUtils {
   }
 
   /**
-   *
    * @param rootDir
    * @param type
    * @return
-     */
+   */
   public static File getDirectory(String rootDir, String type) {
     if (SDCARD_ROOT_DIR == null || DATA_ROOT_DIR == null) {
       Timber.e("you should invoke init() method before use DirUtils");
@@ -82,6 +83,14 @@ public class DirUtils {
 
   public static File getRecordDirectory() {
     return getDirectory(SDCARD_ROOT_DIR, RECORD);
+  }
+
+  public static File getVideoDirectory() {
+    return getDirectory(SDCARD_ROOT_DIR, VIDEO);
+  }
+
+  public static File getAudioDirectory() {
+    return getDirectory(SDCARD_ROOT_DIR, AUDIO);
   }
 
   public static File getGameDirectory() {

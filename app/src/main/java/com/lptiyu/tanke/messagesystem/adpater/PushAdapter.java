@@ -58,7 +58,7 @@ public class PushAdapter extends MessageBaseAdapter {
         TimeViewHolder holder1 = (TimeViewHolder) holder;
         long time = message.getTime();
         if (time >= currentTime) {
-          holder1.mTime.setText(TimeUtils.parsePartTime(time));
+          holder1.mTime.setText(TimeUtils.parseFrontPartTime(time));
         } else {
           holder1.mTime.setText(TimeUtils.parseCompleteTime(time));
         }

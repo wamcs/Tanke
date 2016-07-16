@@ -103,7 +103,6 @@ public class GameDetailsController extends ActivityController {
 
   private long gameId;
   private String tempGameZipUrl;
-  private ShareDialog shareDialog;
 
   private GameZipScanner mGameZipScanner;
 
@@ -435,15 +434,13 @@ public class GameDetailsController extends ActivityController {
 
   @OnClick(R.id.share_btn)
   public void shareClicked() {
-    if (null == shareDialog) {
-      shareDialog = new ShareDialog(getContext());
-      shareDialog.setShareContent(
-          String.format("我正在玩定向AR游戏 %s，一起来探秘吧", mGameDetailsEntity.getTitle()),
-          Html.fromHtml(Html.fromHtml(mGameDetailsEntity.getGameIntro()).toString()).toString(),
-          mGameDetailsEntity.getImg(),
-          mGameDetailsEntity.getShareUrl());
-    }
-    shareDialog.show();
+    Intent intent = new Intent(getContext(),ShareDialog.class);
+    intent.putExtra(Conf.SHARE_TITLE,String.format("我正在玩定向AR游戏 %s，一起来探秘吧", mGameDetailsEntity.getTitle()));
+    intent.putExtra(Conf.SHARE_TEXT,Html.fromHtml(Html.fromHtml(mGameDetailsEntity.getGameIntro()).toString()).toString());
+    intent.putExtra(Conf.SHARE_IMG_URL,mGameDetailsEntity.getImg());
+    intent.putExtra(Conf.SHARE_URL,mGameDetailsEntity.getShareUrl());
+    startActivity(intent);
+    overridePendingTransition(R.anim.translate_in_bottom,R.anim.translate_out_bottom);
   }
 
   @OnClick(R.id.game_detail_location)

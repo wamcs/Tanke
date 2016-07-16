@@ -144,6 +144,14 @@
         </activity>
         <activity android:name=".gameplaying.GamePlayingActivity"></activity>
         <activity android:name=".gameplaying.task.GameTaskActivity"></activity>
+        <activity android:name=".gameplaying.parser.ClueDisplayActivity"
+            android:theme="@style/ApparentActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity android:name=".gamedetails.GameDetailsActivity"></activity>
         <activity android:name=".gamedetails.GameDetailsLocationActivity"></activity>
         <activity android:name=".gamedata.GameDataActivity"></activity>
@@ -171,6 +179,8 @@
         <activity android:name=".gameplaying.GameShareActivity"></activity>
         <activity android:name=".messagesystem.SystemWebActivity"></activity>
         <activity android:name=".userCenter.ui.AboutUsActivity"></activity>
+        <activity android:name=".widget.dialog.ShareDialog"
+                  android:theme="@style/ApparentActivity"/>
     </application>
 
 </manifest>

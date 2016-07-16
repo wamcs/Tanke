@@ -142,6 +142,17 @@ public final class Conf {
   public static final String DEFAULT_CITY_ASSETS = "city.json";
 
   /**
+   * ShareDialog
+   *
+   */
+  public static final String SHARE_TITLE = "share_title";
+  public static final String SHARE_TEXT = "share_text";
+  public static final String SHARE_IMG_URL = "share_img_url";
+  public static final String SHARE_URL = "share_url";
+
+
+
+  /**
    * This method is to make up the entity name of baidu hawk eye service
    * @param gameId
    * @param teamId
