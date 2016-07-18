@@ -2,13 +2,13 @@ package com.lptiyu.tanke.gameplaying.parser;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.Typeface;
 import android.media.MediaMetadataRetriever;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.StyleSpan;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -57,9 +57,8 @@ public class Parser {
   VideoView mVideoView;
   @BindView(R.id.clue_display_video_layout)
   LinearLayout mVideoLayout;
-  @BindView(R.id.clue_display_show_view)
-  LinearLayout mShowLayout;
 
+  private LinearLayout mShowLayout;
 
   private DomNode tree;
   private Context context;
@@ -67,6 +66,8 @@ public class Parser {
   private ImageView lastView;//last audio play button
   private LayoutParams textParams;
   private LayoutParams params;
+  private Scanner scanner;
+  private OnBeginDecodeListener listener;
 
   private int size;
 
@@ -81,6 +82,8 @@ public class Parser {
   }
 
   private void init() {
+    scanner = new Scanner();
+
     size = (int) context.getResources().getDimension(R.dimen.x350);
     textParams = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
     params = new LayoutParams(size, size);
@@ -88,25 +91,39 @@ public class Parser {
     videoParams.height=Display.height();
     videoParams.width =Display.width();
     mVideoView.setLayoutParams(videoParams);
+
   }
 
+  public void setOnBeginDecodeListener(OnBeginDecodeListener listener){
+    this.listener =listener;
+  }
 
-  public void setSignText(String text,int order) {
+  public LinearLayout parser(String text,int type,String password,int order){
+    setSignText(text);
+    return generateView(type,password,order);
+  }
+
+  private void setSignText(String text) {
     try {
-      Scanner scanner = new Scanner();
       tree = scanner.scan(text);
-//      addTitle(order);
     } catch (Throwable throwable) {
       ToastUtil.TextToast("解析出错");
       throwable.printStackTrace();
     }
   }
 
-  public void generateView() {
+  private LinearLayout generateView(int type,String passWord,int order) {
     if (tree == null) {
-      return;
+      return null;
     }
-    for (int i = 0; i < tree.getChildren().size(); i++) {
+
+    LayoutParams layoutParams = new LayoutParams(LayoutParams.MATCH_PARENT,LayoutParams.WRAP_CONTENT);
+    mShowLayout = new LinearLayout(context);
+    mShowLayout.setOrientation(LinearLayout.VERTICAL);
+    mShowLayout.setLayoutParams(layoutParams);
+    mShowLayout.setGravity(Gravity.CENTER);
+    int i;
+    for (i = 0; i < tree.getChildren().size(); i++) {
       DomNode node = tree.getChildren().get(i);
       switch (node.getTag()) {
         case Tag.PARAGRAPH_TAG:
@@ -123,16 +140,11 @@ public class Parser {
           break;
       }
     }
-  }
 
-  /*private void addTitle(int order){
-    CustomTextView customTextView = new CustomTextView(context);
-    customTextView.setLayoutParams(textParams);
-    customTextView.setTextSize(context.getResources().getDimension(R.dimen.clue_display_title_size));
-    customTextView.setTypeface(Typeface.DEFAULT_BOLD);
-    customTextView.setText(String.format("第%d条线索", order));
-    mShowLayout.addView(customTextView,0);
-  }*/
+    mShowLayout.addView(addBeginButton(type,passWord,order),i);
+    return mShowLayout;
+
+  }
 
   /**
    * @param node generate text view by the node which tag is "p"
@@ -216,8 +228,6 @@ public class Parser {
     final File file = new File(DirUtils.getAudioDirectory(), path);
 
     if (!file.exists()) {
-//      player = MediaPlayer.create(context, Uri.parse(file.getAbsolutePath()));
-//    } else {
       thread.background(
           new Runnable() {
             @Override
@@ -305,6 +315,24 @@ public class Parser {
     return imageView;
   }
 
+  private CustomTextView addBeginButton(final int type, final String passWord, final int order){
+    CustomTextView customTextView = new CustomTextView(context);
+    customTextView.setLayoutParams(textParams);
+    int padding = (int) context.getResources().getDimension(R.dimen.clue_display_item_padding);
+    customTextView.setPadding(padding, padding, padding, padding);
+    customTextView.setCompoundDrawablesWithIntrinsicBounds(context.getResources().getDrawable(R.mipmap.ic_play_arrow),null,null,null);
+    customTextView.setGravity(Gravity.CENTER_VERTICAL);
+    customTextView.setText("开始解密");
+    customTextView.setOnClickListener(new OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        listener.onBeginDecode(type,passWord,order);
+      }
+    });
+
+    return customTextView;
+  }
+
   private Bitmap createVideoThumbnail(String url, int width, int height) {
     Bitmap bitmap = null;
     MediaMetadataRetriever retriever = new MediaMetadataRetriever();
@@ -384,6 +412,10 @@ public class Parser {
       return true;
     }
     return false;
+  }
+
+  public interface OnBeginDecodeListener{
+    void onBeginDecode(int type,String passWord,int order);
   }
 
 }

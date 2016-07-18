@@ -150,6 +150,18 @@ public final class Conf {
   public static final String SHARE_IMG_URL = "share_img_url";
   public static final String SHARE_URL = "share_url";
 
+  /**
+   *
+   * ClueDisplay
+   */
+  public static final String CLUE_DISPLAY_TASK_TYPE = "clue_task_type";
+  public static final String CLUE_DISPLAY_TASK_PWD = "clue_task_pwd";
+  public static final int REQUEST_CODE_BEGIN_DECODE = 11;
+  public static final int RESULT_CODE_INPUT_PASSWORD = 12;
+  public static final int RESULT_CODE_SCAN_CODE = 13;
+  public static final int RESULT_CODE_RECOGNISE_IMAGE = 14;
+  public static final int RESULT_CODE_UPLOAD_IMAGE = 15;
+  public static final int RESULT_CODE_CHECK_POSITION =16;
 
 
   /**

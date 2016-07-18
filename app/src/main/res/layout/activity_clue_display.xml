@@ -28,24 +28,12 @@
             android:scrollbarAlwaysDrawHorizontalTrack="false"
             >
             <LinearLayout
-                android:gravity="center"
                 android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/clue_display_show_view">
             </LinearLayout>
         </ScrollView>
-        <Button
-
-            android:layout_width="wrap_content"
-            android:layout_margin="@dimen/x20"
-            android:layout_height="0dp"
-            android:layout_gravity="start"
-            android:drawableStart="@mipmap/ic_play_arrow"
-            android:text="开始任务"
-            android:id="@+id/clue_display_begin_button"
-            android:layout_weight="80"
-            android:drawableLeft="@mipmap/ic_play_arrow"/>
 
     </LinearLayout>
 
