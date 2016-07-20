@@ -143,11 +143,21 @@
                 <data android:mimeType="text/plain"/>
             </intent-filter>
         </activity>
-        <activity android:name=".gameplaying.GamePlayingActivity"/>
-        <activity android:name=".gameplaying.task.GameTaskActivity"/>
-        <activity android:name=".gamedetails.GameDetailsActivity"/>
-        <activity android:name=".gamedetails.GameDetailsLocationActivity"/>
-        <activity android:name=".gamedata.GameDataActivity"/>
+
+        <activity android:name=".gameplaying.GamePlayingActivity"></activity>
+        <activity android:name=".gameplaying.task.GameTaskActivity"></activity>
+        <activity android:name=".gameplaying.parser.ClueDisplayActivity"
+            android:theme="@style/ApparentActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".gamedetails.GameDetailsActivity"></activity>
+        <activity android:name=".gamedetails.GameDetailsLocationActivity"></activity>
+        <activity android:name=".gamedata.GameDataActivity"></activity>
+
 
         <service android:name="com.avos.avoscloud.PushService"/>
 
@@ -166,6 +176,7 @@
             </intent-filter>
         </receiver>
 
+<<<<<<< HEAD
         <activity android:name=".userCenter.ModifyUserInformationActivity"/>
         <activity android:name=".userCenter.UserManagerGameActivity"/>
         <activity android:name=".userCenter.UserRewardActivity"/>
@@ -179,6 +190,18 @@
         </activity>
         <activity android:name=".activities.baidumapmode.BaiduMapModeActivity">
         </activity>
+=======
+
+        <activity android:name=".userCenter.ModifyUserInformationActivity"></activity>
+        <activity android:name=".userCenter.UserManagerGameActivity"></activity>
+        <activity android:name=".userCenter.UserRewardActivity"></activity>
+        <activity android:name=".gameplaying.GameShareActivity"></activity>
+        <activity android:name=".messagesystem.SystemWebActivity"></activity>
+        <activity android:name=".userCenter.ui.AboutUsActivity"></activity>
+        <activity android:name=".widget.dialog.ShareDialog"
+                  android:theme="@style/ApparentActivity"/>
+
+>>>>>>> e58b86f8f9aebb904cd708fe0ff1a580a3032167
     </application>
 
 </manifest>

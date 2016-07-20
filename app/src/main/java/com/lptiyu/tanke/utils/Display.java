@@ -27,6 +27,14 @@ public class Display {
     return display.widthPixels;
   }
 
+  public static int height(){
+    DisplayMetrics display = display();
+    if (display == null){
+      return 0;
+    }
+    return display.heightPixels;
+  }
+
   public static int dip2px(float dp) {
     DisplayMetrics display = display();
     if (display == null) {

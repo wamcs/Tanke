@@ -38,6 +38,7 @@ public class PushAdapter extends MessageBaseAdapter {
         this.context = context;
         currentTime = TimeUtils.getCurrentDate();
     }
+<<<<<<< HEAD
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -48,6 +49,21 @@ public class PushAdapter extends MessageBaseAdapter {
                 return new MessageViewHolder(Inflater.inflate(R.layout.layout_message_item, parent, false));
             default:
                 return new MessageViewHolder(Inflater.inflate(R.layout.layout_message_item, parent, false));
+=======
+  }
+
+  @Override
+  public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+    Message message = messageList.get(position);
+    switch (holder.getItemViewType()) {
+      case VIEW_TYPE_TIME:
+        TimeViewHolder holder1 = (TimeViewHolder) holder;
+        long time = message.getTime();
+        if (time >= currentTime) {
+          holder1.mTime.setText(TimeUtils.parseFrontPartTime(time));
+        } else {
+          holder1.mTime.setText(TimeUtils.parseCompleteTime(time));
+>>>>>>> e58b86f8f9aebb904cd708fe0ff1a580a3032167
         }
     }
 

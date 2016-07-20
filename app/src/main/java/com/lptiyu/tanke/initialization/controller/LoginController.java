@@ -62,7 +62,7 @@ public class LoginController extends ActivityController {
 
     private void init(){
         helper = new ThirdLoginHelper(getActivity());
-        mInputPhoneEditText.setText(Accounts.getPhoneNumber());
+//        mInputPhoneEditText.setText(Accounts.getPhoneNumber());
         initClickEvent();
     }
 
