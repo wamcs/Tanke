@@ -22,6 +22,9 @@ public class ShareHelper {
   public static final int SHARE_QQ = 3;
   public static final int SHARE_WEIBO = 4;
 
+  private static final String DEFAULT_TITLE = "我是分享标题";
+  private static final String DEFAUTL_TEXT = "我是分享文本";
+
   public static void share(int platform, String title, String text, String imagePath, String shareUrl) {
     switch (platform) {
       case SHARE_QQ:
@@ -45,7 +48,7 @@ public class ShareHelper {
   private static void shareWeibo(String title, String text, String imagePath, String shareUrl) {
     Platform.ShareParams shareParams = new Platform.ShareParams();
     shareParams.setText(text);
-    shareParams.setImageUrl(imagePath);
+    shareParams.setImagePath(imagePath);
     Platform weibo = ShareSDK.getPlatform(SinaWeibo.NAME);
     weibo.setPlatformActionListener(new listener());
     weibo.share(shareParams);
@@ -62,7 +65,7 @@ public class ShareHelper {
     Platform.ShareParams shareParams = new Platform.ShareParams();
     shareParams.setTitle(title);
     shareParams.setText(text);
-    shareParams.setImageUrl(imagePath);
+    shareParams.setImagePath(imagePath);
     if (null != shareUrl) {
       shareParams.setTitleUrl(shareUrl);
     }
@@ -83,7 +86,7 @@ public class ShareHelper {
     }
     shareParams.setTitle(title);
     shareParams.setText(text);
-    shareParams.setImageUrl(imagePath);
+    shareParams.setImagePath(imagePath);
     Platform wechat = ShareSDK.getPlatform(Wechat.NAME);
     wechat.setPlatformActionListener(new listener());
     wechat.share(shareParams);
@@ -99,7 +102,7 @@ public class ShareHelper {
     }
     shareParams.setTitle(title);
     shareParams.setText(text);
-    shareParams.setImageUrl(imagePath);
+    shareParams.setImagePath(imagePath);
     Platform wechat = ShareSDK.getPlatform(WechatMoments.NAME);
     wechat.setPlatformActionListener(new listener());
     wechat.share(shareParams);

@@ -108,6 +108,7 @@ public class GameShareController extends ActivityController implements
   private BaiduMap mMap;
   private IHistoryTrackHelper mTrackHelper;
 
+  private ShareDialog shareDialog;
   private AlertDialog mLoadingDialog;
 
   public GameShareController(AppCompatActivity activity, View view) {
@@ -406,14 +407,11 @@ public class GameShareController extends ActivityController implements
                 consumeTimeMinute,
                 totalTaskNum,
                 String.format("%2.1f".toLowerCase(), totalDistance));
-
-            Intent intent = new Intent(getContext(),ShareDialog.class);
-            intent.putExtra(Conf.SHARE_TITLE,SHARE_TITLE);
-            intent.putExtra(Conf.SHARE_TEXT,SHARE_CONTENT);
-            intent.putExtra(Conf.SHARE_IMG_URL,mGameDetailsEntity.getImg());
-            intent.putExtra(Conf.SHARE_URL,stringResponse.getData());
-            startActivity(intent);
-            overridePendingTransition(R.anim.translate_in_bottom,R.anim.translate_out_bottom);
+            if (null == shareDialog) {
+              shareDialog = new ShareDialog(getContext());
+              shareDialog.setShareContent(SHARE_TITLE, SHARE_CONTENT, mGameDetailsEntity.getImg(), stringResponse.getData());
+            }
+            shareDialog.show();
           }
         }, new Action1<Throwable>() {
           @Override

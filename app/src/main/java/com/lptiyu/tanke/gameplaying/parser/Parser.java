@@ -415,7 +415,7 @@ public class Parser {
   }
 
   public interface OnBeginDecodeListener{
-    void onBeginDecode(int type,String passWord,int order);
+    void onBeginDecode(int type, String passWord, int order);
   }
 
 }

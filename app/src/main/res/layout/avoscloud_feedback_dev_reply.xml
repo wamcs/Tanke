@@ -23,7 +23,7 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/avoscloud_feedback_dev_comment_bg"
+        android:background="@drawable/avoscloud_feedback_comment_bg"
         android:orientation="vertical"
         android:paddingLeft="15dp"
         android:paddingRight="15dp"
@@ -39,7 +39,7 @@
             android:layout_margin="5dp"
             android:paddingBottom="5dp"
             android:paddingTop="5dp"
-            android:textColor="@color/black10"
+            android:textColor="#333"
             android:textSize="18sp"/>
 
         <ImageView

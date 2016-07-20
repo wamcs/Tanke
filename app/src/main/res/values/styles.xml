@@ -12,11 +12,8 @@
 
     <style name="ActivityDialog" parent="Theme.AppCompat.Dialog">
         <item name="android:windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
-        <!--<item name="android:windowFrame">@null</item>-->
-        <!--<item name="android:windowIsFloating">true</item>-->
-        <!--<item name="android:windowIsTranslucent">false</item>-->
-
+        <item name="windowNoTitle">true
+        </item>        <!--<item name="android:windowFrame">@null</item>-->        <!--<item name="android:windowIsFloating">true</item>-->        <!--<item name="android:windowIsTranslucent">false</item>-->
     </style>
 
     <style name="ApparentActivity" parent="AppTheme">
@@ -26,9 +23,7 @@
         <item name="android:windowFrame">@null</item>
         <item name="android:windowIsFloating">true</item>
         <item name="android:windowCloseOnTouchOutside">true</item>
-
     </style>
-
 
     <!--Toolbar Theme Area-->
     <style name="Toolbar">

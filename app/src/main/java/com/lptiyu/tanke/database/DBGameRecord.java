@@ -55,12 +55,6 @@ public class DBGameRecord {
         this.uid = uid;
     }
 
-    public DBGameRecord(Long id, String play_statu, String game_id) {
-        this.id = id;
-        this.play_statu = play_statu;
-        this.game_id = game_id;
-    }
-
     /**
      * called by internal mechanisms, do not call yourself.
      */
@@ -198,19 +192,4 @@ public class DBGameRecord {
         myDao.refresh(this);
     }
 
-    @Override
-    public String toString() {
-        return "DBGameRecord{" +
-                "id=" + id +
-                ", join_time='" + join_time + '\'' +
-                ", start_time='" + start_time + '\'' +
-                ", last_task_ftime='" + last_task_ftime + '\'' +
-                ", play_statu='" + play_statu + '\'' +
-                ", ranks_id='" + ranks_id + '\'' +
-                ", game_id='" + game_id + '\'' +
-                ", line_id='" + line_id + '\'' +
-                ", uid='" + uid + '\'' +
-                ", record_text=" + record_text +
-                '}';
-    }
 }

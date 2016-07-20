@@ -22,14 +22,16 @@ import com.lptiyu.tanke.R;
 import com.lptiyu.tanke.activities.baidumapmode.GameMapShowActivity;
 import com.lptiyu.tanke.activities.guessriddle.GuessRiddleActivity;
 import com.lptiyu.tanke.adapter.GVForGamePlayingAdapter;
-import com.lptiyu.tanke.database.DBPointRecord;
 import com.lptiyu.tanke.entity.GameRecord;
+import com.lptiyu.tanke.entity.PointRecord;
 import com.lptiyu.tanke.enums.GameRecordAndPointStatus;
 import com.lptiyu.tanke.enums.GameType;
 import com.lptiyu.tanke.enums.PlayStatus;
 import com.lptiyu.tanke.gameplaying.pojo.Point;
 import com.lptiyu.tanke.gameplaying.pojo.Task;
 import com.lptiyu.tanke.global.Accounts;
+import com.lptiyu.tanke.global.Conf;
+import com.lptiyu.tanke.pojo.GameDetailsEntity;
 import com.lptiyu.tanke.pojo.UpLoadGameRecord;
 import com.lptiyu.tanke.utils.ToastUtil;
 import com.lptiyu.tanke.utils.WebViewUtils;
@@ -54,6 +56,9 @@ public class GamePlaying2Activity extends Activity implements GamePlayingContrac
     long teamId;
     long gameId;
 
+
+    long gameType;
+    GameDetailsEntity gameDetailsEntity;
 
     AlertDialog parseGameZipErrorDialog;
     AlertDialog loadGameRecordDialog;
@@ -138,6 +143,7 @@ public class GamePlaying2Activity extends Activity implements GamePlayingContrac
                 break;
             case R.id.btn_baiduMapMode:
                 Intent intent = new Intent(GamePlaying2Activity.this, GameMapShowActivity.class);
+                intent.putExtra(Conf.GAME_DISPLAY_ENTITY, gameDetailsEntity);
                 startActivity(intent);
                 break;
             case R.id.btn_submitRecord:
@@ -377,7 +383,7 @@ public class GamePlaying2Activity extends Activity implements GamePlayingContrac
         Log.i("jason", "服务器获取的游戏记录：" + gameRecord);
         if (gameRecord != null && gameRecord.getRecord_text() != null && gameRecord.getRecord_text().size() != 0) {
             for (int i = 0; i < gameRecord.getRecord_text().size(); i++) {
-                DBPointRecord record = gameRecord.getRecord_text().get(i);
+                PointRecord record = gameRecord.getRecord_text().get(i);
                 long pointId = record.getId();
                 for (int j = 0; j < list_points.size(); j++) {
                     Point point = list_points.get(j);
@@ -413,20 +419,20 @@ public class GamePlaying2Activity extends Activity implements GamePlayingContrac
 
     @Override
     public void getData(List<Point> list_points, String unZippedDir, GameRecord gameRecord, long
-            gameId, long gameType, String gameName) {
+            gameId, long gameType, String gameName, GameDetailsEntity mGameDetailsEntity) {
         this.list_points = list_points;
         this.unZippedDir = unZippedDir;
         this.gameRecord = gameRecord;
         this.gameId = gameId;
         this.gameType = gameType;
         gamePlayingTitle.setText(gameName + "");
+        this.gameDetailsEntity = mGameDetailsEntity;
 
         //        //请求进入游戏接口
         //        presenter.enterGame();
         presenter.downLoadRecord();
     }
 
-    long gameType;
 
     /**
      * 进入游戏成功回调

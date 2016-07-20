@@ -21,7 +21,7 @@ public class GameRecord implements Parcelable {
     private String game_id;
     private String line_id;
     private String uid;
-    private List<DBPointRecord> record_text;
+    private List<PointRecord> record_text;
 
     @Override
     public int describeContents() {
@@ -55,7 +55,7 @@ public class GameRecord implements Parcelable {
         this.game_id = in.readString();
         this.line_id = in.readString();
         this.uid = in.readString();
-        this.record_text = new ArrayList<DBPointRecord>();
+        this.record_text = new ArrayList<PointRecord>();
         in.readList(this.record_text, DBPointRecord.class.getClassLoader());
     }
 
@@ -143,11 +143,11 @@ public class GameRecord implements Parcelable {
         this.uid = uid;
     }
 
-    public List<DBPointRecord> getRecord_text() {
+    public List<PointRecord> getRecord_text() {
         return record_text;
     }
 
-    public void setRecord_text(List<DBPointRecord> record_text) {
+    public void setRecord_text(List<PointRecord> record_text) {
         this.record_text = record_text;
     }
 
