@@ -1,7 +1,5 @@
 package com.lptiyu.tanke;
 
-import android.accounts.Account;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.IntDef;
 import android.widget.ImageView;
@@ -9,12 +7,10 @@ import android.widget.ImageView;
 import com.lptiyu.tanke.base.controller.ActivityController;
 import com.lptiyu.tanke.base.ui.BaseActivity;
 import com.lptiyu.tanke.global.Accounts;
-import com.lptiyu.tanke.initialization.ui.CompleteInformationActivity;
 import com.lptiyu.tanke.io.net.HttpService;
 import com.lptiyu.tanke.io.net.Response;
 import com.lptiyu.tanke.utils.NetworkUtil;
 import com.lptiyu.tanke.utils.ToastUtil;
-import com.lptiyu.tanke.utils.rx.ToastExceptionAction;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -117,3 +113,5 @@ public class MainActivity extends BaseActivity {
   }
 
 }
+
+

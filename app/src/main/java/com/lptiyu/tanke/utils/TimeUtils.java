@@ -2,7 +2,6 @@ package com.lptiyu.tanke.utils;
 
 
 import android.content.Context;
-import android.util.Log;
 
 import com.lptiyu.tanke.R;
 import com.lptiyu.tanke.global.AppData;
@@ -136,8 +135,9 @@ public class TimeUtils {
     public static String parseTime(final Context context,
                                    String startDate, String endDate,
                                    String startTime, String endTime) {
-        Log.i("jason", "startData:" + startDate + "  endDate:" + endDate + "  startTime:" + startTime + "  endTime:" +
-                endTime);
+        //        Log.i("jason", "startData:" + startDate + "  endDate:" + endDate + "  startTime:" + startTime + "
+        // endTime:" +
+        //                endTime);
         String result;
         Calendar calendar = Calendar.getInstance();
 
@@ -157,7 +157,7 @@ public class TimeUtils {
         }
 
         Date time = TimeUtils.parseTime(startTime);
-        Log.i("jason", "格式化后的time：" + time);
+        //        Log.i("jason", "格式化后的time：" + time);
         if (time == null) {
             result += context.getString(R.string.main_page_forever);
         } else {

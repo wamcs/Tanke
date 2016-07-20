@@ -11,7 +11,7 @@
         android:layout_height="@dimen/default_toolbar_height"
         android:background="@drawable/toolbar_gradient"
         android:gravity="center"
-        android:text="@string/messageList"/>
+        android:text="@string/messagesList"/>
 
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/message_list_swipe_refresh_layout"

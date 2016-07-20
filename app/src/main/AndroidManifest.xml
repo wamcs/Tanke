@@ -172,7 +172,12 @@
         <activity android:name=".gameplaying.GameShareActivity"/>
         <activity android:name=".messagesystem.SystemWebActivity"/>
         <activity android:name=".userCenter.ui.AboutUsActivity"/>
-        <activity android:name=".gameplaying2.GamePlaying2Activity">
+        <activity android:name=".activities.gameplaying2.GamePlaying2Activity"/>
+        <activity android:name=".activities.scancode.ScanCodeActivity">
+        </activity>
+        <activity android:name=".activities.guessriddle.GuessRiddleActivity">
+        </activity>
+        <activity android:name=".activities.baidumapmode.BaiduMapModeActivity">
         </activity>
     </application>
 

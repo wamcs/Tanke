@@ -113,7 +113,7 @@ public class NiftyDialogBuilder extends Dialog implements DialogInterface {
     mFrameLayoutCustomView = (FrameLayout) mDialogView.findViewById(R.id.customPanel);
 
     mTitle = (TextView) mDialogView.findViewById(R.id.alertTitle);
-    mMessage = (TextView) mDialogView.findViewById(R.id.message);
+    mMessage = (TextView) mDialogView.findViewById(R.id.messages);
     mIcon = (ImageView) mDialogView.findViewById(R.id.icon);
     mDivider = mDialogView.findViewById(R.id.titleDivider);
     mButton1 = (Button) mDialogView.findViewById(R.id.button1);

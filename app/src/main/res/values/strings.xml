@@ -48,7 +48,7 @@
     <string name="need_exp_formatter" formatted="false">%d / %d 经验值</string>
 
     <!-- MessageList Text Area-->
-    <string name="messageList">消息中心</string>
+    <string name="messagesList">消息中心</string>
     <string name="message_type_official">步道官方</string>
 
     <!-- MessageActivity Text Area-->

@@ -1,7 +1,7 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
@@ -174,9 +174,11 @@
     <!-- SettingActivity Theme Area-->
     <style name="SettingActivityItemTextBase">
         <item name="android:paddingTop">@dimen/setting_activity_item_text_padding_top_bottom</item>
-        <item name="android:paddingBottom">@dimen/setting_activity_item_text_padding_top_bottom</item>
+        <item name="android:paddingBottom">@dimen/setting_activity_item_text_padding_top_bottom
+        </item>
         <item name="android:paddingLeft">@dimen/setting_activity_item_text_padding_left_right</item>
-        <item name="android:paddingRight">@dimen/setting_activity_item_text_padding_left_right</item>
+        <item name="android:paddingRight">@dimen/setting_activity_item_text_padding_left_right
+        </item>
         <item name="android:textColor">@color/black09</item>
         <item name="android:textSize">@dimen/setting_activity_item_text_size</item>
     </style>
@@ -203,7 +205,7 @@
         <item name="android:paddingTop">4dp</item>
         <item name="android:paddingBottom">4dp</item>
     </style>
-    
+
     <!-- UserManagerGameActivity Theme Area-->
     <style name="UserManagerGameItemTextBaseStyle">
         <item name="android:padding">@dimen/x5</item>
@@ -219,5 +221,16 @@
     <style name="UserManagerGameItemTextTitleStyle" parent="UserManagerGameItemTextBaseStyle">
         <item name="android:layout_marginLeft">@dimen/x10</item>
         <item name="android:textColor">@color/colorPrimary</item>
+    </style>
+
+    <!--Dialog样式的Activity-->
+    <style name="ActivityDialogStyle" parent="Theme.AppCompat.Dialog">
+        <item name="android:windowFrame">@android:color/transparent</item><!--边框-->
+        <item name="android:windowIsFloating">true</item><!--是否浮现在activity之上-->
+        <item name="android:windowIsTranslucent">true</item><!--半透明-->
+        <item name="android:windowNoTitle">true</item><!--无标题-->
+        <item name="android:windowBackground">@android:color/transparent</item><!--背景透明-->
+        <item name="android:backgroundDimAmount">0.3</item>
+        <item name="android:windowAnimationStyle">@null</item>
     </style>
 </resources>
