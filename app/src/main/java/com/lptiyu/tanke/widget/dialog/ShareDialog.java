@@ -28,7 +28,7 @@ public class ShareDialog extends BaseDialog {
     private int[] imagePath={R.mipmap.img_qq,
             R.mipmap.img_weixin,
             R.mipmap.img_weibo,
-            R.mipmap.img_wechat_moment};
+            R.mipmap.img_share_wechat_moment};
 
     @BindView(R.id.share_gridView)
     GridView gridView;
