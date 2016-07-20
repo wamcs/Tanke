@@ -37,7 +37,6 @@ public class ClueDisplayController extends ActivityController implements Parser.
   LinearLayout mainLayout;
   @BindView(R.id.clue_display_show_view)
   LinearLayout mShowLayout;
-
   private static final float heightRate = 0.75f;
   private static final float widthRate = 0.65f;
 

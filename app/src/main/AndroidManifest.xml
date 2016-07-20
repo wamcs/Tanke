@@ -148,11 +148,6 @@
         <activity android:name=".gameplaying.task.GameTaskActivity"></activity>
         <activity android:name=".gameplaying.parser.ClueDisplayActivity"
             android:theme="@style/ApparentActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity android:name=".gamedetails.GameDetailsActivity"></activity>
         <activity android:name=".gamedetails.GameDetailsLocationActivity"></activity>
