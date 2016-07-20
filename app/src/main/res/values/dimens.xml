@@ -294,5 +294,12 @@
     <dimen name="item_user_manager_game_width">@dimen/x320</dimen>
     <dimen name="item_user_manager_game_height">@dimen/y220</dimen>
 
+    <!-- ClueDisplay Dimens-->
+    <dimen name="clue_display_close_button_size">@dimen/x60</dimen>
+    <dimen name="clue_display_begin_button_size">@dimen/x80</dimen>
+    <dimen name="clue_display_item_padding">@dimen/x20</dimen>
+    <dimen name="clue_display_text_size">16sp</dimen>
+    <dimen name="clue_display_title_size">20sp</dimen>
+
 
 </resources>

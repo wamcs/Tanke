@@ -107,11 +107,10 @@ public final class Conf {
      */
     public static final String GAME_POINTS = "game_points";
     public static final String GAME_RECORDS = "game_records";
-
     public static final String GAME_DISPLAY_ENTITY = "game_display_entity";
 
     /**
-     * Messages
+     * Message
      */
 
     public static final int TIME_TYPE = 11;
@@ -144,6 +143,27 @@ public final class Conf {
     public static final String DEFAULT_CITY_ASSETS = "city.json";
 
     /**
+     * ShareDialog
+     */
+    public static final String SHARE_TITLE = "share_title";
+    public static final String SHARE_TEXT = "share_text";
+    public static final String SHARE_IMG_URL = "share_img_url";
+    public static final String SHARE_URL = "share_url";
+
+    /**
+     * ClueDisplay
+     */
+    public static final String CLUE_DISPLAY_TASK_TYPE = "clue_task_type";
+    public static final String CLUE_DISPLAY_TASK_PWD = "clue_task_pwd";
+    public static final int REQUEST_CODE_BEGIN_DECODE = 11;
+    public static final int RESULT_CODE_INPUT_PASSWORD = 12;
+    public static final int RESULT_CODE_SCAN_CODE = 13;
+    public static final int RESULT_CODE_RECOGNISE_IMAGE = 14;
+    public static final int RESULT_CODE_UPLOAD_IMAGE = 15;
+    public static final int RESULT_CODE_CHECK_POSITION = 16;
+
+
+    /**
      * This method is to make up the entity name of baidu hawk eye service
      *
      * @param gameId
@@ -157,8 +177,5 @@ public final class Conf {
     public static final long TEMP_GAME_ID = -1;
     public static final long TEMP_LINE_ID = -1;
     public static final long TEMP_TEAM_ID = -1;
-
-
-    public static final String LIST_RECORDS = "list_records";
 
 }

@@ -19,11 +19,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.lptiyu.tanke.R;
-import com.lptiyu.tanke.activities.baidumapmode.BaiduMapModeActivity;
+import com.lptiyu.tanke.activities.baidumapmode.GameMapShowActivity;
 import com.lptiyu.tanke.activities.guessriddle.GuessRiddleActivity;
 import com.lptiyu.tanke.adapter.GVForGamePlayingAdapter;
-import com.lptiyu.tanke.database.DBPointRecord;
 import com.lptiyu.tanke.entity.GameRecord;
+import com.lptiyu.tanke.entity.PointRecord;
 import com.lptiyu.tanke.enums.GameRecordAndPointStatus;
 import com.lptiyu.tanke.enums.GameType;
 import com.lptiyu.tanke.enums.PlayStatus;
@@ -137,7 +137,7 @@ public class GamePlaying2Activity extends Activity implements GamePlayingContrac
                 finish();
                 break;
             case R.id.btn_baiduMapMode:
-                Intent intent = new Intent(GamePlaying2Activity.this, BaiduMapModeActivity.class);
+                Intent intent = new Intent(GamePlaying2Activity.this, GameMapShowActivity.class);
                 startActivity(intent);
                 break;
             case R.id.btn_submitRecord:
@@ -377,7 +377,7 @@ public class GamePlaying2Activity extends Activity implements GamePlayingContrac
         Log.i("jason", "服务器获取的游戏记录：" + gameRecord);
         if (gameRecord != null && gameRecord.getRecord_text() != null && gameRecord.getRecord_text().size() != 0) {
             for (int i = 0; i < gameRecord.getRecord_text().size(); i++) {
-                DBPointRecord record = gameRecord.getRecord_text().get(i);
+                PointRecord record = gameRecord.getRecord_text().get(i);
                 long pointId = record.getId();
                 for (int j = 0; j < list_points.size(); j++) {
                     Point point = list_points.get(j);

@@ -149,6 +149,12 @@
         <activity android:name=".gamedetails.GameDetailsLocationActivity"/>
         <activity android:name=".gamedata.GameDataActivity"/>
 
+        <activity
+            android:name=".gameplaying.parser.ClueDisplayActivity"
+            android:theme="@style/ApparentActivity">
+        </activity>
+
+
         <service android:name="com.avos.avoscloud.PushService"/>
 
         <receiver android:name="com.avos.avoscloud.AVBroadcastReceiver">
@@ -173,12 +179,14 @@
         <activity android:name=".messagesystem.SystemWebActivity"/>
         <activity android:name=".userCenter.ui.AboutUsActivity"/>
         <activity android:name=".activities.gameplaying2.GamePlaying2Activity"/>
-        <activity android:name=".activities.scancode.ScanCodeActivity">
-        </activity>
         <activity android:name=".activities.guessriddle.GuessRiddleActivity">
         </activity>
-        <activity android:name=".activities.baidumapmode.BaiduMapModeActivity">
+        <activity android:name=".activities.baidumapmode.GameMapShowActivity">
         </activity>
+        <activity
+            android:name=".widget.dialog.ShareDialog"
+            android:theme="@style/ApparentActivity"/>
+
     </application>
 
 </manifest>

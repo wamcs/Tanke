@@ -14,7 +14,7 @@ import java.util.List;
 public class PointRecord implements Parcelable {
     private Long id;
     private String statu;
-    private List<DBTaskRecord> task;
+    private List<TaskRecord> task;
 
     @Override
     public int describeContents() {
@@ -34,7 +34,7 @@ public class PointRecord implements Parcelable {
     protected PointRecord(Parcel in) {
         this.id = (Long) in.readValue(Long.class.getClassLoader());
         this.statu = in.readString();
-        this.task = new ArrayList<DBTaskRecord>();
+        this.task = new ArrayList<TaskRecord>();
         in.readList(this.task, DBTaskRecord.class.getClassLoader());
     }
 
@@ -66,11 +66,11 @@ public class PointRecord implements Parcelable {
         this.statu = statu;
     }
 
-    public List<DBTaskRecord> getTask() {
+    public List<TaskRecord> getTask() {
         return task;
     }
 
-    public void setTask(List<DBTaskRecord> task) {
+    public void setTask(List<TaskRecord> task) {
         this.task = task;
     }
 

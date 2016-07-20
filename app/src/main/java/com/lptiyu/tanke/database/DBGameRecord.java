@@ -42,12 +42,6 @@ public class DBGameRecord {
         this.id = id;
     }
 
-    public DBGameRecord(Long id, String play_statu, String game_id) {
-        this.id = id;
-        this.play_statu = play_statu;
-        this.game_id = game_id;
-    }
-
     public DBGameRecord(Long id, String join_time, String start_time, String last_task_ftime, String play_statu,
                         String ranks_id, String game_id, String line_id, String uid) {
         this.id = id;

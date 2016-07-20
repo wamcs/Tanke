@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.util.Log;
 
-import com.lptiyu.tanke.database.DBGameRecord;
 import com.lptiyu.tanke.database.DBHelper;
 import com.lptiyu.tanke.database.DBPointRecord;
 import com.lptiyu.tanke.database.DBTaskRecord;
@@ -198,8 +197,8 @@ public class GamePlayingPresenter implements GamePlayingContract.IGamePlayingPre
 
     @Override
     public void insertGameRecord(long gameId, long status) {
-        DBHelper.getInstance().getDBGameRecordDao().insertOrReplace((new DBGameRecord(gameId, status + "", gameId +
-                "")));
+//        DBHelper.getInstance().getDBGameRecordDao().insertOrReplace((new DBGameRecord(gameId, status + "", gameId +
+//                "")));
     }
 
     @Override
