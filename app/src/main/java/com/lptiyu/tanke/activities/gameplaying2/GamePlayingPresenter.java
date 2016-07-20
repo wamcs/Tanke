@@ -174,7 +174,7 @@ public class GamePlayingPresenter implements GamePlayingContract.IGamePlayingPre
         String unZippedDir = gameZipHelper.unZippedDir;
         Log.i("jason", "游戏包绝对路径：" + unZippedDir);
 
-        view.getData(list_points, unZippedDir, gameRecord, gameId, gameType, gameName);
+        view.getData(list_points, unZippedDir, gameRecord, gameId, gameType, gameName,mGameDetailsEntity);
     }
 
     @Override

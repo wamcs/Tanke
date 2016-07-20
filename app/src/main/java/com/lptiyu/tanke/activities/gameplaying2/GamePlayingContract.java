@@ -4,6 +4,7 @@ import android.app.Activity;
 
 import com.lptiyu.tanke.entity.GameRecord;
 import com.lptiyu.tanke.gameplaying.pojo.Point;
+import com.lptiyu.tanke.pojo.GameDetailsEntity;
 import com.lptiyu.tanke.pojo.UpLoadGameRecord;
 
 import java.util.List;
@@ -25,7 +26,7 @@ public class GamePlayingContract {
         void checkZipExistOver();
 
         void getData(List<Point> list_points, String unZippedDir, GameRecord gameRecord, long gameId, long
-                gameType, String gameName);
+                gameType, String gameName, GameDetailsEntity mGameDetailsEntity);
 
         void successEnterGame();
     }

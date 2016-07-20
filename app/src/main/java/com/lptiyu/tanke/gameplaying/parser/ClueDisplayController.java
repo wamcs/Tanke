@@ -4,26 +4,20 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Gravity;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.VideoView;
 
-import com.google.gson.Gson;
 import com.lptiyu.tanke.R;
 import com.lptiyu.tanke.base.controller.ActivityController;
-import com.lptiyu.tanke.global.Conf;
 import com.lptiyu.tanke.utils.Display;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-import static android.view.ViewGroup.*;
+import static android.view.ViewGroup.LayoutParams;
 
 /**
  * author:wamcs
