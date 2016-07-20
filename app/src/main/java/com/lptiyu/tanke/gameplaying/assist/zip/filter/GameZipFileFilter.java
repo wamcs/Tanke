@@ -20,9 +20,9 @@ import java.util.regex.Pattern;
 public class GameZipFileFilter implements FilenameFilter {
 
     /**
-     * 文件名格式：37_31_1467789574
+     * 文件名格式：37_31_12
      */
-    static Pattern gameZipPattern = Pattern.compile("[0-9]+_[0-9]+_[0-9]{10}.zip$");
+    static Pattern gameZipPattern = Pattern.compile("[0-9]+_[0-9]+_[0-9].zip$");
 
     /**
      * 文件过滤器，返回true的文件则合格

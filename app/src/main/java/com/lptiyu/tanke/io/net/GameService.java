@@ -2,10 +2,12 @@ package com.lptiyu.tanke.io.net;
 
 import android.support.annotation.IntDef;
 
-import com.lptiyu.tanke.gameplaying.records.RunningRecord;
+import com.lptiyu.tanke.entity.GameRecord;
 import com.lptiyu.tanke.pojo.City;
+import com.lptiyu.tanke.pojo.EnterGameResponse;
 import com.lptiyu.tanke.pojo.GameDetailsEntity;
 import com.lptiyu.tanke.pojo.GameDisplayEntity;
+import com.lptiyu.tanke.pojo.GetGameStatusResponse;
 import com.lptiyu.tanke.pojo.MessageEntity;
 
 import java.lang.annotation.Retention;
@@ -214,19 +216,121 @@ public interface GameService {
             @Query("uid") long userId
     );
 
+    //    /**
+    //     * 2.39下载游戏日志信息
+    //     *
+    //     * @param userId
+    //     * @param gameId
+    //     * @param gameType
+    //     * @return
+    //     */
+    //    @GET("System/Getrankslog")
+    //    Observable<Response<ArrayList<RunningRecord>>> getRunningRecords(
+    //            @Query("uid") long userId,
+    //            @Query("game_id") long gameId,
+    //            @Query("type") int gameType
+    //    );
+
     /**
      * 2.39下载游戏日志信息
      *
-     * @param userId
+     * @param uid
      * @param gameId
      * @param gameType
      * @return
      */
     @GET("System/Getrankslog")
-    Observable<Response<List<RunningRecord>>> getRunningRecords(
-            @Query("uid") long userId,
+    Observable<Response<GameRecord>> getGameRecord(
+            @Query("uid") long uid,
             @Query("game_id") long gameId,
-            @Query("type") int gameType
+            @Query("type") long gameType
+    );
+
+    /**
+     * 2.23 上传游戏记录
+     *
+     * @param uid
+     * @param gameId
+     * @param pointid
+     * @param taskid
+     * @param type
+     * @param pointStatus
+     * @return
+     */
+    @GET("System/Rankslog")
+    Observable<Response<Void>> upLoadGameRecord(
+            @Query("uid") long uid,
+            @Query("game_id") long gameId,
+            @Query("point_id") long pointid,
+            @Query("task_id") long taskid,
+            @Query("type") long type,//1为团队赛，2为个人赛
+            @Query("point_statu") long pointStatus
+    );
+
+    /**
+     * 2.23 游戏结束时上传游戏记录
+     *
+     * @param uid
+     * @param gameId
+     * @param pointid
+     * @param taskid
+     * @param type
+     * @param pointStatus
+     * @param playStatus
+     * @return
+     */
+    @GET("System/Rankslog")
+    Observable<Response<Void>> gameOver(
+            @Query("uid") long uid,
+            @Query("game_id") long gameId,
+            @Query("point_id") long pointid,
+            @Query("task_id") long taskid,
+            @Query("type") long type,
+            @Query("point_statu") long pointStatus,
+            @Query("play_statu") long playStatus
+    );
+
+    /**
+     * 进入游戏
+     *
+     * @param uid
+     * @param gameId
+     * @param type
+     * @return
+     */
+    @GET("system/join_game")
+    Observable<Response<EnterGameResponse>> enterGame(
+            @Query("uid") long uid,
+            @Query("game_id") long gameId,
+            @Query("type") long type
+    );
+
+    /**
+     * 放弃游戏
+     *
+     * @param uid
+     * @param gameId
+     * @return
+     */
+    @GET("system/leave_game")
+    Observable<Response<Void>> leaveGame(
+            @Query("uid") long uid,
+            @Query("game_id") long gameId
+    );
+
+    /**
+     * 获取游戏状态
+     *
+     * @param uid
+     * @param gameId
+     * @param type
+     * @return
+     */
+    @GET("system/get_game_statu")
+    Observable<Response<GetGameStatusResponse>> getGameStatus(
+            @Query("uid") long uid,
+            @Query("game_id") long gameId,
+            @Query("type") long type
     );
 
 }

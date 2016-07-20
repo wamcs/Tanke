@@ -2,7 +2,6 @@ package com.lptiyu.tanke.adapter;
 
 import android.content.Context;
 import android.graphics.BitmapFactory;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +9,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 
 import com.lptiyu.tanke.R;
+import com.lptiyu.tanke.enums.GameRecordAndPointStatus;
 import com.lptiyu.tanke.gameplaying.pojo.Point;
 import com.lptiyu.tanke.gameplaying.pojo.Task;
 import com.lptiyu.tanke.widget.CircularImageView;
@@ -31,7 +31,7 @@ public class GVForGamePlayingAdapter extends BaseAdapter {
     private LayoutInflater inflater;
     private String unZippedDir;
 
-    public GVForGamePlayingAdapter(List<Point> list_points, String unZippedDir, Context context) {
+    public GVForGamePlayingAdapter(Context context, List<Point> list_points, String unZippedDir) {
         this.list_points = list_points;
         this.context = context;
         this.unZippedDir = unZippedDir;
@@ -67,8 +67,31 @@ public class GVForGamePlayingAdapter extends BaseAdapter {
         Map<String, Task> taskMap = point.getTaskMap();
         String taskId = point.getTaskId().get(0);
         Task task = taskMap.get(taskId);//因为每个攻击点只有一个任务，所以，此处可以直接取0
-        vh.ctvPointName.setText(task.getTaskName() + "");
 
+        switch (point.getState()) {
+            case GameRecordAndPointStatus.UNSTARTED://未开启
+                vh.ctvPointName.setText("未开启");
+                vh.img.setImageResource(R.drawable.default_pic);
+                vh.imgLabel.setVisibility(View.GONE);
+                break;
+            case GameRecordAndPointStatus.UNFINISHED://正在玩
+                vh.ctvPointName.setText(task.getTaskName() + "");
+                setImgBitmap(position, vh, taskId);
+                vh.imgLabel.setVisibility(View.VISIBLE);
+                vh.imgLabel.setImageResource(R.drawable.playing);
+                break;
+            case GameRecordAndPointStatus.FINISHED://已完成
+                vh.ctvPointName.setText(task.getTaskName() + "");
+                setImgBitmap(position, vh, taskId);
+                vh.imgLabel.setVisibility(View.VISIBLE);
+                vh.imgLabel.setImageResource(R.drawable.done);
+                break;
+        }
+
+        return convertView;
+    }
+
+    private void setImgBitmap(int position, ViewHolder vh, String taskId) {
         //通过File操作获取游戏包中的图片
         StringBuilder builder = new StringBuilder();
         builder.append(unZippedDir).append("/").append(position).append("/").append(taskId);
@@ -77,13 +100,10 @@ public class GVForGamePlayingAdapter extends BaseAdapter {
         for (String fileDir : list) {
             if (fileDir.endsWith(".jpg") || fileDir.endsWith(".png")) {
                 String imgDir = builder.append("/").append(fileDir).toString();
-                Log.i("jason", "图片路径：" + imgDir);
+                //                Log.i("jason", "图片路径：" + imgDir);
                 vh.img.setImageBitmap(BitmapFactory.decodeFile(imgDir));
             }
         }
-
-
-        return convertView;
     }
 
     static class ViewHolder {

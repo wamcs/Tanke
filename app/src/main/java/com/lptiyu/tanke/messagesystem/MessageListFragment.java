@@ -13,9 +13,9 @@ import com.lptiyu.tanke.R;
 import com.lptiyu.tanke.base.controller.FragmentController;
 import com.lptiyu.tanke.base.ui.BaseFragment;
 import com.lptiyu.tanke.database.DBHelper;
-import com.lptiyu.tanke.database.Message;
-import com.lptiyu.tanke.database.MessageDao;
-import com.lptiyu.tanke.database.MessageList;
+import com.lptiyu.tanke.database.MessageNotification;
+import com.lptiyu.tanke.database.MessageNotificationDao;
+import com.lptiyu.tanke.database.MessageNotificationList;
 import com.lptiyu.tanke.global.Accounts;
 import com.lptiyu.tanke.global.Conf;
 import com.lptiyu.tanke.io.net.HttpService;
@@ -40,103 +40,104 @@ import timber.log.Timber;
  * email:kaili@hustunique.com
  */
 public class MessageListFragment extends BaseFragment implements
-    SwipeRefreshLayout.OnRefreshListener {
+        SwipeRefreshLayout.OnRefreshListener {
 
-  @BindView(R.id.message_list_swipe_refresh_layout)
-  SwipeRefreshLayout swipeRefreshLayout;
-  @BindView(R.id.message_list_recycler_view)
-  RecyclerView mRecyclerView;
+    @BindView(R.id.message_list_swipe_refresh_layout)
+    SwipeRefreshLayout swipeRefreshLayout;
+    @BindView(R.id.message_list_recycler_view)
+    RecyclerView mRecyclerView;
 
-  private boolean isRefreshing = false;
+    private boolean isRefreshing = false;
 
-  private MessageListAdapter adapter;
+    private MessageListAdapter adapter;
 
-  @Nullable
-  @Override
-  public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-    View view = fromResLayout(inflater, container, R.layout.fragment_message_list);
-    ButterKnife.bind(this, view);
-    init();
-    return view;
-  }
-
-  private void init() {
-    swipeRefreshLayout.setOnRefreshListener(this);
-    mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-    mRecyclerView.setAdapter(adapter = new MessageListAdapter(getContext()));
-    onRefresh();
-  }
-
-  @Override
-  public void onRefresh() {
-    if (isRefreshing) {
-      return;
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle
+            savedInstanceState) {
+        View view = fromResLayout(inflater, container, R.layout.fragment_message_list);
+        ButterKnife.bind(this, view);
+        init();
+        return view;
     }
-    isRefreshing = true;
-    HttpService.getGameService().getSystemMessage(Accounts.getId())
-        .observeOn(AndroidSchedulers.mainThread())
-        .subscribeOn(Schedulers.io())
-        .map(new Func1<Response<List<MessageEntity>>, MessageList>() {
-          @Override
-          public MessageList call(Response<List<MessageEntity>> listResponse) {
-            MessageList result;
-            if (listResponse == null || listResponse.getStatus() == 0) {
-              ToastUtil.TextToast("获取消息失败");
-              return null;
-            }
-            List<MessageEntity> serverMessageDatas = listResponse.getData();
-            if (serverMessageDatas == null || serverMessageDatas.size() == 0) {
-              return null;
-            }
-            // add official msg to message table
-            MessageDao messageDao = DBHelper.getInstance().getPushMessageDao();
-            for (MessageEntity me : serverMessageDatas) {
-              Message message = new Message();
-              message.setId(me.getId());
-              message.setTitle(me.getTitle());
-              message.setImage(me.getImgUrl());
-              message.setAlert(me.getContent());
-              message.setUrl(me.getUrl());
-              message.setTime(me.getCreateTime());
-              message.setType(Conf.MESSAGE_LIST_TYPE_OFFICIAL);
-              messageDao.insertOrReplace(message);
-            }
 
-            //update the official msg item
-            MessageEntity lastMsg = serverMessageDatas.get(0);
-            result = new MessageList();
-            result.setName(getString(R.string.message_type_official));
-            result.setIsRead(false);
-            result.setContent(lastMsg.getContent());
-            result.setUserId(Conf.MESSAGE_LIST_USERID_OFFICIAL);
-            result.setType(Conf.MESSAGE_LIST_TYPE_OFFICIAL);
-            result.setTime(lastMsg.getCreateTime());
-            return result;
-          }
-        })
-        .subscribe(new Action1<MessageList>() {
-          @Override
-          public void call(MessageList messageList) {
-            isRefreshing = false;
-            swipeRefreshLayout.setRefreshing(false);
-            if (messageList != null) {
-              DBHelper.getInstance().getMessageListDao().insertOrReplace(messageList);
-              adapter.updateMessageData(messageList);
-            }
-          }
-        }, new Action1<Throwable>() {
-          @Override
-          public void call(Throwable throwable) {
-            isRefreshing = false;
-            swipeRefreshLayout.setRefreshing(false);
-            ToastUtil.TextToast("获取消息失败");
-            Timber.e(throwable, "here");
-          }
-        });
-  }
+    private void init() {
+        swipeRefreshLayout.setOnRefreshListener(this);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        mRecyclerView.setAdapter(adapter = new MessageListAdapter(getContext()));
+        onRefresh();
+    }
 
-  @Override
-  public FragmentController getController() {
-    return null;
-  }
+    @Override
+    public void onRefresh() {
+        if (isRefreshing) {
+            return;
+        }
+        isRefreshing = true;
+        HttpService.getGameService().getSystemMessage(Accounts.getId())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .map(new Func1<Response<List<MessageEntity>>, MessageNotificationList>() {
+                    @Override
+                    public MessageNotificationList call(Response<List<MessageEntity>> listResponse) {
+                        MessageNotificationList result;
+                        if (listResponse == null || listResponse.getStatus() == 0) {
+                            ToastUtil.TextToast("获取消息失败");
+                            return null;
+                        }
+                        List<MessageEntity> serverMessageDatas = listResponse.getData();
+                        if (serverMessageDatas == null || serverMessageDatas.size() == 0) {
+                            return null;
+                        }
+                        // add official msg to message table
+                        MessageNotificationDao messageDao = DBHelper.getInstance().getPushMessageDao();
+                        for (MessageEntity me : serverMessageDatas) {
+                            MessageNotification messages = new MessageNotification();
+                            messages.setId(me.getId());
+                            messages.setTitle(me.getTitle());
+                            messages.setImage(me.getImgUrl());
+                            messages.setAlert(me.getContent());
+                            messages.setUrl(me.getUrl());
+                            messages.setTime(me.getCreateTime());
+                            messages.setType(Conf.MESSAGE_LIST_TYPE_OFFICIAL);
+                            messageDao.insertOrReplace(messages);
+                        }
+
+                        //update the official msg item
+                        MessageEntity lastMsg = serverMessageDatas.get(0);
+                        result = new MessageNotificationList();
+                        result.setName(getString(R.string.message_type_official));
+                        result.setIsRead(false);
+                        result.setContent(lastMsg.getContent());
+                        result.setUserId(Conf.MESSAGE_LIST_USERID_OFFICIAL);
+                        result.setType(Conf.MESSAGE_LIST_TYPE_OFFICIAL);
+                        result.setTime(lastMsg.getCreateTime());
+                        return result;
+                    }
+                })
+                .subscribe(new Action1<MessageNotificationList>() {
+                    @Override
+                    public void call(MessageNotificationList messageList) {
+                        isRefreshing = false;
+                        swipeRefreshLayout.setRefreshing(false);
+                        if (messageList != null) {
+                            DBHelper.getInstance().getMessageListDao().insertOrReplace(messageList);
+                            adapter.updateMessageData(messageList);
+                        }
+                    }
+                }, new Action1<Throwable>() {
+                    @Override
+                    public void call(Throwable throwable) {
+                        isRefreshing = false;
+                        swipeRefreshLayout.setRefreshing(false);
+                        ToastUtil.TextToast("获取消息失败");
+                        Timber.e(throwable, "here");
+                    }
+                });
+    }
+
+    @Override
+    public FragmentController getController() {
+        return null;
+    }
 }

@@ -98,6 +98,7 @@ public class GameZipScanner {
      * @return 返回满足条件的文件的文件路径数组
      */
     private String[] scanFilesWithFilter(FilenameFilter filter) {
+        //获取存储游戏包的文件夹路径
         File gameDir = DirUtils.getTempDirectory();
         if (gameDir == null) {
             Timber.e("Game dir could not found");
@@ -116,13 +117,16 @@ public class GameZipScanner {
             return;
         }
         for (String zipFile : files) {
+            /**
+             * 文件名格式：37_12_3.zip
+             */
             //通过"_"分隔符来切割文件名
             String[] gameLineTimeStamp = zipFile.split(ZIP_DIVIDER);
             //存储文件路径
             gameIdZipFileMap.put(Long.valueOf(gameLineTimeStamp[0]), zipFile);
-            //存储时间戳
+            //存储文件名最后一段
             gameIdTimeStampMap.put(Long.valueOf(gameLineTimeStamp[0]), Long.valueOf(gameLineTimeStamp[2].substring(0,
-                    10)));
+                    gameLineTimeStamp[2].indexOf("."))));
         }
     }
 

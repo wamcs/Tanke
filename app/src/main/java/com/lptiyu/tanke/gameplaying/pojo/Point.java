@@ -17,6 +17,16 @@ import java.util.Map;
  */
 public class Point implements Parcelable {
 
+    private int state;
+
+    public int getState() {
+        return state;
+    }
+
+    public void setState(int state) {
+        this.state = state;
+    }
+
     private long id;
 
     @SerializedName("line_id")
@@ -195,7 +205,8 @@ public class Point implements Parcelable {
     @Override
     public String toString() {
         return "Point{" +
-                "id=" + id +
+                "state=" + state +
+                ", id=" + id +
                 ", lineId=" + lineId +
                 ", pointIndex=" + pointIndex +
                 ", latitude=" + latitude +

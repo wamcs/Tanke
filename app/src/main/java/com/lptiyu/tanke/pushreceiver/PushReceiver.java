@@ -7,14 +7,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.NotificationCompat;
 
-
 import com.avos.avoscloud.AVOSCloud;
 import com.google.gson.Gson;
 import com.lptiyu.tanke.MainActivity;
 import com.lptiyu.tanke.R;
 import com.lptiyu.tanke.database.DBHelper;
-import com.lptiyu.tanke.database.Message;
-import com.lptiyu.tanke.database.MessageList;
+import com.lptiyu.tanke.database.MessageNotification;
+import com.lptiyu.tanke.database.MessageNotificationList;
 import com.lptiyu.tanke.global.Conf;
 
 import timber.log.Timber;
@@ -27,30 +26,32 @@ import timber.log.Timber;
 public class PushReceiver extends BroadcastReceiver {
 
     private Context context = AVOSCloud.applicationContext;
+
     @Override
     public void onReceive(Context context, Intent intent) {
 
-        if (intent.getAction().equals(Conf.PUSH_ACTION)){
+        if (intent.getAction().equals(Conf.PUSH_ACTION)) {
             String jsonString = intent.getExtras().getString("com.avos.avoscloud.Data");
-            Timber.d("push data json is %s",jsonString);
-            Message message = new Gson().fromJson(jsonString,Message.class);
+            Timber.d("push data json is %s", jsonString);
+            MessageNotification messages = new Gson().fromJson(jsonString, MessageNotification.class);
 
-//            Intent resultIntent = new Intent(this.context, MessageActivity.class);
+            //            Intent resultIntent = new Intent(this.context, MessageActivity.class);
             Intent resultIntent = new Intent(this.context, MainActivity.class);
-//            resultIntent.putExtra(Conf.MESSAGE_TYPE,message.getType());
-            PendingIntent pendingIntent = PendingIntent.getActivity(this.context,0, resultIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+            //            resultIntent.putExtra(Conf.MESSAGE_TYPE,messages.getType());
+            PendingIntent pendingIntent = PendingIntent.getActivity(this.context, 0, resultIntent, PendingIntent
+                    .FLAG_UPDATE_CURRENT);
 
-            //add date into table Message
-            DBHelper.getInstance().getPushMessageDao().insert(message);
+            //add date into table Messages
+            DBHelper.getInstance().getPushMessageDao().insert(messages);
 
             //add date into table MessageList
-            updateMessageListDB(message);
+            updateMessageListDB(messages);
 
             NotificationCompat.Builder notification
                     = new NotificationCompat.Builder(this.context)
                     .setSmallIcon(R.mipmap.ic_launcher)
-                    .setContentText(message.getTitle())
-                    .setContentText(message.getAlert())
+                    .setContentText(messages.getTitle())
+                    .setContentText(messages.getAlert())
                     .setContentIntent(pendingIntent)
                     .setTicker("有推送消息未读")
                     .setAutoCancel(true);
@@ -59,19 +60,19 @@ public class PushReceiver extends BroadcastReceiver {
                     (NotificationManager) this.context
                             .getSystemService(
                                     Context.NOTIFICATION_SERVICE);
-            mNotifyMgr.notify(0,notification.build());
+            mNotifyMgr.notify(0, notification.build());
 
 
         }
     }
 
-    private void updateMessageListDB(Message message){
-        MessageList messageList = new MessageList();
-        messageList.setTime(message.getTime());
-        messageList.setContent(message.getTitle());
+    private void updateMessageListDB(MessageNotification messages) {
+        MessageNotificationList messageList = new MessageNotificationList();
+        messageList.setTime(messages.getTime());
+        messageList.setContent(messages.getTitle());
         messageList.setIsRead(false);
-        messageList.setType(message.getType());
-        switch (message.getType()){
+        messageList.setType(messages.getType());
+        switch (messages.getType()) {
             case Conf.MESSAGE_LIST_TYPE_OFFICIAL:
                 messageList.setUserId(Conf.MESSAGE_LIST_USERID_OFFICIAL);
                 messageList.setName(context.getString(R.string.message_type_official));

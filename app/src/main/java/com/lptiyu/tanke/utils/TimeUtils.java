@@ -2,7 +2,6 @@ package com.lptiyu.tanke.utils;
 
 
 import android.content.Context;
-import android.util.Log;
 
 import com.lptiyu.tanke.R;
 import com.lptiyu.tanke.global.AppData;
@@ -43,8 +42,57 @@ public class TimeUtils {
       int sec = (int) ((time % ONE_MINUTE_TIME) / 1000);
       return String.format("%02d : %02d".toLowerCase(), min, sec);
     }
+<<<<<<< HEAD
+
+    /**
+     * Parse time for GameDisplayFragment and GameDetailsActivity
+     *
+     * @param context
+     * @param startDate
+     * @param endDate
+     * @param startTime
+     * @param endTime
+     * @return
+     */
+    public static String parseTime(final Context context,
+                                   String startDate, String endDate,
+                                   String startTime, String endTime) {
+        //        Log.i("jason", "startData:" + startDate + "  endDate:" + endDate + "  startTime:" + startTime + "
+        // endTime:" +
+        //                endTime);
+        String result;
+        Calendar calendar = Calendar.getInstance();
+
+        Date date = TimeUtils.parseDate(startDate, TimeUtils.dateFormatter);
+        if (date == null) {
+            result = "";
+        } else {
+            calendar.setTime(date);
+            int _startMonth = calendar.get(Calendar.MONTH) + 1;
+            int _startDate = calendar.get(Calendar.DATE);
+            date = TimeUtils.parseDate(endDate, TimeUtils.dateFormatter);
+            calendar.setTime(date);
+            int _endMonth = calendar.get(Calendar.MONTH) + 1;
+            int _endDate = calendar.get(Calendar.DATE);
+            result = String.format(Locale.CHINA, context.getString(R.string.main_page_date_format_pattern),
+                    _startMonth, _startDate, _endMonth, _endDate);
+        }
+
+        Date time = TimeUtils.parseTime(startTime);
+        //        Log.i("jason", "格式化后的time：" + time);
+        if (time == null) {
+            result += context.getString(R.string.main_page_forever);
+        } else {
+            result += TimeUtils.formatHourMinute(startTime);
+            result += "-";
+            result += TimeUtils.formatHourMinute(endTime);
+        }
+
+        return result;
+=======
     if (ONE_DAY_TIME > time) {
       return String.format("大约还有%d小时".toLowerCase(), time / ONE_HOUR_TIME);
+>>>>>>> e58b86f8f9aebb904cd708fe0ff1a580a3032167
     }
     return "大于一天";
   }

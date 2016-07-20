@@ -214,7 +214,7 @@
     <dimen name="layout_game_share_form_text_base_padding">@dimen/x5</dimen>
 
 
-    <!-- Message Activity Dimens-->
+    <!-- Messages Activity Dimens-->
     <dimen name="message_img_size">@dimen/x79</dimen>
     <dimen name="message_item_layout_width">@dimen/x735</dimen>
     <dimen name="message_margin">@dimen/x79</dimen>

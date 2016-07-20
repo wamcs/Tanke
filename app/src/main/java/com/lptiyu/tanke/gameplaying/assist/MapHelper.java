@@ -41,344 +41,349 @@ import java.util.Map;
  *         email: wonderfulifeel@gmail.com
  */
 public class MapHelper implements
-    BaiduMap.OnMarkerClickListener {
+        BaiduMap.OnMarkerClickListener {
 
-  private Context mContext;
+    private Context mContext;
 
-  private TextureMapView mapView;
-  private BaiduMap mBaiduMap;
+    private TextureMapView mapView;
+    private BaiduMap mBaiduMap;
 
-  private SensorHelper mSensorHelper;
+    private SensorHelper mSensorHelper;
 
-  private List<Point> mPoints;
-  private Point currentAttackPoint;
-  private Point clickedPoint;
-  private PolylineOptions polyline;
-  private Map<Point, Marker> nailMarkerContainer = new HashMap<>();
+    private List<Point> mPoints;
+    private Point currentAttackPoint;
+    private Point clickedPoint;
+    private PolylineOptions polyline;
+    private Map<Point, Marker> nailMarkerContainer = new HashMap<>();
 
-  private LatLng currentLatLng;
-  private LatLng lastTimeLatLng;
-  private List<LatLng> trackLatLngs;
+    private LatLng currentLatLng;
+    private LatLng lastTimeLatLng;
+    private List<LatLng> trackLatLngs;
 
-  // info window content and info window, show when user arrive the attack point
-  private Map<Marker, InfoWindow> markerInfoWindowMap;
+    // info window content and info window, show when user arrive the attack point
+    private Map<Marker, InfoWindow> markerInfoWindowMap;
 
-  private MyLocationData.Builder mLocationDataBuilder;
+    private MyLocationData.Builder mLocationDataBuilder;
 
-  private OnMapMarkerClickListener mMapMarkerClickListener;
+    private OnMapMarkerClickListener mMapMarkerClickListener;
 
-  // if this boolean is true, map will animate to current location when receive newly location
-  private boolean animateToCurrentPositionOnce = true;
+    // if this boolean is true, map will animate to current location when receive newly location
+    private boolean animateToCurrentPositionOnce = true;
 
-  //  private boolean isReachAttackPoint = false;
-  private boolean isInfoWindowShown = false;
+    //  private boolean isReachAttackPoint = false;
+    private boolean isInfoWindowShown = false;
 
-  // default delta value, the distance between info window and marker
-  private static final int DEFAULT_INFO_WINDOW_DELTA_Y = Display.dip2px(-25);
-  public static final int DEFAULT_ANIMATION_DURATION = 1000;
+    // default delta value, the distance between info window and marker
+    private static final int DEFAULT_INFO_WINDOW_DELTA_Y = Display.dip2px(-25);
+    public static final int DEFAULT_ANIMATION_DURATION = 1000;
 
-  public MapHelper(Context context, TextureMapView view) {
-    if (view == null) {
-      throw new IllegalArgumentException("The map view is null");
-    }
-    mContext = context;
-    mapView = view;
-    mBaiduMap = mapView.getMap();
-    init();
-  }
-
-  private void init() {
-    trackLatLngs = new ArrayList<>(2);
-    mSensorHelper = new SensorHelper(mContext);
-    markerInfoWindowMap = new HashMap<>();
-
-    initMap();
-    initEvent();
-
-  }
-
-  private void initMap() {
-    UiSettings uiSettings = mBaiduMap.getUiSettings();
-    uiSettings.setCompassEnabled(false);
-    uiSettings.setRotateGesturesEnabled(false);
-    uiSettings.setOverlookingGesturesEnabled(false);
-    mBaiduMap.setMyLocationEnabled(true);
-    mBaiduMap.setMyLocationConfigeration(initMyLocationConfiguration());
-    mapView.setLogoPosition(LogoPosition.logoPostionRightTop);
-    mapView.showZoomControls(false);
-    mapView.showScaleControl(false);
-    hideBaiduLogo();
-  }
-
-  private void initEvent() {
-    mBaiduMap.setOnMarkerClickListener(this);
-  }
-
-  public void bindData(List<Point> points) {
-    if (points == null) {
-      return;
-    }
-    mPoints = points;
-  }
-
-  public void initMapFlow() {
-    initNails(mPoints);
-    currentAttackPoint = mPoints.get(0);
-  }
-
-  public boolean mapZoomIn() {
-    MapStatus oldMapStatus = mBaiduMap.getMapStatus();
-    float zoom = oldMapStatus.zoom;
-    float maxZoom = mBaiduMap.getMaxZoomLevel();
-    if (zoom >= maxZoom) {
-      return false;
-    }
-    MapStatusUpdate update = MapStatusUpdateFactory.newLatLngZoom(oldMapStatus.target, zoom + 1);
-    mBaiduMap.animateMapStatus(update, DEFAULT_ANIMATION_DURATION);
-    return true;
-  }
-
-  public boolean mapZoomOut() {
-    MapStatus oldMapStatus = mBaiduMap.getMapStatus();
-    float zoom = oldMapStatus.zoom;
-    float minZoom = mBaiduMap.getMinZoomLevel();
-    if (zoom <= minZoom) {
-      return false;
-    }
-    MapStatusUpdate update = MapStatusUpdateFactory.newLatLngZoom(oldMapStatus.target, zoom - 1);
-    mBaiduMap.animateMapStatus(update, DEFAULT_ANIMATION_DURATION);
-    return true;
-  }
-
-  @Override
-  public boolean onMarkerClick(Marker marker) {
-    if (isInfoWindowShown) {
-      mBaiduMap.hideInfoWindow();
-      isInfoWindowShown = false;
-      return true;
-    }
-    clickedPoint = null;
-    for (Map.Entry<Point, Marker> entry : nailMarkerContainer.entrySet()) {
-      if (entry.getValue() == marker) {
-        clickedPoint = entry.getKey();
-      }
-    }
-    if (clickedPoint == null) {
-      return true;
-    }
-
-    InfoWindow infoWindow = markerInfoWindowMap.get(marker);
-    if (infoWindow == null) {
-      View infoWindowView = LayoutInflater.from(mContext).inflate(R.layout.layout_map_infowindow, null);
-      ImageView imageView = ((ImageView) infoWindowView.findViewById(R.id.start_task));
-      imageView.setImageResource(R.mipmap.need_to_remove);
-      imageView.setOnClickListener(new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-          if (mMapMarkerClickListener != null) {
-            mMapMarkerClickListener.onMarkerClicked(clickedPoint);
-            mBaiduMap.hideInfoWindow();
-          }
+    public MapHelper(Context context, TextureMapView view) {
+        if (view == null) {
+            throw new IllegalArgumentException("The map view is null");
         }
-      });
-      infoWindow = new InfoWindow(infoWindowView, marker.getPosition(), DEFAULT_INFO_WINDOW_DELTA_Y);
-      markerInfoWindowMap.put(marker, infoWindow);
-      mBaiduMap.showInfoWindow(infoWindow);
-      isInfoWindowShown = true;
-    } else {
-      mBaiduMap.showInfoWindow(infoWindow);
-      isInfoWindowShown = true;
+        mContext = context;
+        mapView = view;
+        mBaiduMap = mapView.getMap();
+        init();
     }
-    return true;
-  }
 
-  public void showPointInfoWindow(Point point) {
-    Marker marker = nailMarkerContainer.get(point);
-    if (marker != null) {
-      onMarkerClick(marker);
-    }
-  }
+    private void init() {
+        trackLatLngs = new ArrayList<>(2);
+        mSensorHelper = new SensorHelper(mContext);
+        markerInfoWindowMap = new HashMap<>();
 
-  public void onReachAttackPoint(int index) {
-//    isReachAttackPoint = true;
-    if (index < 0 || mPoints == null || index >= mPoints.size()) {
-      return;
-    }
-    currentAttackPoint = mPoints.get(index);
-    setNail(currentAttackPoint, index, NumNail.NailType.GREEN);
-  }
-
-  public void updateNextPoint(int index) {
-//    isReachAttackPoint = false;
-    if (index < 0 || mPoints == null || index >= mPoints.size()) {
-      return;
-    }
-    currentAttackPoint = mPoints.get(index);
-    setNail(currentAttackPoint, index, NumNail.NailType.RED);
-  }
-
-  /**
-   * receive location info from LocateHelper
-   * set the BDLocation to map as user's location
-   *
-   * @param location real time location from LocateHelper
-   */
-  public void onReceiveLocation(BDLocation location) {
-    mBaiduMap.setMyLocationData(makeUpLocationData(location));
-    currentLatLng = new LatLng(location.getLatitude(), location.getLongitude());
-    if (animateToCurrentPositionOnce) {
-      mBaiduMap.animateMapStatus(MapStatusUpdateFactory.newLatLngZoom(currentLatLng, 20), DEFAULT_ANIMATION_DURATION);
-      animateToCurrentPositionOnce = false;
-    }
-//    if (currentAttackPoint != null && currentAttackPoint.getPointIndex() != 0) {
-//      if ((null != lastTimeLatLng) && (DistanceUtil.getDistance(lastTimeLatLng, currentLatLng) > Conf.LOCATION_DISTANCE_THRESHOLD_BOTTOM)
-//          && (DistanceUtil.getDistance(lastTimeLatLng, currentLatLng) < Conf.LOCATION_DISTANCE_THRESHOLD_TOP)) {
-//        drawPolyLine(lastTimeLatLng, currentLatLng);
-//      }
-//    }
-    lastTimeLatLng = currentLatLng;
-  }
-
-  public void animateCameraToCurrentPosition() {
-    animateToCurrentPositionOnce = true;
-  }
-
-  public void animateCameraToCurrentTarget() {
-    mBaiduMap.animateMapStatus(MapStatusUpdateFactory.newLatLngZoom(currentAttackPoint.getLatLng(), 20), DEFAULT_ANIMATION_DURATION);
-  }
-
-  public void animateCameraToMarkerByIndex(int index) {
-    if (mPoints != null && index <= currentAttackPoint.getPointIndex()) {
-      Point targetPoint = mPoints.get(index);
-      mBaiduMap.animateMapStatus(MapStatusUpdateFactory.newLatLngZoom(targetPoint.getLatLng(), 20), DEFAULT_ANIMATION_DURATION);
-    } else {
+        initMap();
+        initEvent();
 
     }
-  }
 
-  public void drawHistoryTrack(List<LatLng> points) {
-    if (points == null || points.size() == 0) {
-
-    } else if (points.size() > 1) {
-      polyline = new PolylineOptions().width(10)
-          .color(Color.RED).points(points);
-      mBaiduMap.addOverlay(polyline);
+    private void initMap() {
+        UiSettings uiSettings = mBaiduMap.getUiSettings();
+        uiSettings.setCompassEnabled(false);
+        uiSettings.setRotateGesturesEnabled(false);
+        uiSettings.setOverlookingGesturesEnabled(false);
+        mBaiduMap.setMyLocationEnabled(true);
+        mBaiduMap.setMyLocationConfigeration(initMyLocationConfiguration());
+        mapView.setLogoPosition(LogoPosition.logoPostionRightTop);
+        mapView.showZoomControls(false);
+        mapView.showScaleControl(false);
+        hideBaiduLogo();
     }
-  }
 
-  /**
-   * init the nail on the map
-   * point info from mPoints
-   */
-  private void initNails(List<Point> points) {
+    private void initEvent() {
+        mBaiduMap.setOnMarkerClickListener(this);
+    }
+
+    public void bindData(List<Point> points) {
+        if (points == null) {
+            return;
+        }
+        mPoints = points;
+    }
+
+    public void initMapFlow() {
+        initNails(mPoints);
+        currentAttackPoint = mPoints.get(0);
+    }
+
+    public boolean mapZoomIn() {
+        MapStatus oldMapStatus = mBaiduMap.getMapStatus();
+        float zoom = oldMapStatus.zoom;
+        float maxZoom = mBaiduMap.getMaxZoomLevel();
+        if (zoom >= maxZoom) {
+            return false;
+        }
+        MapStatusUpdate update = MapStatusUpdateFactory.newLatLngZoom(oldMapStatus.target, zoom + 1);
+        mBaiduMap.animateMapStatus(update, DEFAULT_ANIMATION_DURATION);
+        return true;
+    }
+
+    public boolean mapZoomOut() {
+        MapStatus oldMapStatus = mBaiduMap.getMapStatus();
+        float zoom = oldMapStatus.zoom;
+        float minZoom = mBaiduMap.getMinZoomLevel();
+        if (zoom <= minZoom) {
+            return false;
+        }
+        MapStatusUpdate update = MapStatusUpdateFactory.newLatLngZoom(oldMapStatus.target, zoom - 1);
+        mBaiduMap.animateMapStatus(update, DEFAULT_ANIMATION_DURATION);
+        return true;
+    }
+
+    @Override
+    public boolean onMarkerClick(Marker marker) {
+        if (isInfoWindowShown) {
+            mBaiduMap.hideInfoWindow();
+            isInfoWindowShown = false;
+            return true;
+        }
+        clickedPoint = null;
+        for (Map.Entry<Point, Marker> entry : nailMarkerContainer.entrySet()) {
+            if (entry.getValue() == marker) {
+                clickedPoint = entry.getKey();
+            }
+        }
+        if (clickedPoint == null) {
+            return true;
+        }
+
+        InfoWindow infoWindow = markerInfoWindowMap.get(marker);
+        if (infoWindow == null) {
+            View infoWindowView = LayoutInflater.from(mContext).inflate(R.layout.layout_map_infowindow, null);
+            ImageView imageView = ((ImageView) infoWindowView.findViewById(R.id.start_task));
+            imageView.setImageResource(R.mipmap.need_to_remove);
+            imageView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (mMapMarkerClickListener != null) {
+                        mMapMarkerClickListener.onMarkerClicked(clickedPoint);
+                        mBaiduMap.hideInfoWindow();
+                    }
+                }
+            });
+            infoWindow = new InfoWindow(infoWindowView, marker.getPosition(), DEFAULT_INFO_WINDOW_DELTA_Y);
+            markerInfoWindowMap.put(marker, infoWindow);
+            mBaiduMap.showInfoWindow(infoWindow);
+            isInfoWindowShown = true;
+        } else {
+            mBaiduMap.showInfoWindow(infoWindow);
+            isInfoWindowShown = true;
+        }
+        return true;
+    }
+
+    public void showPointInfoWindow(Point point) {
+        Marker marker = nailMarkerContainer.get(point);
+        if (marker != null) {
+            onMarkerClick(marker);
+        }
+    }
+
+    public void onReachAttackPoint(int index) {
+        //    isReachAttackPoint = true;
+        if (index < 0 || mPoints == null || index >= mPoints.size()) {
+            return;
+        }
+        currentAttackPoint = mPoints.get(index);
+        setNail(currentAttackPoint, index, NumNail.NailType.GREEN);
+    }
+
+    public void updateNextPoint(int index) {
+        //    isReachAttackPoint = false;
+        if (index < 0 || mPoints == null || index >= mPoints.size()) {
+            return;
+        }
+        currentAttackPoint = mPoints.get(index);
+        setNail(currentAttackPoint, index, NumNail.NailType.RED);
+    }
+
     /**
-     * init the first target
-     * when user arrives in the current target
-     * the next target will be shown
+     * receive location info from LocateHelper
+     * set the BDLocation to map as user's location
+     *
+     * @param location real time location from LocateHelper
      */
-    setNail(points.get(0), 0, NumNail.NailType.RED);
-  }
-
-  private void setNail(Point point, int index, NumNail.NailType type) {
-    if (nailMarkerContainer == null) {
-      throw new IllegalStateException("MarkerContainer not init");
+    public void onReceiveLocation(BDLocation location) {
+        mBaiduMap.setMyLocationData(makeUpLocationData(location));
+        currentLatLng = new LatLng(location.getLatitude(), location.getLongitude());
+        if (animateToCurrentPositionOnce) {
+            mBaiduMap.animateMapStatus(MapStatusUpdateFactory.newLatLngZoom(currentLatLng, 20),
+                    DEFAULT_ANIMATION_DURATION);
+            animateToCurrentPositionOnce = false;
+        }
+        //    if (currentAttackPoint != null && currentAttackPoint.getPointIndex() != 0) {
+        //      if ((null != lastTimeLatLng) && (DistanceUtil.getDistance(lastTimeLatLng, currentLatLng) > Conf
+      // .LOCATION_DISTANCE_THRESHOLD_BOTTOM)
+        //          && (DistanceUtil.getDistance(lastTimeLatLng, currentLatLng) < Conf
+      // .LOCATION_DISTANCE_THRESHOLD_TOP)) {
+        //        drawPolyLine(lastTimeLatLng, currentLatLng);
+        //      }
+        //    }
+        lastTimeLatLng = currentLatLng;
     }
-    MarkerOptions options;
-    if (nailMarkerContainer.containsKey(point)) {
-      nailMarkerContainer.get(point).remove();
+
+    public void animateCameraToCurrentPosition() {
+        animateToCurrentPositionOnce = true;
     }
-    options = newNailMarkerOptions();
-    options.position(point.getLatLng());
-    Bitmap b = NumNail.getNailBitmap(mContext, type).bakeText(String.valueOf(index + 1)).getBitmap();
-    if (b != null) {
-      options.icon(BitmapDescriptorFactory.fromBitmap(b));
+
+    public void animateCameraToCurrentTarget() {
+        mBaiduMap.animateMapStatus(MapStatusUpdateFactory.newLatLngZoom(currentAttackPoint.getLatLng(), 20),
+                DEFAULT_ANIMATION_DURATION);
     }
-    nailMarkerContainer.put(point, ((Marker) mBaiduMap.addOverlay(options)));
-  }
 
-  private void drawPolyLine(LatLng oldLatLng, LatLng newLatLng) {
-    if (oldLatLng == null || newLatLng == null) {
-      return;
+    public void animateCameraToMarkerByIndex(int index) {
+        if (mPoints != null && index <= currentAttackPoint.getPointIndex()) {
+            Point targetPoint = mPoints.get(index);
+            mBaiduMap.animateMapStatus(MapStatusUpdateFactory.newLatLngZoom(targetPoint.getLatLng(), 20),
+                    DEFAULT_ANIMATION_DURATION);
+        } else {
+
+        }
     }
-    trackLatLngs.clear();
-    trackLatLngs.add(oldLatLng);
-    trackLatLngs.add(newLatLng);
-    mBaiduMap.addOverlay(initPolyLineOptions().points(trackLatLngs));
-  }
 
-  private PolylineOptions initPolyLineOptions() {
-    return new PolylineOptions().width(10).color(0xff0F8AD7);
-  }
+    public void drawHistoryTrack(List<LatLng> points) {
+        if (points == null || points.size() == 0) {
 
-  /**
-   * method to make up MyLocationData
-   * with the latitude and longitude from BDLocation
-   * and the direction from the sensor
-   *
-   * @param location
-   * @return
-   */
-  private MyLocationData makeUpLocationData(BDLocation location) {
-    if (mLocationDataBuilder == null) {
-      mLocationDataBuilder = new MyLocationData.Builder();
+        } else if (points.size() > 1) {
+            polyline = new PolylineOptions().width(10)
+                    .color(Color.RED).points(points);
+            mBaiduMap.addOverlay(polyline);
+        }
     }
-    mLocationDataBuilder
-        .direction(mSensorHelper.getCurrentDegree())
-        .latitude(location.getLatitude())
-        .longitude(location.getLongitude());
-    return mLocationDataBuilder.build();
-  }
 
-  private MyLocationConfiguration initMyLocationConfiguration() {
-    BitmapDescriptor bitmapDescriptor = BitmapDescriptorFactory.fromResource(R.mipmap.img_user_position_arrow);
-    return new MyLocationConfiguration(null, true, bitmapDescriptor);
-  }
-
-  private MarkerOptions newNailMarkerOptions() {
-    MarkerOptions options = new MarkerOptions();
-    options
-        .title("Nail")
-        .draggable(false);
-    return options;
-  }
-
-  /**
-   * this method can hide the baidu logo
-   * but baidu said the logo should not be hide
-   * so i'm not sure if i will be killed by baidu :)
-   */
-  private void hideBaiduLogo() {
-    View child = mapView.getChildAt(1);
-    if (child != null && (child instanceof ImageView || child instanceof ZoomControls)) {
-      child.setVisibility(View.INVISIBLE);
+    /**
+     * init the nail on the map
+     * point info from mPoints
+     */
+    private void initNails(List<Point> points) {
+        /**
+         * init the first target
+         * when user arrives in the current target
+         * the next target will be shown
+         */
+        setNail(points.get(0), 0, NumNail.NailType.RED);
     }
-  }
 
-  public void onResume() {
-    mapView.onResume();
-    mSensorHelper.onResume();
-  }
+    private void setNail(Point point, int index, NumNail.NailType type) {
+        if (nailMarkerContainer == null) {
+            throw new IllegalStateException("MarkerContainer not init");
+        }
+        MarkerOptions options;
+        if (nailMarkerContainer.containsKey(point)) {
+            nailMarkerContainer.get(point).remove();
+        }
+        options = newNailMarkerOptions();
+        options.position(point.getLatLng());
+        Bitmap b = NumNail.getNailBitmap(mContext, type).bakeText(String.valueOf(index + 1)).getBitmap();
+        if (b != null) {
+            options.icon(BitmapDescriptorFactory.fromBitmap(b));
+        }
+        nailMarkerContainer.put(point, ((Marker) mBaiduMap.addOverlay(options)));
+    }
 
-  public void onPause() {
-    mapView.onPause();
-    mSensorHelper.onPause();
-  }
+    private void drawPolyLine(LatLng oldLatLng, LatLng newLatLng) {
+        if (oldLatLng == null || newLatLng == null) {
+            return;
+        }
+        trackLatLngs.clear();
+        trackLatLngs.add(oldLatLng);
+        trackLatLngs.add(newLatLng);
+        mBaiduMap.addOverlay(initPolyLineOptions().points(trackLatLngs));
+    }
 
-  public void onDestroy() {
-    mapView.onDestroy();
-    mSensorHelper.onDestroy();
-  }
+    private PolylineOptions initPolyLineOptions() {
+        return new PolylineOptions().width(10).color(0xff0F8AD7);
+    }
 
-  public BaiduMap getmBaiduMap() {
-    return mBaiduMap;
-  }
+    /**
+     * method to make up MyLocationData
+     * with the latitude and longitude from BDLocation
+     * and the direction from the sensor
+     *
+     * @param location
+     * @return
+     */
+    private MyLocationData makeUpLocationData(BDLocation location) {
+        if (mLocationDataBuilder == null) {
+            mLocationDataBuilder = new MyLocationData.Builder();
+        }
+        mLocationDataBuilder
+                .direction(mSensorHelper.getCurrentDegree())
+                .latitude(location.getLatitude())
+                .longitude(location.getLongitude());
+        return mLocationDataBuilder.build();
+    }
 
-  public void setmMapMarkerClickListener(OnMapMarkerClickListener mMapMarkerClickListener) {
-    this.mMapMarkerClickListener = mMapMarkerClickListener;
-  }
+    private MyLocationConfiguration initMyLocationConfiguration() {
+        BitmapDescriptor bitmapDescriptor = BitmapDescriptorFactory.fromResource(R.mipmap.img_user_position_arrow);
+        return new MyLocationConfiguration(null, true, bitmapDescriptor);
+    }
 
-  public interface OnMapMarkerClickListener {
-    void onMarkerClicked(Point point);
-  }
+    private MarkerOptions newNailMarkerOptions() {
+        MarkerOptions options = new MarkerOptions();
+        options
+                .title("Nail")
+                .draggable(false);
+        return options;
+    }
+
+    /**
+     * this method can hide the baidu logo
+     * but baidu said the logo should not be hide
+     * so i'm not sure if i will be killed by baidu :)
+     */
+    private void hideBaiduLogo() {
+        View child = mapView.getChildAt(1);
+        if (child != null && (child instanceof ImageView || child instanceof ZoomControls)) {
+            child.setVisibility(View.INVISIBLE);
+        }
+    }
+
+    public void onResume() {
+        mapView.onResume();
+        mSensorHelper.onResume();
+    }
+
+    public void onPause() {
+        mapView.onPause();
+        mSensorHelper.onPause();
+    }
+
+    public void onDestroy() {
+        mapView.onDestroy();
+        mSensorHelper.onDestroy();
+    }
+
+    public BaiduMap getmBaiduMap() {
+        return mBaiduMap;
+    }
+
+    public void setmMapMarkerClickListener(OnMapMarkerClickListener mMapMarkerClickListener) {
+        this.mMapMarkerClickListener = mMapMarkerClickListener;
+    }
+
+    public interface OnMapMarkerClickListener {
+        void onMarkerClicked(Point point);
+    }
 
 }
