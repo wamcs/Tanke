@@ -171,7 +171,6 @@
             </intent-filter>
         </receiver>
 
-<<<<<<< HEAD
         <activity android:name=".userCenter.ModifyUserInformationActivity"/>
         <activity android:name=".userCenter.UserManagerGameActivity"/>
         <activity android:name=".userCenter.UserRewardActivity"/>
@@ -179,24 +178,13 @@
         <activity android:name=".messagesystem.SystemWebActivity"/>
         <activity android:name=".userCenter.ui.AboutUsActivity"/>
         <activity android:name=".activities.gameplaying2.GamePlaying2Activity"/>
-        <activity android:name=".activities.scancode.ScanCodeActivity">
-        </activity>
         <activity android:name=".activities.guessriddle.GuessRiddleActivity">
         </activity>
         <activity android:name=".activities.baidumapmode.BaiduMapModeActivity">
         </activity>
-=======
-
-        <activity android:name=".userCenter.ModifyUserInformationActivity"></activity>
-        <activity android:name=".userCenter.UserManagerGameActivity"></activity>
-        <activity android:name=".userCenter.UserRewardActivity"></activity>
-        <activity android:name=".gameplaying.GameShareActivity"></activity>
-        <activity android:name=".messagesystem.SystemWebActivity"></activity>
-        <activity android:name=".userCenter.ui.AboutUsActivity"></activity>
         <activity android:name=".widget.dialog.ShareDialog"
                   android:theme="@style/ApparentActivity"/>
 
->>>>>>> e58b86f8f9aebb904cd708fe0ff1a580a3032167
     </application>
 
 </manifest>
