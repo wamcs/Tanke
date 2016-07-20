@@ -180,7 +180,7 @@
         <activity android:name=".activities.gameplaying2.GamePlaying2Activity"/>
         <activity android:name=".activities.guessriddle.GuessRiddleActivity">
         </activity>
-        <activity android:name=".activities.baidumapmode.BaiduMapModeActivity">
+        <activity android:name=".activities.baidumapmode.GameMapShowActivity">
         </activity>
         <activity android:name=".widget.dialog.ShareDialog"
                   android:theme="@style/ApparentActivity"/>

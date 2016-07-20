@@ -19,7 +19,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.lptiyu.tanke.R;
-import com.lptiyu.tanke.activities.baidumapmode.BaiduMapModeActivity;
+import com.lptiyu.tanke.activities.baidumapmode.GameMapShowActivity;
 import com.lptiyu.tanke.activities.guessriddle.GuessRiddleActivity;
 import com.lptiyu.tanke.adapter.GVForGamePlayingAdapter;
 import com.lptiyu.tanke.database.DBPointRecord;
@@ -137,7 +137,7 @@ public class GamePlaying2Activity extends Activity implements GamePlayingContrac
                 finish();
                 break;
             case R.id.btn_baiduMapMode:
-                Intent intent = new Intent(GamePlaying2Activity.this, BaiduMapModeActivity.class);
+                Intent intent = new Intent(GamePlaying2Activity.this, GameMapShowActivity.class);
                 startActivity(intent);
                 break;
             case R.id.btn_submitRecord:
