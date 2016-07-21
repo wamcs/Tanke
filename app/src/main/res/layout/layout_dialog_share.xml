@@ -13,7 +13,7 @@
         android:background="@color/default_font_color"
         android:gravity="center"
         android:horizontalSpacing="@dimen/x3"
-        android:numColumns="2"
+        android:numColumns="3"
         android:paddingBottom="@dimen/y26"
         android:paddingTop="@dimen/y39"
         android:paddingLeft="@dimen/x26"
