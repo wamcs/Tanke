@@ -34,6 +34,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="@dimen/x7"
+            android:maxEms="10"
             android:text="华科森林记华科森林记"
             android:textSize="@dimen/main_page_item_text_size_normal"
             android:textStyle="bold"

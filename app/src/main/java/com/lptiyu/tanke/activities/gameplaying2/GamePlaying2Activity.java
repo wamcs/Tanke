@@ -65,6 +65,7 @@ public class GamePlaying2Activity extends Activity implements GamePlaying2Contra
     GridView gv;
 
     long gameId;
+    long teamId;
 
     long gameType;
     GameDetailsEntity gameDetailsEntity;
@@ -244,12 +245,12 @@ public class GamePlaying2Activity extends Activity implements GamePlaying2Contra
                 break;
             case R.id.btn_baiduMapMode:
                 Intent intent = new Intent(GamePlaying2Activity.this, GameMapShowActivity.class);
-                //                intent.putExtra(Conf.GAME_DISPLAY_ENTITY, gameDetailsEntity);
                 ArrayList<Point> list = new ArrayList<>();
                 for (Point point : list_points) {
                     list.add(point);
                 }
-                intent.putParcelableArrayListExtra(Conf.LIST_POINTS, list);
+                intent.putExtra(Conf.GAME_ID, gameId);
+                intent.putExtra(Conf.TEAM_ID, teamId);
                 startActivity(intent);
                 break;
             case R.id.btn_submitRecord:

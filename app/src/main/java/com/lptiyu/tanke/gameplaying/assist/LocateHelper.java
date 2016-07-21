@@ -39,7 +39,7 @@ public class LocateHelper implements BDLocationListener {
     if (location == null || mBDLocationListener == null) {
       return;
     }
-    RecordsUtils.setCurrentLatLng(new LatLng(location.getLatitude(), location.getLongitude()));
+//    RecordsUtils.setCurrentLatLng(new LatLng(location.getLatitude(), location.getLongitude()));
     mBDLocationListener.onReceiveLocation(location);
   }
 

@@ -4,11 +4,16 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PointF;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.graphics.RectF;
+import android.graphics.Xfermode;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.util.TypedValue;
 
 import com.lptiyu.tanke.R;
@@ -106,6 +111,16 @@ public abstract class NumNail {
     return this;
   }
 
+  public NumNail bakeImage(Bitmap bitmap){
+    if (bitmap == null){
+      return this;
+    }
+    int height = bitmap.getHeight();
+    int canvasHeight = mCanvas.getHeight();
+    mCanvas.drawBitmap(bitmap,0,canvasHeight-height,null);
+    return this;
+  }
+
   public Bitmap getBitmap() {
     return mBitmap;
   }
@@ -169,7 +184,9 @@ public abstract class NumNail {
       return new NumNailGreenImpl(context);
     } else if (type == NailType.GREY) {
       return new NumNailGreyImpl(context);
-    } else {
+    } else if (type == NailType.IMAGE){
+      return new NumNailImgImpl(context);
+    }else {
       throw new IllegalStateException("type must be 0, 1, 2. 0 is red, 1 is green, 2 is grey");
     }
   }
@@ -177,7 +194,8 @@ public abstract class NumNail {
   public enum NailType {
     RED,
     GREEN,
-    GREY
+    GREY,
+    IMAGE
   }
 
   private static class NumNailGreyImpl extends NumNail {
@@ -296,5 +314,50 @@ public abstract class NumNail {
     }
   }
 
+  private static class NumNailImgImpl extends NumNail {
+    private static Bitmap cache;
 
+    /**
+     * Constructor
+     *
+     * @param context The context to get the resource, and other something.
+     */
+    public NumNailImgImpl(Context context) {
+      super(context);
+    }
+
+    protected Bitmap getCache() {
+      if (cache == null || cache.isRecycled()) {
+        cache = Bitmap.createBitmap(
+            getContext().getResources().getDimensionPixelOffset(R.dimen.x180),
+            getContext().getResources().getDimensionPixelOffset(R.dimen.y180),
+            Bitmap.Config.ARGB_4444);
+        Timber.d("The length of cache width = %d height = %d", cache.getWidth(), cache.getHeight());
+        //In Nexus(1080 * 1920), the cache's width is 80 and height is 89
+        //And in vivo(an 720p android phone), the cache's width is 40 and height is 45
+        DisplayMetrics metrics = getContext().getResources().getDisplayMetrics();
+        Timber.d("The density is %d", metrics.densityDpi);
+        //Density of nexus is 480
+        //Density of vivo is 240
+        Timber.d("The Scaled length may be help, the DisplayMetrics is so the cache's scaled width = %d and height = %d",
+            cache.getScaledWidth(metrics),
+            cache.getScaledHeight(metrics));
+        //In nexus, scaled width and height is 80 and 89
+        //In vivo , scaled width and height is 40 and 45
+      }
+      return cache;
+    }
+
+    @Override
+    public Bitmap getDrawingBitmap() {
+      Bitmap cache = getCache();
+      return cache.copy(cache.getConfig(), true);
+    }
+
+    @Override
+    public RectF getDrawingRect() {
+      int densityDpi = getContext().getResources().getDisplayMetrics().densityDpi;
+      return new RectF(0, 0, 60 * densityDpi / 480f, 60 * densityDpi / 480f);
+    }
+  }
 }

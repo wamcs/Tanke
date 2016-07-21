@@ -21,54 +21,49 @@
         android:id="@+id/start_locate"
         android:layout_width="@dimen/activity_game_playing_button_width_height"
         android:layout_height="@dimen/activity_game_playing_button_width_height"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_marginBottom="@dimen/activity_game_playing_start_locate_margin_bottom"
-        android:layout_marginLeft="@dimen/activity_game_playing_start_locate_margin_left"
         android:background="@drawable/map_button_style"
         android:contentDescription="@string/content_description"
-        android:src="@mipmap/img_locate"/>
+        android:src="@mipmap/img_locate"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"/>
 
     <ImageView
         android:id="@+id/move_to_target"
         android:layout_width="@dimen/activity_game_playing_button_width_height"
         android:layout_height="@dimen/activity_game_playing_button_width_height"
-        android:layout_above="@id/start_locate"
-        android:layout_alignParentLeft="true"
-        android:layout_marginBottom="@dimen/activity_game_playing_move_to_target_margin_bottom"
-        android:layout_marginLeft="@dimen/activity_game_playing_move_to_target_margin_left"
         android:background="@drawable/map_button_style"
         android:contentDescription="@string/content_description"
         android:padding="@dimen/activity_game_playing_move_to_target_padding"
-        android:src="@mipmap/img_target"/>
+        android:src="@mipmap/img_target"
+        android:layout_above="@+id/start_locate"
+        android:layout_alignLeft="@+id/start_locate"
+        android:layout_alignStart="@+id/start_locate"/>
 
     <ImageView
         android:id="@+id/game_data"
         android:layout_width="@dimen/activity_game_playing_button_width_height"
         android:layout_height="@dimen/activity_game_playing_button_width_height"
-        android:layout_above="@id/move_to_target"
-        android:layout_alignParentLeft="true"
-        android:layout_marginBottom="@dimen/activity_game_playing_game_data_margin_bottom"
-        android:layout_marginLeft="@dimen/activity_game_playing_game_data_margin_left"
         android:background="@drawable/map_button_style"
         android:contentDescription="@string/content_description"
         android:padding="@dimen/activity_game_playing_game_data_padding"
-        android:src="@mipmap/img_game_data"/>
+        android:visibility="gone"
+        android:src="@mipmap/img_game_data"
+        android:layout_above="@+id/move_to_target"
+        android:layout_alignLeft="@+id/move_to_target"
+        android:layout_alignStart="@+id/move_to_target"/>
 
     <ImageView
         android:id="@+id/zoom_out"
         android:layout_width="@dimen/activity_game_playing_button_width_height"
         android:layout_height="@dimen/activity_game_playing_button_width_height"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginBottom="@dimen/activity_game_playing_zoom_out_margin_bottom"
-        android:layout_marginRight="@dimen/activity_game_playing_zoom_out_margin_right"
         android:padding="@dimen/activity_game_playing_zoom_out_padding"
-        android:layout_marginEnd="@dimen/activity_game_playing_zoom_out_margin_end"
         android:background="@drawable/map_zoom_out_button_bg"
         android:contentDescription="@string/content_description"
-        android:src="@drawable/map_zoom_out_button"/>
+        android:src="@drawable/map_zoom_out_button"
+        android:layout_alignParentBottom="true"
+        android:layout_alignLeft="@+id/zoom_in"
+        android:layout_alignStart="@+id/zoom_in"/>
 
 
     <ImageView
@@ -87,6 +82,7 @@
 
 
     <Button
+        android:visibility="gone"
         android:id="@+id/start_animate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -106,7 +102,8 @@
         app:spotItemLineHeight="@dimen/running_spot_view_item_line_height"
         app:spotItemLineWidth="@dimen/running_spot_view_item_line_width"
         app:spotTextSize="@dimen/running_spot_view_text_size"
-        app:spotToDoColor="@color/game_playing_spot_to_do_color"/>
+        app:spotToDoColor="@color/game_playing_spot_to_do_color"
+        android:visibility="gone"/>
 
 
     <com.lptiyu.tanke.widget.TickView

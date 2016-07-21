@@ -17,15 +17,8 @@ import java.util.Map;
  */
 public class Point implements Parcelable {
 
+
     private int state;
-
-    public int getState() {
-        return state;
-    }
-
-    public void setState(int state) {
-        this.state = state;
-    }
 
     private long id;
 
@@ -44,14 +37,27 @@ public class Point implements Parcelable {
 
     private Map<String, Task> taskMap;
 
+    private String introImage;
+
     private Point(Builder builder) {
+        setState(builder.state);
         setId(builder.id);
         setLineId(builder.lineId);
         setPointIndex(builder.pointIndex);
         setLatitude(builder.latitude);
         setLongitude(builder.longitude);
         setTaskId(builder.taskId);
-        setTaskMap(builder.missionMap);
+        setTaskMap(builder.taskMap);
+        setIntroImage(builder.introImage);
+    }
+
+
+    public int getState() {
+        return state;
+    }
+
+    public void setState(int state) {
+        this.state = state;
     }
 
     public long getId() {
@@ -110,20 +116,104 @@ public class Point implements Parcelable {
         this.taskMap = taskMap;
     }
 
+    public String getIntroImage() {
+        return introImage;
+    }
+
+    public void setIntroImage(String introImage) {
+        this.introImage = introImage;
+    }
+
     public LatLng getLatLng() {
         return new LatLng(latitude, longitude);
     }
 
+    @Override
+    public String toString() {
+        return "Point{" +
+                "state=" + state +
+                ", id=" + id +
+                ", lineId=" + lineId +
+                ", pointIndex=" + pointIndex +
+                ", latitude=" + latitude +
+                ", longitude=" + longitude +
+                ", taskId=" + taskId +
+                ", taskMap=" + taskMap +
+                '}';
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(this.state);
+        dest.writeLong(this.id);
+        dest.writeLong(this.lineId);
+        dest.writeInt(this.pointIndex);
+        dest.writeDouble(this.latitude);
+        dest.writeDouble(this.longitude);
+        dest.writeStringList(this.taskId);
+        dest.writeInt(this.taskMap.size());
+        for (Map.Entry<String, Task> entry : this.taskMap.entrySet()) {
+            dest.writeString(entry.getKey());
+            dest.writeParcelable(entry.getValue(), flags);
+        }
+        dest.writeString(this.introImage);
+    }
+
+    public Point() {
+    }
+
+    protected Point(Parcel in) {
+        this.state = in.readInt();
+        this.id = in.readLong();
+        this.lineId = in.readLong();
+        this.pointIndex = in.readInt();
+        this.latitude = in.readDouble();
+        this.longitude = in.readDouble();
+        this.taskId = in.createStringArrayList();
+        int taskMapSize = in.readInt();
+        this.taskMap = new HashMap<String, Task>(taskMapSize);
+        for (int i = 0; i < taskMapSize; i++) {
+            String key = in.readString();
+            Task value = in.readParcelable(Task.class.getClassLoader());
+            this.taskMap.put(key, value);
+        }
+        this.introImage = in.readString();
+    }
+
+    public static final Creator<Point> CREATOR = new Creator<Point>() {
+        @Override
+        public Point createFromParcel(Parcel source) {
+            return new Point(source);
+        }
+
+        @Override
+        public Point[] newArray(int size) {
+            return new Point[size];
+        }
+    };
+
     public static final class Builder {
+        private int state;
         private long id;
         private long lineId;
         private int pointIndex;
         private double latitude;
         private double longitude;
         private List<String> taskId;
-        private Map<String, Task> missionMap;
+        private Map<String, Task> taskMap;
+        private String introImage;
 
-        public Builder() {
+        private Builder() {
+        }
+
+        public Builder state(int val) {
+            state = val;
+            return this;
         }
 
         public Builder id(long val) {
@@ -156,8 +246,13 @@ public class Point implements Parcelable {
             return this;
         }
 
-        public Builder missionMap(Map<String, Task> val) {
-            missionMap = val;
+        public Builder taskMap(Map<String, Task> val) {
+            taskMap = val;
+            return this;
+        }
+
+        public Builder introImage(String val) {
+            introImage = val;
             return this;
         }
 
@@ -165,66 +260,4 @@ public class Point implements Parcelable {
             return new Point(this);
         }
     }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeLong(this.id);
-        dest.writeLong(this.lineId);
-        dest.writeInt(this.pointIndex);
-        dest.writeDouble(this.latitude);
-        dest.writeDouble(this.longitude);
-        dest.writeStringList(this.taskId);
-        dest.writeInt(this.taskMap.size());
-        for (Map.Entry<String, Task> entry : this.taskMap.entrySet()) {
-            dest.writeString(entry.getKey());
-            dest.writeParcelable(entry.getValue(), flags);
-        }
-    }
-
-    protected Point(Parcel in) {
-        this.id = in.readLong();
-        this.lineId = in.readLong();
-        this.pointIndex = in.readInt();
-        this.latitude = in.readDouble();
-        this.longitude = in.readDouble();
-        this.taskId = in.createStringArrayList();
-        int missionMapSize = in.readInt();
-        this.taskMap = new HashMap<String, Task>(missionMapSize);
-        for (int i = 0; i < missionMapSize; i++) {
-            String key = in.readString();
-            Task value = in.readParcelable(Task.class.getClassLoader());
-            this.taskMap.put(key, value);
-        }
-    }
-
-    @Override
-    public String toString() {
-        return "Point{" +
-                "state=" + state +
-                ", id=" + id +
-                ", lineId=" + lineId +
-                ", pointIndex=" + pointIndex +
-                ", latitude=" + latitude +
-                ", longitude=" + longitude +
-                ", taskId=" + taskId +
-                ", taskMap=" + taskMap +
-                '}';
-    }
-
-    public static final Creator<Point> CREATOR = new Creator<Point>() {
-        @Override
-        public Point createFromParcel(Parcel source) {
-            return new Point(source);
-        }
-
-        @Override
-        public Point[] newArray(int size) {
-            return new Point[size];
-        }
-    };
 }
