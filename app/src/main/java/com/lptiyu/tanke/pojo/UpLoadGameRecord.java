@@ -4,13 +4,13 @@ package com.lptiyu.tanke.pojo;
  * Created by Jason on 2016/7/18.
  */
 public class UpLoadGameRecord {
-    public long uid;
-    public long game_id;
-    public long point_id;
-    public long task_id;
-    public long type;//游戏类型，个人赛还是团队赛
-    public long point_statu;
-    public long play_statu;
+    public String uid;
+    public String game_id;
+    public String point_id;
+    public String task_id;
+    public String type;//游戏类型，个人赛还是团队赛
+    public String point_statu;
+    public String play_statu;
 
     @Override
     public String toString() {

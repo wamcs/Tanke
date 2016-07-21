@@ -111,4 +111,13 @@ public class DBPointRecord {
         myDao.refresh(this);
     }
 
+    @Override
+    public String toString() {
+        return "DBPointRecord{" +
+                "id=" + id +
+                ", statu='" + statu + '\'' +
+                ", point_id='" + point_id + '\'' +
+                ", task=" + task +
+                '}';
+    }
 }

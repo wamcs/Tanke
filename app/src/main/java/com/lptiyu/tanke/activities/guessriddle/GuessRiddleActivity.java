@@ -10,6 +10,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.lptiyu.tanke.R;
+import com.lptiyu.tanke.enums.ResultCode;
 import com.lptiyu.tanke.gameplaying.pojo.Task;
 import com.lptiyu.tanke.widget.CustomTextView;
 
@@ -33,7 +34,7 @@ public class GuessRiddleActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         Intent intent = getIntent();
-        task = intent.getParcelableExtra("task");
+        task = intent.getParcelableExtra(Task.class.getName());
 
         Log.i("jason", "当前task：" + task);
     }
@@ -49,6 +50,7 @@ public class GuessRiddleActivity extends AppCompatActivity {
                 }
                 if (answer.equals(task.getPwd())) {
                     Toast.makeText(this, "答案正确", Toast.LENGTH_SHORT).show();
+                    setResult(ResultCode.GUESS_RIDDLE);
                     finish();
                 } else {
                     Toast.makeText(this, "答案错误,请重新输入答案", Toast.LENGTH_SHORT).show();

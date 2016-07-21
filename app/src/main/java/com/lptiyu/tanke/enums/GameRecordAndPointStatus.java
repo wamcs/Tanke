@@ -5,6 +5,6 @@ package com.lptiyu.tanke.enums;
  */
 public interface GameRecordAndPointStatus {
     int FINISHED = 1;
-    int UNFINISHED = 0;
+    int PLAYING = 0;
     int UNSTARTED = -1;
 }

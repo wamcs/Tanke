@@ -80,6 +80,7 @@
         android:layout_alignBottom="@id/gv"
         android:layout_alignRight="@id/gv"
         android:onClick="click"
-        android:text="提交游戏记录"/>
+        android:text="提交游戏记录"
+        android:visibility="gone"/>
 
 </RelativeLayout>

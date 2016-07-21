@@ -25,7 +25,7 @@ import butterknife.ButterKnife;
  */
 public class ShareDialog extends BaseDialog {
 
-    private int[] imagePath={R.mipmap.img_qq,
+    private int[] imagePath = {R.mipmap.img_qq,
             R.mipmap.img_weixin,
             R.mipmap.img_weibo,
             R.mipmap.img_share_wechat_moment};
@@ -41,39 +41,39 @@ public class ShareDialog extends BaseDialog {
         initGridView(context);
     }
 
-    private void initGridView(Context context){
-        List<HashMap<String,Object>> shareList=new ArrayList<>();
+    private void initGridView(Context context) {
+        List<HashMap<String, Object>> shareList = new ArrayList<>();
         for (int anImagePath : imagePath) {
             HashMap<String, Object> map = new HashMap<>();
             map.put("ItemImage", anImagePath);
             shareList.add(map);
         }
-        SimpleAdapter adapter=new SimpleAdapter(context, shareList, R.layout.layout_dialog_share_item,
-                new String[]{"ItemImage"},new int[]{R.id.dialog_share_item});
+        SimpleAdapter adapter = new SimpleAdapter(context, shareList, R.layout.layout_dialog_share_item,
+                new String[]{"ItemImage"}, new int[]{R.id.dialog_share_item});
         gridView.setAdapter(adapter);
 
     }
 
-    public void setShareContent(String title, String text, String imageUrl, String shareUrl){
-        final String mTitle=title;
-        final String mText=text;
-        final String mImageUrl=imageUrl;
-        final String mShareUrl=shareUrl;
-        OnItemClickListener listener=new OnItemClickListener() {
+    public void setShareContent(String title, String text, String imageUrl, String shareUrl) {
+        final String mTitle = title;
+        final String mText = text;
+        final String mImageUrl = imageUrl;
+        final String mShareUrl = shareUrl;
+        OnItemClickListener listener = new OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                switch (position){
+                switch (position) {
                     case 0:
-                        ShareHelper.share(ShareHelper.SHARE_QQ,mTitle,mText,mImageUrl,mShareUrl);
+                        ShareHelper.share(ShareHelper.SHARE_QQ, mTitle, mText, mImageUrl, mShareUrl);
                         break;
                     case 1:
-                        ShareHelper.share(ShareHelper.SHARE_WECHAT_FRIENDS,mTitle,mText,mImageUrl,mShareUrl);
+                        ShareHelper.share(ShareHelper.SHARE_WECHAT_FRIENDS, mTitle, mText, mImageUrl, mShareUrl);
                         break;
                     case 2:
-                        ShareHelper.share(ShareHelper.SHARE_WEIBO,mTitle,mText,mImageUrl,mShareUrl);
+                        ShareHelper.share(ShareHelper.SHARE_WEIBO, mTitle, mText, mImageUrl, mShareUrl);
                         break;
                     case 3:
-                        ShareHelper.share(ShareHelper.SHARE_WECHAT_CIRCLE,mTitle,mText,mImageUrl,mShareUrl);
+                        ShareHelper.share(ShareHelper.SHARE_WECHAT_CIRCLE, mTitle, mText, mImageUrl, mShareUrl);
                         break;
                 }
             }

@@ -454,6 +454,8 @@ public class GameDetailsController extends ActivityController {
         Intent intent = new Intent(getContext(), GamePlaying2Activity.class);
         intent.putExtra(Conf.GAME_ID, gameId);
         intent.putExtra(Conf.GAME_DETAIL, mGameDetailsEntity);
+        //        //从游戏详情进入玩游戏界面，说明这是用户第一次进入到游戏，所以需要传入数据库所需要的字段
+        //        intent.putExtra(Conf.JOIN_TIME, System.currentTimeMillis() + "");
         if (mGameDetailsEntity.getType() == GAME_TYPE.TEAMS) {
             //TODO : need pass team id to GamePlayingActivity when the team game open
         }
