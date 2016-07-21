@@ -143,7 +143,8 @@ public class GamePlaying2Activity extends Activity implements GamePlayingContrac
                 break;
             case R.id.btn_baiduMapMode:
                 Intent intent = new Intent(GamePlaying2Activity.this, GameMapShowActivity.class);
-                intent.putExtra(Conf.GAME_DISPLAY_ENTITY, gameDetailsEntity);
+                intent.putExtra(Conf.GAME_ID, gameId);
+                intent.putExtra(Conf.TEAM_ID,teamId);
                 startActivity(intent);
                 break;
             case R.id.btn_submitRecord:

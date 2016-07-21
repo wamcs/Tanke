@@ -144,9 +144,7 @@ public class TimeUtils {
     Calendar calendar = Calendar.getInstance();
 
     Date date = TimeUtils.parseDate(startDate, TimeUtils.dateFormatter);
-    if (date == null) {
-      result = "";
-    } else {
+    if (date!=null){
       calendar.setTime(date);
       int _startMonth = calendar.get(Calendar.MONTH);
       int _startDate = calendar.get(Calendar.DATE);
@@ -156,8 +154,10 @@ public class TimeUtils {
       int _endDate = calendar.get(Calendar.DATE);
       result = String.format(Locale.CHINA, context.getString(R.string.main_page_date_format_pattern),
           _startMonth, _startDate, _endMonth, _endDate);
+      return result;
     }
 
+    result = "";
     Date time = TimeUtils.parseTime(startTime);
     if (time == null) {
       result += context.getString(R.string.main_page_forever);

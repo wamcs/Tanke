@@ -124,6 +124,8 @@ public class GameZipParser {
                 return null;
             }
             taskMap.put(taskName, task);
+            //this method only be used when point only has one task
+            point.setIntroImage(LOCAL_FILE_PREFIX + taskDirPath + "/" + point.getPointIndex() + ".jpg");
         }
         point.setTaskMap(taskMap);
         return point;

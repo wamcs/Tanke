@@ -38,6 +38,7 @@
 
     <!-- Permission above added for barcode scanner -->
     <application
+        
         android:name=".RunApplication"
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"

@@ -161,6 +161,7 @@
                     android:id="@id/login_weibo_button"
                     android:layout_width="@dimen/x150"
                     android:layout_height="@dimen/x150"
+                    android:visibility="gone"
                     android:background="@mipmap/img_weibo"/>
 
             </LinearLayout>
