@@ -12,16 +12,16 @@ import java.util.List;
  * Created by Jason on 2016/7/20.
  */
 public class GameRecord implements Parcelable {
-    private Long id;
-    private String join_time;
-    private String start_time;
-    private String last_task_ftime;
-    private String play_statu;
-    private String ranks_id;
-    private String game_id;
-    private String line_id;
-    private String uid;
-    private List<PointRecord> record_text;
+    public Long id;
+    public String join_time;
+    public String start_time;
+    public String last_task_ftime;
+    public String play_statu;
+    public String ranks_id;
+    public String game_id;
+    public String line_id;
+    public String uid;
+    public List<PointRecord> record_text;
 
     @Override
     public int describeContents() {
@@ -70,86 +70,6 @@ public class GameRecord implements Parcelable {
             return new GameRecord[size];
         }
     };
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getJoin_time() {
-        return join_time;
-    }
-
-    public void setJoin_time(String join_time) {
-        this.join_time = join_time;
-    }
-
-    public String getStart_time() {
-        return start_time;
-    }
-
-    public void setStart_time(String start_time) {
-        this.start_time = start_time;
-    }
-
-    public String getLast_task_ftime() {
-        return last_task_ftime;
-    }
-
-    public void setLast_task_ftime(String last_task_ftime) {
-        this.last_task_ftime = last_task_ftime;
-    }
-
-    public String getPlay_statu() {
-        return play_statu;
-    }
-
-    public void setPlay_statu(String play_statu) {
-        this.play_statu = play_statu;
-    }
-
-    public String getRanks_id() {
-        return ranks_id;
-    }
-
-    public void setRanks_id(String ranks_id) {
-        this.ranks_id = ranks_id;
-    }
-
-    public String getGame_id() {
-        return game_id;
-    }
-
-    public void setGame_id(String game_id) {
-        this.game_id = game_id;
-    }
-
-    public String getLine_id() {
-        return line_id;
-    }
-
-    public void setLine_id(String line_id) {
-        this.line_id = line_id;
-    }
-
-    public String getUid() {
-        return uid;
-    }
-
-    public void setUid(String uid) {
-        this.uid = uid;
-    }
-
-    public List<PointRecord> getRecord_text() {
-        return record_text;
-    }
-
-    public void setRecord_text(List<PointRecord> record_text) {
-        this.record_text = record_text;
-    }
 
     @Override
     public String toString() {

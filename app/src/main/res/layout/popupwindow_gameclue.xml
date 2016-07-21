@@ -64,7 +64,6 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="30dp"
             android:layout_toRightOf="@id/img_indicate"
-            android:clickable="true"
             android:drawablePadding="10dp"
             android:text="寻找答案"
             android:textColor="@color/colorPrimary"

@@ -251,6 +251,11 @@ public class TimeUtils {
     else
       return h + "";
   }
+    public static String parseFinishTimeForTaskFinished() {
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        return formatter.format(new Date());
+
+    }
 
 
 }

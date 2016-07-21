@@ -74,7 +74,7 @@ public class GVForGamePlayingAdapter extends BaseAdapter {
                 vh.img.setImageResource(R.drawable.default_pic);
                 vh.imgLabel.setVisibility(View.GONE);
                 break;
-            case GameRecordAndPointStatus.UNFINISHED://正在玩
+            case GameRecordAndPointStatus.PLAYING://正在玩
                 vh.ctvPointName.setText(task.getTaskName() + "");
                 setImgBitmap(position, vh, taskId);
                 vh.imgLabel.setVisibility(View.VISIBLE);
@@ -97,11 +97,14 @@ public class GVForGamePlayingAdapter extends BaseAdapter {
         builder.append(unZippedDir).append("/").append(position).append("/").append(taskId);
         File file = new File(builder.toString());
         String[] list = file.list();
-        for (String fileDir : list) {
-            if (fileDir.endsWith(".jpg") || fileDir.endsWith(".png")) {
-                String imgDir = builder.append("/").append(fileDir).toString();
-                //                Log.i("jason", "图片路径：" + imgDir);
-                vh.img.setImageBitmap(BitmapFactory.decodeFile(imgDir));
+        if (list == null || list.length == 0) {
+            vh.img.setImageResource(R.drawable.default_pic);
+        } else {
+            for (String fileDir : list) {
+                if (fileDir.endsWith(".jpg") || fileDir.endsWith(".png")) {
+                    String imgDir = builder.append("/").append(fileDir).toString();
+                    vh.img.setImageBitmap(BitmapFactory.decodeFile(imgDir));
+                }
             }
         }
     }

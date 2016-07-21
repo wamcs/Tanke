@@ -29,6 +29,16 @@ public class Task implements Parcelable {
 
     private int exp;
 
+    private String finishTime;
+
+    public String getFinishTime() {
+        return finishTime;
+    }
+
+    public void setFinishTime(String finishTime) {
+        this.finishTime = finishTime;
+    }
+
     @SerializedName("mission_name")
     private String taskName;
 
@@ -173,6 +183,7 @@ public class Task implements Parcelable {
                 "id=" + id +
                 ", type=" + type +
                 ", exp=" + exp +
+                ", finishTime='" + finishTime + '\'' +
                 ", taskName='" + taskName + '\'' +
                 ", content='" + content + '\'' +
                 ", pwd='" + pwd + '\'' +

@@ -2,7 +2,6 @@ package com.lptiyu.tanke.activities.baidumapmode;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 

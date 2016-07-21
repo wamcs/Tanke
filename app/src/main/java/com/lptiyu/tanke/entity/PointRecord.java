@@ -3,18 +3,16 @@ package com.lptiyu.tanke.entity;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.lptiyu.tanke.database.DBTaskRecord;
-
-import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by Jason on 2016/7/20.
  */
 public class PointRecord implements Parcelable {
-    private Long id;
-    private String statu;
-    private List<TaskRecord> task;
+    public Long id;
+    public String statu;
+    public String point_id;
+    public List<TaskRecord> task;
 
     @Override
     public int describeContents() {
@@ -25,7 +23,8 @@ public class PointRecord implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeValue(this.id);
         dest.writeString(this.statu);
-        dest.writeList(this.task);
+        dest.writeString(this.point_id);
+        dest.writeTypedList(this.task);
     }
 
     public PointRecord() {
@@ -34,8 +33,8 @@ public class PointRecord implements Parcelable {
     protected PointRecord(Parcel in) {
         this.id = (Long) in.readValue(Long.class.getClassLoader());
         this.statu = in.readString();
-        this.task = new ArrayList<TaskRecord>();
-        in.readList(this.task, DBTaskRecord.class.getClassLoader());
+        this.point_id = in.readString();
+        this.task = in.createTypedArrayList(TaskRecord.CREATOR);
     }
 
     public static final Parcelable.Creator<PointRecord> CREATOR = new Parcelable.Creator<PointRecord>() {
@@ -50,35 +49,12 @@ public class PointRecord implements Parcelable {
         }
     };
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getStatu() {
-        return statu;
-    }
-
-    public void setStatu(String statu) {
-        this.statu = statu;
-    }
-
-    public List<TaskRecord> getTask() {
-        return task;
-    }
-
-    public void setTask(List<TaskRecord> task) {
-        this.task = task;
-    }
-
     @Override
     public String toString() {
         return "PointRecord{" +
                 "id=" + id +
                 ", statu='" + statu + '\'' +
+                ", point_id='" + point_id + '\'' +
                 ", task=" + task +
                 '}';
     }
