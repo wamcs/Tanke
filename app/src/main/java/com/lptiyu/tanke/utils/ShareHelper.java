@@ -48,7 +48,7 @@ public class ShareHelper {
   private static void shareWeibo(String title, String text, String imagePath, String shareUrl) {
     Platform.ShareParams shareParams = new Platform.ShareParams();
     shareParams.setText(text);
-    shareParams.setImagePath(imagePath);
+    shareParams.setImageUrl(imagePath);
     Platform weibo = ShareSDK.getPlatform(SinaWeibo.NAME);
     weibo.setPlatformActionListener(new listener());
     weibo.share(shareParams);
@@ -65,7 +65,7 @@ public class ShareHelper {
     Platform.ShareParams shareParams = new Platform.ShareParams();
     shareParams.setTitle(title);
     shareParams.setText(text);
-    shareParams.setImagePath(imagePath);
+    shareParams.setImageUrl(imagePath);
     if (null != shareUrl) {
       shareParams.setTitleUrl(shareUrl);
     }
@@ -86,7 +86,7 @@ public class ShareHelper {
     }
     shareParams.setTitle(title);
     shareParams.setText(text);
-    shareParams.setImagePath(imagePath);
+    shareParams.setImageUrl(imagePath);
     Platform wechat = ShareSDK.getPlatform(Wechat.NAME);
     wechat.setPlatformActionListener(new listener());
     wechat.share(shareParams);
@@ -102,7 +102,7 @@ public class ShareHelper {
     }
     shareParams.setTitle(title);
     shareParams.setText(text);
-    shareParams.setImagePath(imagePath);
+    shareParams.setImageUrl(imagePath);
     Platform wechat = ShareSDK.getPlatform(WechatMoments.NAME);
     wechat.setPlatformActionListener(new listener());
     wechat.share(shareParams);
