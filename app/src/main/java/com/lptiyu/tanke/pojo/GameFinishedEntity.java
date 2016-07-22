@@ -1,5 +1,8 @@
 package com.lptiyu.tanke.pojo;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.SerializedName;
 
 /**
@@ -8,7 +11,7 @@ import com.google.gson.annotations.SerializedName;
  *
  * @author ldx
  */
-public class GameFinishedEntity {
+public class GameFinishedEntity implements Parcelable {
   @SerializedName("game_id")
   long gameId;
 
@@ -84,4 +87,45 @@ public class GameFinishedEntity {
   public void setExpPoints(int expPoints) {
     this.expPoints = expPoints;
   }
+
+  @Override
+  public int describeContents() {
+    return 0;
+  }
+
+  @Override
+  public void writeToParcel(Parcel dest, int flags) {
+    dest.writeLong(this.gameId);
+    dest.writeString(this.img);
+    dest.writeString(this.name);
+    dest.writeString(this.startTime);
+    dest.writeString(this.endTime);
+    dest.writeInt(this.type);
+    dest.writeInt(this.expPoints);
+  }
+
+  public GameFinishedEntity() {
+  }
+
+  protected GameFinishedEntity(Parcel in) {
+    this.gameId = in.readLong();
+    this.img = in.readString();
+    this.name = in.readString();
+    this.startTime = in.readString();
+    this.endTime = in.readString();
+    this.type = in.readInt();
+    this.expPoints = in.readInt();
+  }
+
+  public static final Parcelable.Creator<GameFinishedEntity> CREATOR = new Parcelable.Creator<GameFinishedEntity>() {
+    @Override
+    public GameFinishedEntity createFromParcel(Parcel source) {
+      return new GameFinishedEntity(source);
+    }
+
+    @Override
+    public GameFinishedEntity[] newArray(int size) {
+      return new GameFinishedEntity[size];
+    }
+  };
 }

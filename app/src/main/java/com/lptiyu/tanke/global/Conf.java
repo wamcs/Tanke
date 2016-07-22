@@ -108,6 +108,8 @@ public final class Conf {
     public static final String GAME_POINTS = "game_points";
     public static final String GAME_RECORDS = "game_records";
     public static final String GAME_DISPLAY_ENTITY = "game_display_entity";
+    public static final String GAME_PLAYING_ENTITY = "game_playing_entity";
+    public static final String GAME_FINISHED_ENTITY = "game_finished_entity";
     public static final String LIST_POINTS = "list_points";
 
     /**

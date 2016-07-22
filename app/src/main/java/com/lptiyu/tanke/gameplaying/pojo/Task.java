@@ -51,7 +51,7 @@ public class Task implements Parcelable {
         LOCATE(1), // locate the position
         RIDDLE(3), // Secret mission
         DISTINGUISH(5), // take the photo and distinguish
-        TIMING(0),
+        TIMING(0),//限时任务
         FINISH(2);
 
         private int type;

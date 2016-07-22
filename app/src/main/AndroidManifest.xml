@@ -38,7 +38,6 @@
 
     <!-- Permission above added for barcode scanner -->
     <application
-        
         android:name=".RunApplication"
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
@@ -149,12 +148,10 @@
         <activity android:name=".gamedetails.GameDetailsActivity"/>
         <activity android:name=".gamedetails.GameDetailsLocationActivity"/>
         <activity android:name=".gamedata.GameDataActivity"/>
-
         <activity
             android:name=".gameplaying.parser.ClueDisplayActivity"
             android:theme="@style/ApparentActivity">
         </activity>
-
 
         <service android:name="com.avos.avoscloud.PushService"/>
 
@@ -187,7 +184,8 @@
         <activity
             android:name=".widget.dialog.ShareDialog"
             android:theme="@style/ApparentActivity"/>
-
+        <activity android:name=".activities.imagedistinguish.ImageDistinguish">
+        </activity>
     </application>
 
 </manifest>
