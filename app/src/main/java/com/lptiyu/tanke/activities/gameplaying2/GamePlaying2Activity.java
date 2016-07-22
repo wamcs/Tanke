@@ -21,6 +21,7 @@ import android.widget.Toast;
 import com.lptiyu.tanke.R;
 import com.lptiyu.tanke.activities.baidumapmode.GameMapShowActivity;
 import com.lptiyu.tanke.activities.guessriddle.GuessRiddleActivity;
+import com.lptiyu.tanke.activities.imagedistinguish.ImageDistinguish;
 import com.lptiyu.tanke.adapter.GVForGamePlayingAdapter;
 import com.lptiyu.tanke.database.DBGameRecord;
 import com.lptiyu.tanke.database.DBPointRecord;
@@ -40,6 +41,8 @@ import com.lptiyu.tanke.global.Accounts;
 import com.lptiyu.tanke.global.Conf;
 import com.lptiyu.tanke.pojo.GameDetailsEntity;
 import com.lptiyu.tanke.pojo.GameDisplayEntity;
+import com.lptiyu.tanke.pojo.GameFinishedEntity;
+import com.lptiyu.tanke.pojo.GamePlayingEntity;
 import com.lptiyu.tanke.pojo.UpLoadGameRecord;
 import com.lptiyu.tanke.utils.TimeUtils;
 import com.lptiyu.tanke.utils.ToastUtil;
@@ -68,7 +71,6 @@ public class GamePlaying2Activity extends Activity implements GamePlaying2Contra
     long teamId;
 
     long gameType;
-    GameDetailsEntity gameDetailsEntity;
 
     AlertDialog parseGameZipErrorDialog;
     AlertDialog loadGameRecordDialog;
@@ -85,6 +87,7 @@ public class GamePlaying2Activity extends Activity implements GamePlaying2Contra
     private boolean isGameOver;
 
     private static final int CAMERA_PERMISSION_REQUEST_CODE = 1;
+    private static final int IMAGE_DISTINGUISH = 2;
     private GVForGamePlayingAdapter adapter;
     private AlertDialog taskDialog;
     private int currentPointIndex;
@@ -162,7 +165,7 @@ public class GamePlaying2Activity extends Activity implements GamePlaying2Contra
     }
 
     /**
-     * 玩游戏界面可以从两个入口进来，游戏列表和游戏详情，要分开考虑
+     * 玩游戏界面可以从四个入口进来：游戏列表、游戏详情、正在玩的游戏、已经完成的游戏，要分开考虑
      */
     private void initData() {
         GameZipHelper gameZipHelper = new GameZipHelper();
@@ -172,14 +175,30 @@ public class GamePlaying2Activity extends Activity implements GamePlaying2Contra
         //获取游戏列表实体类（从游戏列表进来）
         GameDisplayEntity gameDisplayEntity = intent.getParcelableExtra(Conf.GAME_DISPLAY_ENTITY);
         //获取游戏详情实体类（从游戏详情进来）
-        gameDetailsEntity = intent.getParcelableExtra(Conf.GAME_DETAIL);
+        GameDetailsEntity gameDetailsEntity = intent.getParcelableExtra(Conf.GAME_DETAIL);
+        //获取游戏详情实体类（从正在玩的游戏进来）
+        GamePlayingEntity gamePlayingEntity = intent.getParcelableExtra(Conf.GAME_PLAYING_ENTITY);
+        //获取游戏详情实体类（从已完成的游戏进来）
+        GameFinishedEntity gameFinishedEntity = intent.getParcelableExtra(Conf.GAME_FINISHED_ENTITY);
         if (gameDisplayEntity != null) {
+            Log.i("jason", "接收的游戏列表的实体类：" + gameDisplayEntity);
             gameType = gameDisplayEntity.getType().value;
             gameName = gameDisplayEntity.getTitle();
         }
         if (gameDetailsEntity != null) {
+            Log.i("jason", "接收的游戏详情的实体类：" + gameDetailsEntity);
             gameType = gameDetailsEntity.getType().value;
             gameName = gameDetailsEntity.getTitle();
+        }
+        if (gamePlayingEntity != null) {
+            Log.i("jason", "接收的正在玩的游戏实体类：" + gamePlayingEntity);
+            gameType = gamePlayingEntity.getType();
+            gameName = gamePlayingEntity.getName();
+        }
+        if (gameFinishedEntity != null) {
+            Log.i("jason", "接收的完成的游戏实体类：" + gameFinishedEntity);
+            gameType = gameFinishedEntity.getType();
+            gameName = gameFinishedEntity.getName();
         }
 
         gamePlayingTitle.setText(gameName + "");
@@ -394,11 +413,10 @@ public class GamePlaying2Activity extends Activity implements GamePlaying2Contra
                         Intent intent = new Intent(GamePlaying2Activity.this, CaptureActivity.class);
                         startActivityForResult(intent, CAMERA_PERMISSION_REQUEST_CODE);
                     }
-                    if (task.getType() == Task.TASK_TYPE.DISTINGUISH) {//拍照上传任务
-                        Log.i("jason", "拍照任务");
-                        //TODO 这里只是为了测试才这么写的，实际上是进入拍照任务的界面
-                        Intent intent = new Intent(GamePlaying2Activity.this, CaptureActivity.class);
-                        startActivityForResult(intent, CAMERA_PERMISSION_REQUEST_CODE);
+                    if (task.getType() == Task.TASK_TYPE.DISTINGUISH) {//图像识别任务
+                        Log.i("jason", "图像识别任务");
+                        Intent intent = new Intent(GamePlaying2Activity.this, ImageDistinguish.class);
+                        startActivityForResult(intent, IMAGE_DISTINGUISH);
                     }
                     if (task.getType() == Task.TASK_TYPE.LOCATE) {//定位任务
                         Log.i("jason", "定位任务");
