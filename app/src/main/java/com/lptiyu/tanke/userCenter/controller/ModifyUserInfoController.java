@@ -304,7 +304,7 @@ public class ModifyUserInfoController extends ActivityController {
       mImageChooseDialog = new ImageChooseDialog(getContext(), this);
       mImageChooseDialog.setOnImageChoosedListener(new ImageChooseDialog.OnImageChoosedListener() {
         @Override
-        public void onImageChoosed(File file) {
+        public void onImageChoosed(final File file) {
           mLoadingDialog.setDialogText("图片上传中");
           mLoadingDialog.show();
           RequestBody body = RequestBody.create(MediaType.parse("multipart/form-data"), file);
@@ -321,7 +321,7 @@ public class ModifyUserInfoController extends ActivityController {
                     return;
                   }
                   ToastUtil.TextToast(getString(R.string.upload_avatar_success));
-                  mAvatarImage.setImageURI(Uri.parse(stringResponse.getData()));
+                  Glide.with(getActivity()).load(Uri.parse(stringResponse.getData())).into(mAvatarImage);
                 }
               }, new Action1<Throwable>() {
                 @Override

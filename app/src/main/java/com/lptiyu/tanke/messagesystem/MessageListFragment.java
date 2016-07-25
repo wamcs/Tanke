@@ -16,6 +16,7 @@ import com.lptiyu.tanke.database.DBHelper;
 import com.lptiyu.tanke.database.MessageNotification;
 import com.lptiyu.tanke.database.MessageNotificationDao;
 import com.lptiyu.tanke.database.MessageNotificationList;
+import com.lptiyu.tanke.database.MessageNotificationListDao;
 import com.lptiyu.tanke.global.Accounts;
 import com.lptiyu.tanke.global.Conf;
 import com.lptiyu.tanke.io.net.HttpService;
@@ -121,7 +122,6 @@ public class MessageListFragment extends BaseFragment implements
                         isRefreshing = false;
                         swipeRefreshLayout.setRefreshing(false);
                         if (messageList != null) {
-                            DBHelper.getInstance().getMessageListDao().insertOrReplace(messageList);
                             adapter.updateMessageData(messageList);
                         }
                     }
