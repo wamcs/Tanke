@@ -46,7 +46,7 @@ import timber.log.Timber;
 public class GameDataController extends BaseListActivityController<GameDataEntity> implements
     SwipeRefreshLayout.OnRefreshListener {
 
-  @BindView(R.id.activity_game_data_toolbar_textview)
+
   TextView mToolbarTitle;
   @BindView(R.id.swipe_refresh_layout)
   SwipeRefreshLayout mRefreshLayout;
@@ -70,6 +70,7 @@ public class GameDataController extends BaseListActivityController<GameDataEntit
 
   public GameDataController(AppCompatActivity activity, View view) {
     super(activity, view);
+    mToolbarTitle= (TextView) view.findViewById(R.id.activity_game_data_toolbar_textview);
     ButterKnife.bind(this, view);
     init();
   }
