@@ -54,7 +54,7 @@ public class MessageListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             dao.insertOrReplace(messageList);
         } else {
             if (messageList.getTime() > result.get(0).getTime()) {
-                dao.update(messageList);
+                dao.insertOrReplace(messageList);
             }
         }
         mMessageList = dao.loadAll();

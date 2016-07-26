@@ -64,7 +64,7 @@ public class ShareDialog extends AppCompatActivity {
         mShareUrl = intent.getStringExtra(Conf.SHARE_URL);
         Window window = getWindow();
         WindowManager.LayoutParams params = window.getAttributes();
-        params.height = (int) (Display.height() *0.3f);
+        params.height = (int) (Display.height() *0.15f);
         params.width = Display.width();
         window.setAttributes(params);
         window.setGravity(Gravity.BOTTOM);
