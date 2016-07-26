@@ -5,4 +5,5 @@ package com.lptiyu.tanke.enums;
  */
 public interface ResultCode {
     int GUESS_RIDDLE = 68001;
+    int IMAGE_DISTINGUISH = 68002;
 }

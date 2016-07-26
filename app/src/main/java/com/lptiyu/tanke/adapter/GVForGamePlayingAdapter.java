@@ -2,6 +2,7 @@ package com.lptiyu.tanke.adapter;
 
 import android.content.Context;
 import android.graphics.BitmapFactory;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -101,8 +102,9 @@ public class GVForGamePlayingAdapter extends BaseAdapter {
             vh.img.setImageResource(R.drawable.default_pic);
         } else {
             for (String fileDir : list) {
-                if (fileDir.endsWith(".jpg") || fileDir.endsWith(".png")) {
+                if (fileDir.endsWith(position+".jpg") || fileDir.endsWith(position+".png")) {
                     String imgDir = builder.append("/").append(fileDir).toString();
+                    Log.i("jason", "章节点图片路径：" + imgDir);
                     vh.img.setImageBitmap(BitmapFactory.decodeFile(imgDir));
                 }
             }

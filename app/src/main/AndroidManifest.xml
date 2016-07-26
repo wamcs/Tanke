@@ -184,7 +184,7 @@
         <activity
             android:name=".widget.dialog.ShareDialog"
             android:theme="@style/ApparentActivity"/>
-        <activity android:name=".activities.imagedistinguish.ImageDistinguish">
+        <activity android:name=".activities.imagedistinguish.ImageDistinguishActivity">
         </activity>
     </application>
 

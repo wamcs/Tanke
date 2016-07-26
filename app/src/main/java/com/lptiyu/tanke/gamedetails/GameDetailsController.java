@@ -460,6 +460,7 @@ public class GameDetailsController extends ActivityController {
             //TODO : need pass team id to GamePlayingActivity when the team game open
         }
         startActivity(intent);
+        finish();
     }
 
 
@@ -532,7 +533,8 @@ public class GameDetailsController extends ActivityController {
                     sink.writeAll(response.body().source());
                     sink.close();
                     //游戏包下载完毕,检测有用是否开启GPS定位
-                    initGPS();
+                    //                    initGPS();
+                    startPlayingGame();
                 } catch (IOException e) {
                     if (file.exists()) {
                         file.delete();

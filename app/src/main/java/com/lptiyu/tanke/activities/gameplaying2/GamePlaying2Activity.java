@@ -21,7 +21,7 @@ import android.widget.Toast;
 import com.lptiyu.tanke.R;
 import com.lptiyu.tanke.activities.baidumapmode.GameMapShowActivity;
 import com.lptiyu.tanke.activities.guessriddle.GuessRiddleActivity;
-import com.lptiyu.tanke.activities.imagedistinguish.ImageDistinguish;
+import com.lptiyu.tanke.activities.imagedistinguish.ImageDistinguishActivity;
 import com.lptiyu.tanke.adapter.GVForGamePlayingAdapter;
 import com.lptiyu.tanke.database.DBGameRecord;
 import com.lptiyu.tanke.database.DBPointRecord;
@@ -51,7 +51,6 @@ import com.lptiyu.tanke.widget.CustomTextView;
 import com.lptiyu.zxinglib.android.CaptureActivity;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -338,8 +337,8 @@ public class GamePlaying2Activity extends Activity implements GamePlaying2Contra
         //根据游戏记录核对每个任务点的状态
         checkGameRecordAndPointStatus();
         setAdapter();
-        showFinishTaskAndGameOverDialog();
         if (isGameOver) {
+            showFinishTaskAndGameOverDialog();
             finishTaskAndGameOverDialog.setMessage("恭喜你，游戏通关");
             finishTaskAndGameOverDialog.show();
         }
@@ -410,19 +409,22 @@ public class GamePlaying2Activity extends Activity implements GamePlaying2Contra
                     if (task.getType() == Task.TASK_TYPE.TIMING) {//限时任务
                         Log.i("jason", "限时任务");
                         //TODO 这里只是为了测试才这么写的，实际上是进入限时任务的界面
-                        Intent intent = new Intent(GamePlaying2Activity.this, CaptureActivity.class);
-                        startActivityForResult(intent, CAMERA_PERMISSION_REQUEST_CODE);
+                        Intent intent = new Intent(GamePlaying2Activity.this, ImageDistinguishActivity.class);
+                        startActivityForResult(intent, IMAGE_DISTINGUISH);
                     }
                     if (task.getType() == Task.TASK_TYPE.DISTINGUISH) {//图像识别任务
                         Log.i("jason", "图像识别任务");
-                        Intent intent = new Intent(GamePlaying2Activity.this, ImageDistinguish.class);
+                        Intent intent = new Intent(GamePlaying2Activity.this, ImageDistinguishActivity.class);
+                        String imgUrl = unZippedDir + "/" + currentPointIndex + "/" + currentTask.getId() + "/" +
+                                currentTask.getPwd();
+                        Log.i("jason", "要识别的图片路径：" + imgUrl);
+                        intent.putExtra(Conf.IMG_DISTINGUISH_URL, imgUrl);
                         startActivityForResult(intent, IMAGE_DISTINGUISH);
                     }
                     if (task.getType() == Task.TASK_TYPE.LOCATE) {//定位任务
                         Log.i("jason", "定位任务");
                         //TODO 这里只是为了测试才这么写的，实际上是进入定位任务的界面
-                        Intent intent = new Intent(GamePlaying2Activity.this, CaptureActivity.class);
-                        startActivityForResult(intent, CAMERA_PERMISSION_REQUEST_CODE);
+
                     }
                     if (task.getType() == Task.TASK_TYPE.FINISH) {
                         Log.i("jason", "完成任务");
@@ -476,42 +478,53 @@ public class GamePlaying2Activity extends Activity implements GamePlaying2Contra
                 throw new IllegalArgumentException("the pwd must not be null or \"\" ");
             }
             if (str.equals(currentTask.getPwd())) {
-                finishTaskAndGameOverDialog.setMessage("恭喜你找出线索");
-                finishTaskAndGameOverDialog.show();
-                //                currentTask.setFinishTime((new Date() + ""));
-                currentTask.setFinishTime(TimeUtils.parseFinishTimeForTaskFinished());
-                //刷新数据源
-                reLoadData();
-                //存储游戏记录
-                upLoadAndSaveGameRecord();
+                finishedCurrentTast();
 
             } else {
                 Toast.makeText(this, "答案错误，任务失败", Toast.LENGTH_SHORT).show();
             }
         }
         if (resultCode == ResultCode.GUESS_RIDDLE) {//猜谜返回
-            showFinishTaskAndGameOverDialog();
-            finishTaskAndGameOverDialog.setMessage("恭喜你找出线索");
-            finishTaskAndGameOverDialog.show();
-            currentTask.setFinishTime((new Date() + ""));
-            //刷新数据源
-            reLoadData();
-            //存储游戏记录
-            upLoadAndSaveGameRecord();
+            finishedCurrentTast();
         }
+        if (resultCode == ResultCode.IMAGE_DISTINGUISH) {//图像识别返回
+            finishedCurrentTast();
+        }
+    }
+
+    /**
+     * 任务完成后要执行的
+     */
+    private void finishedCurrentTast() {
+        if (finishTaskAndGameOverDialog == null) {
+            showFinishTaskAndGameOverDialog();
+        }
+        finishTaskAndGameOverDialog.setMessage("恭喜你找出线索");
+        finishTaskAndGameOverDialog.show();
+        currentTask.setFinishTime(TimeUtils.parseFinishTimeForTaskFinished());
+        //刷新数据源
+        reLoadData();
+        //上传游戏记录
+        upLoadAndSaveGameRecord();
     }
 
     /**
      * 当游戏完成之后需要更新章节点状态，具体是在上传游戏记录之后更新还是上传之前更新有待商榷
      */
     private void reLoadData() {
-        taskDialog.dismiss();
+        if (taskDialog != null)
+            taskDialog.dismiss();
         currentPoint.setState(GameRecordAndPointStatus.FINISHED);//当前章节点结束
         int nextPointIndex = currentPointIndex + 1;
         if (nextPointIndex >= list_points.size()) {
             //游戏结束
             isGameOver = true;
-            showFinishTaskAndGameOverDialog();
+            if (finishTaskAndGameOverDialog == null) {
+                showFinishTaskAndGameOverDialog();
+            } else {
+                finishTaskAndGameOverDialog.setMessage("恭喜你，游戏通关");
+                finishTaskAndGameOverDialog.show();
+            }
         } else {
             isGameOver = false;
             list_points.get(nextPointIndex).setState(GameRecordAndPointStatus.PLAYING);//下一个章节点开启
