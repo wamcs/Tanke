@@ -1,8 +1,6 @@
 package com.lptiyu.tanke.userCenter;
 
-import android.accounts.Account;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -40,7 +38,6 @@ import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.schedulers.Schedulers;
-import timber.log.Timber;
 
 /**
  * author:wamcs
@@ -128,6 +125,7 @@ public class UserCenterFragment extends BaseFragment {
     String serverAvatar = details.getAvatar();
     checkAndLoadUserAvatar(serverAvatar);
     Accounts.setNickName(details.getNickname());
+    Accounts.setPhoneNumber(details.getPhone());
 
     mUserNickname.setText(details.getNickname());
     mUserLocation.setText(details.getAddress());

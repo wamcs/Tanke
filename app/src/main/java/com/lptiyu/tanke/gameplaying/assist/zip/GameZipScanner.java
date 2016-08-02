@@ -19,17 +19,17 @@ import timber.log.Timber;
 public class GameZipScanner {
 
     private Map<Long, String> gameIdZipFileMap;
-    private Map<Long, Long> gameIdTimeStampMap;
+    private Map<Long, Long> gameVersionMap;
     private Map<Long, String> gameIdUnzippedDirMap;
 
     private static final String ZIP_DIVIDER = "_";
     //获取游戏包的存储目录：SDCard/Android/data/包名/files/temp
     private static final String DEFAULT_GAME_ROOT_DIR = DirUtils.getTempDirectory().getAbsolutePath() + "/";
-    public static final long ZIP_FILE_NOT_FOUND_TIMESTAMP = -1L;
+    public static final long ZIP_FILE_NOT_FOUND_VERSION = -1L;
 
     public GameZipScanner() {
         gameIdZipFileMap = new HashMap<>();
-        gameIdTimeStampMap = new HashMap<>();
+        gameVersionMap = new HashMap<>();
         gameIdUnzippedDirMap = new HashMap<>();
         scanGameZipFiles();
         scanGameUnzippedDir();
@@ -37,7 +37,7 @@ public class GameZipScanner {
 
     public void reload() {
         gameIdZipFileMap.clear();
-        gameIdTimeStampMap.clear();
+        gameVersionMap.clear();
         gameIdUnzippedDirMap.clear();
         scanGameZipFiles();
         scanGameUnzippedDir();
@@ -51,7 +51,7 @@ public class GameZipScanner {
      * @return
      */
     public long isZipFileExist(long gameId) {
-        return getGameZipFileTimeStamp(gameId);
+        return getGameZipFileVersion(gameId);
     }
 
     /**
@@ -76,14 +76,14 @@ public class GameZipScanner {
      *
      * @param gameId the target game's id
      * @return if the zip of gameId is exist, return the timestamp
-     * if not exist, return {ZIP_FILE_NOT_FOUND_TIMESTAMP : -1}
+     * if not exist, return {ZIP_FILE_NOT_FOUND_VERSION : -1}
      * 根据游戏ID返回该游戏的时间戳
      */
-    public long getGameZipFileTimeStamp(long gameId) {
-        if (gameIdTimeStampMap.get(gameId) == null) {
-            return ZIP_FILE_NOT_FOUND_TIMESTAMP;
+    public long getGameZipFileVersion(long gameId) {
+        if (gameVersionMap.get(gameId) == null) {
+            return ZIP_FILE_NOT_FOUND_VERSION;
         }
-        return gameIdTimeStampMap.get(gameId);
+        return gameVersionMap.get(gameId);
     }
 
     //返回游戏压缩包的绝对路径
@@ -125,7 +125,7 @@ public class GameZipScanner {
             //存储文件路径
             gameIdZipFileMap.put(Long.valueOf(gameLineTimeStamp[0]), zipFile);
             //存储文件名最后一段
-            gameIdTimeStampMap.put(Long.valueOf(gameLineTimeStamp[0]), Long.valueOf(gameLineTimeStamp[2].substring(0,
+            gameVersionMap.put(Long.valueOf(gameLineTimeStamp[0]), Long.valueOf(gameLineTimeStamp[2].substring(0,
                     gameLineTimeStamp[2].indexOf("."))));
         }
     }

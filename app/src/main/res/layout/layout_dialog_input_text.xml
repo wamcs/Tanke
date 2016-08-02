@@ -12,6 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="换一个好一点的名字"
+        android:maxLength="10"
         android:padding="@dimen/x35"
         android:textColor="@color/colorPrimary"
         android:textColorHint="@color/colorAccent"/>

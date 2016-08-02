@@ -30,8 +30,8 @@ public class GameZipHelper {
      * @param gameId
      */
     public boolean checkAndParseGameZip(long gameId) {
-        //判断游戏包压缩文件是否存在，如果存在返回该文件的时间戳，否则返回-1
-        if (mGameZipScanner.isZipFileExist(gameId) == GameZipScanner.ZIP_FILE_NOT_FOUND_TIMESTAMP) {
+        //判断游戏包压缩文件是否存在
+        if (mGameZipScanner.isZipFileExist(gameId) == GameZipScanner.ZIP_FILE_NOT_FOUND_VERSION) {
             Timber.e("zip file not found which gameId : %d", gameId);
             return false;
         }

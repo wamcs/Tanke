@@ -24,6 +24,17 @@ public class GameFinishedEntity implements Parcelable {
   @SerializedName("start_time")
   String startTime;
 
+  public String getTotalTime() {
+    return totalTime;
+  }
+
+  public void setTotalTime(String totalTime) {
+    this.totalTime = totalTime;
+  }
+
+  @SerializedName("time")
+  String totalTime;
+
   @SerializedName("end_time")
   String endTime;
 
@@ -100,6 +111,7 @@ public class GameFinishedEntity implements Parcelable {
     dest.writeString(this.name);
     dest.writeString(this.startTime);
     dest.writeString(this.endTime);
+    dest.writeString(this.totalTime);
     dest.writeInt(this.type);
     dest.writeInt(this.expPoints);
   }
@@ -113,6 +125,7 @@ public class GameFinishedEntity implements Parcelable {
     this.name = in.readString();
     this.startTime = in.readString();
     this.endTime = in.readString();
+    this.totalTime = in.readString();
     this.type = in.readInt();
     this.expPoints = in.readInt();
   }

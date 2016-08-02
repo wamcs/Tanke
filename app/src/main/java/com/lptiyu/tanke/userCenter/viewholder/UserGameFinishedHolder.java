@@ -15,8 +15,6 @@ import com.lptiyu.tanke.utils.TimeUtils;
 import com.lptiyu.tanke.widget.CustomTextView;
 import com.makeramen.roundedimageview.RoundedImageView;
 
-import java.util.Date;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -64,16 +62,16 @@ public class UserGameFinishedHolder extends BaseViewHolder<GameFinishedEntity> {
         title.setText(entity.getName());
         type.setText("");
         completeTime.setText(entity.getEndTime());
-        Date startTimeDate = TimeUtils.parseDate(entity.getStartTime(), TimeUtils.totalFormat);
-        Date endTimeDate = TimeUtils.parseDate(entity.getEndTime(), TimeUtils.totalFormat);
-        if (startTimeDate == null) {
-            startTimeDate = new Date();
-        }
-        if (endTimeDate == null) {
-            endTimeDate = new Date();
-        }
-        long consumeTime = endTimeDate.getTime() - startTimeDate.getTime();
-        consumingTime.setText(TimeUtils.getConsumingTime(consumeTime));
+        //        Date startTimeDate = TimeUtils.parseDate(entity.getStartTime(), TimeUtils.totalFormat);
+        //        Date endTimeDate = TimeUtils.parseDate(entity.getEndTime(), TimeUtils.totalFormat);
+        //        if (startTimeDate == null) {
+        //            startTimeDate = new Date();
+        //        }
+        //        if (endTimeDate == null) {
+        //            endTimeDate = new Date();
+        //        }
+        //        long consumeTime = endTimeDate.getTime() - startTimeDate.getTime();
+        consumingTime.setText(TimeUtils.parseSecondToHourAndMinutes(Long.parseLong(entity.getTotalTime())));
         exp.setText(String.format(getContext().getString(R.string.user_game_finished_get_exp_formatter), entity
                 .getExpPoints()));
 

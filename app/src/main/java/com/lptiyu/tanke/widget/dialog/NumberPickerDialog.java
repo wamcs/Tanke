@@ -33,7 +33,7 @@ public class NumberPickerDialog extends BaseDialog {
     super(context);
     this.setCustomView(R.layout.layout_dialog_number_picker, context)
         .withMessage(null)
-        .isCancelableOnTouchOutside(false);
+        .isCancelableOnTouchOutside(true);
   }
 
   @Override

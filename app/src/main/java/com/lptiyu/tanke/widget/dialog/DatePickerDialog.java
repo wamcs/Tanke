@@ -41,8 +41,8 @@ public class DatePickerDialog extends BaseDialog {
 
   public DatePickerDialog(Context context) {
     super(context);
-    this.withTitle(context.getString(R.string.birthday))                                  //.withTitle(null)  no title
-        .isCancelableOnTouchOutside(false)
+    this.withTitle(context.getString(R.string.birthday)).withMessage(null)
+        .isCancelableOnTouchOutside(true)
         .setCustomView(R.layout.layout_dialog_date_picker, context);
     init();
   }

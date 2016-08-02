@@ -25,8 +25,6 @@ import com.lptiyu.tanke.widget.LoginEditView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import rx.Observer;
-import rx.Scheduler;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.schedulers.Schedulers;
@@ -43,13 +41,13 @@ public class LoginController extends ActivityController {
     @BindView(R.id.login_input_password)
     LoginEditView mInputPasswordEditText;
     @BindView(R.id.login_qq_button)
-    ImageView  mQqLogin;
+    ImageView mQqLogin;
     @BindView(R.id.login_weixin_button)
     ImageView mWeixinLogin;
     @BindView(R.id.login_weibo_button)
     ImageView mWeiboLogin;
 
-    private boolean isButtonEnable=true;
+    private boolean isButtonEnable = true;
 
     private ThirdLoginHelper helper;
 
@@ -60,35 +58,37 @@ public class LoginController extends ActivityController {
         init();
     }
 
-    private void init(){
+    private void init() {
         helper = new ThirdLoginHelper(getActivity());
         mInputPhoneEditText.setText(Accounts.getPhoneNumber());
         initClickEvent();
     }
 
-    private void initClickEvent(){
+    private void initClickEvent() {
         mQqLogin.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                if (!isButtonEnable){
+                if (!isButtonEnable) {
                     return false;
                 }
 
-                if (event.getAction() == MotionEvent.ACTION_UP){
+                if (event.getAction() == MotionEvent.ACTION_UP) {
                     isButtonEnable = false;
                     mQqLogin.postDelayed(new Runnable() {
                         @Override
                         public void run() {
                             isButtonEnable = true;
                         }
-                    },1000);
+                    }, 1000);
                     helper.oauthLogin(ThirdLoginHelper.QZONE);
-                    mQqLogin.animate().scaleX(1.0f).scaleY(1.0f).setInterpolator(new BounceInterpolator()).setDuration(100).start();
+                    mQqLogin.animate().scaleX(1.0f).scaleY(1.0f).setInterpolator(new BounceInterpolator())
+                            .setDuration(100).start();
                     return true;
                 }
 
-                if (event.getAction() == MotionEvent.ACTION_DOWN){
-                    mQqLogin.animate().scaleX(0.8f).scaleY(0.8f).setInterpolator(new BounceInterpolator()).setDuration(100).start();
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    mQqLogin.animate().scaleX(0.8f).scaleY(0.8f).setInterpolator(new BounceInterpolator())
+                            .setDuration(100).start();
                     return true;
                 }
 
@@ -99,25 +99,27 @@ public class LoginController extends ActivityController {
         mWeixinLogin.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                if (!isButtonEnable){
+                if (!isButtonEnable) {
                     return false;
                 }
 
-                if (event.getAction() == MotionEvent.ACTION_UP){
+                if (event.getAction() == MotionEvent.ACTION_UP) {
                     isButtonEnable = false;
                     mWeixinLogin.postDelayed(new Runnable() {
                         @Override
                         public void run() {
                             isButtonEnable = true;
                         }
-                    },1000);
+                    }, 1000);
                     helper.oauthLogin(ThirdLoginHelper.WECHAT);
-                    mWeixinLogin.animate().scaleX(1.0f).scaleY(1.0f).setInterpolator(new BounceInterpolator()).setDuration(100).start();
+                    mWeixinLogin.animate().scaleX(1.0f).scaleY(1.0f).setInterpolator(new BounceInterpolator())
+                            .setDuration(100).start();
                     return true;
                 }
 
-                if (event.getAction() == MotionEvent.ACTION_DOWN){
-                    mWeixinLogin.animate().scaleX(0.8f).scaleY(0.8f).setInterpolator(new BounceInterpolator()).setDuration(100).start();
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    mWeixinLogin.animate().scaleX(0.8f).scaleY(0.8f).setInterpolator(new BounceInterpolator())
+                            .setDuration(100).start();
                     return true;
                 }
 
@@ -128,25 +130,27 @@ public class LoginController extends ActivityController {
         mWeiboLogin.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                if (!isButtonEnable){
+                if (!isButtonEnable) {
                     return false;
                 }
 
-                if (event.getAction() == MotionEvent.ACTION_UP){
+                if (event.getAction() == MotionEvent.ACTION_UP) {
                     isButtonEnable = false;
                     mWeiboLogin.postDelayed(new Runnable() {
                         @Override
                         public void run() {
                             isButtonEnable = true;
                         }
-                    },1000);
+                    }, 1000);
                     helper.oauthLogin(ThirdLoginHelper.WEIBO);
-                    mWeiboLogin.animate().scaleX(1.0f).scaleY(1.0f).setInterpolator(new BounceInterpolator()).setDuration(100).start();
+                    mWeiboLogin.animate().scaleX(1.0f).scaleY(1.0f).setInterpolator(new BounceInterpolator())
+                            .setDuration(100).start();
                     return true;
                 }
 
-                if (event.getAction() == MotionEvent.ACTION_DOWN){
-                    mWeiboLogin.animate().scaleX(0.8f).scaleY(0.8f).setInterpolator(new BounceInterpolator()).setDuration(100).start();
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    mWeiboLogin.animate().scaleX(0.8f).scaleY(0.8f).setInterpolator(new BounceInterpolator())
+                            .setDuration(100).start();
                     return true;
                 }
 
@@ -156,33 +160,33 @@ public class LoginController extends ActivityController {
     }
 
     @OnClick(R.id.login_forget_password_button)
-    void forget(){
+    void forget() {
         Intent intent = new Intent(this.getContext(), SignUpActivity.class);
-        intent.putExtra(Conf.SIGN_UP_CODE,Conf.RESET_PASSWORD_CODE);
+        intent.putExtra(Conf.SIGN_UP_CODE, Conf.RESET_PASSWORD_CODE);
         startActivity(intent);
     }
 
     @OnClick(R.id.login_sign_up_button)
-    void signUp(){
+    void signUp() {
         Intent intent = new Intent(this.getContext(), SignUpActivity.class);
-        intent.putExtra(Conf.SIGN_UP_CODE,Conf.REGISTER_CODE);
-        intent.putExtra(Conf.SIGN_UP_TYPE,UserService.USER_TYPE_NORMAL);
+        intent.putExtra(Conf.SIGN_UP_CODE, Conf.REGISTER_CODE);
+        intent.putExtra(Conf.SIGN_UP_TYPE, UserService.USER_TYPE_NORMAL);
         startActivity(intent);
     }
 
     @OnClick(R.id.login_login_button)
-    void login(){
-        if (mInputPhoneEditText.getText().length() == 0){
+    void login() {
+        if (mInputPhoneEditText.getText().length() == 0) {
             ToastUtil.TextToast(getString(R.string.none_user_phone));
             return;
         }
 
-        if (mInputPhoneEditText.getText().length() != 11){
+        if (mInputPhoneEditText.getText().length() != 11) {
             ToastUtil.TextToast(getString(R.string.error_user_phone));
             return;
         }
 
-        if (mInputPasswordEditText.getText().length() == 0){
+        if (mInputPasswordEditText.getText().length() == 0) {
             ToastUtil.TextToast(getString(R.string.none_user_password));
             return;
         }
@@ -190,40 +194,40 @@ public class LoginController extends ActivityController {
         final String phoneNumber = mInputPhoneEditText.getText().toString();
         final String password = mInputPasswordEditText.getText().toString();
 
-        HttpService.getUserService().login(phoneNumber,password)
+        HttpService.getUserService().login(phoneNumber, password)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Action1<Response<UserEntity>>() {
-                  @Override
-                  public void call(Response<UserEntity> userEntityResponse) {
-                    int status = userEntityResponse.getStatus();
-                    if (status != 1) {
-                      ToastUtil.TextToast(userEntityResponse.getInfo());
-                      return;
+                    @Override
+                    public void call(Response<UserEntity> userEntityResponse) {
+                        int status = userEntityResponse.getStatus();
+                        if (status != 1) {
+                            ToastUtil.TextToast(userEntityResponse.getInfo());
+                            return;
+                        }
+                        UserEntity entity = userEntityResponse.getData();
+                        Accounts.setId(entity.getUid());
+                        Accounts.setToken(entity.getToken());
+                        Accounts.setPhoneNumber(entity.getPhone());
+                        //Accounts.setNickName(entity.getNickname());
+                        //Accounts.setAvatar(entity.getAvatar());
+                        //nickname 和 avatar 干什么用？不造
+                        //TODO:jump to main activity
+                        Intent intent = new Intent(getActivity(), MainActivity.class);
+                        startActivity(intent);
+                        finish();
                     }
-                    UserEntity entity = userEntityResponse.getData();
-                    Accounts.setId(entity.getUid());
-                    Accounts.setToken(entity.getToken());
-                    Accounts.setPhoneNumber(entity.getPhone());
-                    //Accounts.setNickName(entity.getNickname());
-                    //Accounts.setAvatar(entity.getAvatar());
-                    //nickname 和 avatar 干什么用？不造
-                    //TODO:jump to main activity
-                    Intent intent = new Intent(getActivity(), MainActivity.class);
-                    startActivity(intent);
-                    finish();
-                  }
                 }, new Action1<Throwable>() {
-                  @Override
-                  public void call(Throwable throwable) {
-                    ToastUtil.TextToast("登录失败");
-                  }
+                    @Override
+                    public void call(Throwable throwable) {
+                        ToastUtil.TextToast("登录失败");
+                    }
                 });
 
     }
 
-  @Override
+    @Override
     protected boolean isToolbarEnable() {
         return false;
     }

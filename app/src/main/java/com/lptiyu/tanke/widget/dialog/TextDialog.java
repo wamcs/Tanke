@@ -31,7 +31,7 @@ public class TextDialog extends BaseDialog {
     super(context);
     this.setCustomView(R.layout.layout_dialog_text, context)
         .withTitle(null)
-        .setCanceledOnTouchOutside(false);
+        .setCanceledOnTouchOutside(true);
   }
 
   @Override

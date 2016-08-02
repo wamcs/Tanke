@@ -7,12 +7,12 @@ import android.support.multidex.MultiDexApplication;
 import com.avos.avoscloud.AVInstallation;
 import com.avos.avoscloud.AVOSCloud;
 import com.avos.avoscloud.PushService;
+import com.baidu.mapapi.BMapManager;
 import com.baidu.mapapi.SDKInitializer;
 import com.lptiyu.tanke.global.Accounts;
 import com.lptiyu.tanke.global.AppData;
 import com.lptiyu.tanke.global.Conf;
 import com.lptiyu.tanke.location.LocationFileParser;
-
 import com.lptiyu.tanke.messagesystem.MessageActivity;
 import com.lptiyu.tanke.utils.DirUtils;
 import com.lptiyu.tanke.utils.thread;
@@ -32,6 +32,7 @@ public class RunApplication extends MultiDexApplication {
 
   private static Stack<Activity> activityStack;
   private static RunApplication singleton;
+  private BMapManager manager;
 
   @Override
   public void onCreate() {
@@ -44,6 +45,7 @@ public class RunApplication extends MultiDexApplication {
     AppData.init(this);
 
     try {
+//      initBMapManager(this);
       ShareSDK.initSDK(this, "1276c2d783264");
       AVOSCloud.initialize(AppData.getContext(), "Wqseclbr8wx2kFAS7YseVc5n-gzGzoHsz", "1z4GofW1zaArBjcj53u3oBm1");
       PushService.setDefaultPushCallback(this, MessageActivity.class);
@@ -67,6 +69,15 @@ public class RunApplication extends MultiDexApplication {
       }
     });
   }
+
+//  public void initBMapManager(Context context) {
+//    if (manager == null) {
+//      manager = new BMapManager();
+//    }
+//    manager.init();
+//  }
+
+
 
   // Returns the application instance
   public static RunApplication getInstance() {

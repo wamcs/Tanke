@@ -253,4 +253,7 @@
     <!-- AboutUsActivity Text Area-->
     <string name="about_us_activity">关于我们</string>
 
+    <string name="my_point_progress">我的进度</string>
+
+
 </resources>

@@ -78,7 +78,7 @@ public class GVForGamePlayingAdapter extends BaseAdapter {
             case GameRecordAndPointStatus.PLAYING://正在玩
                 vh.ctvPointName.setText(task.getTaskName() + "");
                 setImgBitmap(position, vh, taskId);
-                vh.imgLabel.setVisibility(View.VISIBLE);
+                vh.imgLabel.setVisibility(View.GONE);
                 vh.imgLabel.setImageResource(R.drawable.playing);
                 break;
             case GameRecordAndPointStatus.FINISHED://已完成

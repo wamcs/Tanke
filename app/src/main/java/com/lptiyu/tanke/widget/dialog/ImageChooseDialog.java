@@ -36,7 +36,7 @@ public class ImageChooseDialog extends BaseDialog {
   public ImageChooseDialog(Context context, ContextController controller) {
     super(context);
     mController = controller;
-    this.withTitle(context.getString(R.string.select_image))                                  //.withTitle(null)  no title
+    this.withTitle(context.getString(R.string.select_image)).withMessage(null).isCancelable(true)
         .setCustomView(R.layout.layout_dialog_image_choose, context);
   }
 

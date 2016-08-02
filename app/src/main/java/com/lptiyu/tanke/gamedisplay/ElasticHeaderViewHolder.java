@@ -55,7 +55,7 @@ import timber.log.Timber;
 /**
  * EMAIL : danxionglei@foxmail.com
  * DATE : 16/6/1
- * <p>
+ * <p/>
  * 控制RecyclerView的首部
  *
  * @author ldx
@@ -146,6 +146,8 @@ public class ElasticHeaderViewHolder extends BaseViewHolder<GameDisplayEntity> {
                                     intent.setClass(getContext(), GameDetailsActivity.class);
                                     intent.putExtra(Conf.GAME_ID, gameDisplayEntity.getId());
                                     break;
+                                case PlayStatus.GAME_OVER://游戏结束，暂不考虑
+                                    //TODO 需要进入到游戏完成界面
                                 case PlayStatus.HAVE_ENTERED_bUT_NOT_START_GAME://进入过但没开始游戏，进入到玩游戏界面
                                 case PlayStatus.HAVE_STARTED_GAME://进入并且已经开始游戏，进入到玩游戏界面
                                     //进入到玩游戏界面之前，先检测游戏包是否存在，存在则直接进入，否则要先下载游戏包
@@ -159,11 +161,9 @@ public class ElasticHeaderViewHolder extends BaseViewHolder<GameDisplayEntity> {
                                         mGameZipScanner = new GameZipScanner();
                                         startGetGameZipUrlAndDownload();
                                     } else {
-                                        initGPS();
+                                        //                                        initGPS();
+                                        startPlayingGame();
                                     }
-                                    break;
-                                case PlayStatus.GAME_OVER://游戏结束，暂不考虑
-                                    //TODO 需要进入到游戏完成界面
                                     break;
                                 default:
                                     break;
@@ -327,7 +327,8 @@ public class ElasticHeaderViewHolder extends BaseViewHolder<GameDisplayEntity> {
                     @Override
                     public void call(File file) {
                         mGameZipScanner.reload();
-                        initGPS();
+                        //                        initGPS();
+                        startPlayingGame();
                     }
                 }, new Action1<Throwable>() {
                     @Override

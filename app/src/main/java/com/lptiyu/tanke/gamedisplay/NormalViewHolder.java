@@ -200,7 +200,8 @@ public class NormalViewHolder extends BaseViewHolder<GameDisplayEntity> {
                     @Override
                     public void call(File file) {
                         mGameZipScanner.reload();
-                        initGPS();
+                        //                        initGPS();
+                        startPlayingGame();
                     }
                 }, new Action1<Throwable>() {
                     @Override
@@ -294,9 +295,14 @@ public class NormalViewHolder extends BaseViewHolder<GameDisplayEntity> {
                 new Func1<GameDisplayEntity, String>() {
                     @Override
                     public String call(GameDisplayEntity entity) {
-                        return TimeUtils.parseTime(fragment.getContext(),
+                        String[] time = TimeUtils.parseTime(fragment.getContext(),
                                 entity.getStartDate(), entity.getEndDate(),
                                 entity.getStartTime(), entity.getEndTime());
+                        if (time[0] != null && !time[0].equals("")) {
+                            return time[0];
+                        } else {
+                            return time[1];
+                        }
                     }
                 })
                 .subscribeOn(Schedulers.computation())

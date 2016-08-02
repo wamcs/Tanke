@@ -27,7 +27,7 @@ public class WebViewUtils {
         webSettings.setSupportZoom(true);
         //支持自动加载图片
         webSettings.setLoadsImagesAutomatically(true);
-        //是否显示网络图片
+        //是否拦截网络图片
         webSettings.setBlockNetworkImage(false);
         //设置字体大小
         webSettings.setDefaultFontSize(Display.sp2px(context, 16f));

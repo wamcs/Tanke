@@ -50,7 +50,7 @@
                 android:paddingLeft="@dimen/default_toolbar_imageview_padding_left"
                 android:paddingRight="@dimen/default_toolbar_imageview_padding"
                 android:paddingTop="@dimen/default_toolbar_imageview_padding"
-                android:src="@mipmap/main_page_item_location"
+                android:src="@mipmap/detail"
                 android:visibility="visible"
                 />
 
@@ -58,11 +58,38 @@
 
     </android.support.v7.widget.Toolbar>
 
+    <com.baidu.mapapi.map.TextureMapView
+        android:id="@+id/map_view"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_below="@id/toolbar"/>
+
+    <ImageView
+        android:id="@+id/img_zoom_full_screen"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignBottom="@id/map_view"
+        android:layout_alignRight="@id/map_view"
+        android:layout_marginBottom="0dp"
+        android:layout_marginRight="0dp"
+        android:scaleType="centerInside"
+        android:src="@drawable/zoom_full_screen"/>
+
+    <com.lptiyu.tanke.widget.CustomTextView
+        android:id="@+id/ctv_my_progress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/map_view"
+        android:layout_marginLeft="10dp"
+        android:padding="10dp"
+        android:text="@string/my_point_progress"
+        android:textSize="18sp"/>
+
     <GridView
         android:id="@+id/gv"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/toolbar"
+        android:layout_below="@id/ctv_my_progress"
         android:columnWidth="200dp"
         android:gravity="center"
         android:horizontalSpacing="20dp"

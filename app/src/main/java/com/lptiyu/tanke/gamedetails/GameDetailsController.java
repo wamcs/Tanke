@@ -92,21 +92,10 @@ public class GameDetailsController extends ActivityController {
 
     private Subscription gameDetailsSubscription;
 
-
-    //  private Observable<Boolean> isGameFinishObservable;
-    //  private Subscription isGameFinishSubscription;
-
     //这个变量用来标志下载出错的次数，为0的时候停止重试下载
     private int gameZipDownloadFailedNum = 3;
-
-    //  private GameZipScanner mGameZipScanner;
-
     private long gameId;
     private String tempGameZipUrl;
-
-
-    //  private GameZipScanner mGameZipScanner;
-
 
     private GameDetailsEntity mGameDetailsEntity;
 
@@ -127,21 +116,7 @@ public class GameDetailsController extends ActivityController {
             gameDetailsSubscription = null;
         }
 
-
         showLoadingDialog();
-        //扫描游戏包中的信息
-        //    mGameZipScanner = new GameZipScanner();
-        //    progressDialog = new ProgressDialog(getContext(), ProgressDialog.STYLE_SPINNER);
-        //    progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-
-        //    isGameFinishObservable = Observable.just(gameId)
-        //        .map(new Func1<Long, Boolean>() {
-        //          @Override
-        //          public Boolean call(Long id) {//这个id就是传进来的gameId
-        //            //判断游戏是否结束，这里进行了IO流的操作，稍微有点儿耗时，所以需要用Rxjava来写
-        //            return RecordsUtils.isGameFinishedFromDisk(id);
-        //          }
-        //        });
 
         //prepare for the network request
         gameDetailsSubscription = HttpService.getGameService().getGameDetails(gameId)
@@ -193,26 +168,6 @@ public class GameDetailsController extends ActivityController {
         }
         mTextGameIntro.setText(Html.fromHtml(Html.fromHtml(entity.getGameIntro()).toString()));
         mTextRule.setText(Html.fromHtml(Html.fromHtml(entity.getRule()).toString()));
-
-        //    isGameFinishSubscription = isGameFinishObservable
-        //        .subscribeOn(Schedulers.io())
-        //        .observeOn(AndroidSchedulers.mainThread())
-        //        .subscribe(new Action1<Boolean>() {
-        //          @Override
-        //          public void call(Boolean aBoolean) {
-        //            if (aBoolean) {
-        //              mTextEnsure.setText(getString(R.string.enter_game_share));
-        //              return;
-        //            }
-        //            isGameFinishedFromServer(gameId);
-        //          }
-        //        }, new Action1<Throwable>() {
-        //          @Override
-        //          public void call(Throwable throwable) {
-        //            Timber.e(throwable, "get records from server error... ");
-        //            isGameFinishedFromServer(gameId);
-        //          }
-        //        });
         Glide.with(getActivity()).load(entity.getImg()).error(R.mipmap.need_to_remove).centerCrop().into(mImageCover);
     }
 
@@ -227,9 +182,10 @@ public class GameDetailsController extends ActivityController {
                 new Func1<GameDetailsEntity, String>() {
                     @Override
                     public String call(GameDetailsEntity entity) {
-                        return TimeUtils.parseTime(getContext(),
+                        String[] time = TimeUtils.parseTime(getContext(),
                                 entity.getStartDate(), entity.getEndDate(),
                                 entity.getStartTime(), entity.getEndTime());
+                        return time[0] + " " + time[1];
                     }
                 })
                 .subscribeOn(Schedulers.computation())//CPU密集型计算
@@ -241,168 +197,6 @@ public class GameDetailsController extends ActivityController {
                     }
                 });
     }
-
-    //  /**
-    //   * This method is to load running records from server
-    //   * if the local records is damage or the records return the game is not finished
-    //   * reload the records from server and check
-    //   * <p/>
-    //   * 这个方法是用来从服务器请求该用户对于该游戏的记录，并分析用户是否已经完成此游戏
-    //   *
-    //   * @param gameId target game
-    //   */
-    //  private void isGameFinishedFromServer(long gameId) {
-    //    final long gameIdInner = gameId;
-    //    HttpService.getGameService()
-    //        .getRunningRecords(Accounts.getId(), gameId, mGameDetailsEntity.getType().value)
-    //        .map(new Func1<Response<List<RunningRecord>>, Boolean>() {
-    //          @Override
-    //          public Boolean call(Response<List<RunningRecord>> listResponse) {
-    //            if (listResponse == null || listResponse.getStatus() == 0) {
-    //              return false;
-    //            }
-    //            List<RunningRecord> records = listResponse.getData();
-    //            if (records == null || records.size() == 0) {
-    //              return false;
-    //            }
-    //            // 如果检测到本地日志文件不存在，则将服务器的日志文件写入到本地
-    //            if (!RecordsUtils.isGameRecordsFileExist(gameIdInner)) {
-    //              RecordsUtils.cacheServerRecordsInLocal(gameIdInner, records);
-    //            }
-    //            for (RunningRecord record : records) {
-    //              if (record.getState() == RunningRecord.RECORD_TYPE.GAME_FINISH) {
-    //                return true;
-    //              }
-    //            }
-    //            return false;
-    //          }
-    //        })
-    //        .subscribeOn(Schedulers.io())
-    //        .observeOn(AndroidSchedulers.mainThread())
-    //        .subscribe(new Action1<Boolean>() {
-    //          @Override
-    //          public void call(Boolean aBoolean) {
-    //            if (aBoolean) {
-    //              mTextEnsure.setText(getString(R.string.enter_game_share));
-    //            } else {
-    //              mTextEnsure.setText(getString(R.string.enter_game_play));
-    //            }
-    //          }
-    //        }, new Action1<Throwable>() {
-    //          @Override
-    //          public void call(Throwable throwable) {
-    //            Timber.e(throwable, "here");
-    //          }
-    //        });
-    //  }
-    //
-    //  /**
-    //   * This method is to check whether the game zip has been download
-    //   * and the game zip is out of date or not
-    //   * <p/>
-    //   * If the unix timestamp is not match with server's, then must
-    //   * clean the game records、zip package、game dir etc
-    //   * <p/>
-    //   * 这个是用来扫描本地文件夹，查看该游戏的游戏包是否已经下载过了，如果没有下载过，启动下载；
-    //   * 下载过之后，请求定位权限并进入游戏中
-    //   */
-    //  private void checkDiskAndNextStep() {
-    //    // first scan the dir and check the zip is exist or not
-    //    if (mGameZipScanner == null) {
-    //      mGameZipScanner = new GameZipScanner();
-    //    }
-    //    long timeStamp = mGameZipScanner.getGameZipFileTimeStamp(gameId);
-    //    if (timeStamp == GameZipScanner.ZIP_FILE_NOT_FOUND_TIMESTAMP) {
-    //      // it means that the game zip is not exist, need download
-    //      startGetGameZipUrlAndDownload();
-    //    } else {
-    //      // the zip is exist, then check is it out of date
-    //      //TODO : invoke api to check whether the zio is out of date
-    //      initGPS();
-    //    }
-    //  }
-    //
-    //  /**
-    //   * 检测到本地没有游戏包之后，开始向服务器请求游戏包的下载url
-    //   * 并下载相应的zip包保存在本地
-    //   * 这里可能出现游戏包第一次下载失败的情况，失败之后再次请求，失败超过三次则停止请求
-    //   */
-    //  private void startGetGameZipUrlAndDownload() {
-    //    mGameDetailsEntity.setGameId(gameId);
-    //    progressDialog.show();
-    //    HttpService.getGameService()
-    //        .getIndividualGameZipUrl(Accounts.getId(),
-    //            Accounts.getToken(),
-    //            mGameDetailsEntity.getGameId())
-    //        .flatMap(new Func1<Response<String>, Observable<retrofit2.Response<ResponseBody>>>() {
-    //          @Override
-    //          public Observable<retrofit2.Response<ResponseBody>> call(Response<String> response) {
-    //            if (response.getStatus() != Response.RESPONSE_OK) {
-    //              throw new RuntimeException(response.getInfo());
-    //            }
-    //            String data = response.getData();
-    //            if (data == null || data.length() == 0) {
-    //              Timber.e("当前游戏并未提供下载连接");
-    //              throw new RuntimeException(response.getInfo());
-    //            }
-    //            tempGameZipUrl = response.getData();
-    //            return HttpService.getGameService().downloadGameZip(response.getData());
-    //          }
-    //        })
-    //        .map(new Func1<retrofit2.Response<ResponseBody>, File>() {
-    //          @Override
-    //          public File call(retrofit2.Response<ResponseBody> response) {
-    //            String url = tempGameZipUrl;
-    //            System.out.println("url = " + url);
-    //            String[] segs = url.split("/");
-    //            if (segs.length == 0) {
-    //              throw new IllegalStateException("Wrong url can not split file name");
-    //            }
-    //            File file = new File(DirUtils.getTempDirectory(), segs[segs.length - 1]);
-    //            try {
-    //              if (!file.exists() && !file.createNewFile()) {
-    //                throw new IOException("Create file failed.");
-    //              }
-    //              BufferedSink sink = Okio.buffer(Okio.sink(file));
-    //              sink.writeAll(response.body().source());
-    //              sink.close();
-    //              return file;
-    //            } catch (IOException e) {
-    //              if (file.exists()) {
-    //                //noinspection ResultOfMethodCallIgnored
-    //                file.delete();
-    //              }
-    //              throw Exceptions.propagate(e);
-    //            }
-    //          }
-    //        })
-    //        .subscribeOn(Schedulers.io())
-    //        .observeOn(AndroidSchedulers.mainThread())
-    //        .subscribe(new Action1<File>() {
-    //          @Override
-    //          public void call(File file) {
-    //            mGameZipScanner.reload();
-    //            initGPS();
-    //          }
-    //        }, new Action1<Throwable>() {
-    //          @Override
-    //          public void call(Throwable throwable) {
-    //            Timber.e(throwable, "game zip download error.....redownload");
-    //            if (gameZipDownloadFailedNum > 0) {
-    //              startGetGameZipUrlAndDownload();
-    //              gameZipDownloadFailedNum--;
-    //            } else {
-    //              ToastUtil.TextToast("游戏包下载出错");
-    //            }
-    //          }
-    //        }, new Action0() {
-    //          @Override
-    //          public void call() {
-    //            progressDialog.dismiss();
-    //          }
-    //        });
-    //  }
-
 
     @Override
     public void onResume() {

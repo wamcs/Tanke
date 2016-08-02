@@ -18,12 +18,16 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.baidu.mapapi.map.TextureMapView;
+import com.baidu.mapapi.model.LatLng;
 import com.lptiyu.tanke.R;
 import com.lptiyu.tanke.activities.baidumapmode.GameMapShowActivity;
 import com.lptiyu.tanke.activities.guessriddle.GuessRiddleActivity;
 import com.lptiyu.tanke.activities.imagedistinguish.ImageDistinguishActivity;
 import com.lptiyu.tanke.adapter.GVForGamePlayingAdapter;
 import com.lptiyu.tanke.database.DBGameRecord;
+import com.lptiyu.tanke.database.DBGameRecordDao;
+import com.lptiyu.tanke.database.DBHelper;
 import com.lptiyu.tanke.database.DBPointRecord;
 import com.lptiyu.tanke.database.DBTaskRecord;
 import com.lptiyu.tanke.entity.GameRecord;
@@ -33,6 +37,8 @@ import com.lptiyu.tanke.enums.GameRecordAndPointStatus;
 import com.lptiyu.tanke.enums.PlayStatus;
 import com.lptiyu.tanke.enums.RequestCode;
 import com.lptiyu.tanke.enums.ResultCode;
+import com.lptiyu.tanke.gameplaying.assist.LocateHelper;
+import com.lptiyu.tanke.gameplaying.assist.MapHelper;
 import com.lptiyu.tanke.gameplaying.assist.zip.GameZipHelper;
 import com.lptiyu.tanke.gameplaying.pojo.Point;
 import com.lptiyu.tanke.gameplaying.pojo.Task;
@@ -50,12 +56,14 @@ import com.lptiyu.tanke.utils.WebViewUtils;
 import com.lptiyu.tanke.widget.CustomTextView;
 import com.lptiyu.zxinglib.android.CaptureActivity;
 
+import java.sql.SQLDataException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import timber.log.Timber;
 
 public class GamePlaying2Activity extends Activity implements GamePlaying2Contract.IGamePlayingView {
 
@@ -73,6 +81,10 @@ public class GamePlaying2Activity extends Activity implements GamePlaying2Contra
 
     AlertDialog parseGameZipErrorDialog;
     AlertDialog loadGameRecordDialog;
+    @BindView(R.id.map_view)
+    TextureMapView mapView;
+    @BindView(R.id.img_zoom_full_screen)
+    ImageView imgZoomFullScreen;
 
     private GamePlaying2Presenter presenter;
     private List<Point> list_points;
@@ -91,6 +103,12 @@ public class GamePlaying2Activity extends Activity implements GamePlaying2Contra
     private AlertDialog taskDialog;
     private int currentPointIndex;
     private AlertDialog finishTaskAndGameOverDialog;
+    private GameZipHelper gameZipHelper;
+    private List<Point> mPoints;
+    private ArrayList<LatLng> mPonitLatLngs;
+    private MapHelper mapHelper;
+    private LocateHelper locateHelper;
+    int currentAttackPointCount = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,6 +117,16 @@ public class GamePlaying2Activity extends Activity implements GamePlaying2Contra
         ButterKnife.bind(this);
 
         presenter = new GamePlaying2Presenter(this);
+
+        init();
+
+        try {
+            readResume();
+        } catch (SQLDataException e) {
+            e.printStackTrace();
+            finish();
+        }
+        initView();
 
         showLoadingDialog();
         //接受从游戏详情传过来的数据
@@ -121,6 +149,58 @@ public class GamePlaying2Activity extends Activity implements GamePlaying2Contra
         //        //根据游戏记录核对每个任务点的状态
         //        checkGameRecordAndPointStatus();
         //        setAdapter();
+    }
+
+    private void init() {
+
+        gameZipHelper = new GameZipHelper();
+
+        Intent intent = getIntent();
+        gameId = intent.getLongExtra(Conf.GAME_ID, Conf.TEMP_GAME_ID);
+        teamId = intent.getLongExtra(Conf.TEAM_ID, Conf.TEMP_TEAM_ID);
+        gameZipHelper.checkAndParseGameZip(gameId);
+
+        mPoints = gameZipHelper.getmPoints();
+        mPonitLatLngs = new ArrayList<>();
+        mapHelper = new MapHelper(this, mapView);
+        mapHelper.bindData(mPoints);
+
+        locateHelper = new LocateHelper(getApplicationContext());
+        //        locateHelper.registerLocationListener(this);
+
+    }
+
+    private void readResume() throws SQLDataException {
+        if (currentAttackPointCount > 1) {
+            return;
+        }
+        List<DBGameRecord> gameRecordList = DBHelper.getInstance().getDBGameRecordDao()
+                .queryBuilder().where(DBGameRecordDao.Properties.Game_id.eq(gameId)).list();
+        if (gameRecordList.size() > 1) {
+            Timber.e("game_id should be only,but size is %d", gameRecordList.size());
+            throw new SQLDataException("game_id should be only");
+        } else if (gameRecordList.size() == 0) {
+            currentAttackPointCount = 1;
+            return;
+        }
+        DBGameRecord gameRecord = gameRecordList.get(0);
+        currentAttackPointCount = gameRecord.getRecord_text().size();
+    }
+
+    private void initView() {
+
+        for (Point p : mPoints.subList(0, currentAttackPointCount)) {
+            mapHelper.showNextPoint(mPoints.indexOf(p));
+            mPonitLatLngs.add(new LatLng(p.getLatitude(), p.getLongitude()));
+        }
+        mapHelper.drawPolyLine(mPonitLatLngs);
+        moveToTarget();
+    }
+
+    void moveToTarget() {
+        if (mapHelper != null) {
+            mapHelper.animateCameraToCurrentTarget();
+        }
     }
 
     /**

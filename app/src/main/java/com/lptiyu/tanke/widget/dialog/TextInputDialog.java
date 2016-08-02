@@ -30,7 +30,7 @@ public class TextInputDialog extends BaseDialog {
     super(context);
     this.setCustomView(R.layout.layout_dialog_input_text, context)
         .withMessage(null)
-        .setCancelable(false);
+        .setCancelable(true);
   }
 
   @Override
