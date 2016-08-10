@@ -117,5 +117,10 @@
     <color name="game_data_activity_item_top_color">#2F5FD0</color>
 
 
+    <color name="orange">#FF8201</color>
+
+    <color name="half_transparent">#a000</color>
+
+    <color name="most_transparent">#b000</color>
 
 </resources>

@@ -186,4 +186,23 @@ public final class Conf {
     public static final String JOIN_TIME = "join_time";
     public static final String START_TIME = "start_time";
 
+    public static final String LIST_TASK = "list_task";
+    public static final String POINT = "point";
+
+    public static final String LIST_TASK_RECORD = "list_task_record";
+    public static final String POINT_RECORD = "point_record";
+    public static final String UNZIPPED_DIR = "unZippedDir";
+    public static final String IS_FINISHED_POINT = "is_finished_point";
+
+    public static final String FROM_WHERE = "from_where";
+    public static final String NormalViewHolder = "NormalViewHolder";
+    public static final String ElasticHeaderViewHolder = "ElasticHeaderViewHolder";
+    public static final String GamePlay2Activity = "GamePlay2Activity";
+    public static final String GamePlay2ActivityEntity = "GamePlay2ActivityEntity";
+
+    public static final String RIDDLE_ANSWER = "riddle_anwser";
+    public static final String CURRENT_TASK = "current_task";
+    public static final String IS_POINT_OVER = "is_point_over";
+    public static final String UPLOAD_RECORD_RESPONSE = "upload_record_response";
+
 }

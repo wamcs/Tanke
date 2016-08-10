@@ -3,7 +3,7 @@ package com.lptiyu.tanke.entity;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import java.util.List;
+import java.util.ArrayList;
 
 /**
  * Created by Jason on 2016/7/20.
@@ -11,8 +11,8 @@ import java.util.List;
 public class PointRecord implements Parcelable {
     public Long id;
     public String statu;
-    public String point_id;
-    public List<TaskRecord> task;
+    //    public String point_id;
+    public ArrayList<TaskRecord> task;
 
     @Override
     public int describeContents() {
@@ -23,7 +23,7 @@ public class PointRecord implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeValue(this.id);
         dest.writeString(this.statu);
-        dest.writeString(this.point_id);
+        //        dest.writeString(this.point_id);
         dest.writeTypedList(this.task);
     }
 
@@ -33,7 +33,7 @@ public class PointRecord implements Parcelable {
     protected PointRecord(Parcel in) {
         this.id = (Long) in.readValue(Long.class.getClassLoader());
         this.statu = in.readString();
-        this.point_id = in.readString();
+        //        this.point_id = in.readString();
         this.task = in.createTypedArrayList(TaskRecord.CREATOR);
     }
 
@@ -54,7 +54,7 @@ public class PointRecord implements Parcelable {
         return "PointRecord{" +
                 "id=" + id +
                 ", statu='" + statu + '\'' +
-                ", point_id='" + point_id + '\'' +
+                //                ", point_id='" + point_id + '\'' +
                 ", task=" + task +
                 '}';
     }

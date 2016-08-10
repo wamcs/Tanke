@@ -39,14 +39,14 @@ public class LocateHelper implements BDLocationListener {
     if (location == null || mBDLocationListener == null) {
       return;
     }
-//    RecordsUtils.setCurrentLatLng(new LatLng(location.getLatitude(), location.getLongitude()));
+//    RecordsUtils.setCurrentLatLng(playing LatLng(location.getLatitude(), location.getLongitude()));
     mBDLocationListener.onReceiveLocation(location);
   }
 
   public void startLocate() {
     if (mLocationClient != null) {
       if (mLocationClient.isStarted()) {
-        Timber.e("locate service is already started");
+        Timber.e("locate_orange service is already started");
       } else {
         mLocationClient.start();
       }
@@ -56,7 +56,7 @@ public class LocateHelper implements BDLocationListener {
   public void stopLocate() {
     if (mLocationClient != null) {
       if (!mLocationClient.isStarted()) {
-        Timber.e("locate service is already stop");
+        Timber.e("locate_orange service is already stop");
       } else {
         mLocationClient.stop();
       }

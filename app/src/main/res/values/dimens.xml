@@ -268,7 +268,7 @@
     <dimen name="modify_user_info_item_text_size">16sp</dimen>
     <dimen name="modify_user_info_item_content_margin">@dimen/x52</dimen>
 
-    <!--locate Activity Dimens-->
+    <!--locate_orange Activity Dimens-->
     <dimen name="item_locate_activity_list_item_padding_top_bottom">@dimen/y45</dimen>
     <dimen name="item_locate_activity_list_item_padding_left">@dimen/x66</dimen>
 

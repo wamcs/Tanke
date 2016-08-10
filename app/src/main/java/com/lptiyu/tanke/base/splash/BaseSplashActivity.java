@@ -77,7 +77,7 @@ public abstract class BaseSplashActivity extends BaseActivity {
 //    fetchSplashUrl()
 //        .subscribeOn(Schedulers.io())
 //        .observeOn(AndroidSchedulers.mainThread())
-//        .subscribe(new SaveAction(getBaseContext(), imageFile), new Action1<Throwable>() {
+//        .subscribe(playing SaveAction(getBaseContext(), imageFile), playing Action1<Throwable>() {
 //          @Override
 //          public void call(Throwable throwable) {
 //            if (imageFile.delete()) {

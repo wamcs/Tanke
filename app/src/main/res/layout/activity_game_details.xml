@@ -26,7 +26,7 @@
                 android:paddingTop="@dimen/default_toolbar_imageview_padding"
                 android:scaleType="centerInside"
                 android:src="@mipmap/img_last_white"
-            />
+                />
 
             <com.lptiyu.tanke.widget.CustomTextView
                 android:id="@+id/game_detail_title"
@@ -35,7 +35,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:text="华科森林记"
-            />
+                />
 
             <ImageView
                 android:id="@+id/share_btn"
@@ -47,18 +47,21 @@
                 android:paddingLeft="@dimen/x50"
                 android:paddingRight="@dimen/x50"
                 android:paddingTop="@dimen/y50"
-                android:src="@mipmap/game_details_share_btn"
-            />
+                android:src="@drawable/share"
+                />
 
         </RelativeLayout>
 
     </android.support.v7.widget.Toolbar>
 
     <com.lptiyu.tanke.widget.CustomTextView
-        android:id="@+id/game_detail_ensure"
+        android:id="@+id/enter_game"
         android:layout_width="match_parent"
         android:layout_height="@dimen/y130"
         android:layout_alignParentBottom="true"
+        android:layout_marginBottom="30dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
         android:background="@drawable/toolbar_gradient"
         android:gravity="center"
         android:text="@string/enter_game_play"
@@ -68,7 +71,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/game_detail_ensure"
+        android:layout_above="@id/enter_game"
         android:layout_below="@id/relative_layout">
 
         <ScrollView
@@ -101,7 +104,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:scaleType="fitCenter"
-                        android:src="@mipmap/blue_round_bg"/>
+                        android:src="@drawable/circle_orange"/>
 
                     <LinearLayout
                         android:layout_width="wrap_content"
@@ -119,11 +122,17 @@
                             android:text="1"
                             android:textColor="@color/white10"
                             android:textSize="18sp"
-                        />
+                            />
+
+                        <com.lptiyu.tanke.widget.CustomTextView
+                            android:layout_width="match_parent"
+                            android:layout_height="1px"
+                            android:background="@color/white10"/>
 
                         <com.lptiyu.tanke.widget.CustomTextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
                             android:text="人在玩"
                             android:textColor="@color/white07"
                             android:textSize="9sp"/>
@@ -145,7 +154,7 @@
                         android:id="@+id/game_detail_location"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:drawableLeft="@mipmap/game_detail_loc"
+                        android:drawableLeft="@drawable/location_gray"
                         android:drawablePadding="@dimen/x52"
                         android:gravity="center_vertical"
                         android:text="洪山区-华科校区"
@@ -157,22 +166,18 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/y52"
-                        android:drawableLeft="@mipmap/game_detail_time"
-                        android:drawablePadding="@dimen/x52"
                         android:gravity="center_vertical"
                         android:text="2016.04.10 - 2016.04.12"
                         android:textColor="@color/grey06"
                         android:textSize="14.5sp"
-                    />
+                        />
 
                     <com.lptiyu.tanke.widget.CustomTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/y39"
-                        android:drawableLeft="@mipmap/game_details_1"
-                        android:drawablePadding="@dimen/x30"
                         android:gravity="center_vertical"
-                        android:text="简介"
+                        android:text="情节简介"
                         android:textColor="@color/grey02"
                         android:textSize="15sp"
                         android:textStyle="bold"/>
@@ -198,7 +203,8 @@
                         android:text="规则"
                         android:textColor="@color/grey02"
                         android:textSize="15sp"
-                        android:textStyle="bold"/>
+                        android:textStyle="bold"
+                        android:visibility="gone"/>
 
                     <com.lptiyu.tanke.widget.CustomTextView
                         android:id="@+id/game_detail_rule"
@@ -209,7 +215,8 @@
                         android:paddingTop="@dimen/y18"
                         android:text="从东小门触发，途径运园公寓，七星进入绝望坡，感受绝望破的美丽，后一路前行到西校门，在哪里与裁判朋友，扫码后完成任务"
                         android:textColor="@color/grey05"
-                        android:textSize="14sp"/>
+                        android:textSize="14sp"
+                        android:visibility="gone"/>
 
                 </LinearLayout>
             </RelativeLayout>
@@ -225,7 +232,7 @@
             android:text="5人团队赛"
             android:textColor="@color/middle_blue"
             android:textSize="15sp"
-        />
+            />
 
     </RelativeLayout>
 

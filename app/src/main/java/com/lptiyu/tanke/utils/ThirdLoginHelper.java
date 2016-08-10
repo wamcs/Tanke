@@ -7,8 +7,6 @@ import android.content.Intent;
 import com.lptiyu.tanke.MainActivity;
 import com.lptiyu.tanke.global.Accounts;
 import com.lptiyu.tanke.global.AppData;
-import com.lptiyu.tanke.global.Conf;
-import com.lptiyu.tanke.initialization.ui.SignUpActivity;
 import com.lptiyu.tanke.io.net.HttpService;
 import com.lptiyu.tanke.io.net.Response;
 import com.lptiyu.tanke.io.net.UserService;
@@ -20,6 +18,7 @@ import java.util.HashMap;
 
 import cn.sharesdk.framework.Platform;
 import cn.sharesdk.framework.PlatformActionListener;
+import cn.sharesdk.framework.PlatformDb;
 import cn.sharesdk.framework.ShareSDK;
 import cn.sharesdk.sina.weibo.SinaWeibo;
 import cn.sharesdk.tencent.qzone.QZone;
@@ -95,9 +94,9 @@ public class ThirdLoginHelper implements PlatformActionListener {
         Muser.setAvatar(hashMap.get("headimgurl").toString());
     }
 
-    public void login(String id, int platformType) {
+    public void login(String id, int platformType, int ostype, String avatar_url, String nick_name) {
         final int plantType = platformType;
-        HttpService.getUserService().loginThirdParty(id, platformType)
+        HttpService.getUserService().loginThirdParty(id, platformType, ostype, avatar_url, nick_name)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Action1<Response<UserEntity>>() {
@@ -113,15 +112,18 @@ public class ThirdLoginHelper implements PlatformActionListener {
                         Activity activity = activityWeakReference.get();
                         Intent intentToSignUP = new Intent();
 
-                        if (entity.getIsNewUserThirdParty() == 1) {
-                            intentToSignUP.setClass(activity, SignUpActivity.class);
-                            intentToSignUP.putExtra(Conf.SIGN_UP_CODE, Conf.REGISTER_CODE);
-                            intentToSignUP.putExtra(Conf.SIGN_UP_TYPE, plantType);
-                        } else {
-                            Accounts.setId(entity.getUid());
-                            Accounts.setToken(entity.getToken());
-                            intentToSignUP.setClass(activity, MainActivity.class);
-                        }
+                        //                        if (entity.getIsNewUserThirdParty() == 1) {
+                        //                            intentToSignUP.setClass(activity, SignUpActivity.class);
+                        //                            intentToSignUP.putExtra(Conf.SIGN_UP_CODE, Conf.REGISTER_CODE);
+                        //                            intentToSignUP.putExtra(Conf.SIGN_UP_TYPE, plantType);
+                        //                        } else {
+                        //                            Accounts.setId(entity.getUid());
+                        //                            Accounts.setToken(entity.getToken());
+                        //                            intentToSignUP.setClass(activity, MainActivity.class);
+                        //                        }
+                        Accounts.setId(entity.getUid());
+                        Accounts.setToken(entity.getToken());
+                        intentToSignUP.setClass(activity, MainActivity.class);
                         activity.startActivity(intentToSignUP);
                     }
                 }, new Action1<Throwable>() {
@@ -132,26 +134,30 @@ public class ThirdLoginHelper implements PlatformActionListener {
                 });
     }
 
+    private final int ANDROID = 1;
 
     @Override
     public void onComplete(Platform platform, int i, HashMap<String, Object> hashMap) {
 
-        String id = platform.getDb().getUserId();//openID
+        PlatformDb db = platform.getDb();
+        String id = db.getUserId();//openID
+        String nick_name = db.getUserName();//nick_name
+        String avatar_url = db.getUserIcon();//avatar_url
         //platform.getDb().getToken();
         if (platform.getName().equals(QZONE)) {
             getQzoneUserInformation(hashMap);
-            login(id, UserService.USER_TYPE_QQ);
+            login(id, UserService.USER_TYPE_QQ, ANDROID, avatar_url, nick_name);
             return;
         }
 
         if (platform.getName().equals(WEIBO)) {
             getWeiboUserInformation(hashMap);
-            login(id, UserService.USER_TYPE_WEIBO);
+            login(id, UserService.USER_TYPE_WEIBO, ANDROID, avatar_url, nick_name);
             return;
         }
         if (platform.getName().equals(WECHAT)) {
             getWechatUserInformation(hashMap);
-            login(id, UserService.USER_TYPE_WEIXIN);
+            login(id, UserService.USER_TYPE_WEIXIN, ANDROID, avatar_url, nick_name);
         }
     }
 

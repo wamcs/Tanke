@@ -6,108 +6,214 @@
     android:layout_height="match_parent"
     tools:context=".activities.gameplaying2.GamePlaying2Activity">
 
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar"
-        style="@style/Toolbar">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            style="@style/Toolbar">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/back_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:background="@null"
+                    android:onClick="click"
+                    android:paddingBottom="@dimen/default_toolbar_imageview_padding"
+                    android:paddingLeft="@dimen/default_toolbar_imageview_padding_left"
+                    android:paddingRight="@dimen/default_toolbar_imageview_padding"
+                    android:paddingTop="@dimen/default_toolbar_imageview_padding"
+                    android:scaleType="centerInside"
+                    android:src="@mipmap/img_last_white"
+                    />
+
+                <com.lptiyu.tanke.widget.CustomTextView
+                    android:id="@+id/game_playing_title"
+                    style="@style/TextAppearance.Toolbar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:text="华科森林记"
+                    />
+
+                <ImageView
+                    android:id="@+id/img_game_detail"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:clickable="true"
+                    android:onClick="click"
+                    android:paddingBottom="@dimen/default_toolbar_imageview_padding"
+                    android:paddingLeft="@dimen/default_toolbar_imageview_padding_left"
+                    android:paddingRight="@dimen/default_toolbar_imageview_padding"
+                    android:paddingTop="@dimen/default_toolbar_imageview_padding"
+                    android:src="@mipmap/detail"
+                    android:visibility="visible"
+                    />
+
+            </RelativeLayout>
+
+        </android.support.v7.widget.Toolbar>
+
+        <ImageView
+            android:id="@+id/map_view"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_below="@id/toolbar"
+            android:scaleType="centerCrop"
+            android:src="@drawable/example"
+            android:visibility="gone"/>
+        <!--    <com.baidu.mapapi.map.TextureMapView
+                android:id="@+id/map_view"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_below="@id/toolbar"/>-->
+
+        <ImageView
+            android:id="@+id/img_zoom_full_screen"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_alignBottom="@id/map_view"
+            android:layout_alignRight="@id/map_view"
+            android:layout_marginBottom="0dp"
+            android:layout_marginRight="0dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/zoom_full_screen"
+            android:visibility="gone"/>
+
+        <com.lptiyu.tanke.widget.CustomTextView
+            android:id="@+id/ctv_my_progress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/map_view"
+            android:layout_marginLeft="10dp"
+            android:paddingBottom="10dp"
+            android:paddingLeft="10dp"
+            android:paddingTop="10dp"
+            android:text="@string/my_point_progress"
+            android:textSize="18sp"/>
+
+        <com.lptiyu.tanke.widget.CustomTextView
+            android:id="@+id/ctv_have_gone_throungh_game"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@id/ctv_my_progress"
+            android:layout_below="@id/map_view"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@id/ctv_my_progress"
+            android:text="@string/have_gone_through_game"
+            android:textColor="@color/orange"
+            android:textSize="18sp"
+            android:visibility="gone"/>
+
+        <GridView
+            android:id="@+id/gv"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/ctv_my_progress"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:columnWidth="200dp"
+            android:gravity="center"
+            android:horizontalSpacing="30dp"
+            android:listSelector="@android:color/transparent"
+            android:numColumns="3"
+            android:padding="10dp"
+            android:scrollbars="none"
+            android:stretchMode="columnWidth"
+            android:verticalSpacing="20dp"/>
+
+        <TextView
+            android:id="@+id/btn_submitRecord"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="click"
+            android:text="提交游戏记录"
+            android:typeface="normal"
+            android:visibility="gone"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rl_clue"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#a000"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:paddingTop="40dp"
+        android:visibility="gone"
+        >
+
 
         <RelativeLayout
+            android:id="@+id/rl_title"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:background="#FF8201"
+            android:padding="15dp"
+            android:visibility="visible">
+
+            <TextView
+                android:id="@+id/ctv_taskName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:text="神秘楼宇"
+                android:textColor="#fff"
+                android:textSize="20sp"
+                android:textStyle="bold"/>
 
             <ImageView
-                android:id="@+id/back_btn"
+                android:id="@+id/img_close"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:background="@null"
-                android:onClick="click"
-                android:paddingBottom="@dimen/default_toolbar_imageview_padding"
-                android:paddingLeft="@dimen/default_toolbar_imageview_padding_left"
-                android:paddingRight="@dimen/default_toolbar_imageview_padding"
-                android:paddingTop="@dimen/default_toolbar_imageview_padding"
-                android:scaleType="centerInside"
-                android:src="@mipmap/img_last_white"
-                />
-
-            <com.lptiyu.tanke.widget.CustomTextView
-                android:id="@+id/game_playing_title"
-                style="@style/TextAppearance.Toolbar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:text="华科森林记"
-                />
-
-            <ImageView
-                android:id="@+id/btn_baiduMapMode"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_alignBottom="@id/ctv_taskName"
                 android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
+                android:layout_alignTop="@id/ctv_taskName"
                 android:clickable="true"
-                android:onClick="click"
-                android:paddingBottom="@dimen/default_toolbar_imageview_padding"
-                android:paddingLeft="@dimen/default_toolbar_imageview_padding_left"
-                android:paddingRight="@dimen/default_toolbar_imageview_padding"
-                android:paddingTop="@dimen/default_toolbar_imageview_padding"
-                android:src="@mipmap/detail"
-                android:visibility="visible"
-                />
+                android:src="@drawable/close"/>
+        </RelativeLayout>
+
+
+        <RelativeLayout
+            android:id="@+id/rl_getKey"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_alignParentBottom="true"
+            android:background="@android:color/transparent">
+
+            <ImageView
+                android:id="@+id/img_getKey"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="20dp"
+                android:scaleType="centerInside"
+                android:src="@drawable/key"/>
 
         </RelativeLayout>
 
-    </android.support.v7.widget.Toolbar>
+        <ListView
+            android:id="@+id/lv"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@id/rl_getKey"
+            android:layout_below="@id/rl_title"
+            android:background="#fff"
+            android:divider="@null"
+            android:dividerHeight="0dp"
+            android:listSelector="@null"
+            android:scrollbars="none"/>
 
-    <com.baidu.mapapi.map.TextureMapView
-        android:id="@+id/map_view"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:layout_below="@id/toolbar"/>
 
-    <ImageView
-        android:id="@+id/img_zoom_full_screen"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_alignBottom="@id/map_view"
-        android:layout_alignRight="@id/map_view"
-        android:layout_marginBottom="0dp"
-        android:layout_marginRight="0dp"
-        android:scaleType="centerInside"
-        android:src="@drawable/zoom_full_screen"/>
-
-    <com.lptiyu.tanke.widget.CustomTextView
-        android:id="@+id/ctv_my_progress"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/map_view"
-        android:layout_marginLeft="10dp"
-        android:padding="10dp"
-        android:text="@string/my_point_progress"
-        android:textSize="18sp"/>
-
-    <GridView
-        android:id="@+id/gv"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/ctv_my_progress"
-        android:columnWidth="200dp"
-        android:gravity="center"
-        android:horizontalSpacing="20dp"
-        android:listSelector="@android:color/transparent"
-        android:numColumns="3"
-        android:padding="10dp"
-        android:scrollbars="none"
-        android:stretchMode="columnWidth"
-        android:verticalSpacing="20dp"/>
-
-    <Button
-        android:id="@+id/btn_submitRecord"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@id/gv"
-        android:layout_alignRight="@id/gv"
-        android:onClick="click"
-        android:text="提交游戏记录"
-        android:visibility="gone"/>
+    </RelativeLayout>
 
 </RelativeLayout>

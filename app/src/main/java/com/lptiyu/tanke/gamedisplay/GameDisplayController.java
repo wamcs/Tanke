@@ -257,7 +257,7 @@ public class GameDisplayController extends BaseListFragmentController<GameDispla
 
   @OnClick(R.id.scanner)
   void scanner() {
-//    startActivityForResult(new Intent(getContext(), CaptureActivity.class), SCANNER_REQUEST_CODE);
+//    startActivityForResult(playing Intent(getContext(), CaptureActivity.class), SCANNER_REQUEST_CODE);
   }
 
   void onItemClick(GameDisplayEntity gameDisplayEntity) {

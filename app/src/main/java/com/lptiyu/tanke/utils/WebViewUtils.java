@@ -30,6 +30,8 @@ public class WebViewUtils {
         //是否拦截网络图片
         webSettings.setBlockNetworkImage(false);
         //设置字体大小
-        webSettings.setDefaultFontSize(Display.sp2px(context, 16f));
+        webSettings.setDefaultFontSize(Display.sp2px(context, 20f));
+        //设置编码类型
+        webSettings.setDefaultTextEncodingName("utf-8");
     }
 }

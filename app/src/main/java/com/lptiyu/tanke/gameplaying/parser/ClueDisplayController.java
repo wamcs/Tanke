@@ -84,7 +84,7 @@ public class ClueDisplayController extends ActivityController implements Parser.
      * this method will be reused when one task finished
      */
     private void addClueView() {
-        //    Gson gson = new Gson();
+        //    Gson gson = playing Gson();
         //    gson.fromJson()
         mShowLayout.addView(parser.parser(TEXT_CONTENT, 0, "sjdakhds", 1));
         mShowLayout.addView(parser.parser(TEXT_CONTENT_2, 1, "gjds;klvopkfd", 2));
@@ -110,7 +110,7 @@ public class ClueDisplayController extends ActivityController implements Parser.
     public void onBeginDecode(int type, String passWord, int order) {
         //TODO:do judge order.if it is smaller than currentTask,do not call onclick method
         Log.d("lk", "type is " + type + ",password is " + passWord);
-        //    Intent intent = new Intent(getActivity(),xxx.class);
+        //    Intent intent = playing Intent(getActivity(),xxx.class);
         //    intent.putExtra(Conf.CLUE_DISPLAY_TASK_TYPE,type);
         //    intent.putExtra(Conf.CLUE_DISPLAY_TASK_PWD,passWord);
         //    startActivityForResult(intent,Conf.REQUEST_CODE_BEGIN_DECODE);

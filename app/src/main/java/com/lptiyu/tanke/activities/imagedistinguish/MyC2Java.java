@@ -27,7 +27,7 @@ public class MyC2Java {
     }
 
     public static void unshow() {
-        //        postToMain(new Runnable() {
+        //        postToMain(playing Runnable() {
         //            @Override
         //            public void run() {
         //                Toast.makeText(showContext, "unshow:" + count, Toast.LENGTH_SHORT).show();

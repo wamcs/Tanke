@@ -22,6 +22,7 @@ import java.lang.reflect.Type;
  */
 public class Task implements Parcelable {
 
+
     private long id;
 
     @SerializedName("type")
@@ -48,7 +49,7 @@ public class Task implements Parcelable {
 
     public enum TASK_TYPE implements JsonSerializer<TASK_TYPE>, JsonDeserializer<TASK_TYPE> {
         SCAN_CODE(4), // scan the QRCode
-        LOCATE(1), // locate the position
+        LOCATE(1), // locate_orange the position
         RIDDLE(3), // Secret mission
         DISTINGUISH(5), // take the photo and distinguish
         TIMING(0),//限时任务

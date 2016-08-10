@@ -22,11 +22,11 @@
             android:id="@+id/middle_image_view"
             android:layout_width="@dimen/middle_image_view_width_height"
             android:layout_height="@dimen/middle_image_view_width_height"
-            app:civ_border_color="#fff"
-            app:civ_border_width="@dimen/middle_image_view_width_height_civ_border_width"
-            app:civ_shadow="true"
-            app:civ_shadow_radius="15"
-            app:civ_shadow_color="@color/purple_shadow_color"
+            app:cuiv_border_color="#fff"
+            app:cuiv_border_width="@dimen/middle_image_view_width_height_civ_border_width"
+            app:cuiv_shadow="true"
+            app:cuiv_shadow_radius="15"
+            app:cuiv_shadow_color="@color/purple_shadow_color"
             />
 
         <com.lptiyu.tanke.widget.CustomTextView
@@ -52,11 +52,11 @@
             android:id="@+id/left_image_view"
             android:layout_width="@dimen/left_right_image_view_width_height"
             android:layout_height="@dimen/left_right_image_view_width_height"
-            app:civ_border_color="#fff"
-            app:civ_border_width="@dimen/left_right_image_view_civ_border_width"
-            app:civ_shadow="true"
-            app:civ_shadow_radius="15"
-            app:civ_shadow_color="@color/purple_shadow_color"
+            app:cuiv_border_color="#fff"
+            app:cuiv_border_width="@dimen/left_right_image_view_civ_border_width"
+            app:cuiv_shadow="true"
+            app:cuiv_shadow_radius="15"
+            app:cuiv_shadow_color="@color/purple_shadow_color"
             />
 
         <com.lptiyu.tanke.widget.CustomTextView
@@ -82,11 +82,11 @@
             android:id="@+id/right_image_view"
             android:layout_width="@dimen/left_right_image_view_width_height"
             android:layout_height="@dimen/left_right_image_view_width_height"
-            app:civ_border_color="#fff"
-            app:civ_border_width="@dimen/left_right_image_view_civ_border_width"
-            app:civ_shadow="true"
-            app:civ_shadow_color="@color/purple_shadow_color"
-            app:civ_shadow_radius="15"
+            app:cuiv_border_color="#fff"
+            app:cuiv_border_width="@dimen/left_right_image_view_civ_border_width"
+            app:cuiv_shadow="true"
+            app:cuiv_shadow_color="@color/purple_shadow_color"
+            app:cuiv_shadow_radius="15"
             />
 
         <com.lptiyu.tanke.widget.CustomTextView
