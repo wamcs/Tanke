@@ -10,11 +10,12 @@ import com.lptiyu.tanke.database.DBTaskRecord;
 import com.lptiyu.tanke.entity.GameRecord;
 import com.lptiyu.tanke.entity.PointRecord;
 import com.lptiyu.tanke.entity.TaskRecord;
-import com.lptiyu.tanke.enums.GameRecordAndPointStatus;
+import com.lptiyu.tanke.enums.PointTaskStatus;
 import com.lptiyu.tanke.global.Accounts;
 import com.lptiyu.tanke.io.net.HttpService;
 import com.lptiyu.tanke.io.net.Response;
 import com.lptiyu.tanke.pojo.UpLoadGameRecord;
+import com.lptiyu.tanke.pojo.UploadGameRecordResponse;
 
 import java.util.List;
 
@@ -45,7 +46,7 @@ public class GamePlaying2Presenter implements GamePlaying2Contract.IGamePlayingP
                 .subscribe(new Action1<Response<GameRecord>>() {
                     @Override
                     public void call(Response<GameRecord> response) {
-                        Log.i("jason", "请求游戏记录结果：" + response);
+                        //                        Log.i("jason", "请求游戏记录结果：" + response);
                         if (response.getStatus() != Response.RESPONSE_OK) {
                             Log.i("jason", "请求游戏记录失败：" + response.getInfo());
                         } else {
@@ -93,12 +94,12 @@ public class GamePlaying2Presenter implements GamePlaying2Contract.IGamePlayingP
     public void upLoadRecord(final UpLoadGameRecord record) {
         HttpService.getGameService()
                 .upLoadGameRecord(Accounts.getId(), Long.parseLong(record.game_id), Long.parseLong(record.point_id),
-                        Long.parseLong(record.task_id), Long.parseLong(record.type), GameRecordAndPointStatus.FINISHED)
+                        Long.parseLong(record.task_id), Long.parseLong(record.type), PointTaskStatus.FINISHED)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Action1<Response<Void>>() {
+                .subscribe(new Action1<Response<UploadGameRecordResponse>>() {
                     @Override
-                    public void call(Response<Void> response) {
+                    public void call(Response<UploadGameRecordResponse> response) {
                         Log.i("jason", "上传游戏记录结果:" + response);
                         if (response.getStatus() == Response.RESPONSE_OK) {
                             view.successUpLoadRecord();
@@ -121,7 +122,7 @@ public class GamePlaying2Presenter implements GamePlaying2Contract.IGamePlayingP
         dbTaskRecord.setExp(taskRecord.exp);
         dbTaskRecord.setFtime(taskRecord.ftime);
         dbTaskRecord.setId(taskRecord.id);
-        dbTaskRecord.setTaskId(taskRecord.taskId);
+        dbTaskRecord.setTaskId(taskRecord.id + "");
         DBHelper.getInstance().getDBTaskDao().insertOrReplace(dbTaskRecord);
     }
 
@@ -129,7 +130,7 @@ public class GamePlaying2Presenter implements GamePlaying2Contract.IGamePlayingP
     public void insertPoint(PointRecord pointRecord) {
         DBPointRecord dbPointRecord = new DBPointRecord();
         dbPointRecord.setId(pointRecord.id);
-        dbPointRecord.setPoint_id(pointRecord.point_id);
+        dbPointRecord.setPoint_id(pointRecord.id + "");
         dbPointRecord.setStatu(pointRecord.statu);
         DBHelper.getInstance().getDBPointDao().insertOrReplace(dbPointRecord);
     }
@@ -137,15 +138,15 @@ public class GamePlaying2Presenter implements GamePlaying2Contract.IGamePlayingP
     @Override
     public void insertGameRecord(GameRecord gameRecord) {
         DBGameRecord dbGameRecord = new DBGameRecord();
-        dbGameRecord.setId(gameRecord.id);
+        //        dbGameRecord.setId(Long.parseLong(gameRecord.game_id));
         dbGameRecord.setGame_id(gameRecord.game_id);
         dbGameRecord.setJoin_time(gameRecord.join_time);
         dbGameRecord.setLast_task_ftime(gameRecord.last_task_ftime);
         dbGameRecord.setLine_id(gameRecord.line_id);
         dbGameRecord.setPlay_statu(gameRecord.play_statu);
         dbGameRecord.setRanks_id(gameRecord.ranks_id);
-        dbGameRecord.setStart_time(gameRecord.start_time);
-        dbGameRecord.setUid(gameRecord.uid);
+        //        dbGameRecord.setStart_time(gameRecord.start_time);
+        //        dbGameRecord.setUid(gameRecord.uid);
         DBHelper.getInstance().getDBGameRecordDao().insertOrReplace(dbGameRecord);
     }
 

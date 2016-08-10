@@ -41,7 +41,7 @@
         <attr name="spotToDoColor" format="color|reference"/>
         <attr name="spotItemLineColor" format="color|reference"/>
     </declare-styleable>
-    
+
     <declare-styleable name="TickView">
         <attr name="tickTextSize" format="dimension"/>
         <attr name="tickTextColor" format="color|reference"/>
@@ -57,12 +57,12 @@
     </declare-styleable>
 
     <declare-styleable name="CircularImageView">
-        <attr name="civ_border" format="boolean"/>
-        <attr name="civ_border_width" format="dimension"/>
-        <attr name="civ_border_color" format="color|reference"/>
-        <attr name="civ_shadow" format="boolean"/>
-        <attr name="civ_shadow_radius" format="integer"/>
-        <attr name="civ_shadow_color" format="color|reference"/>
+        <attr name="cuiv_border" format="boolean"/>
+        <attr name="cuiv_border_width" format="dimension"/>
+        <attr name="cuiv_border_color" format="color|reference"/>
+        <attr name="cuiv_shadow" format="boolean"/>
+        <attr name="cuiv_shadow_radius" format="integer"/>
+        <attr name="cuiv_shadow_color" format="color|reference"/>
     </declare-styleable>
 
 </resources>

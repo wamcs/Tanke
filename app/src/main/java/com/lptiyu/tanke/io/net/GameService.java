@@ -5,10 +5,11 @@ import android.support.annotation.IntDef;
 import com.lptiyu.tanke.entity.GameRecord;
 import com.lptiyu.tanke.pojo.City;
 import com.lptiyu.tanke.pojo.EnterGameResponse;
-import com.lptiyu.tanke.pojo.GameDetailsEntity;
+import com.lptiyu.tanke.pojo.GameDetailResponse;
 import com.lptiyu.tanke.pojo.GameDisplayEntity;
 import com.lptiyu.tanke.pojo.GetGameStatusResponse;
 import com.lptiyu.tanke.pojo.MessageEntity;
+import com.lptiyu.tanke.pojo.UploadGameRecordResponse;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -43,7 +44,7 @@ public interface GameService {
      * 2.13 游戏详情
      */
     @GET("Home/Details")
-    Observable<Response<GameDetailsEntity>> getGameDetails(
+    Observable<Response<GameDetailResponse>> getGameDetails(
             @Query("game_id") long gameId);
 
     /**
@@ -258,7 +259,7 @@ public interface GameService {
      * @return
      */
     @GET("System/Rankslog")
-    Observable<Response<Void>> upLoadGameRecord(
+    Observable<Response<UploadGameRecordResponse>> upLoadGameRecord(
             @Query("uid") long uid,
             @Query("game_id") long gameId,
             @Query("point_id") long pointid,

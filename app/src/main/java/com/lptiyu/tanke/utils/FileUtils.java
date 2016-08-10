@@ -61,7 +61,6 @@ public class FileUtils {
     /**
      * 解压.zip文件
      *
-     * @param fileName
      * @param filePath
      * @return 解压后的游戏文件夹的绝对路径
      */
@@ -69,8 +68,10 @@ public class FileUtils {
     public static String unzipFile(String fileName, String filePath) {
         String dirPath = null;
         try {
-            ZipFile zipFile = new ZipFile(fileName, "GBK");
+            //            ZipFile zipFile = playing ZipFile(fileName, "GBK");
+            ZipFile zipFile = new ZipFile(filePath, "GBK");
             Enumeration emu = zipFile.getEntries();
+            dirPath = filePath.substring(0, filePath.length() - 4);
             while (emu.hasMoreElements()) {
                 ZipEntry entry = (ZipEntry) emu.nextElement();
                 if (entry.isDirectory()) {
@@ -78,7 +79,7 @@ public class FileUtils {
                     continue;
                 }
                 BufferedInputStream bis = new BufferedInputStream(zipFile.getInputStream(entry));
-                File file = new File(filePath + entry.getName());
+                File file = new File(dirPath + "/" + entry.getName());
                 File parent = file.getParentFile();
                 if (parent != null && (!parent.exists())) {
                     parent.mkdirs();
@@ -96,7 +97,47 @@ public class FileUtils {
                 bis.close();
             }
             zipFile.close();
-            dirPath = fileName.substring(0, fileName.length() - 4);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return dirPath;
+    }
+
+    /**
+     * 解压.zip文件
+     *
+     * @param filePath
+     * @return 解压后的游戏文件夹的绝对路径
+     */
+    //TODO : UTF-8 only, do not support GBK
+    public static String unzipFile(String filePath) {
+        String dirPath = null;
+        try {
+            ZipFile zipFile = new ZipFile(filePath, "GBK");
+            Enumeration emu = zipFile.getEntries();
+            String rootPath = new File(filePath).getParent();
+            while (emu.hasMoreElements()) {
+                ZipEntry entry = (ZipEntry) emu.nextElement();
+                BufferedInputStream bis = new BufferedInputStream(zipFile.getInputStream(entry));
+                File file = new File(rootPath + "/" + entry.getName());
+                File parent = file.getParentFile();
+                if (parent != null && (!parent.exists())) {
+                    parent.mkdirs();
+                }
+                FileOutputStream fos = new FileOutputStream(file);
+                BufferedOutputStream bos = new BufferedOutputStream(fos, BUFFER);
+
+                int count;
+                byte data[] = new byte[BUFFER];
+                while ((count = bis.read(data, 0, BUFFER)) != -1) {
+                    bos.write(data, 0, count);
+                }
+                bos.flush();
+                bos.close();
+                bis.close();
+            }
+            zipFile.close();
+            dirPath = filePath.substring(0, filePath.length() - 4);
         } catch (IOException e) {
             e.printStackTrace();
         }

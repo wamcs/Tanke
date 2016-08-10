@@ -57,7 +57,7 @@ public class GameZipScanner {
     /**
      * if the zip file is unzipped, return the absolute path
      * else return null
-     * <p/>
+     * <p>
      * 根据游戏ID返回解压后的游戏文件夹的绝对路径
      *
      * @param gameId

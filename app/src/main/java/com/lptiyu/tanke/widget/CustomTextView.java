@@ -11,30 +11,30 @@ import android.widget.TextView;
  *
  * @author ldx
  */
-public class CustomTextView extends TextView{
+public class CustomTextView extends TextView {
 
-  private static Typeface typeface;
+    private static Typeface typeface;
 
-  public CustomTextView(Context context) {
-    super(context);
-    init();
-  }
-
-  public CustomTextView(Context context, AttributeSet attrs) {
-    super(context, attrs);
-    init();
-  }
-
-  public CustomTextView(Context context, AttributeSet attrs, int defStyleAttr) {
-    super(context, attrs, defStyleAttr);
-    init();
-  }
-
-  private void init() {
-    if (typeface == null) {
-      typeface = Typeface.createFromAsset(getContext().getAssets(), "DroidPingFang.ttf");
+    public CustomTextView(Context context) {
+        super(context);
+        init();
     }
-    setTypeface(typeface);
-  }
+
+    public CustomTextView(Context context, AttributeSet attrs) {
+        super(context, attrs);
+        init();
+    }
+
+    public CustomTextView(Context context, AttributeSet attrs, int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
+        init();
+    }
+
+    private void init() {
+        //    if (typeface == null) {
+        //      typeface = Typeface.createFromAsset(getContext().getAssets(), "DroidPingFang.ttf");
+        //    }
+        //    setTypeface(typeface);
+    }
 
 }

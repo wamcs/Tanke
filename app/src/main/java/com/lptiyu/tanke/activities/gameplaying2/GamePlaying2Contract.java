@@ -17,6 +17,7 @@ public class GamePlaying2Contract {
         void successDownLoadRecord(GameRecord gameRecord);
 
         void failDownLoadRecord();
+
     }
 
     interface IGamePlayingPresenter {

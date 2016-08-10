@@ -52,6 +52,23 @@ public class DirUtils {
     DATA_ROOT_DIR = context.getFilesDir().toString();
   }
 
+  public static File getResDirectory() {
+    StringBuilder stringBuilder = new StringBuilder();
+    if (hasSDCard())
+      stringBuilder.append(SDCARD_ROOT_DIR).append(RES);
+    else
+      stringBuilder.append(DATA_ROOT_DIR).append(FILES).append(RES);
+    File destDir = new File(stringBuilder.toString());
+    if (!destDir.exists()) {
+      if (destDir.mkdirs()) {
+        Timber.d("=======create dir======== %s", destDir.getAbsolutePath());
+      } else {
+        Timber.d("=======create dir========failed");
+      }
+    }
+    return destDir;
+  }
+
   /**
    * 根据指定文件夹目录和类型创建文件夹
    *
@@ -65,23 +82,6 @@ public class DirUtils {
       return null;
     }
     File destDir = new File(rootDir + type);
-    if (!destDir.exists()) {
-      if (destDir.mkdirs()) {
-        Timber.d("=======create dir======== %s", destDir.getAbsolutePath());
-      } else {
-        Timber.d("=======create dir========failed");
-      }
-    }
-    return destDir;
-  }
-
-  public static File getResDirectory() {
-    StringBuilder stringBuilder = new StringBuilder();
-    if (hasSDCard())
-      stringBuilder.append(SDCARD_ROOT_DIR).append(RES);
-    else
-      stringBuilder.append(DATA_ROOT_DIR).append(FILES).append(RES);
-    File destDir = new File(stringBuilder.toString());
     if (!destDir.exists()) {
       if (destDir.mkdirs()) {
         Timber.d("=======create dir======== %s", destDir.getAbsolutePath());

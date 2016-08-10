@@ -133,4 +133,7 @@ dependencies {
     compile project(path: ':nifty')
 
     compile 'com.android.support:multidex:1.0.1'
+
+    compile 'org.xutils:xutils:3.3.36'
+    compile 'de.hdodenhof:circleimageview:2.1.0'
 }

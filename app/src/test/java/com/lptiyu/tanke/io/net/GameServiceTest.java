@@ -1,14 +1,11 @@
 package com.lptiyu.tanke.io.net;
 
 import com.lptiyu.tanke.BuildConfig;
-import com.lptiyu.tanke.global.Accounts;
-import com.lptiyu.tanke.pojo.GameDetailsEntity;
+import com.lptiyu.tanke.pojo.GameDetailResponse;
 import com.lptiyu.tanke.pojo.GameDisplayEntity;
-import com.lptiyu.tanke.pojo.UserDetails;
 
 import junit.framework.Assert;
 
-import org.apache.tools.ant.taskdefs.condition.Http;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -17,7 +14,6 @@ import org.robolectric.annotation.Config;
 
 import java.util.List;
 
-import okhttp3.ResponseBody;
 import rx.functions.Action1;
 
 /**
@@ -53,9 +49,9 @@ public class GameServiceTest {
 
   @Test// success 2.13
   public void testGetGameDetails() throws Exception {
-    HttpService.getGameService().getGameDetails(4).subscribe(new Action1<Response<GameDetailsEntity>>() {
+    HttpService.getGameService().getGameDetails(4).subscribe(new Action1<Response<GameDetailResponse>>() {
       @Override
-      public void call(Response<GameDetailsEntity> gameDetailsEntityResponse) {
+      public void call(Response<GameDetailResponse> gameDetailsEntityResponse) {
         System.out.println("gameDetailsEntityResponse = " + gameDetailsEntityResponse);
         Assert.assertEquals(gameDetailsEntityResponse.getStatus(), Response.RESPONSE_OK);
       }

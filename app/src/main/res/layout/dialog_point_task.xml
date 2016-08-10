@@ -8,12 +8,14 @@
         android:id="@+id/rl_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="10dp">
+        android:padding="10dp"
+        android:visibility="visible">
 
         <com.lptiyu.tanke.widget.CustomTextView
             android:id="@+id/ctv_taskName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
             android:text="神秘楼宇"
             android:textSize="20sp"
             android:textStyle="bold"/>
@@ -40,13 +42,14 @@
         android:layout_marginTop="10dp"
         android:background="@android:color/white"
         android:paddingLeft="10dp"
-        android:paddingRight="10dp"/>
+        android:paddingRight="10dp"
+        android:visibility="gone"/>
 
     <RelativeLayout
         android:id="@+id/rl_getClue"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/webView"
+        android:layout_alignParentBottom="true"
         android:padding="10dp">
 
         <ImageView
@@ -65,10 +68,18 @@
             android:layout_marginLeft="30dp"
             android:layout_toRightOf="@id/img_indicate"
             android:drawablePadding="10dp"
-            android:text="寻找答案"
             android:maxLines="1"
+            android:text="寻找答案"
             android:textColor="@color/colorPrimary"
             android:textSize="14sp"/>
     </RelativeLayout>
+
+    <ListView
+        android:id="@+id/lv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/rl_getClue"
+        android:layout_below="@id/rl_title"
+        android:scrollbars="none"/>
 
 </RelativeLayout>

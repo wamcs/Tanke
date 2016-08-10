@@ -254,6 +254,7 @@
     <string name="about_us_activity">关于我们</string>
 
     <string name="my_point_progress">我的进度</string>
+    <string name="have_gone_through_game">(已通关)</string>
 
 
 </resources>

@@ -31,12 +31,12 @@
             android:layout_height="@dimen/x300"
             android:layout_gravity="center_vertical"
             android:src="@mipmap/default_avatar"
-            app:civ_border="true"
-            app:civ_border_color="#fff"
-            app:civ_border_width="@dimen/x10"
-            app:civ_shadow="true"
-            app:civ_shadow_color="@color/user_avatar_shadow_color"
-            app:civ_shadow_radius="15" />
+            app:cuiv_border="true"
+            app:cuiv_border_color="#fff"
+            app:cuiv_border_width="@dimen/x10"
+            app:cuiv_shadow="true"
+            app:cuiv_shadow_color="@color/user_avatar_shadow_color"
+            app:cuiv_shadow_radius="15" />
 
         <RelativeLayout
             android:layout_width="match_parent"

@@ -66,7 +66,7 @@ HelloARVideo::HelloARVideo()
     active_target = 0;
 //    for(int i = 0; i < tracks_count; ++i) {
 //        texid[i] = 0;
-//        renderer[i] = new VideoRenderer;
+//        renderer[i] = playing VideoRenderer;
 //    }
     video = NULL;
     video_renderer = NULL;
@@ -125,17 +125,17 @@ void HelloARVideo::render()
         if (!tracked_target) {
             if (istargeted == 0) {
                 // if(frame.targets()[0].target().name() == std::string("argame") && texid[0]) {
-                //     video = new ARVideo;
+                //     video = playing ARVideo;
                 //     video->openVideoFile("video.mp4", texid[0]);
                 //     video_renderer = renderer[0];
                 // }
                 // else if(frame.targets()[0].target().name() == std::string("namecard") && texid[1]) {
-                //     video = new ARVideo;
+                //     video = playing ARVideo;
                 //     video->openTransparentVideoFile("transparentvideo.mp4", texid[1]);
                 //     video_renderer = renderer[1];
                 // }
                 // else if(frame.targets()[0].target().name() == std::string("idback") && texid[2]) {
-                //     video = new ARVideo;
+                //     video = playing ARVideo;
                 //     video->openStreamingVideo("http://7xl1ve.com5.z0.glb.clouddn.com/sdkvideo/EasyARSDKShow201520.mp4", texid[2]);
                 //     video_renderer = renderer[2];
                 // }
@@ -149,7 +149,7 @@ void HelloARVideo::render()
               //  myenv->CallStaticIntMethod(obj,java_method
 
 
-//            video = new ARVideo;
+//            video = playing ARVideo;
 //            video->openStreamingVideo(tracks_doing[a], texid[a]);
 //            video_renderer = renderer[a];
                 //调用java

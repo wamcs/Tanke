@@ -17,8 +17,8 @@
         android:layout_marginRight="@dimen/x30"
         android:background="@color/transparent"
         android:src="@mipmap/ic_launcher"
-        app:civ_border="false"
-        app:civ_shadow="false"/>
+        app:cuiv_border="false"
+        app:cuiv_shadow="false"/>
 
     <com.lptiyu.tanke.widget.CustomTextView
         android:id="@+id/message_list_item_name"

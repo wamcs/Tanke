@@ -9,7 +9,7 @@ import android.os.Parcelable;
 public class TaskRecord implements Parcelable {
     public Long id;
     public String ftime;
-    public String taskId;
+    //    public String taskId;
     public String exp;
 
     @Override
@@ -21,7 +21,7 @@ public class TaskRecord implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeValue(this.id);
         dest.writeString(this.ftime);
-        dest.writeString(this.taskId);
+        //        dest.writeString(this.taskId);
         dest.writeString(this.exp);
     }
 
@@ -31,7 +31,7 @@ public class TaskRecord implements Parcelable {
     protected TaskRecord(Parcel in) {
         this.id = (Long) in.readValue(Long.class.getClassLoader());
         this.ftime = in.readString();
-        this.taskId = in.readString();
+        //        this.taskId = in.readString();
         this.exp = in.readString();
     }
 
@@ -52,7 +52,7 @@ public class TaskRecord implements Parcelable {
         return "TaskRecord{" +
                 "id=" + id +
                 ", ftime='" + ftime + '\'' +
-                ", taskId='" + taskId + '\'' +
+                //                ", taskId='" + taskId + '\'' +
                 ", exp='" + exp + '\'' +
                 '}';
     }

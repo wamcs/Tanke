@@ -4,21 +4,30 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.drawable.ColorDrawable;
 import android.location.LocationManager;
 import android.provider.Settings;
 import android.support.v7.app.AlertDialog;
 import android.text.Html;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.PopupWindow;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.lptiyu.tanke.R;
+import com.lptiyu.tanke.RunApplication;
 import com.lptiyu.tanke.activities.gameplaying2.GamePlaying2Activity;
 import com.lptiyu.tanke.base.controller.ActivityController;
 import com.lptiyu.tanke.base.ui.BaseActivity;
+import com.lptiyu.tanke.enums.GameType;
+import com.lptiyu.tanke.enums.ResultCode;
 import com.lptiyu.tanke.global.Accounts;
 import com.lptiyu.tanke.global.Conf;
 import com.lptiyu.tanke.io.net.HttpService;
@@ -26,27 +35,22 @@ import com.lptiyu.tanke.io.net.Response;
 import com.lptiyu.tanke.permission.PermissionDispatcher;
 import com.lptiyu.tanke.permission.TargetMethod;
 import com.lptiyu.tanke.pojo.EnterGameResponse;
-import com.lptiyu.tanke.pojo.GAME_TYPE;
-import com.lptiyu.tanke.pojo.GameDetailsEntity;
-import com.lptiyu.tanke.utils.DirUtils;
+import com.lptiyu.tanke.pojo.GameDetailResponse;
+import com.lptiyu.tanke.utils.GameZipUtils;
 import com.lptiyu.tanke.utils.TimeUtils;
 import com.lptiyu.tanke.utils.ToastUtil;
+import com.lptiyu.tanke.utils.XUtilsHelper;
 import com.lptiyu.tanke.widget.CustomTextView;
 import com.lptiyu.tanke.widget.dialog.ShareDialog;
 
 import java.io.File;
-import java.io.IOException;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import okhttp3.ResponseBody;
-import okio.BufferedSink;
-import okio.Okio;
 import rx.Observable;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.exceptions.Exceptions;
 import rx.functions.Action1;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
@@ -81,8 +85,8 @@ public class GameDetailsController extends ActivityController {
     @BindView(R.id.game_detail_rule)
     CustomTextView mTextRule;
 
-    @BindView(R.id.game_detail_ensure)
-    CustomTextView mTextEnsure;
+    @BindView(R.id.enter_game)
+    CustomTextView mTextEnterGame;
 
     @BindView(R.id.num_playing)
     CustomTextView mTextPeoplePlaying;
@@ -97,18 +101,20 @@ public class GameDetailsController extends ActivityController {
     private long gameId;
     private String tempGameZipUrl;
 
-    private GameDetailsEntity mGameDetailsEntity;
+    private GameDetailResponse mGameDetailsResponse;
+    private final String from_where;
 
     public GameDetailsController(GameDetailsActivity activity, View view) {
         super(activity, view);
         gameId = getIntent().getLongExtra(Conf.GAME_ID, Integer.MIN_VALUE);
+        from_where = getIntent().getStringExtra(Conf.FROM_WHERE);
         ButterKnife.bind(this, view);
         init();
     }
 
     /**
      * 对整个界面进行初始化的操作，还有根据gameId从服务器获取游戏详情的数据json
-     * 获取成功之后用{@link GameDetailsController#bind(GameDetailsEntity)}方法来进行数据的绑定操作
+     * 获取成功之后用{@link GameDetailsController#bind(GameDetailResponse)}方法来进行数据的绑定操作
      */
     private void init() {
         if (gameDetailsSubscription != null) {
@@ -122,9 +128,9 @@ public class GameDetailsController extends ActivityController {
         gameDetailsSubscription = HttpService.getGameService().getGameDetails(gameId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .map(new Func1<Response<GameDetailsEntity>, GameDetailsEntity>() {
+                .map(new Func1<Response<GameDetailResponse>, GameDetailResponse>() {
                     @Override
-                    public GameDetailsEntity call(Response<GameDetailsEntity> response) {
+                    public GameDetailResponse call(Response<GameDetailResponse> response) {
                         if (response.getStatus() != Response.RESPONSE_OK || response.getData() == null) {
                             mLoadingDialog.dismiss();
                             Timber.e("Network Error (%d, %s)", response.getStatus(), response.getInfo());
@@ -133,9 +139,9 @@ public class GameDetailsController extends ActivityController {
                         return response.getData();
                     }
                 })
-                .subscribe(new Action1<GameDetailsEntity>() {
+                .subscribe(new Action1<GameDetailResponse>() {
                     @Override
-                    public void call(GameDetailsEntity gameDetailsEntity) {
+                    public void call(GameDetailResponse gameDetailsEntity) {
                         bind(gameDetailsEntity);
                         mLoadingDialog.dismiss();
                     }
@@ -153,22 +159,33 @@ public class GameDetailsController extends ActivityController {
      *
      * @param entity
      */
-    private void bind(GameDetailsEntity entity) {
-        this.mGameDetailsEntity = entity;
-        mTextTitle.setText(entity.getTitle());
+    private void bind(GameDetailResponse entity) {
+        this.mGameDetailsResponse = entity;
+        mTextTitle.setText(entity.title);
         mTextLocation.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG); //下划线
         mTextLocation.getPaint().setAntiAlias(true);//抗锯齿
-        mTextLocation.setText(entity.getArea());
-        mTextPeoplePlaying.setText(String.valueOf(entity.getPeoplePlaying()));
+        mTextLocation.setText(entity.area);
+        mTextPeoplePlaying.setText(String.valueOf(entity.num));
         parseTime(mTextTime, entity);
-        if (entity.getType() == GAME_TYPE.INDIVIDUALS) {
+        if (entity.type == GameType.INDIVIDUAL_TYPE) {
             mTextTeamType.setVisibility(View.GONE);
         } else {
-            mTextTeamType.setText(String.format(getString(R.string.team_game_formatter), entity.getMinNum()));
+            mTextTeamType.setText(String.format(getString(R.string.team_game_formatter), Integer.parseInt(entity.min)));
         }
-        mTextGameIntro.setText(Html.fromHtml(Html.fromHtml(entity.getGameIntro()).toString()));
-        mTextRule.setText(Html.fromHtml(Html.fromHtml(entity.getRule()).toString()));
-        Glide.with(getActivity()).load(entity.getImg()).error(R.mipmap.need_to_remove).centerCrop().into(mImageCover);
+        mTextGameIntro.setText(Html.fromHtml(Html.fromHtml(entity.content) + ""));
+        //        mTextRule.setText(Html.fromHtml(Html.fromHtml(entity.getRule()) + ""));
+        switch (from_where) {
+            case Conf.ElasticHeaderViewHolder:
+                mTextEnterGame.setText("进入游戏");
+                break;
+            case Conf.NormalViewHolder:
+                mTextEnterGame.setText("进入游戏");
+                break;
+            case Conf.GamePlay2Activity:
+                mTextEnterGame.setText("放弃游戏");
+                break;
+        }
+        Glide.with(getActivity()).load(entity.pic).error(R.mipmap.need_to_remove).centerCrop().into(mImageCover);
     }
 
     /**
@@ -177,14 +194,14 @@ public class GameDetailsController extends ActivityController {
      * @param textView
      * @param entity
      */
-    public void parseTime(final CustomTextView textView, GameDetailsEntity entity) {
+    public void parseTime(final CustomTextView textView, GameDetailResponse entity) {
         Observable.just(entity).map(
-                new Func1<GameDetailsEntity, String>() {
+                new Func1<GameDetailResponse, String>() {
                     @Override
-                    public String call(GameDetailsEntity entity) {
+                    public String call(GameDetailResponse entity) {
                         String[] time = TimeUtils.parseTime(getContext(),
-                                entity.getStartDate(), entity.getEndDate(),
-                                entity.getStartTime(), entity.getEndTime());
+                                entity.start_date, entity.end_date,
+                                entity.start_time, entity.end_time);
                         return time[0] + " " + time[1];
                     }
                 })
@@ -211,12 +228,12 @@ public class GameDetailsController extends ActivityController {
     @OnClick(R.id.share_btn)
     public void shareClicked() {
         Intent intent = new Intent(getContext(), ShareDialog.class);
-        intent.putExtra(Conf.SHARE_TITLE, String.format("我正在玩定向AR游戏 %s，一起来探秘吧", mGameDetailsEntity.getTitle()));
-        intent.putExtra(Conf.SHARE_TEXT, Html.fromHtml(Html.fromHtml(mGameDetailsEntity.getGameIntro()).toString())
+        intent.putExtra(Conf.SHARE_TITLE, String.format("我正在玩定向AR游戏 %s，一起来探秘吧", mGameDetailsResponse.title));
+        intent.putExtra(Conf.SHARE_TEXT, Html.fromHtml(Html.fromHtml(mGameDetailsResponse.content).toString())
                 .toString());
 
-        intent.putExtra(Conf.SHARE_IMG_URL, mGameDetailsEntity.getImg());
-        intent.putExtra(Conf.SHARE_URL, mGameDetailsEntity.getShareUrl());
+        intent.putExtra(Conf.SHARE_IMG_URL, mGameDetailsResponse.pic);
+        intent.putExtra(Conf.SHARE_URL, mGameDetailsResponse.url);
         startActivity(intent);
         overridePendingTransition(R.anim.translate_in_bottom, R.anim.translate_out_bottom);
     }
@@ -224,8 +241,8 @@ public class GameDetailsController extends ActivityController {
     @OnClick(R.id.game_detail_location)
     public void startLocationDetailMap() {
         Intent intent = new Intent(getActivity(), GameDetailsLocationActivity.class);
-        intent.putExtra(Conf.LATITUDE, Double.valueOf(mGameDetailsEntity.getLatitude()));
-        intent.putExtra(Conf.LONGITUDE, Double.valueOf(mGameDetailsEntity.getLongitude()));
+        intent.putExtra(Conf.LATITUDE, Double.valueOf(mGameDetailsResponse.latitude));
+        intent.putExtra(Conf.LONGITUDE, Double.valueOf(mGameDetailsResponse.longtitude));
         startActivity(intent);
     }
 
@@ -247,10 +264,10 @@ public class GameDetailsController extends ActivityController {
     public void startPlayingGame() {
         Intent intent = new Intent(getContext(), GamePlaying2Activity.class);
         intent.putExtra(Conf.GAME_ID, gameId);
-        intent.putExtra(Conf.GAME_DETAIL, mGameDetailsEntity);
+        intent.putExtra(Conf.GAME_DETAIL, mGameDetailsResponse);
         //        //从游戏详情进入玩游戏界面，说明这是用户第一次进入到游戏，所以需要传入数据库所需要的字段
         //        intent.putExtra(Conf.JOIN_TIME, System.currentTimeMillis() + "");
-        if (mGameDetailsEntity.getType() == GAME_TYPE.TEAMS) {
+        if (mGameDetailsResponse.type == GameType.TEAM_TYPE) {
             //TODO : need pass team id to GamePlayingActivity when the team game open
         }
         startActivity(intent);
@@ -258,35 +275,110 @@ public class GameDetailsController extends ActivityController {
     }
 
 
-    @OnClick(R.id.game_detail_ensure)
+    @OnClick(R.id.enter_game)
     public void ensureClicked() {
-        if (mGameDetailsEntity == null) {
-            ToastUtil.TextToast("获取游戏信息失败");
-            return;
+        switch (from_where) {
+            case Conf.ElasticHeaderViewHolder:
+            case Conf.NormalViewHolder:
+                if (mGameDetailsResponse == null) {
+                    ToastUtil.TextToast("获取游戏信息失败");
+                    return;
+                }
+                if (mGameDetailsResponse.type == GameType.TEAM_TYPE) {
+                    ToastUtil.TextToast("团队赛正在开发中");
+                    return;
+                }
+                //        checkDiskAndNextStep();
+                //请求加入游戏接口，获取游戏包下载链接
+                progressDialog = new ProgressDialog(getContext(), ProgressDialog.STYLE_SPINNER);
+                progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                enterGame();
+                break;
+            case Conf.GamePlay2Activity:
+                // 放弃游戏
+                showPopup();
+                //                new android.app.AlertDialog.Builder(getContext()).setMessage("您确定要放弃本游戏？")
+                // .setPositiveButton("确定",
+                //                        new DialogInterface
+                //                                .OnClickListener() {
+                //                            @Override
+                //                            public void onClick(DialogInterface dialog, int which) {
+                //                                abandonGame();
+                //                            }
+                //                        }).setNegativeButton("取消", null).show();
+                break;
         }
-        if (mGameDetailsEntity.getType() == GAME_TYPE.TEAMS) {
-            ToastUtil.TextToast("团队赛正在开发中");
-            return;
-        }
-        //        checkDiskAndNextStep();
-        //请求加入游戏接口，获取游戏包下载链接
-        progressDialog = new ProgressDialog(getContext(), ProgressDialog.STYLE_SPINNER);
-        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        enterGame();
+    }
+
+    private void showPopup() {
+        LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View popupView = inflater.inflate(R.layout.popup_abandon_game, null);
+        final PopupWindow popupWindow = new PopupWindow(popupView, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup
+                .LayoutParams.WRAP_CONTENT, true);
+        popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        popupWindow.setAnimationStyle(R.style.Popup_Animation);
+        popupWindow.showAtLocation(popupView, Gravity.BOTTOM, 0, 0);
+
+        popupView.findViewById(R.id.tv_cancle).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                popupWindow.dismiss();
+            }
+        });
+        popupView.findViewById(R.id.tv_ensure).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                abandonGame();
+            }
+        });
+
+    }
+
+    private void abandonGame() {
+        HttpService.getGameService().leaveGame(Accounts.getId(), gameId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Action1<Response<Void>>() {
+                    @Override
+                    public void call(Response<Void> response) {
+                        Log.i("jason", "放弃游戏结果:" + response);
+                        if (response.getStatus() == Response.RESPONSE_OK) {
+                            getActivity().setResult(ResultCode.LEAVE_GAME);
+                            RunApplication.getInstance().finishActivity();
+                            //                            Toast.makeText(getContext(), "您已成功放弃该游戏", Toast
+                            // .LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(getContext(), "放弃该游戏失败", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                }, new Action1<Throwable>() {
+                    @Override
+                    public void call(Throwable throwable) {
+                        Toast.makeText(getContext(), "放弃该游戏失败", Toast.LENGTH_SHORT).show();
+                        Log.i("jason", "abandon game error:" + throwable.getMessage());
+                    }
+                });
     }
 
     /**
      * 请求加入游戏，获取游戏下载链接
      */
     private void enterGame() {
-        HttpService.getGameService().enterGame(Accounts.getId(), gameId, mGameDetailsEntity.getType().value)
+        HttpService.getGameService().enterGame(Accounts.getId(), gameId, mGameDetailsResponse.type)
                 .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Action1<Response<EnterGameResponse>>() {
             @Override
             public void call(Response<EnterGameResponse> response) {
                 if (response.getStatus() == Response.RESPONSE_OK) {
-                    tempGameZipUrl = response.getData().game_zip;
-                    //根据获取到的游戏包下载链接去下载游戏
-                    downloadGameZip(tempGameZipUrl);
+                    if (new GameZipUtils().isParsedFileExist(gameId) == null) {
+                        tempGameZipUrl = response.getData().game_zip;
+                        //根据获取到的游戏包下载链接去下载游戏
+                        progressDialog = ProgressDialog.show(getContext(), "", "游戏下载中...",
+                                true);
+                        progressDialog.show();
+                        downloadGameZipFile();
+                    } else {
+                        startPlayingGame();
+                    }
                 } else {
                     throw new RuntimeException("请求加入游戏获取游戏包下载地址失败");
                 }
@@ -301,55 +393,45 @@ public class GameDetailsController extends ActivityController {
 
     /**
      * 根据游戏下载包链接下载该游戏包
-     *
-     * @param tempGameZipUrl
      */
-    private void downloadGameZip(final String tempGameZipUrl) {
-        HttpService.getGameService().downloadGameZip(tempGameZipUrl).subscribeOn(Schedulers.io()).observeOn
-                (AndroidSchedulers.mainThread()).subscribe(new Action1<retrofit2.Response<ResponseBody>>() {
+    private void downloadGameZipFile() {
+        XUtilsHelper.getInstance().downLoadGameZip(tempGameZipUrl, new XUtilsHelper.IDownloadGameZipFileListener() {
             @Override
-            public void call(retrofit2.Response<ResponseBody> response) {
+            public void successs(File file) {
+                String zippedFilePath = file.getAbsolutePath();
+                GameZipUtils gameZipUtils = new GameZipUtils();
+                //解压文件
+                gameZipUtils.parseZipFile(zippedFilePath);
+                //                if (FileUtils.isFileExist(parsedFilePath)) {
+                //                    file.delete();
+                //                    startPlayingGame();
+                //                } else {
+                //                    Toast.makeText(getContext(), "游戏包解压失败", Toast.LENGTH_SHORT).show();
+                //                }
+                String parsedFilePath = gameZipUtils.isParsedFileExist(gameId);
+                if (parsedFilePath != null) {
+                    file.delete();
+                    startPlayingGame();
+                } else {
+                    Toast.makeText(getContext(), "游戏包解压失败", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void progress(long total, long current, boolean isDownloading) {
+                //游戏进度
+                Log.i("jason", "进度：%" + current * 100 / total);
+
+            }
+
+            @Override
+            public void finished() {
                 if (progressDialog != null) {
                     progressDialog.dismiss();
                 }
-                String url = tempGameZipUrl;
-                System.out.println("url = " + url);
-                String[] segs = url.split("/");
-                if (segs.length == 0) {
-                    throw new IllegalStateException("Wrong url can not split file name");
-                }
-                File file = new File(DirUtils.getTempDirectory(), segs[segs.length - 1]);
-                try {
-                    if (!file.exists() && !file.createNewFile()) {
-                        throw new IOException("Create file failed.");
-                    }
-                    BufferedSink sink = Okio.buffer(Okio.sink(file));
-                    sink.writeAll(response.body().source());
-                    sink.close();
-                    //游戏包下载完毕,检测有用是否开启GPS定位
-                    //                    initGPS();
-                    startPlayingGame();
-                } catch (IOException e) {
-                    if (file.exists()) {
-                        file.delete();
-                    }
-                    throw Exceptions.propagate(e);
-                }
-            }
-        }, new Action1<Throwable>() {
-            @Override
-            public void call(Throwable throwable) {
-                if (gameZipDownloadFailedNum > 0) {
-                    downloadGameZip(tempGameZipUrl);
-                    gameZipDownloadFailedNum--;
-                } else {
-                    ToastUtil.TextToast("游戏包下载出错");
-                    if (progressDialog != null) {
-                        progressDialog.dismiss();
-                    }
-                }
             }
         });
+
     }
 
     @Override

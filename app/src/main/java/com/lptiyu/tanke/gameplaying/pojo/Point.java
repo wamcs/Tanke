@@ -18,8 +18,6 @@ import java.util.Map;
 public class Point implements Parcelable {
 
 
-    private int state;
-
     private long id;
 
     @SerializedName("line_id")
@@ -32,12 +30,23 @@ public class Point implements Parcelable {
 
     private double longitude;
 
-    @SerializedName("task")
+    @SerializedName("address_name")
+    private String addressName;
+
+    @SerializedName("point_title")
+    private String pointTitle;
+
+    @SerializedName("point_img")
+    private String pointImg;
+
+    @SerializedName("first_task")
     private List<String> taskId;
 
     private Map<String, Task> taskMap;
 
     private String introImage;
+
+    private int state;
 
     private Point(Builder builder) {
         setState(builder.state);

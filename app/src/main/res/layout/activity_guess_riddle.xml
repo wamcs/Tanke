@@ -4,36 +4,88 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/bg_riddle"
     tools:context="com.lptiyu.tanke.activities.guessriddle.GuessRiddleActivity">
 
-    <com.lptiyu.tanke.widget.CustomTextView
-        android:id="@+id/ctv_showAnswer"
+    <ImageView
+        android:id="@+id/img_close"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="这里显示答案"/>
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="20dp"
+        android:scaleType="centerInside"
+        android:src="@drawable/close"/>
 
-    <LinearLayout
+
+    <EditText
+        android:id="@+id/et_writeAnswer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:orientation="horizontal">
+        android:layout_marginLeft="50dp"
+        android:layout_marginRight="50dp"
+        android:layout_marginTop="150dp"
+        android:layout_weight="4"
+        android:background="@android:color/transparent"
+        android:drawableLeft="@drawable/input_anwser"
+        android:drawablePadding="10dp"
+        android:hint="请输入答案"
+        android:inputType="text"
+        android:paddingBottom="10dp"
+        android:paddingTop="10dp"
+        android:textColor="@color/white10"
+        android:textColorHint="@color/white10"/>
 
-        <EditText
-            android:id="@+id/et_writeAnswer"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="4"
-            android:hint="请输入答案"
-            android:inputType="text"/>
+    <TextView
+        android:id="@+id/tv_seperator"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_alignLeft="@id/et_writeAnswer"
+        android:layout_alignRight="@id/et_writeAnswer"
+        android:layout_below="@id/et_writeAnswer"
+        android:background="@color/white10"/>
 
-        <Button
-            android:id="@+id/btn_submitAnswer"
-            android:layout_width="0dp"
+
+    <TextView
+        android:id="@+id/tv_submitAnswer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/et_writeAnswer"
+        android:layout_alignRight="@id/et_writeAnswer"
+        android:layout_below="@id/tv_seperator"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="50dp"
+        android:background="@drawable/shape_continue_scan"
+        android:gravity="center"
+        android:padding="10dp"
+        android:text="提交"
+        android:textColor="@color/white10"/>
+
+    <RelativeLayout
+        android:id="@+id/rl_submit_record"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/bg_submit_record"
+        android:visibility="gone">
+
+        <ImageView
+            android:id="@+id/img_anim"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:onClick="click"
-            android:text="提交"/>
-    </LinearLayout>
+            android:layout_centerInParent="true"
+            android:scaleType="centerInside"
+            />
+
+        <TextView
+            android:id="@+id/tv_please_wait"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/img_anim"
+            android:layout_centerInParent="true"
+            android:layout_marginTop="10dp"
+            android:text="提交中..."
+            android:textColor="@color/white10"
+            />
+    </RelativeLayout>
 
 
 </RelativeLayout>

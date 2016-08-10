@@ -35,7 +35,7 @@ public class PushReceiver extends BroadcastReceiver {
             Timber.d("push data json is %s", jsonString);
             MessageNotification messages = new Gson().fromJson(jsonString, MessageNotification.class);
 
-            //            Intent resultIntent = new Intent(this.context, MessageActivity.class);
+            //            Intent resultIntent = playing Intent(this.context, MessageActivity.class);
             Intent resultIntent = new Intent(this.context, MainActivity.class);
             //            resultIntent.putExtra(Conf.MESSAGE_TYPE,messages.getType());
             PendingIntent pendingIntent = PendingIntent.getActivity(this.context, 0, resultIntent, PendingIntent

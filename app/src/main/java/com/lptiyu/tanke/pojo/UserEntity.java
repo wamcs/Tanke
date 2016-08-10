@@ -10,80 +10,80 @@ import com.google.gson.annotations.SerializedName;
  */
 public class UserEntity {
 
-  private long uid;
+    private long uid;
 
-  private String token;
+    private String token;
 
-  @SerializedName("img")
-  private String avatar;
+    @SerializedName("img")
+    private String avatar;
 
-  @SerializedName("name")
-  private String nickname;
+    @SerializedName("name")
+    private String nickname;
 
-  private String phone;
+    private String phone;
 
-  // 0:不是第一次登录 1：是第一次登录
-  // 只在第三方登录时有用
-  @SerializedName("type")
-  private int isNewUserThirdParty = 1;
+    // 0:不是第一次登录 1：是第一次登录
+    // 只在第三方登录时有用
+    @SerializedName("type")
+    private int isNewUserThirdParty = 1;
 
-  public long getUid() {
-    return uid;
-  }
+    public long getUid() {
+        return uid;
+    }
 
-  public void setUid(long uid) {
-    this.uid = uid;
-  }
+    public void setUid(long uid) {
+        this.uid = uid;
+    }
 
-  public String getToken() {
-    return token;
-  }
+    public String getToken() {
+        return token;
+    }
 
-  public void setToken(String token) {
-    this.token = token;
-  }
+    public void setToken(String token) {
+        this.token = token;
+    }
 
-  public String getAvatar() {
-    return avatar;
-  }
+    public String getAvatar() {
+        return avatar;
+    }
 
-  public void setAvatar(String avatar) {
-    this.avatar = avatar;
-  }
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
 
-  public String getNickname() {
-    return nickname;
-  }
+    public String getNickname() {
+        return nickname;
+    }
 
-  public void setNickname(String nickname) {
-    this.nickname = nickname;
-  }
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
 
-  public String getPhone() {
-    return phone;
-  }
+    public String getPhone() {
+        return phone;
+    }
 
-  public void setPhone(String phone) {
-    this.phone = phone;
-  }
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
 
-  public int getIsNewUserThirdParty() {
-    return isNewUserThirdParty;
-  }
+    public int getIsNewUserThirdParty() {
+        return isNewUserThirdParty;
+    }
 
-  public void setIsNewUserThirdParty(int isNewUserThirdParty) {
-    this.isNewUserThirdParty = isNewUserThirdParty;
-  }
+    public void setIsNewUserThirdParty(int isNewUserThirdParty) {
+        this.isNewUserThirdParty = isNewUserThirdParty;
+    }
 
-  @Override
-  public String toString() {
-    return "UserEntity{" +
-        "uid=" + uid +
-        ", token='" + token + '\'' +
-        ", avatar='" + avatar + '\'' +
-        ", nickname='" + nickname + '\'' +
-        ", phone='" + phone + '\'' +
-        ", isNewUserThirdParty=" + isNewUserThirdParty +
-        '}';
-  }
+    @Override
+    public String toString() {
+        return "UserEntity{" +
+                "uid=" + uid +
+                ", token='" + token + '\'' +
+                ", avatar='" + avatar + '\'' +
+                ", nickname='" + nickname + '\'' +
+                ", phone='" + phone + '\'' +
+                ", isNewUserThirdParty=" + isNewUserThirdParty +
+                '}';
+    }
 }

@@ -57,7 +57,7 @@ public class GamePlayingViewHolder extends BaseViewHolder<GamePlayingEntity> {
         mItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //        Intent intent = new Intent(getContext(), GameDetailsActivity.class);
+                //        Intent intent = playing Intent(getContext(), GameDetailsActivity.class);
                 Intent intent = new Intent(getContext(), GamePlaying2Activity.class);
                 intent.putExtra(Conf.GAME_ID, gameId);
                 intent.putExtra(Conf.GAME_PLAYING_ENTITY, entity);

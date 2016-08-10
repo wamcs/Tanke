@@ -17,6 +17,8 @@ import com.lptiyu.tanke.messagesystem.MessageActivity;
 import com.lptiyu.tanke.utils.DirUtils;
 import com.lptiyu.tanke.utils.thread;
 
+import org.xutils.x;
+
 import java.util.Stack;
 
 import cn.sharesdk.framework.ShareSDK;
@@ -30,128 +32,130 @@ import timber.log.Timber;
  */
 public class RunApplication extends MultiDexApplication {
 
-  private static Stack<Activity> activityStack;
-  private static RunApplication singleton;
-  private BMapManager manager;
+    private static Stack<Activity> activityStack;
+    private static RunApplication singleton;
+    private BMapManager manager;
 
-  @Override
-  public void onCreate() {
-    super.onCreate();
-    singleton = this;
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        singleton = this;
 
-    MultiDex.install(this);
+        MultiDex.install(this);
 
-    Timber.plant(new Timber.DebugTree());
-    AppData.init(this);
+        Timber.plant(new Timber.DebugTree());
+        AppData.init(this);
 
-    try {
-//      initBMapManager(this);
-      ShareSDK.initSDK(this, "1276c2d783264");
-      AVOSCloud.initialize(AppData.getContext(), "Wqseclbr8wx2kFAS7YseVc5n-gzGzoHsz", "1z4GofW1zaArBjcj53u3oBm1");
-      PushService.setDefaultPushCallback(this, MessageActivity.class);
-      SDKInitializer.initialize(this);
-      DirUtils.init(this);
-      if (Accounts.getInstallationId().isEmpty()) {
-        String installationId = AVInstallation.getCurrentInstallation().getInstallationId();
-        Accounts.setInstallationId(installationId);
-        Timber.d("this device installation is %s", installationId);
-      }
+        x.Ext.init(this);
+        x.Ext.setDebug(true);
 
-    } catch (Exception e) {
-      // To test it automatically.
-      Timber.e(e, e.getMessage());
+        try {
+            //      initBMapManager(this);
+            ShareSDK.initSDK(this.getApplicationContext(), "1276c2d783264");
+            AVOSCloud.initialize(AppData.getContext(), "Wqseclbr8wx2kFAS7YseVc5n-gzGzoHsz", "1z4GofW1zaArBjcj53u3oBm1");
+            PushService.setDefaultPushCallback(this, MessageActivity.class);
+            SDKInitializer.initialize(this);
+            DirUtils.init(this);
+            if (Accounts.getInstallationId().isEmpty()) {
+                String installationId = AVInstallation.getCurrentInstallation().getInstallationId();
+                Accounts.setInstallationId(installationId);
+                Timber.d("this device installation is %s", installationId);
+            }
+
+        } catch (Exception e) {
+            // To test it automatically.
+            Timber.e(e, e.getMessage());
+        }
+
+        thread.background(new Runnable() {
+            @Override
+            public void run() {
+                LocationFileParser.init(getApplicationContext(), Conf.DEFAULT_CITY_FILE_NAME);
+            }
+        });
     }
 
-    thread.background(new Runnable() {
-      @Override
-      public void run() {
-        LocationFileParser.init(getApplicationContext(), Conf.DEFAULT_CITY_FILE_NAME);
-      }
-    });
-  }
-
-//  public void initBMapManager(Context context) {
-//    if (manager == null) {
-//      manager = new BMapManager();
-//    }
-//    manager.init();
-//  }
+    //  public void initBMapManager(Context context) {
+    //    if (manager == null) {
+    //      manager = playing BMapManager();
+    //    }
+    //    manager.init();
+    //  }
 
 
-
-  // Returns the application instance
-  public static RunApplication getInstance() {
-    return singleton;
-  }
-
-  /**
-   * add Activity 添加Activity到栈
-   */
-  public void addActivity(Activity activity) {
-    if (activityStack == null) {
-      activityStack = new Stack<Activity>();
+    // Returns the application instance
+    public static RunApplication getInstance() {
+        return singleton;
     }
-    activityStack.add(activity);
-  }
 
-  /**
-   * get current Activity 获取当前Activity（栈中最后一个压入的）
-   */
-  public Activity currentActivity() {
-    Activity activity = activityStack.lastElement();
-    return activity;
-  }
-
-  /**
-   * 结束当前Activity（栈中最后一个压入的）
-   */
-  public void finishActivity() {
-    Activity activity = activityStack.lastElement();
-    finishActivity(activity);
-  }
-
-  /**
-   * 结束指定的Activity
-   */
-  public void finishActivity(Activity activity) {
-    if (activity != null) {
-      activityStack.remove(activity);
-      activity.finish();
-      activity = null;
+    /**
+     * add Activity 添加Activity到栈
+     */
+    public void addActivity(Activity activity) {
+        if (activityStack == null) {
+            activityStack = new Stack<Activity>();
+        }
+        activityStack.add(activity);
     }
-  }
 
-  /**
-   * 结束指定类名的Activity
-   */
-  public void finishActivity(Class<?> cls) {
-    for (Activity activity : activityStack) {
-      if (activity.getClass().equals(cls)) {
+    /**
+     * get current Activity 获取当前Activity（栈中最后一个压入的）
+     */
+    public Activity currentActivity() {
+        Activity activity = activityStack.lastElement();
+        return activity;
+    }
+
+    /**
+     * 结束当前Activity（栈中最后一个压入的）
+     */
+    public void finishActivity() {
+        Activity activity = activityStack.lastElement();
         finishActivity(activity);
-      }
     }
-  }
 
-  /**
-   * 结束所有Activity
-   */
-  public void finishAllActivity() {
-    for (int i = 0, size = activityStack.size(); i < size; i++) {
-      if (null != activityStack.get(i)) {
-        activityStack.get(i).finish();
-      }
+    /**
+     * 结束指定的Activity
+     */
+    public void finishActivity(Activity activity) {
+        if (activity != null) {
+            activityStack.remove(activity);
+            activity.finish();
+            activity = null;
+        }
     }
-    activityStack.clear();
-  }
 
-  /**
-   * 退出应用程序
-   */
-  public void AppExit() {
-    try {
-      finishAllActivity();
-    } catch (Exception e) {
+    /**
+     * 结束指定类名的Activity
+     */
+    public void finishActivity(Class<?> cls) {
+        for (Activity activity : activityStack) {
+            if (activity.getClass().equals(cls)) {
+                finishActivity(activity);
+            }
+        }
     }
-  }
+
+    /**
+     * 结束所有Activity
+     */
+    public void finishAllActivity() {
+        for (int i = 0, size = activityStack.size(); i < size; i++) {
+            if (null != activityStack.get(i)) {
+                activityStack.get(i).finish();
+            }
+        }
+        activityStack.clear();
+    }
+
+    /**
+     * 退出应用程序
+     */
+    public void AppExit() {
+        try {
+            finishAllActivity();
+        } catch (Exception e) {
+        }
+    }
 
 }
