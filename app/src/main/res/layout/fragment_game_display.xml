@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.lptiyu.tanke.gamedisplay.GameDisplayController">
+
+    <RelativeLayout
+        android:id="@+id/relative_layout"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/default_toolbar_height"
+        android:background="@drawable/toolbar_gradient">
+
+        <com.lptiyu.tanke.widget.CustomTextView
+            android:id="@+id/location"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/x26"
+            android:drawableRight="@mipmap/img_arrow_down"
+            android:padding="@dimen/x13"
+            android:drawablePadding="@dimen/x13"
+            android:text="武汉"
+            android:textColor="@color/default_font_color"
+            android:textSize="16sp"/>
+
+        <com.lptiyu.tanke.widget.CustomTextView
+            style="@style/TextAppearance.Toolbar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="热门推荐"
+        />
+
+        <Button
+            android:id="@+id/scanner"
+            android:layout_width="@dimen/x94"
+            android:layout_height="@dimen/y105"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:text="扫一扫"
+            android:visibility="gone"
+        />
+
+    </RelativeLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/relative_layout"
+        android:overScrollMode="never"/>
+
+    <ImageView
+        android:contentDescription="@string/content_description"
+        android:visibility="gone"
+        android:id="@id/no_data_imageview"
+        android:src="@mipmap/img_temp_no_data"
+        android:layout_below="@id/relative_layout"
+        android:padding="@dimen/x262"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+
+</RelativeLayout>

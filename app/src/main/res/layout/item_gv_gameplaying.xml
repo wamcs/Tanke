@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+
+    >
+
+    <com.lptiyu.tanke.widget.CircularImageView
+        android:id="@+id/img"
+        android:layout_width="@dimen/x300"
+        android:layout_height="@dimen/x300"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/default_pic"
+        app:civ_border="true"
+        app:civ_border_color="#fff"
+        app:civ_border_width="@dimen/x10"
+        app:civ_shadow="true"
+        app:civ_shadow_color="@color/user_avatar_shadow_color"
+        app:civ_shadow_radius="15"
+        />
+
+    <com.lptiyu.tanke.widget.CustomTextView
+        android:id="@+id/ctv_pointName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/img"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:text="章节名称"
+        android:textSize="15sp"
+        android:textStyle="bold"/>
+
+    <ImageView
+        android:id="@+id/img_label"
+        android:layout_width="60dp"
+        android:layout_height="30dp"
+        android:layout_alignBottom="@id/img"
+        android:layout_alignRight="@id/img"
+        android:scaleType="centerInside"
+        android:src="@drawable/done"/>
+
+</RelativeLayout>

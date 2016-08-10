@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#fff"
+                android:orientation="vertical">
+
+    <com.lptiyu.tanke.widget.CircularImageView
+        android:layout_margin="10dp"
+        android:id="@+id/avoscloud_avatar"
+        android:layout_width="@dimen/message_img_size"
+        android:layout_height="@dimen/message_img_size"
+        app:civ_border_color="#EEEEEE"
+        android:background="@mipmap/ic_launcher"
+        app:civ_border_width="@dimen/x10"
+        app:civ_shadow="true"
+        app:civ_shadow_color="#8BC34A"
+        app:civ_shadow_radius="10"
+
+        />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/avoscloud_feedback_comment_bg"
+        android:orientation="vertical"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_toRightOf="@+id/avoscloud_avatar"
+        android:layout_toEndOf="@+id/avoscloud_avatar">
+
+        <com.lptiyu.tanke.widget.CustomTextView
+            android:id="@+id/avoscloud_feedback_content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:paddingBottom="5dp"
+            android:paddingTop="5dp"
+            android:textColor="#333"
+            android:textSize="18sp"/>
+
+        <ImageView
+            android:id="@+id/avoscloud_feedback_image"
+            android:layout_width="wrap_content"
+            android:paddingBottom="5dp"
+            android:paddingTop="5dp"
+            android:layout_height="wrap_content"
+            android:visibility="gone">
+        </ImageView>
+
+        <TextView
+            android:id="@+id/avoscloud_feedback_timestamp"
+            android:layout_width="wrap_content"
+            android:visibility="gone"
+            android:layout_height="wrap_content"
+            android:textColor="@color/avoscloud_timestamp_gray"
+            android:textSize="12sp">
+        </TextView>
+    </LinearLayout>
+
+</RelativeLayout>

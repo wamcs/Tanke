@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activities.gameplaying2.GamePlaying2Activity">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        style="@style/Toolbar">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/back_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:background="@null"
+                android:onClick="click"
+                android:paddingBottom="@dimen/default_toolbar_imageview_padding"
+                android:paddingLeft="@dimen/default_toolbar_imageview_padding_left"
+                android:paddingRight="@dimen/default_toolbar_imageview_padding"
+                android:paddingTop="@dimen/default_toolbar_imageview_padding"
+                android:scaleType="centerInside"
+                android:src="@mipmap/img_last_white"
+                />
+
+            <com.lptiyu.tanke.widget.CustomTextView
+                android:id="@+id/game_playing_title"
+                style="@style/TextAppearance.Toolbar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="华科森林记"
+                />
+
+            <ImageView
+                android:id="@+id/btn_baiduMapMode"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:clickable="true"
+                android:onClick="click"
+                android:paddingBottom="@dimen/default_toolbar_imageview_padding"
+                android:paddingLeft="@dimen/default_toolbar_imageview_padding_left"
+                android:paddingRight="@dimen/default_toolbar_imageview_padding"
+                android:paddingTop="@dimen/default_toolbar_imageview_padding"
+                android:src="@mipmap/detail"
+                android:visibility="visible"
+                />
+
+        </RelativeLayout>
+
+    </android.support.v7.widget.Toolbar>
+
+    <com.baidu.mapapi.map.TextureMapView
+        android:id="@+id/map_view"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_below="@id/toolbar"/>
+
+    <ImageView
+        android:id="@+id/img_zoom_full_screen"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignBottom="@id/map_view"
+        android:layout_alignRight="@id/map_view"
+        android:layout_marginBottom="0dp"
+        android:layout_marginRight="0dp"
+        android:scaleType="centerInside"
+        android:src="@drawable/zoom_full_screen"/>
+
+    <com.lptiyu.tanke.widget.CustomTextView
+        android:id="@+id/ctv_my_progress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/map_view"
+        android:layout_marginLeft="10dp"
+        android:padding="10dp"
+        android:text="@string/my_point_progress"
+        android:textSize="18sp"/>
+
+    <GridView
+        android:id="@+id/gv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/ctv_my_progress"
+        android:columnWidth="200dp"
+        android:gravity="center"
+        android:horizontalSpacing="20dp"
+        android:listSelector="@android:color/transparent"
+        android:numColumns="3"
+        android:padding="10dp"
+        android:scrollbars="none"
+        android:stretchMode="columnWidth"
+        android:verticalSpacing="20dp"/>
+
+    <Button
+        android:id="@+id/btn_submitRecord"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/gv"
+        android:layout_alignRight="@id/gv"
+        android:onClick="click"
+        android:text="提交游戏记录"
+        android:visibility="gone"/>
+
+</RelativeLayout>
