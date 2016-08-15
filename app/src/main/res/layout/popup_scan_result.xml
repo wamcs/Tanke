@@ -15,7 +15,7 @@
         android:paddingLeft="50dp"
         android:paddingRight="50dp"
         android:paddingTop="10dp"
-        android:text="继续扫码"
+        android:text="关闭"
         android:textColor="@color/white10"/>
 
     <ImageView
