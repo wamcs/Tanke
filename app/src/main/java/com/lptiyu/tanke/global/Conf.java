@@ -204,5 +204,8 @@ public final class Conf {
     public static final String CURRENT_TASK = "current_task";
     public static final String IS_POINT_OVER = "is_point_over";
     public static final String UPLOAD_RECORD_RESPONSE = "upload_record_response";
+    public static final String CONTENT = "content";
+    public static final String BANNER_TITLE = "banner_title";
+    public static final String PARENT_DIR = "parent_dir";
 
 }

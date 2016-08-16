@@ -28,6 +28,8 @@ public class SignUpController extends ActivityController {
 
   @BindView(R.id.sign_up_protocol_button)
   TextView mProtocolButton;
+  @BindView(R.id.sign_up_protocol_button_tip)
+  TextView mProtocolButtonTip;
 
   private SignUpHelper signUpHelper;
 
@@ -56,9 +58,9 @@ public class SignUpController extends ActivityController {
         signUpHelper = new RegisterHelper(activity, view, type);
         break;
       case Conf.RESET_PASSWORD_CODE:
-
         signUpHelper = new ResetPasswordHelper(activity, view);
         mProtocolButton.setVisibility(View.GONE);
+        mProtocolButtonTip.setVisibility(View.GONE);
         break;
     }
 

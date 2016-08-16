@@ -31,6 +31,18 @@
         android:src="@drawable/img_distinguish"
         />
 
+    <TextView
+        android:id="@+id/tv_scanning_tip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/img_startScan"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="20dp"
+        android:text="扫描场景中，调整角度可能有新发现哦！"
+        android:textColor="@color/white10"
+        android:textSize="16sp"
+        android:visibility="gone"/>
+
     <RelativeLayout
         android:id="@+id/rl_submit_record"
         android:layout_width="match_parent"

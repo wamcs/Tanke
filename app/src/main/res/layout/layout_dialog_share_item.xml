@@ -7,10 +7,21 @@
 
     <ImageView
         android:id="@+id/dialog_share_item"
-        android:layout_width="@dimen/x131"
-        android:layout_height="@dimen/y131"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
+        android:scaleType="centerInside"
         android:src="@mipmap/ic_launcher"/>
+
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/dialog_share_item"
+        android:layout_centerHorizontal="true"
+        android:text="QQ"
+        android:textColor="@color/black10"
+        android:textSize="14sp"/>
 
 
 </RelativeLayout>

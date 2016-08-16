@@ -12,59 +12,93 @@
 
     <android.support.v4.view.ViewPager
         android:id="@+id/splash_activity_viewpager"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-    />
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        />
 
-    <TextView
-        android:id="@+id/splash_activity_textview_skip"
-        android:text="@string/skip"
-        android:textSize="18sp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="@dimen/x26"
-        android:layout_marginBottom="@dimen/y26"
-        android:layout_marginRight="@dimen/x26"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:drawableLeft="@mipmap/img_three_arrow"/>
-
-    <LinearLayout
-        android:id="@+id/splash_activity_viewpager_indicator"
+    <RadioGroup
+        android:id="@+id/rg_guide_dot"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="@dimen/y52"
+        android:layout_marginBottom="20dp"
         android:orientation="horizontal">
 
-        <ImageView
-            android:id="@+id/splash_indicator_1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:clickable="true"
-            android:padding="@dimen/x13"
-            android:src="@drawable/guide_activity_indicator_style"/>
+        <RadioButton
+            android:id="@+id/rb_blue"
+            android:layout_width="10dp"
+            android:layout_height="10dp"
+            android:layout_margin="10dp"
+            android:background="@drawable/selector_guide_dot_blue"
+            android:button="@null"/>
 
-        <ImageView
-            android:id="@+id/splash_indicator_2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:clickable="true"
-            android:padding="@dimen/x13"
-            android:src="@drawable/guide_activity_indicator_style"/>
+        <RadioButton
+            android:id="@+id/rb_orange"
+            android:layout_width="10dp"
+            android:layout_height="10dp"
+            android:layout_margin="10dp"
+            android:background="@drawable/selector_guide_dot_orange"
+            android:button="@null"/>
 
-        <ImageView
-            android:id="@+id/splash_indicator_3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:clickable="true"
-            android:padding="@dimen/x13"
-            android:src="@drawable/guide_activity_indicator_style"/>
+        <RadioButton
+            android:id="@+id/rb_green"
+            android:layout_width="10dp"
+            android:layout_height="10dp"
+            android:layout_margin="10dp"
+            android:background="@drawable/selector_guide_dot_green"
+            android:button="@null"/>
+    </RadioGroup>
 
-    </LinearLayout>
+    <!--<TextView-->
+    <!--android:id="@+id/splash_activity_textview_skip"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_alignParentTop="true"-->
+    <!--android:layout_alignParentRight="true"-->
+    <!--android:layout_marginBottom="@dimen/y26"-->
+    <!--android:layout_marginRight="@dimen/x26"-->
+    <!--android:drawableLeft="@mipmap/img_three_arrow"-->
+    <!--android:padding="@dimen/x26"-->
+    <!--android:text="@string/skip"-->
+    <!--android:textSize="18sp"/>-->
+
+    <!--<LinearLayout-->
+    <!--android:id="@+id/splash_activity_viewpager_indicator"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_alignParentBottom="true"-->
+    <!--android:layout_centerHorizontal="true"-->
+    <!--android:layout_marginBottom="@dimen/y52"-->
+    <!--android:orientation="horizontal">-->
+
+    <!--<ImageView-->
+    <!--android:id="@+id/splash_indicator_1"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_gravity="center_vertical"-->
+    <!--android:clickable="true"-->
+    <!--android:padding="@dimen/x13"-->
+    <!--android:src="@drawable/guide_activity_indicator_style"/>-->
+
+    <!--<ImageView-->
+    <!--android:id="@+id/splash_indicator_2"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_gravity="center_vertical"-->
+    <!--android:clickable="true"-->
+    <!--android:padding="@dimen/x13"-->
+    <!--android:src="@drawable/guide_activity_indicator_style"/>-->
+
+    <!--<ImageView-->
+    <!--android:id="@+id/splash_indicator_3"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_gravity="center_vertical"-->
+    <!--android:clickable="true"-->
+    <!--android:padding="@dimen/x13"-->
+    <!--android:src="@drawable/guide_activity_indicator_style"/>-->
+
+    <!--</LinearLayout>-->
 
 </RelativeLayout>

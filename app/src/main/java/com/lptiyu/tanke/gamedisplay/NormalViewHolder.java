@@ -8,7 +8,9 @@ import android.location.LocationManager;
 import android.provider.Settings;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
+import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -18,17 +20,21 @@ import com.lptiyu.tanke.activities.gameplaying2.GamePlaying2Activity;
 import com.lptiyu.tanke.base.recyclerview.BaseViewHolder;
 import com.lptiyu.tanke.enums.PlayStatus;
 import com.lptiyu.tanke.gamedetails.GameDetailsActivity;
-import com.lptiyu.tanke.gameplaying.assist.zip.GameZipScanner;
 import com.lptiyu.tanke.global.Accounts;
 import com.lptiyu.tanke.global.Conf;
 import com.lptiyu.tanke.io.net.HttpService;
 import com.lptiyu.tanke.io.net.Response;
+import com.lptiyu.tanke.permission.PermissionDispatcher;
+import com.lptiyu.tanke.permission.TargetMethod;
 import com.lptiyu.tanke.pojo.GAME_TYPE;
 import com.lptiyu.tanke.pojo.GameDisplayEntity;
 import com.lptiyu.tanke.pojo.GetGameStatusResponse;
+import com.lptiyu.tanke.utils.FileUtils;
 import com.lptiyu.tanke.utils.GameZipUtils;
+import com.lptiyu.tanke.utils.NetworkUtil;
+import com.lptiyu.tanke.utils.PopupWindowUtils;
 import com.lptiyu.tanke.utils.TimeUtils;
-import com.lptiyu.tanke.utils.XUtilsHelper;
+import com.lptiyu.tanke.utils.xutils3.XUtilsHelper;
 import com.makeramen.roundedimageview.RoundedImageView;
 
 import java.io.File;
@@ -58,7 +64,10 @@ public class NormalViewHolder extends BaseViewHolder<GameDisplayEntity> {
     TextView title;
 
     @BindView(R.id.team_type)
-    TextView teamType;
+    ImageView teamType;
+
+    @BindView(R.id.inner_test)
+    ImageView innerTest;
 
     @BindView(R.id.location)
     TextView location;
@@ -76,14 +85,33 @@ public class NormalViewHolder extends BaseViewHolder<GameDisplayEntity> {
     private int gameZipDownloadFailedNum = 3;
     private ProgressDialog progressDialog;
     //    private final GameZipHelper gameZipHelper;
-    private GameZipScanner mGameZipScanner;
+    //    private GameZipScanner mGameZipScanner;
 
     NormalViewHolder(ViewGroup parent, GameDisplayFragment fragment) {
         super(fromResLayout(parent, R.layout.item_game_display));
         ButterKnife.bind(this, itemView);
         this.fragment = fragment;
-        mGameZipScanner = new GameZipScanner();
+        //        mGameZipScanner = new GameZipScanner();
         //        gameZipHelper = playing GameZipHelper();
+    }
+
+    private void loadNetWorkData() {
+        if (NetworkUtil.checkIsNetworkConnected()) {
+            loadNet();
+        } else {
+            showNetUnConnectDialog();
+        }
+    }
+
+    // 网络异常对话框
+    private void showNetUnConnectDialog() {
+        PopupWindowUtils.getInstance().showNetExceptionPopupwindow(getContext(), new PopupWindowUtils
+                .OnNetExceptionListener() {
+            @Override
+            public void onClick(View view) {
+                loadNetWorkData();
+            }
+        });
     }
 
     @OnClick(R.id.item_root)
@@ -91,55 +119,7 @@ public class NormalViewHolder extends BaseViewHolder<GameDisplayEntity> {
         if (gameDisplayEntity == null) {
             return;
         }
-        //请求游戏状态接口获取游戏状态，如果是进入过游戏，则直接跳转到玩游戏界面，如果这是第一次玩，则进入到游戏详情界面
-        HttpService.getGameService().getGameStatus(Accounts.getId(), gameDisplayEntity.getId(), gameDisplayEntity
-                .getType().value)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Action1<Response<GetGameStatusResponse>>() {
-                    @Override
-                    public void call(Response<GetGameStatusResponse> response) {
-                        if (response.getStatus() == Response.RESPONSE_OK) {
-                            Intent intent = new Intent();
-                            //判断游戏状态
-                            switch (response.getData().play_statu) {
-                                case PlayStatus.NEVER_ENTER_GANME://从未玩过游戏，进入到游戏详情界面
-                                    intent.setClass(getContext(), GameDetailsActivity.class);
-                                    intent.putExtra(Conf.GAME_ID, gameDisplayEntity.getId());
-                                    intent.putExtra(Conf.FROM_WHERE, Conf.NormalViewHolder);
-                                    break;
-                                case PlayStatus.GAME_OVER://游戏结束，暂不考虑
-                                    //TODO 需要进入到游戏完成界面
-                                case PlayStatus.HAVE_ENTERED_bUT_NOT_START_GAME://进入过但没开始游戏，进入到玩游戏界面
-                                case PlayStatus.HAVE_STARTED_GAME://进入并且已经开始游戏，进入到玩游戏界面
-                                    //进入到玩游戏界面之前，先检测游戏包是否存在，存在则直接进入，否则要先下载游戏包
-                                    //检查游戏包是否存在或者游戏解压后为空，判断完后游戏包已经被解压缩，并且已经将文件解析成实体类对象，此时可以直接从内存中取数据了
-                                    GameZipUtils gameZipUtils = new GameZipUtils();
-                                    if (gameZipUtils.isParsedFileExist(gameDisplayEntity.getId()) == null) {
-                                        //游戏包不存在，需要下载游戏包
-                                        progressDialog = ProgressDialog.show(getContext(), "", "游戏下载中...",
-                                                true);
-                                        progressDialog.show();
-                                        tempGameZipUrl = response.getData().game_zip;
-                                        downloadGameZipFile();
-                                    } else {
-                                        startPlayingGame();
-                                    }
-                                    break;
-                                default:
-                                    break;
-                            }
-                            getContext().startActivity(intent);
-                        } else {
-                            Log.i("jason", "获取游戏状态错误信息：" + response.getInfo());
-                        }
-                    }
-                }, new Action1<Throwable>() {
-                    @Override
-                    public void call(Throwable throwable) {
-                        Log.i("jason", "获取游戏状态错误信息throw：" + throwable.getMessage());
-                    }
-                });
+        loadNetWorkData();
     }
 
     //下载游戏包
@@ -164,7 +144,6 @@ public class NormalViewHolder extends BaseViewHolder<GameDisplayEntity> {
             public void progress(long total, long current, boolean isDownloading) {
                 //游戏进度
                 Log.i("jason", "进度：%" + current * 100 / total);
-
             }
 
             @Override
@@ -172,6 +151,11 @@ public class NormalViewHolder extends BaseViewHolder<GameDisplayEntity> {
                 if (progressDialog != null) {
                     progressDialog.dismiss();
                 }
+            }
+
+            @Override
+            public void onError(String errMsg) {
+                PopupWindowUtils.getInstance().showFailLoadPopupwindow(getContext());
             }
         });
 
@@ -189,10 +173,8 @@ public class NormalViewHolder extends BaseViewHolder<GameDisplayEntity> {
                         @Override
                         public void onClick(DialogInterface arg0, int arg1) {
                             // 转到手机设置界面，用户设置GPS
-                            Intent intent = new Intent(
-                                    Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                            Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
                             fragment.startActivityForResult(intent, 0); // 设置完成后返回到原来的界面
-
                         }
                     });
             dialog.setNegativeButton("取消", new android.content.DialogInterface.OnClickListener() {
@@ -208,7 +190,7 @@ public class NormalViewHolder extends BaseViewHolder<GameDisplayEntity> {
         }
     }
 
-    //    @TargetMethod(requestCode = PermissionDispatcher.PERMISSION_REQUEST_CODE_LOCATION)
+    @TargetMethod(requestCode = PermissionDispatcher.PERMISSION_REQUEST_CODE_LOCATION)
     public void startPlayingGame() {
         Intent intent = new Intent(getContext(), GamePlaying2Activity.class);
         intent.putExtra(Conf.GAME_ID, gameDisplayEntity.getId());
@@ -223,8 +205,9 @@ public class NormalViewHolder extends BaseViewHolder<GameDisplayEntity> {
         parseTitle(entity);
         parseLocation(entity);
         parseTime(entity);
-        parseTag(entity);
+        //        parseTag(entity);
         parseTeamType(entity);
+        parseInnerTest(entity);
     }
 
     private void parseImage(GameDisplayEntity entity) {
@@ -288,11 +271,31 @@ public class NormalViewHolder extends BaseViewHolder<GameDisplayEntity> {
 
     private void parseTeamType(GameDisplayEntity entity) {
         if (entity.getType() == GAME_TYPE.TEAMS) {
-            teamType.setText(fragment.getString(R.string.team_type_team));
+            teamType.setVisibility(View.VISIBLE);
         } else {
             //个人赛不需要展示标签
             //      teamType.setText(fragment.getString(R.string.team_type_individule));
-            teamType.setText("");
+            teamType.setVisibility(View.GONE);
+        }
+    }
+
+    private void parseInnerTest(GameDisplayEntity entity) {
+        switch (entity.getState()) {
+            case NORMAL:
+                innerTest.setVisibility(View.GONE);
+                return;
+            case ALPHA_TEST:
+                innerTest.setVisibility(View.VISIBLE);
+                innerTest.setImageResource(R.drawable.inner_test);
+                return;
+            case MAINTAINING:
+                innerTest.setVisibility(View.GONE);
+                return;
+            case FINISHED:
+                innerTest.setVisibility(View.VISIBLE);
+                innerTest.setImageResource(R.drawable.have_finished);
+                return;
+            default:
         }
     }
 
@@ -304,5 +307,64 @@ public class NormalViewHolder extends BaseViewHolder<GameDisplayEntity> {
             return;
         }
         controller.onItemClick(gameDisplayEntity);
+    }
+
+    private void loadNet() {
+        HttpService.getGameService().getGameStatus(Accounts.getId(), gameDisplayEntity.getId())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Action1<Response<GetGameStatusResponse>>() {
+                    @Override
+                    public void call(Response<GetGameStatusResponse> response) {
+                        if (response.getStatus() == Response.RESPONSE_OK) {
+                            tempGameZipUrl = response.getData().game_zip;
+                            //判断游戏状态
+                            switch (response.getData().play_statu) {
+                                case PlayStatus.NEVER_ENTER_GANME://从未玩过游戏，进入到游戏详情界面
+                                    Intent intent = new Intent();
+                                    intent.setClass(getContext(), GameDetailsActivity.class);
+                                    intent.putExtra(Conf.GAME_ID, gameDisplayEntity.getId());
+                                    intent.putExtra(Conf.FROM_WHERE, Conf.NormalViewHolder);
+                                    getContext().startActivity(intent);
+                                    break;
+                                case PlayStatus.GAME_OVER://游戏结束，暂不考虑
+                                    //TODO 需要进入到游戏完成界面
+                                case PlayStatus.HAVE_ENTERED_bUT_NOT_START_GAME://进入过但没开始游戏，进入到玩游戏界面
+                                case PlayStatus.HAVE_STARTED_GAME://进入并且已经开始游戏，进入到玩游戏界面
+                                    //进入到玩游戏界面之前，先检测游戏包是否存在，存在则直接进入，否则要先下载游戏包
+                                    //检查游戏包是否存在或者游戏解压后为空，判断完后游戏包已经被解压缩，并且已经将文件解析成实体类对象，此时可以直接从内存中取数据了
+                                    GameZipUtils gameZipUtils = new GameZipUtils();
+                                    //如果游戏包不存在或者游戏包有更新，则都需要下载最新的游戏包
+                                    if (gameZipUtils.isParsedFileExist(gameDisplayEntity.getId()) == null) {
+                                        //游戏包不存在，需要下载游戏包
+                                        progressDialog = ProgressDialog.show(getContext(), "", "加载中...", true);
+                                        downloadGameZipFile();
+                                    } else if (gameZipUtils.isGameUpdated(gameDisplayEntity.getId(), tempGameZipUrl
+                                            .substring(tempGameZipUrl.lastIndexOf('/') + 1, tempGameZipUrl
+                                                    .lastIndexOf('.')))) {
+                                        String parsedFileExist = gameZipUtils.isParsedFileExist(gameDisplayEntity
+                                                .getId());
+                                        //删除旧的游戏包
+                                        boolean b = FileUtils.deleteDirectory(parsedFileExist);
+                                        //下载新的游戏包
+                                        progressDialog = ProgressDialog.show(getContext(), "", "加载中...", true);
+                                        downloadGameZipFile();
+                                    } else {
+                                        startPlayingGame();
+                                    }
+                                    break;
+                                default:
+                                    break;
+                            }
+                        } else {
+                            Log.i("jason", "获取游戏状态错误信息：" + response.getInfo());
+                        }
+                    }
+                }, new Action1<Throwable>() {
+                    @Override
+                    public void call(Throwable throwable) {
+                        Log.i("jason", "获取游戏状态错误信息throw：" + throwable.getMessage());
+                    }
+                });
     }
 }

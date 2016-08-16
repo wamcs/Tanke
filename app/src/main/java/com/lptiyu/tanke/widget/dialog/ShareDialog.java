@@ -24,6 +24,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 
 /**
@@ -33,10 +34,12 @@ import butterknife.ButterKnife;
  */
 public class ShareDialog extends AppCompatActivity {
 
-    private int[] imagePath = {R.mipmap.img_share_qq,
-        R.mipmap.img_share_wechat,
-//      R.mipmap.img_share_sina,
-        R.mipmap.img_share_wechat_moment};
+    //    private int[] imagePath = {R.mipmap.img_share_qq,
+    //        R.mipmap.img_share_wechat,
+    ////      R.mipmap.img_share_sina,
+    //        R.mipmap.img_share_wechat_moment};
+    private int[] imagePath = {R.drawable.share_qq, R.drawable.share_wechat, R.drawable.share_wechat_moment};
+    private String[] titleArr = {"QQ", "微信", "朋友圈"};
 
     @BindView(R.id.share_gridView)
     GridView gridView;
@@ -64,7 +67,8 @@ public class ShareDialog extends AppCompatActivity {
         mShareUrl = intent.getStringExtra(Conf.SHARE_URL);
         Window window = getWindow();
         WindowManager.LayoutParams params = window.getAttributes();
-        params.height = (int) (Display.height() *0.15f);
+        //        params.height = (int) (Display.height() * 0.15f);
+        params.height = WindowManager.LayoutParams.WRAP_CONTENT;
         params.width = Display.width();
         window.setAttributes(params);
         window.setGravity(Gravity.BOTTOM);
@@ -73,13 +77,16 @@ public class ShareDialog extends AppCompatActivity {
     private void initGridView() {
 
         List<HashMap<String, Object>> shareList = new ArrayList<>();
-        for (int anImagePath : imagePath) {
+        for (int i = 0; i < imagePath.length; i++) {
             HashMap<String, Object> map = new HashMap<>();
-            map.put("ItemImage", anImagePath);
+            map.put("ItemImage", imagePath[i]);
+            map.put("ItemTitle", titleArr[i]);
             shareList.add(map);
         }
+
         SimpleAdapter adapter = new SimpleAdapter(this, shareList, R.layout.layout_dialog_share_item,
-            new String[]{"ItemImage"}, new int[]{R.id.dialog_share_item});
+                new String[]{"ItemImage", "ItemTitle"}, new int[]{R.id.dialog_share_item, R.id.tv_title});
+
         gridView.setAdapter(adapter);
 
     }
@@ -115,6 +122,11 @@ public class ShareDialog extends AppCompatActivity {
     @Override
     public void finish() {
         super.finish();
-        overridePendingTransition(R.anim.translate_in_bottom,R.anim.translate_out_bottom);
+        overridePendingTransition(R.anim.translate_in_bottom, R.anim.translate_out_bottom);
+    }
+
+    @OnClick(R.id.img_close)
+    public void onClick() {
+        this.finish();
     }
 }

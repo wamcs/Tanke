@@ -1,0 +1,10 @@
+package com.lptiyu.tanke.utils.xutils3;
+
+/**
+ * Created by Jason on 2016/8/11.
+ */
+public interface XUtilsUrls {
+    String SERVER_URL = "http://api.lptiyu.com/lepao/api.php/";
+
+    String GET_BANNER = SERVER_URL + "System/get_banner";
+}

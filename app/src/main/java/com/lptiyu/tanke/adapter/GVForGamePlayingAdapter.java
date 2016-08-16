@@ -1,7 +1,7 @@
 package com.lptiyu.tanke.adapter;
 
 import android.content.Context;
-import android.graphics.BitmapFactory;
+import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import com.lptiyu.tanke.R;
 import com.lptiyu.tanke.entity.Point;
 import com.lptiyu.tanke.enums.PointTaskStatus;
+import com.lptiyu.tanke.utils.BitMapUtils;
 import com.lptiyu.tanke.widget.CircularImageView;
 import com.lptiyu.tanke.widget.CustomTextView;
 
@@ -102,7 +103,10 @@ public class GVForGamePlayingAdapter extends BaseAdapter {
         if (path == null || path.length() == 0) {
             vh.img.setImageResource(R.drawable.default_pic);
         } else {
-            vh.img.setImageBitmap(BitmapFactory.decodeFile(path));
+            //压缩处理
+            Bitmap bitmap = BitMapUtils.getBitmap(path, 100, 100);
+            vh.img.setImageBitmap(bitmap);
+            //            vh.img.setImageBitmap(BitmapFactory.decodeFile(path));
         }
     }
 

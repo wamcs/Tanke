@@ -29,7 +29,7 @@ public class ResetPasswordHelper extends SignUpHelper {
   protected void init() {
 
     signUpTitle.setText(R.string.reset_password_title);
-    signUpNextButton.setText(R.string.ensure);
+//    signUpNextButton.setText(R.string.ensure);
   }
 
 

@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.lptiyu.tanke.R;
@@ -105,8 +106,6 @@ public class LVForPointTaskAdapter extends BaseAdapter {
                     vh.ctvExp.setText("+"+currentRecord.exp);
                     vh.ctvFfinishTime.setText(currentRecord.ftime.substring(0,currentRecord.ftime.lastIndexOf(":")));
                 }
-
-
 
                 break;
         }

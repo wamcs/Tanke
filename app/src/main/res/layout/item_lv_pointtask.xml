@@ -22,8 +22,8 @@
         android:layout_width="match_parent"
         android:layout_height="25dp"
         android:layout_below="@id/webView"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
+        android:layout_alignLeft="@id/webView"
+        android:layout_alignRight="@id/webView"
         android:layout_marginBottom="5dp"
         android:layout_centerHorizontal="true"
         android:gravity="left">
@@ -77,6 +77,17 @@
             android:textColor="@color/grey06"
             android:textSize="11sp"/>
 
+
+
+    </RelativeLayout>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_alignLeft="@id/webView"
+        android:layout_alignRight="@id/webView"
+        android:layout_below="@id/rl_finishInfo"
+        android:layout_marginBottom="5dp"
+        android:background="@color/orange"/>
+
     </RelativeLayout>
 
-</RelativeLayout>

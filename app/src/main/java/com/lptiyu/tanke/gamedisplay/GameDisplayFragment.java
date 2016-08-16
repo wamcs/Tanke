@@ -3,6 +3,7 @@ package com.lptiyu.tanke.gamedisplay;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -15,6 +16,7 @@ import com.lptiyu.tanke.MainActivityController;
 import com.lptiyu.tanke.R;
 import com.lptiyu.tanke.base.ui.BaseFragment;
 import com.lptiyu.tanke.pojo.City;
+import com.lptiyu.tanke.utils.xutils3.SwipeRefreshLayoutUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -27,6 +29,9 @@ import timber.log.Timber;
  * @author ldx
  */
 public class GameDisplayFragment extends BaseFragment {
+
+    @BindView(R.id.swipe)
+    SwipeRefreshLayout swipe;
 
     private GameDisplayController controller;
 
@@ -50,6 +55,32 @@ public class GameDisplayFragment extends BaseFragment {
     }
 
     private void init() {
+        SwipeRefreshLayoutUtils.setSwipeStyle(swipe);
+        swipe.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                swipe.setRefreshing(true);
+                controller.refreshTop();
+                //TODO 当网络请求完毕时才隐藏刷新标志
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            Thread.sleep(200);
+                            getActivity().runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    swipe.setRefreshing(false);
+                                }
+                            });
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }).start();
+            }
+        });
+
         recyclerView.setLayoutManager(mLayoutManager = new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(adapter = new GameDisplayAdapter(this));
         //用于下拉刷新监听

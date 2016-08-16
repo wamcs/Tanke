@@ -45,6 +45,16 @@ public class GameDisplayEntity implements Parcelable {
     @SerializedName("type")
     protected GAME_TYPE type = GAME_TYPE.INDIVIDUALS;
 
+    protected int time_type;
+
+    public int getTime_type() {
+        return time_type;
+    }
+
+    public void setTime_type(int time_type) {
+        this.time_type = time_type;
+    }
+
     public long getId() {
         return id;
     }
@@ -157,6 +167,7 @@ public class GameDisplayEntity implements Parcelable {
                 ",\n state=" + state +
                 ",\n recommend=" + recommend +
                 ",\n type=" + type +
+                ",\n time_type=" + time_type +
                 '}';
     }
 
@@ -179,6 +190,7 @@ public class GameDisplayEntity implements Parcelable {
         dest.writeInt(this.state == null ? -1 : this.state.ordinal());
         dest.writeInt(this.recommend == null ? -1 : this.recommend.ordinal());
         dest.writeInt(this.type == null ? -1 : this.type.ordinal());
+        dest.writeInt(time_type);
     }
 
     public GameDisplayEntity() {
@@ -195,6 +207,7 @@ public class GameDisplayEntity implements Parcelable {
         this.startTime = in.readString();
         this.endTime = in.readString();
         int tmpState = in.readInt();
+        int time_type = in.readInt();
         this.state = tmpState == -1 ? null : GAME_STATE.values()[tmpState];
         int tmpRecommend = in.readInt();
         this.recommend = tmpRecommend == -1 ? null : RECOMMENDED_TYPE.values()[tmpRecommend];

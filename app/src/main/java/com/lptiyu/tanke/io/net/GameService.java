@@ -237,14 +237,13 @@ public interface GameService {
      *
      * @param uid
      * @param gameId
-     * @param gameType
      * @return
      */
     @GET("System/Getrankslog")
     Observable<Response<GameRecord>> getGameRecord(
             @Query("uid") long uid,
-            @Query("game_id") long gameId,
-            @Query("type") long gameType
+            @Query("game_id") long gameId
+            //            @Query("type") long gameType
     );
 
     /**
@@ -254,7 +253,6 @@ public interface GameService {
      * @param gameId
      * @param pointid
      * @param taskid
-     * @param type
      * @param pointStatus
      * @return
      */
@@ -264,7 +262,7 @@ public interface GameService {
             @Query("game_id") long gameId,
             @Query("point_id") long pointid,
             @Query("task_id") long taskid,
-            @Query("type") long type,//1为团队赛，2为个人赛
+            //            @Query("type") long type,//1为团队赛，2为个人赛
             @Query("point_statu") long pointStatus
     );
 
@@ -324,14 +322,13 @@ public interface GameService {
      *
      * @param uid
      * @param gameId
-     * @param type
      * @return
      */
     @GET("system/get_game_statu")
     Observable<Response<GetGameStatusResponse>> getGameStatus(
             @Query("uid") long uid,
-            @Query("game_id") long gameId,
-            @Query("type") long type
+            @Query("game_id") long gameId
+            //            @Query("type") long type
     );
 
 }

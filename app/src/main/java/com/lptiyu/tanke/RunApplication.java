@@ -49,6 +49,12 @@ public class RunApplication extends MultiDexApplication {
         x.Ext.init(this);
         x.Ext.setDebug(true);
 
+        /*
+        初始化程序崩溃记录器
+         */
+        CrashHandler crashHandler = CrashHandler.getInstance();
+        crashHandler.init(this);
+
         try {
             //      initBMapManager(this);
             ShareSDK.initSDK(this.getApplicationContext(), "1276c2d783264");

@@ -101,6 +101,11 @@ bool AR::stop()
     return status;
 }
 
+void AR::close()
+{
+    camera_.stop();
+}
+
 bool AR::clear()
 {
     bool status = true;

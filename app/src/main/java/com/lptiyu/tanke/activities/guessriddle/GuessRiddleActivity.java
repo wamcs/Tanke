@@ -57,7 +57,7 @@ public class GuessRiddleActivity extends MyBaseActivity implements RiddleContact
     private AnimationDrawable anim;
     private RiddlePresenter presenter;
     private long gameId;
-    private long gameType;
+//    private long gameType;
     private Point point;
     private boolean isPointOver;
 
@@ -74,7 +74,7 @@ public class GuessRiddleActivity extends MyBaseActivity implements RiddleContact
         Intent intent = getIntent();
         task = intent.getParcelableExtra(Conf.CURRENT_TASK);
         gameId = getIntent().getLongExtra(Conf.GAME_ID, 0);
-        gameType = getIntent().getLongExtra(Conf.GAME_TYPE, 0);
+//        gameType = getIntent().getLongExtra(Conf.GAME_TYPE, 0);
         point = getIntent().getParcelableExtra(Conf.POINT);
         isPointOver = getIntent().getBooleanExtra(Conf.IS_POINT_OVER, false);
 
@@ -172,7 +172,7 @@ public class GuessRiddleActivity extends MyBaseActivity implements RiddleContact
     private void upLoadGameRecord() {
         UpLoadGameRecord record = new UpLoadGameRecord();
         record.uid = Accounts.getId() + "";
-        record.type = gameType + "";
+//        record.type = gameType + "";
         record.point_id = point.id + "";
         record.game_id = gameId + "";
         if (isPointOver)

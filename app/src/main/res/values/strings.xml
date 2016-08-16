@@ -87,7 +87,7 @@
     <string name="skip">跳过</string>
 
     <!-- Register and resetPassword Text Area-->
-    <string name="register_title">注册</string>
+    <string name="register_title">手机号注册</string>
     <string name="reset_password_title">找回密码</string>
     <string name="phone">手机号</string>
     <string name="area_code">+86</string>

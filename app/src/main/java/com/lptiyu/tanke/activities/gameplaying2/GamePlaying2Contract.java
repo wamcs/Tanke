@@ -24,7 +24,7 @@ public class GamePlaying2Contract {
 
         DBGameRecord queryGameRecord(long gameId);
 
-        void downLoadGameRecord(long gameId, long gameType);
+        void downLoadGameRecord(long gameId);
 
         void upLoadRecord(UpLoadGameRecord record);
 

@@ -29,8 +29,7 @@ import com.lptiyu.tanke.global.Accounts;
 import com.lptiyu.tanke.global.Conf;
 import com.lptiyu.tanke.pojo.UpLoadGameRecord;
 import com.lptiyu.tanke.pojo.UploadGameRecordResponse;
-
-import java.util.concurrent.ScheduledExecutorService;
+import com.lptiyu.tanke.utils.thread;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -70,6 +69,8 @@ public class ImageDistinguishActivity extends MyBaseActivity implements Imagedis
     TextView tv_is_scanning;
     @BindView(R.id.img_waiting)
     ImageView img_waiting;
+    @BindView(R.id.tv_scanning_tip)
+    TextView tvScanningTip;
 
     private TextView popup_tv_btn;
     private ImageView popup_img_result;
@@ -80,11 +81,12 @@ public class ImageDistinguishActivity extends MyBaseActivity implements Imagedis
     private AnimationDrawable anim;
     private ImagedistinguishPresenter presenter;
     private long gameId;
-    private long gameType;
+    //    private long gameType;
     private Point point;
     private Task task;
     private boolean isPointOver;
-    private Thread thread;
+    //    private Thread thread;
+    private String[] imgArr;
 
     public static native void nativeInitGL();
 
@@ -130,14 +132,30 @@ public class ImageDistinguishActivity extends MyBaseActivity implements Imagedis
 
         EasyAR.initialize(this, key);
         //        nativeInit();
-        String imgPath = getIntent().getStringExtra(Conf.IMG_DISTINGUISH_URL) + "";
+        String parent_dir = getIntent().getStringExtra(Conf.PARENT_DIR);
+        String imgPath = getIntent().getStringExtra(Conf.IMG_DISTINGUISH_URL) + "";//有可能有多张图片，是用逗号隔开的
+        String[] split = imgPath.split(",");
+        if (split == null) {
+            imgArr = new String[]{parent_dir + "/" + imgPath};
+        } else {
+            for (int i = 0; i < split.length; i++) {
+                split[i] = parent_dir + "/" + split[i];
+            }
+            imgArr = split;
+        }
         gameId = getIntent().getLongExtra(Conf.GAME_ID, 0);
-        gameType = getIntent().getLongExtra(Conf.GAME_TYPE, 0);
+        //        gameType = getIntent().getLongExtra(Conf.GAME_TYPE, 0);
         point = getIntent().getParcelableExtra(Conf.POINT);
         task = getIntent().getParcelableExtra(Conf.CURRENT_TASK);
         isPointOver = getIntent().getBooleanExtra(Conf.IS_POINT_OVER, false);
 
-        nativeInit(new String[]{imgPath}, new String[]{""});
+        //        nativeInit(new String[]{imgPath}, new String[]{""});
+        //        for (int i = 0; i < imgArr.length; i++) {
+        //            nativeInit(new String[]{imgArr[i]}, new String[]{""});
+        //        }
+        nativeInit(imgArr, new String[]{""});
+        //        nativeInit(new String[]{"/storage/emulated/0/Android/data/com.lptiyu
+        // .tanke/files/temp/23_24_2/point6.jpg"}, new String[]{""});
 
         GLView glView = new GLView(this);
         glView.setRenderer(new Renderer());
@@ -150,7 +168,7 @@ public class ImageDistinguishActivity extends MyBaseActivity implements Imagedis
 
         initPopupwindow();
         initAnim();
-        initCountDownTimer();
+        //        initCountDownTimer();
 
         /**
          * 识别成功回调
@@ -170,6 +188,7 @@ public class ImageDistinguishActivity extends MyBaseActivity implements Imagedis
      * 展示成功信息
      */
     private void showSuccessResult() {
+        tvScanningTip.setVisibility(View.GONE);
         imgStartScan.setEnabled(true);
         isOK = true;
         stopAnim();
@@ -184,6 +203,7 @@ public class ImageDistinguishActivity extends MyBaseActivity implements Imagedis
      * 展示失败信息
      */
     private void showFailResult() {
+        tvScanningTip.setVisibility(View.GONE);
         imgStartScan.setEnabled(true);
         isOK = false;
         stopAnim();
@@ -198,6 +218,7 @@ public class ImageDistinguishActivity extends MyBaseActivity implements Imagedis
      * 展示网络异常信息
      */
     private void showNetException() {
+        tvScanningTip.setVisibility(View.GONE);
         imgStartScan.setEnabled(true);
         isOK = false;
         stopAnim();
@@ -245,12 +266,13 @@ public class ImageDistinguishActivity extends MyBaseActivity implements Imagedis
                 break;
             case R.id.img_startScan:
                 ImageDistinguishActivity.nativeStartAr();
-                startAnim();
-                if (thread == null) {
-                    initCountDownTimer();
-                }
-                thread.start();
+                //                startAnim();
+                //                if (thread == null) {
+                //                    initCountDownTimer();
+                //                }
+                //                thread.start();
                 imgStartScan.setEnabled(false);
+                tvScanningTip.setVisibility(View.VISIBLE);
                 break;
         }
     }
@@ -263,7 +285,7 @@ public class ImageDistinguishActivity extends MyBaseActivity implements Imagedis
     private void upLoadGameRecord() {
         UpLoadGameRecord record = new UpLoadGameRecord();
         record.uid = Accounts.getId() + "";
-        record.type = gameType + "";
+        //        record.type = gameType + "";
         record.point_id = point.id + "";
         record.game_id = gameId + "";
         if (isPointOver)
@@ -283,8 +305,8 @@ public class ImageDistinguishActivity extends MyBaseActivity implements Imagedis
     public void successUploadRecord(UploadGameRecordResponse response) {
         resultRecord = response;
         showSuccessResult();
-        thread.interrupt();
-        thread = null;
+        //        thread.interrupt();
+        //        thread = null;
         if (response.game_statu == PlayStatus.GAME_OVER) {
             popup_tv_result.setText("游戏完成");
         } else {
@@ -354,30 +376,30 @@ public class ImageDistinguishActivity extends MyBaseActivity implements Imagedis
         }
     }
 
-    /**
-     * 初始化计时器
-     */
-    private void initCountDownTimer() {
-        thread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    Thread.sleep(3000);
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            thread = null;
-                            if (!isOK) {
-                                showFailResult();
-                            }
-                        }
-                    });
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-    }
+    //    /**
+    //     * 初始化计时器
+    //     */
+    //    private void initCountDownTimer() {
+    //        thread = new Thread(new Runnable() {
+    //            @Override
+    //            public void run() {
+    //                try {
+    //                    Thread.sleep(3000);
+    //                    runOnUiThread(new Runnable() {
+    //                        @Override
+    //                        public void run() {
+    //                            thread = null;
+    //                            if (!isOK) {
+    //                                showFailResult();
+    //                            }
+    //                        }
+    //                    });
+    //                } catch (InterruptedException e) {
+    //                    e.printStackTrace();
+    //                }
+    //            }
+    //        });
+    //    }
 
     @Override
     public void onConfigurationChanged(Configuration config) {

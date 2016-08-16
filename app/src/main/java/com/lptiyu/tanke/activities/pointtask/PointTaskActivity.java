@@ -1,7 +1,12 @@
 package com.lptiyu.tanke.activities.pointtask;
 
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.location.LocationManager;
 import android.os.Bundle;
+import android.provider.Settings;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -12,6 +17,7 @@ import com.lptiyu.tanke.R;
 import com.lptiyu.tanke.activities.base.MyBaseActivity;
 import com.lptiyu.tanke.activities.guessriddle.GuessRiddleActivity;
 import com.lptiyu.tanke.activities.imagedistinguish.ImageDistinguishActivity;
+import com.lptiyu.tanke.activities.locationtask.LocationTaskActivity;
 import com.lptiyu.tanke.adapter.LVForPointTaskAdapter;
 import com.lptiyu.tanke.entity.Point;
 import com.lptiyu.tanke.entity.PointRecord;
@@ -52,7 +58,7 @@ public class PointTaskActivity extends MyBaseActivity implements PointTaskContac
     private LVForPointTaskAdapter adapter;
     private PointTaskPresenter presenter;
     private long gameId;
-    private long gameType;
+    //    private long gameType;
     private ArrayList<TaskRecord> list_task_record;
     private ArrayList<Task> list_task;
     private int selectPosition;
@@ -94,7 +100,7 @@ public class PointTaskActivity extends MyBaseActivity implements PointTaskContac
         point = bundle.getParcelable(Conf.POINT);
         point_record = bundle.getParcelable(Conf.POINT_RECORD);
         gameId = bundle.getLong(Conf.GAME_ID, -1);
-        gameType = bundle.getLong(Conf.GAME_TYPE, -1);
+        //        gameType = bundle.getLong(Conf.GAME_TYPE, -1);
         unZippedDir = bundle.getString(Conf.UNZIPPED_DIR);
         isFinishedPoint = bundle.getBoolean(Conf.IS_FINISHED_POINT);
         if (isFinishedPoint) {
@@ -140,7 +146,7 @@ public class PointTaskActivity extends MyBaseActivity implements PointTaskContac
         isPointOver = true;
         UpLoadGameRecord record = new UpLoadGameRecord();
         record.uid = Accounts.getId() + "";
-        record.type = gameType + "";
+        //        record.type = gameType + "";
         record.point_id = point.id + "";
         record.game_id = gameId + "";
         record.point_statu = PointTaskStatus.FINISHED + "";
@@ -242,7 +248,8 @@ public class PointTaskActivity extends MyBaseActivity implements PointTaskContac
         super.onActivityResult(requestCode, resultCode, intent);
         if (resultCode == RESULT_OK) {//扫码识别返回
             Bundle b = intent.getExtras();
-            String str = b.getString(CaptureActivity.QR_CODE_DATA);//扫描到的结果
+            //扫描到的结果
+            String str = b.getString(CaptureActivity.QR_CODE_DATA);
             if (str == null || str.length() == 0) {
                 ToastUtil.TextToast(getString(R.string.scan_error));
                 return;
@@ -263,6 +270,11 @@ public class PointTaskActivity extends MyBaseActivity implements PointTaskContac
             UploadGameRecordResponse resultResponse = intent.getParcelableExtra(Conf.UPLOAD_RECORD_RESPONSE);
             refreshData(resultResponse);
         }
+        if (resultCode == ResultCode.LOCATION_TASK) {//定位返回
+            UploadGameRecordResponse resultResponse = intent.getParcelableExtra(Conf.UPLOAD_RECORD_RESPONSE);
+            refreshData(resultResponse);
+        }
+
     }
 
     /**
@@ -280,7 +292,7 @@ public class PointTaskActivity extends MyBaseActivity implements PointTaskContac
     private void upLoadGameRecord() {
         UpLoadGameRecord record = new UpLoadGameRecord();
         record.uid = Accounts.getId() + "";
-        record.type = gameType + "";
+        //        record.type = gameType + "";
         record.point_id = point.id + "";
         record.game_id = gameId + "";
         //        if (selectPosition == list_task.size() - 1) {
@@ -415,7 +427,7 @@ public class PointTaskActivity extends MyBaseActivity implements PointTaskContac
                 //跳转
                 Intent intent = new Intent();
                 intent.putExtra(Conf.GAME_ID, gameId);
-                intent.putExtra(Conf.GAME_TYPE, gameType);
+                //                intent.putExtra(Conf.GAME_TYPE, gameType);
                 intent.putExtra(Conf.POINT, point);
                 intent.putExtra(Conf.CURRENT_TASK, currentTask);
                 if (selectPosition == list_task.size() - 1) {
@@ -435,9 +447,9 @@ public class PointTaskActivity extends MyBaseActivity implements PointTaskContac
                         //TODO 等待交互
                         Log.i("jason", "图像识别任务");
                         intent.setClass(PointTaskActivity.this, ImageDistinguishActivity.class);
-                        String imgUrl = unZippedDir + "/" + currentTask.pwd;
-                        Log.i("jason", "要识别的图片路径：" + imgUrl);
-                        intent.putExtra(Conf.IMG_DISTINGUISH_URL, imgUrl);
+                        Log.i("jason", "要识别的图片路径：" + currentTask.pwd);
+                        intent.putExtra(Conf.IMG_DISTINGUISH_URL, currentTask.pwd);
+                        intent.putExtra(Conf.PARENT_DIR, unZippedDir);
                         startActivityForResult(intent, RequestCode.IMAGE_DISTINGUISH);
                         Log.i("jason", "跳转完毕");
                         break;
@@ -446,12 +458,11 @@ public class PointTaskActivity extends MyBaseActivity implements PointTaskContac
                         break;
                     case TaskType.LOCATE:
                         Log.i("jason", "定位任务");
-                        //获取当前坐标
+                        initGPS();
                         break;
                     case TaskType.RIDDLE:
                         Log.i("jason", "猜谜任务");
                         intent.setClass(PointTaskActivity.this, GuessRiddleActivity.class);
-                        intent.putExtra(Conf.CURRENT_TASK, currentTask);
                         startActivityForResult(intent, RequestCode.GUESS_RIDDLE);
                         break;
                     case TaskType.SCAN_CODE:
@@ -464,9 +475,42 @@ public class PointTaskActivity extends MyBaseActivity implements PointTaskContac
                         break;
                     case TaskType.UPLOAD_PHOTO:
                         Log.i("jason", "图像上传任务");
+                        ToastUtil.TextToast("该类型任务尚未开通");
                         break;
                 }
                 break;
+        }
+    }
+
+    private void initGPS() {
+        LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+        // 判断GPS模块是否开启，如果没有则开启
+        if (!locationManager.isProviderEnabled(android.location.LocationManager.GPS_PROVIDER)) {
+            AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+            dialog.setMessage("为了定位更加精确，请打开GPS");
+            dialog.setPositiveButton("确定",
+                    new android.content.DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface arg0, int arg1) {
+                            // 转到手机设置界面，用户设置GPS
+                            Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                            startActivityForResult(intent, 0); // 设置完成后返回到原来的界面
+                        }
+                    });
+            dialog.setNegativeButton("取消", new android.content.DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface arg0, int arg1) {
+                    arg0.dismiss();
+                }
+            });
+            dialog.show();
+        } else {
+            Intent intent = new Intent();
+            intent.putExtra(Conf.GAME_ID, gameId);
+            intent.putExtra(Conf.POINT, point);
+            intent.putExtra(Conf.CURRENT_TASK, currentTask);
+            intent.setClass(PointTaskActivity.this, LocationTaskActivity.class);
+            startActivityForResult(intent, RequestCode.LOCATION_TASK);
         }
     }
 }

@@ -1,23 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#00ffffff"
-    android:orientation="vertical">
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="#00ffffff"
+              android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/default_font_color"
+        android:paddingBottom="10dp"
+        android:paddingLeft="30dp"
+        android:paddingRight="30dp"
+        android:paddingTop="10dp">
+
+        <TextView
+            android:id="@+id/tv_share_to"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="分享至："
+            android:textColor="@color/black10"/>
+
+        <ImageView
+            android:id="@+id/img_close"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/close_share_dialog"
+            android:textColor="@color/black10"/>
+    </RelativeLayout>
 
     <GridView
-        android:listSelector="@android:color/transparent"
         android:id="@+id/share_gridView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/default_font_color"
+        android:columnWidth="150dp"
         android:gravity="center"
         android:horizontalSpacing="@dimen/x3"
+        android:listSelector="@android:color/transparent"
         android:numColumns="3"
         android:paddingBottom="@dimen/y26"
-        android:paddingTop="@dimen/y39"
         android:paddingLeft="@dimen/x26"
         android:paddingRight="@dimen/x26"
+        android:paddingTop="@dimen/y39"
+        android:stretchMode="columnWidth"
         android:verticalSpacing="@dimen/x3">
 
     </GridView>

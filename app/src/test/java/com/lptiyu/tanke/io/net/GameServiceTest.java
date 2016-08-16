@@ -27,6 +27,7 @@ import rx.functions.Action1;
 public class GameServiceTest {
 
 
+
   @Test
   // success 2.12
   public void testGetGamePage() throws Exception {

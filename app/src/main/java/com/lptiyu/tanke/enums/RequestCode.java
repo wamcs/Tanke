@@ -9,4 +9,5 @@ public interface RequestCode {
     int CAMERA_PERMISSION_REQUEST_CODE = 10088;
     int SKIP_TO_TASK_ACTIVITY = 54321;
     int LEAVE_GAME = 88888;
+    int LOCATION_TASK = 60321;
 }

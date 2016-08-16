@@ -42,6 +42,8 @@ protected:
     Augmenter augmenter_;
     bool portrait_;
     Vec4I viewport_;
+
+    void close();
 };
 
 class ARVideo {

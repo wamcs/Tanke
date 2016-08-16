@@ -10,16 +10,16 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/sign_up_toolbar_height"
+        android:layout_height="@dimen/default_toolbar_height"
         android:background="@drawable/gradient_rect_style">
 
         <ImageView
             android:id="@id/sign_up_return_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="@dimen/x39"
-            android:layout_marginTop="@dimen/y50"
-            android:src="@mipmap/img_last_white"/>
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="20dp"
+            android:src="@drawable/img_last_white"/>
 
 
         <com.lptiyu.tanke.widget.CustomTextView
@@ -27,6 +27,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
             android:layout_marginTop="@dimen/sign_up_title_margin_top"
             android:text="@string/register_title"
             android:textColor="@color/white10"
@@ -52,11 +53,13 @@
             android:layout_height="@dimen/sign_up_edit_height"
             android:orientation="horizontal">
 
-            <com.lptiyu.tanke.widget.CustomTextView
-                style="@style/signUpText"
-                android:layout_marginLeft="@dimen/sign_up_edit_left_text_margin_left"
-                android:layout_marginRight="@dimen/sign_up_edit_left_text_margin_right"
-                android:text="@string/phone"
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="10dp"
+                android:src="@drawable/regist_input_phone"
                 />
 
             <com.lptiyu.tanke.widget.CustomTextView
@@ -86,11 +89,13 @@
             android:layout_height="@dimen/sign_up_edit_height"
             android:orientation="horizontal">
 
-            <com.lptiyu.tanke.widget.CustomTextView
-                style="@style/signUpText"
-                android:layout_marginLeft="@dimen/sign_up_edit_left_text_margin_left"
-                android:layout_marginRight="@dimen/sign_up_edit_left_text_margin_right"
-                android:text="@string/verify_code"
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="10dp"
+                android:src="@drawable/regist_input_vertification"
                 />
 
             <EditText
@@ -105,16 +110,13 @@
             <com.lptiyu.tanke.widget.CustomTextView
                 android:id="@id/sign_up_get_code_button"
                 android:layout_width="wrap_content"
-                android:layout_height="@dimen/y80"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical|end"
                 android:layout_marginRight="@dimen/x39"
-                android:background="@drawable/gradient_oval_style"
+                android:background="@drawable/shape_get_vertification"
                 android:gravity="center"
-                android:paddingBottom="@dimen/y13"
-                android:paddingLeft="@dimen/x26"
-                android:paddingRight="@dimen/x26"
-                android:paddingTop="@dimen/y13"
-                android:text="@string/get_verify_code"
+                android:padding="3dp"
+                android:text="获取验证码"
                 android:textColor="@color/white10"
                 android:textSize="12sp"
                 />
@@ -133,11 +135,13 @@
         android:background="@drawable/sign_up_edit_border_style"
         android:orientation="horizontal">
 
-        <com.lptiyu.tanke.widget.CustomTextView
-            style="@style/signUpText"
-            android:layout_marginLeft="@dimen/sign_up_edit_left_text_margin_left"
-            android:layout_marginRight="@dimen/sign_up_edit_left_text_margin_right"
-            android:text="@string/password"
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="10dp"
+            android:src="@drawable/set_password"
             />
 
         <EditText
@@ -151,25 +155,33 @@
 
     <Button
         android:id="@id/sign_up_next_button"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/x92"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_below="@+id/linearLayout2"
-        android:layout_marginLeft="@dimen/sign_up_edit_margin"
-        android:layout_marginRight="@dimen/sign_up_edit_margin"
-        android:background="@drawable/gradient_oval_rect_style"
-        android:text="@string/next"
-        android:textColor="@color/white10"
-        android:textSize="14sp"/>
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/regist_over"/>
 
-    <com.lptiyu.tanke.widget.CustomTextView
-        android:id="@+id/sign_up_protocol_button"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/sign_up_next_button"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/y26"
-        android:text="@string/click_user_protocol"
-        android:textColor="@color/grey05"/>
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal">
 
+        <com.lptiyu.tanke.widget.CustomTextView
+            android:id="@+id/sign_up_protocol_button_tip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="点击下一步即代表您已同意"
+            android:textColor="@color/grey05"/>
+
+        <com.lptiyu.tanke.widget.CustomTextView
+            android:id="@+id/sign_up_protocol_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="《注册协议》"
+            android:textColor="@color/orange"/>
+    </LinearLayout>
 
 </RelativeLayout>
