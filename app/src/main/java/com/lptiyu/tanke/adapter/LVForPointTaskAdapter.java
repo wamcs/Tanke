@@ -102,8 +102,11 @@ public class LVForPointTaskAdapter extends BaseAdapter {
             case PointTaskStatus.FINISHED://已完成
                 vh.rlFinishInfo.setVisibility(View.VISIBLE);
                 if (currentRecord != null) {
-                    vh.ctvFinishInfo.setText("经验+" + currentRecord.exp + " " + currentRecord.ftime);
+                    vh.ctvExp.setText("+"+currentRecord.exp);
+                    vh.ctvFfinishTime.setText(currentRecord.ftime.substring(0,currentRecord.ftime.lastIndexOf(":")));
                 }
+
+
 
                 break;
         }
@@ -118,10 +121,10 @@ public class LVForPointTaskAdapter extends BaseAdapter {
     static class ViewHolder {
         @BindView(R.id.webView)
         WebView webView;
-        @BindView(R.id.ctv_finish)
-        CustomTextView ctvFinish;
-        @BindView(R.id.ctv_finishInfo)
-        CustomTextView ctvFinishInfo;
+        @BindView(R.id.ctv_exp)
+        CustomTextView ctvExp;
+        @BindView(R.id.ctv_finish_time)
+        CustomTextView ctvFfinishTime;
         @BindView(R.id.rl_finishInfo)
         RelativeLayout rlFinishInfo;
 
