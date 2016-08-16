@@ -399,10 +399,13 @@ public class PointTaskActivity extends MyBaseActivity implements PointTaskContac
         finish();
     }
 
-    @OnClick({R.id.img_close, R.id.img_getKey})
+    @OnClick({R.id.img_close,R.id.rl_title,R.id.ctv_taskName, R.id.rl_getKey,R.id.img_getKey})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.img_close:
+            case R.id.rl_title:
+            case R.id.ctv_taskName:
+            case R.id.rl_getKey:
                 if (isPointOver) {
                     setResult(ResultCode.POINT_OVER);
                 }
