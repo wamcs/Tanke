@@ -32,6 +32,7 @@ import com.lptiyu.tanke.pojo.GameFinishedEntity;
 import com.lptiyu.tanke.pojo.GamePlayingEntity;
 import com.lptiyu.tanke.utils.GameZipUtils;
 import com.lptiyu.tanke.utils.NetworkUtil;
+import com.lptiyu.tanke.utils.PopupWindowUtils;
 import com.lptiyu.tanke.widget.CustomTextView;
 
 import java.util.ArrayList;
@@ -116,6 +117,8 @@ public class GamePlaying2Activity extends MyBaseActivity implements GamePlaying2
         GamePlayingEntity gamePlayingEntity = intent.getParcelableExtra(Conf.GAME_PLAYING_ENTITY);
         //获取游戏详情实体类（从已完成的游戏进来）
         GameFinishedEntity gameFinishedEntity = intent.getParcelableExtra(Conf.GAME_FINISHED_ENTITY);
+        //获取游戏标题（从首页Banner进来）
+        String title = intent.getStringExtra(Conf.BANNER_TITLE);
         String gameName = "";
         if (gameDisplayEntity != null) {
             Log.i("jason", "接收的游戏列表的实体类：" + gameDisplayEntity);
@@ -136,6 +139,9 @@ public class GamePlaying2Activity extends MyBaseActivity implements GamePlaying2
             Log.i("jason", "接收的完成的游戏实体类：" + gameFinishedEntity);
             gameType = gameFinishedEntity.getType();
             gameName = gameFinishedEntity.getName();
+        }
+        if (title != null) {
+            gameName = title;
         }
 
         gamePlayingTitle.setText(gameName + "");
@@ -216,15 +222,25 @@ public class GamePlaying2Activity extends MyBaseActivity implements GamePlaying2
     @Override
     protected void onResume() {
         super.onResume();
+        loadNetWorkData();
+    }
+
+    private void loadNetWorkData() {
         if (NetworkUtil.checkIsNetworkConnected()) {
-            presenter.downLoadGameRecord(gameId, gameType);
+            presenter.downLoadGameRecord(gameId);
         } else {
             showNetUnConnectDialog();
         }
     }
 
+    // 网络异常对话框
     private void showNetUnConnectDialog() {
-        //TODO 网络异常对话框
+        PopupWindowUtils.getInstance().showNetExceptionPopupwindow(this, new PopupWindowUtils.OnNetExceptionListener() {
+            @Override
+            public void onClick(View view) {
+                loadNetWorkData();
+            }
+        });
     }
 
     @Override
@@ -285,7 +301,7 @@ public class GamePlaying2Activity extends MyBaseActivity implements GamePlaying2
                 Bundle bundle = new Bundle();
                 bundle.putParcelable(Conf.POINT, currentPoint);
                 bundle.putLong(Conf.GAME_ID, gameId);
-                bundle.putLong(Conf.GAME_TYPE, gameType);
+//                bundle.putLong(Conf.GAME_TYPE, gameType);
                 bundle.putString(Conf.UNZIPPED_DIR, unZippedDir);
                 if (gameRecord.record_text != null) {
                     for (PointRecord record : gameRecord.record_text) {

@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout android:id="@+id/item_root"
-                xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/item_root"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/y300"
+                android:background="@color/white10"
+                android:orientation="horizontal"
                 android:paddingLeft="@dimen/x52"
-                android:paddingRight="@dimen/x52"
-                android:orientation="horizontal">
+                android:paddingRight="@dimen/x52">
 
     <com.makeramen.roundedimageview.RoundedImageView
         android:id="@+id/image_view"
@@ -22,8 +23,8 @@
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@id/image_view"
         android:layout_alignBottom="@id/image_view"
+        android:layout_alignTop="@id/image_view"
         android:layout_centerVertical="true"
         android:layout_toRightOf="@id/image_view"
         android:orientation="vertical"
@@ -33,28 +34,36 @@
             android:id="@+id/title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="@dimen/x7"
             android:maxEms="10"
+            android:maxWidth="@dimen/x315"
+            android:padding="@dimen/x7"
+            android:singleLine="true"
             android:text="华科森林记华科森林记"
             android:textSize="@dimen/main_page_item_text_size_normal"
             android:textStyle="bold"
-            android:maxWidth="@dimen/x315"
-            android:singleLine="true"
             />
 
-        <com.lptiyu.tanke.widget.CustomTextView
+        <ImageView
             android:id="@+id/team_type"
-            android:layout_alignTop="@id/title"
-            android:padding="@dimen/x7"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignBottom="@id/title"
+            android:layout_alignTop="@id/title"
             android:layout_toRightOf="@id/title"
-            android:paddingBottom="@dimen/y3"
-            android:paddingLeft="@dimen/x5"
-            android:text="团队赛事"
-            android:textColor="@color/colorPrimary"
-            android:textSize="@dimen/main_page_item_text_size_small"
+            android:scaleType="centerInside"
+            android:src="@drawable/team_game_type"
+            />
+
+        <ImageView
+            android:id="@+id/inner_test"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/team_type"
+            android:layout_alignTop="@id/team_type"
+            android:layout_marginLeft="5dp"
+            android:layout_toRightOf="@id/team_type"
+            android:scaleType="centerInside"
+            android:src="@drawable/inner_test"
             />
 
         <LinearLayout
@@ -67,19 +76,19 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="-2dp"
+                android:padding="@dimen/x7"
                 android:scaleX="0.8"
                 android:scaleY="0.8"
-                android:padding="@dimen/x7"
-                android:layout_marginTop="-2dp"
                 android:src="@mipmap/main_page_item_location"/>
 
             <com.lptiyu.tanke.widget.CustomTextView
                 android:id="@+id/location"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="华中科技大学 东小区"
-                android:padding="@dimen/x7"
                 android:maxLines="1"
+                android:padding="@dimen/x7"
+                android:text="华中科技大学 东小区"
                 android:textColor="@color/grey06"
                 android:textSize="@dimen/main_page_item_text_size_small"/>
         </LinearLayout>
@@ -93,9 +102,9 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:padding="@dimen/x7"
                 android:scaleX="0.8"
                 android:scaleY="0.8"
-                android:padding="@dimen/x7"
                 android:src="@mipmap/main_page_item_time"
                 />
 
@@ -103,8 +112,8 @@
                 android:id="@+id/time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="@dimen/x7"
                 android:maxLines="1"
+                android:padding="@dimen/x7"
                 android:text="白昼-黑夜"
                 android:textColor="@color/grey06"
                 android:textSize="@dimen/main_page_item_text_size_small"
@@ -118,11 +127,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:paddingRight="@dimen/x16"
         android:layout_alignTop="@id/image_view"
+        android:paddingRight="@dimen/x16"
         android:text="内测中"
         android:textColor="@color/colorPrimary"
         android:textSize="@dimen/main_page_item_text_size_small"
+        android:visibility="gone"
         />
 
     <View

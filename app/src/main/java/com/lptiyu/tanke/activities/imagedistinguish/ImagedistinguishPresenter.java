@@ -26,7 +26,7 @@ public class ImagedistinguishPresenter implements ImagedistinguishContact.Imaged
     public void uploadRecord(UpLoadGameRecord record) {
         HttpService.getGameService()
                 .upLoadGameRecord(Accounts.getId(), Long.parseLong(record.game_id), Long.parseLong(record.point_id),
-                        Long.parseLong(record.task_id), Long.parseLong(record.type), Long.parseLong(record.point_statu))
+                        Long.parseLong(record.task_id), Long.parseLong(record.point_statu))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Action1<Response<UploadGameRecordResponse>>() {

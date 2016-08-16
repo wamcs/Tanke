@@ -3,6 +3,7 @@
     <color name="colorPrimary">#769df6</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+    <color name="windowBackground">#f3f3f3</color>
 
     <color name="attackPointCircleColor">#aa0000</color>
     <color name="default_font_color">#fff</color>
@@ -119,8 +120,10 @@
 
     <color name="orange">#FF8201</color>
 
-    <color name="half_transparent">#a000</color>
-
-    <color name="most_transparent">#b000</color>
+    <color name="transparent_a">#a000</color>
+    <color name="transparent_b">#b000</color>
+    <color name="transparent_c">#c000</color>
+    <color name="transparent_d">#d000</color>
+    <color name="transparent_e">#e000</color>
 
 </resources>

@@ -208,28 +208,29 @@ JNIEXPORT jboolean JNICALL JNIFUNCTION_NATIVE(nativeInit(JNIEnv* env,jobject obj
 {
 
    // ar.myenv=env;
-env->GetJavaVM(&(ar.g_jvm));
+    env->GetJavaVM(&(ar.g_jvm));
     bool status = ar.initCamera();
-    //ar.loadAllFromJsonFile("targets.json");
+//    ar.loadAllFromJsonFile("targets.json");
     //ar.loadFromImage("namecard.jpg");
 //pyj
 //LOGI("call from jni!");
     jint i;
-    jstring myarray,doarray;
-//LOGI("call from jni!");
+    jstring myarray;
+//    jstring doarray;
+//    LOGI("call from jni!");
     int row =env->GetArrayLength(picData);//获得行数
-    ar.tracks_count=row;
-ar.tracks_doing=new std::string[row];
+//    ar.tracks_count=row;
+//    ar.tracks_doing=new std::string[row];
     for (i = 0; i < row; i++){
         myarray = (jstring)(env->GetObjectArrayElement(picData,i));
-        doarray=(jstring)(env->GetObjectArrayElement(videoData,i));
+//        doarray=(jstring)(env->GetObjectArrayElement(videoData,i));
         char * ok=(char*)(env->GetStringUTFChars(myarray,NULL));
-        char * dolist=(char*)(env->GetStringUTFChars(doarray,NULL));
-         ar.loadFromImage(ok,i);
-        ar.tracks_doing[i]=dolist;
+//        char * dolist=(char*)(env->GetStringUTFChars(doarray,NULL));
+        ar.loadFromImage(ok,i);
+//        ar.tracks_doing[i]=dolist;
        // ar.tracks_all[i][j]=env->GetStringUTFChars((jstring)(env->GetObjectArrayElement((jobjectArray)myarray , j)),NULL);
       // LOGI("test: %s\n",env->GetStringUTFChars(myarray,NULL) );
-}
+    }
 //pyj
 
     //status &= ar.start();

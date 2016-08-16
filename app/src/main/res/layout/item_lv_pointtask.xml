@@ -21,10 +21,12 @@
         android:id="@+id/rl_finishInfo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/webView"
+        android:layout_alignRight="@id/webView"
         android:layout_below="@id/webView"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="10dp"
-        android:gravity="center">
+        android:gravity="left">
 
         <ImageView
             android:id="@+id/img_flag"
@@ -46,6 +48,39 @@
             android:textSize="13sp"/>
 
         <com.lptiyu.tanke.widget.CustomTextView
+            android:id="@+id/ctv_exp_tip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@id/ctv_finish"
+            android:text="经验+"
+            android:textColor="@color/black10"
+            android:textSize="13sp"/>
+
+        <com.lptiyu.tanke.widget.CustomTextView
+            android:id="@+id/ctv_exp_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="5dp"
+            android:layout_toRightOf="@id/ctv_exp_tip"
+            android:text="+3"
+            android:textColor="@color/orange"
+            android:textSize="13sp"/>
+
+        <com.lptiyu.tanke.widget.CustomTextView
+            android:id="@+id/ctv_ftime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@id/ctv_exp_value"
+            android:text="2016-08-11"
+            android:textColor="@color/orange"
+            android:textSize="13sp"/>
+
+        <com.lptiyu.tanke.widget.CustomTextView
             android:id="@+id/ctv_finishInfo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -54,8 +89,18 @@
             android:layout_toRightOf="@id/ctv_finish"
             android:text=""
             android:textColor="@color/orange"
-            android:textSize="12sp"/>
+            android:textSize="12sp"
+            android:visibility="gone"/>
 
     </RelativeLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_alignLeft="@id/webView"
+        android:layout_alignRight="@id/webView"
+        android:layout_below="@id/rl_finishInfo"
+        android:layout_marginBottom="5dp"
+        android:background="@color/orange"/>
 
 </RelativeLayout>

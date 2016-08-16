@@ -63,9 +63,11 @@ public class GameZipUtils {
         //获取游戏包父目录
         File gameZipRootFile = DirUtils.getTempDirectory();
         //筛选出解压文件
-        String[] list = gameZipRootFile.list(new GameParsedFileFilter());
+        //        String[] list = gameZipRootFile.list(new GameParsedFileFilter());
+        String[] list = gameZipRootFile.list();
         for (String filePath : list) {
-            if (filePath.startsWith(gameId + "")) {
+            Log.i("jason", "筛选出的游戏文件夹：" + filePath);
+            if (filePath.startsWith(gameId + "_") && !filePath.endsWith(".zip")) {
                 //                this.parsedFilePath = gameZipRootFile.getAbsolutePath() + "/" + filePath;
                 //                setGameIdLineIdVersion(parsedFilePath + ".zip");
                 //                transformParsedFileToEntity();
@@ -97,7 +99,8 @@ public class GameZipUtils {
         /**
          * 文件名格式：37_31_12
          */
-        Pattern gameParsedPattern = Pattern.compile("[0-9]+_[0-9]+_[0-9]");
+        String pattern = "[0-9]+_[0-9]+_[0-9]";
+        Pattern gameParsedPattern = Pattern.compile(pattern);
 
         /**
          * 文件过滤器，返回true的文件则合格
@@ -143,12 +146,14 @@ public class GameZipUtils {
      * @param gameId
      * @return
      */
-    public boolean isGameUpdated(long gameId, long gameVersion) {
-        if (isParsedFileExist(gameId) == null) {
+    public boolean isGameUpdated(long gameId, String parsedFileName) {
+        String parsedFilePath = isParsedFileExist(gameId);
+        if (parsedFilePath == null) {
             Log.i("jason", "gameId=" + gameId + "的游戏包不存在");
             return false;
         } else {
-            if (version == gameVersion) {
+            String fileName = parsedFilePath.substring(parsedFilePath.lastIndexOf('/') + 1);
+            if (fileName.equals(parsedFileName)) {
                 return false;
             } else {
                 return true;

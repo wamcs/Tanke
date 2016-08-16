@@ -8,7 +8,8 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/white10">
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
@@ -94,6 +95,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/map_view"
             android:layout_marginLeft="10dp"
+            android:background="@color/white10"
             android:paddingBottom="10dp"
             android:paddingLeft="10dp"
             android:paddingTop="10dp"
@@ -120,6 +122,7 @@
             android:layout_below="@id/ctv_my_progress"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
+            android:background="@color/white10"
             android:columnWidth="200dp"
             android:gravity="center"
             android:horizontalSpacing="30dp"

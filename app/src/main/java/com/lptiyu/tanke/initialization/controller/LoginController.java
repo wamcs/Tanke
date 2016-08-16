@@ -2,10 +2,12 @@ package com.lptiyu.tanke.initialization.controller;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.BounceInterpolator;
+import android.widget.EditText;
 import android.widget.ImageView;
 
 import com.lptiyu.tanke.MainActivity;
@@ -20,7 +22,6 @@ import com.lptiyu.tanke.io.net.UserService;
 import com.lptiyu.tanke.pojo.UserEntity;
 import com.lptiyu.tanke.utils.ThirdLoginHelper;
 import com.lptiyu.tanke.utils.ToastUtil;
-import com.lptiyu.tanke.widget.LoginEditView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -37,9 +38,9 @@ import rx.schedulers.Schedulers;
 public class LoginController extends ActivityController {
 
     @BindView(R.id.login_input_phone)
-    LoginEditView mInputPhoneEditText;
+    EditText mInputPhoneEditText;
     @BindView(R.id.login_input_password)
-    LoginEditView mInputPasswordEditText;
+    EditText mInputPasswordEditText;
     @BindView(R.id.login_qq_button)
     ImageView mQqLogin;
     @BindView(R.id.login_weixin_button)
@@ -60,7 +61,9 @@ public class LoginController extends ActivityController {
 
     private void init() {
         helper = new ThirdLoginHelper(getActivity());
-        mInputPhoneEditText.setText(Accounts.getPhoneNumber());
+        String phoneNumber = Accounts.getPhoneNumber();
+        if (phoneNumber != null && !TextUtils.isEmpty(phoneNumber))
+            mInputPhoneEditText.setText(phoneNumber);
         initClickEvent();
     }
 

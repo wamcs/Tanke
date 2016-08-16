@@ -60,7 +60,8 @@
             android:enabled="true"
             android:exported="true"/>
 
-        <activity android:name=".MainActivity"/>
+        <activity android:name=".MainActivity">
+        </activity>
         <activity android:name=".initialization.ui.LoginActivity"/>
         <activity android:name=".initialization.ui.SplashActivity">
             <intent-filter>
@@ -189,6 +190,10 @@
         <activity
             android:name=".activities.pointtask.PointTaskActivity"
             android:theme="@style/PointTaskActivity"/>
+        <activity android:name=".activities.bannerdetail.BannerDetailActivity">
+        </activity>
+        <activity android:name=".activities.locationtask.LocationTaskActivity">
+        </activity>
     </application>
 
 </manifest>

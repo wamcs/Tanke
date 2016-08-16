@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.lptiyu.tanke.R;
@@ -102,7 +103,10 @@ public class LVForPointTaskAdapter extends BaseAdapter {
             case PointTaskStatus.FINISHED://已完成
                 vh.rlFinishInfo.setVisibility(View.VISIBLE);
                 if (currentRecord != null) {
-                    vh.ctvFinishInfo.setText("经验+" + currentRecord.exp + " " + currentRecord.ftime);
+                    //                    vh.ctvFinishInfo.setText("经验+" + currentRecord.exp + " " + currentRecord
+                    // .ftime);
+                    vh.ctvExpValue.setText(currentRecord.exp + "");
+                    vh.ctvFtime.setText(currentRecord.ftime + "");
                 }
 
                 break;
@@ -115,11 +119,25 @@ public class LVForPointTaskAdapter extends BaseAdapter {
         return convertView;
     }
 
+    public void refresh(List<Task> list_tasks, ArrayList<TaskRecord> list_task_record) {
+        this.list_tasks = list_tasks;
+        this.list_task_record = list_task_record;
+        notifyDataSetChanged();
+    }
+
     static class ViewHolder {
         @BindView(R.id.webView)
         WebView webView;
+        @BindView(R.id.img_flag)
+        ImageView imgFlag;
         @BindView(R.id.ctv_finish)
         CustomTextView ctvFinish;
+        @BindView(R.id.ctv_exp_tip)
+        CustomTextView ctvExpTip;
+        @BindView(R.id.ctv_exp_value)
+        CustomTextView ctvExpValue;
+        @BindView(R.id.ctv_ftime)
+        CustomTextView ctvFtime;
         @BindView(R.id.ctv_finishInfo)
         CustomTextView ctvFinishInfo;
         @BindView(R.id.rl_finishInfo)
@@ -128,12 +146,6 @@ public class LVForPointTaskAdapter extends BaseAdapter {
         ViewHolder(View view) {
             ButterKnife.bind(this, view);
         }
-    }
-
-    public void refresh(List<Task> list_tasks, ArrayList<TaskRecord> list_task_record) {
-        this.list_tasks = list_tasks;
-        this.list_task_record = list_task_record;
-        notifyDataSetChanged();
     }
 }
 

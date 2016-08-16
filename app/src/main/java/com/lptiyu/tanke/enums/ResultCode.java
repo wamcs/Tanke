@@ -8,4 +8,5 @@ public interface ResultCode {
     int IMAGE_DISTINGUISH = 68002;
     int POINT_OVER = 12345;
     int LEAVE_GAME = 88889;
+    int LOCATION_TASK = 12306;
 }

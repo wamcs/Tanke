@@ -38,9 +38,9 @@ public class GamePlaying2Presenter implements GamePlaying2Contract.IGamePlayingP
      * 从服务器请求游戏记录
      */
     @Override
-    public void downLoadGameRecord(long gameId, long gameType) {
+    public void downLoadGameRecord(long gameId) {
         HttpService.getGameService()
-                .getGameRecord(Accounts.getId(), gameId, gameType)
+                .getGameRecord(Accounts.getId(), gameId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Action1<Response<GameRecord>>() {
@@ -94,7 +94,7 @@ public class GamePlaying2Presenter implements GamePlaying2Contract.IGamePlayingP
     public void upLoadRecord(final UpLoadGameRecord record) {
         HttpService.getGameService()
                 .upLoadGameRecord(Accounts.getId(), Long.parseLong(record.game_id), Long.parseLong(record.point_id),
-                        Long.parseLong(record.task_id), Long.parseLong(record.type), PointTaskStatus.FINISHED)
+                        Long.parseLong(record.task_id), PointTaskStatus.FINISHED)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Action1<Response<UploadGameRecordResponse>>() {

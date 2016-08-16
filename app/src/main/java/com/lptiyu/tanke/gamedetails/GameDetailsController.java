@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.Paint;
 import android.graphics.drawable.ColorDrawable;
 import android.location.LocationManager;
 import android.provider.Settings;
@@ -37,9 +36,11 @@ import com.lptiyu.tanke.permission.TargetMethod;
 import com.lptiyu.tanke.pojo.EnterGameResponse;
 import com.lptiyu.tanke.pojo.GameDetailResponse;
 import com.lptiyu.tanke.utils.GameZipUtils;
+import com.lptiyu.tanke.utils.NetworkUtil;
+import com.lptiyu.tanke.utils.PopupWindowUtils;
 import com.lptiyu.tanke.utils.TimeUtils;
 import com.lptiyu.tanke.utils.ToastUtil;
-import com.lptiyu.tanke.utils.XUtilsHelper;
+import com.lptiyu.tanke.utils.xutils3.XUtilsHelper;
 import com.lptiyu.tanke.widget.CustomTextView;
 import com.lptiyu.tanke.widget.dialog.ShareDialog;
 
@@ -162,8 +163,8 @@ public class GameDetailsController extends ActivityController {
     private void bind(GameDetailResponse entity) {
         this.mGameDetailsResponse = entity;
         mTextTitle.setText(entity.title);
-        mTextLocation.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG); //下划线
-        mTextLocation.getPaint().setAntiAlias(true);//抗锯齿
+        //        mTextLocation.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG); //下划线
+        //        mTextLocation.getPaint().setAntiAlias(true);//抗锯齿
         mTextLocation.setText(entity.area);
         mTextPeoplePlaying.setText(String.valueOf(entity.num));
         parseTime(mTextTime, entity);
@@ -251,7 +252,7 @@ public class GameDetailsController extends ActivityController {
         if (mLoadingDialog == null) {
             View view = LayoutInflater.from(getContext()).inflate(R.layout.layout_loading, null);
             CustomTextView textView = ((CustomTextView) view.findViewById(R.id.loading_dialog_textview));
-            textView.setText(getString(R.string.loading));
+            textView.setText("加载中");
             mLoadingDialog = new AlertDialog.Builder(getActivity())
                     .setCancelable(false)
                     .setView(view)
@@ -274,6 +275,16 @@ public class GameDetailsController extends ActivityController {
         finish();
     }
 
+    // 网络异常对话框
+    private void showNetUnConnectDialog() {
+        PopupWindowUtils.getInstance().showNetExceptionPopupwindow(getContext(), new PopupWindowUtils
+                .OnNetExceptionListener() {
+            @Override
+            public void onClick(View view) {
+                loadNet();
+            }
+        });
+    }
 
     @OnClick(R.id.enter_game)
     public void ensureClicked() {
@@ -290,9 +301,7 @@ public class GameDetailsController extends ActivityController {
                 }
                 //        checkDiskAndNextStep();
                 //请求加入游戏接口，获取游戏包下载链接
-                progressDialog = new ProgressDialog(getContext(), ProgressDialog.STYLE_SPINNER);
-                progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-                enterGame();
+                loadNet();
                 break;
             case Conf.GamePlay2Activity:
                 // 放弃游戏
@@ -307,6 +316,16 @@ public class GameDetailsController extends ActivityController {
                 //                            }
                 //                        }).setNegativeButton("取消", null).show();
                 break;
+        }
+    }
+
+    private void loadNet() {
+        if (NetworkUtil.checkIsNetworkConnected()) {
+            progressDialog = ProgressDialog.show(getContext(), "", "加载中...", true);
+            progressDialog.show();
+            enterGame();
+        } else {
+            showNetUnConnectDialog();
         }
     }
 
@@ -328,10 +347,20 @@ public class GameDetailsController extends ActivityController {
         popupView.findViewById(R.id.tv_ensure).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                abandonGame();
+                abandonGamePopup();
             }
         });
 
+    }
+
+    private void abandonGamePopup() {
+        if (NetworkUtil.checkIsNetworkConnected()) {
+            progressDialog = ProgressDialog.show(getContext(), "", "加载中...", true);
+            progressDialog.show();
+            abandonGame();
+        } else {
+            showNetUnConnectDialog();
+        }
     }
 
     private void abandonGame() {
@@ -368,11 +397,14 @@ public class GameDetailsController extends ActivityController {
                 .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Action1<Response<EnterGameResponse>>() {
             @Override
             public void call(Response<EnterGameResponse> response) {
+                if (progressDialog != null) {
+                    progressDialog.dismiss();
+                }
                 if (response.getStatus() == Response.RESPONSE_OK) {
                     if (new GameZipUtils().isParsedFileExist(gameId) == null) {
                         tempGameZipUrl = response.getData().game_zip;
                         //根据获取到的游戏包下载链接去下载游戏
-                        progressDialog = ProgressDialog.show(getContext(), "", "游戏下载中...",
+                        progressDialog = ProgressDialog.show(getContext(), "", "加载中...",
                                 true);
                         progressDialog.show();
                         downloadGameZipFile();
@@ -387,6 +419,10 @@ public class GameDetailsController extends ActivityController {
             @Override
             public void call(Throwable throwable) {
                 Log.i("jason", "请求加入游戏获取游戏包下载地址失败:" + throwable.getMessage());
+                if (progressDialog != null) {
+                    progressDialog.dismiss();
+                }
+                PopupWindowUtils.getInstance().showFailLoadPopupwindow(getContext());
             }
         });
     }
@@ -429,6 +465,11 @@ public class GameDetailsController extends ActivityController {
                 if (progressDialog != null) {
                     progressDialog.dismiss();
                 }
+            }
+
+            @Override
+            public void onError(String errMsg) {
+                PopupWindowUtils.getInstance().showFailLoadPopupwindow(getContext());
             }
         });
 
