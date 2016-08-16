@@ -326,7 +326,9 @@
         android:layout_below="@id/user_rewards"
         android:background="@drawable/fragment_user_center_item_bg"
         android:gravity="center_vertical"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:visibility="gone"
+        >
 
         <ImageView
             android:id="@id/image"

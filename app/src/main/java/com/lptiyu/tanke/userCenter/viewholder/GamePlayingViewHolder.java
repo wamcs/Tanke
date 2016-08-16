@@ -72,7 +72,7 @@ public class GamePlayingViewHolder extends BaseViewHolder<GamePlayingEntity> {
         currentEntity = entity;
         final long gameId = entity.getGameId();
         mItemName.setText(entity.getName());
-        mItemProgressNumber.setText(entity.getProgress() * 100 + "%");
+        mItemProgressNumber.setText(Math.floor(entity.getProgress() * 100) + "%");
         Glide.with(getContext()).load(entity.getImg()).error(R.mipmap.need_to_remove).into(mItemPicture);
         mItemProgress.setProgress(entity.getProgress());
         mItem.setOnClickListener(new View.OnClickListener() {

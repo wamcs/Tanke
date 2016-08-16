@@ -244,10 +244,10 @@
 
 
     <!-- gameList Text Area-->
-    <string name="game_progress">游戏进度</string>
+    <string name="game_progress">游戏进度:</string>
 
     <!-- UserGameFinishedList Text Area-->
-    <string name="user_game_finished_get_exp_formatter">%d经验值</string>
+    <string name="user_game_finished_get_exp_formatter">%d</string>
     <string name="complete_game_consuming_time_formatter" formatted="false">%d小时%d分钟</string>
 
     <!-- AboutUsActivity Text Area-->

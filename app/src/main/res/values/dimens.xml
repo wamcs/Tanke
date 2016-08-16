@@ -280,8 +280,8 @@
 
     <!-- UserGameFinished Dimens-->
     <dimen name="item_game_finished_root_padding_left_right">@dimen/y26</dimen>
-    <dimen name="item_game_finished_img_width">@dimen/y290</dimen>
-    <dimen name="item_game_finished_img_height">@dimen/y210</dimen>
+    <dimen name="item_game_finished_img_width">@dimen/y320</dimen>
+    <dimen name="item_game_finished_img_height">@dimen/y230</dimen>
     <dimen name="item_game_finished_img_margin_left">@dimen/x26</dimen>
     <dimen name="item_game_finished_img_corner_radius">@dimen/x13</dimen>
     <dimen name="item_game_finished_content_root_margin_left">@dimen/x26</dimen>

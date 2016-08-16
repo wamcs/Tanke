@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -79,6 +80,9 @@ public class UserCenterFragment extends BaseFragment {
     @BindView(R.id.user_game_finished_num)
     TextView mUserGameFinishedNum;
 
+    @BindView(R.id.user_judge_game)
+    RelativeLayout mUserJudgeGame;
+
     private Subscription subscription;
     private UserDetails mUserDetails;
 
@@ -133,6 +137,11 @@ public class UserCenterFragment extends BaseFragment {
         mUserUid.setText(String.valueOf(Accounts.getId()));
         mUserGamePlayingNum.setText(String.valueOf(details.getPlayingGameNum()));
         mUserGameFinishedNum.setText(String.valueOf(details.getFinishedGameNum()));
+
+        if(details.getTaskCount() > 0)
+        {
+            mUserJudgeGame.setVisibility(RelativeLayout.VISIBLE);
+        }
 
         String gender = details.getSex();
         if (gender == null || gender.length() == 0) {
