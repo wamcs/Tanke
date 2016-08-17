@@ -16,7 +16,7 @@ android {
         ndk {
             moduleName "HelloARVideoNative"
             cFlags "-DANDROID_NDK -frtti -fexceptions " + "-I${file("include")}".toString()
-            ldLibs "GLESv3", "log", file(projectDir).absolutePath + "\\src\\main\\jniLibs\\armeabi-v7a\\libEasyAR.so"
+            ldLibs "GLESv3", "log", file(projectDir).absolutePath + "/src/main/jniLibs/armeabi-v7a/libEasyAR.so"
             // Link with these libraries!
             stl "gnustl_static"
             abiFilters "armeabi", "armeabi-v7a"
