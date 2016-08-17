@@ -174,6 +174,7 @@ public class ModifyUserInfoController extends ActivityController {
         }
       });
     }
+    mTextInputDialog.isCancelable(false);
     mTextInputDialog.show(details.getNickname());
   }
 
@@ -211,6 +212,7 @@ public class ModifyUserInfoController extends ActivityController {
         }
       });
     }
+    mDatePickerDialog.isCancelable(false);
     mDatePickerDialog.scrollToDefaultValue();
     mDatePickerDialog.show();
   }
@@ -264,6 +266,7 @@ public class ModifyUserInfoController extends ActivityController {
       }
     });
     mNumberPickerDialog.withTitle(getString(R.string.change_height));
+    mNumberPickerDialog.isCancelable(false);
     mNumberPickerDialog.withMinMaxValue(Conf.MIN_HEIGHT, Conf.MAX_HEIGHT).show();
   }
 
@@ -279,6 +282,7 @@ public class ModifyUserInfoController extends ActivityController {
       }
     });
     mNumberPickerDialog.withTitle(getString(R.string.change_weight));
+    mNumberPickerDialog.isCancelable(false);
     mNumberPickerDialog.withMinMaxValue(Conf.MIN_WEIGHT, Conf.MAX_WEIGHT).show();
   }
 
@@ -290,7 +294,8 @@ public class ModifyUserInfoController extends ActivityController {
 
   @OnClick(R.id.modify_user_info_phone_button)
   void modifyPhone() {
-    ToastUtil.TextToast("暂未开放此功能");
+//    ToastUtil.TextToast("暂未开放此功能");
+    return;
   }
 
   @OnClick(R.id.default_tool_bar_imageview)
