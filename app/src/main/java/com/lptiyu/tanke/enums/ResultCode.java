@@ -9,4 +9,5 @@ public interface ResultCode {
     int POINT_OVER = 12345;
     int LEAVE_GAME = 88889;
     int LOCATION_TASK = 12306;
+    int BIND_TEL = 98001;
 }

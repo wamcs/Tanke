@@ -94,8 +94,8 @@ public class ThirdLoginHelper implements PlatformActionListener {
         Muser.setAvatar(hashMap.get("headimgurl").toString());
     }
 
-    public void login(String id, int platformType, int ostype, String avatar_url, String nick_name) {
-        final int plantType = platformType;
+    public void login(String id, final int platformType, int ostype, String avatar_url, String nick_name) {
+        //        final int plantType = platformType;
         HttpService.getUserService().loginThirdParty(id, platformType, ostype, avatar_url, nick_name)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -123,6 +123,7 @@ public class ThirdLoginHelper implements PlatformActionListener {
                         //                        }
                         Accounts.setId(entity.getUid());
                         Accounts.setToken(entity.getToken());
+                        Accounts.setPlatform(platformType);
                         intentToSignUP.setClass(activity, MainActivity.class);
                         activity.startActivity(intentToSignUP);
                     }

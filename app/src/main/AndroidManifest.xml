@@ -60,28 +60,73 @@
             android:enabled="true"
             android:exported="true"/>
 
-        <activity android:name=".MainActivity">
+        <activity
+            android:name=".MainActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".initialization.ui.LoginActivity"/>
-        <activity android:name=".initialization.ui.SplashActivity">
+        <activity
+            android:name=".initialization.ui.LoginActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".initialization.ui.SplashActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".initialization.ui.GuideActivity"/>
-        <activity android:name=".initialization.ui.CompleteInformationActivity"/>
-        <activity android:name=".initialization.ui.SignUpActivity"/>
-        <activity android:name=".initialization.ui.UserProtocolActivity"/>
-        <activity android:name=".messagesystem.MessageActivity"/>
-        <activity android:name=".userCenter.ui.UserGameFinishedListActivity"/>
-        <activity android:name=".userCenter.ui.UserGamePlayingListActivity"/>
-        <activity android:name=".userCenter.ui.LocateActivity"/>
-        <activity android:name=".location.LocateUserActivity"/>
-        <activity android:name=".userCenter.ui.ModifyUserInfoActivity"/>
-        <activity android:name=".userCenter.ui.OtherUserInformationActivity"/>
-        <activity android:name=".userCenter.ui.SettingActivity"/>
+        <activity
+            android:name=".initialization.ui.GuideActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".initialization.ui.CompleteInformationActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".initialization.ui.SignUpActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".initialization.ui.UserProtocolActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".messagesystem.MessageActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".userCenter.ui.UserGameFinishedListActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".userCenter.ui.UserGamePlayingListActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".userCenter.ui.LocateActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".location.LocateUserActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".userCenter.ui.ModifyUserInfoActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".userCenter.ui.OtherUserInformationActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".userCenter.ui.SettingActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="portrait"/>
         <activity
             android:name="com.mob.tools.MobUIShell"
             android:configChanges="keyboardHidden|orientation|screenSize"
@@ -144,13 +189,30 @@
                 <data android:mimeType="text/plain"/>
             </intent-filter>
         </activity>
-        <activity android:name=".gameplaying.GamePlayingActivity"/>
-        <activity android:name=".gameplaying.task.GameTaskActivity"/>
-        <activity android:name=".gamedetails.GameDetailsActivity"/>
-        <activity android:name=".gamedetails.GameDetailsLocationActivity"/>
-        <activity android:name=".gamedata.GameDataActivity"/>
+        <activity
+            android:name=".gameplaying.GamePlayingActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".gameplaying.task.GameTaskActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".gamedetails.GameDetailsActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".gamedetails.GameDetailsLocationActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".gamedata.GameDataActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".gameplaying.parser.ClueDisplayActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="portrait"
             android:theme="@style/ApparentActivity">
         </activity>
 
@@ -171,28 +233,64 @@
             </intent-filter>
         </receiver>
 
-        <activity android:name=".userCenter.ModifyUserInformationActivity"/>
-        <activity android:name=".userCenter.UserManagerGameActivity"/>
-        <activity android:name=".userCenter.UserRewardActivity"/>
-        <activity android:name=".gameplaying.GameShareActivity"/>
-        <activity android:name=".messagesystem.SystemWebActivity"/>
-        <activity android:name=".userCenter.ui.AboutUsActivity"/>
-        <activity android:name=".activities.gameplaying2.GamePlaying2Activity"/>
-        <activity android:name=".activities.guessriddle.GuessRiddleActivity">
+        <activity
+            android:name=".userCenter.UserManagerGameActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".userCenter.UserRewardActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".gameplaying.GameShareActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".messagesystem.SystemWebActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".userCenter.ui.AboutUsActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".activities.gameplaying2.GamePlaying2Activity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".activities.guessriddle.GuessRiddleActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".activities.baidumapmode.GameMapShowActivity">
+        <activity
+            android:name=".activities.baidumapmode.GameMapShowActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="portrait">
         </activity>
         <activity
             android:name=".widget.dialog.ShareDialog"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="portrait"
             android:theme="@style/ApparentActivity"/>
-        <activity android:name=".activities.imagedistinguish.ImageDistinguishActivity">
+        <activity
+            android:name=".activities.imagedistinguish.ImageDistinguishActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="portrait">
         </activity>
         <activity
             android:name=".activities.pointtask.PointTaskActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="portrait"
             android:theme="@style/PointTaskActivity"/>
-        <activity android:name=".activities.bannerdetail.BannerDetailActivity">
+        <activity
+            android:name=".activities.bannerdetail.BannerDetailActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".activities.locationtask.LocationTaskActivity">
+        <activity
+            android:name=".activities.locationtask.LocationTaskActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="portrait">
         </activity>
     </application>
 

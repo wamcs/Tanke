@@ -7,4 +7,6 @@ public interface XUtilsUrls {
     String SERVER_URL = "http://api.lptiyu.com/lepao/api.php/";
 
     String GET_BANNER = SERVER_URL + "System/get_banner";
+
+    String BIND_PHONE = SERVER_URL + "login/bind_phone";
 }

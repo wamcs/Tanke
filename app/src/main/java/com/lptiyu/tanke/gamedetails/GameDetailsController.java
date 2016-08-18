@@ -38,6 +38,7 @@ import com.lptiyu.tanke.pojo.GameDetailResponse;
 import com.lptiyu.tanke.utils.GameZipUtils;
 import com.lptiyu.tanke.utils.NetworkUtil;
 import com.lptiyu.tanke.utils.PopupWindowUtils;
+import com.lptiyu.tanke.utils.ProgressDialogHelper;
 import com.lptiyu.tanke.utils.TimeUtils;
 import com.lptiyu.tanke.utils.ToastUtil;
 import com.lptiyu.tanke.utils.xutils3.XUtilsHelper;
@@ -321,8 +322,6 @@ public class GameDetailsController extends ActivityController {
 
     private void loadNet() {
         if (NetworkUtil.checkIsNetworkConnected()) {
-            progressDialog = ProgressDialog.show(getContext(), "", "加载中...", true);
-            progressDialog.show();
             enterGame();
         } else {
             showNetUnConnectDialog();
@@ -397,15 +396,11 @@ public class GameDetailsController extends ActivityController {
                 .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Action1<Response<EnterGameResponse>>() {
             @Override
             public void call(Response<EnterGameResponse> response) {
-                if (progressDialog != null) {
-                    progressDialog.dismiss();
-                }
                 if (response.getStatus() == Response.RESPONSE_OK) {
                     if (new GameZipUtils().isParsedFileExist(gameId) == null) {
                         tempGameZipUrl = response.getData().game_zip;
                         //根据获取到的游戏包下载链接去下载游戏
-                        progressDialog = ProgressDialog.show(getContext(), "", "加载中...",
-                                true);
+                        progressDialog = ProgressDialogHelper.getSpinnerProgressDialog(getContext());
                         progressDialog.show();
                         downloadGameZipFile();
                     } else {
@@ -456,7 +451,9 @@ public class GameDetailsController extends ActivityController {
             @Override
             public void progress(long total, long current, boolean isDownloading) {
                 //游戏进度
-                Log.i("jason", "进度：%" + current * 100 / total);
+                if (progressDialog != null) {
+                    progressDialog.setMessage("加载中" + current * 100 / total + "%");
+                }
 
             }
 

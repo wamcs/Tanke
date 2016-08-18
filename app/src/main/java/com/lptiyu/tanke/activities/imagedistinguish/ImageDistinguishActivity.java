@@ -17,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.lptiyu.tanke.R;
 import com.lptiyu.tanke.activities.base.MyBaseActivity;
@@ -29,7 +30,6 @@ import com.lptiyu.tanke.global.Accounts;
 import com.lptiyu.tanke.global.Conf;
 import com.lptiyu.tanke.pojo.UpLoadGameRecord;
 import com.lptiyu.tanke.pojo.UploadGameRecordResponse;
-import com.lptiyu.tanke.utils.thread;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -149,13 +149,21 @@ public class ImageDistinguishActivity extends MyBaseActivity implements Imagedis
         task = getIntent().getParcelableExtra(Conf.CURRENT_TASK);
         isPointOver = getIntent().getBooleanExtra(Conf.IS_POINT_OVER, false);
 
-        //        nativeInit(new String[]{imgPath}, new String[]{""});
-        //        for (int i = 0; i < imgArr.length; i++) {
-        //            nativeInit(new String[]{imgArr[i]}, new String[]{""});
+        //        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager
+        //                .PERMISSION_GRANTED) {
+        //            if (ActivityCompat.shouldShowRequestPermissionRationale(ImageDistinguishActivity.this,
+        //                    Manifest.permission.CAMERA)) {
+        //                //如果用户之前拒绝过App使用权限，这个方法就会返回true。
+        //                Toast.makeText(this, "上次拒绝了授权", Toast.LENGTH_SHORT).show();
+        //            } else {
+        //                //当App被永远拒绝获取某权限时（比如你点击了“不再提示”），shouldShowRequestPermissionRationale()就会返回false，
+        //                Toast.makeText(this, "权限被永久禁止", Toast.LENGTH_SHORT).show();
+        //            }
+        //            //申请权限，在回调方法onRequestPermissionsResult()中处理
+        //            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, 100);
+        //        } else {
+        initAR();
         //        }
-        nativeInit(imgArr, new String[]{""});
-        //        nativeInit(new String[]{"/storage/emulated/0/Android/data/com.lptiyu
-        // .tanke/files/temp/23_24_2/point6.jpg"}, new String[]{""});
 
         GLView glView = new GLView(this);
         glView.setRenderer(new Renderer());
@@ -184,12 +192,41 @@ public class ImageDistinguishActivity extends MyBaseActivity implements Imagedis
         });
     }
 
+    private void initAR() {
+        try {
+            nativeInit(imgArr, new String[]{""});
+        } catch (Exception e) {
+            Toast.makeText(this, "请确认本应用是否授予摄像头的权限", Toast.LENGTH_SHORT).show();
+            e.printStackTrace();
+        }
+    }
+
+//    @Override
+//    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+//        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+//        switch (requestCode) {
+//            case 100:
+//                // If request is cancelled, the result arrays are empty.
+//                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+//                    // permission was granted, yay! Do the
+//                    // contacts-related task you need to do.
+//                    Toast.makeText(this, "权限请求成功", Toast.LENGTH_SHORT).show();
+//                    initAR();
+//                } else {
+//                    // permission denied, boo! Disable the
+//                    // functionality that depends on this permission.
+//                    Toast.makeText(this, "权限请求失败", Toast.LENGTH_SHORT).show();
+//                }
+//                break;
+//        }
+//    }
+
     /**
      * 展示成功信息
      */
     private void showSuccessResult() {
         tvScanningTip.setVisibility(View.GONE);
-        imgStartScan.setEnabled(true);
+        //        imgStartScan.setEnabled(true);
         isOK = true;
         stopAnim();
         popup_tv_btn.setText("查看");
@@ -204,7 +241,7 @@ public class ImageDistinguishActivity extends MyBaseActivity implements Imagedis
      */
     private void showFailResult() {
         tvScanningTip.setVisibility(View.GONE);
-        imgStartScan.setEnabled(true);
+        //        imgStartScan.setEnabled(true);
         isOK = false;
         stopAnim();
         popup_tv_btn.setText("关闭");
@@ -219,7 +256,7 @@ public class ImageDistinguishActivity extends MyBaseActivity implements Imagedis
      */
     private void showNetException() {
         tvScanningTip.setVisibility(View.GONE);
-        imgStartScan.setEnabled(true);
+        //        imgStartScan.setEnabled(true);
         isOK = false;
         stopAnim();
         popup_tv_btn.setText("关闭");
@@ -265,17 +302,27 @@ public class ImageDistinguishActivity extends MyBaseActivity implements Imagedis
                 finish();
                 break;
             case R.id.img_startScan:
-                ImageDistinguishActivity.nativeStartAr();
-                //                startAnim();
-                //                if (thread == null) {
-                //                    initCountDownTimer();
-                //                }
-                //                thread.start();
-                imgStartScan.setEnabled(false);
-                tvScanningTip.setVisibility(View.VISIBLE);
+                if (!isScanning) {
+                    ImageDistinguishActivity.nativeStartAr();
+                    //                startAnim();
+                    //                if (thread == null) {
+                    //                    initCountDownTimer();
+                    //                }
+                    //                thread.start();
+                    //                imgStartScan.setEnabled(false);
+                    imgStartScan.setImageResource(R.drawable.img_distinguish);
+                    tvScanningTip.setVisibility(View.VISIBLE);
+                } else {
+                    ImageDistinguishActivity.nativeStopAr();
+                    imgStartScan.setImageResource(R.drawable.img_start_distinguish);
+                    tvScanningTip.setVisibility(View.GONE);
+                }
+                isScanning = !isScanning;
                 break;
         }
     }
+
+    private boolean isScanning = false;
 
     private UploadGameRecordResponse resultRecord;
 

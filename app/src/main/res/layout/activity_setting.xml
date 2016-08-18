@@ -25,23 +25,23 @@
         android:orientation="vertical">
 
         <!--<RelativeLayout-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="@dimen/activity_setting_item_height">-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="@dimen/activity_setting_item_height">-->
 
-            <!--<com.lptiyu.tanke.widget.CustomTextView-->
-                <!--style="@style/SettingActivityItemTextBase"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="match_parent"-->
-                <!--android:layout_centerVertical="true"-->
-                <!--android:text="@string/setting_activity_push_msg"/>-->
+        <!--<com.lptiyu.tanke.widget.CustomTextView-->
+        <!--style="@style/SettingActivityItemTextBase"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:layout_centerVertical="true"-->
+        <!--android:text="@string/setting_activity_push_msg"/>-->
 
-            <!--<com.lptiyu.tanke.widget.SwitchButton-->
-                <!--android:id="@+id/setting_activity_msg_push"-->
-                <!--style="@style/SwitchButtonStyleMD"-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_alignParentRight="true"-->
-                <!--android:layout_centerVertical="true"/>-->
+        <!--<com.lptiyu.tanke.widget.SwitchButton-->
+        <!--android:id="@+id/setting_activity_msg_push"-->
+        <!--style="@style/SwitchButtonStyleMD"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_alignParentRight="true"-->
+        <!--android:layout_centerVertical="true"/>-->
 
         <!--</RelativeLayout>-->
 
@@ -83,23 +83,23 @@
             android:background="@color/user_center_split_line"/>
 
         <!--<RelativeLayout-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="@dimen/activity_setting_item_height">-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="@dimen/activity_setting_item_height">-->
 
-            <!--<com.lptiyu.tanke.widget.CustomTextView-->
-                <!--style="@style/SettingActivityItemTextBase"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="match_parent"-->
-                <!--android:layout_centerVertical="true"-->
-                <!--android:text="@string/setting_activity_light_screen"/>-->
+        <!--<com.lptiyu.tanke.widget.CustomTextView-->
+        <!--style="@style/SettingActivityItemTextBase"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:layout_centerVertical="true"-->
+        <!--android:text="@string/setting_activity_light_screen"/>-->
 
-            <!--<com.lptiyu.tanke.widget.SwitchButton-->
-                <!--android:id="@+id/setting_activity_screen_light"-->
-                <!--style="@style/SwitchButtonStyleMD"-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_alignParentRight="true"-->
-                <!--android:layout_centerVertical="true"/>-->
+        <!--<com.lptiyu.tanke.widget.SwitchButton-->
+        <!--android:id="@+id/setting_activity_screen_light"-->
+        <!--style="@style/SwitchButtonStyleMD"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_alignParentRight="true"-->
+        <!--android:layout_centerVertical="true"/>-->
 
         <!--</RelativeLayout>-->
 
@@ -136,11 +136,11 @@
             <com.lptiyu.tanke.widget.CustomTextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:text="@string/app_mail"
-                android:layout_marginRight="@dimen/x20"
-                android:gravity="center_vertical"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
+                android:layout_marginRight="@dimen/x20"
+                android:gravity="center_vertical"
+                android:text="@string/app_mail"
                 android:textColor="@color/grey06"
                 android:textSize="16sp"/>
 
@@ -168,11 +168,36 @@
             <com.lptiyu.tanke.widget.CustomTextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:text="@string/wechat_public"
-                android:layout_marginRight="@dimen/x20"
-                android:gravity="center_vertical"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
+                android:layout_marginRight="@dimen/x20"
+                android:gravity="center_vertical"
+                android:text="@string/wechat_public"
+                android:textColor="@color/grey06"
+                android:textSize="16sp"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/activity_setting_item_height">
+
+            <com.lptiyu.tanke.widget.CustomTextView
+                android:id="@+id/clear_cache"
+                style="@style/SettingActivityItemTextNormal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_centerVertical="true"
+                android:text="清理缓存"/>
+
+            <com.lptiyu.tanke.widget.CustomTextView
+                android:id="@+id/ctv_cache_size"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="@dimen/x20"
+                android:gravity="center_vertical"
                 android:textColor="@color/grey06"
                 android:textSize="16sp"/>
 

@@ -26,6 +26,7 @@ import com.lptiyu.tanke.utils.FileUtils;
 import com.lptiyu.tanke.utils.GameZipUtils;
 import com.lptiyu.tanke.utils.NetworkUtil;
 import com.lptiyu.tanke.utils.PopupWindowUtils;
+import com.lptiyu.tanke.utils.ProgressDialogHelper;
 import com.lptiyu.tanke.utils.xutils3.XUtilsHelper;
 import com.lptiyu.tanke.utils.xutils3.response.Banner;
 
@@ -149,7 +150,8 @@ public class BannerPagerAdapter extends PagerAdapter {
                                     GameZipUtils gameZipUtils = new GameZipUtils();
                                     if (gameZipUtils.isParsedFileExist(gameId) == null) {
                                         //游戏包不存在，需要下载游戏包
-                                        progressDialog = ProgressDialog.show(context, "", "加载中...", true);
+                                        progressDialog = ProgressDialogHelper.getSpinnerProgressDialog(context);
+                                        progressDialog.show();
                                         downloadGameZipFile();
                                     } else if (gameZipUtils.isGameUpdated(gameId, tempGameZipUrl
                                             .substring(tempGameZipUrl.lastIndexOf('/') + 1, tempGameZipUrl
@@ -158,7 +160,8 @@ public class BannerPagerAdapter extends PagerAdapter {
                                         //删除旧的游戏包
                                         boolean b = FileUtils.deleteDirectory(parsedFileExist);
                                         //下载新的游戏包
-                                        progressDialog = ProgressDialog.show(context, "", "加载中...", true);
+                                        progressDialog = ProgressDialogHelper.getSpinnerProgressDialog(context);
+                                        progressDialog.show();
                                         downloadGameZipFile();
                                     } else {
                                         startPlayingGame();
@@ -200,8 +203,9 @@ public class BannerPagerAdapter extends PagerAdapter {
             @Override
             public void progress(long total, long current, boolean isDownloading) {
                 //游戏进度
-                Log.i("jason", "进度：%" + current * 100 / total);
-
+                if (progressDialog != null) {
+                    progressDialog.setMessage("加载中" + current * 100 / total + "%");
+                }
             }
 
             @Override

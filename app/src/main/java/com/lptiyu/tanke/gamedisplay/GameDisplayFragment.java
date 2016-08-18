@@ -16,6 +16,8 @@ import com.lptiyu.tanke.MainActivityController;
 import com.lptiyu.tanke.R;
 import com.lptiyu.tanke.base.ui.BaseFragment;
 import com.lptiyu.tanke.pojo.City;
+import com.lptiyu.tanke.utils.NetworkUtil;
+import com.lptiyu.tanke.utils.PopupWindowUtils;
 import com.lptiyu.tanke.utils.xutils3.SwipeRefreshLayoutUtils;
 
 import butterknife.BindView;
@@ -60,13 +62,13 @@ public class GameDisplayFragment extends BaseFragment {
             @Override
             public void onRefresh() {
                 swipe.setRefreshing(true);
-                controller.refreshTop();
+                loadNetWorkData();
                 //TODO 当网络请求完毕时才隐藏刷新标志
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
                         try {
-                            Thread.sleep(200);
+                            Thread.sleep(2000);
                             getActivity().runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
@@ -112,6 +114,26 @@ public class GameDisplayFragment extends BaseFragment {
                 if (!controller.isRefreshing()) {
                     controller.refreshTop();
                 }
+            }
+        });
+    }
+
+    private void loadNetWorkData() {
+        if (NetworkUtil.checkIsNetworkConnected()) {
+            controller.refreshTop();
+        } else {
+            swipe.setRefreshing(false);
+            showNetUnConnectDialog();
+        }
+    }
+
+    // 网络异常对话框
+    private void showNetUnConnectDialog() {
+        PopupWindowUtils.getInstance().showNetExceptionPopupwindow(getContext(), new PopupWindowUtils
+                .OnNetExceptionListener() {
+            @Override
+            public void onClick(View view) {
+                loadNetWorkData();
             }
         });
     }

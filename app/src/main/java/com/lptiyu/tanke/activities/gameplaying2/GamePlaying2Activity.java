@@ -283,7 +283,7 @@ public class GamePlaying2Activity extends MyBaseActivity implements GamePlaying2
                     currentPoint.isNew = false;
                 }
                 adapter.notifyDataSetChanged();
-                Log.i("jason", "点击的point：" + currentPoint);
+//                Log.i("jason", "点击的point：" + currentPoint);
                 if (currentPoint.state == PointTaskStatus.UNSTARTED) {
                     //控制Toast的显示
                     if (toast != null) {

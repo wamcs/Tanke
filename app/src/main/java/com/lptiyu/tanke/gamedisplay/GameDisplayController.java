@@ -1,6 +1,7 @@
 package com.lptiyu.tanke.gamedisplay;
 
 import android.content.Intent;
+import android.os.Handler;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -18,6 +19,8 @@ import com.lptiyu.tanke.io.net.Response;
 import com.lptiyu.tanke.pojo.City;
 import com.lptiyu.tanke.pojo.GameDisplayEntity;
 import com.lptiyu.tanke.userCenter.ui.LocateActivity;
+import com.lptiyu.tanke.utils.NetworkUtil;
+import com.lptiyu.tanke.utils.PopupWindowUtils;
 import com.lptiyu.tanke.utils.ShaPrefer;
 import com.lptiyu.tanke.utils.thread;
 import com.lptiyu.tanke.widget.CustomTextView;
@@ -61,6 +64,8 @@ public class GameDisplayController extends BaseListFragmentController<GameDispla
     private boolean isCheckData = false;
     private LocationClient locationClient;
 
+    private Handler mHandler = new Handler();
+
     public GameDisplayController(GameDisplayFragment fragment, MainActivityController controller, View view) {
         super(fragment, controller, view);
         this.fragment = fragment;
@@ -74,8 +79,38 @@ public class GameDisplayController extends BaseListFragmentController<GameDispla
      */
     private void init() {
         requestLocation = ShaPrefer.getCity();
-        refreshTop();
+        //        refreshTop();
+        loadNetWorkData();
         initLocation();
+    }
+
+    private void loadNetWorkData() {
+        if (NetworkUtil.checkIsNetworkConnected()) {
+            refreshTop();
+        } else {
+            mHandler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    fragment.getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            showNetUnConnectDialog();
+                        }
+                    });
+                }
+            }, 100);
+        }
+    }
+
+    // 网络异常对话框
+    private void showNetUnConnectDialog() {
+        PopupWindowUtils.getInstance().showNetExceptionPopupwindow(getContext(), new PopupWindowUtils
+                .OnNetExceptionListener() {
+            @Override
+            public void onClick(View view) {
+                loadNetWorkData();
+            }
+        });
     }
 
     public void changeCurrentCity(City c) {

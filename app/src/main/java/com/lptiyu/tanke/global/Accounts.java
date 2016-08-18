@@ -71,6 +71,14 @@ public class Accounts {
         ShaPrefer.put("user_openId", openId);
     }
 
+    public static int getPlatform() {
+        return ShaPrefer.getInt("platform", -1);
+    }
+
+    public static void setPlatform(int platform) {
+        ShaPrefer.put("platform", platform);
+    }
+
     public static boolean isLogin() {
         long key = getId();
         return (key != 0L);

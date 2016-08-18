@@ -3,10 +3,12 @@ package com.lptiyu.tanke.userCenter;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -16,8 +18,12 @@ import com.bumptech.glide.request.target.Target;
 import com.lptiyu.tanke.R;
 import com.lptiyu.tanke.base.controller.FragmentController;
 import com.lptiyu.tanke.base.ui.BaseFragment;
+import com.lptiyu.tanke.enums.Platform;
+import com.lptiyu.tanke.enums.RequestCode;
+import com.lptiyu.tanke.enums.ResultCode;
 import com.lptiyu.tanke.global.Accounts;
 import com.lptiyu.tanke.global.Conf;
+import com.lptiyu.tanke.initialization.ui.SignUpActivity;
 import com.lptiyu.tanke.io.net.HttpService;
 import com.lptiyu.tanke.io.net.Response;
 import com.lptiyu.tanke.pojo.UserDetails;
@@ -78,6 +84,10 @@ public class UserCenterFragment extends BaseFragment {
 
     @BindView(R.id.user_game_finished_num)
     TextView mUserGameFinishedNum;
+    @BindView(R.id.tv_platform_tel_info)
+    TextView tvPlatformTelInfo;
+    @BindView(R.id.rl_popup)
+    RelativeLayout rlPopup;
 
     private Subscription subscription;
     private UserDetails mUserDetails;
@@ -128,6 +138,8 @@ public class UserCenterFragment extends BaseFragment {
         Accounts.setNickName(details.getNickname());
         Accounts.setPhoneNumber(details.getPhone() + "");
 
+        showBindTelTip();
+
         mUserNickname.setText(details.getNickname());
         mUserLocation.setText(details.getAddress());
         mUserUid.setText(String.valueOf(Accounts.getId()));
@@ -146,6 +158,47 @@ public class UserCenterFragment extends BaseFragment {
         }
 
         parseLevelAndExp(details.getExp());
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (resultCode) {
+            case ResultCode.BIND_TEL:
+                showBindTelTip();
+                break;
+        }
+    }
+
+    private void showBindTelTip() {
+        String platform = "";
+        switch (Accounts.getPlatform()) {
+            case Platform.QQ:
+                platform = "QQ";
+                rlPopup.setVisibility(View.VISIBLE);
+                break;
+            case Platform.WEIXIN:
+                platform = "微信";
+                rlPopup.setVisibility(View.VISIBLE);
+                break;
+            case Platform.TEL:
+                rlPopup.setVisibility(View.GONE);
+                break;
+        }
+        String phoneNumber = Accounts.getPhoneNumber();
+        Log.i("jason", "Accounts.getPhoneNumber():" + phoneNumber);
+        if (phoneNumber == null || phoneNumber.equals("") || phoneNumber.equals("null")) {
+            tvPlatformTelInfo.setText(String.format(getContext().getString(R.string.platform_info_unbind_tel)
+                    , platform));
+            rlPopup.setBackgroundResource(R.color.orange);
+            rlPopup.setEnabled(true);
+        } else {
+            tvPlatformTelInfo.setText(String.format(getContext().getString(R.string.platform_info_bind_tel)
+                    , platform, Accounts.getPhoneNumber()));
+            //            rlPopup.setBackgroundResource(R.color.grey08);
+            //            rlPopup.setEnabled(false);
+            rlPopup.setVisibility(View.GONE);
+        }
     }
 
     private void parseLevelAndExp(int exp) {
@@ -269,4 +322,18 @@ public class UserCenterFragment extends BaseFragment {
         return null;
     }
 
+    @OnClick({R.id.img_close_popup, R.id.rl_popup})
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.img_close_popup:
+                rlPopup.setVisibility(View.GONE);
+                break;
+            case R.id.rl_popup:
+                //跳转到注册页面
+                Intent intent = new Intent(getActivity(), SignUpActivity.class);
+                intent.putExtra(Conf.SIGN_UP_CODE, Conf.BIND_TEL);
+                startActivityForResult(intent, RequestCode.BIND_TEL);
+                break;
+        }
+    }
 }
