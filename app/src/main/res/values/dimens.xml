@@ -144,7 +144,7 @@
     <dimen name="middle_title_margin_top">@dimen/y5</dimen>
     <dimen name="middle_title_max_width">@dimen/x302</dimen>
     <dimen name="left_right_image_root_margin_top">@dimen/y66</dimen>
-    <dimen name="left_right_image_view_width_height">@dimen/y300</dimen>
+    <dimen name="left_right_image_view_width_height">@dimen/y260</dimen>
     <dimen name="left_right_image_view_civ_border_width">@dimen/x10</dimen>
     <dimen name="left_right_title_margin_top">@dimen/y8</dimen>
     <dimen name="left_right_title_max_width">@dimen/x262</dimen>

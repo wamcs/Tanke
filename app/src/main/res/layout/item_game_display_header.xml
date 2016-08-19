@@ -38,8 +38,8 @@
         android:paddingBottom="5dp"
         android:paddingTop="5dp"
         android:text="热门推荐"
-        android:textColor="@color/black10"
-        android:textSize="16sp"/>
+        android:textColor="@color/black08"
+        android:textSize="14sp"/>
 
     <LinearLayout
         android:id="@+id/ll_hot_list"
@@ -87,7 +87,7 @@
                 android:layout_marginTop="@dimen/left_right_title_margin_top"
                 android:maxWidth="@dimen/left_right_title_max_width"
                 android:singleLine="true"
-                android:textSize="13sp"
+                android:textSize="12sp"
                 />
         </LinearLayout>
 
@@ -129,7 +129,7 @@
                 android:layout_marginTop="@dimen/middle_title_margin_top"
                 android:maxWidth="@dimen/middle_title_max_width"
                 android:singleLine="true"
-                android:textSize="15sp"
+                android:textSize="12sp"
                 />
         </LinearLayout>
 
@@ -170,7 +170,7 @@
                 android:layout_marginTop="@dimen/left_right_title_margin_top"
                 android:maxWidth="@dimen/left_right_title_max_width"
                 android:singleLine="true"
-                android:textSize="13sp"
+                android:textSize="12sp"
                 />
 
         </LinearLayout>

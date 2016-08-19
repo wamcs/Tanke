@@ -221,7 +221,13 @@ public class NormalViewHolder extends BaseViewHolder<GameDisplayEntity> {
     }
 
     private void parseLocation(GameDisplayEntity entity) {
-        location.setText(entity.getArea());
+        String area = "不限地址";
+
+        if (entity.getArea() != "")
+        {
+            area =  entity.getArea();
+        }
+        location.setText(area);
     }
 
     private void parseTime(GameDisplayEntity entity) {

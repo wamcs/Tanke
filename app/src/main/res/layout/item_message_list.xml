@@ -4,8 +4,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/y210"
-    android:background="@drawable/item_message_list_bg_style"
+    android:layout_height="@dimen/y240"
+    android:background="@color/windowBackground"
     android:paddingLeft="@dimen/x50"
     android:paddingRight="@dimen/x50">
 
@@ -27,10 +27,10 @@
         android:layout_alignTop="@id/message_list_item_picture"
         android:layout_marginTop="@dimen/y10"
         android:layout_toRightOf="@id/message_list_item_picture"
-        android:padding="@dimen/x8"
+        android:paddingLeft="@dimen/x8"
+        android:paddingBottom="@dimen/x8"
         android:text="官方资讯"
-        android:textSize="17sp"
-        android:textStyle="bold"
+        android:textSize="16sp"
     />
 
     <ImageView
@@ -61,15 +61,17 @@
         android:layout_marginTop="@dimen/y8"
         android:layout_toRightOf="@id/message_list_item_picture"
         android:maxLines="1"
-        android:padding="@dimen/x8"
-        android:text="今天这个实则呢吗好似阿斯顿两个空间塑料袋反馈给多人"
+        android:paddingLeft="@dimen/x8"
+        android:paddingBottom="@dimen/x8"
+        android:text="官方咨询"
         android:textColor="@color/grey06"
         android:textSize="14sp"/>
 
     <View
         android:layout_width="wrap_content"
         android:layout_height="@dimen/user_center_linear_layout_bottom_line_height"
-        android:layout_alignParentBottom="true"
+        android:layout_below="@+id/message_list_item_content"
+        android:layout_marginTop="15.0px"
         android:background="@color/user_center_split_line"/>
 
 </RelativeLayout>

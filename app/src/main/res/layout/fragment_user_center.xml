@@ -22,6 +22,7 @@
         android:layout_height="@dimen/y350"
         android:layout_below="@id/header_layout"
         android:orientation="horizontal"
+        android:background="@color/white10"
         android:paddingLeft="@dimen/x53"
         >
 
@@ -159,6 +160,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/fragment_user_center_item_height"
         android:layout_below="@id/user_message_layout"
+        android:layout_marginTop="20.0px"
         android:background="@drawable/fragment_user_center_item_bg"
         android:gravity="center_vertical"
         android:orientation="horizontal">
@@ -262,8 +264,8 @@
             android:layout_width="wrap_content"
             android:layout_height="@dimen/user_center_linear_layout_bottom_line_height"
             android:layout_alignParentBottom="true"
-            android:layout_marginLeft="@dimen/x47"
-            android:layout_marginRight="@dimen/x47"
+            android:layout_marginLeft="@dimen/x26"
+            android:layout_marginRight="@dimen/x26"
             android:background="@color/user_center_split_line" />
 
         <ImageView

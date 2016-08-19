@@ -165,7 +165,10 @@ public class GameDetailsController extends ActivityController {
         mTextTitle.setText(entity.title);
         //        mTextLocation.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG); //下划线
         //        mTextLocation.getPaint().setAntiAlias(true);//抗锯齿
-        mTextLocation.setText(entity.area);
+        String area = "不限地址";
+        if (entity.area != "")
+            area = entity.area;
+        mTextLocation.setText(area);
         mTextPeoplePlaying.setText(String.valueOf(entity.num));
         parseTime(mTextTime, entity);
         if (entity.type == GameType.INDIVIDUAL_TYPE) {

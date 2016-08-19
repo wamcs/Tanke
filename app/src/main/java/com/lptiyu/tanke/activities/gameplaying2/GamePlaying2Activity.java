@@ -94,8 +94,14 @@ public class GamePlaying2Activity extends MyBaseActivity implements GamePlaying2
 
         presenter = new GamePlaying2Presenter(this);
 
+        Intent intent = getIntent();
+        //获取gameId
+        gameId = intent.getLongExtra(Conf.GAME_ID, Conf.TEMP_GAME_ID);
+        //获取游戏列表实体类（从游戏列表进来）
+        GameDisplayEntity gameDisplayEntity = intent.getParcelableExtra(Conf.GAME_DISPLAY_ENTITY);
+
         //接受过来的数据
-        initData();
+      //  initData();
 
         showLoadGameRecordDialog();
         //从服务器请求游戏数据(扔到onResume()里面做了)
@@ -195,7 +201,7 @@ public class GamePlaying2Activity extends MyBaseActivity implements GamePlaying2
         //根据游戏记录核对每个任务点的状态
         checkPointStatus();
         setAdapter();
-        if (isGameOver) {
+        if (Integer.parseInt(this.gameRecord.play_statu) == 2) {
             ctv_throungh_game.setVisibility(View.VISIBLE);
         } else {
             ctv_throungh_game.setVisibility(View.GONE);
