@@ -76,7 +76,7 @@ public class PointTaskPresenter implements PointTaskContact.IPointTaskPresenter 
         //            @Override
         //            public void onError(Throwable ex, boolean isOnCallback) {
         //                Log.i("jason", "onError:" + ex.getMessage());
-        //                view.failUploadRecord();
+        //                view.failSubmit();
         //            }
         //
         //            @Override

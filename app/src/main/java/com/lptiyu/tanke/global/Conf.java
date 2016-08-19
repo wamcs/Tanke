@@ -21,6 +21,7 @@ public final class Conf {
     public static final String SIGN_UP_TYPE = "sign_up_type";
     public static final int REGISTER_CODE = 1;
     public static final int RESET_PASSWORD_CODE = 2;
+    public static final int BIND_TEL = 22;
 
     /**
      * Request Code For Start LocateUserActivity
@@ -207,5 +208,6 @@ public final class Conf {
     public static final String CONTENT = "content";
     public static final String BANNER_TITLE = "banner_title";
     public static final String PARENT_DIR = "parent_dir";
+    public static final String TASK_IMG = "task_img";
 
 }

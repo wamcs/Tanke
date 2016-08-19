@@ -16,7 +16,6 @@ import com.lptiyu.tanke.database.DBHelper;
 import com.lptiyu.tanke.database.MessageNotification;
 import com.lptiyu.tanke.database.MessageNotificationDao;
 import com.lptiyu.tanke.database.MessageNotificationList;
-import com.lptiyu.tanke.database.MessageNotificationListDao;
 import com.lptiyu.tanke.global.Accounts;
 import com.lptiyu.tanke.global.Conf;
 import com.lptiyu.tanke.io.net.HttpService;
@@ -83,13 +82,11 @@ public class MessageListFragment extends BaseFragment implements
                     public MessageNotificationList call(Response<List<MessageEntity>> listResponse) {
                         MessageNotificationList result;
                         if (listResponse == null || listResponse.getStatus() == 0) {
-                            ToastUtil.TextToast("获取消息失败");
+                            ToastUtil.TextToast("暂无最新消息");
                             return null;
                         }
                         List<MessageEntity> serverMessageDatas = listResponse.getData();
-                        if (serverMessageDatas == null || serverMessageDatas.size() == 0) {
-                            return null;
-                        }
+
                         // add official msg to message table
                         MessageNotificationDao messageDao = DBHelper.getInstance().getPushMessageDao();
                         for (MessageEntity me : serverMessageDatas) {

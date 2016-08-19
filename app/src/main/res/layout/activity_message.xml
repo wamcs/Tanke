@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
     <android.support.v7.widget.Toolbar
         android:id="@id/tool_bar"
@@ -12,10 +13,10 @@
     </android.support.v7.widget.Toolbar>
 
     <android.support.v4.widget.SwipeRefreshLayout
-        android:layout_below="@id/tool_bar"
+        android:id="@id/message_refresh_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@id/message_refresh_layout"
+        android:layout_below="@id/tool_bar"
         >
 
         <android.support.v7.widget.RecyclerView
@@ -26,6 +27,15 @@
             />
     </android.support.v4.widget.SwipeRefreshLayout>
 
+    <ImageView
+        android:id="@+id/img_empty_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/tool_bar"
+        android:contentDescription="@string/content_description"
+        android:padding="@dimen/x262"
+        android:src="@mipmap/img_temp_no_data"
+        android:visibility="gone"/>
 
 
 </RelativeLayout>

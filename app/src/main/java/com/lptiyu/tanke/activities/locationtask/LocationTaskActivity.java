@@ -23,6 +23,7 @@ import com.lptiyu.tanke.global.Accounts;
 import com.lptiyu.tanke.global.Conf;
 import com.lptiyu.tanke.pojo.UpLoadGameRecord;
 import com.lptiyu.tanke.pojo.UploadGameRecordResponse;
+import com.lptiyu.tanke.utils.DistanceFormatter;
 import com.lptiyu.tanke.utils.NetworkUtil;
 import com.lptiyu.tanke.utils.PopupWindowUtils;
 import com.lptiyu.tanke.utils.ToastUtil;
@@ -60,7 +61,7 @@ public class LocationTaskActivity extends MyBaseActivity implements BDLocationLi
         ButterKnife.bind(this);
 
         initAnim();
-        //        startAnim();
+        startAnim();
 
         presenter = new LocationTaskPresenter(this);
 
@@ -71,7 +72,7 @@ public class LocationTaskActivity extends MyBaseActivity implements BDLocationLi
 
         //        mHandler.postDelayed(new Runnable() {
         //            public void run() {
-        //                locateHelper.startLocate();
+        locateHelper.startLocate();
         //            }
         //        }, 100);
     }
@@ -140,15 +141,15 @@ public class LocationTaskActivity extends MyBaseActivity implements BDLocationLi
             return;
         }
         double distance = DistanceUtil.getDistance(new LatLng(latitude, longitude), new LatLng(Double.parseDouble
-                (split[0]), Double
-                .parseDouble(split[1])));
+                (split[1]), Double
+                .parseDouble(split[0])));
         if (distance <= DISTANCE_OFFSET) {
             //验证成功，上传游戏记录
             if (locateHelper != null)
                 locateHelper.stopLocate();
             loadNetWorkData();
         } else {
-            ToastUtil.TextToast("您距离目标点" + distance + "米");
+            ToastUtil.TextToast("您距离目标点" + DistanceFormatter.formatMeter(distance));
         }
     }
 

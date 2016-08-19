@@ -4,13 +4,15 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
-import com.avos.avoscloud.feedback.FeedbackAgent;
 import com.lptiyu.tanke.R;
+import com.lptiyu.tanke.activities.feedback.FeedBackActivity;
 import com.lptiyu.tanke.base.controller.ActivityController;
 import com.lptiyu.tanke.global.Accounts;
 import com.lptiyu.tanke.initialization.ui.LoginActivity;
 import com.lptiyu.tanke.userCenter.ui.AboutUsActivity;
+import com.lptiyu.tanke.utils.DataCleanManager;
 import com.lptiyu.tanke.utils.ShaPreferManager;
+import com.lptiyu.tanke.utils.ToastUtil;
 import com.lptiyu.tanke.widget.CustomTextView;
 import com.lptiyu.tanke.widget.SwitchButton;
 
@@ -25,84 +27,109 @@ import butterknife.OnClick;
  */
 public class SettingController extends ActivityController {
 
-  @BindView(R.id.default_tool_bar_textview)
-  CustomTextView mToolbarText;
+    @BindView(R.id.default_tool_bar_textview)
+    CustomTextView mToolbarText;
 
-//  @BindView(R.id.setting_activity_msg_push)
-//  SwitchButton mMsgPush;
-  @BindView(R.id.setting_activity_mobile_vibrate)
-  SwitchButton mVibrate;
-//  @BindView(R.id.setting_activity_screen_light)
-//  SwitchButton mScreenLight;
+    //  @BindView(R.id.setting_activity_msg_push)
+    //  SwitchButton mMsgPush;
+    @BindView(R.id.setting_activity_mobile_vibrate)
+    SwitchButton mVibrate;
+    //  @BindView(R.id.setting_activity_screen_light)
+    //  SwitchButton mScreenLight;
 
-  @BindView(R.id.setting_activity_logout)
-  CustomTextView mLogout;
+    @BindView(R.id.setting_activity_logout)
+    CustomTextView mLogout;
 
-  @BindView(R.id.setting_activity_feedback)
-  CustomTextView mFeedback;
+    @BindView(R.id.setting_activity_feedback)
+    CustomTextView mFeedback;
 
-  public SettingController(AppCompatActivity activity, View view) {
-    super(activity, view);
-    ButterKnife.bind(this, view);
+    @BindView(R.id.clear_cache)
+    CustomTextView mClearCache;
 
-    mToolbarText.setText(getString(R.string.setting));
-    init();
-  }
+    @BindView(R.id.ctv_cache_size)
+    CustomTextView mCacheSize;
 
-  private void init() {
-//    mMsgPush.setChecked(ShaPreferManager.getMsgPush());
-    mVibrate.setChecked(ShaPreferManager.getMobileVibrate());
-//    mScreenLight.setChecked(ShaPreferManager.getScreenLight());
-  }
+    public SettingController(AppCompatActivity activity, View view) {
+        super(activity, view);
+        ButterKnife.bind(this, view);
 
-  @OnClick(R.id.setting_activity_feedback)
-  void onFeedback() {
-    FeedbackAgent agent = new FeedbackAgent(getContext());
-    agent.startDefaultThreadActivity();
-  }
-
-  @OnClick(R.id.setting_activity_logout)
-  void onLogoutClicked() {
-    Accounts.logOut();
-    Intent intent = new Intent(getActivity(), LoginActivity.class);
-    startActivity(intent);
-  }
-
-  @OnClick(R.id.default_tool_bar_imageview)
-  void back() {
-    finish();
-  }
-
-//  @OnClick(R.id.setting_activity_msg_push)
-//  void msgPush() {
-//    if (mMsgPush.isChecked()) {
-//      ShaPreferManager.setMsgPush(true);
-//    } else {
-//      ShaPreferManager.setMsgPush(false);
-//    }
-//  }
-
-  @OnClick(R.id.setting_activity_mobile_vibrate)
-  void mobileVirate() {
-    if (mVibrate.isChecked()) {
-      ShaPreferManager.setMobileVibrate(true);
-    } else {
-      ShaPreferManager.setMobileVibrate(false);
+        mToolbarText.setText(getString(R.string.setting));
+        init();
     }
-  }
 
-//  @OnClick(R.id.setting_activity_screen_light)
-//  void screenLight() {
-//    if (mScreenLight.isChecked()) {
-//      ShaPreferManager.setScreenLight(true);
-//    } else {
-//      ShaPreferManager.setScreenLight(false);
-//    }
-//  }
+    private void init() {
+        //    mMsgPush.setChecked(ShaPreferManager.getMsgPush());
+        mVibrate.setChecked(ShaPreferManager.getMobileVibrate());
+        //    mScreenLight.setChecked(ShaPreferManager.getScreenLight());
+        try {
+            String cacheSize = DataCleanManager.getTotalCacheSize(getContext());
+            mCacheSize.setText(cacheSize);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
-  @OnClick(R.id.setting_activity_about_us)
-  void startAboutUs() {
-    startActivity(new Intent(getActivity(), AboutUsActivity.class));
-  }
+    @OnClick(R.id.setting_activity_feedback)
+    void onFeedback() {
+        //        FeedbackAgent agent = new FeedbackAgent(getContext());
+        //        agent.startDefaultThreadActivity();\
+        startActivity(new Intent(getActivity(), FeedBackActivity.class));
+    }
+
+    @OnClick(R.id.setting_activity_logout)
+    void onLogoutClicked() {
+        Accounts.logOut();
+        Intent intent = new Intent(getActivity(), LoginActivity.class);
+        startActivity(intent);
+    }
+
+    @OnClick(R.id.clear_cache)
+    void clearCache() {
+        try {
+            String cacheSize = DataCleanManager.getTotalCacheSize(getContext());
+            DataCleanManager.clearAllCache(getContext());
+            ToastUtil.TextToast("共清理" + cacheSize + "垃圾");
+            mCacheSize.setText(DataCleanManager.getTotalCacheSize(getContext()));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @OnClick(R.id.default_tool_bar_imageview)
+    void back() {
+        finish();
+    }
+
+    //  @OnClick(R.id.setting_activity_msg_push)
+    //  void msgPush() {
+    //    if (mMsgPush.isChecked()) {
+    //      ShaPreferManager.setMsgPush(true);
+    //    } else {
+    //      ShaPreferManager.setMsgPush(false);
+    //    }
+    //  }
+
+    @OnClick(R.id.setting_activity_mobile_vibrate)
+    void mobileVirate() {
+        if (mVibrate.isChecked()) {
+            ShaPreferManager.setMobileVibrate(true);
+        } else {
+            ShaPreferManager.setMobileVibrate(false);
+        }
+    }
+
+    //  @OnClick(R.id.setting_activity_screen_light)
+    //  void screenLight() {
+    //    if (mScreenLight.isChecked()) {
+    //      ShaPreferManager.setScreenLight(true);
+    //    } else {
+    //      ShaPreferManager.setScreenLight(false);
+    //    }
+    //  }
+
+    @OnClick(R.id.setting_activity_about_us)
+    void startAboutUs() {
+        startActivity(new Intent(getActivity(), AboutUsActivity.class));
+    }
 
 }

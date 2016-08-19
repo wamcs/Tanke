@@ -38,7 +38,7 @@ public class GameDetailsEntity implements Parcelable {
   private String endTime;
 
   @SerializedName("type")
-  private GAME_TYPE type;
+  private int type;
 
   @SerializedName("num")
   private int peoplePlaying;
@@ -171,11 +171,11 @@ public class GameDetailsEntity implements Parcelable {
     this.endTime = endTime;
   }
 
-  public GAME_TYPE getType() {
+  public int getType() {
     return type;
   }
 
-  public void setType(GAME_TYPE type) {
+  public void setType(int type) {
     this.type = type;
   }
 
@@ -250,7 +250,7 @@ public class GameDetailsEntity implements Parcelable {
     dest.writeString(this.endDate);
     dest.writeString(this.startTime);
     dest.writeString(this.endTime);
-    dest.writeInt(this.type == null ? -1 : this.type.ordinal());
+    dest.writeInt(this.type);
     dest.writeInt(this.peoplePlaying);
     dest.writeString(this.gameIntro);
     dest.writeString(this.rule);
@@ -275,7 +275,7 @@ public class GameDetailsEntity implements Parcelable {
     this.startTime = in.readString();
     this.endTime = in.readString();
     int tmpType = in.readInt();
-    this.type = tmpType == -1 ? null : GAME_TYPE.values()[tmpType];
+    this.type = in.readInt();
     this.peoplePlaying = in.readInt();
     this.gameIntro = in.readString();
     this.rule = in.readString();

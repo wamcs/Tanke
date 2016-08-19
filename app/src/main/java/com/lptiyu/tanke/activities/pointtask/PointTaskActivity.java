@@ -1,10 +1,12 @@
 package com.lptiyu.tanke.activities.pointtask;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.Settings;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
@@ -68,6 +70,7 @@ public class PointTaskActivity extends MyBaseActivity implements PointTaskContac
     private boolean isPointOver;
     private boolean isFinishedPoint;
     private boolean isLastAvaliableTask;
+    private ProgressDialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -126,7 +129,7 @@ public class PointTaskActivity extends MyBaseActivity implements PointTaskContac
         ctvTaskName.setText(point.point_title + "");
 
         //如果当前章节点只有一个任务并且是FINISH类型的任务，则表示该章节点结束（这种情况一般在最后一个章节点出现）
-        if (Integer.parseInt(list_task.get(0).type) == TaskType.FINISH) {
+        if (Integer.parseInt(list_task.get(0).type) == TaskType.FINISH && !isFinishedPoint) {
             imgGetKey.setVisibility(View.GONE);
             selectPosition = 0;
             list_task.get(0).state = PointTaskStatus.FINISHED;
@@ -166,7 +169,7 @@ public class PointTaskActivity extends MyBaseActivity implements PointTaskContac
         lv.setAdapter(adapter);
         lv.setSelection(selectPosition);
         currentTask = list_task.get(selectPosition);
-        Log.i("jason", "selectPosition=" + selectPosition);
+        //        Log.i("jason", "selectPosition=" + selectPosition);
         if (Integer.parseInt(currentTask.type) == TaskType.FINISH) {
             imgGetKey.setVisibility(View.GONE);
         }
@@ -411,7 +414,7 @@ public class PointTaskActivity extends MyBaseActivity implements PointTaskContac
         finish();
     }
 
-    @OnClick({R.id.img_close,R.id.rl_title,R.id.ctv_taskName, R.id.rl_getKey,R.id.img_getKey})
+    @OnClick({R.id.img_close, R.id.rl_title, R.id.ctv_taskName, R.id.rl_getKey, R.id.img_getKey})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.img_close:
@@ -425,7 +428,7 @@ public class PointTaskActivity extends MyBaseActivity implements PointTaskContac
                 break;
             case R.id.img_getKey:
                 //跳转
-                Intent intent = new Intent();
+                final Intent intent = new Intent();
                 intent.putExtra(Conf.GAME_ID, gameId);
                 //                intent.putExtra(Conf.GAME_TYPE, gameType);
                 intent.putExtra(Conf.POINT, point);
@@ -445,13 +448,23 @@ public class PointTaskActivity extends MyBaseActivity implements PointTaskContac
                 switch (Integer.parseInt(currentTask.type)) {
                     case TaskType.DISTINGUISH:
                         //TODO 等待交互
-                        Log.i("jason", "图像识别任务");
-                        intent.setClass(PointTaskActivity.this, ImageDistinguishActivity.class);
-                        Log.i("jason", "要识别的图片路径：" + currentTask.pwd);
-                        intent.putExtra(Conf.IMG_DISTINGUISH_URL, currentTask.pwd);
-                        intent.putExtra(Conf.PARENT_DIR, unZippedDir);
-                        startActivityForResult(intent, RequestCode.IMAGE_DISTINGUISH);
-                        Log.i("jason", "跳转完毕");
+                        dialog = ProgressDialog.show(this, null, "正在启动摄像头...");
+                        mHandler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        Log.i("jason", "图像识别任务");
+                                        intent.setClass(PointTaskActivity.this, ImageDistinguishActivity.class);
+                                        Log.i("jason", "要识别的图片路径：" + unZippedDir + "/" + currentTask.pwd);
+                                        intent.putExtra(Conf.IMG_DISTINGUISH_URL, currentTask.pwd);
+                                        intent.putExtra(Conf.PARENT_DIR, unZippedDir);
+                                        startActivityForResult(intent, RequestCode.IMAGE_DISTINGUISH);
+                                    }
+                                });
+                            }
+                        }, 2000);
                         break;
                     case TaskType.FINISH:
                         Log.i("jason", "finish任务");
@@ -482,6 +495,17 @@ public class PointTaskActivity extends MyBaseActivity implements PointTaskContac
         }
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (dialog != null) {
+            dialog.dismiss();
+            dialog = null;
+        }
+    }
+
+    private Handler mHandler = new Handler();
+
     private void initGPS() {
         LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
         // 判断GPS模块是否开启，如果没有则开启
@@ -505,10 +529,12 @@ public class PointTaskActivity extends MyBaseActivity implements PointTaskContac
             });
             dialog.show();
         } else {
+            //            PermissionDispatcher.startLocateWithCheck(((BaseActivity) getActivity()));
             Intent intent = new Intent();
             intent.putExtra(Conf.GAME_ID, gameId);
             intent.putExtra(Conf.POINT, point);
             intent.putExtra(Conf.CURRENT_TASK, currentTask);
+            intent.putExtra(Conf.IS_POINT_OVER, isPointOver);
             intent.setClass(PointTaskActivity.this, LocationTaskActivity.class);
             startActivityForResult(intent, RequestCode.LOCATION_TASK);
         }

@@ -18,6 +18,8 @@ import com.bumptech.glide.Glide;
 import com.lptiyu.tanke.R;
 import com.lptiyu.tanke.activities.gameplaying2.GamePlaying2Activity;
 import com.lptiyu.tanke.base.recyclerview.BaseViewHolder;
+import com.lptiyu.tanke.enums.GameState;
+import com.lptiyu.tanke.enums.GameType;
 import com.lptiyu.tanke.enums.PlayStatus;
 import com.lptiyu.tanke.gamedetails.GameDetailsActivity;
 import com.lptiyu.tanke.global.Accounts;
@@ -26,13 +28,13 @@ import com.lptiyu.tanke.io.net.HttpService;
 import com.lptiyu.tanke.io.net.Response;
 import com.lptiyu.tanke.permission.PermissionDispatcher;
 import com.lptiyu.tanke.permission.TargetMethod;
-import com.lptiyu.tanke.pojo.GAME_TYPE;
 import com.lptiyu.tanke.pojo.GameDisplayEntity;
 import com.lptiyu.tanke.pojo.GetGameStatusResponse;
 import com.lptiyu.tanke.utils.FileUtils;
 import com.lptiyu.tanke.utils.GameZipUtils;
 import com.lptiyu.tanke.utils.NetworkUtil;
 import com.lptiyu.tanke.utils.PopupWindowUtils;
+import com.lptiyu.tanke.utils.ProgressDialogHelper;
 import com.lptiyu.tanke.utils.TimeUtils;
 import com.lptiyu.tanke.utils.xutils3.XUtilsHelper;
 import com.makeramen.roundedimageview.RoundedImageView;
@@ -143,7 +145,9 @@ public class NormalViewHolder extends BaseViewHolder<GameDisplayEntity> {
             @Override
             public void progress(long total, long current, boolean isDownloading) {
                 //游戏进度
-                Log.i("jason", "进度：%" + current * 100 / total);
+                if (progressDialog != null) {
+                    progressDialog.setMessage("加载中" + current * 100 / total + "%");
+                }
             }
 
             @Override
@@ -258,16 +262,16 @@ public class NormalViewHolder extends BaseViewHolder<GameDisplayEntity> {
 
     private void parseTag(GameDisplayEntity entity) {
         switch (entity.getState()) {
-            case NORMAL:
+            case GameState.NORMAL:
                 tag.setText("");
                 return;
-            case ALPHA_TEST:
+            case GameState.ALPHA_TEST:
                 tag.setText("内测中");
                 return;
-            case MAINTAINING:
+            case GameState.MAINTAINING:
                 tag.setText("维护中");
                 return;
-            case FINISHED:
+            case GameState.FINISHED:
                 tag.setText("已结束");
                 return;
             default:
@@ -276,7 +280,7 @@ public class NormalViewHolder extends BaseViewHolder<GameDisplayEntity> {
     }
 
     private void parseTeamType(GameDisplayEntity entity) {
-        if (entity.getType() == GAME_TYPE.TEAMS) {
+        if (entity.getType() == GameType.TEAM_TYPE) {
             teamType.setVisibility(View.VISIBLE);
         } else {
             //个人赛不需要展示标签
@@ -287,17 +291,17 @@ public class NormalViewHolder extends BaseViewHolder<GameDisplayEntity> {
 
     private void parseInnerTest(GameDisplayEntity entity) {
         switch (entity.getState()) {
-            case NORMAL:
+            case GameState.NORMAL:
                 innerTest.setVisibility(View.GONE);
                 return;
-            case ALPHA_TEST:
+            case GameState.ALPHA_TEST:
                 innerTest.setVisibility(View.VISIBLE);
                 innerTest.setImageResource(R.drawable.inner_test);
                 return;
-            case MAINTAINING:
+            case GameState.MAINTAINING:
                 innerTest.setVisibility(View.GONE);
                 return;
-            case FINISHED:
+            case GameState.FINISHED:
                 innerTest.setVisibility(View.VISIBLE);
                 innerTest.setImageResource(R.drawable.have_finished);
                 return;
@@ -343,7 +347,8 @@ public class NormalViewHolder extends BaseViewHolder<GameDisplayEntity> {
                                     //如果游戏包不存在或者游戏包有更新，则都需要下载最新的游戏包
                                     if (gameZipUtils.isParsedFileExist(gameDisplayEntity.getId()) == null) {
                                         //游戏包不存在，需要下载游戏包
-                                        progressDialog = ProgressDialog.show(getContext(), "", "加载中...", true);
+                                        progressDialog = ProgressDialogHelper.getSpinnerProgressDialog(getContext());
+                                        progressDialog.show();
                                         downloadGameZipFile();
                                     } else if (gameZipUtils.isGameUpdated(gameDisplayEntity.getId(), tempGameZipUrl
                                             .substring(tempGameZipUrl.lastIndexOf('/') + 1, tempGameZipUrl
@@ -353,7 +358,8 @@ public class NormalViewHolder extends BaseViewHolder<GameDisplayEntity> {
                                         //删除旧的游戏包
                                         boolean b = FileUtils.deleteDirectory(parsedFileExist);
                                         //下载新的游戏包
-                                        progressDialog = ProgressDialog.show(getContext(), "", "加载中...", true);
+                                        progressDialog = ProgressDialogHelper.getSpinnerProgressDialog(getContext());
+                                        progressDialog.show();
                                         downloadGameZipFile();
                                     } else {
                                         startPlayingGame();

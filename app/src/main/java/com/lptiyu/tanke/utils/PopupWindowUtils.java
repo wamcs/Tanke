@@ -57,29 +57,10 @@ public class PopupWindowUtils {
         final PopupWindow popupWindow = new PopupWindow(popupView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup
                 .LayoutParams.WRAP_CONTENT, true);
         popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        //
-        //        TextView tv_fail_load = (TextView) popupView.findViewById(R.id.tv_fail_load);
-        //
-        //        tv_fail_load.setOnClickListener(new View.OnClickListener() {
-        //            @Override
-        //            public void onClick(View v) {
-        //                popupWindow.dismiss();
-        //
-        //            }
-        //        });
         popupWindow.showAtLocation(popupView, Gravity.CENTER, 0, -100);
     }
 
     public interface OnNetExceptionListener {
         void onClick(View view);
     }
-
-    //    public void showSharePopupwindow(Context context) {
-    //        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-    //        View popupView = inflater.inflate(R.layout.popup_share, null);
-    //        final PopupWindow popupWindow = new PopupWindow(popupView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup
-    //                .LayoutParams.WRAP_CONTENT, true);
-    //        popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-    //        popupWindow.showAtLocation(popupView, Gravity.CENTER, 0, -100);
-    //    }
 }

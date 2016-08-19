@@ -19,38 +19,38 @@ import butterknife.OnClick;
  */
 public class MessageController extends ActivityController {
 
-  private MessageHelper helper;
+    private MessageHelper helper;
 
-  public MessageController(AppCompatActivity activity, View view) {
-    super(activity, view);
-    ButterKnife.bind(this, view);
-    init(activity, view);
-  }
-
-  private void init(AppCompatActivity activity, View view) {
-    int type = getIntent().getIntExtra(Conf.MESSAGE_TYPE, Integer.MIN_VALUE);
-    if (type == Integer.MIN_VALUE) {
-      throw new IllegalStateException("not has this type");
+    public MessageController(AppCompatActivity activity, View view) {
+        super(activity, view);
+        ButterKnife.bind(this, view);
+        init(activity, view);
     }
-    switch (type) {
-      case Conf.MESSAGE_LIST_TYPE_OFFICIAL:
-        helper = new PushHelper(activity, view, Conf.MESSAGE_LIST_TYPE_OFFICIAL);
-        break;
-      case Conf.MESSAGE_LIST_TYPE_SYSTEM:
-        helper = new PushHelper(activity, view, Conf.MESSAGE_LIST_TYPE_SYSTEM);
-        break;
+
+    private void init(AppCompatActivity activity, View view) {
+        int type = getIntent().getIntExtra(Conf.MESSAGE_TYPE, Integer.MIN_VALUE);
+        if (type == Integer.MIN_VALUE) {
+            throw new IllegalStateException("not has this type");
+        }
+        switch (type) {
+            case Conf.MESSAGE_LIST_TYPE_OFFICIAL:
+                helper = new PushHelper(activity, view, Conf.MESSAGE_LIST_TYPE_OFFICIAL);
+                break;
+            case Conf.MESSAGE_LIST_TYPE_SYSTEM:
+                helper = new PushHelper(activity, view, Conf.MESSAGE_LIST_TYPE_SYSTEM);
+                break;
+        }
     }
-  }
 
-  @Override
-  public void onDestroy() {
-    super.onDestroy();
-    helper.finish();
-  }
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        helper.finish();
+    }
 
-  @OnClick(R.id.default_tool_bar_imageview)
-  void back() {
-    finish();
-  }
+    @OnClick(R.id.default_tool_bar_imageview)
+    void back() {
+        finish();
+    }
 
 }

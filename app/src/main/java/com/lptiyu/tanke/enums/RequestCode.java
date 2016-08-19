@@ -10,4 +10,5 @@ public interface RequestCode {
     int SKIP_TO_TASK_ACTIVITY = 54321;
     int LEAVE_GAME = 88888;
     int LOCATION_TASK = 60321;
+    int BIND_TEL = 10089;
 }

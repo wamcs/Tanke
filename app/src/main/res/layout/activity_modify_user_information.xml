@@ -1,17 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
 
     <android.support.v7.widget.Toolbar
         android:id="@id/tool_bar"
         style="@style/Toolbar">
 
-        <include layout="@layout/layout_default_toolbar" />
+        <include layout="@layout/layout_default_toolbar"/>
 
     </android.support.v7.widget.Toolbar>
+
+    <RelativeLayout
+        android:id="@+id/rl_popup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/grey04"
+        android:descendantFocusability="blocksDescendants"
+        android:paddingBottom="3dp"
+        android:paddingTop="3dp"
+        android:visibility="visible">
+
+        <TextView
+            android:id="@+id/tv_platform_tel_info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="20dp"
+            android:text="@string/platform_info_bind_tel"
+            android:textColor="@color/white10"
+            android:textSize="12sp"/>
+
+    </RelativeLayout>
 
     <RelativeLayout
         android:id="@id/modify_user_info_avatar_button"
@@ -21,7 +43,7 @@
 
         <com.lptiyu.tanke.widget.CustomTextView
             style="@style/ModifyUserInfoItemTitle"
-            android:text="@string/avatar" />
+            android:text="@string/avatar"/>
 
         <com.lptiyu.tanke.widget.CircularImageView
             android:id="@id/modify_user_info_avatar_image"
@@ -29,7 +51,7 @@
             android:layout_height="@dimen/activity_modify_user_information_avatar_width_height"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_marginRight="@dimen/modify_user_info_item_content_margin" />
+            android:layout_marginRight="@dimen/modify_user_info_item_content_margin"/>
 
     </RelativeLayout>
 
@@ -38,7 +60,7 @@
         android:layout_height="@dimen/user_center_linear_layout_bottom_line_height"
         android:layout_marginLeft="@dimen/under_line_margin_left_right"
         android:layout_marginRight="@dimen/under_line_margin_left_right"
-        android:background="@color/user_center_split_line" />
+        android:background="@color/user_center_split_line"/>
 
     <RelativeLayout
         android:id="@id/modify_user_info_nickname_button"
@@ -48,13 +70,13 @@
 
         <com.lptiyu.tanke.widget.CustomTextView
             style="@style/ModifyUserInfoItemTitle"
-            android:text="@string/nickname" />
+            android:text="@string/nickname"/>
 
         <com.lptiyu.tanke.widget.CustomTextView
             android:id="@id/modify_user_info_nickname_text"
             style="@style/ModifyUserInfoItemText"
             android:layout_alignParentRight="true"
-            android:text="狂战士" />
+            android:text="狂战士"/>
 
     </RelativeLayout>
 
@@ -63,7 +85,7 @@
         android:layout_height="@dimen/user_center_linear_layout_bottom_line_height"
         android:layout_marginLeft="@dimen/under_line_margin_left_right"
         android:layout_marginRight="@dimen/under_line_margin_left_right"
-        android:background="@color/user_center_split_line" />
+        android:background="@color/user_center_split_line"/>
 
     <RelativeLayout
         android:id="@id/modify_user_info_birthday_button"
@@ -73,13 +95,13 @@
 
         <com.lptiyu.tanke.widget.CustomTextView
             style="@style/ModifyUserInfoItemTitle"
-            android:text="生日" />
+            android:text="生日"/>
 
         <com.lptiyu.tanke.widget.CustomTextView
             android:id="@id/modify_user_info_birthday_text"
             style="@style/ModifyUserInfoItemText"
             android:layout_alignParentRight="true"
-            android:text="1970-01-01" />
+            android:text="1970-01-01"/>
 
     </RelativeLayout>
 
@@ -88,7 +110,7 @@
         android:layout_height="@dimen/user_center_linear_layout_bottom_line_height"
         android:layout_marginLeft="@dimen/under_line_margin_left_right"
         android:layout_marginRight="@dimen/under_line_margin_left_right"
-        android:background="@color/user_center_split_line" />
+        android:background="@color/user_center_split_line"/>
 
     <RelativeLayout
         android:id="@id/modify_user_info_gender_button"
@@ -98,13 +120,13 @@
 
         <com.lptiyu.tanke.widget.CustomTextView
             style="@style/ModifyUserInfoItemTitle"
-            android:text="@string/gender" />
+            android:text="@string/gender"/>
 
         <com.lptiyu.tanke.widget.CustomTextView
             android:id="@id/modify_user_info_gender_text"
             style="@style/ModifyUserInfoItemText"
             android:layout_alignParentRight="true"
-            android:text="男" />
+            android:text="男"/>
 
     </RelativeLayout>
 
@@ -113,7 +135,7 @@
         android:layout_height="@dimen/user_center_linear_layout_bottom_line_height"
         android:layout_marginLeft="@dimen/under_line_margin_left_right"
         android:layout_marginRight="@dimen/under_line_margin_left_right"
-        android:background="@color/user_center_split_line" />
+        android:background="@color/user_center_split_line"/>
 
     <RelativeLayout
         android:id="@id/modify_user_info_height_button"
@@ -123,13 +145,13 @@
 
         <com.lptiyu.tanke.widget.CustomTextView
             style="@style/ModifyUserInfoItemTitle"
-            android:text="@string/height" />
+            android:text="@string/height"/>
 
         <com.lptiyu.tanke.widget.CustomTextView
             android:id="@id/modify_user_info_height_text"
             style="@style/ModifyUserInfoItemText"
             android:layout_alignParentRight="true"
-            android:text="177cm" />
+            android:text="177cm"/>
 
     </RelativeLayout>
 
@@ -138,7 +160,7 @@
         android:layout_height="@dimen/user_center_linear_layout_bottom_line_height"
         android:layout_marginLeft="@dimen/under_line_margin_left_right"
         android:layout_marginRight="@dimen/under_line_margin_left_right"
-        android:background="@color/user_center_split_line" />
+        android:background="@color/user_center_split_line"/>
 
     <RelativeLayout
         android:id="@id/modify_user_info_weight_button"
@@ -148,13 +170,13 @@
 
         <com.lptiyu.tanke.widget.CustomTextView
             style="@style/ModifyUserInfoItemTitle"
-            android:text="@string/weight" />
+            android:text="@string/weight"/>
 
         <com.lptiyu.tanke.widget.CustomTextView
             android:id="@id/modify_user_info_weight_text"
             style="@style/ModifyUserInfoItemText"
             android:layout_alignParentRight="true"
-            android:text="75kg" />
+            android:text="75kg"/>
 
     </RelativeLayout>
 
@@ -163,7 +185,7 @@
         android:layout_height="@dimen/user_center_linear_layout_bottom_line_height"
         android:layout_marginLeft="@dimen/under_line_margin_left_right"
         android:layout_marginRight="@dimen/under_line_margin_left_right"
-        android:background="@color/user_center_split_line" />
+        android:background="@color/user_center_split_line"/>
 
     <RelativeLayout
         android:id="@id/modify_user_info_location_button"
@@ -173,13 +195,13 @@
 
         <com.lptiyu.tanke.widget.CustomTextView
             style="@style/ModifyUserInfoItemTitle"
-            android:text="所在地" />
+            android:text="所在地"/>
 
         <com.lptiyu.tanke.widget.CustomTextView
             android:id="@id/modify_user_info_location_text"
             style="@style/ModifyUserInfoItemText"
             android:layout_alignParentRight="true"
-            android:text="湖北 武汉" />
+            android:text="湖北 武汉"/>
 
     </RelativeLayout>
 
@@ -188,24 +210,25 @@
         android:layout_height="@dimen/user_center_linear_layout_bottom_line_height"
         android:layout_marginLeft="@dimen/under_line_margin_left_right"
         android:layout_marginRight="@dimen/under_line_margin_left_right"
-        android:background="@color/user_center_split_line" />
+        android:background="@color/user_center_split_line"/>
 
     <RelativeLayout
         android:id="@+id/modify_user_info_phone_button"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/modify_user_info_item_height">
+        android:layout_height="@dimen/modify_user_info_item_height"
+        android:visibility="gone">
 
         <com.lptiyu.tanke.widget.CustomTextView
             style="@style/ModifyUserInfoItemTitle"
             android:text="@string/phone"
-            android:textColor="@color/grey06" />
+            android:textColor="@color/grey06"/>
 
         <com.lptiyu.tanke.widget.CustomTextView
             android:id="@+id/modify_user_info_phone_text"
             style="@style/ModifyUserInfoItemText"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
-            android:text="18062145623" />
+            android:text="18062145623"/>
 
     </RelativeLayout>
 
@@ -214,6 +237,6 @@
         android:layout_height="@dimen/user_center_linear_layout_bottom_line_height"
         android:layout_marginLeft="@dimen/under_line_margin_left_right"
         android:layout_marginRight="@dimen/under_line_margin_left_right"
-        android:background="@color/user_center_split_line" />
+        android:background="@color/user_center_split_line"/>
 
 </LinearLayout>

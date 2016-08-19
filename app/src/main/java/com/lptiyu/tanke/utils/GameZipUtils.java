@@ -66,7 +66,7 @@ public class GameZipUtils {
         //        String[] list = gameZipRootFile.list(new GameParsedFileFilter());
         String[] list = gameZipRootFile.list();
         for (String filePath : list) {
-            Log.i("jason", "筛选出的游戏文件夹：" + filePath);
+//            Log.i("jason", "筛选出的游戏文件夹：" + filePath);
             if (filePath.startsWith(gameId + "_") && !filePath.endsWith(".zip")) {
                 //                this.parsedFilePath = gameZipRootFile.getAbsolutePath() + "/" + filePath;
                 //                setGameIdLineIdVersion(parsedFilePath + ".zip");
@@ -169,7 +169,7 @@ public class GameZipUtils {
     public String parseZipFile(String zippedFilePath) {
         boolean isFileExist = FileUtils.isFileExist(zippedFilePath);
         if (isFileExist) {
-            parsedFilePath = FileUtils.unzipFile(zippedFilePath);
+            String parsedFilePath = FileUtils.unzipFile(zippedFilePath);
             return parsedFilePath;
         } else {
             return null;

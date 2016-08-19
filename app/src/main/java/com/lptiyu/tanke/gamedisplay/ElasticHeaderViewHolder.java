@@ -376,7 +376,7 @@ public class ElasticHeaderViewHolder extends BaseViewHolder<GameDisplayEntity> {
                 .error(R.mipmap.need_to_remove)
                 .into(imageView);
         textView.setText(entity.getTitle());
-        if (entity.getType().value == GameType.TEAM_TYPE) {
+        if (entity.getType() == GameType.TEAM_TYPE) {
             imgGameType.setVisibility(View.VISIBLE);
         } else {
             imgGameType.setVisibility(View.GONE);

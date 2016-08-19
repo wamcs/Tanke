@@ -17,6 +17,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="20dp"
         android:layout_marginTop="20dp"
+        android:padding="10dp"
         android:scaleType="centerCrop"
         android:src="@drawable/close"/>
 
@@ -28,7 +29,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="50dp"
         android:clickable="true"
-        android:src="@drawable/img_distinguish"
+        android:src="@drawable/img_start_distinguish"
         />
 
     <TextView

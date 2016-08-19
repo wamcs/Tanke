@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import com.lptiyu.tanke.MainActivity;
 import com.lptiyu.tanke.R;
 import com.lptiyu.tanke.base.controller.ActivityController;
+import com.lptiyu.tanke.enums.Platform;
 import com.lptiyu.tanke.global.Accounts;
 import com.lptiyu.tanke.global.Conf;
 import com.lptiyu.tanke.initialization.ui.SignUpActivity;
@@ -213,10 +214,10 @@ public class LoginController extends ActivityController {
                         Accounts.setId(entity.getUid());
                         Accounts.setToken(entity.getToken());
                         Accounts.setPhoneNumber(entity.getPhone());
+                        Accounts.setPlatform(Platform.TEL);
                         //Accounts.setNickName(entity.getNickname());
                         //Accounts.setAvatar(entity.getAvatar());
                         //nickname 和 avatar 干什么用？不造
-                        //TODO:jump to main activity
                         Intent intent = new Intent(getActivity(), MainActivity.class);
                         startActivity(intent);
                         finish();

@@ -37,8 +37,8 @@ public class MessageListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        final MessageListViewHolder holder1 = (MessageListViewHolder) holder;
-        final MessageNotificationList item = mMessageList.get(position);
+        MessageListViewHolder holder1 = (MessageListViewHolder) holder;
+        MessageNotificationList item = mMessageList.get(position);
         holder1.bind(item);
     }
 
