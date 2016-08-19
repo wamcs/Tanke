@@ -18,38 +18,39 @@ import java.lang.reflect.Type;
  * @author ldx
  */
 public enum GAME_STATE implements JsonSerializer<GAME_STATE>, JsonDeserializer<GAME_STATE> {
-  NORMAL(4),
-  ALPHA_TEST(1),
-  MAINTAINING(2),
-  FINISHED(3);
+    NORMAL(4),
+    ALPHA_TEST(1),
+    MAINTAINING(2),
+    FINISHED(3);
 
-  public int value;
+    public int value;
 
-  GAME_STATE(int value) {
-    this.value = value;
-  }
-
-  @Override
-  public JsonElement serialize(GAME_STATE src, Type typeOfSrc, JsonSerializationContext context) {
-    return new JsonPrimitive(src.value);
-  }
-
-  @Override
-  public GAME_STATE deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
-    final int item = json.getAsInt();
-    for (GAME_STATE state : GAME_STATE.values()) {
-      if (state.value == item) {
-        return state;
-      }
+    GAME_STATE(int value) {
+        this.value = value;
     }
 
-    if (BuildConfig.DEBUG) {
-      throw new IllegalStateException(
-          String.format("The item (%d) for GAME_STATE is unexpected.".toLowerCase(),
-              item));
+    @Override
+    public JsonElement serialize(GAME_STATE src, Type typeOfSrc, JsonSerializationContext context) {
+        return new JsonPrimitive(src.value);
     }
-    return NORMAL;
-  }
+
+    @Override
+    public GAME_STATE deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws
+            JsonParseException {
+        final int item = json.getAsInt();
+        for (GAME_STATE state : GAME_STATE.values()) {
+            if (state.value == item) {
+                return state;
+            }
+        }
+
+        if (BuildConfig.DEBUG) {
+            throw new IllegalStateException(
+                    String.format("The item (%d) for GAME_STATE is unexpected.".toLowerCase(),
+                            item));
+        }
+        return NORMAL;
+    }
 
 }
 

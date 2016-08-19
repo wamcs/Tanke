@@ -1,18 +1,23 @@
 package com.lptiyu.tanke.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.BaseAdapter;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.lptiyu.tanke.R;
+import com.lptiyu.tanke.activities.taskimagescale.TaskImageScaleActivity;
 import com.lptiyu.tanke.entity.Task;
 import com.lptiyu.tanke.entity.TaskRecord;
 import com.lptiyu.tanke.enums.PointTaskStatus;
 import com.lptiyu.tanke.enums.TaskType;
+import com.lptiyu.tanke.global.Conf;
 import com.lptiyu.tanke.utils.WebViewUtils;
 import com.lptiyu.tanke.widget.CustomTextView;
 
@@ -81,6 +86,24 @@ public class LVForPointTaskAdapter extends BaseAdapter {
         Task task = list_tasks.get(position);
         WebViewUtils.setWebView(context, vh.webView);
         vh.webView.loadData(task.content, "text/html;charset=UTF-8", null);
+        // 特别要注意这行代码,意思是在js中条用android中的第一个参数的实际名字。这里第一个参数是this。
+        //也就是本类的实例。imgelistener是本类的实例在js中的名字。
+        // 也就是说你要在js中调用MainActivity这个类中的方法的话就必须给MainActivity这个类在js中的名字，
+        //这样你才能在js中调用android中的类中的方法。
+        vh.webView.addJavascriptInterface(this, "imagelistner");
+        final ViewHolder finalVh = vh;
+        vh.webView.setWebViewClient(new WebViewClient() {
+            @Override
+            public void onPageFinished(WebView view, String url) {
+                // 注入js函数监听
+                finalVh.webView.loadUrl("javascript:(function(){"
+                        + "var objs = document.getElementsByTagName(\"img\"); "
+                        + "for(var i=0;i<objs.length;i++)  " + "{"
+                        + "    objs[i].onclick=function()  " + "    {  "
+                        + "        window.imagelistner.openImage(this.src);  "
+                        + "    }  " + "}" + "})()");
+            }
+        });
 
         TaskRecord currentRecord = null;
         if (list_task_record != null) {
@@ -102,8 +125,8 @@ public class LVForPointTaskAdapter extends BaseAdapter {
             case PointTaskStatus.FINISHED://已完成
                 vh.rlFinishInfo.setVisibility(View.VISIBLE);
                 if (currentRecord != null) {
-                    vh.ctvExp.setText("+"+currentRecord.exp);
-                    vh.ctvFfinishTime.setText(currentRecord.ftime.substring(0,currentRecord.ftime.lastIndexOf(":")));
+                    vh.ctvExp.setText("+" + currentRecord.exp);
+                    vh.ctvFfinishTime.setText(currentRecord.ftime.substring(0, currentRecord.ftime.lastIndexOf(":")));
                 }
 
                 break;
@@ -135,6 +158,16 @@ public class LVForPointTaskAdapter extends BaseAdapter {
         this.list_tasks = list_tasks;
         this.list_task_record = list_task_record;
         notifyDataSetChanged();
+    }
+
+    @android.webkit.JavascriptInterface
+    public void openImage(String img) {
+        Toast.makeText(context, img, Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(context, TaskImageScaleActivity.class);
+        intent.putExtra(Conf.TASK_IMG,img);
+        context.startActivity(intent);
+        //        new AlertDialog.Builder(context).setMessage("图片被点击了").setNegativeButton("确定", null).setCancelable
+        // (true).show();
     }
 }
 

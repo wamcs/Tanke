@@ -18,36 +18,37 @@ import java.lang.reflect.Type;
  * @author ldx
  */
 public enum GAME_TYPE implements JsonSerializer<GAME_TYPE>,
-    JsonDeserializer<GAME_TYPE> {
-  INDIVIDUALS(2),
-  TEAMS(1);
+        JsonDeserializer<GAME_TYPE> {
+    INDIVIDUALS(2),
+    TEAMS(1);
 
-  public int value;
+    public int value;
 
-  GAME_TYPE(int value) {
-    this.value = value;
-  }
-
-  @Override
-  public JsonElement serialize(GAME_TYPE src, Type typeOfSrc, JsonSerializationContext context) {
-    return new JsonPrimitive(src.value);
-  }
-
-  @Override
-  public GAME_TYPE deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
-    final int item = json.getAsInt();
-    for (GAME_TYPE game_type : GAME_TYPE.values()) {
-      if (game_type.value == item) {
-        return game_type;
-      }
+    GAME_TYPE(int value) {
+        this.value = value;
     }
 
-    if (BuildConfig.DEBUG) {
-      throw new IllegalStateException(
-          String.format("The item (%d) for GAME_TYPE is unexpected.",
-              item));
+    @Override
+    public JsonElement serialize(GAME_TYPE src, Type typeOfSrc, JsonSerializationContext context) {
+        return new JsonPrimitive(src.value);
     }
-    return INDIVIDUALS;
-  }
+
+    @Override
+    public GAME_TYPE deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws
+            JsonParseException {
+        final int item = json.getAsInt();
+        for (GAME_TYPE game_type : GAME_TYPE.values()) {
+            if (game_type.value == item) {
+                return game_type;
+            }
+        }
+
+        if (BuildConfig.DEBUG) {
+            throw new IllegalStateException(
+                    String.format("The item (%d) for GAME_TYPE is unexpected.",
+                            item));
+        }
+        return INDIVIDUALS;
+    }
 
 }

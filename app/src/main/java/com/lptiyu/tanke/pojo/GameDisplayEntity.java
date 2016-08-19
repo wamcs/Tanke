@@ -27,9 +27,8 @@ public class GameDisplayEntity implements Parcelable {
     @SerializedName("pic")
     protected String img = "";
 
-    //TODO 不需要Recommended字段了，推荐将单独作为一个字段
     @SerializedName("recommend")
-    protected RECOMMENDED_TYPE recommend = RECOMMENDED_TYPE.NORMAL;
+    protected int recommend;
 
     @SerializedName("start_date")
     protected String startDate = "";
@@ -38,21 +37,98 @@ public class GameDisplayEntity implements Parcelable {
     protected String startTime = "";
 
     @SerializedName("state")
-    protected GAME_STATE state = GAME_STATE.NORMAL;
+    protected int state;
 
     protected int time_type;
 
     protected String title = "";
 
     @SerializedName("type")
-    protected GAME_TYPE type = GAME_TYPE.INDIVIDUALS;
+    protected int type;
 
-    public int getTime_type() {
-        return time_type;
+    @Override
+    public int describeContents() {
+        return 0;
     }
 
-    public void setTime_type(int time_type) {
-        this.time_type = time_type;
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.area);
+        dest.writeString(this.city);
+        dest.writeString(this.endDate);
+        dest.writeString(this.endTime);
+        dest.writeLong(this.id);
+        dest.writeString(this.img);
+        dest.writeInt(this.recommend);
+        dest.writeString(this.startDate);
+        dest.writeString(this.startTime);
+        dest.writeInt(this.state);
+        dest.writeInt(this.time_type);
+        dest.writeString(this.title);
+        dest.writeInt(this.type);
+    }
+
+    public GameDisplayEntity() {
+    }
+
+    protected GameDisplayEntity(Parcel in) {
+        this.area = in.readString();
+        this.city = in.readString();
+        this.endDate = in.readString();
+        this.endTime = in.readString();
+        this.id = in.readLong();
+        this.img = in.readString();
+        this.recommend = in.readInt();
+        this.startDate = in.readString();
+        this.startTime = in.readString();
+        this.state = in.readInt();
+        this.time_type = in.readInt();
+        this.title = in.readString();
+        this.type = in.readInt();
+    }
+
+    public static final Parcelable.Creator<GameDisplayEntity> CREATOR = new Parcelable.Creator<GameDisplayEntity>() {
+        @Override
+        public GameDisplayEntity createFromParcel(Parcel source) {
+            return new GameDisplayEntity(source);
+        }
+
+        @Override
+        public GameDisplayEntity[] newArray(int size) {
+            return new GameDisplayEntity[size];
+        }
+    };
+
+    public String getArea() {
+        return area;
+    }
+
+    public void setArea(String area) {
+        this.area = area;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(String endDate) {
+        this.endDate = endDate;
+    }
+
+    public String getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(String endTime) {
+        this.endTime = endTime;
     }
 
     public long getId() {
@@ -71,28 +147,12 @@ public class GameDisplayEntity implements Parcelable {
         this.img = img;
     }
 
-    public String getTitle() {
-        return title;
+    public int getRecommend() {
+        return recommend;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getArea() {
-        return area;
-    }
-
-    public void setArea(String area) {
-        this.area = area;
-    }
-
-    public String getCity() {
-        return city;
-    }
-
-    public void setCity(String city) {
-        this.city = city;
+    public void setRecommend(int recommend) {
+        this.recommend = recommend;
     }
 
     public String getStartDate() {
@@ -103,14 +163,6 @@ public class GameDisplayEntity implements Parcelable {
         this.startDate = startDate;
     }
 
-    public String getEndDate() {
-        return endDate;
-    }
-
-    public void setEndDate(String endDate) {
-        this.endDate = endDate;
-    }
-
     public String getStartTime() {
         return startTime;
     }
@@ -119,111 +171,35 @@ public class GameDisplayEntity implements Parcelable {
         this.startTime = startTime;
     }
 
-    public String getEndTime() {
-        return endTime;
-    }
-
-    public void setEndTime(String endTime) {
-        this.endTime = endTime;
-    }
-
-    public GAME_STATE getState() {
+    public int getState() {
         return state;
     }
 
-    public void setState(GAME_STATE state) {
+    public void setState(int state) {
         this.state = state;
     }
 
-    public RECOMMENDED_TYPE getRecommend() {
-        return recommend;
+    public int getTime_type() {
+        return time_type;
     }
 
-    public void setRecommend(RECOMMENDED_TYPE recommend) {
-        this.recommend = recommend;
+    public void setTime_type(int time_type) {
+        this.time_type = time_type;
     }
 
-    public GAME_TYPE getType() {
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public int getType() {
         return type;
     }
 
-    public void setType(GAME_TYPE type) {
+    public void setType(int type) {
         this.type = type;
     }
-
-
-    @Override
-    public String toString() {
-        return "GameDisplayEntity {" +
-                "\n id=" + id +
-                ",\n img='" + img + '\'' +
-                ",\n title='" + title + '\'' +
-                ",\n area='" + area + '\'' +
-                ",\n city='" + city + '\'' +
-                ",\n startDate='" + startDate + '\'' +
-                ",\n endDate='" + endDate + '\'' +
-                ",\n startTime='" + startTime + '\'' +
-                ",\n endTime='" + endTime + '\'' +
-                ",\n state=" + state +
-                ",\n recommend=" + recommend +
-                ",\n type=" + type +
-                ",\n time_type=" + time_type +
-                '}';
-    }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeLong(this.id);
-        dest.writeString(this.img);
-        dest.writeString(this.title);
-        dest.writeString(this.area);
-        dest.writeString(this.city);
-        dest.writeString(this.startDate);
-        dest.writeString(this.endDate);
-        dest.writeString(this.startTime);
-        dest.writeString(this.endTime);
-        dest.writeInt(this.state == null ? -1 : this.state.ordinal());
-        dest.writeInt(this.recommend == null ? -1 : this.recommend.ordinal());
-        dest.writeInt(this.type == null ? -1 : this.type.ordinal());
-        dest.writeInt(time_type);
-    }
-
-    public GameDisplayEntity() {
-    }
-
-    protected GameDisplayEntity(Parcel in) {
-        this.id = in.readLong();
-        this.img = in.readString();
-        this.title = in.readString();
-        this.area = in.readString();
-        this.city = in.readString();
-        this.startDate = in.readString();
-        this.endDate = in.readString();
-        this.startTime = in.readString();
-        this.endTime = in.readString();
-        int tmpState = in.readInt();
-        int time_type = in.readInt();
-        this.state = tmpState == -1 ? null : GAME_STATE.values()[tmpState];
-        int tmpRecommend = in.readInt();
-        this.recommend = tmpRecommend == -1 ? null : RECOMMENDED_TYPE.values()[tmpRecommend];
-        int tmpType = in.readInt();
-        this.type = tmpType == -1 ? null : GAME_TYPE.values()[tmpType];
-    }
-
-    public static final Parcelable.Creator<GameDisplayEntity> CREATOR = new Parcelable.Creator<GameDisplayEntity>() {
-        @Override
-        public GameDisplayEntity createFromParcel(Parcel source) {
-            return new GameDisplayEntity(source);
-        }
-
-        @Override
-        public GameDisplayEntity[] newArray(int size) {
-            return new GameDisplayEntity[size];
-        }
-    };
 }

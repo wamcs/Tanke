@@ -122,7 +122,7 @@ public class GamePlaying2Activity extends MyBaseActivity implements GamePlaying2
         String gameName = "";
         if (gameDisplayEntity != null) {
             Log.i("jason", "接收的游戏列表的实体类：" + gameDisplayEntity);
-            gameType = gameDisplayEntity.getType().value;
+            gameType = gameDisplayEntity.getType();
             gameName = gameDisplayEntity.getTitle();
         }
         if (gameDetailsResponse != null) {

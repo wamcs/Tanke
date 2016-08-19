@@ -18,6 +18,8 @@ import com.bumptech.glide.Glide;
 import com.lptiyu.tanke.R;
 import com.lptiyu.tanke.activities.gameplaying2.GamePlaying2Activity;
 import com.lptiyu.tanke.base.recyclerview.BaseViewHolder;
+import com.lptiyu.tanke.enums.GameState;
+import com.lptiyu.tanke.enums.GameType;
 import com.lptiyu.tanke.enums.PlayStatus;
 import com.lptiyu.tanke.gamedetails.GameDetailsActivity;
 import com.lptiyu.tanke.global.Accounts;
@@ -26,7 +28,6 @@ import com.lptiyu.tanke.io.net.HttpService;
 import com.lptiyu.tanke.io.net.Response;
 import com.lptiyu.tanke.permission.PermissionDispatcher;
 import com.lptiyu.tanke.permission.TargetMethod;
-import com.lptiyu.tanke.pojo.GAME_TYPE;
 import com.lptiyu.tanke.pojo.GameDisplayEntity;
 import com.lptiyu.tanke.pojo.GetGameStatusResponse;
 import com.lptiyu.tanke.utils.FileUtils;
@@ -255,16 +256,16 @@ public class NormalViewHolder extends BaseViewHolder<GameDisplayEntity> {
 
     private void parseTag(GameDisplayEntity entity) {
         switch (entity.getState()) {
-            case NORMAL:
+            case GameState.NORMAL:
                 tag.setText("");
                 return;
-            case ALPHA_TEST:
+            case GameState.ALPHA_TEST:
                 tag.setText("内测中");
                 return;
-            case MAINTAINING:
+            case GameState.MAINTAINING:
                 tag.setText("维护中");
                 return;
-            case FINISHED:
+            case GameState.FINISHED:
                 tag.setText("已结束");
                 return;
             default:
@@ -273,7 +274,7 @@ public class NormalViewHolder extends BaseViewHolder<GameDisplayEntity> {
     }
 
     private void parseTeamType(GameDisplayEntity entity) {
-        if (entity.getType() == GAME_TYPE.TEAMS) {
+        if (entity.getType() == GameType.TEAM_TYPE) {
             teamType.setVisibility(View.VISIBLE);
         } else {
             //个人赛不需要展示标签
@@ -284,17 +285,17 @@ public class NormalViewHolder extends BaseViewHolder<GameDisplayEntity> {
 
     private void parseInnerTest(GameDisplayEntity entity) {
         switch (entity.getState()) {
-            case NORMAL:
+            case GameState.NORMAL:
                 innerTest.setVisibility(View.GONE);
                 return;
-            case ALPHA_TEST:
+            case GameState.ALPHA_TEST:
                 innerTest.setVisibility(View.VISIBLE);
                 innerTest.setImageResource(R.drawable.inner_test);
                 return;
-            case MAINTAINING:
+            case GameState.MAINTAINING:
                 innerTest.setVisibility(View.GONE);
                 return;
-            case FINISHED:
+            case GameState.FINISHED:
                 innerTest.setVisibility(View.VISIBLE);
                 innerTest.setImageResource(R.drawable.have_finished);
                 return;

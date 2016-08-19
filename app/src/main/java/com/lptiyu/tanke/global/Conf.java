@@ -208,5 +208,6 @@ public final class Conf {
     public static final String CONTENT = "content";
     public static final String BANNER_TITLE = "banner_title";
     public static final String PARENT_DIR = "parent_dir";
+    public static final String TASK_IMG = "task_img";
 
 }
