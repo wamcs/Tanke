@@ -268,9 +268,11 @@ public class TimeUtils {
         }
     }
 
-    public static String parseFinishTimeForTaskFinished() {
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-        return formatter.format(new Date());
+    public static String parseFinishTimeForTaskFinished(long time) {
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm",Locale.CHINA);
+        Long timestamp = Long.parseLong(String.valueOf(time)) * 1000;
+        Date data = new Date(timestamp);
+        return formatter.format(data);
 
     }
 

@@ -73,7 +73,7 @@ public class GamePlayingViewHolder extends BaseViewHolder<GamePlayingEntity> {
         currentEntity = entity;
         final long gameId = entity.getGameId();
         mItemName.setText(entity.getName());
-        mItemProgressNumber.setText(entity.getProgress() * 100 + "%");
+        mItemProgressNumber.setText(Math.floor(entity.getProgress() * 100) + "%");
         Glide.with(getContext()).load(entity.getImg()).error(R.mipmap.need_to_remove).into(mItemPicture);
         mItemProgress.setProgress(entity.getProgress());
         mItem.setOnClickListener(new View.OnClickListener() {
@@ -163,6 +163,7 @@ public class GamePlayingViewHolder extends BaseViewHolder<GamePlayingEntity> {
                             tempGameZipUrl = response.getData().game_zip;
                             //判断游戏状态
                             switch (response.getData().play_statu) {
+                                case PlayStatus.HAVE_ENTERED_bUT_NOT_START_GAME://进入过但没开始游戏，进入到玩游戏界面
                                 case PlayStatus.HAVE_STARTED_GAME://进入并且已经开始游戏，进入到玩游戏界面
                                     //进入到玩游戏界面之前，先检测游戏包是否存在，存在则直接进入，否则要先下载游戏包
                                     //检查游戏包是否存在或者游戏解压后为空，判断完后游戏包已经被解压缩，并且已经将文件解析成实体类对象，此时可以直接从内存中取数据了
@@ -189,7 +190,6 @@ public class GamePlayingViewHolder extends BaseViewHolder<GamePlayingEntity> {
                                     break;
                                 case PlayStatus.NEVER_ENTER_GANME://从未玩过游戏，进入到游戏详情界面
                                 case PlayStatus.GAME_OVER://游戏结束，暂不考虑
-                                case PlayStatus.HAVE_ENTERED_bUT_NOT_START_GAME://进入过但没开始游戏，进入到玩游戏界面
                                 default:
                                     break;
                             }

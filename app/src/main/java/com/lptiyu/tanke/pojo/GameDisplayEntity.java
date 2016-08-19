@@ -12,40 +12,40 @@ import com.google.gson.annotations.SerializedName;
  * @author ldx
  */
 public class GameDisplayEntity implements Parcelable {
+    protected String area = "";
+
+    protected String city = "";
+
+    @SerializedName("end_date")
+    protected String endDate = "";
+
+    @SerializedName("end_time")
+    protected String endTime = "";
+
     protected long id;
 
     @SerializedName("pic")
     protected String img = "";
 
-    protected String title = "";
-
-    protected String area = "";
-
-    protected String city = "";
-
-    @SerializedName("start_date")
-    protected String startDate = "";
-
-    @SerializedName("end_date")
-    protected String endDate = "";
-
-    @SerializedName("start_time")
-    protected String startTime = "";
-
-    @SerializedName("end_time")
-    protected String endTime = "";
-
-    @SerializedName("state")
-    protected GAME_STATE state = GAME_STATE.NORMAL;
-
     //TODO 不需要Recommended字段了，推荐将单独作为一个字段
     @SerializedName("recommend")
     protected RECOMMENDED_TYPE recommend = RECOMMENDED_TYPE.NORMAL;
 
-    @SerializedName("type")
-    protected GAME_TYPE type = GAME_TYPE.INDIVIDUALS;
+    @SerializedName("start_date")
+    protected String startDate = "";
+
+    @SerializedName("start_time")
+    protected String startTime = "";
+
+    @SerializedName("state")
+    protected GAME_STATE state = GAME_STATE.NORMAL;
 
     protected int time_type;
+
+    protected String title = "";
+
+    @SerializedName("type")
+    protected GAME_TYPE type = GAME_TYPE.INDIVIDUALS;
 
     public int getTime_type() {
         return time_type;

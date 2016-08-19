@@ -35,6 +35,8 @@ public class MessageHelper {
     ImageView mBackButton;
     @BindView(R.id.default_tool_bar_textview)
     TextView mTitleText;
+    @BindView(R.id.img_empty_view)
+    ImageView mNoDataImageView;
 
     protected AppCompatActivity context;
     protected LinearLayoutManager manager;

@@ -67,14 +67,13 @@ public class GVForGamePlayingAdapter extends BaseAdapter {
 
         switch (point.state) {
             case PointTaskStatus.UNSTARTED://未开启
-                vh.ctvPointName.setText("未开启");
+                vh.ctvPointName.setText("未解锁");
                 vh.imgLabel.setVisibility(View.GONE);
                 vh.imgLock.setVisibility(View.VISIBLE);
                 vh.imgTransparent.setVisibility(View.VISIBLE);
                 break;
             case PointTaskStatus.PLAYING://正在玩
                 vh.ctvPointName.setText(point.point_title);
-                //                vh.ctvPointName.setText("第" + (position + 1) + "站：" + point.point_title);
                 if (point.isNew) {
                     vh.imgLabel.setVisibility(View.VISIBLE);
                     vh.imgLabel.setImageResource(R.drawable.playing);
@@ -86,7 +85,6 @@ public class GVForGamePlayingAdapter extends BaseAdapter {
                 break;
             case PointTaskStatus.FINISHED://已完成
                 vh.ctvPointName.setText(point.point_title);
-                //                vh.ctvPointName.setText("第" + (position + 1) + "站：" + point.point_title);
                 vh.imgLabel.setVisibility(View.VISIBLE);
                 vh.imgLabel.setImageResource(R.drawable.done);
                 vh.imgLock.setVisibility(View.GONE);

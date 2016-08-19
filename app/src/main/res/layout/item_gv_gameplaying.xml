@@ -9,10 +9,12 @@
 
     <com.lptiyu.tanke.widget.CircularImageView
         android:id="@+id/img"
-        android:layout_width="@dimen/x250"
-        android:layout_height="@dimen/x250"
+        android:layout_width="@dimen/x230"
+        android:layout_height="@dimen/x230"
         android:layout_centerHorizontal="true"
         android:src="@drawable/default_pic"
+        app:cuiv_border="false"
+        app:cuiv_shadow="false"
         />
 
     <ImageView
@@ -35,22 +37,23 @@
 
     <com.lptiyu.tanke.widget.CustomTextView
         android:id="@+id/ctv_pointName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="@dimen/x330"
+        android:layout_height="30dp"
         android:layout_below="@id/img"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="10dp"
         android:gravity="center"
+        android:singleLine="true"
+        android:ellipsize="end"
         android:text="章节名称"
-        android:textSize="15sp"
-        android:textStyle="bold"/>
+        android:textSize="13sp" />
 
     <ImageView
         android:id="@+id/img_label"
-        android:layout_width="60dp"
-        android:layout_height="30dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignBottom="@id/img"
-        android:layout_alignRight="@id/img"
+        android:layout_alignRight="@+id/img"
+        android:layout_marginRight="10dp"
         android:scaleType="centerInside"
         android:src="@drawable/done"/>
 

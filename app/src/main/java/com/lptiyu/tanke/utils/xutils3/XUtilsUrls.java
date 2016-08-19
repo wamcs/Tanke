@@ -9,4 +9,6 @@ public interface XUtilsUrls {
     String GET_BANNER = SERVER_URL + "System/get_banner";
 
     String BIND_PHONE = SERVER_URL + "login/bind_phone";
+
+    String FEED_BACK = SERVER_URL + "system/feedback";
 }

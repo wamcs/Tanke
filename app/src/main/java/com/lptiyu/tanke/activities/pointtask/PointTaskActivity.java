@@ -414,10 +414,13 @@ public class PointTaskActivity extends MyBaseActivity implements PointTaskContac
         finish();
     }
 
-    @OnClick({R.id.img_close, R.id.img_getKey})
+    @OnClick({R.id.img_close, R.id.rl_title, R.id.ctv_taskName, R.id.rl_getKey, R.id.img_getKey})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.img_close:
+            case R.id.rl_title:
+            case R.id.ctv_taskName:
+            case R.id.rl_getKey:
                 if (isPointOver) {
                     setResult(ResultCode.POINT_OVER);
                 }
@@ -493,8 +496,8 @@ public class PointTaskActivity extends MyBaseActivity implements PointTaskContac
     }
 
     @Override
-    protected void onRestart() {
-        super.onRestart();
+    protected void onStop() {
+        super.onStop();
         if (dialog != null) {
             dialog.dismiss();
             dialog = null;
@@ -531,6 +534,7 @@ public class PointTaskActivity extends MyBaseActivity implements PointTaskContac
             intent.putExtra(Conf.GAME_ID, gameId);
             intent.putExtra(Conf.POINT, point);
             intent.putExtra(Conf.CURRENT_TASK, currentTask);
+            intent.putExtra(Conf.IS_POINT_OVER, isPointOver);
             intent.setClass(PointTaskActivity.this, LocationTaskActivity.class);
             startActivityForResult(intent, RequestCode.LOCATION_TASK);
         }

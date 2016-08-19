@@ -24,6 +24,7 @@ import com.lptiyu.tanke.messagesystem.adpater.MessageBaseAdapter;
 import com.lptiyu.tanke.messagesystem.adpater.PushAdapter;
 import com.lptiyu.tanke.pojo.MessageEntity;
 import com.lptiyu.tanke.utils.ToastUtil;
+import com.lptiyu.tanke.utils.thread;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -167,10 +168,29 @@ public class PushHelper extends MessageHelper implements
                     public void call(List<MessageNotification> messages) {
                         isRefreshing = false;
                         mSwipeRefreshLayout.setRefreshing(false);
-                        if (messages == null) {
-                            ToastUtil.TextToast("暂无历史消息");
-                            return;
+
+                        if (messages == null || messages.size() == 0) {
+                            if (mNoDataImageView != null) {
+                                ToastUtil.TextToast("暂无历史消息");
+                                thread.mainThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        mNoDataImageView.setVisibility(View.VISIBLE);
+                                    }
+                                });
+                                return;
+                            }
+                        } else {
+                            if (mNoDataImageView != null) {
+                                thread.mainThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        mNoDataImageView.setVisibility(View.GONE);
+                                    }
+                                });
+                            }
                         }
+
                         messagesList.addAll(messages);
                         adapter.notifyDataSetChanged();
                         if (mCurrentPage < mTotalMsgPageCount) {
@@ -201,6 +221,28 @@ public class PushHelper extends MessageHelper implements
                         messagesList.clear();
                         List<MessageNotification> list = new ArrayList<>();
                         List<MessageEntity> messageEntityList = listResponse.getData();
+
+                        if (messageEntityList == null || messageEntityList.size() == 0) {
+                            if (mNoDataImageView != null) {
+                                thread.mainThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        mNoDataImageView.setVisibility(View.VISIBLE);
+                                    }
+                                });
+                                return;
+                            }
+                        } else {
+                            if (mNoDataImageView != null) {
+                                thread.mainThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        mNoDataImageView.setVisibility(View.GONE);
+                                    }
+                                });
+                            }
+                        }
+
                         for (MessageEntity me : messageEntityList) {
                             MessageNotification messages = new MessageNotification();
                             messages.setId(me.getId());

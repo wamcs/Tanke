@@ -89,6 +89,9 @@ public class UserCenterFragment extends BaseFragment {
     @BindView(R.id.rl_popup)
     RelativeLayout rlPopup;
 
+    @BindView(R.id.user_judge_game)
+    RelativeLayout mUserJudgeGame;
+
     private Subscription subscription;
     private UserDetails mUserDetails;
 
@@ -145,6 +148,11 @@ public class UserCenterFragment extends BaseFragment {
         mUserUid.setText(String.valueOf(Accounts.getId()));
         mUserGamePlayingNum.setText(String.valueOf(details.getPlayingGameNum()));
         mUserGameFinishedNum.setText(String.valueOf(details.getFinishedGameNum()));
+
+        if(details.getTaskCount() > 0)
+        {
+            mUserJudgeGame.setVisibility(RelativeLayout.VISIBLE);
+        }
 
         String gender = details.getSex();
         if (gender == null || gender.length() == 0) {

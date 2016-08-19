@@ -211,7 +211,7 @@
     <string name="save">保存</string>
     <string name="modify_info_failed">修改失败</string>
     <string name="modify_info_success">修改成功</string>
-    <string name="change_nickname">更改姓名</string>
+    <string name="change_nickname">更改昵称</string>
     <string name="change_height">更改身高</string>
 
     <string name="change_nickname_hint">取一个好的昵称能让朋友更容易记住你</string>
@@ -244,10 +244,10 @@
 
 
     <!-- gameList Text Area-->
-    <string name="game_progress">游戏进度</string>
+    <string name="game_progress">游戏进度:</string>
 
     <!-- UserGameFinishedList Text Area-->
-    <string name="user_game_finished_get_exp_formatter">%d经验值</string>
+    <string name="user_game_finished_get_exp_formatter">%d</string>
     <string name="complete_game_consuming_time_formatter" formatted="false">%d小时%d分钟</string>
 
     <string name="platform_info_bind_tel" formatted="false">已用%s登录，手机号：%s</string>

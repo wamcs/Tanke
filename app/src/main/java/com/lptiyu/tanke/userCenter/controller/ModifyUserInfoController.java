@@ -142,6 +142,7 @@ public class ModifyUserInfoController extends ActivityController {
                 platform = "微信";
                 break;
             case Platform.TEL:
+                platform = "手机号";
                 break;
         }
         String phoneNumber = Accounts.getPhoneNumber();
@@ -218,6 +219,7 @@ public class ModifyUserInfoController extends ActivityController {
                 }
             });
         }
+        mTextInputDialog.isCancelable(false);
         mTextInputDialog.show(details.getNickname());
     }
 
@@ -255,6 +257,7 @@ public class ModifyUserInfoController extends ActivityController {
                 }
             });
         }
+        mDatePickerDialog.isCancelable(false);
         mDatePickerDialog.scrollToDefaultValue();
         mDatePickerDialog.show();
     }
@@ -308,6 +311,7 @@ public class ModifyUserInfoController extends ActivityController {
             }
         });
         mNumberPickerDialog.withTitle(getString(R.string.change_height));
+        mNumberPickerDialog.isCancelable(false);
         mNumberPickerDialog.withMinMaxValue(Conf.MIN_HEIGHT, Conf.MAX_HEIGHT).show();
     }
 
@@ -323,6 +327,7 @@ public class ModifyUserInfoController extends ActivityController {
             }
         });
         mNumberPickerDialog.withTitle(getString(R.string.change_weight));
+        mNumberPickerDialog.isCancelable(false);
         mNumberPickerDialog.withMinMaxValue(Conf.MIN_WEIGHT, Conf.MAX_WEIGHT).show();
     }
 
@@ -432,7 +437,7 @@ public class ModifyUserInfoController extends ActivityController {
         }
     }
 
-    @OnClick({R.id.img_close_popup, R.id.rl_popup})
+    @OnClick({R.id.rl_popup})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.rl_popup:

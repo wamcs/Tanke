@@ -25,6 +25,7 @@ import com.lptiyu.tanke.pojo.GameManageEntity;
 import com.lptiyu.tanke.utils.ToastUtil;
 import com.lptiyu.tanke.utils.thread;
 import com.lptiyu.tanke.widget.CustomTextView;
+import com.lptiyu.tanke.widget.dialog.TextDialog;
 import com.lptiyu.zxinglib.android.Contents;
 import com.lptiyu.zxinglib.android.Intents;
 import com.lptiyu.zxinglib.android.encode.EncodeActivity;
@@ -159,6 +160,8 @@ public class UserManagerGameController extends BaseListActivityController<GameMa
 
     GameManageEntity entity;
 
+    TextDialog mTextDialog;
+
     public GameManagerGameHolder(ViewGroup parent) {
       super(parent, R.layout.item_user_manager_game);
       ButterKnife.bind(this, itemView);
@@ -175,8 +178,25 @@ public class UserManagerGameController extends BaseListActivityController<GameMa
     @OnClick(R.id.game_pass_rule)
     void showGamePassRule() {
 
-    }
+      if (mTextDialog == null) {
+           mTextDialog = new TextDialog(getContext());
+           mTextDialog.ensureButton.setVisibility(View.GONE);
+           mTextDialog.cancelButton.setText("关闭");
+           mTextDialog.setmListener(new TextDialog.OnTextDialogButtonClickListener() {
+          @Override
+          public void onPositiveClicked() {
+          }
 
+          @Override
+          public void onNegtiveClicked() {
+            mTextDialog.dismiss();
+          }
+        });
+
+      }
+      mTextDialog.isCancelable(false);//点击窗口外不能关闭
+      mTextDialog.show(entity.getContent());
+    }
 
     @OnClick(R.id.game_qrcode)
     public void game_qrcode() {

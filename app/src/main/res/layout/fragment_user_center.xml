@@ -56,7 +56,7 @@
         android:layout_below="@id/rl_popup"
         android:orientation="horizontal"
         android:paddingLeft="@dimen/x53"
-        android:paddingRight="@dimen/x53">
+        >
 
         <com.lptiyu.tanke.widget.CircularImageView
             android:id="@+id/user_avatar"
@@ -99,16 +99,16 @@
                 android:id="@+id/user_nickname"
                 style="@style/TextAppearance.UserCenter.middle"
                 android:layout_width="wrap_content"
-                android:layout_height="@dimen/y52"
+                android:layout_height="@dimen/y60"
                 android:layout_above="@id/user_id_pre"
-                android:layout_marginBottom="@dimen/y21"
+                android:layout_marginBottom="@dimen/y22"
                 android:gravity="center_vertical"
                 android:text="狂战术"/>
 
             <ImageView
                 android:id="@+id/user_sex"
-                android:layout_width="@dimen/x52"
-                android:layout_height="@dimen/y52"
+                android:layout_width="@dimen/x60"
+                android:layout_height="@dimen/y60"
                 android:layout_alignTop="@id/user_nickname"
                 android:layout_toRightOf="@id/user_nickname"
                 android:contentDescription="@string/content_description"
@@ -118,7 +118,7 @@
                 android:id="@+id/user_location"
                 style="@style/TextAppearance.UserCenter.small"
                 android:layout_width="wrap_content"
-                android:layout_height="@dimen/y52"
+                android:layout_height="@dimen/y60"
                 android:layout_alignTop="@id/user_sex"
                 android:layout_toRightOf="@id/user_sex"
                 android:gravity="center_vertical"
@@ -166,7 +166,17 @@
 
             </RelativeLayout>
 
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/setting_activity_arrow_margin_right"
+                android:src="@mipmap/arrow_left_black" />
+
+
         </RelativeLayout>
+
 
     </LinearLayout>
 
@@ -359,7 +369,9 @@
         android:layout_below="@id/user_rewards"
         android:background="@drawable/fragment_user_center_item_bg"
         android:gravity="center_vertical"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:visibility="gone"
+        >
 
         <ImageView
             android:id="@id/image"

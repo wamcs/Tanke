@@ -4,8 +4,8 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
-import com.avos.avoscloud.feedback.FeedbackAgent;
 import com.lptiyu.tanke.R;
+import com.lptiyu.tanke.activities.feedback.FeedBackActivity;
 import com.lptiyu.tanke.base.controller.ActivityController;
 import com.lptiyu.tanke.global.Accounts;
 import com.lptiyu.tanke.initialization.ui.LoginActivity;
@@ -71,8 +71,9 @@ public class SettingController extends ActivityController {
 
     @OnClick(R.id.setting_activity_feedback)
     void onFeedback() {
-        FeedbackAgent agent = new FeedbackAgent(getContext());
-        agent.startDefaultThreadActivity();
+        //        FeedbackAgent agent = new FeedbackAgent(getContext());
+        //        agent.startDefaultThreadActivity();\
+        startActivity(new Intent(getActivity(), FeedBackActivity.class));
     }
 
     @OnClick(R.id.setting_activity_logout)

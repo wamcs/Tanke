@@ -292,6 +292,8 @@
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait">
         </activity>
+        <activity android:name=".activities.feedback.FeedBackActivity">
+        </activity>
     </application>
 
 </manifest>

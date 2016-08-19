@@ -21,9 +21,12 @@ public class WebViewUtils {
         WebSettings webSettings = webView.getSettings();
         //支持js
         webSettings.setJavaScriptEnabled(true);
-        //打开页面时， 自适应屏幕
+        //        //打开页面时， 自适应屏幕
         webSettings.setUseWideViewPort(true);//设置此属性，可任意比例缩放
         webSettings.setLoadWithOverviewMode(true);
+        webSettings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
+        //使用缓存
+        webSettings.setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
         webSettings.setSupportZoom(true);
         //支持自动加载图片
         webSettings.setLoadsImagesAutomatically(true);

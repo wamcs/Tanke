@@ -84,7 +84,8 @@ public class UserGameFinishedHolder extends BaseViewHolder<GameFinishedEntity> {
         Glide.with(getContext()).load(entity.getImg()).error(R.mipmap.need_to_remove).into(mItemPicture);
         title.setText(entity.getName());
         type.setText("");
-        completeTime.setText(entity.getEndTime());
+        String ftime = entity.getEndTime();
+        completeTime.setText(ftime.substring(0,ftime.lastIndexOf(":"))+"完成");
         //        Date startTimeDate = TimeUtils.parseDate(entity.getStartTime(), TimeUtils.totalFormat);
         //        Date endTimeDate = TimeUtils.parseDate(entity.getEndTime(), TimeUtils.totalFormat);
         //        if (startTimeDate == null) {
@@ -94,7 +95,7 @@ public class UserGameFinishedHolder extends BaseViewHolder<GameFinishedEntity> {
         //            endTimeDate = playing Date();
         //        }
         //        long consumeTime = endTimeDate.getTime() - startTimeDate.getTime();
-        consumingTime.setText(TimeUtils.parseSecondToHourAndMinutes(Long.parseLong(entity.getTotalTime())));
+        consumingTime.setText("用时"+TimeUtils.parseSecondToHourAndMinutes(Long.parseLong(entity.getTotalTime())));
         exp.setText(String.format(getContext().getString(R.string.user_game_finished_get_exp_formatter), entity
                 .getExpPoints()));
 
