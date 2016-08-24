@@ -1,6 +1,5 @@
 package com.lptiyu.tanke.adapter;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v4.view.PagerAdapter;
@@ -8,7 +7,6 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.lptiyu.tanke.R;
@@ -22,15 +20,11 @@ import com.lptiyu.tanke.global.Conf;
 import com.lptiyu.tanke.io.net.HttpService;
 import com.lptiyu.tanke.io.net.Response;
 import com.lptiyu.tanke.pojo.GetGameStatusResponse;
-import com.lptiyu.tanke.utils.FileUtils;
-import com.lptiyu.tanke.utils.GameZipUtils;
 import com.lptiyu.tanke.utils.NetworkUtil;
 import com.lptiyu.tanke.utils.PopupWindowUtils;
-import com.lptiyu.tanke.utils.ProgressDialogHelper;
-import com.lptiyu.tanke.utils.xutils3.XUtilsHelper;
+import com.lptiyu.tanke.utils.XUtilsDownloader;
 import com.lptiyu.tanke.utils.xutils3.response.Banner;
 
-import java.io.File;
 import java.util.List;
 
 import rx.android.schedulers.AndroidSchedulers;
@@ -44,7 +38,6 @@ public class BannerPagerAdapter extends PagerAdapter {
     private List<Banner> list;
     private Context context;
     private long gameId;
-    private ProgressDialog progressDialog;
     private String tempGameZipUrl;
     private String title;
 
@@ -147,25 +140,13 @@ public class BannerPagerAdapter extends PagerAdapter {
                                 case PlayStatus.HAVE_ENTERED_bUT_NOT_START_GAME://进入过但没开始游戏，进入到玩游戏界面
                                 case PlayStatus.HAVE_STARTED_GAME://进入并且已经开始游戏，进入到玩游戏界面
                                     //进入到玩游戏界面之前，先检测游戏包是否存在，存在则直接进入，否则要先下载游戏包
-                                    GameZipUtils gameZipUtils = new GameZipUtils();
-                                    if (gameZipUtils.isParsedFileExist(gameId) == null) {
-                                        //游戏包不存在，需要下载游戏包
-                                        progressDialog = ProgressDialogHelper.getSpinnerProgressDialog(context);
-                                        progressDialog.show();
-                                        downloadGameZipFile();
-                                    } else if (gameZipUtils.isGameUpdated(gameId, tempGameZipUrl
-                                            .substring(tempGameZipUrl.lastIndexOf('/') + 1, tempGameZipUrl
-                                                    .lastIndexOf('.')))) {
-                                        String parsedFileExist = gameZipUtils.isParsedFileExist(gameId);
-                                        //删除旧的游戏包
-                                        boolean b = FileUtils.deleteDirectory(parsedFileExist);
-                                        //下载新的游戏包
-                                        progressDialog = ProgressDialogHelper.getSpinnerProgressDialog(context);
-                                        progressDialog.show();
-                                        downloadGameZipFile();
-                                    } else {
-                                        startPlayingGame();
-                                    }
+                                    new XUtilsDownloader(context, tempGameZipUrl, gameId, new XUtilsDownloader
+                                            .FinishDownloadCallback() {
+                                        @Override
+                                        public void onFinishedDownload() {
+                                            startPlayingGame();
+                                        }
+                                    });
                                     break;
                                 default:
                                     break;
@@ -180,47 +161,6 @@ public class BannerPagerAdapter extends PagerAdapter {
                         Log.i("jason", "获取游戏状态错误信息throw：" + throwable.getMessage());
                     }
                 });
-    }
-
-    //下载游戏包
-    private void downloadGameZipFile() {
-        XUtilsHelper.getInstance().downLoadGameZip(tempGameZipUrl, new XUtilsHelper.IDownloadGameZipFileListener() {
-            @Override
-            public void successs(File file) {
-                String zippedFilePath = file.getAbsolutePath();
-                GameZipUtils gameZipUtils = new GameZipUtils();
-                //解压文件
-                gameZipUtils.parseZipFile(zippedFilePath);
-                String parsedFilePath = gameZipUtils.isParsedFileExist(gameId);
-                if (parsedFilePath != null) {
-                    file.delete();
-                    startPlayingGame();
-                } else {
-                    Toast.makeText(context, "游戏包解压失败", Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            @Override
-            public void progress(long total, long current, boolean isDownloading) {
-                //游戏进度
-                if (progressDialog != null) {
-                    progressDialog.setMessage("加载中" + current * 100 / total + "%");
-                }
-            }
-
-            @Override
-            public void finished() {
-                if (progressDialog != null) {
-                    progressDialog.dismiss();
-                }
-            }
-
-            @Override
-            public void onError(String errMsg) {
-                PopupWindowUtils.getInstance().showFailLoadPopupwindow(context);
-            }
-        });
-
     }
 
     private void startPlayingGame() {

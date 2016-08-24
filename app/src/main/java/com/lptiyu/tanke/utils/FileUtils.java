@@ -16,6 +16,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.RandomAccessFile;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Enumeration;
 
 
@@ -289,4 +292,29 @@ public class FileUtils {
         }
     }
 
+    /**
+     * get file size 通过URL地址获取文件大小
+     *
+     * @param fileUrl * url file path
+     * @return filesize
+     * @throws MalformedURLException
+     */
+    public static double getFileSizeByUrl(String fileUrl) {
+        HttpURLConnection urlcon = null;
+        try {
+            if (!fileUrl.startsWith("http://"))
+                fileUrl = "http://" + fileUrl;
+            URL url = new URL(fileUrl);
+            urlcon = (HttpURLConnection) url.openConnection();
+            double filesize = urlcon.getContentLength();
+            return filesize;
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            urlcon.disconnect();
+        }
+        return 0;
+    }
 }

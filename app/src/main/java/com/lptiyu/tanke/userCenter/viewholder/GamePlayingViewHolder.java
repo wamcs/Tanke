@@ -1,13 +1,11 @@
 package com.lptiyu.tanke.userCenter.viewholder;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.lptiyu.tanke.R;
@@ -20,16 +18,12 @@ import com.lptiyu.tanke.io.net.HttpService;
 import com.lptiyu.tanke.io.net.Response;
 import com.lptiyu.tanke.pojo.GamePlayingEntity;
 import com.lptiyu.tanke.pojo.GetGameStatusResponse;
-import com.lptiyu.tanke.utils.FileUtils;
 import com.lptiyu.tanke.utils.GameZipUtils;
 import com.lptiyu.tanke.utils.NetworkUtil;
 import com.lptiyu.tanke.utils.PopupWindowUtils;
-import com.lptiyu.tanke.utils.ProgressDialogHelper;
-import com.lptiyu.tanke.utils.xutils3.XUtilsHelper;
+import com.lptiyu.tanke.utils.XUtilsDownloader;
 import com.lptiyu.tanke.widget.GradientProgressBar;
 import com.makeramen.roundedimageview.RoundedImageView;
-
-import java.io.File;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -58,7 +52,6 @@ public class GamePlayingViewHolder extends BaseViewHolder<GamePlayingEntity> {
 
     @BindView(R.id.game_playing_list_item)
     LinearLayout mItem;
-    private ProgressDialog progressDialog;
     private String tempGameZipUrl;
     private GamePlayingEntity currentEntity;
 
@@ -110,48 +103,6 @@ public class GamePlayingViewHolder extends BaseViewHolder<GamePlayingEntity> {
         });
     }
 
-    //下载游戏包
-    private void downloadGameZipFile() {
-        XUtilsHelper.getInstance().downLoadGameZip(tempGameZipUrl, new XUtilsHelper.IDownloadGameZipFileListener() {
-            @Override
-            public void successs(File file) {
-                String zippedFilePath = file.getAbsolutePath();
-                GameZipUtils gameZipUtils = new GameZipUtils();
-                //解压文件
-                gameZipUtils.parseZipFile(zippedFilePath);
-                String parsedFilePath = gameZipUtils.isParsedFileExist(currentEntity.getGameId());
-                if (parsedFilePath != null) {
-                    file.delete();
-                    startPlayingGame();
-                } else {
-                    Toast.makeText(getContext(), "游戏包解压失败", Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            @Override
-            public void progress(long total, long current, boolean isDownloading) {
-                //游戏进度
-                //                Log.i("jason", "进度：%" + current * 100 / total);
-                if (progressDialog != null) {
-                    progressDialog.setMessage("加载中" + current * 100 / total + "%");
-                }
-            }
-
-            @Override
-            public void finished() {
-                if (progressDialog != null) {
-                    progressDialog.dismiss();
-                }
-            }
-
-            @Override
-            public void onError(String errMsg) {
-                PopupWindowUtils.getInstance().showFailLoadPopupwindow(getContext());
-            }
-        });
-
-    }
-
     private void loadNet() {
         HttpService.getGameService().getGameStatus(Accounts.getId(), currentEntity.getGameId())
                 .subscribeOn(Schedulers.io())
@@ -167,26 +118,13 @@ public class GamePlayingViewHolder extends BaseViewHolder<GamePlayingEntity> {
                                 case PlayStatus.HAVE_STARTED_GAME://进入并且已经开始游戏，进入到玩游戏界面
                                     //进入到玩游戏界面之前，先检测游戏包是否存在，存在则直接进入，否则要先下载游戏包
                                     //检查游戏包是否存在或者游戏解压后为空，判断完后游戏包已经被解压缩，并且已经将文件解析成实体类对象，此时可以直接从内存中取数据了
-                                    GameZipUtils gameZipUtils = new GameZipUtils();
-                                    if (gameZipUtils.isParsedFileExist(currentEntity.getGameId()) == null) {
-                                        //游戏包不存在，需要下载游戏包
-                                        progressDialog = ProgressDialogHelper.getSpinnerProgressDialog(getContext());
-                                        progressDialog.show();
-                                        downloadGameZipFile();
-                                    } else if (gameZipUtils.isGameUpdated(currentEntity.getGameId(), tempGameZipUrl
-                                            .substring(tempGameZipUrl.lastIndexOf('/') + 1, tempGameZipUrl
-                                                    .lastIndexOf('.')))) {
-                                        String parsedFileExist = gameZipUtils.isParsedFileExist(currentEntity
-                                                .getGameId());
-                                        //删除旧的游戏包
-                                        boolean b = FileUtils.deleteDirectory(parsedFileExist);
-                                        //下载新的游戏包
-                                        progressDialog = ProgressDialogHelper.getSpinnerProgressDialog(getContext());
-                                        progressDialog.show();
-                                        downloadGameZipFile();
-                                    } else {
-                                        startPlayingGame();
-                                    }
+                                    new XUtilsDownloader(getContext(), tempGameZipUrl, currentEntity.getGameId(), new
+                                            XUtilsDownloader.FinishDownloadCallback() {
+                                                @Override
+                                                public void onFinishedDownload() {
+                                                    startPlayingGame();
+                                                }
+                                            });
                                     break;
                                 case PlayStatus.NEVER_ENTER_GANME://从未玩过游戏，进入到游戏详情界面
                                 case PlayStatus.GAME_OVER://游戏结束，暂不考虑

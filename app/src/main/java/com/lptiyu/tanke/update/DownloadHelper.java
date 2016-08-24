@@ -125,6 +125,7 @@ public class DownloadHelper implements
     Intent intent = new Intent(Intent.ACTION_VIEW);
     intent.setDataAndType(Uri.fromFile(file), "application/vnd.android.package-archive");
     weakReference.get().startActivity(intent);
+    RunApplication.getInstance().AppExit();
   }
 
   private void initRetrofit() {

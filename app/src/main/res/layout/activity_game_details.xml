@@ -106,38 +106,44 @@
                     android:paddingRight="@dimen/x52"
                     android:paddingTop="@dimen/y52">
 
-                    <com.lptiyu.tanke.widget.CustomTextView
-                        android:id="@+id/game_detail_location"
+                    <RelativeLayout
+                        android:id="@+id/rl_location"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:drawableLeft="@drawable/location_gray"
-                        android:drawablePadding="@dimen/x15"
-                        android:gravity="center_vertical"
-                        android:text="洪山区-华科校区"
-                        android:textColor="@color/grey05"
-                        android:textSize="14sp"/>
+                        android:layout_height="wrap_content">
 
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignBottom="@id/game_detail_location"
-                        android:layout_alignTop="@id/game_detail_location"
-                        android:layout_marginLeft="20dp"
-                        android:layout_toRightOf="@id/game_detail_location"
-                        android:scaleType="centerInside"
-                        android:src="@drawable/enter_map"/>
+                        <com.lptiyu.tanke.widget.CustomTextView
+                            android:id="@+id/game_detail_location"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:drawableLeft="@drawable/location_gray"
+                            android:drawablePadding="@dimen/x15"
+                            android:gravity="center_vertical"
+                            android:text="洪山区-华科校区"
+                            android:textColor="#333"
+                            android:textSize="14sp"/>
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignBottom="@id/game_detail_location"
+                            android:layout_alignTop="@id/game_detail_location"
+                            android:layout_marginLeft="50dp"
+                            android:layout_toRightOf="@id/game_detail_location"
+                            android:scaleType="centerInside"
+                            android:src="@drawable/enter_map"/>
+                    </RelativeLayout>
+
 
                     <com.lptiyu.tanke.widget.CustomTextView
                         android:id="@+id/game_detail_time"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_below="@id/game_detail_location"
+                        android:layout_below="@id/rl_location"
                         android:layout_marginTop="@dimen/y25"
-
                         android:gravity="center_vertical"
                         android:text="白天-黑夜"
-                        android:textColor="@color/grey06"
-                        android:textSize="14sp"
+                        android:textColor="#666"
+                        android:textSize="13sp"
                         />
 
                 </RelativeLayout>
@@ -199,7 +205,7 @@
                     android:layout_marginTop="7dp"
                     android:background="@color/white10"
                     android:orientation="vertical"
-                    android:paddingBottom="@dimen/y52"
+                    android:paddingBottom="@dimen/y42"
                     android:paddingLeft="@dimen/x52"
                     android:paddingRight="@dimen/x52"
                     android:paddingTop="@dimen/y52">
@@ -207,11 +213,10 @@
                     <com.lptiyu.tanke.widget.CustomTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/y10"
                         android:gravity="center_vertical"
                         android:text="情节简介"
-                        android:textColor="@color/grey06"
-                        android:textSize="13sp" />
+                        android:textColor="#333"
+                        android:textSize="16sp"/>
 
                     <com.lptiyu.tanke.widget.CustomTextView
                         android:id="@+id/game_detail_intro"

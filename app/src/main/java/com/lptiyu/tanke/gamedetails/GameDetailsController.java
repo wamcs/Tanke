@@ -243,7 +243,7 @@ public class GameDetailsController extends ActivityController {
         overridePendingTransition(R.anim.translate_in_bottom, R.anim.translate_out_bottom);
     }
 
-    @OnClick(R.id.game_detail_location)
+    @OnClick(R.id.rl_location)
     public void startLocationDetailMap() {
         Intent intent = new Intent(getActivity(), GameDetailsLocationActivity.class);
         intent.putExtra(Conf.LATITUDE, Double.valueOf(mGameDetailsResponse.latitude));

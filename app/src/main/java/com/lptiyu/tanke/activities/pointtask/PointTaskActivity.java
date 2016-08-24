@@ -30,11 +30,13 @@ import com.lptiyu.tanke.enums.RequestCode;
 import com.lptiyu.tanke.enums.ResultCode;
 import com.lptiyu.tanke.enums.TaskType;
 import com.lptiyu.tanke.global.Accounts;
+import com.lptiyu.tanke.global.AppData;
 import com.lptiyu.tanke.global.Conf;
 import com.lptiyu.tanke.pojo.UpLoadGameRecord;
 import com.lptiyu.tanke.pojo.UploadGameRecordResponse;
 import com.lptiyu.tanke.utils.ToastUtil;
 import com.lptiyu.tanke.widget.CustomTextView;
+import com.lptiyu.tanke.widget.DragLayout;
 import com.lptiyu.zxinglib.android.CaptureActivity;
 
 import java.util.ArrayList;
@@ -55,6 +57,10 @@ public class PointTaskActivity extends MyBaseActivity implements PointTaskContac
     ListView lv;
     @BindView(R.id.img_getKey)
     ImageView imgGetKey;
+    @BindView(R.id.dragview)
+    ImageView dragview;
+    @BindView(R.id.drag_layout)
+    DragLayout dragLayout;
 
     private Point point;
     private LVForPointTaskAdapter adapter;
@@ -140,6 +146,20 @@ public class PointTaskActivity extends MyBaseActivity implements PointTaskContac
         checkTaskState();
 
         setAdapter();
+
+        dragLayout.setChildView(dragview);
+        //如果用户是第一次进入此Activity，则显示导航提示
+        if (AppData.isFirstInPointTaskActivity()) {
+            dragLayout.setVisibility(View.VISIBLE);
+        } else {
+            dragLayout.setVisibility(View.GONE);
+        }
+        dragLayout.setOnDragOverListener(new DragLayout.OnDragOverListener() {
+            @Override
+            public void onDrag() {
+                dragLayout.setVisibility(View.GONE);
+            }
+        });
     }
 
     /**
@@ -447,7 +467,6 @@ public class PointTaskActivity extends MyBaseActivity implements PointTaskContac
                 //根据当前任务的类型决定如何操作
                 switch (Integer.parseInt(currentTask.type)) {
                     case TaskType.DISTINGUISH:
-                        //TODO 等待交互
                         dialog = ProgressDialog.show(this, null, "正在启动摄像头...");
                         mHandler.postDelayed(new Runnable() {
                             @Override
@@ -483,6 +502,7 @@ public class PointTaskActivity extends MyBaseActivity implements PointTaskContac
                         intent.putExtra("uid", Accounts.getId());
                         intent.putExtra("task_id", currentTask.id);
                         intent.putExtra("point_id", point.id);
+                        intent.putExtra("isFirstInLocation", AppData.isFirstInCaptureActivity());
                         intent.setClass(PointTaskActivity.this, CaptureActivity.class);
                         startActivityForResult(intent, RequestCode.CAMERA_PERMISSION_REQUEST_CODE);
                         break;
@@ -509,11 +529,11 @@ public class PointTaskActivity extends MyBaseActivity implements PointTaskContac
     private void initGPS() {
         LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
         // 判断GPS模块是否开启，如果没有则开启
-        if (!locationManager.isProviderEnabled(android.location.LocationManager.GPS_PROVIDER)) {
+        if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
             AlertDialog.Builder dialog = new AlertDialog.Builder(this);
             dialog.setMessage("为了定位更加精确，请打开GPS");
             dialog.setPositiveButton("确定",
-                    new android.content.DialogInterface.OnClickListener() {
+                    new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface arg0, int arg1) {
                             // 转到手机设置界面，用户设置GPS
@@ -521,7 +541,7 @@ public class PointTaskActivity extends MyBaseActivity implements PointTaskContac
                             startActivityForResult(intent, 0); // 设置完成后返回到原来的界面
                         }
                     });
-            dialog.setNegativeButton("取消", new android.content.DialogInterface.OnClickListener() {
+            dialog.setNegativeButton("取消", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface arg0, int arg1) {
                     arg0.dismiss();

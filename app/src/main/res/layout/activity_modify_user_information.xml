@@ -17,7 +17,7 @@
         android:id="@+id/rl_popup"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/grey04"
+        android:background="#999999"
         android:descendantFocusability="blocksDescendants"
         android:paddingBottom="3dp"
         android:paddingTop="3dp"
@@ -45,13 +45,23 @@
             style="@style/ModifyUserInfoItemTitle"
             android:text="@string/avatar"/>
 
+        <ImageView
+            android:id="@+id/img_arrow1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/modify_user_info_item_content_margin"
+            android:src="@drawable/enter_map"/>
+
         <com.lptiyu.tanke.widget.CircularImageView
             android:id="@id/modify_user_info_avatar_image"
             android:layout_width="@dimen/activity_modify_user_information_avatar_width_height"
             android:layout_height="@dimen/activity_modify_user_information_avatar_width_height"
-            android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_marginRight="@dimen/modify_user_info_item_content_margin"/>
+            android:layout_marginRight="@dimen/modify_user_info_item_content_margin"
+            android:layout_toLeftOf="@id/img_arrow1"/>
+
 
     </RelativeLayout>
 
@@ -72,10 +82,21 @@
             style="@style/ModifyUserInfoItemTitle"
             android:text="@string/nickname"/>
 
+        <ImageView
+            android:id="@+id/img_arrow2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/modify_user_info_item_content_margin"
+            android:src="@drawable/enter_map"/>
+
         <com.lptiyu.tanke.widget.CustomTextView
             android:id="@id/modify_user_info_nickname_text"
             style="@style/ModifyUserInfoItemText"
-            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/modify_user_info_item_content_margin"
+            android:layout_toLeftOf="@+id/img_arrow2"
             android:text="狂战士"/>
 
     </RelativeLayout>
@@ -97,10 +118,21 @@
             style="@style/ModifyUserInfoItemTitle"
             android:text="生日"/>
 
+        <ImageView
+            android:id="@+id/img_arrow3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/modify_user_info_item_content_margin"
+            android:src="@drawable/enter_map"/>
+
         <com.lptiyu.tanke.widget.CustomTextView
             android:id="@id/modify_user_info_birthday_text"
             style="@style/ModifyUserInfoItemText"
-            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/modify_user_info_item_content_margin"
+            android:layout_toLeftOf="@id/img_arrow3"
             android:text="1970-01-01"/>
 
     </RelativeLayout>
@@ -122,10 +154,21 @@
             style="@style/ModifyUserInfoItemTitle"
             android:text="@string/gender"/>
 
+        <ImageView
+            android:id="@+id/img_arrow4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/modify_user_info_item_content_margin"
+            android:src="@drawable/enter_map"/>
+
         <com.lptiyu.tanke.widget.CustomTextView
             android:id="@id/modify_user_info_gender_text"
             style="@style/ModifyUserInfoItemText"
-            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/modify_user_info_item_content_margin"
+            android:layout_toLeftOf="@id/img_arrow4"
             android:text="男"/>
 
     </RelativeLayout>
@@ -147,10 +190,21 @@
             style="@style/ModifyUserInfoItemTitle"
             android:text="@string/height"/>
 
+        <ImageView
+            android:id="@+id/img_arrow5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/modify_user_info_item_content_margin"
+            android:src="@drawable/enter_map"/>
+
         <com.lptiyu.tanke.widget.CustomTextView
             android:id="@id/modify_user_info_height_text"
             style="@style/ModifyUserInfoItemText"
-            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/modify_user_info_item_content_margin"
+            android:layout_toLeftOf="@id/img_arrow5"
             android:text="177cm"/>
 
     </RelativeLayout>
@@ -172,10 +226,21 @@
             style="@style/ModifyUserInfoItemTitle"
             android:text="@string/weight"/>
 
+        <ImageView
+            android:id="@+id/img_arrow6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/modify_user_info_item_content_margin"
+            android:src="@drawable/enter_map"/>
+
         <com.lptiyu.tanke.widget.CustomTextView
             android:id="@id/modify_user_info_weight_text"
             style="@style/ModifyUserInfoItemText"
-            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/modify_user_info_item_content_margin"
+            android:layout_toLeftOf="@id/img_arrow6"
             android:text="75kg"/>
 
     </RelativeLayout>
@@ -197,10 +262,21 @@
             style="@style/ModifyUserInfoItemTitle"
             android:text="所在地"/>
 
+        <ImageView
+            android:id="@+id/img_arrow7"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/modify_user_info_item_content_margin"
+            android:src="@drawable/enter_map"/>
+
         <com.lptiyu.tanke.widget.CustomTextView
             android:id="@id/modify_user_info_location_text"
             style="@style/ModifyUserInfoItemText"
-            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/modify_user_info_item_content_margin"
+            android:layout_toLeftOf="@id/img_arrow7"
             android:text="湖北 武汉"/>
 
     </RelativeLayout>
@@ -210,7 +286,8 @@
         android:layout_height="@dimen/user_center_linear_layout_bottom_line_height"
         android:layout_marginLeft="@dimen/under_line_margin_left_right"
         android:layout_marginRight="@dimen/under_line_margin_left_right"
-        android:background="@color/user_center_split_line"/>
+        android:background="@color/user_center_split_line"
+        android:visibility="gone"/>
 
     <RelativeLayout
         android:id="@+id/modify_user_info_phone_button"
@@ -237,6 +314,7 @@
         android:layout_height="@dimen/user_center_linear_layout_bottom_line_height"
         android:layout_marginLeft="@dimen/under_line_margin_left_right"
         android:layout_marginRight="@dimen/under_line_margin_left_right"
-        android:background="@color/user_center_split_line"/>
+        android:background="@color/user_center_split_line"
+        android:visibility="gone"/>
 
 </LinearLayout>

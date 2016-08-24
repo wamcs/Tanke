@@ -100,7 +100,7 @@
             android:paddingLeft="10dp"
             android:paddingTop="10dp"
             android:text="@string/my_point_progress"
-            android:textSize="16sp"/>
+            android:textSize="18sp"/>
 
         <com.lptiyu.tanke.widget.CustomTextView
             android:id="@+id/ctv_have_gone_throungh_game"
@@ -133,90 +133,19 @@
             android:stretchMode="columnWidth"
             android:verticalSpacing="20dp"/>
 
-        <TextView
-            android:id="@+id/btn_submitRecord"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="click"
-            android:text="提交游戏记录"
-            android:typeface="normal"
-            android:visibility="gone"/>
-
     </RelativeLayout>
 
-    <RelativeLayout
-        android:id="@+id/rl_clue"
+    <com.lptiyu.tanke.widget.DragLayout
+        android:id="@+id/drag_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#a000"
-        android:paddingLeft="20dp"
-        android:paddingRight="20dp"
-        android:paddingTop="40dp"
-        android:visibility="gone"
-        >
+        android:layout_height="match_parent">
 
-
-        <RelativeLayout
-            android:id="@+id/rl_title"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="#FF8201"
-            android:padding="15dp"
-            android:visibility="visible">
-
-            <TextView
-                android:id="@+id/ctv_taskName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:text="神秘楼宇"
-                android:textColor="#fff"
-                android:textSize="20sp"
-                android:textStyle="bold"/>
-
-            <ImageView
-                android:id="@+id/img_close"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignBottom="@id/ctv_taskName"
-                android:layout_alignParentRight="true"
-                android:layout_alignTop="@id/ctv_taskName"
-                android:clickable="true"
-                android:src="@drawable/close"/>
-        </RelativeLayout>
-
-
-        <RelativeLayout
-            android:id="@+id/rl_getKey"
-            android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:layout_alignParentBottom="true"
-            android:background="@android:color/transparent">
-
-            <ImageView
-                android:id="@+id/img_getKey"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="20dp"
-                android:scaleType="centerInside"
-                android:src="@drawable/key"/>
-
-        </RelativeLayout>
-
-        <ListView
-            android:id="@+id/lv"
+        <ImageView
+            android:id="@+id/dragview"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_above="@id/rl_getKey"
-            android:layout_below="@id/rl_title"
-            android:background="#fff"
-            android:divider="@null"
-            android:dividerHeight="0dp"
-            android:listSelector="@null"
-            android:scrollbars="none"/>
-
-
-    </RelativeLayout>
+            android:scaleType="fitXY"
+            android:src="@drawable/game_list_guide"/>
+    </com.lptiyu.tanke.widget.DragLayout>
 
 </RelativeLayout>

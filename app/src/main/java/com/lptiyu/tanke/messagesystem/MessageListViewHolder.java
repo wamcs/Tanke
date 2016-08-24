@@ -2,6 +2,7 @@ package com.lptiyu.tanke.messagesystem;
 
 import android.content.Context;
 import android.content.Intent;
+import android.text.Html;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -13,7 +14,6 @@ import com.lptiyu.tanke.database.MessageNotificationList;
 import com.lptiyu.tanke.database.MessageNotificationListDao;
 import com.lptiyu.tanke.global.Conf;
 import com.lptiyu.tanke.utils.TimeUtils;
-import com.lptiyu.tanke.widget.CircularImageView;
 import com.lptiyu.tanke.widget.CustomTextView;
 
 import java.lang.ref.WeakReference;
@@ -29,7 +29,7 @@ import butterknife.ButterKnife;
 public class MessageListViewHolder extends BaseViewHolder<MessageNotificationList> {
 
     @BindView(R.id.message_list_item_picture)
-    CircularImageView mPicture;
+    ImageView mPicture;
     @BindView(R.id.message_list_item_name)
     CustomTextView mName;
     @BindView(R.id.message_list_item_content)
@@ -53,8 +53,7 @@ public class MessageListViewHolder extends BaseViewHolder<MessageNotificationLis
     public void bind(MessageNotificationList entity) {
         final MessageNotificationList item = entity;
         mName.setText(item.getName());
-        //    mContent.setText(Html.fromHtml(Html.fromHtml(item.getContent()).toString()).toString());
-        mContent.setText(item.getName());
+        mContent.setText(Html.fromHtml(Html.fromHtml(item.getContent()).toString()).toString());
         mTime.setText(TimeUtils.parseCompleteTime(item.getTime()));
         if (entity.getIsRead()) {
             mRedSpot.setVisibility(View.GONE);

@@ -90,6 +90,72 @@ public class AppData {
         }
     }
 
+    public static boolean isFirstInImageDistinguishActivity() {
+        // 如果获取不到这个键，就返回true, 则判断为第一次进入这个App
+        if (ShaPrefer.getBoolean(Conf.IS_FIRST_IN_IMAGE_DISTINGUISH_ACTIVITY, true)) {
+            // 现在把该值变成false, 即，以后进入不是第一次进入
+            ShaPrefer.put(Conf.IS_FIRST_IN_IMAGE_DISTINGUISH_ACTIVITY, false);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public static boolean isFirstInGuessRiddleActivity() {
+        // 如果获取不到这个键，就返回true, 则判断为第一次进入这个App
+        if (ShaPrefer.getBoolean(Conf.IS_FIRST_IN_GUESS_RIDDLE_ACTIVITY, true)) {
+            // 现在把该值变成false, 即，以后进入不是第一次进入
+            ShaPrefer.put(Conf.IS_FIRST_IN_GUESS_RIDDLE_ACTIVITY, false);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public static boolean isFirstInGamePlaying2Activity() {
+        // 如果获取不到这个键，就返回true, 则判断为第一次进入这个App
+        if (ShaPrefer.getBoolean(Conf.IS_FIRST_IN_GAME_pLAYING2_ACTIVITY, true)) {
+            // 现在把该值变成false, 即，以后进入不是第一次进入
+            ShaPrefer.put(Conf.IS_FIRST_IN_GAME_pLAYING2_ACTIVITY, false);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public static boolean isFirstInPointTaskActivity() {
+        // 如果获取不到这个键，就返回true, 则判断为第一次进入这个App
+        if (ShaPrefer.getBoolean(Conf.IS_FIRST_IN_POINT_TASK_ACTIVITY, true)) {
+            // 现在把该值变成false, 即，以后进入不是第一次进入
+            ShaPrefer.put(Conf.IS_FIRST_IN_POINT_TASK_ACTIVITY, false);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public static boolean isFirstInLocationActivity() {
+        // 如果获取不到这个键，就返回true, 则判断为第一次进入这个App
+        if (ShaPrefer.getBoolean(Conf.IS_FIRST_IN_LOCATION_ACTIVITY, true)) {
+            // 现在把该值变成false, 即，以后进入不是第一次进入
+            ShaPrefer.put(Conf.IS_FIRST_IN_LOCATION_ACTIVITY, false);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public static boolean isFirstInCaptureActivity() {
+        // 如果获取不到这个键，就返回true, 则判断为第一次进入这个App
+        if (ShaPrefer.getBoolean(Conf.IS_FIRST_IN_CAPTURE_ACTIVITY, true)) {
+            // 现在把该值变成false, 即，以后进入不是第一次进入
+            ShaPrefer.put(Conf.IS_FIRST_IN_CAPTURE_ACTIVITY, false);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     public static void init(Context context) {
         sContext = context.getApplicationContext();
     }

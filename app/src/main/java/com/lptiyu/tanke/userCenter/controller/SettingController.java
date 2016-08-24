@@ -1,5 +1,7 @@
 package com.lptiyu.tanke.userCenter.controller;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -85,14 +87,20 @@ public class SettingController extends ActivityController {
 
     @OnClick(R.id.clear_cache)
     void clearCache() {
-        try {
-            String cacheSize = DataCleanManager.getTotalCacheSize(getContext());
-            DataCleanManager.clearAllCache(getContext());
-            ToastUtil.TextToast("共清理" + cacheSize + "垃圾");
-            mCacheSize.setText(DataCleanManager.getTotalCacheSize(getContext()));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        new AlertDialog.Builder(getContext()).setMessage("清除后会导致游戏包丢失，确认清除吗？").setCancelable(true).setPositiveButton
+                ("确认", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        try {
+                            String cacheSize = DataCleanManager.getTotalCacheSize(getContext());
+                            DataCleanManager.clearAllCache(getContext());
+                            ToastUtil.TextToast("共清理" + cacheSize + "垃圾");
+                            mCacheSize.setText(DataCleanManager.getTotalCacheSize(getContext()));
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }).setNegativeButton("取消", null).show();
     }
 
     @OnClick(R.id.default_tool_bar_imageview)

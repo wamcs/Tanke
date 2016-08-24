@@ -9,7 +9,6 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.BaseAdapter;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
 
 import com.lptiyu.tanke.R;
 import com.lptiyu.tanke.activities.taskimagescale.TaskImageScaleActivity;
@@ -162,9 +161,9 @@ public class LVForPointTaskAdapter extends BaseAdapter {
 
     @android.webkit.JavascriptInterface
     public void openImage(String img) {
-        Toast.makeText(context, img, Toast.LENGTH_SHORT).show();
+        //        Toast.makeText(context, img, Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(context, TaskImageScaleActivity.class);
-        intent.putExtra(Conf.TASK_IMG,img);
+        intent.putExtra(Conf.TASK_IMG, img);
         context.startActivity(intent);
         //        new AlertDialog.Builder(context).setMessage("图片被点击了").setNegativeButton("确定", null).setCancelable
         // (true).show();

@@ -1,15 +1,12 @@
 package com.lptiyu.tanke.activities.gameplaying2;
 
-import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.lptiyu.tanke.R;
@@ -25,6 +22,7 @@ import com.lptiyu.tanke.enums.PointTaskStatus;
 import com.lptiyu.tanke.enums.RequestCode;
 import com.lptiyu.tanke.enums.ResultCode;
 import com.lptiyu.tanke.gamedetails.GameDetailsActivity;
+import com.lptiyu.tanke.global.AppData;
 import com.lptiyu.tanke.global.Conf;
 import com.lptiyu.tanke.pojo.GameDetailResponse;
 import com.lptiyu.tanke.pojo.GameDisplayEntity;
@@ -34,6 +32,7 @@ import com.lptiyu.tanke.utils.GameZipUtils;
 import com.lptiyu.tanke.utils.NetworkUtil;
 import com.lptiyu.tanke.utils.PopupWindowUtils;
 import com.lptiyu.tanke.widget.CustomTextView;
+import com.lptiyu.tanke.widget.DragLayout;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -57,11 +56,15 @@ public class GamePlaying2Activity extends MyBaseActivity implements GamePlaying2
     long gameId;
     long gameType;
 
-    AlertDialog loadGameRecordDialog;
+    //    AlertDialog loadGameRecordDialog;
     //    @BindView(R.id.map_view)
     //    TextureMapView mapView;
     @BindView(R.id.img_zoom_full_screen)
     ImageView imgZoomFullScreen;
+    @BindView(R.id.dragview)
+    ImageView dragview;
+    @BindView(R.id.drag_layout)
+    DragLayout dragLayout;
 
     private GamePlaying2Presenter presenter;
 
@@ -83,6 +86,7 @@ public class GamePlaying2Activity extends MyBaseActivity implements GamePlaying2
 
     private int currentPointIndex;
     private Point currentPoint;
+    private String gameName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,13 +101,11 @@ public class GamePlaying2Activity extends MyBaseActivity implements GamePlaying2
         Intent intent = getIntent();
         //获取gameId
         gameId = intent.getLongExtra(Conf.GAME_ID, Conf.TEMP_GAME_ID);
-        //获取游戏列表实体类（从游戏列表进来）
-        GameDisplayEntity gameDisplayEntity = intent.getParcelableExtra(Conf.GAME_DISPLAY_ENTITY);
 
         //接受过来的数据
-      //  initData();
+        initData();
+        gamePlayingTitle.setText("加载中...");
 
-        showLoadGameRecordDialog();
         //从服务器请求游戏数据(扔到onResume()里面做了)
         //        presenter.downLoadGameRecord(gameId, gameType);
     }
@@ -125,7 +127,7 @@ public class GamePlaying2Activity extends MyBaseActivity implements GamePlaying2
         GameFinishedEntity gameFinishedEntity = intent.getParcelableExtra(Conf.GAME_FINISHED_ENTITY);
         //获取游戏标题（从首页Banner进来）
         String title = intent.getStringExtra(Conf.BANNER_TITLE);
-        String gameName = "";
+        gameName = "";
         if (gameDisplayEntity != null) {
             Log.i("jason", "接收的游戏列表的实体类：" + gameDisplayEntity);
             gameType = gameDisplayEntity.getType();
@@ -150,8 +152,6 @@ public class GamePlaying2Activity extends MyBaseActivity implements GamePlaying2
             gameName = title;
         }
 
-        gamePlayingTitle.setText(gameName + "");
-
         gameZipUtils = new GameZipUtils();
         String parsedFilePath = gameZipUtils.isParsedFileExist(gameId);
         if (parsedFilePath != null) {
@@ -169,6 +169,20 @@ public class GamePlaying2Activity extends MyBaseActivity implements GamePlaying2
         } else {
             Toast.makeText(GamePlaying2Activity.this, "游戏包不存在", Toast.LENGTH_SHORT).show();
         }
+
+        dragLayout.setChildView(dragview);
+        //如果用户是第一次打开app，则显示导航提示
+        if (AppData.isFirstInGamePlaying2Activity()) {
+            dragLayout.setVisibility(View.VISIBLE);
+        } else {
+            dragLayout.setVisibility(View.GONE);
+        }
+        dragLayout.setOnDragOverListener(new DragLayout.OnDragOverListener() {
+            @Override
+            public void onDrag() {
+                dragLayout.setVisibility(View.GONE);
+            }
+        });
     }
 
     /**
@@ -194,9 +208,7 @@ public class GamePlaying2Activity extends MyBaseActivity implements GamePlaying2
 
     @Override
     public void successDownLoadRecord(GameRecord gameRecord) {
-        if (loadGameRecordDialog != null) {
-            loadGameRecordDialog.dismiss();
-        }
+        gamePlayingTitle.setText(gameName + "");
         this.gameRecord = gameRecord;
         //根据游戏记录核对每个任务点的状态
         checkPointStatus();
@@ -206,23 +218,6 @@ public class GamePlaying2Activity extends MyBaseActivity implements GamePlaying2
         } else {
             ctv_throungh_game.setVisibility(View.GONE);
         }
-    }
-
-
-    /**
-     * 请求游戏记录弹出的对话框
-     */
-    private void showLoadGameRecordDialog() {
-        if (loadGameRecordDialog == null) {
-            View view = LayoutInflater.from(this).inflate(R.layout.layout_loading, null);
-            TextView textView = ((TextView) view.findViewById(R.id.loading_dialog_textview));
-            textView.setText(getString(R.string.loading));
-            loadGameRecordDialog = new AlertDialog.Builder(this)
-                    .setCancelable(true)
-                    .setView(view)
-                    .create();
-        }
-        loadGameRecordDialog.show();
     }
 
     @Override
@@ -251,7 +246,7 @@ public class GamePlaying2Activity extends MyBaseActivity implements GamePlaying2
 
     @Override
     public void failDownLoadRecord() {
-        Toast.makeText(this, "网络异常", Toast.LENGTH_SHORT).show();
+        showNetUnConnectDialog();
     }
 
     private void initTimeTask() {
@@ -289,7 +284,7 @@ public class GamePlaying2Activity extends MyBaseActivity implements GamePlaying2
                     currentPoint.isNew = false;
                 }
                 adapter.notifyDataSetChanged();
-//                Log.i("jason", "点击的point：" + currentPoint);
+                //                Log.i("jason", "点击的point：" + currentPoint);
                 if (currentPoint.state == PointTaskStatus.UNSTARTED) {
                     //控制Toast的显示
                     if (toast != null) {
@@ -307,7 +302,7 @@ public class GamePlaying2Activity extends MyBaseActivity implements GamePlaying2
                 Bundle bundle = new Bundle();
                 bundle.putParcelable(Conf.POINT, currentPoint);
                 bundle.putLong(Conf.GAME_ID, gameId);
-//                bundle.putLong(Conf.GAME_TYPE, gameType);
+                //                bundle.putLong(Conf.GAME_TYPE, gameType);
                 bundle.putString(Conf.UNZIPPED_DIR, unZippedDir);
                 if (gameRecord.record_text != null) {
                     for (PointRecord record : gameRecord.record_text) {

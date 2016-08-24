@@ -59,6 +59,8 @@
     <color name="middle_blue">#5682e7</color>
     <color name="dark_blue">#3868da</color>
 
+    <color name="jellin_blue">#6c98fe</color>
+
     <color name="user_center_split_line">@color/grey08</color>
 
     <!-- LoginEditText colors-->

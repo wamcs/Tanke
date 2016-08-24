@@ -4,11 +4,11 @@
                 android:id="@+id/item_root"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/y300"
+                android:layout_marginBottom="10dp"
                 android:background="@color/white10"
                 android:orientation="horizontal"
                 android:paddingLeft="@dimen/x52"
-                android:paddingRight="@dimen/x52"
-                android:layout_marginBottom="10dp">
+                android:paddingRight="@dimen/x52">
 
     <com.makeramen.roundedimageview.RoundedImageView
         android:id="@+id/image_view"
@@ -39,6 +39,7 @@
             android:padding="@dimen/x7"
             android:singleLine="true"
             android:text="华科森林记华科森林记"
+            android:textColor="@color/black10"
             android:textSize="@dimen/main_page_item_text_size_normal"
 
             />
@@ -77,8 +78,8 @@
                 android:id="@+id/game_img"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="@dimen/x7"
                 android:layout_gravity="bottom"
+                android:padding="@dimen/x7"
                 android:scaleX="0.8"
                 android:scaleY="0.8"
                 android:src="@mipmap/main_page_item_location"/>
@@ -91,7 +92,7 @@
                 android:maxLines="1"
                 android:padding="@dimen/x7"
                 android:text="华中科技大学 东小区"
-                android:textColor="@color/grey06"
+                android:textColor="@color/black06"
                 android:textSize="@dimen/main_page_item_text_size_small"/>
         </LinearLayout>
 
@@ -104,8 +105,8 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="@dimen/x7"
                 android:layout_gravity="bottom"
+                android:padding="@dimen/x7"
                 android:scaleX="0.8"
                 android:scaleY="0.8"
                 android:src="@mipmap/main_page_item_time"
@@ -115,10 +116,10 @@
                 android:id="@+id/time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
                 android:maxLines="1"
                 android:padding="@dimen/x7"
                 android:text="白昼-黑夜"
-                android:layout_gravity="bottom"
                 android:textColor="@color/grey06"
                 android:textSize="@dimen/main_page_item_text_size_small"
                 />

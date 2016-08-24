@@ -9,7 +9,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/default_font_color"
-        android:paddingBottom="10dp"
         android:paddingLeft="30dp"
         android:paddingRight="30dp"
         android:paddingTop="10dp">
@@ -28,6 +27,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
+            android:padding="10dp"
             android:src="@drawable/close_share_dialog"
             android:textColor="@color/black10"/>
     </RelativeLayout>
@@ -45,7 +45,7 @@
         android:paddingBottom="@dimen/y26"
         android:paddingLeft="@dimen/x26"
         android:paddingRight="@dimen/x26"
-        android:paddingTop="@dimen/y39"
+        android:paddingTop="@dimen/y10"
         android:stretchMode="columnWidth"
         android:verticalSpacing="@dimen/x3">
 
