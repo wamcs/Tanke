@@ -9,6 +9,8 @@ import com.avos.avoscloud.AVOSCloud;
 import com.avos.avoscloud.PushService;
 import com.baidu.mapapi.BMapManager;
 import com.baidu.mapapi.SDKInitializer;
+import com.lptiyu.tanke.entity.ThemeLine;
+import com.lptiyu.tanke.gamedisplay.GameDisplayAdapter;
 import com.lptiyu.tanke.global.Accounts;
 import com.lptiyu.tanke.global.AppData;
 import com.lptiyu.tanke.global.Conf;
@@ -35,6 +37,11 @@ public class RunApplication extends MultiDexApplication {
     private static Stack<Activity> activityStack;
     private static RunApplication singleton;
     private BMapManager manager;
+
+    private static GameDisplayAdapter displayAdapter;//暂时维护游戏列表全局变量
+    private static ThemeLine  themeLine;//维护一个正在玩的游戏数据
+
+    private static long lastLoginUserId = 0;
 
     @Override
     public void onCreate() {
@@ -93,6 +100,32 @@ public class RunApplication extends MultiDexApplication {
     public static RunApplication getInstance() {
         return singleton;
     }
+
+    public static GameDisplayAdapter getDisplayAdapter() {
+        return displayAdapter;
+    }
+
+    public static void setDisplayAdapter(GameDisplayAdapter adapter) {
+        displayAdapter = adapter;
+    }
+
+    public static ThemeLine getPlayingThemeLine() {
+        return themeLine;
+    }
+
+    public static void setgetPlayingThemeLine(ThemeLine playLine) {
+        themeLine = playLine;
+    }
+
+    //获取上一次的登录账户
+    public static long getLastLoginUserId() {
+        return lastLoginUserId;
+    }
+
+    public static  void setLastLoginUserId(long id) {
+        lastLoginUserId =id;
+    }
+
 
     /**
      * add Activity 添加Activity到栈

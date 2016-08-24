@@ -165,7 +165,8 @@ public class UserCenterFragment extends BaseFragment {
             }
         }
 
-        parseLevelAndExp(details.getExp());
+        //获取经验值
+        parseLevelAndExp();
     }
 
     @Override
@@ -209,16 +210,19 @@ public class UserCenterFragment extends BaseFragment {
         }
     }
 
-    private void parseLevelAndExp(int exp) {
-        int currentLevel = ExpUtils.calculateCurrentLevel(exp);
+    private void parseLevelAndExp() {
+        int currentLevel = mUserDetails.getLevel();
+        int currentExp = mUserDetails.getExp();
+        int nextExp = mUserDetails.getNextExp();
+
         int currentLevelNeedExp = ExpUtils.calculateExpByLevel(currentLevel);
-        int nextLevelNeedExp = ExpUtils.calculateExpByLevel(currentLevel + 1);
+
         mUserProgressLeft.setText(getString(R.string.user_level, currentLevel));
         mUserProgressRight.setText(getString(R.string.user_level, currentLevel + 1));
-        mUserProgress.setProgress(((float) (exp - currentLevelNeedExp) / (float) (nextLevelNeedExp -
+        mUserProgress.setProgress(((float) (currentExp - currentLevelNeedExp) / (float) (nextExp -
                 currentLevelNeedExp)));
-        mUserProgressNeedExp.setText(String.format(getString(R.string.need_exp_formatter), exp - currentLevelNeedExp,
-                nextLevelNeedExp - currentLevelNeedExp));
+        mUserProgressNeedExp.setText(String.format(getString(R.string.need_exp_formatter), currentExp,
+                nextExp));
     }
 
     /**

@@ -4,6 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.google.gson.annotations.SerializedName;
+import com.lptiyu.tanke.enums.PlayStatus;
 
 /**
  * EMAIL : danxionglei@foxmail.com
@@ -46,6 +47,12 @@ public class GameDisplayEntity implements Parcelable {
     @SerializedName("type")
     protected int type;
 
+    @SerializedName("play_statu")
+    protected int play_statu = PlayStatus.NO_STATUS;
+
+    @SerializedName("game_zip_url")
+    protected String game_zip_url = "";
+
     @Override
     public int describeContents() {
         return 0;
@@ -66,6 +73,8 @@ public class GameDisplayEntity implements Parcelable {
         dest.writeInt(this.time_type);
         dest.writeString(this.title);
         dest.writeInt(this.type);
+        dest.writeInt(this.play_statu);
+        dest.writeString(this.game_zip_url);
     }
 
     public GameDisplayEntity() {
@@ -85,6 +94,8 @@ public class GameDisplayEntity implements Parcelable {
         this.time_type = in.readInt();
         this.title = in.readString();
         this.type = in.readInt();
+        this.play_statu = in.readInt();
+        this.game_zip_url = in.readString();
     }
 
     public static final Parcelable.Creator<GameDisplayEntity> CREATOR = new Parcelable.Creator<GameDisplayEntity>() {
@@ -202,4 +213,21 @@ public class GameDisplayEntity implements Parcelable {
     public void setType(int type) {
         this.type = type;
     }
+
+    public int getPlayStatu() {
+        return play_statu;
+    }
+
+    public void setPlayStatu(int game_statu) {
+        this.play_statu = game_statu;
+    }
+
+    public String getGameZipUrl() {
+        return game_zip_url;
+    }
+
+    public void setGameZipUrl(String url) {
+        this.game_zip_url = url;
+    }
+
 }

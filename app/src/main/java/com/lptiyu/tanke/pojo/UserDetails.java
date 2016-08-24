@@ -42,8 +42,16 @@ public class UserDetails implements Parcelable{
   @SerializedName("experience")
   private int exp;
 
+  @SerializedName("experiencelast")
+  private int next_exp;
+
+  @SerializedName("level")
+  private int level;
+
+
   @SerializedName("task_count")
   private int task_count;
+
 
 
   public String getNickname() {
@@ -134,6 +142,22 @@ public class UserDetails implements Parcelable{
     this.exp = exp;
   }
 
+  public int getNextExp() {
+    return next_exp;
+  }
+
+  public void setNextExp(int exp) {
+    this.next_exp = exp;
+  }
+
+  public int getLevel() {
+    return level;
+  }
+
+  public void setLevel(int level) {
+    this.level = level;
+  }
+
   public int getTaskCount() {
     return task_count;
   }
@@ -157,6 +181,8 @@ public class UserDetails implements Parcelable{
         ", playingGameNum=" + playingGameNum +
         ", finishedGameNum=" + finishedGameNum +
         ", exp=" + exp +
+        ", next_exp=" + next_exp +
+        ", level=" + level +
         ", task_count=" + task_count +
         '}';
   }
@@ -179,6 +205,8 @@ public class UserDetails implements Parcelable{
     dest.writeInt(this.playingGameNum);
     dest.writeInt(this.finishedGameNum);
     dest.writeInt(this.exp);
+    dest.writeInt(this.next_exp);
+    dest.writeInt(this.level);
     dest.writeInt(this.task_count);
 
   }
@@ -198,6 +226,8 @@ public class UserDetails implements Parcelable{
     this.playingGameNum = in.readInt();
     this.finishedGameNum = in.readInt();
     this.exp = in.readInt();
+    this.next_exp = in.readInt();
+    this.level = in.readInt();
     this.task_count = in.readInt();
   }
 

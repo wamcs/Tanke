@@ -149,7 +149,7 @@ public class GamePlayingController extends ActivityController implements
 
     private void init(View view) {
 
-        showLoadingDialog();
+        //showLoadingDialog();
 
         gameZipHelper = new GameZipHelper();
 

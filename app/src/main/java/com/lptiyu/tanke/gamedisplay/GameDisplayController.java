@@ -123,14 +123,18 @@ public class GameDisplayController extends BaseListFragmentController<GameDispla
         ShaPrefer.put("", requestLocation);
     }
 
+
     @Override
     public void refreshBottom() {
-        super.refreshBottom();
+
         adapter.showFooter();
+        super.refreshBottom();
+
     }
 
     @Override
     public void refreshTop() {
+        adapter.refreshBanner();
         super.refreshTop();
     }
 

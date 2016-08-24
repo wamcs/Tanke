@@ -2,9 +2,11 @@ package com.lptiyu.tanke.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.BaseAdapter;
@@ -14,14 +16,12 @@ import android.widget.Toast;
 import com.lptiyu.tanke.R;
 import com.lptiyu.tanke.activities.taskimagescale.TaskImageScaleActivity;
 import com.lptiyu.tanke.entity.Task;
-import com.lptiyu.tanke.entity.TaskRecord;
 import com.lptiyu.tanke.enums.PointTaskStatus;
 import com.lptiyu.tanke.enums.TaskType;
 import com.lptiyu.tanke.global.Conf;
 import com.lptiyu.tanke.utils.WebViewUtils;
 import com.lptiyu.tanke.widget.CustomTextView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -34,22 +34,20 @@ public class LVForPointTaskAdapter extends BaseAdapter {
     private List<Task> list_tasks;
     private Context context;
     private LayoutInflater inflater;
-    private ArrayList<TaskRecord> list_task_record;
-    private int count;
-    private boolean isPointOver;
+  //  private ArrayList<TaskRecord> list_task_record;
+    private int count = 0;
 
-    public LVForPointTaskAdapter(Context context, List<Task> list_tasks, ArrayList<TaskRecord> list_task_record) {
+    public LVForPointTaskAdapter(Context context, List<Task> list_tasks) {
         this.list_tasks = list_tasks;
         this.context = context;
-        this.list_task_record = list_task_record;
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         for (Task task : list_tasks) {
-            if (task.state == PointTaskStatus.FINISHED) {
+            if (task.state == PointTaskStatus.FINISHED || task.state == PointTaskStatus.PLAYING) {
                 count++;
-                isPointOver = true;
-            } else {
-                isPointOver = false;
+            }
+            else {
+
             }
         }
     }
@@ -59,7 +57,8 @@ public class LVForPointTaskAdapter extends BaseAdapter {
         //        Log.i("jason", "LVForPointTaskAdapter-->getCount():isPointOver=" + isPointOver + " list_tasks.size
         // ()=" +
         //                list_tasks.size() + "  count=" + count);
-        return isPointOver ? list_tasks.size() : count + 1;
+        //return isPointOver ? list_tasks.size() : count + 1;
+        return  count;
     }
 
     @Override
@@ -93,6 +92,19 @@ public class LVForPointTaskAdapter extends BaseAdapter {
         vh.webView.addJavascriptInterface(this, "imagelistner");
         final ViewHolder finalVh = vh;
         vh.webView.setWebViewClient(new WebViewClient() {
+
+            public  void onPageStarted(WebView view, String url, Bitmap favicon)
+            {
+                // 防止双击内容缩小
+                finalVh.webView.loadUrl("javascript:(function(){"
+                        + "var oMeta = document.createElement('meta'); "
+                        + "oMeta.name = \"viewport\"; "
+                        + "oMeta.content = \"initial-scale=1.0, user-scalable=no\"; "
+                        + "document.getElementsByTagName('head')[0].appendChild(oMeta); "
+                        + "})()");
+
+            }
+
             @Override
             public void onPageFinished(WebView view, String url) {
                 // 注入js函数监听
@@ -100,20 +112,22 @@ public class LVForPointTaskAdapter extends BaseAdapter {
                         + "var objs = document.getElementsByTagName(\"img\"); "
                         + "for(var i=0;i<objs.length;i++)  " + "{"
                         + "    objs[i].onclick=function()  " + "    {  "
-                        + "        window.imagelistner.openImage(this.src);  "
+                        + "        var url =  this.src.replace(\"_thumbs/Images\",\"images\"); "
+                        + "        window.imagelistner.openImage(url);  "
                         + "    }  " + "}" + "})()");
             }
         });
 
-        TaskRecord currentRecord = null;
-        if (list_task_record != null) {
-            for (TaskRecord record : list_task_record) {
-                if (Long.parseLong(task.id) == record.id) {
-                    currentRecord = record;
-                    break;
-                }
-            }
-        }
+
+        WebSettings wSet = vh.webView.getSettings();
+        wSet.setLoadWithOverviewMode(true);
+        wSet.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
+        wSet.setSupportZoom(false);
+
+        //修改适合的字体，避免因为系统的设置，导致字体过大或过小
+        int j = wSet.getDefaultFixedFontSize();
+        wSet.setDefaultFontSize(j);
+
 
         switch (task.state) {
             case PointTaskStatus.UNSTARTED://未开启
@@ -123,13 +137,13 @@ public class LVForPointTaskAdapter extends BaseAdapter {
                 vh.rlFinishInfo.setVisibility(View.GONE);
                 break;
             case PointTaskStatus.FINISHED://已完成
-                vh.rlFinishInfo.setVisibility(View.VISIBLE);
-                if (currentRecord != null) {
-                    vh.ctvExp.setText("+" + currentRecord.exp);
-                    vh.ctvFfinishTime.setText(currentRecord.ftime.substring(0, currentRecord.ftime.lastIndexOf(":")));
-                }
+                {
+                    vh.rlFinishInfo.setVisibility(View.VISIBLE);
 
-                break;
+                    vh.ctvExp.setText("+" + task.exp);
+                    if (task.finishTime != null)
+                    vh.ctvFfinishTime.setText(task.finishTime.substring(0, task.finishTime.lastIndexOf(":")));
+                }
         }
 
         if (Integer.parseInt(task.type) == TaskType.FINISH) {
@@ -154,9 +168,8 @@ public class LVForPointTaskAdapter extends BaseAdapter {
         }
     }
 
-    public void refresh(List<Task> list_tasks, ArrayList<TaskRecord> list_task_record) {
+    public void refresh(List<Task> list_tasks) {
         this.list_tasks = list_tasks;
-        this.list_task_record = list_task_record;
         notifyDataSetChanged();
     }
 

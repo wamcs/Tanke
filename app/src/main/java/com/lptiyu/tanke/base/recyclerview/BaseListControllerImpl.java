@@ -2,7 +2,6 @@ package com.lptiyu.tanke.base.recyclerview;
 
 import android.support.annotation.NonNull;
 
-
 import com.lptiyu.tanke.R;
 import com.lptiyu.tanke.utils.NetworkUtil;
 import com.lptiyu.tanke.utils.ToastUtil;
@@ -12,7 +11,6 @@ import java.util.List;
 import rx.Observable;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action0;
 import rx.functions.Action1;
 import rx.schedulers.Schedulers;
 import timber.log.Timber;
@@ -26,6 +24,7 @@ import timber.log.Timber;
 class BaseListControllerImpl<Data> implements ListController{
 
   private int mListPage = INIT_PAGE;
+  private boolean m_need_load_more = true;//是否需要加载更多
 
   private Subscription lastRequest;
 
@@ -48,6 +47,7 @@ class BaseListControllerImpl<Data> implements ListController{
       return;
     }
     mListPage = INIT_PAGE;
+    m_need_load_more = true;
     changeRefreshState(true);
     lastRequest = listener.requestData(mListPage)
         .subscribeOn(Schedulers.io())
@@ -72,6 +72,13 @@ class BaseListControllerImpl<Data> implements ListController{
     if (isRefreshing) {
       return;
     }
+
+    if (!m_need_load_more)//不需要加载
+    {
+      changeRefreshState(false);
+      return;
+    }
+
     mListPage++;
     changeRefreshState(true);
     lastRequest = listener.requestData(mListPage)
@@ -80,12 +87,18 @@ class BaseListControllerImpl<Data> implements ListController{
         .subscribe(new Action1<List<Data>>() {
           @Override
           public void call(List<Data> datas) {
+            if (datas.size() == 0) {
+              m_need_load_more = false;
+              mListPage--;
+            }
             listener.getAdapter().addData(datas);
             changeRefreshState(false);
           }
         }, new Action1<Throwable>() {
           @Override
           public void call(Throwable throwable) {
+            m_need_load_more = true;
+            mListPage--;
             onError(throwable);
             changeRefreshState(false);
           }

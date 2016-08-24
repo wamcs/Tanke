@@ -3,6 +3,8 @@ package com.lptiyu.tanke.entity;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.lptiyu.tanke.enums.PointTaskStatus;
+
 /**
  * Created by Jason on 2016/8/2.
  */
@@ -41,8 +43,9 @@ public class Task implements Comparable<Task>, Parcelable {
     public String task_index;
     public String next_task;
 
-    public int state;
-
+    public int state = PointTaskStatus.UNSTARTED;//默认没有完成
+    public String finishTime = "";
+    public int exp = 0;
 
     @Override
     public int compareTo(Task another) {

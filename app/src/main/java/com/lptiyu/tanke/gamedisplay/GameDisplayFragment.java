@@ -14,6 +14,7 @@ import android.widget.RelativeLayout;
 
 import com.lptiyu.tanke.MainActivityController;
 import com.lptiyu.tanke.R;
+import com.lptiyu.tanke.RunApplication;
 import com.lptiyu.tanke.base.ui.BaseFragment;
 import com.lptiyu.tanke.pojo.City;
 import com.lptiyu.tanke.utils.NetworkUtil;
@@ -62,7 +63,19 @@ public class GameDisplayFragment extends BaseFragment {
             @Override
             public void onRefresh() {
                 swipe.setRefreshing(true);
-                loadNetWorkData();
+
+                // loadNetWorkData();刷新只是个假动作，并不真正刷新，减少服务器的请求压力
+                //判断下网络是否正常吧
+                if (!NetworkUtil.checkIsNetworkConnected()) {
+                    swipe.setRefreshing(false);
+                    showNetUnConnectDialog();
+                }
+
+                if (adapter.getItemCount() < 3)//为什么是小于3，getItemCount没有任何数据时候也会返回2
+                {
+                    controller.refreshTop();
+                }
+
                 //TODO 当网络请求完毕时才隐藏刷新标志
                 new Thread(new Runnable() {
                     @Override
@@ -84,7 +97,11 @@ public class GameDisplayFragment extends BaseFragment {
         });
 
         recyclerView.setLayoutManager(mLayoutManager = new LinearLayoutManager(getContext()));
-        recyclerView.setAdapter(adapter = new GameDisplayAdapter(this));
+
+        adapter = new GameDisplayAdapter(this);
+        RunApplication.setDisplayAdapter(adapter);
+
+        recyclerView.setAdapter(adapter);
         //用于下拉刷新监听
         ElasticTouchListener listener = new ElasticTouchListener();
         recyclerView.addOnItemTouchListener(listener);
@@ -133,7 +150,14 @@ public class GameDisplayFragment extends BaseFragment {
                 .OnNetExceptionListener() {
             @Override
             public void onClick(View view) {
-                loadNetWorkData();
+                if (!NetworkUtil.checkIsNetworkConnected()) {
+                    swipe.setRefreshing(false);
+                    showNetUnConnectDialog();
+                }
+                else if (adapter.getItemCount() < 3)
+                {
+                    controller.refreshTop();
+                }
             }
         });
     }

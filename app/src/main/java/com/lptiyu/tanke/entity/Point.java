@@ -3,6 +3,8 @@ package com.lptiyu.tanke.entity;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.lptiyu.tanke.enums.PointTaskStatus;
+
 import java.util.ArrayList;
 
 /**
@@ -30,9 +32,9 @@ public class Point implements Comparable<Point>, Parcelable {
     public String point_title;
     public String point_img;
     public String first_task;
-    public int state;
+    public int state = PointTaskStatus.UNSTARTED;
 
-    public boolean isNew;
+    public boolean isNew = false;
 
     public ArrayList<Task> list_task;
 

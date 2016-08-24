@@ -80,6 +80,7 @@ public class SettingController extends ActivityController {
     void onLogoutClicked() {
         Accounts.logOut();
         Intent intent = new Intent(getActivity(), LoginActivity.class);
+
         startActivity(intent);
     }
 

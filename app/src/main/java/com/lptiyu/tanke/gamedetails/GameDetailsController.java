@@ -26,7 +26,9 @@ import com.lptiyu.tanke.activities.gameplaying2.GamePlaying2Activity;
 import com.lptiyu.tanke.base.controller.ActivityController;
 import com.lptiyu.tanke.base.ui.BaseActivity;
 import com.lptiyu.tanke.enums.GameType;
+import com.lptiyu.tanke.enums.PlayStatus;
 import com.lptiyu.tanke.enums.ResultCode;
+import com.lptiyu.tanke.gamedisplay.GameDisplayAdapter;
 import com.lptiyu.tanke.global.Accounts;
 import com.lptiyu.tanke.global.Conf;
 import com.lptiyu.tanke.io.net.HttpService;
@@ -124,7 +126,9 @@ public class GameDetailsController extends ActivityController {
             gameDetailsSubscription = null;
         }
 
-        showLoadingDialog();
+     //
+        // showLoadingDialog();
+        mTextTitle.setText("加载中...");
 
         //prepare for the network request
         gameDetailsSubscription = HttpService.getGameService().getGameDetails(gameId)
@@ -134,7 +138,7 @@ public class GameDetailsController extends ActivityController {
                     @Override
                     public GameDetailResponse call(Response<GameDetailResponse> response) {
                         if (response.getStatus() != Response.RESPONSE_OK || response.getData() == null) {
-                            mLoadingDialog.dismiss();
+                           // mLoadingDialog.dismiss();
                             Timber.e("Network Error (%d, %s)", response.getStatus(), response.getInfo());
                             throw new IllegalStateException(response.getInfo());
                         }
@@ -145,12 +149,12 @@ public class GameDetailsController extends ActivityController {
                     @Override
                     public void call(GameDetailResponse gameDetailsEntity) {
                         bind(gameDetailsEntity);
-                        mLoadingDialog.dismiss();
+                       // mLoadingDialog.dismiss();
                     }
                 }, new Action1<Throwable>() {
                     @Override
                     public void call(Throwable throwable) {
-                        mLoadingDialog.dismiss();
+                       // mLoadingDialog.dismiss();
                         ToastUtil.TextToast(throwable.getMessage());
                     }
                 });
@@ -243,7 +247,8 @@ public class GameDetailsController extends ActivityController {
         overridePendingTransition(R.anim.translate_in_bottom, R.anim.translate_out_bottom);
     }
 
-    @OnClick(R.id.game_detail_location)
+    //点击范围更广点
+    @OnClick(R.id.rl_time_location)
     public void startLocationDetailMap() {
         Intent intent = new Intent(getActivity(), GameDetailsLocationActivity.class);
         intent.putExtra(Conf.LATITUDE, Double.valueOf(mGameDetailsResponse.latitude));
@@ -374,6 +379,12 @@ public class GameDetailsController extends ActivityController {
                     public void call(Response<Void> response) {
                         Log.i("jason", "放弃游戏结果:" + response);
                         if (response.getStatus() == Response.RESPONSE_OK) {
+
+                            /*标记游戏状态为已放弃*/
+                            GameDisplayAdapter displayAdapter = RunApplication.getDisplayAdapter();
+                            if (displayAdapter != null)
+                                displayAdapter.SetGameDataByGameId(gameId,PlayStatus.NEVER_ENTER_GANME,"");
+
                             getActivity().setResult(ResultCode.LEAVE_GAME);
                             RunApplication.getInstance().finishActivity();
                             //                            Toast.makeText(getContext(), "您已成功放弃该游戏", Toast
@@ -400,8 +411,15 @@ public class GameDetailsController extends ActivityController {
             @Override
             public void call(Response<EnterGameResponse> response) {
                 if (response.getStatus() == Response.RESPONSE_OK) {
+
+                    tempGameZipUrl = response.getData().game_zip;
+
+                    /*标记游戏状态为已经进入*/
+                    GameDisplayAdapter displayAdapter = RunApplication.getDisplayAdapter();
+                    if (displayAdapter != null)
+                        displayAdapter.SetGameDataByGameId(gameId,PlayStatus.HAVE_ENTERED_bUT_NOT_START_GAME,tempGameZipUrl);
+
                     if (new GameZipUtils().isParsedFileExist(gameId) == null) {
-                        tempGameZipUrl = response.getData().game_zip;
                         //根据获取到的游戏包下载链接去下载游戏
                         progressDialog = ProgressDialogHelper.getSpinnerProgressDialog(getContext());
                         progressDialog.show();

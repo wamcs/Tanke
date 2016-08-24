@@ -90,6 +90,7 @@
                 android:layout_gravity="bottom"
                 android:maxLines="1"
                 android:padding="@dimen/x7"
+                android:layout_marginBottom="@dimen/x4"
                 android:text="华中科技大学 东小区"
                 android:textColor="@color/grey06"
                 android:textSize="@dimen/main_page_item_text_size_small"/>

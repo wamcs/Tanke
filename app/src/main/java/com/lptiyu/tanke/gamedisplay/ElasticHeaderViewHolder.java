@@ -10,6 +10,7 @@ import android.provider.Settings;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -86,6 +87,8 @@ public class ElasticHeaderViewHolder extends BaseViewHolder<GameDisplayEntity> {
 
     GameDisplayFragment fragment;
 
+    android.app.AlertDialog m_loadDlg;
+
     //    @BindView(R.id.jelly_view)
     //    ElasticHeaderLayout elasticHeaderLayout;
 
@@ -104,7 +107,6 @@ public class ElasticHeaderViewHolder extends BaseViewHolder<GameDisplayEntity> {
     ImageView rightImgGameType;
     private ProgressDialog progressDialog;
     private GameDisplayEntity gameDisplayEntity;
-    private String tempGameZipUrl;
 
     //    private GameZipScanner mGameZipScanner;
     private double gameZipDownloadFailedNum = 3;
@@ -154,7 +156,7 @@ public class ElasticHeaderViewHolder extends BaseViewHolder<GameDisplayEntity> {
         }
     }
 
-    private void loadBanner() {
+    public void loadBanner() {
         RequestParams params = RequestParamsHelper.getBaseRequestParam(XUtilsUrls.GET_BANNER);
         String cityCode = ShaPrefer.getCity().getId();
         Log.i("jason", "cityCode:" + cityCode);
@@ -255,11 +257,24 @@ public class ElasticHeaderViewHolder extends BaseViewHolder<GameDisplayEntity> {
                 == null) {
             return;
         }
-        //        Intent intent = playing Intent(getContext(), GameDetailsActivity.class);
-        //        intent.putExtra(Conf.GAME_ID, gameDisplayEntities.get(index).getId());
-        //        getContext().startActivity(intent);
-        //        startActivity(index);
-        loadNetWorkData(index);
+
+        gameDisplayEntity = gameDisplayEntities.get(index);
+        int play_statu = gameDisplayEntity.getPlayStatu();
+        String tempGameZipUrl = gameDisplayEntity.getGameZipUrl();
+        if (play_statu == PlayStatus.NO_STATUS)
+        {
+            loadNetWorkData(index);
+        }
+        else if (play_statu != PlayStatus.NEVER_ENTER_GANME && (tempGameZipUrl == null || tempGameZipUrl.isEmpty()))
+        {//为-1时，本身就是没有返回游戏包，因为路径还没有确定
+            loadNetWorkData(index);
+        }
+        else//如果之前已经请求过状态了，就记录下来，避免每次网络请求
+        {
+            startGameByPlayStatu(play_statu);
+        }
+
+
     }
 
     private void loadNetWorkData(int index) {
@@ -268,6 +283,38 @@ public class ElasticHeaderViewHolder extends BaseViewHolder<GameDisplayEntity> {
         } else {
             showNetUnConnectDialog(index);
         }
+    }
+
+    private void  startGameByPlayStatu(int play_statu) {
+        //判断游戏状态
+        switch (play_statu) {
+            case PlayStatus.NEVER_ENTER_GANME://从未玩过游戏，进入到游戏详情界面
+                Intent intent = new Intent();
+                intent.setClass(getContext(), GameDetailsActivity.class);
+                intent.putExtra(Conf.GAME_ID, gameDisplayEntity.getId());
+                intent.putExtra(Conf.FROM_WHERE, Conf.ElasticHeaderViewHolder);
+                getContext().startActivity(intent);
+                break;
+            case PlayStatus.GAME_OVER://游戏结束，暂不考虑
+                //TODO 需要进入到游戏完成界面
+            case PlayStatus.HAVE_ENTERED_bUT_NOT_START_GAME://进入过但没开始游戏，进入到玩游戏界面
+            case PlayStatus.HAVE_STARTED_GAME://进入并且已经开始游戏，进入到玩游戏界面
+                //进入到玩游戏界面之前，先检测游戏包是否存在，存在则直接进入，否则要先下载游戏包
+                GameZipUtils gameZipUtils = new GameZipUtils();
+                if (gameZipUtils.isParsedFileExist(gameDisplayEntity.getId()) == null) {
+                    //游戏包不存在，需要下载游戏包
+                    progressDialog = ProgressDialog.show(getContext(), "", "加载中...",
+                            true);
+                    progressDialog.show();
+                    downloadGameZipFile();
+                } else {
+                    startPlayingGame();
+                }
+                break;
+            default:
+                break;
+        }
+
     }
 
     // 网络异常对话框
@@ -282,6 +329,7 @@ public class ElasticHeaderViewHolder extends BaseViewHolder<GameDisplayEntity> {
     }
 
     private void startActivity(int index) {
+
         //请求游戏状态接口获取游戏状态，如果是进入过游戏，则直接跳转到玩游戏界面，如果这是第一次玩，则进入到游戏详情界面
         gameDisplayEntity = gameDisplayEntities.get(index);
         HttpService.getGameService().getGameStatus(Accounts.getId(), gameDisplayEntity.getId())
@@ -291,35 +339,17 @@ public class ElasticHeaderViewHolder extends BaseViewHolder<GameDisplayEntity> {
                     @Override
                     public void call(Response<GetGameStatusResponse> response) {
                         if (response.getStatus() == Response.RESPONSE_OK) {
-                            Intent intent = new Intent();
-                            //判断游戏状态
-                            switch (response.getData().play_statu) {
-                                case PlayStatus.NEVER_ENTER_GANME://从未玩过游戏，进入到游戏详情界面
-                                    intent.setClass(getContext(), GameDetailsActivity.class);
-                                    intent.putExtra(Conf.GAME_ID, gameDisplayEntity.getId());
-                                    intent.putExtra(Conf.FROM_WHERE, Conf.ElasticHeaderViewHolder);
-                                    getContext().startActivity(intent);
-                                    break;
-                                case PlayStatus.GAME_OVER://游戏结束，暂不考虑
-                                    //TODO 需要进入到游戏完成界面
-                                case PlayStatus.HAVE_ENTERED_bUT_NOT_START_GAME://进入过但没开始游戏，进入到玩游戏界面
-                                case PlayStatus.HAVE_STARTED_GAME://进入并且已经开始游戏，进入到玩游戏界面
-                                    //进入到玩游戏界面之前，先检测游戏包是否存在，存在则直接进入，否则要先下载游戏包
-                                    GameZipUtils gameZipUtils = new GameZipUtils();
-                                    if (gameZipUtils.isParsedFileExist(gameDisplayEntity.getId()) == null) {
-                                        //游戏包不存在，需要下载游戏包
-                                        progressDialog = ProgressDialog.show(getContext(), "", "加载中...",
-                                                true);
-                                        progressDialog.show();
-                                        tempGameZipUrl = response.getData().game_zip;
-                                        downloadGameZipFile();
-                                    } else {
-                                        startPlayingGame();
-                                    }
-                                    break;
-                                default:
-                                    break;
+
+
+                            String tempGameZipUrl = "";
+                            if (response.getData().game_zip != null) {
+                                tempGameZipUrl = response.getData().game_zip;
                             }
+
+                            gameDisplayEntity.setGameZipUrl(tempGameZipUrl);
+                            gameDisplayEntity.setPlayStatu(response.getData().play_statu);
+                            startGameByPlayStatu (gameDisplayEntity.getPlayStatu());
+
                         } else {
                             Log.i("jason", "获取游戏状态错误信息：" + response.getInfo());
                         }
@@ -432,7 +462,7 @@ public class ElasticHeaderViewHolder extends BaseViewHolder<GameDisplayEntity> {
 
     //下载游戏包
     private void downloadGameZipFile() {
-        XUtilsHelper.getInstance().downLoadGameZip(tempGameZipUrl, new XUtilsHelper.IDownloadGameZipFileListener() {
+        XUtilsHelper.getInstance().downLoadGameZip(gameDisplayEntity.getGameZipUrl(), new XUtilsHelper.IDownloadGameZipFileListener() {
             @Override
             public void successs(File file) {
                 String zippedFilePath = file.getAbsolutePath();
@@ -505,5 +535,23 @@ public class ElasticHeaderViewHolder extends BaseViewHolder<GameDisplayEntity> {
         intent.putExtra(Conf.GAME_ID, gameDisplayEntity.getId());
         intent.putExtra(Conf.GAME_DISPLAY_ENTITY, gameDisplayEntity);
         fragment.startActivity(intent);
+    }
+
+
+
+    /**
+     * 请求游戏记录弹出的对话框
+     */
+    private void showLoadDlg() {
+        if (m_loadDlg == null) {
+            View view = LayoutInflater.from(getContext()).inflate(R.layout.layout_loading, null);
+            TextView textView = ((TextView) view.findViewById(R.id.loading_dialog_textview));
+            textView.setText(getContext().getString(R.string.loading));
+            m_loadDlg = new android.app.AlertDialog.Builder(getContext())
+                    .setCancelable(true)
+                    .setView(view)
+                    .create();
+        }
+        m_loadDlg.show();
     }
 }

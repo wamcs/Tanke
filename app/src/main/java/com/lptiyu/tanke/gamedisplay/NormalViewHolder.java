@@ -49,7 +49,6 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
-import timber.log.Timber;
 
 /**
  * EMAIL : danxionglei@foxmail.com
@@ -83,7 +82,6 @@ public class NormalViewHolder extends BaseViewHolder<GameDisplayEntity> {
     GameDisplayEntity gameDisplayEntity;
 
     private GameDisplayFragment fragment;
-    private String tempGameZipUrl;
     private int gameZipDownloadFailedNum = 3;
     private ProgressDialog progressDialog;
     //    private final GameZipHelper gameZipHelper;
@@ -121,12 +119,35 @@ public class NormalViewHolder extends BaseViewHolder<GameDisplayEntity> {
         if (gameDisplayEntity == null) {
             return;
         }
-        loadNetWorkData();
+        int play_statu = gameDisplayEntity.getPlayStatu();
+        String tempGameZipUrl = gameDisplayEntity.getGameZipUrl();
+        if (play_statu == PlayStatus.NO_STATUS)
+        {
+            loadNetWorkData();
+        }
+        else if (play_statu != PlayStatus.NEVER_ENTER_GANME && (tempGameZipUrl == null || tempGameZipUrl.isEmpty()))
+        {
+            loadNetWorkData();
+        }
+        else//如果之前已经请求过状态了，就记录下来，避免每次网络请求
+        {
+            startGameByPlayStatu(play_statu);
+        }
+
+
+        /*暂时没有用
+        GameDisplayController controller = fragment.getController();
+        if (controller == null) {
+            Timber.e("GameDisplayFragment get Controller is null");
+            return;
+        }
+        controller.onItemClick(gameDisplayEntity);
+        */
     }
 
     //下载游戏包
     private void downloadGameZipFile() {
-        XUtilsHelper.getInstance().downLoadGameZip(tempGameZipUrl, new XUtilsHelper.IDownloadGameZipFileListener() {
+        XUtilsHelper.getInstance().downLoadGameZip(gameDisplayEntity.getGameZipUrl(), new XUtilsHelper.IDownloadGameZipFileListener() {
             @Override
             public void successs(File file) {
                 String zippedFilePath = file.getAbsolutePath();
@@ -309,14 +330,50 @@ public class NormalViewHolder extends BaseViewHolder<GameDisplayEntity> {
         }
     }
 
-    @OnClick(R.id.item_root)
-    void onItemClick() {
-        GameDisplayController controller = fragment.getController();
-        if (controller == null) {
-            Timber.e("GameDisplayFragment get Controller is null");
-            return;
+    private void  startGameByPlayStatu(int play_statu) {
+
+        switch (play_statu) {
+            case PlayStatus.NEVER_ENTER_GANME://从未玩过游戏，进入到游戏详情界面
+                Intent intent = new Intent();
+                intent.setClass(getContext(), GameDetailsActivity.class);
+                intent.putExtra(Conf.GAME_ID, gameDisplayEntity.getId());
+                intent.putExtra(Conf.FROM_WHERE, Conf.NormalViewHolder);
+                getContext().startActivity(intent);
+                break;
+            case PlayStatus.GAME_OVER://游戏结束，暂不考虑
+                //TODO 需要进入到游戏完成界面
+            case PlayStatus.HAVE_ENTERED_bUT_NOT_START_GAME://进入过但没开始游戏，进入到玩游戏界面
+            case PlayStatus.HAVE_STARTED_GAME://进入并且已经开始游戏，进入到玩游戏界面
+                //进入到玩游戏界面之前，先检测游戏包是否存在，存在则直接进入，否则要先下载游戏包
+                //检查游戏包是否存在或者游戏解压后为空，判断完后游戏包已经被解压缩，并且已经将文件解析成实体类对象，此时可以直接从内存中取数据了
+                GameZipUtils gameZipUtils = new GameZipUtils();
+                //如果游戏包不存在或者游戏包有更新，则都需要下载最新的游戏包
+
+                String tempGameZipUrl = gameDisplayEntity.getGameZipUrl();
+
+                if (gameZipUtils.isParsedFileExist(gameDisplayEntity.getId()) == null) {
+                    //游戏包不存在，需要下载游戏包
+                    progressDialog = ProgressDialogHelper.getSpinnerProgressDialog(getContext());
+                    progressDialog.show();
+                    downloadGameZipFile();
+                } else if (gameZipUtils.isGameUpdated(gameDisplayEntity.getId(), tempGameZipUrl
+                        .substring(tempGameZipUrl.lastIndexOf('/') + 1, tempGameZipUrl
+                                .lastIndexOf('.')))) {
+                    String parsedFileExist = gameZipUtils.isParsedFileExist(gameDisplayEntity
+                            .getId());
+                    //删除旧的游戏包
+                    boolean b = FileUtils.deleteDirectory(parsedFileExist);
+                    //下载新的游戏包
+                    progressDialog = ProgressDialogHelper.getSpinnerProgressDialog(getContext());
+                    progressDialog.show();
+                    downloadGameZipFile();
+                } else {
+                    startPlayingGame();
+                }
+                break;
+            default:
+                break;
         }
-        controller.onItemClick(gameDisplayEntity);
     }
 
     private void loadNet() {
@@ -327,47 +384,15 @@ public class NormalViewHolder extends BaseViewHolder<GameDisplayEntity> {
                     @Override
                     public void call(Response<GetGameStatusResponse> response) {
                         if (response.getStatus() == Response.RESPONSE_OK) {
-                            tempGameZipUrl = response.getData().game_zip;
-                            //判断游戏状态
-                            switch (response.getData().play_statu) {
-                                case PlayStatus.NEVER_ENTER_GANME://从未玩过游戏，进入到游戏详情界面
-                                    Intent intent = new Intent();
-                                    intent.setClass(getContext(), GameDetailsActivity.class);
-                                    intent.putExtra(Conf.GAME_ID, gameDisplayEntity.getId());
-                                    intent.putExtra(Conf.FROM_WHERE, Conf.NormalViewHolder);
-                                    getContext().startActivity(intent);
-                                    break;
-                                case PlayStatus.GAME_OVER://游戏结束，暂不考虑
-                                    //TODO 需要进入到游戏完成界面
-                                case PlayStatus.HAVE_ENTERED_bUT_NOT_START_GAME://进入过但没开始游戏，进入到玩游戏界面
-                                case PlayStatus.HAVE_STARTED_GAME://进入并且已经开始游戏，进入到玩游戏界面
-                                    //进入到玩游戏界面之前，先检测游戏包是否存在，存在则直接进入，否则要先下载游戏包
-                                    //检查游戏包是否存在或者游戏解压后为空，判断完后游戏包已经被解压缩，并且已经将文件解析成实体类对象，此时可以直接从内存中取数据了
-                                    GameZipUtils gameZipUtils = new GameZipUtils();
-                                    //如果游戏包不存在或者游戏包有更新，则都需要下载最新的游戏包
-                                    if (gameZipUtils.isParsedFileExist(gameDisplayEntity.getId()) == null) {
-                                        //游戏包不存在，需要下载游戏包
-                                        progressDialog = ProgressDialogHelper.getSpinnerProgressDialog(getContext());
-                                        progressDialog.show();
-                                        downloadGameZipFile();
-                                    } else if (gameZipUtils.isGameUpdated(gameDisplayEntity.getId(), tempGameZipUrl
-                                            .substring(tempGameZipUrl.lastIndexOf('/') + 1, tempGameZipUrl
-                                                    .lastIndexOf('.')))) {
-                                        String parsedFileExist = gameZipUtils.isParsedFileExist(gameDisplayEntity
-                                                .getId());
-                                        //删除旧的游戏包
-                                        boolean b = FileUtils.deleteDirectory(parsedFileExist);
-                                        //下载新的游戏包
-                                        progressDialog = ProgressDialogHelper.getSpinnerProgressDialog(getContext());
-                                        progressDialog.show();
-                                        downloadGameZipFile();
-                                    } else {
-                                        startPlayingGame();
-                                    }
-                                    break;
-                                default:
-                                    break;
+
+                            String tempGameZipUrl = "";
+                            if (response.getData().game_zip != null) {
+                                tempGameZipUrl = response.getData().game_zip;
                             }
+
+                            gameDisplayEntity.setGameZipUrl(tempGameZipUrl);
+                            gameDisplayEntity.setPlayStatu(response.getData().play_statu);
+                            startGameByPlayStatu (gameDisplayEntity.getPlayStatu());
                         } else {
                             Log.i("jason", "获取游戏状态错误信息：" + response.getInfo());
                         }

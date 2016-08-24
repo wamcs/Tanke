@@ -3,6 +3,8 @@ package com.lptiyu.tanke.entity;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.List;
+
 /**
  * Created by Jason on 2016/8/2.
  */
@@ -18,6 +20,11 @@ public class ThemeLine implements Parcelable {
     public String game_id;
     public String line_name;
     public String point_count;
+    public String uid = "";
+
+    public String play_statu = "";
+
+    public List<Point> list_points;
 
     @Override
     public String toString() {

@@ -49,6 +49,8 @@ public class GamePlaying2Presenter implements GamePlaying2Contract.IGamePlayingP
                         //                        Log.i("jason", "请求游戏记录结果：" + response);
                         if (response.getStatus() != Response.RESPONSE_OK) {
                             Log.i("jason", "请求游戏记录失败：" + response.getInfo());
+                            view.failDownLoadRecord();
+
                         } else {
                             List<PointRecord> record_text = response.getData().record_text;
                             if (record_text != null) {

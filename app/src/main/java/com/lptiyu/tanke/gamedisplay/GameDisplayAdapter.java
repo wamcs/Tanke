@@ -57,6 +57,24 @@ public class GameDisplayAdapter extends BaseAdapter<GameDisplayEntity> {
         return result;
     }
 
+    //主要是改游戏状态和下载包链接
+    public void SetGameDataByGameId(long game_id,int game_statu,String game_zip_url)
+    {
+        if(dataList == null)
+            return;
+
+        for (int i =0;i < dataList.size();i++)
+        {
+            GameDisplayEntity tmp = dataList.get(i);
+            if (game_id == tmp.getId())
+            {
+                tmp.setPlayStatu(game_statu);
+                tmp.setGameZipUrl(game_zip_url);
+            }
+        }
+    }
+
+
     @Override
     public void onBindViewHolder(BaseViewHolder<GameDisplayEntity> holder, int position) {
         if (dataList == null) {
@@ -104,6 +122,11 @@ public class GameDisplayAdapter extends BaseAdapter<GameDisplayEntity> {
 
     public void showFooter() {
         footerHolder.mRoot.setVisibility(View.VISIBLE);
+    }
+
+    public void refreshBanner() {
+        if (elasticHeaderViewHolder != null)
+            elasticHeaderViewHolder.loadBanner();
     }
 
     public boolean isFooterVisible() {
