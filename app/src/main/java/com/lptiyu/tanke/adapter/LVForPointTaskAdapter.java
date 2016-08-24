@@ -141,7 +141,7 @@ public class LVForPointTaskAdapter extends BaseAdapter {
                     vh.rlFinishInfo.setVisibility(View.VISIBLE);
 
                     vh.ctvExp.setText("+" + task.exp);
-                    if (task.finishTime != null)
+                    if (task.finishTime != null && task.finishTime !="")
                     vh.ctvFfinishTime.setText(task.finishTime.substring(0, task.finishTime.lastIndexOf(":")));
                 }
         }

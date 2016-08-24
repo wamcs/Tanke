@@ -127,18 +127,19 @@ public class PointTaskActivity extends MyBaseActivity implements PointTaskContac
         }
         ctvTaskName.setText(point.point_title + "");
 
-        //如果当前章节点只有一个任务并且是FINISH类型的任务，则表示该章节点结束（这种情况一般在最后一个章节点出现）
-        if (Integer.parseInt(list_task.get(0).type) == TaskType.FINISH && (point.state != PointTaskStatus.FINISHED)) {
-            imgGetKey.setVisibility(View.GONE);
-            selectPosition = 0;
-            list_task.get(0).state = PointTaskStatus.FINISHED;
-            uploadPointOverRecord();
-            return;
-        }
+
         //根据任务记录决定当前任务的状态
         checkTaskState();
 
         setAdapter();
+
+        //如果当前章节点只有一个任务并且是FINISH类型的任务，则表示该章节点结束（这种情况一般在最后一个章节点出现）
+        if (Integer.parseInt(list_task.get(0).type) == TaskType.FINISH && (point.state != PointTaskStatus.FINISHED)) {
+            imgGetKey.setVisibility(View.GONE);
+            selectPosition = 0;
+            isPointOver = true;
+            uploadPointOverRecord();
+        }
     }
 
     /**
@@ -193,11 +194,6 @@ public class PointTaskActivity extends MyBaseActivity implements PointTaskContac
         } else if (point.state == PointTaskStatus.FINISHED) {//章节点已结束，所有任务已完成
             selectPosition = 0;
             imgGetKey.setVisibility(View.GONE);
-            if (pointIndex < themeLine.list_points.size() - 1)
-            {
-                //下一个任务设置为new
-                themeLine.list_points.get(pointIndex+1).isNew = true;
-            }
         } else if (point.state == PointTaskStatus.UNSTARTED) {//章节点未开启，所有任务未开启
             selectPosition = 0;
         } else {//章节点已开启
@@ -336,6 +332,14 @@ public class PointTaskActivity extends MyBaseActivity implements PointTaskContac
         if (isPointOver)
         {
             point.state = PointTaskStatus.FINISHED;
+
+            if (pointIndex < themeLine.list_points.size() - 1)
+            {
+                //下一个任务设置为new
+                themeLine.list_points.get(pointIndex+1).isNew = true;
+                themeLine.list_points.get(pointIndex+1).state = PointTaskStatus.PLAYING;
+                themeLine.list_points.get(pointIndex+1).list_task.get(0).state = PointTaskStatus.PLAYING;
+            }
         }
 
         if (selectPosition == list_task.size() - 1) {

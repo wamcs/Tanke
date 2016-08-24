@@ -24,6 +24,7 @@ import com.lptiyu.tanke.enums.PointTaskStatus;
 import com.lptiyu.tanke.enums.RequestCode;
 import com.lptiyu.tanke.enums.ResultCode;
 import com.lptiyu.tanke.gamedetails.GameDetailsActivity;
+import com.lptiyu.tanke.global.Accounts;
 import com.lptiyu.tanke.global.Conf;
 import com.lptiyu.tanke.pojo.GameDetailResponse;
 import com.lptiyu.tanke.pojo.GameDisplayEntity;
@@ -86,10 +87,11 @@ public class GamePlaying2Activity extends MyBaseActivity implements GamePlaying2
 
         presenter = new GamePlaying2Presenter(this);
 
-        //接受过来的数据
-        initData();
 
         gamePlayingTitle.setText("加载中...");
+
+        //接受过来的数据
+        initData();
 
 
         //从服务器请求游戏数据(扔到onResume()里面做了)
@@ -138,44 +140,56 @@ public class GamePlaying2Activity extends MyBaseActivity implements GamePlaying2
             m_title = title;
         }
 
+        ThemeLine themeLine = RunApplication.getPlayingThemeLine();
+
 
         gameZipUtils = new GameZipUtils();
         String parsedFilePath = gameZipUtils.isParsedFileExist(gameId);
         if (parsedFilePath != null) {
             unZippedDir = parsedFilePath;
-            boolean isSuccess = gameZipUtils.transformParsedFileToEntity(parsedFilePath);
-            if (isSuccess) {
 
-                RunApplication.setgetPlayingThemeLine(gameZipUtils.mThemeLine);
-                ThemeLine themeLine = RunApplication.getPlayingThemeLine();
-                if (themeLine == null)
-                    return;
+            //之前有的直接使用
+            if (themeLine != null && Long.parseLong(themeLine.game_id) == gameId && Long.parseLong(themeLine.uid) == Accounts.getId())
+            {
 
-                themeLine.list_points = gameZipUtils.mPoints;
+            }
+            else {
+                boolean isSuccess = gameZipUtils.transformParsedFileToEntity(parsedFilePath);
+                if (isSuccess) {
+
+                    RunApplication.setgetPlayingThemeLine(gameZipUtils.mThemeLine);
+                    themeLine = RunApplication.getPlayingThemeLine();
+                    themeLine.uid = Accounts.getId()+"";//存上账户信息
+                    if (themeLine == null)
+                        return;
+
+                    themeLine.list_points = gameZipUtils.mPoints;
 
 
-                //将任务添加到攻击点中去
-                Collections.sort(themeLine.list_points);
-                //将Task添加到Point中
-                for (Point point : themeLine.list_points) {
-                    point.isNew = false;
-                    ArrayList<Task> list_tasks = new ArrayList<>();
-                    for (Task task : gameZipUtils.mTasks) {
-                        if (task.point_id.equals(point.id)) {
-                            list_tasks.add(task);
+                    //将任务添加到攻击点中去
+                    Collections.sort(themeLine.list_points);
+                    //将Task添加到Point中
+                    for (Point point : themeLine.list_points) {
+                        point.isNew = false;
+                        ArrayList<Task> list_tasks = new ArrayList<>();
+                        for (Task task : gameZipUtils.mTasks) {
+                            if (task.point_id.equals(point.id)) {
+                                list_tasks.add(task);
+                            }
                         }
+                        point.list_task = list_tasks;
+                        //对list_task进行排序
+                        Collections.sort(point.list_task);
                     }
-                    point.list_task = list_tasks;
-                    //对list_task进行排序
-                    Collections.sort(point.list_task);
-                }
 
-            } else {
-                Toast.makeText(GamePlaying2Activity.this, "游戏包解析错误", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(GamePlaying2Activity.this, "游戏包解析错误", Toast.LENGTH_SHORT).show();
+                }
             }
         } else {
             Toast.makeText(GamePlaying2Activity.this, "游戏包不存在", Toast.LENGTH_SHORT).show();
         }
+
     }
 
 
@@ -285,6 +299,8 @@ public class GamePlaying2Activity extends MyBaseActivity implements GamePlaying2
         }
         else {
             //恢复时直接读取本地数据
+
+            gamePlayingTitle.setText(m_title + "");
             setAdapter();
             if (Integer.parseInt(themeLine.play_statu) == 2) {
                 ctv_throungh_game.setVisibility(View.VISIBLE);

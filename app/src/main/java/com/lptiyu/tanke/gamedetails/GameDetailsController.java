@@ -385,6 +385,9 @@ public class GameDetailsController extends ActivityController {
                             if (displayAdapter != null)
                                 displayAdapter.SetGameDataByGameId(gameId,PlayStatus.NEVER_ENTER_GANME,"");
 
+                            //同时清空该游戏的记录
+                            RunApplication.setgetPlayingThemeLine(null);
+
                             getActivity().setResult(ResultCode.LEAVE_GAME);
                             RunApplication.getInstance().finishActivity();
                             //                            Toast.makeText(getContext(), "您已成功放弃该游戏", Toast
