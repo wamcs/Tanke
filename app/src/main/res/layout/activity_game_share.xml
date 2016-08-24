@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".gameplaying.GameShareActivity">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@id/tool_bar"
+        style="@style/Toolbar">
+
+        <RelativeLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/activity_game_share_toolbar_imageview_left"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:background="@null"
+                android:paddingBottom="@dimen/default_toolbar_imageview_padding"
+                android:paddingLeft="@dimen/default_toolbar_imageview_padding_left"
+                android:paddingRight="@dimen/default_toolbar_imageview_padding"
+                android:paddingTop="@dimen/default_toolbar_imageview_padding"
+                android:scaleType="centerInside"
+                android:src="@mipmap/img_last_white"
+            />
+
+            <com.lptiyu.tanke.widget.CustomTextView
+                android:id="@+id/activity_game_share_toolbar_textview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_marginLeft="@dimen/default_toolbar_textview_margin_left"
+                android:padding="@dimen/default_toolbar_textview_padding"
+                android:textColor="@color/default_font_color"
+                android:textSize="@dimen/default_toolbar_textview_text_size"/>
+
+            <ImageView
+                android:id="@+id/activity_game_share_toolbar_imageview_right"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:paddingBottom="@dimen/y50"
+                android:paddingLeft="@dimen/x50"
+                android:paddingRight="@dimen/x50"
+                android:paddingTop="@dimen/y50"
+                android:src="@mipmap/game_details_share_btn"
+            />
+
+        </RelativeLayout>
+
+    </android.support.v7.widget.Toolbar>
+
+    <com.baidu.mapapi.map.TextureMapView
+        android:id="@+id/activity_game_share_map_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/tool_bar"/>
+
+    <include
+        android:id="@+id/activity_game_share_form_root"
+        layout="@layout/layout_game_share_form"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"/>
+
+</RelativeLayout>
