@@ -242,7 +242,7 @@
     <!-- SettingActivity Dimens Area-->
     <dimen name="activity_setting_item_height">@dimen/y140</dimen>
     <dimen name="setting_activity_item_margin_top">@dimen/y79</dimen>
-    <dimen name="setting_activity_arrow_margin_right">@dimen/x26</dimen>
+    <dimen name="setting_activity_arrow_margin_right">@dimen/x47</dimen>
 
     <dimen name="setting_activity_item_text_padding_top_bottom">@dimen/y31</dimen>
     <dimen name="setting_activity_item_text_padding_left_right">@dimen/x58</dimen>

@@ -1,11 +1,19 @@
 package com.lptiyu.tanke.activities.locationtask;
 
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.drawable.AnimationDrawable;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.baidu.location.BDLocation;
@@ -16,16 +24,19 @@ import com.lptiyu.tanke.R;
 import com.lptiyu.tanke.activities.base.MyBaseActivity;
 import com.lptiyu.tanke.entity.Point;
 import com.lptiyu.tanke.entity.Task;
+import com.lptiyu.tanke.enums.PlayStatus;
 import com.lptiyu.tanke.enums.PointTaskStatus;
 import com.lptiyu.tanke.enums.ResultCode;
 import com.lptiyu.tanke.gameplaying.assist.LocateHelper;
 import com.lptiyu.tanke.global.Accounts;
+import com.lptiyu.tanke.global.AppData;
 import com.lptiyu.tanke.global.Conf;
 import com.lptiyu.tanke.pojo.UpLoadGameRecord;
 import com.lptiyu.tanke.pojo.UploadGameRecordResponse;
 import com.lptiyu.tanke.utils.DistanceFormatter;
 import com.lptiyu.tanke.utils.NetworkUtil;
 import com.lptiyu.tanke.utils.PopupWindowUtils;
+import com.lptiyu.tanke.utils.TaskResultHelper;
 import com.lptiyu.tanke.utils.ToastUtil;
 
 import butterknife.BindView;
@@ -54,6 +65,20 @@ public class LocationTaskActivity extends MyBaseActivity implements BDLocationLi
     //    private Handler mHandler = new Handler();
     private String[] split;
 
+    private TextView popup_tv_btn;
+    private ImageView popup_img_result;
+    private TextView popup_tv_result;
+    private PopupWindow popupWindow;
+    private View popupView;
+    private boolean isOK;
+    private UploadGameRecordResponse resultRecord;
+
+    private final String FAIL = "什么都没有发现";
+    private final String NET_EXCEPTION = "网络错误";
+    private final String SUCESS = "找到新线索";
+    private TaskResultHelper taskResultHelper;
+    private Handler mHandler = new Handler();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,19 +87,35 @@ public class LocationTaskActivity extends MyBaseActivity implements BDLocationLi
 
         initAnim();
         startAnim();
-
+        initPopupwindow();
+        //
+        //        taskResultHelper = new TaskResultHelper(this, imgAnim, new TaskResultHelper
+        //                .TaskResultCallback() {
+        //            @Override
+        //            public void onSuccess() {
+        //                Intent intent = new Intent();
+        //                intent.putExtra(Conf.UPLOAD_RECORD_RESPONSE, resultRecord);
+        //                LocationTaskActivity.this.setResult(ResultCode.LOCATION_TASK, intent);
+        //                finish();
+        //            }
+        //        });
         presenter = new LocationTaskPresenter(this);
 
         initData();
 
         locateHelper = new LocateHelper(this);
         locateHelper.registerLocationListener(this);
-
-        //        mHandler.postDelayed(new Runnable() {
-        //            public void run() {
         locateHelper.startLocate();
-        //            }
-        //        }, 100);
+
+        if (AppData.isFirstInLocationActivity()) {
+            mHandler.postDelayed(new Runnable() {
+                public void run() {
+                    PopupWindowUtils.getInstance().showTaskGuide(LocationTaskActivity.this,
+                            "这是定位任务，正在验证您当前的位置，验证通过即可通关");
+                }
+            }, 500);
+        }
+
     }
 
     private void initData() {
@@ -192,23 +233,32 @@ public class LocationTaskActivity extends MyBaseActivity implements BDLocationLi
 
     @Override
     public void successUploadRecord(UploadGameRecordResponse response) {
-        stopAnim();
-        Intent intent = new Intent();
-        intent.putExtra(Conf.UPLOAD_RECORD_RESPONSE, response);
-        setResult(ResultCode.LOCATION_TASK, intent);
-        finish();
+        resultRecord = response;
+        showSuccessResult();
+        if (response.game_statu == PlayStatus.GAME_OVER) {
+            popup_tv_result.setText("游戏完成");
+        } else {
+            popup_tv_result.setText("找到新线索");
+        }
+
+        //                stopAnim();
+        //                Intent intent = new Intent();
+        //                intent.putExtra(Conf.UPLOAD_RECORD_RESPONSE, response);
+        //                setResult(ResultCode.LOCATION_TASK, intent);
+        //                finish();
     }
 
     @Override
     public void failUploadRecord() {
-        stopAnim();
-        ToastUtil.TextToast("位置验证失败");
+        showFailResult();
+        //        stopAnim();
+        //        ToastUtil.TextToast("位置验证失败");
     }
 
     @Override
     public void netException() {
-        stopAnim();
-        ToastUtil.TextToast("网络异常");
+        //        showNetUnConnectDialog();
+        showNetException();
     }
 
     @OnClick(R.id.btn_startLocating)
@@ -216,5 +266,82 @@ public class LocationTaskActivity extends MyBaseActivity implements BDLocationLi
         startAnim();
         if (locateHelper != null)
             locateHelper.startLocate();
+    }
+
+    /**
+     * 展示成功信息
+     */
+    private void showSuccessResult() {
+        isOK = true;
+        stopAnim();
+        popup_tv_btn.setText("查看");
+        popup_img_result.setImageResource(R.drawable.task_result_right);
+        popup_tv_result.setText(SUCESS);
+        showPopup();
+    }
+
+    /**
+     * 展示失败信息
+     */
+    private void showFailResult() {
+        isOK = false;
+        stopAnim();
+        popup_tv_btn.setText("关闭");
+        popup_img_result.setImageResource(R.drawable.task_result_wrong);
+        popup_tv_result.setText(FAIL);
+        showPopup();
+    }
+
+    /**
+     * 展示网络异常信息
+     */
+    private void showNetException() {
+        isOK = false;
+        stopAnim();
+        popup_tv_btn.setText("关闭");
+        popup_img_result.setImageResource(R.drawable.task_result_wrong);
+        popup_tv_result.setText(NET_EXCEPTION);
+        showPopup();
+    }
+
+    private void showPopup() {
+        if (popupView != null && popupWindow != null) {
+            popupWindow.showAtLocation(popupView, Gravity.CENTER, 0, 0);
+        }
+    }
+
+    private void hidePopup() {
+        if (popupWindow != null && popupWindow.isShowing()) {
+            popupWindow.dismiss();
+        }
+    }
+
+    private void initPopupwindow() {
+        LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        popupView = inflater.inflate(R.layout.popup_scan_result, null);
+        popupWindow = new PopupWindow(popupView, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup
+                .LayoutParams.MATCH_PARENT,
+                true);
+        popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        //        popupWindow.setAnimationStyle(R.style.Popup_Animation);
+
+        popup_tv_btn = (TextView) popupView.findViewById(R.id.tv_continue_scan);
+        popup_img_result = (ImageView) popupView.findViewById(R.id.img_result);
+        popup_tv_result = (TextView) popupView.findViewById(R.id.tv_result_tip);
+
+        popup_tv_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                popupWindow.dismiss();
+                if (isOK) {
+                    Intent intent = new Intent();
+                    intent.putExtra(Conf.UPLOAD_RECORD_RESPONSE, resultRecord);
+                    LocationTaskActivity.this.setResult(ResultCode.LOCATION_TASK, intent);
+                    finish();
+                } else {
+                    hidePopup();
+                }
+            }
+        });
     }
 }

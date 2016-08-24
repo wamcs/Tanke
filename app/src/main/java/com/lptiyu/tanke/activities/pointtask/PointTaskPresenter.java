@@ -85,8 +85,8 @@ public class PointTaskPresenter implements PointTaskContact.IPointTaskPresenter 
         //            }
         //
         //            @Override
-        //            public void onFinished() {
-        //                Log.i("jason", "onFinished()");
+        //            public void onFinishedDownload() {
+        //                Log.i("jason", "onFinishedDownload()");
         //            }
         //        });
 

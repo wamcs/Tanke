@@ -170,8 +170,14 @@ public class PushHelper extends MessageHelper implements
                         mSwipeRefreshLayout.setRefreshing(false);
 
                         if (messages == null || messages.size() == 0) {
+                            ToastUtil.TextToast("暂无历史消息");
+                            return;
+                        }
+
+                        messagesList.addAll(messages);
+                        adapter.notifyDataSetChanged();
+                        if (messagesList == null || messagesList.size() == 0) {
                             if (mNoDataImageView != null) {
-                                ToastUtil.TextToast("暂无历史消息");
                                 thread.mainThread(new Runnable() {
                                     @Override
                                     public void run() {
@@ -191,8 +197,6 @@ public class PushHelper extends MessageHelper implements
                             }
                         }
 
-                        messagesList.addAll(messages);
-                        adapter.notifyDataSetChanged();
                         if (mCurrentPage < mTotalMsgPageCount) {
                             mCurrentPage += 1;
                         }
@@ -222,7 +226,42 @@ public class PushHelper extends MessageHelper implements
                         List<MessageNotification> list = new ArrayList<>();
                         List<MessageEntity> messageEntityList = listResponse.getData();
 
-                        if (messageEntityList == null || messageEntityList.size() == 0) {
+                        //                        if (messageEntityList == null || messageEntityList.size() == 0) {
+                        //                            if (mNoDataImageView != null) {
+                        //                                thread.mainThread(new Runnable() {
+                        //                                    @Override
+                        //                                    public void run() {
+                        //                                        mNoDataImageView.setVisibility(View.VISIBLE);
+                        //                                    }
+                        //                                });
+                        //                                return;
+                        //                            }
+                        //                        } else {
+                        //                            if (mNoDataImageView != null) {
+                        //                                thread.mainThread(new Runnable() {
+                        //                                    @Override
+                        //                                    public void run() {
+                        //                                        mNoDataImageView.setVisibility(View.GONE);
+                        //                                    }
+                        //                                });
+                        //                            }
+                        //                        }
+
+                        for (MessageEntity me : messageEntityList) {
+                            MessageNotification messages = new MessageNotification();
+                            messages.setId(me.getId());
+                            messages.setTitle(me.getTitle());
+                            messages.setImage(me.getImgUrl());
+                            messages.setAlert(me.getContent());
+                            messages.setUrl(me.getUrl());
+                            messages.setTime(me.getCreateTime());
+                            messages.setType(Conf.MESSAGE_LIST_TYPE_OFFICIAL);
+                            list.add(messages);
+                        }
+                        messagesList.addAll(decorateMessageList(list));
+                        adapter.notifyDataSetChanged();
+
+                        if (messagesList == null || messagesList.size() == 0) {
                             if (mNoDataImageView != null) {
                                 thread.mainThread(new Runnable() {
                                     @Override
@@ -242,20 +281,6 @@ public class PushHelper extends MessageHelper implements
                                 });
                             }
                         }
-
-                        for (MessageEntity me : messageEntityList) {
-                            MessageNotification messages = new MessageNotification();
-                            messages.setId(me.getId());
-                            messages.setTitle(me.getTitle());
-                            messages.setImage(me.getImgUrl());
-                            messages.setAlert(me.getContent());
-                            messages.setUrl(me.getUrl());
-                            messages.setTime(me.getCreateTime());
-                            messages.setType(Conf.MESSAGE_LIST_TYPE_OFFICIAL);
-                            list.add(messages);
-                        }
-                        messagesList.addAll(decorateMessageList(list));
-                        adapter.notifyDataSetChanged();
 
                         MessageNotificationList result;
                         MessageEntity lastMsg = messageEntityList.get(messageEntityList.size() - 1);

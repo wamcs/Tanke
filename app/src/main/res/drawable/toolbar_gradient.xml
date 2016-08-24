@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <shape xmlns:android="http://schemas.android.com/apk/res/android"
        android:shape="rectangle">
-    <gradient
-        android:centerColor="@color/middle_blue"
-        android:endColor="@color/dark_blue"
-        android:startColor="@color/light_blue"/>
+    <!--<gradient-->
+    <!--android:centerColor="@color/middle_blue"-->
+    <!--android:endColor="@color/dark_blue"-->
+    <!--android:startColor="@color/light_blue"/>-->
+    <solid android:color="@color/register_activity_gradient_end"/>
     <!--
         <corners android:radius="5dp"/>-->
 </shape>

@@ -18,61 +18,61 @@ import butterknife.OnClick;
  */
 public class TextDialog extends BaseDialog {
 
-  @BindView(R.id.text)
-  public CustomTextView textView;
-  @BindView(R.id.cancel_button)
-  public CustomTextView cancelButton;
-  @BindView(R.id.ensure_button)
-  public CustomTextView ensureButton;
+    @BindView(R.id.text)
+    public CustomTextView textView;
+    @BindView(R.id.cancel_button)
+    public CustomTextView cancelButton;
+    @BindView(R.id.ensure_button)
+    public CustomTextView ensureButton;
 
-  private OnTextDialogButtonClickListener mListener;
+    private OnTextDialogButtonClickListener mListener;
 
-  public TextDialog(Context context) {
-    super(context);
-    this.setCustomView(R.layout.layout_dialog_text, context)
-        .withTitle(null)
-        .setCanceledOnTouchOutside(true);
-  }
-
-  @Override
-  public BaseDialog setCustomView(int resId, Context context) {
-    View v = Inflater.inflate(resId, null, false);
-    return setCustomView(v, context);
-  }
-
-  @Override
-  public BaseDialog setCustomView(View view, Context context) {
-    ButterKnife.bind(this, view);
-    return super.setCustomView(view, context);
-  }
-
-  public void show(String msg) {
-    textView.setText(msg);
-    super.show();
-  }
-
-  public void setmListener(OnTextDialogButtonClickListener mListener) {
-    this.mListener = mListener;
-  }
-
-  @OnClick(R.id.cancel_button)
-  void onCancel() {
-    if (mListener != null) {
-      mListener.onNegtiveClicked();
+    public TextDialog(Context context) {
+        super(context);
+        this.setCustomView(R.layout.layout_dialog_text, context)
+                .withTitle("").withMessage(null)
+                .setCanceledOnTouchOutside(true);
     }
-  }
 
-  @OnClick(R.id.ensure_button)
-  void onEnsure() {
-    if (mListener != null) {
-      mListener.onPositiveClicked();
+    @Override
+    public BaseDialog setCustomView(int resId, Context context) {
+        View v = Inflater.inflate(resId, null, false);
+        return setCustomView(v, context);
     }
-  }
 
-  public interface OnTextDialogButtonClickListener {
+    @Override
+    public BaseDialog setCustomView(View view, Context context) {
+        ButterKnife.bind(this, view);
+        return super.setCustomView(view, context);
+    }
 
-    void onPositiveClicked();
+    public void show(String msg) {
+        textView.setText(msg);
+        super.show();
+    }
 
-    void onNegtiveClicked();
-  }
+    public void setmListener(OnTextDialogButtonClickListener mListener) {
+        this.mListener = mListener;
+    }
+
+    @OnClick(R.id.cancel_button)
+    void onCancel() {
+        if (mListener != null) {
+            mListener.onNegtiveClicked();
+        }
+    }
+
+    @OnClick(R.id.ensure_button)
+    void onEnsure() {
+        if (mListener != null) {
+            mListener.onPositiveClicked();
+        }
+    }
+
+    public interface OnTextDialogButtonClickListener {
+
+        void onPositiveClicked();
+
+        void onNegtiveClicked();
+    }
 }

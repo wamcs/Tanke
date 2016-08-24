@@ -14,6 +14,12 @@ public final class Conf {
     public static final String IMG_DISTINGUISH_URL = "img_distinguish_url";
 
     public static final String IS_FIRST_IN_APP = "is_first_in_app";
+    public static final String IS_FIRST_IN_IMAGE_DISTINGUISH_ACTIVITY = "is_first_in_image_distinguish";
+    public static final String IS_FIRST_IN_GUESS_RIDDLE_ACTIVITY = "is_first_in_guess_riddle";
+    public static final String IS_FIRST_IN_LOCATION_ACTIVITY = "is_first_in_location";
+    public static final String IS_FIRST_IN_CAPTURE_ACTIVITY = "is_first_in_capture";
+    public static final String IS_FIRST_IN_GAME_pLAYING2_ACTIVITY = "is_first_in_game_playing2";
+    public static final String IS_FIRST_IN_POINT_TASK_ACTIVITY = "is_first_in_point_task";
     /**
      * Sign up conf
      */

@@ -19,6 +19,7 @@ package com.lptiyu.zxinglib.android;
 import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
@@ -26,7 +27,9 @@ import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -36,13 +39,17 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.Surface;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.lptiyu.zxinglib.R;
@@ -121,6 +128,7 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
     private String upload_record_url = "http://192.168.1.5/trunk/lepao/api.php/system/Rankslog";
     private long uid;
     private UploadGameRecordResponse resultResponse;
+    private boolean isFirstInLocationActivity;
 
     ViewfinderView getViewfinderView() {
         return viewfinderView;
@@ -134,6 +142,11 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
         return cameraManager;
     }
 
+    /*******************************************/
+    private Handler mHandler = new Handler();
+
+    /*******************************************/
+
     @Override
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
@@ -142,10 +155,6 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         setContentView(R.layout.capture);
 
-        /*********************************/
-        //        initData();
-        /*********************************/
-
         hasSurface = false;
         isPermissionCheckedAndResume = false;
         inactivityTimer = new InactivityTimer(this);
@@ -153,6 +162,41 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
         ambientLightManager = new AmbientLightManager(this);
 
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
+
+        /*********************************/
+        //                initData();
+        isFirstInLocationActivity = getIntent().getBooleanExtra("isFirstInLocation", false);
+        if (isFirstInLocationActivity) {
+            mHandler.postDelayed(new Runnable() {
+                public void run() {
+                    //                    PopupWindowUtils.getInstance().showTaskGuide(CaptureActivity.this,
+                    //                            "这是扫码任务，找到神奇的二维码即可通关");
+                    showTaskGuide(CaptureActivity.this, "这是扫码任务，找到神奇的二维码即可通关");
+                }
+            }, 500);
+        }
+        /*********************************/
+    }
+
+    public void showTaskGuide(Context context, String content) {
+        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View popupView = inflater.inflate(R.layout.popup_task_guide, null);
+        final PopupWindow popupWindow = new PopupWindow(popupView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup
+                .LayoutParams.WRAP_CONTENT, true);
+        popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        popupWindow.setOutsideTouchable(false);
+        popupWindow.setTouchable(true);
+        popupWindow.showAtLocation(popupView, Gravity.CENTER, 0, 0);
+
+        TextView tv_content_tip = (TextView) popupView.findViewById(R.id.tv_content_tip);
+        TextView tv_ok = (TextView) popupView.findViewById(R.id.tv_ok);
+        tv_content_tip.setText(content);
+        tv_ok.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                popupWindow.dismiss();
+            }
+        });
     }
 
     /**

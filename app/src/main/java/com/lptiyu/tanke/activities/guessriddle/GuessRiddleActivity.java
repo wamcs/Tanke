@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -26,9 +27,11 @@ import com.lptiyu.tanke.enums.PlayStatus;
 import com.lptiyu.tanke.enums.PointTaskStatus;
 import com.lptiyu.tanke.enums.ResultCode;
 import com.lptiyu.tanke.global.Accounts;
+import com.lptiyu.tanke.global.AppData;
 import com.lptiyu.tanke.global.Conf;
 import com.lptiyu.tanke.pojo.UpLoadGameRecord;
 import com.lptiyu.tanke.pojo.UploadGameRecordResponse;
+import com.lptiyu.tanke.utils.PopupWindowUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -57,13 +60,14 @@ public class GuessRiddleActivity extends MyBaseActivity implements RiddleContact
     private AnimationDrawable anim;
     private RiddlePresenter presenter;
     private long gameId;
-//    private long gameType;
+    //    private long gameType;
     private Point point;
     private boolean isPointOver;
 
     private final String FAIL = "什么都没有发现";
     private final String NET_EXCEPTION = "网络错误";
     private final String SUCESS = "找到新线索";
+    private Handler mHandler = new Handler();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,7 +78,7 @@ public class GuessRiddleActivity extends MyBaseActivity implements RiddleContact
         Intent intent = getIntent();
         task = intent.getParcelableExtra(Conf.CURRENT_TASK);
         gameId = getIntent().getLongExtra(Conf.GAME_ID, 0);
-//        gameType = getIntent().getLongExtra(Conf.GAME_TYPE, 0);
+        //        gameType = getIntent().getLongExtra(Conf.GAME_TYPE, 0);
         point = getIntent().getParcelableExtra(Conf.POINT);
         isPointOver = getIntent().getBooleanExtra(Conf.IS_POINT_OVER, false);
 
@@ -84,6 +88,16 @@ public class GuessRiddleActivity extends MyBaseActivity implements RiddleContact
 
         initPopupwindow();
         initAnim();
+
+        if (AppData.isFirstInGuessRiddleActivity()) {
+            mHandler.postDelayed(new Runnable() {
+                public void run() {
+                    PopupWindowUtils.getInstance().showTaskGuide(GuessRiddleActivity.this,
+                            "这是猜谜任务，提交你的答案，正确即可通关");
+                }
+            }, 500);
+        }
+
     }
 
     private void initPopupwindow() {
@@ -172,7 +186,7 @@ public class GuessRiddleActivity extends MyBaseActivity implements RiddleContact
     private void upLoadGameRecord() {
         UpLoadGameRecord record = new UpLoadGameRecord();
         record.uid = Accounts.getId() + "";
-//        record.type = gameType + "";
+        //        record.type = gameType + "";
         record.point_id = point.id + "";
         record.game_id = gameId + "";
         if (isPointOver)

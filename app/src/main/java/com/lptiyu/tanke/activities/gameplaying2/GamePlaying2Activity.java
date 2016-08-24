@@ -25,6 +25,7 @@ import com.lptiyu.tanke.enums.RequestCode;
 import com.lptiyu.tanke.enums.ResultCode;
 import com.lptiyu.tanke.gamedetails.GameDetailsActivity;
 import com.lptiyu.tanke.global.Accounts;
+import com.lptiyu.tanke.global.AppData;
 import com.lptiyu.tanke.global.Conf;
 import com.lptiyu.tanke.pojo.GameDetailResponse;
 import com.lptiyu.tanke.pojo.GameDisplayEntity;
@@ -34,6 +35,7 @@ import com.lptiyu.tanke.utils.GameZipUtils;
 import com.lptiyu.tanke.utils.NetworkUtil;
 import com.lptiyu.tanke.utils.PopupWindowUtils;
 import com.lptiyu.tanke.widget.CustomTextView;
+import com.lptiyu.tanke.widget.DragLayout;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -61,6 +63,10 @@ public class GamePlaying2Activity extends MyBaseActivity implements GamePlaying2
     //    TextureMapView mapView;
     @BindView(R.id.img_zoom_full_screen)
     ImageView imgZoomFullScreen;
+    @BindView(R.id.dragview)
+    ImageView dragview;
+    @BindView(R.id.drag_layout)
+    DragLayout dragLayout;
 
     private GamePlaying2Presenter presenter;
 
@@ -190,8 +196,20 @@ public class GamePlaying2Activity extends MyBaseActivity implements GamePlaying2
             Toast.makeText(GamePlaying2Activity.this, "游戏包不存在", Toast.LENGTH_SHORT).show();
         }
 
+        dragLayout.setChildView(dragview);
+        //如果用户是第一次打开app，则显示导航提示
+        if (AppData.isFirstInGamePlaying2Activity()) {
+            dragLayout.setVisibility(View.VISIBLE);
+        } else {
+            dragLayout.setVisibility(View.GONE);
+        }
+        dragLayout.setOnDragOverListener(new DragLayout.OnDragOverListener() {
+            @Override
+            public void onDrag() {
+                dragLayout.setVisibility(View.GONE);
+            }
+        });
     }
-
 
     @Override
     public void successDownLoadRecord(GameRecord gameRecord) {
@@ -331,7 +349,7 @@ public class GamePlaying2Activity extends MyBaseActivity implements GamePlaying2
 
     @Override
     public void failDownLoadRecord() {
-        Toast.makeText(this, "网络异常", Toast.LENGTH_SHORT).show();
+        showNetUnConnectDialog();
     }
 
     private void initTimeTask() {

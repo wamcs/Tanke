@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Surface;
@@ -27,9 +28,11 @@ import com.lptiyu.tanke.enums.PlayStatus;
 import com.lptiyu.tanke.enums.PointTaskStatus;
 import com.lptiyu.tanke.enums.ResultCode;
 import com.lptiyu.tanke.global.Accounts;
+import com.lptiyu.tanke.global.AppData;
 import com.lptiyu.tanke.global.Conf;
 import com.lptiyu.tanke.pojo.UpLoadGameRecord;
 import com.lptiyu.tanke.pojo.UploadGameRecordResponse;
+import com.lptiyu.tanke.utils.PopupWindowUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -106,7 +109,7 @@ public class ImageDistinguishActivity extends MyBaseActivity implements Imagedis
 
     private native void nativeRotationChange(boolean portrait);
 
-    //    private Handler mHandler = new Handler();
+    private Handler mHandler = new Handler();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -114,16 +117,6 @@ public class ImageDistinguishActivity extends MyBaseActivity implements Imagedis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_image_distinguish);
         ButterKnife.bind(this);
-
-        //打开摄像头前的等待交互，不能直接写在onCreate()中，要用handler
-        //        mHandler.postDelayed(new Runnable() {
-        //            public void run() {
-        //                Animation animation = AnimationUtils.loadAnimation(ImageDistinguishActivity.this, R.anim
-        //                        .waiting_for_open_camera);
-        //                img_waiting.startAnimation(animation);
-        //            }
-        //        }, 100);
-
 
         presenter = new ImagedistinguishPresenter(this);
 
@@ -176,7 +169,6 @@ public class ImageDistinguishActivity extends MyBaseActivity implements Imagedis
 
         initPopupwindow();
         initAnim();
-        //        initCountDownTimer();
 
         /**
          * 识别成功回调
@@ -190,6 +182,15 @@ public class ImageDistinguishActivity extends MyBaseActivity implements Imagedis
                 upLoadGameRecord();
             }
         });
+
+        if (AppData.isFirstInImageDistinguishActivity()) {
+            mHandler.postDelayed(new Runnable() {
+                public void run() {
+                    PopupWindowUtils.getInstance().showTaskGuide(ImageDistinguishActivity.this,
+                            "这是个识图任务，将摄像头对准目标对象，点击蓝色按钮开始识别，识别成功即可通关");
+                }
+            }, 800);
+        }
     }
 
     private void initAR() {
@@ -201,25 +202,25 @@ public class ImageDistinguishActivity extends MyBaseActivity implements Imagedis
         }
     }
 
-//    @Override
-//    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-//        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-//        switch (requestCode) {
-//            case 100:
-//                // If request is cancelled, the result arrays are empty.
-//                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-//                    // permission was granted, yay! Do the
-//                    // contacts-related task you need to do.
-//                    Toast.makeText(this, "权限请求成功", Toast.LENGTH_SHORT).show();
-//                    initAR();
-//                } else {
-//                    // permission denied, boo! Disable the
-//                    // functionality that depends on this permission.
-//                    Toast.makeText(this, "权限请求失败", Toast.LENGTH_SHORT).show();
-//                }
-//                break;
-//        }
-//    }
+    //    @Override
+    //    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+    //        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    //        switch (requestCode) {
+    //            case 100:
+    //                // If request is cancelled, the result arrays are empty.
+    //                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+    //                    // permission was granted, yay! Do the
+    //                    // contacts-related task you need to do.
+    //                    Toast.makeText(this, "权限请求成功", Toast.LENGTH_SHORT).show();
+    //                    initAR();
+    //                } else {
+    //                    // permission denied, boo! Disable the
+    //                    // functionality that depends on this permission.
+    //                    Toast.makeText(this, "权限请求失败", Toast.LENGTH_SHORT).show();
+    //                }
+    //                break;
+    //        }
+    //    }
 
     /**
      * 展示成功信息

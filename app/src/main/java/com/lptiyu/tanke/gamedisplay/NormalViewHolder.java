@@ -1,18 +1,11 @@
 package com.lptiyu.tanke.gamedisplay;
 
-import android.app.ProgressDialog;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.location.LocationManager;
-import android.provider.Settings;
-import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.lptiyu.tanke.R;
@@ -30,16 +23,11 @@ import com.lptiyu.tanke.permission.PermissionDispatcher;
 import com.lptiyu.tanke.permission.TargetMethod;
 import com.lptiyu.tanke.pojo.GameDisplayEntity;
 import com.lptiyu.tanke.pojo.GetGameStatusResponse;
-import com.lptiyu.tanke.utils.FileUtils;
-import com.lptiyu.tanke.utils.GameZipUtils;
 import com.lptiyu.tanke.utils.NetworkUtil;
 import com.lptiyu.tanke.utils.PopupWindowUtils;
-import com.lptiyu.tanke.utils.ProgressDialogHelper;
 import com.lptiyu.tanke.utils.TimeUtils;
-import com.lptiyu.tanke.utils.xutils3.XUtilsHelper;
+import com.lptiyu.tanke.utils.XUtilsDownloader;
 import com.makeramen.roundedimageview.RoundedImageView;
-
-import java.io.File;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -91,8 +79,6 @@ public class NormalViewHolder extends BaseViewHolder<GameDisplayEntity> {
         super(fromResLayout(parent, R.layout.item_game_display));
         ButterKnife.bind(this, itemView);
         this.fragment = fragment;
-        //        mGameZipScanner = new GameZipScanner();
-        //        gameZipHelper = playing GameZipHelper();
     }
 
     private void loadNetWorkData() {
@@ -145,76 +131,6 @@ public class NormalViewHolder extends BaseViewHolder<GameDisplayEntity> {
         */
     }
 
-    //下载游戏包
-    private void downloadGameZipFile() {
-        XUtilsHelper.getInstance().downLoadGameZip(gameDisplayEntity.getGameZipUrl(), new XUtilsHelper.IDownloadGameZipFileListener() {
-            @Override
-            public void successs(File file) {
-                String zippedFilePath = file.getAbsolutePath();
-                GameZipUtils gameZipUtils = new GameZipUtils();
-                //解压文件
-                gameZipUtils.parseZipFile(zippedFilePath);
-                String parsedFilePath = gameZipUtils.isParsedFileExist(gameDisplayEntity.getId());
-                if (parsedFilePath != null) {
-                    file.delete();
-                    startPlayingGame();
-                } else {
-                    Toast.makeText(getContext(), "游戏包解压失败", Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            @Override
-            public void progress(long total, long current, boolean isDownloading) {
-                //游戏进度
-                if (progressDialog != null) {
-                    progressDialog.setMessage("加载中" + current * 100 / total + "%");
-                }
-            }
-
-            @Override
-            public void finished() {
-                if (progressDialog != null) {
-                    progressDialog.dismiss();
-                }
-            }
-
-            @Override
-            public void onError(String errMsg) {
-                PopupWindowUtils.getInstance().showFailLoadPopupwindow(getContext());
-            }
-        });
-
-    }
-
-    private void initGPS() {
-        LocationManager locationManager = (LocationManager) getContext().getSystemService(Context.LOCATION_SERVICE);
-        // 判断GPS模块是否开启，如果没有则开启
-        if (!locationManager.isProviderEnabled(android.location.LocationManager.GPS_PROVIDER)) {
-            AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
-            dialog.setMessage("为了定位更加精确，请打开GPS");
-            dialog.setPositiveButton("确定",
-                    new android.content.DialogInterface.OnClickListener() {
-
-                        @Override
-                        public void onClick(DialogInterface arg0, int arg1) {
-                            // 转到手机设置界面，用户设置GPS
-                            Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                            fragment.startActivityForResult(intent, 0); // 设置完成后返回到原来的界面
-                        }
-                    });
-            dialog.setNegativeButton("取消", new android.content.DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface arg0, int arg1) {
-                    arg0.dismiss();
-                }
-            });
-            dialog.show();
-        } else {
-            startPlayingGame();
-            //            PermissionDispatcher.startLocateWithCheck(((BaseActivity) getContext()));
-        }
-    }
-
     @TargetMethod(requestCode = PermissionDispatcher.PERMISSION_REQUEST_CODE_LOCATION)
     public void startPlayingGame() {
         Intent intent = new Intent(getContext(), GamePlaying2Activity.class);
@@ -248,9 +164,8 @@ public class NormalViewHolder extends BaseViewHolder<GameDisplayEntity> {
     private void parseLocation(GameDisplayEntity entity) {
         String area = "不限地址";
 
-        if (entity.getArea() != "")
-        {
-            area =  entity.getArea();
+        if (entity.getArea() != "") {
+            area = entity.getArea();
         }
         location.setText(area);
     }
