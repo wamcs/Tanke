@@ -2,13 +2,8 @@ package com.lptiyu.tanke.gamedisplay;
 
 import android.animation.ObjectAnimator;
 import android.app.ProgressDialog;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.location.LocationManager;
-import android.provider.Settings;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,7 +11,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RadioGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.lptiyu.tanke.R;
@@ -298,7 +292,9 @@ public class ElasticHeaderViewHolder extends BaseViewHolder<GameDisplayEntity> {
             case PlayStatus.HAVE_ENTERED_bUT_NOT_START_GAME://进入过但没开始游戏，进入到玩游戏界面
             case PlayStatus.HAVE_STARTED_GAME://进入并且已经开始游戏，进入到玩游戏界面
                 //进入到玩游戏界面之前，先检测游戏包是否存在，存在则直接进入，否则要先下载游戏包
-
+                String tempGameZipUrl = gameDisplayEntity.getGameZipUrl();
+                if (tempGameZipUrl == null || tempGameZipUrl=="")
+                    return;
                 new XUtilsDownloader(getContext(), tempGameZipUrl, gameDisplayEntity.getId(), new
                         XUtilsDownloader.FinishDownloadCallback() {
                             @Override

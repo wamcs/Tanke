@@ -1,5 +1,6 @@
 package com.lptiyu.tanke.gamedisplay;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.util.Log;
 import android.view.View;
@@ -261,30 +262,16 @@ public class NormalViewHolder extends BaseViewHolder<GameDisplayEntity> {
             case PlayStatus.HAVE_STARTED_GAME://进入并且已经开始游戏，进入到玩游戏界面
                 //进入到玩游戏界面之前，先检测游戏包是否存在，存在则直接进入，否则要先下载游戏包
                 //检查游戏包是否存在或者游戏解压后为空，判断完后游戏包已经被解压缩，并且已经将文件解析成实体类对象，此时可以直接从内存中取数据了
-                GameZipUtils gameZipUtils = new GameZipUtils();
-                //如果游戏包不存在或者游戏包有更新，则都需要下载最新的游戏包
-
                 String tempGameZipUrl = gameDisplayEntity.getGameZipUrl();
-
-                if (gameZipUtils.isParsedFileExist(gameDisplayEntity.getId()) == null) {
-                    //游戏包不存在，需要下载游戏包
-                    progressDialog = ProgressDialogHelper.getSpinnerProgressDialog(getContext());
-                    progressDialog.show();
-                    downloadGameZipFile();
-                } else if (gameZipUtils.isGameUpdated(gameDisplayEntity.getId(), tempGameZipUrl
-                        .substring(tempGameZipUrl.lastIndexOf('/') + 1, tempGameZipUrl
-                                .lastIndexOf('.')))) {
-                    String parsedFileExist = gameZipUtils.isParsedFileExist(gameDisplayEntity
-                            .getId());
-                    //删除旧的游戏包
-                    boolean b = FileUtils.deleteDirectory(parsedFileExist);
-                    //下载新的游戏包
-                    progressDialog = ProgressDialogHelper.getSpinnerProgressDialog(getContext());
-                    progressDialog.show();
-                    downloadGameZipFile();
-                } else {
-                    startPlayingGame();
-                }
+                if (tempGameZipUrl == null || tempGameZipUrl=="")
+                return;
+                new XUtilsDownloader(getContext(), tempGameZipUrl, gameDisplayEntity.getId(), new
+                        XUtilsDownloader.FinishDownloadCallback() {
+                            @Override
+                            public void onFinishedDownload() {
+                                startPlayingGame();
+                            }
+                        });
                 break;
             default:
                 break;
