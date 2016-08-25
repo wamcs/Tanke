@@ -22,6 +22,7 @@ import com.lptiyu.tanke.utils.GameZipUtils;
 import com.lptiyu.tanke.utils.NetworkUtil;
 import com.lptiyu.tanke.utils.PopupWindowUtils;
 import com.lptiyu.tanke.utils.TimeUtils;
+import com.lptiyu.tanke.utils.ToastUtil;
 import com.lptiyu.tanke.utils.XUtilsDownloader;
 import com.lptiyu.tanke.widget.CustomTextView;
 import com.makeramen.roundedimageview.RoundedImageView;
@@ -97,6 +98,18 @@ public class UserGameFinishedHolder extends BaseViewHolder<GameFinishedEntity> {
         mItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                if (entity.getIsdel() != 0)//游戏包已经删除，提示
+                {
+                    ToastUtil.TextToast("该游戏已经下线");
+                    return;
+                }
+                else if (entity.getStates() == 2 || entity.getStates()==0)//维护中的游戏s
+                {
+                    ToastUtil.TextToast("该游戏正在维护中，尽请期待");
+                    return;
+                }
+
                 GameZipUtils gameZipUtils = new GameZipUtils();
                 String parsedFilePath = gameZipUtils.isParsedFileExist(gameId);
                 if (parsedFilePath != null) {

@@ -264,7 +264,8 @@ public class NormalViewHolder extends BaseViewHolder<GameDisplayEntity> {
                 //检查游戏包是否存在或者游戏解压后为空，判断完后游戏包已经被解压缩，并且已经将文件解析成实体类对象，此时可以直接从内存中取数据了
                 String tempGameZipUrl = gameDisplayEntity.getGameZipUrl();
                 if (tempGameZipUrl == null || tempGameZipUrl=="")
-                return;
+                    return;
+
                 new XUtilsDownloader(getContext(), tempGameZipUrl, gameDisplayEntity.getId(), new
                         XUtilsDownloader.FinishDownloadCallback() {
                             @Override

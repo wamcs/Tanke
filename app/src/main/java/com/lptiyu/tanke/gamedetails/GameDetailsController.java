@@ -184,14 +184,38 @@ public class GameDetailsController extends ActivityController {
         mTextGameIntro.setText(Html.fromHtml(Html.fromHtml(entity.content) + ""));
         //        mTextRule.setText(Html.fromHtml(Html.fromHtml(entity.getRule()) + ""));
         switch (from_where) {
-            case Conf.ElasticHeaderViewHolder:
-                mTextEnterGame.setText("进入游戏");
+            case Conf.ElasticHeaderViewHolder: {
+                if (entity.states == 3)//游戏已经下线，但还展示在前台
+                {
+                    mTextEnterGame.setText("游戏已经下线休息了~");
+                }
+                else
+                {
+                    mTextEnterGame.setText("进入游戏");
+                }
+
                 break;
+            }
             case Conf.NormalViewHolder:
-                mTextEnterGame.setText("进入游戏");
+                if (entity.states == 3)//游戏已经下线，但还展示在前台
+                {
+                    mTextEnterGame.setText("游戏已经下线休息了~");
+                }
+                else
+                {
+                    mTextEnterGame.setText("进入游戏");
+                }
                 break;
             case Conf.GamePlay2Activity:
-                mTextEnterGame.setText("放弃游戏");
+                if (entity.states == 3)//游戏已经下线，但还展示在前台
+                {
+                    mTextEnterGame.setText("游戏已经下线休息了~");
+                }
+                else
+                {
+                    mTextEnterGame.setText("放弃游戏");
+                }
+
                 break;
         }
         Glide.with(getActivity()).load(entity.pic).error(R.mipmap.need_to_remove).centerCrop().into(mImageCover);
@@ -297,13 +321,19 @@ public class GameDetailsController extends ActivityController {
 
     @OnClick(R.id.enter_game)
     public void ensureClicked() {
+
+        if (mGameDetailsResponse == null) {
+            ToastUtil.TextToast("获取游戏信息失败");
+            return;
+        }
+        if (mGameDetailsResponse.states == 3)//游戏已经下线，但还展示在前台
+        {
+            return;
+        }
+
         switch (from_where) {
             case Conf.ElasticHeaderViewHolder:
             case Conf.NormalViewHolder:
-                if (mGameDetailsResponse == null) {
-                    ToastUtil.TextToast("获取游戏信息失败");
-                    return;
-                }
                 if (mGameDetailsResponse.type == GameType.TEAM_TYPE) {
                     ToastUtil.TextToast("团队赛正在开发中");
                     return;

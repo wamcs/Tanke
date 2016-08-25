@@ -43,6 +43,28 @@ public class GameFinishedEntity implements Parcelable {
   @SerializedName("values")
   int expPoints;
 
+  @SerializedName("states")
+  private int states;
+
+  @SerializedName("is_del")
+  private int is_del;
+
+  public long getIsdel() {
+    return is_del;
+  }
+
+  public void setIsdel(int is_del) {
+    this.is_del = is_del;
+  }
+
+  public long getStates() {
+    return states;
+  }
+
+  public void setStates(int states) {
+    this.states = states;
+  }
+
   public long getGameId() {
     return gameId;
   }
@@ -114,6 +136,8 @@ public class GameFinishedEntity implements Parcelable {
     dest.writeString(this.totalTime);
     dest.writeInt(this.type);
     dest.writeInt(this.expPoints);
+    dest.writeInt(this.states);
+    dest.writeInt(this.is_del);
   }
 
   public GameFinishedEntity() {
@@ -128,6 +152,9 @@ public class GameFinishedEntity implements Parcelable {
     this.totalTime = in.readString();
     this.type = in.readInt();
     this.expPoints = in.readInt();
+    this.states = in.readInt();
+    this.is_del = in.readInt();
+
   }
 
   public static final Parcelable.Creator<GameFinishedEntity> CREATOR = new Parcelable.Creator<GameFinishedEntity>() {

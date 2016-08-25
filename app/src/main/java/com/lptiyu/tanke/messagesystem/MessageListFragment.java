@@ -106,7 +106,7 @@ public class MessageListFragment extends BaseFragment implements
                         result = new MessageNotificationList();
                         result.setName(getString(R.string.message_type_official));
                         result.setIsRead(false);
-                        result.setContent(lastMsg.getContent());
+                        result.setContent(lastMsg.getTitle());//显示标题
                         result.setUserId(Conf.MESSAGE_LIST_USERID_OFFICIAL);
                         result.setType(Conf.MESSAGE_LIST_TYPE_OFFICIAL);
                         result.setTime(lastMsg.getCreateTime());
