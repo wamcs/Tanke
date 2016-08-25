@@ -1,0 +1,286 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@id/tool_bar"
+        style="@style/Toolbar" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white10">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="122">
+
+                <ImageView
+                    android:id="@id/complete_last_button"
+                    android:layout_width="@dimen/complete_arrow_button_size"
+                    android:layout_height="@dimen/complete_arrow_button_size"
+                    android:layout_marginLeft="@dimen/complete_arrow_button_margin_x"
+                    android:layout_marginTop="@dimen/complete_arrow_button_margin_y"
+                    android:src="@mipmap/img_last_grey" />
+
+                <LinearLayout
+                    android:id="@id/complete_next_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/complete_arrow_button_size"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="@dimen/complete_arrow_button_margin_x"
+                    android:layout_marginTop="@dimen/complete_arrow_button_margin_y"
+                    android:orientation="horizontal">
+
+                    <com.lptiyu.tanke.widget.CustomTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginRight="@dimen/x10"
+                        android:text="@string/complete"
+                        android:textColor="@color/complete_next_button_text_color"
+                        android:textSize="@dimen/complete_arrow_button_text_size" />
+
+                    <ImageView
+
+                        android:layout_width="@dimen/complete_arrow_button_size"
+                        android:layout_height="@dimen/complete_arrow_button_size"
+                        android:drawablePadding="@dimen/x10"
+                        android:src="@mipmap/img_next_bule" />
+                </LinearLayout>
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="700"
+                android:background="@mipmap/img_complete_bg" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="65" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_gravity="center"
+                android:layout_weight="246">
+
+                <FrameLayout
+                    android:id="@+id/FrameLayout"
+                    android:layout_width="@dimen/complete_user_avatar_layout_size"
+                    android:layout_height="@dimen/complete_user_avatar_layout_size"
+                    android:background="@mipmap/img_avatar_border">
+
+                    <com.lptiyu.tanke.widget.CircularImageView
+                        android:id="@id/complete_avatar_image_view"
+                        android:layout_width="@dimen/complete_user_avatar_size"
+                        android:layout_height="@dimen/complete_user_avatar_size"
+                        android:layout_gravity="center"
+                        android:background="@mipmap/img_male" />
+                </FrameLayout>
+            </LinearLayout>
+
+            <EditText
+                android:id="@id/complete_nickname_text"
+                android:layout_width="@dimen/complete_nickname_edit_width"
+                android:layout_height="0dp"
+                android:layout_gravity="center"
+                android:layout_weight="42"
+                android:background="@color/white10"
+                android:gravity="center"
+                android:hint="@string/input_nickname"
+                android:textColor="@color/base_text_color"
+                android:textColorHint="@color/base_text_color"
+                android:textSize="@dimen/complete_nickname_edit_text_size" />
+
+            <LinearLayout
+
+
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_gravity="center"
+                android:layout_weight="56"
+                android:gravity="center">
+
+                <com.lptiyu.tanke.widget.CustomTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="@dimen/x79"
+                    android:text="@string/gender"
+                    android:textColor="@color/base_text_color"
+                    android:textSize="@dimen/complete_gender_text_size" />
+
+                <com.lptiyu.tanke.widget.CustomTextView
+                    android:id="@id/complete_gender_male_button"
+                    android:layout_width="@dimen/complete_gender_text_height"
+                    android:layout_height="@dimen/complete_gender_text_height"
+                    android:layout_marginRight="@dimen/x110"
+                    android:background="@drawable/male_select_style"
+                    android:gravity="center"
+                    android:text="@string/male"
+                    android:textColor="@color/white10"
+                    android:textSize="@dimen/complete_gender_text_size" />
+
+                <com.lptiyu.tanke.widget.CustomTextView
+                    android:id="@id/complete_gender_female_button"
+                    android:layout_width="@dimen/complete_gender_text_height"
+                    android:layout_height="@dimen/complete_gender_text_height"
+                    android:gravity="center"
+                    android:text="@string/female"
+                    android:textColor="@color/grey06"
+                    android:textSize="@dimen/complete_gender_text_size" />
+
+            </LinearLayout>
+
+            <LinearLayout
+
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="125"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:id="@id/complete_height_button"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@mipmap/img_complete_item_side"
+                    android:orientation="vertical">
+
+                    <com.lptiyu.tanke.widget.CustomTextView
+                        style="@style/CompleteItemTitle"
+                        android:text="@string/height" />
+
+                    <com.lptiyu.tanke.widget.CustomTextView
+                        android:id="@id/complete_height_text"
+                        style="@style/CompleteItemContent"
+                        android:text="170CM" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:src="@mipmap/img_down" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@id/complete_birthday_button"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1.5"
+                    android:background="@mipmap/img_complete_item_center"
+                    android:orientation="vertical">
+
+                    <com.lptiyu.tanke.widget.CustomTextView
+                        style="@style/CompleteItemTitle"
+                        android:text="@string/birthday" />
+
+                    <com.lptiyu.tanke.widget.CustomTextView
+                        android:id="@id/complete_birthday_text"
+                        style="@style/CompleteItemContent"
+                        android:text="1980.01.01" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:src="@mipmap/img_down" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@id/complete_weight_button"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@mipmap/img_complete_item_side"
+                    android:orientation="vertical">
+
+                    <com.lptiyu.tanke.widget.CustomTextView
+                        style="@style/CompleteItemTitle"
+                        android:text="@string/weight" />
+
+                    <com.lptiyu.tanke.widget.CustomTextView
+                        android:id="@id/complete_weight_text"
+                        style="@style/CompleteItemContent"
+                        android:text="60KG" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:src="@mipmap/img_down" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_gravity="center"
+                android:layout_weight="106">
+
+                <FrameLayout
+                    android:layout_width="@dimen/complete_location_size"
+                    android:layout_height="@dimen/complete_location_size"
+                    android:layout_marginBottom="@dimen/complete_location_margin_bottom"
+                    android:background="@mipmap/img_complete_location_border">
+
+                    <ImageView
+                        android:id="@id/complete_location_button"
+                        android:layout_width="@dimen/complete_location_button_size"
+                        android:layout_height="@dimen/complete_location_button_size"
+                        android:layout_gravity="center"
+                        android:background="@mipmap/img_complete_location" />
+
+                    <com.lptiyu.tanke.widget.CustomTextView
+                        android:id="@id/complete_location_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="7dp"
+                        android:text="武汉"
+                        android:textColor="@color/white10"
+                        android:textSize="@dimen/complete_location_text_size" />
+
+                    <com.lptiyu.tanke.widget.CustomTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="@dimen/y45"
+                        android:text="@string/change_city"
+                        android:textColor="@color/grey09"
+                        android:textSize="5sp" />
+                </FrameLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="13" />
+
+
+        </LinearLayout>
+
+
+    </RelativeLayout>
+
+
+</RelativeLayout>
