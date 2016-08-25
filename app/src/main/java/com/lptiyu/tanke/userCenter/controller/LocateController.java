@@ -22,10 +22,8 @@ import com.lptiyu.tanke.permission.TargetMethod;
 import com.lptiyu.tanke.pojo.City;
 import com.lptiyu.tanke.userCenter.adapter.LocateListAdapter;
 import com.lptiyu.tanke.utils.ToastUtil;
-import com.lptiyu.tanke.utils.rx.ToastExceptionAction;
 import com.lptiyu.tanke.widget.CustomTextView;
 
-import java.lang.annotation.Target;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -200,7 +198,7 @@ public class LocateController extends ActivityController implements BDLocationLi
       mLocateErrorText.setVisibility(View.VISIBLE);
     } else {
       for (City c : list) {
-        if (c != null && c.getId().equals(city.getId())) {
+        if (c != null &&c.getId()!=null&& c.getId().equals(city.getId())) {
           isLocateCityOpened = true;
           mLocateErrorText.setVisibility(View.GONE);
           return;
