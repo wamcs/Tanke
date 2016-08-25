@@ -274,9 +274,23 @@ public class GameDetailsController extends ActivityController {
     //点击范围更广点
     @OnClick(R.id.rl_time_location)
     public void startLocationDetailMap() {
+
+        //默认显示武汉
+        String lat = "30.515372";
+        String lon = "114.419876";
+        if (mGameDetailsResponse.latitude != null && mGameDetailsResponse.latitude !="" && Double.valueOf(mGameDetailsResponse.latitude) > 0.1)
+        {
+            lat = mGameDetailsResponse.latitude;
+        }
+
+        if (mGameDetailsResponse.longtitude != null && mGameDetailsResponse.longtitude !="" && Double.valueOf(mGameDetailsResponse.longtitude) > 0.1)
+        {
+            lon = mGameDetailsResponse.longtitude;
+        }
+
         Intent intent = new Intent(getActivity(), GameDetailsLocationActivity.class);
-        intent.putExtra(Conf.LATITUDE, Double.valueOf(mGameDetailsResponse.latitude));
-        intent.putExtra(Conf.LONGITUDE, Double.valueOf(mGameDetailsResponse.longtitude));
+        intent.putExtra(Conf.LATITUDE, Double.valueOf(lat));
+        intent.putExtra(Conf.LONGITUDE, Double.valueOf(lon));
         startActivity(intent);
     }
 
