@@ -183,6 +183,8 @@ public class ImageDistinguishActivity extends MyBaseActivity implements Imagedis
                 isOK = true;
                 tv_is_scanning.setText("提交中...");
                 startAnim();
+                timerHandler = null;
+                mHandler = null;
                 upLoadGameRecord();
             }
         });
