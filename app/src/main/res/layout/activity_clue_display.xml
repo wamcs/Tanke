@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/clue_display_background"
+    >
+
+    <LinearLayout
+        android:id="@+id/clue_display_main_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true"
+        android:orientation="vertical"
+        android:background="@color/white08">
+        <ImageView
+            android:id="@+id/clue_display_close_button"
+            android:layout_gravity="end"
+            android:layout_margin="@dimen/x20"
+            android:layout_width="@dimen/clue_display_close_button_size"
+            android:layout_height="0dp"
+            android:layout_weight="60"
+            android:src="@mipmap/avoscloud_feedback_dev_reply_background"/>
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="780"
+            android:scrollbarAlwaysDrawHorizontalTrack="false"
+            >
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/clue_display_show_view">
+            </LinearLayout>
+        </ScrollView>
+
+    </LinearLayout>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        android:layout_centerInParent="true"
+        android:id="@+id/clue_display_image_view"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:visibility="gone"
+        android:layout_centerInParent="true"
+        android:id="@+id/clue_display_video_layout">
+        <LinearLayout
+            android:layout_gravity="center_vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <VideoView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="gone"
+                android:id="@+id/clue_display_video_view"
+                />
+        </LinearLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>

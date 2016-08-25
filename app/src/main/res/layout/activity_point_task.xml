@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginLeft="30dp"
+    android:layout_marginRight="30dp"
+    android:layout_marginTop="40dp"
+    tools:context="com.lptiyu.tanke.activities.pointtask.PointTaskActivity">
+
+
+    <RelativeLayout
+        android:id="@+id/rl_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/orange"
+        android:padding="15dp"
+        android:clickable="true"
+        android:visibility="visible">
+
+        <com.lptiyu.tanke.widget.CustomTextView
+            android:id="@+id/ctv_taskName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginRight="25dp"
+            android:text="神秘楼宇"
+            android:textColor="@color/white10"
+            android:textSize="18sp"
+            android:clickable="true"
+            android:textStyle="bold"/>
+
+        <ImageView
+            android:id="@+id/img_close"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/ctv_taskName"
+            android:layout_alignParentRight="true"
+            android:layout_alignTop="@id/ctv_taskName"
+            android:clickable="true"
+            android:src="@drawable/close"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rl_getKey"
+        android:layout_width="match_parent"
+        android:layout_height="90dp"
+        android:layout_alignParentBottom="true"
+        android:visibility="visible"
+        android:clickable="true">
+
+        <ImageView
+            android:id="@+id/img_getKey"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/key"/>
+
+    </RelativeLayout>
+
+    <ListView
+        android:id="@+id/lv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/rl_getKey"
+        android:layout_below="@id/rl_title"
+        android:background="@color/white10"
+        android:divider="@null"
+        android:dividerHeight="0dp"
+        android:listSelector="@null"
+        android:scrollbars="none"/>
+
+
+</RelativeLayout>

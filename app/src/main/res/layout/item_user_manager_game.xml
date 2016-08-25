@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:paddingTop="@dimen/y5"
+              android:paddingBottom="@dimen/y5"
+              android:paddingLeft="@dimen/x20"
+              android:paddingRight="@dimen/x20"
+              android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/item_user_manager_game_content_root"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/y20">
+
+        <com.makeramen.roundedimageview.RoundedImageView
+            android:id="@id/image_view"
+            android:layout_width="@dimen/item_user_manager_game_width"
+            android:layout_height="@dimen/item_user_manager_game_height"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/x26"
+            android:contentDescription="@string/content_description"
+            android:scaleType="centerCrop"
+            android:src="@mipmap/need_to_remove"
+            app:riv_corner_radius="@dimen/x13"/>
+
+
+        <com.lptiyu.tanke.widget.CustomTextView
+            android:id="@+id/game_title_pre"
+            style="@style/UserManagerGameItemTextPreStyle"
+            android:layout_width="wrap_content"
+            android:layout_marginLeft="@dimen/x20"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/image_view"
+            android:text="游戏名称:"
+        />
+
+        <com.lptiyu.tanke.widget.CustomTextView
+            android:id="@+id/game_title"
+            style="@style/UserManagerGameItemTextTitleStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@id/game_title_pre"
+            android:layout_toRightOf="@id/game_title_pre"
+            android:text="游戏标题"
+        />
+
+        <com.lptiyu.tanke.widget.CustomTextView
+            android:id="@+id/task_title_pre"
+            style="@style/UserManagerGameItemTextPreStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@id/game_title_pre"
+            android:layout_below="@id/game_title_pre"
+            android:text="任务名称:"/>
+
+        <com.lptiyu.tanke.widget.CustomTextView
+            android:id="@+id/task_title"
+            style="@style/UserManagerGameItemTextTitleStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@id/task_title_pre"
+            android:layout_toRightOf="@id/task_title_pre"
+            android:text="任务名称"
+        />
+
+        <com.lptiyu.tanke.widget.CustomTextView
+            android:id="@+id/task_location_pre"
+            style="@style/UserManagerGameItemTextPreStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@id/task_title_pre"
+            android:layout_below="@id/task_title_pre"
+            android:layout_toRightOf="@id/image_view"
+            android:text="任务地点:"/>
+
+        <com.lptiyu.tanke.widget.CustomTextView
+            android:id="@+id/task_location"
+            style="@style/UserManagerGameItemTextTitleStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@id/task_location_pre"
+            android:layout_toRightOf="@id/task_location_pre"
+            android:text="华中科技大学东校区"/>
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/item_user_manager_game_content_root">
+
+        <Button
+            android:id="@+id/game_pass_rule"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:padding="0dp"
+            android:backgroundTint="@color/colorPrimary"
+            android:textColor="@color/white10"
+            android:text="通关规则"/>
+
+        <Button
+            android:id="@+id/game_qrcode"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:backgroundTint="@color/colorPrimary"
+            android:textColor="@color/white10"
+            android:text="通关密钥"/>
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/user_center_linear_layout_bottom_line_height"
+        android:layout_alignParentBottom="true"
+        android:background="@color/user_center_split_line"/>
+
+</LinearLayout>

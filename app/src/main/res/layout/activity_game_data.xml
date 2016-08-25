@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".gamedata.GameDataActivity">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@id/tool_bar"
+        style="@style/Toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/activity_game_data_toolbar_imageview_left"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:contentDescription="@null"
+                android:padding="@dimen/default_toolbar_imageview_padding"
+                android:src="@mipmap/img_last_white"/>
+
+            <com.lptiyu.tanke.widget.CustomTextView
+                android:id="@+id/activity_game_data_toolbar_textview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:padding="@dimen/default_toolbar_textview_padding"
+                android:textColor="@color/default_font_color"
+                android:textSize="@dimen/default_toolbar_textview_text_size"/>
+
+        </RelativeLayout>
+
+    </android.support.v7.widget.Toolbar>
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_refresh_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/tool_bar">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:overScrollMode="never"/>
+
+    </android.support.v4.widget.SwipeRefreshLayout>
+
+</RelativeLayout>

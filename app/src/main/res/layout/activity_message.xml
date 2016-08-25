@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@id/tool_bar"
+        style="@style/Toolbar">
+
+        <include layout="@layout/layout_default_toolbar"/>
+
+    </android.support.v7.widget.Toolbar>
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@id/message_refresh_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/tool_bar"
+        >
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@id/message_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/message_activity_bg_color"
+            />
+    </android.support.v4.widget.SwipeRefreshLayout>
+
+    <ImageView
+        android:id="@+id/img_empty_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/tool_bar"
+        android:contentDescription="@string/content_description"
+        android:padding="@dimen/x262"
+        android:src="@mipmap/img_temp_no_data"
+        android:visibility="gone"/>
+
+
+</RelativeLayout>
