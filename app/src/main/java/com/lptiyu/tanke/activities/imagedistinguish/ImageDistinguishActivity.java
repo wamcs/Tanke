@@ -8,6 +8,7 @@ import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Surface;
@@ -33,6 +34,10 @@ import com.lptiyu.tanke.global.Conf;
 import com.lptiyu.tanke.pojo.UpLoadGameRecord;
 import com.lptiyu.tanke.pojo.UploadGameRecordResponse;
 import com.lptiyu.tanke.utils.PopupWindowUtils;
+import com.lptiyu.tanke.utils.ToastUtil;
+import com.lptiyu.tanke.utils.thread;
+
+import java.util.TimerTask;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -88,7 +93,6 @@ public class ImageDistinguishActivity extends MyBaseActivity implements Imagedis
     private Point point;
     private Task task;
     private boolean isPointOver;
-    //    private Thread thread;
     private String[] imgArr;
 
     public static native void nativeInitGL();
@@ -191,6 +195,23 @@ public class ImageDistinguishActivity extends MyBaseActivity implements Imagedis
                 }
             }, 800);
         }
+    }
+
+    private Handler timerHandler;
+
+    private void initTimerTask() {
+        timerHandler = new Handler() {
+            @Override
+            public void handleMessage(Message msg) {
+                super.handleMessage(msg);
+                switch (msg.what) {
+                    case 0:
+                        if (timerHandler != null)
+                            ToastUtil.TextToast("什么都没有发现，继续努力哦！");
+                        break;
+                }
+            }
+        };
     }
 
     private void initAR() {
@@ -304,16 +325,16 @@ public class ImageDistinguishActivity extends MyBaseActivity implements Imagedis
                 break;
             case R.id.img_startScan:
                 if (!isScanning) {
+                    if (timerHandler == null) {
+                        initTimerTask();
+                    }
+                    timerHandler.sendEmptyMessageDelayed(0, 7000);
+
                     ImageDistinguishActivity.nativeStartAr();
-                    //                startAnim();
-                    //                if (thread == null) {
-                    //                    initCountDownTimer();
-                    //                }
-                    //                thread.start();
-                    //                imgStartScan.setEnabled(false);
                     imgStartScan.setImageResource(R.drawable.img_distinguish);
                     tvScanningTip.setVisibility(View.VISIBLE);
                 } else {
+                    timerHandler = null;
                     ImageDistinguishActivity.nativeStopAr();
                     imgStartScan.setImageResource(R.drawable.img_start_distinguish);
                     tvScanningTip.setVisibility(View.GONE);
@@ -353,8 +374,6 @@ public class ImageDistinguishActivity extends MyBaseActivity implements Imagedis
     public void successUploadRecord(UploadGameRecordResponse response) {
         resultRecord = response;
         showSuccessResult();
-        //        thread.interrupt();
-        //        thread = null;
         if (response.game_statu == PlayStatus.GAME_OVER) {
             popup_tv_result.setText("游戏完成");
         } else {
@@ -424,30 +443,6 @@ public class ImageDistinguishActivity extends MyBaseActivity implements Imagedis
         }
     }
 
-    //    /**
-    //     * 初始化计时器
-    //     */
-    //    private void initCountDownTimer() {
-    //        thread = new Thread(new Runnable() {
-    //            @Override
-    //            public void run() {
-    //                try {
-    //                    Thread.sleep(3000);
-    //                    runOnUiThread(new Runnable() {
-    //                        @Override
-    //                        public void run() {
-    //                            thread = null;
-    //                            if (!isOK) {
-    //                                showFailResult();
-    //                            }
-    //                        }
-    //                    });
-    //                } catch (InterruptedException e) {
-    //                    e.printStackTrace();
-    //                }
-    //            }
-    //        });
-    //    }
 
     @Override
     public void onConfigurationChanged(Configuration config) {
