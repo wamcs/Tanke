@@ -1,46 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:orientation="vertical">
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
     <com.lptiyu.tanke.widget.CustomTextView
         android:id="@+id/text"
         android:layout_width="match_parent"
-        android:textSize="15sp"
+        android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/x50"
         android:layout_marginRight="@dimen/x50"
-        android:textColor="@color/black06"
+        android:paddingBottom="10dp"
+        android:paddingTop="10dp"
         android:text="几条那了大概阿龙索的高科技阿列克如果两个计算两打开过三个速度含苏丹红发送斯蒂芬斯蒂芬和所覆盖和"
-        android:layout_height="wrap_content"/>
+        android:textColor="@color/black06"
+        android:textSize="15sp"/>
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignRight="@id/text"
         android:layout_below="@id/text"
-        android:textSize="15sp"
         android:orientation="horizontal"
-        android:padding="@dimen/x13">
+        android:padding="@dimen/x13"
+        android:textSize="15sp">
 
         <com.lptiyu.tanke.widget.CustomTextView
             android:id="@+id/cancel_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/x13"
-            android:textColor="@color/colorPrimary"
             android:padding="@dimen/x21"
-            android:text="@string/dismiss"/>
+            android:text="@string/dismiss"
+            android:textColor="@color/colorPrimary"/>
 
         <com.lptiyu.tanke.widget.CustomTextView
             android:id="@+id/ensure_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/colorPrimary"
-            android:textSize="15sp"
             android:layout_margin="@dimen/x13"
             android:padding="@dimen/x21"
-            android:text="@string/ensure"/>
+            android:text="@string/ensure"
+            android:textColor="@color/colorPrimary"
+            android:textSize="15sp"/>
 
     </LinearLayout>
 

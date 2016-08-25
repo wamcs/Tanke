@@ -61,12 +61,12 @@ public class GameZipUtils {
      */
     public String isParsedFileExist(long gameId) {
         //获取游戏包父目录
-        File gameZipRootFile = DirUtils.getTempDirectory();
+        File gameZipRootFile = DirUtils.getGameDirectory();
         //筛选出解压文件
         //        String[] list = gameZipRootFile.list(new GameParsedFileFilter());
         String[] list = gameZipRootFile.list();
         for (String filePath : list) {
-//            Log.i("jason", "筛选出的游戏文件夹：" + filePath);
+            //            Log.i("jason", "筛选出的游戏文件夹：" + filePath);
             if (filePath.startsWith(gameId + "_") && !filePath.endsWith(".zip")) {
                 //                this.parsedFilePath = gameZipRootFile.getAbsolutePath() + "/" + filePath;
                 //                setGameIdLineIdVersion(parsedFilePath + ".zip");
@@ -78,11 +78,28 @@ public class GameZipUtils {
     }
 
     /**
+     * 判断该游戏解压包是否存在
+     */
+    public String isParsedFileExistAndUpdate(String parsedFileName) {
+        //获取游戏包父目录
+        File gameZipRootFile = DirUtils.getGameDirectory();
+        //筛选出解压文件
+        String[] list = gameZipRootFile.list();
+        for (String filePath : list) {
+            //            Log.i("jason", "筛选出的游戏文件夹：" + filePath);
+            if (filePath.startsWith(parsedFileName) && !filePath.endsWith(".zip")) {
+                return gameZipRootFile.getAbsolutePath() + "/" + filePath;
+            }
+        }
+        return null;
+    }
+
+    /**
      * 判断该游戏压缩包是否存在
      */
     public String isZippedFileExist(long gameId) {
         //获取游戏包父目录
-        File gameZipRootFile = DirUtils.getTempDirectory();
+        File gameZipRootFile = DirUtils.getGameDirectory();
         //筛选出压缩文件，也可以通过filePath.endsWith(".zip")来筛选
         String[] list = gameZipRootFile.list(new GameZippedFileFilter());
         for (String filePath : list) {

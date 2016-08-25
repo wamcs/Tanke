@@ -2,13 +2,8 @@ package com.lptiyu.tanke.gamedisplay;
 
 import android.animation.ObjectAnimator;
 import android.app.ProgressDialog;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.location.LocationManager;
-import android.provider.Settings;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,7 +11,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RadioGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.lptiyu.tanke.R;
@@ -32,10 +26,10 @@ import com.lptiyu.tanke.io.net.HttpService;
 import com.lptiyu.tanke.io.net.Response;
 import com.lptiyu.tanke.pojo.GameDisplayEntity;
 import com.lptiyu.tanke.pojo.GetGameStatusResponse;
-import com.lptiyu.tanke.utils.GameZipUtils;
 import com.lptiyu.tanke.utils.NetworkUtil;
 import com.lptiyu.tanke.utils.PopupWindowUtils;
 import com.lptiyu.tanke.utils.ShaPrefer;
+import com.lptiyu.tanke.utils.XUtilsDownloader;
 import com.lptiyu.tanke.utils.xutils3.RequestParamsHelper;
 import com.lptiyu.tanke.utils.xutils3.XUtilsHelper;
 import com.lptiyu.tanke.utils.xutils3.XUtilsRequestCallBack;
@@ -47,7 +41,6 @@ import com.lptiyu.tanke.widget.CustomTextView;
 
 import org.xutils.http.RequestParams;
 
-import java.io.File;
 import java.util.List;
 
 import butterknife.BindView;
@@ -60,7 +53,7 @@ import rx.schedulers.Schedulers;
 /**
  * EMAIL : danxionglei@foxmail.com
  * DATE : 16/6/1
- * <p>
+ * <p/>
  * 控制RecyclerView的首部
  *
  * @author ldx
@@ -109,7 +102,6 @@ public class ElasticHeaderViewHolder extends BaseViewHolder<GameDisplayEntity> {
     private GameDisplayEntity gameDisplayEntity;
 
     //    private GameZipScanner mGameZipScanner;
-    private double gameZipDownloadFailedNum = 3;
     private List<Banner> list_banner;
     private BannerPagerAdapter pagerAdapter;
 
@@ -300,16 +292,16 @@ public class ElasticHeaderViewHolder extends BaseViewHolder<GameDisplayEntity> {
             case PlayStatus.HAVE_ENTERED_bUT_NOT_START_GAME://进入过但没开始游戏，进入到玩游戏界面
             case PlayStatus.HAVE_STARTED_GAME://进入并且已经开始游戏，进入到玩游戏界面
                 //进入到玩游戏界面之前，先检测游戏包是否存在，存在则直接进入，否则要先下载游戏包
-                GameZipUtils gameZipUtils = new GameZipUtils();
-                if (gameZipUtils.isParsedFileExist(gameDisplayEntity.getId()) == null) {
-                    //游戏包不存在，需要下载游戏包
-                    progressDialog = ProgressDialog.show(getContext(), "", "加载中...",
-                            true);
-                    progressDialog.show();
-                    downloadGameZipFile();
-                } else {
-                    startPlayingGame();
-                }
+                String tempGameZipUrl = gameDisplayEntity.getGameZipUrl();
+                if (tempGameZipUrl == null || tempGameZipUrl=="")
+                    return;
+                new XUtilsDownloader(getContext(), tempGameZipUrl, gameDisplayEntity.getId(), new
+                        XUtilsDownloader.FinishDownloadCallback() {
+                            @Override
+                            public void onFinishedDownload() {
+                                startPlayingGame();
+                            }
+                        });
                 break;
             default:
                 break;
@@ -457,76 +449,6 @@ public class ElasticHeaderViewHolder extends BaseViewHolder<GameDisplayEntity> {
         }
         if (rightTitle != null) {
             rightTitle.setVisibility(View.VISIBLE);
-        }
-    }
-
-    //下载游戏包
-    private void downloadGameZipFile() {
-        XUtilsHelper.getInstance().downLoadGameZip(gameDisplayEntity.getGameZipUrl(), new XUtilsHelper.IDownloadGameZipFileListener() {
-            @Override
-            public void successs(File file) {
-                String zippedFilePath = file.getAbsolutePath();
-                GameZipUtils gameZipUtils = new GameZipUtils();
-                //解压文件
-                gameZipUtils.parseZipFile(zippedFilePath);
-                String parsedFilePath = gameZipUtils.isParsedFileExist(gameDisplayEntity.getId());
-                if (parsedFilePath != null) {
-                    file.delete();
-                    startPlayingGame();
-                } else {
-                    Toast.makeText(getContext(), "游戏包解压失败", Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            @Override
-            public void progress(long total, long current, boolean isDownloading) {
-                //游戏进度
-                Log.i("jason", "进度：%" + current * 100 / total);
-
-            }
-
-            @Override
-            public void finished() {
-                if (progressDialog != null) {
-                    progressDialog.dismiss();
-                }
-            }
-
-            @Override
-            public void onError(String errMsg) {
-                PopupWindowUtils.getInstance().showFailLoadPopupwindow(getContext());
-            }
-        });
-
-    }
-
-    private void initGPS() {
-        LocationManager locationManager = (LocationManager) getContext().getSystemService(Context.LOCATION_SERVICE);
-        // 判断GPS模块是否开启，如果没有则开启
-        if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-            AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
-            dialog.setMessage("为了定位更加精确，请打开GPS");
-            dialog.setPositiveButton("确定",
-                    new DialogInterface.OnClickListener() {
-
-                        @Override
-                        public void onClick(DialogInterface arg0, int arg1) {
-                            // 转到手机设置界面，用户设置GPS
-                            Intent intent = new Intent(
-                                    Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                            fragment.startActivityForResult(intent, 0); // 设置完成后返回到原来的界面
-
-                        }
-                    });
-            dialog.setNegativeButton("取消", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface arg0, int arg1) {
-                    arg0.dismiss();
-                }
-            });
-            dialog.show();
-        } else {
-            startPlayingGame();
         }
     }
 

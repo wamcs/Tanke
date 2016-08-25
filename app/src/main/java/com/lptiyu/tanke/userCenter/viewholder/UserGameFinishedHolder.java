@@ -6,7 +6,6 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.lptiyu.tanke.R;
@@ -19,17 +18,13 @@ import com.lptiyu.tanke.io.net.HttpService;
 import com.lptiyu.tanke.io.net.Response;
 import com.lptiyu.tanke.pojo.GameFinishedEntity;
 import com.lptiyu.tanke.pojo.GetGameStatusResponse;
-import com.lptiyu.tanke.utils.FileUtils;
 import com.lptiyu.tanke.utils.GameZipUtils;
 import com.lptiyu.tanke.utils.NetworkUtil;
 import com.lptiyu.tanke.utils.PopupWindowUtils;
-import com.lptiyu.tanke.utils.ProgressDialogHelper;
 import com.lptiyu.tanke.utils.TimeUtils;
-import com.lptiyu.tanke.utils.xutils3.XUtilsHelper;
+import com.lptiyu.tanke.utils.XUtilsDownloader;
 import com.lptiyu.tanke.widget.CustomTextView;
 import com.makeramen.roundedimageview.RoundedImageView;
-
-import java.io.File;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -85,7 +80,7 @@ public class UserGameFinishedHolder extends BaseViewHolder<GameFinishedEntity> {
         title.setText(entity.getName());
         type.setText("");
         String ftime = entity.getEndTime();
-        completeTime.setText(ftime.substring(0,ftime.lastIndexOf(":"))+"完成");
+        completeTime.setText(ftime.substring(0, ftime.lastIndexOf(":")) + "完成");
         //        Date startTimeDate = TimeUtils.parseDate(entity.getStartTime(), TimeUtils.totalFormat);
         //        Date endTimeDate = TimeUtils.parseDate(entity.getEndTime(), TimeUtils.totalFormat);
         //        if (startTimeDate == null) {
@@ -95,7 +90,7 @@ public class UserGameFinishedHolder extends BaseViewHolder<GameFinishedEntity> {
         //            endTimeDate = playing Date();
         //        }
         //        long consumeTime = endTimeDate.getTime() - startTimeDate.getTime();
-        consumingTime.setText("用时"+TimeUtils.parseSecondToHourAndMinutes(Long.parseLong(entity.getTotalTime())));
+        consumingTime.setText("用时" + TimeUtils.parseSecondToHourAndMinutes(Long.parseLong(entity.getTotalTime())));
         exp.setText(String.format(getContext().getString(R.string.user_game_finished_get_exp_formatter), entity
                 .getExpPoints()));
 
@@ -133,48 +128,6 @@ public class UserGameFinishedHolder extends BaseViewHolder<GameFinishedEntity> {
         });
     }
 
-    //下载游戏包
-    private void downloadGameZipFile() {
-        XUtilsHelper.getInstance().downLoadGameZip(tempGameZipUrl, new XUtilsHelper.IDownloadGameZipFileListener() {
-            @Override
-            public void successs(File file) {
-                String zippedFilePath = file.getAbsolutePath();
-                GameZipUtils gameZipUtils = new GameZipUtils();
-                //解压文件
-                gameZipUtils.parseZipFile(zippedFilePath);
-                String parsedFilePath = gameZipUtils.isParsedFileExist(currentEntity.getGameId());
-                if (parsedFilePath != null) {
-                    file.delete();
-                    startPlayingGame();
-                } else {
-                    Toast.makeText(getContext(), "游戏包解压失败", Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            @Override
-            public void progress(long total, long current, boolean isDownloading) {
-                //游戏进度
-                //                Log.i("jason", "进度：%" + current * 100 / total);
-                if (progressDialog != null) {
-                    progressDialog.setMessage("加载中" + current * 100 / total + "%");
-                }
-            }
-
-            @Override
-            public void finished() {
-                if (progressDialog != null) {
-                    progressDialog.dismiss();
-                }
-            }
-
-            @Override
-            public void onError(String errMsg) {
-                PopupWindowUtils.getInstance().showFailLoadPopupwindow(getContext());
-            }
-        });
-
-    }
-
     private void loadNet() {
         HttpService.getGameService().getGameStatus(Accounts.getId(), currentEntity.getGameId())
                 .subscribeOn(Schedulers.io())
@@ -187,26 +140,13 @@ public class UserGameFinishedHolder extends BaseViewHolder<GameFinishedEntity> {
                             //判断游戏状态
                             switch (response.getData().play_statu) {
                                 case PlayStatus.GAME_OVER://游戏结束，暂不考虑
-                                    GameZipUtils gameZipUtils = new GameZipUtils();
-                                    if (gameZipUtils.isParsedFileExist(currentEntity.getGameId()) == null) {
-                                        //游戏包不存在，需要下载游戏包
-                                        progressDialog = ProgressDialogHelper.getSpinnerProgressDialog(getContext());
-                                        progressDialog.show();
-                                        downloadGameZipFile();
-                                    } else if (gameZipUtils.isGameUpdated(currentEntity.getGameId(), tempGameZipUrl
-                                            .substring(tempGameZipUrl.lastIndexOf('/') + 1, tempGameZipUrl
-                                                    .lastIndexOf('.')))) {
-                                        String parsedFileExist = gameZipUtils.isParsedFileExist(currentEntity
-                                                .getGameId());
-                                        //删除旧的游戏包
-                                        boolean b = FileUtils.deleteDirectory(parsedFileExist);
-                                        //下载新的游戏包
-                                        progressDialog = ProgressDialogHelper.getSpinnerProgressDialog(getContext());
-                                        progressDialog.show();
-                                        downloadGameZipFile();
-                                    } else {
-                                        startPlayingGame();
-                                    }
+                                    new XUtilsDownloader(getContext(), tempGameZipUrl, currentEntity.getGameId(), new
+                                            XUtilsDownloader.FinishDownloadCallback() {
+                                                @Override
+                                                public void onFinishedDownload() {
+                                                    startPlayingGame();
+                                                }
+                                            });
                                     break;
                                 case PlayStatus.NEVER_ENTER_GANME://从未玩过游戏，进入到游戏详情界面
                                 case PlayStatus.HAVE_ENTERED_bUT_NOT_START_GAME://进入过但没开始游戏，进入到玩游戏界面

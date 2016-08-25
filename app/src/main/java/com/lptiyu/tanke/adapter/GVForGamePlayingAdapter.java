@@ -29,6 +29,7 @@ public class GVForGamePlayingAdapter extends BaseAdapter {
     private Context context;
     private LayoutInflater inflater;
     private String unZippedDir;
+    private boolean isShow = false;
 
     public GVForGamePlayingAdapter(Context context, List<Point> list_points, String unZippedDir) {
         this.list_points = list_points;
@@ -91,6 +92,11 @@ public class GVForGamePlayingAdapter extends BaseAdapter {
                 vh.imgTransparent.setVisibility(View.GONE);
                 break;
         }
+
+        //        if (position == 0 && !isShow) {
+        //            PopupWindowUtils.getInstance().showUsageTip(context, convertView, 100, 0);
+        //            isShow = true;
+        //        }
 
         return convertView;
     }

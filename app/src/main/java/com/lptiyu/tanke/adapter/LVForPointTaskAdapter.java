@@ -2,16 +2,13 @@ package com.lptiyu.tanke.adapter;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.BaseAdapter;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
 
 import com.lptiyu.tanke.R;
 import com.lptiyu.tanke.activities.taskimagescale.TaskImageScaleActivity;
@@ -85,6 +82,15 @@ public class LVForPointTaskAdapter extends BaseAdapter {
         Task task = list_tasks.get(position);
         WebViewUtils.setWebView(context, vh.webView);
         vh.webView.loadData(task.content, "text/html;charset=UTF-8", null);
+
+
+        //修改适合的字体，避免因为系统的设置，导致字体过大或过小
+//        int j = wSet.getDefaultFixedFontSize();
+//        if(j < 15)
+//            j=15;
+//        wSet.setDefaultFontSize(j);
+//        wSet.setMinimumFontSize(j);
+
         // 特别要注意这行代码,意思是在js中条用android中的第一个参数的实际名字。这里第一个参数是this。
         //也就是本类的实例。imgelistener是本类的实例在js中的名字。
         // 也就是说你要在js中调用MainActivity这个类中的方法的话就必须给MainActivity这个类在js中的名字，
@@ -93,22 +99,39 @@ public class LVForPointTaskAdapter extends BaseAdapter {
         final ViewHolder finalVh = vh;
         vh.webView.setWebViewClient(new WebViewClient() {
 
+            /*
             public  void onPageStarted(WebView view, String url, Bitmap favicon)
             {
                 // 防止双击内容缩小
                 finalVh.webView.loadUrl("javascript:(function(){"
-                        + "var oMeta = document.createElement('meta'); "
+                + "var cssString=\"p{line-height: 40px;color:#ff0000;}\""
+               + "var style=document.createElement(\"style\");"
+               + "style.setAttribute(\"type\", \"text/css\");"
+               + "if(style.styleSheet){"
+               + "  style.styleSheet.cssText = cssString;"
+               +" } else {"
+               +"     var cssText = document.createTextNode(cssString);"
+               +"    style.appendChild(cssText);"
+               +" }"
+                + "document.getElementsByTagName('head')[0].appendChild(style); "
+
+                + "var oMeta = document.createElement('meta'); "
                         + "oMeta.name = \"viewport\"; "
                         + "oMeta.content = \"initial-scale=1.0, user-scalable=no\"; "
                         + "document.getElementsByTagName('head')[0].appendChild(oMeta); "
                         + "})()");
 
             }
+            */
 
             @Override
             public void onPageFinished(WebView view, String url) {
-                // 注入js函数监听
+                // 注入js函数监听  更改行间距和字体颜色
                 finalVh.webView.loadUrl("javascript:(function(){"
+                        + "var p = document.getElementsByTagName(\"p\"); "
+                        + "for(var j=0;j<p.length;j++)  " + "{"
+                        + "p[j].style.lineHeight=\"1.8\";"
+                        + "p[j].style.color=\"#666666\";}"
                         + "var objs = document.getElementsByTagName(\"img\"); "
                         + "for(var i=0;i<objs.length;i++)  " + "{"
                         + "    objs[i].onclick=function()  " + "    {  "
@@ -117,16 +140,6 @@ public class LVForPointTaskAdapter extends BaseAdapter {
                         + "    }  " + "}" + "})()");
             }
         });
-
-
-        WebSettings wSet = vh.webView.getSettings();
-        wSet.setLoadWithOverviewMode(true);
-        wSet.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
-        wSet.setSupportZoom(false);
-
-        //修改适合的字体，避免因为系统的设置，导致字体过大或过小
-        int j = wSet.getDefaultFixedFontSize();
-        wSet.setDefaultFontSize(j);
 
 
         switch (task.state) {
@@ -175,9 +188,9 @@ public class LVForPointTaskAdapter extends BaseAdapter {
 
     @android.webkit.JavascriptInterface
     public void openImage(String img) {
-        Toast.makeText(context, img, Toast.LENGTH_SHORT).show();
+        //        Toast.makeText(context, img, Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(context, TaskImageScaleActivity.class);
-        intent.putExtra(Conf.TASK_IMG,img);
+        intent.putExtra(Conf.TASK_IMG, img);
         context.startActivity(intent);
         //        new AlertDialog.Builder(context).setMessage("图片被点击了").setNegativeButton("确定", null).setCancelable
         // (true).show();

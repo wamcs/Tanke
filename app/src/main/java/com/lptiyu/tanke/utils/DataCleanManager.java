@@ -13,17 +13,21 @@ public class DataCleanManager {
 
     public static String getTotalCacheSize(Context context) throws Exception {
         long cacheSize = getFolderSize(context.getCacheDir());
+        long fileSize = getFolderSize(context.getFilesDir());
         if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
             cacheSize += getFolderSize(context.getExternalCacheDir());
+            fileSize += getFolderSize(context.getExternalFilesDir(null));
         }
-        return getFormatSize(cacheSize);
+        return getFormatSize(cacheSize + fileSize);
     }
 
 
     public static void clearAllCache(Context context) {
         deleteDir(context.getCacheDir());
+        deleteDir(context.getFilesDir());
         if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
             deleteDir(context.getExternalCacheDir());
+            deleteDir(context.getExternalFilesDir(null));
         }
     }
 
@@ -70,7 +74,7 @@ public class DataCleanManager {
     public static String getFormatSize(double size) {
         double kiloByte = size / 1024;
         if (kiloByte < 1) {
-//            return size + "Byte";
+            //            return size + "Byte";
             return "0K";
         }
 

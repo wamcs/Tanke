@@ -51,6 +51,8 @@ public class GameDisplayController extends BaseListFragmentController<GameDispla
     CustomTextView mLocate;
     @BindView(R.id.no_data_imageview)
     ImageView mNoDataImageView;
+    @BindView(R.id.ctv_title)
+    CustomTextView ctv_title;
 
     //As a view controller
     GameDisplayFragment fragment;
@@ -82,6 +84,7 @@ public class GameDisplayController extends BaseListFragmentController<GameDispla
         //        refreshTop();
         loadNetWorkData();
         initLocation();
+        ctv_title.setText(Accounts.getNickName() + "");
     }
 
     private void loadNetWorkData() {

@@ -8,33 +8,43 @@ package com.lptiyu.tanke.update;
  */
 public class VersionEntity {
 
-  private String url;
+    private String url;
 
-  private String versionName;
+    private String versionName;
 
-  private int versionCode;
+    private int versionCode;
 
-  public String getUrl() {
-    return url;
-  }
+    private int min_version;
 
-  public void setUrl(String url) {
-    this.url = url;
-  }
+    public int getMin_version() {
+        return min_version;
+    }
 
-  public String getVersionName() {
-    return versionName;
-  }
+    public void setMin_version(int min_version) {
+        this.min_version = min_version;
+    }
 
-  public void setVersionName(String versionName) {
-    this.versionName = versionName;
-  }
+    public String getUrl() {
+        return url;
+    }
 
-  public int getVersionCode() {
-    return versionCode;
-  }
+    public void setUrl(String url) {
+        this.url = url;
+    }
 
-  public void setVersionCode(int versionCode) {
-    this.versionCode = versionCode;
-  }
+    public String getVersionName() {
+        return versionName;
+    }
+
+    public void setVersionName(String versionName) {
+        this.versionName = versionName;
+    }
+
+    public int getVersionCode() {
+        return versionCode;
+    }
+
+    public void setVersionCode(int versionCode) {
+        this.versionCode = versionCode;
+    }
 }
