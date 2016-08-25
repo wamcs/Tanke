@@ -47,6 +47,9 @@ public class GameDetailResponse implements Parcelable {
     public String min;
     public String max;
     public String url;
+    public int states;
+
+
 
     @Override
     public int describeContents() {
@@ -73,6 +76,7 @@ public class GameDetailResponse implements Parcelable {
         dest.writeString(this.min);
         dest.writeString(this.max);
         dest.writeString(this.url);
+        dest.writeInt(this.states);
     }
 
     public GameDetailResponse() {
@@ -97,6 +101,7 @@ public class GameDetailResponse implements Parcelable {
         this.min = in.readString();
         this.max = in.readString();
         this.url = in.readString();
+        this.states = in.readInt();
     }
 
     public static final Parcelable.Creator<GameDetailResponse> CREATOR = new Parcelable.Creator<GameDetailResponse>() {
@@ -132,6 +137,7 @@ public class GameDetailResponse implements Parcelable {
                 ", min='" + min + '\'' +
                 ", max='" + max + '\'' +
                 ", url='" + url + '\'' +
+                ", states='" + states + '\'' +
                 '}';
     }
 }

@@ -33,6 +33,30 @@ public class GamePlayingEntity implements Parcelable {
     @SerializedName("set")
     private float progress;
 
+
+    @SerializedName("states")
+    private int states;
+
+    @SerializedName("is_del")
+    private int is_del;
+
+    public long getIsdel() {
+        return is_del;
+    }
+
+    public void setIsdel(int is_del) {
+        this.is_del = is_del;
+    }
+
+    public long getStates() {
+        return states;
+    }
+
+    public void setStates(int states) {
+        this.states = states;
+    }
+
+
     public long getGameId() {
         return gameId;
     }
@@ -94,6 +118,8 @@ public class GamePlayingEntity implements Parcelable {
         dest.writeInt(this.type);
         dest.writeInt(this.num);
         dest.writeFloat(this.progress);
+        dest.writeInt(this.states);
+        dest.writeInt(this.is_del);
     }
 
     public GamePlayingEntity() {
@@ -106,6 +132,8 @@ public class GamePlayingEntity implements Parcelable {
         this.type = in.readInt();
         this.num = in.readInt();
         this.progress = in.readFloat();
+        this.states = in.readInt();
+        this.is_del = in.readInt();
     }
 
     public static final Parcelable.Creator<GamePlayingEntity> CREATOR = new Parcelable.Creator<GamePlayingEntity>() {
@@ -129,6 +157,8 @@ public class GamePlayingEntity implements Parcelable {
                 ", type=" + type +
                 ", num=" + num +
                 ", progress=" + progress +
+                ", states=" + states +
+                ", is_del=" + is_del +
                 '}';
     }
 }

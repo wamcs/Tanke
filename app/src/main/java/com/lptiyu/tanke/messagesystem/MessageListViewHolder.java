@@ -2,7 +2,6 @@ package com.lptiyu.tanke.messagesystem;
 
 import android.content.Context;
 import android.content.Intent;
-import android.text.Html;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -53,7 +52,7 @@ public class MessageListViewHolder extends BaseViewHolder<MessageNotificationLis
     public void bind(MessageNotificationList entity) {
         final MessageNotificationList item = entity;
         mName.setText(item.getName());
-        mContent.setText(Html.fromHtml(Html.fromHtml(item.getContent()).toString()).toString());
+        mContent.setText(item.getContent());
         mTime.setText(TimeUtils.parseCompleteTime(item.getTime()));
         if (entity.getIsRead()) {
             mRedSpot.setVisibility(View.GONE);
