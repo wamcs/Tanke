@@ -12,7 +12,6 @@ public class ProgressDialogHelper {
         dialog.setCancelable(false);// 设置是否可以通过点击Back键取消
         dialog.setCanceledOnTouchOutside(false);// 设置在点击Dialog外是否取消Dialog进度条
         dialog.setIndeterminate(false);//true不显示进度，false显示进度
-        dialog.setMax(100);
         dialog.setMessage("加载中...");
         return dialog;
     }

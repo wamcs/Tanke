@@ -9,6 +9,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.os.Vibrator;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Surface;
@@ -35,6 +36,7 @@ import com.lptiyu.tanke.pojo.UpLoadGameRecord;
 import com.lptiyu.tanke.pojo.UploadGameRecordResponse;
 import com.lptiyu.tanke.utils.PopupWindowUtils;
 import com.lptiyu.tanke.utils.ToastUtil;
+import com.lptiyu.tanke.utils.VibratorHelper;
 import com.lptiyu.tanke.utils.thread;
 
 import java.util.TimerTask;
@@ -94,6 +96,7 @@ public class ImageDistinguishActivity extends MyBaseActivity implements Imagedis
     private Task task;
     private boolean isPointOver;
     private String[] imgArr;
+    private MyCountDownTimer timer;
 
     public static native void nativeInitGL();
 
@@ -146,21 +149,7 @@ public class ImageDistinguishActivity extends MyBaseActivity implements Imagedis
         task = getIntent().getParcelableExtra(Conf.CURRENT_TASK);
         isPointOver = getIntent().getBooleanExtra(Conf.IS_POINT_OVER, false);
 
-        //        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager
-        //                .PERMISSION_GRANTED) {
-        //            if (ActivityCompat.shouldShowRequestPermissionRationale(ImageDistinguishActivity.this,
-        //                    Manifest.permission.CAMERA)) {
-        //                //如果用户之前拒绝过App使用权限，这个方法就会返回true。
-        //                Toast.makeText(this, "上次拒绝了授权", Toast.LENGTH_SHORT).show();
-        //            } else {
-        //                //当App被永远拒绝获取某权限时（比如你点击了“不再提示”），shouldShowRequestPermissionRationale()就会返回false，
-        //                Toast.makeText(this, "权限被永久禁止", Toast.LENGTH_SHORT).show();
-        //            }
-        //            //申请权限，在回调方法onRequestPermissionsResult()中处理
-        //            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, 100);
-        //        } else {
-        initAR();
-        //        }
+        nativeInit(imgArr, new String[]{""});
 
         GLView glView = new GLView(this);
         glView.setRenderer(new Renderer());
@@ -183,7 +172,8 @@ public class ImageDistinguishActivity extends MyBaseActivity implements Imagedis
                 isOK = true;
                 tv_is_scanning.setText("提交中...");
                 startAnim();
-                timerHandler = null;
+                timer.cancel();
+                timer = null;
                 mHandler = null;
                 upLoadGameRecord();
             }
@@ -199,51 +189,25 @@ public class ImageDistinguishActivity extends MyBaseActivity implements Imagedis
         }
     }
 
-    private Handler timerHandler;
-
     private void initTimerTask() {
-        timerHandler = new Handler() {
+        timer = new MyCountDownTimer(7000, 1000, new MyCountDownTimer.ICountDownTimerListener() {
             @Override
-            public void handleMessage(Message msg) {
-                super.handleMessage(msg);
-                switch (msg.what) {
-                    case 0:
-                        if (timerHandler != null)
-                            ToastUtil.TextToast("什么都没有发现，继续努力哦！");
-                        break;
+            public void onTick(long millisUntilFinished) {
+
+            }
+
+            @Override
+            public void onFinish() {
+                ToastUtil.TextToast("什么都没有发现，继续努力哦！");
+                if (!isOK) {
+                    if (timer == null) {
+                        initTimerTask();
+                    }
+                    timer.start();
                 }
             }
-        };
+        });
     }
-
-    private void initAR() {
-        try {
-            nativeInit(imgArr, new String[]{""});
-        } catch (Exception e) {
-            Toast.makeText(this, "请确认本应用是否授予摄像头的权限", Toast.LENGTH_SHORT).show();
-            e.printStackTrace();
-        }
-    }
-
-    //    @Override
-    //    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-    //        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-    //        switch (requestCode) {
-    //            case 100:
-    //                // If request is cancelled, the result arrays are empty.
-    //                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-    //                    // permission was granted, yay! Do the
-    //                    // contacts-related task you need to do.
-    //                    Toast.makeText(this, "权限请求成功", Toast.LENGTH_SHORT).show();
-    //                    initAR();
-    //                } else {
-    //                    // permission denied, boo! Disable the
-    //                    // functionality that depends on this permission.
-    //                    Toast.makeText(this, "权限请求失败", Toast.LENGTH_SHORT).show();
-    //                }
-    //                break;
-    //        }
-    //    }
 
     /**
      * 展示成功信息
@@ -327,16 +291,16 @@ public class ImageDistinguishActivity extends MyBaseActivity implements Imagedis
                 break;
             case R.id.img_startScan:
                 if (!isScanning) {
-                    if (timerHandler == null) {
+                    if (timer == null) {
                         initTimerTask();
                     }
-                    timerHandler.sendEmptyMessageDelayed(0, 7000);
+                    timer.start();
 
                     ImageDistinguishActivity.nativeStartAr();
                     imgStartScan.setImageResource(R.drawable.img_distinguish);
                     tvScanningTip.setVisibility(View.VISIBLE);
                 } else {
-                    timerHandler = null;
+                    timer.cancel();
                     ImageDistinguishActivity.nativeStopAr();
                     imgStartScan.setImageResource(R.drawable.img_start_distinguish);
                     tvScanningTip.setVisibility(View.GONE);
@@ -381,6 +345,8 @@ public class ImageDistinguishActivity extends MyBaseActivity implements Imagedis
         } else {
             popup_tv_result.setText("找到新线索");
         }
+        //震动提示
+        VibratorHelper.startVibrator(this);
     }
 
     /**

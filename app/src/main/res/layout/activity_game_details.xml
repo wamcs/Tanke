@@ -7,53 +7,52 @@
     android:background="@color/white10"
     tools:context="com.lptiyu.tanke.gamedetails.GameDetailsActivity">
 
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/relative_layout"
-        style="@style/Toolbar">
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+    <RelativeLayout
+        android:id="@+id/rl_title"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/default_toolbar_height"
+        android:background="@drawable/toolbar_gradient"
+        >
 
-            <ImageView
-                android:id="@+id/back_btn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:background="@null"
-                android:paddingBottom="@dimen/default_toolbar_imageview_padding"
-                android:paddingLeft="@dimen/default_toolbar_imageview_padding_left"
-                android:paddingRight="@dimen/default_toolbar_imageview_padding"
-                android:paddingTop="@dimen/default_toolbar_imageview_padding"
-                android:scaleType="centerInside"
-                android:src="@mipmap/img_last_white"
-                />
+        <ImageView
+            android:id="@+id/back_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:background="@null"
+            android:paddingBottom="@dimen/default_toolbar_imageview_padding"
+            android:paddingLeft="@dimen/default_toolbar_imageview_padding_left"
+            android:paddingRight="@dimen/default_toolbar_imageview_padding"
+            android:paddingTop="@dimen/default_toolbar_imageview_padding"
+            android:scaleType="centerInside"
+            android:src="@mipmap/img_last_white"
+            />
 
-            <com.lptiyu.tanke.widget.CustomTextView
-                android:id="@+id/game_detail_title"
-                style="@style/TextAppearance.Toolbar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:text="华科森林记"
-                />
+        <com.lptiyu.tanke.widget.CustomTextView
+            android:id="@+id/game_detail_title"
+            style="@style/TextAppearance.Toolbar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="华科森林记"
+            />
 
-            <ImageView
-                android:id="@+id/share_btn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:paddingBottom="@dimen/y50"
-                android:paddingLeft="@dimen/x50"
-                android:paddingRight="@dimen/x50"
-                android:paddingTop="@dimen/y50"
-                android:src="@drawable/share"
-                />
+        <ImageView
+            android:id="@+id/share_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:paddingBottom="@dimen/y50"
+            android:paddingLeft="@dimen/x50"
+            android:paddingRight="@dimen/x50"
+            android:paddingTop="@dimen/y50"
+            android:src="@drawable/share"
+            />
 
-        </RelativeLayout>
+    </RelativeLayout>
 
-    </android.support.v7.widget.Toolbar>
 
     <com.lptiyu.tanke.widget.CustomTextView
         android:id="@+id/enter_game"
@@ -73,7 +72,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@id/enter_game"
-        android:layout_below="@id/relative_layout">
+        android:layout_below="@id/rl_title">
 
         <ScrollView
             android:layout_width="match_parent"

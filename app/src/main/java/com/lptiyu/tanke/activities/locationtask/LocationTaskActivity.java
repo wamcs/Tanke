@@ -36,8 +36,8 @@ import com.lptiyu.tanke.pojo.UploadGameRecordResponse;
 import com.lptiyu.tanke.utils.DistanceFormatter;
 import com.lptiyu.tanke.utils.NetworkUtil;
 import com.lptiyu.tanke.utils.PopupWindowUtils;
-import com.lptiyu.tanke.utils.TaskResultHelper;
 import com.lptiyu.tanke.utils.ToastUtil;
+import com.lptiyu.tanke.utils.VibratorHelper;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -60,9 +60,8 @@ public class LocationTaskActivity extends MyBaseActivity implements BDLocationLi
     private Point point;
     private boolean isPointOver;
     private Task task;
-    private int DISTANCE_OFFSET = 20;
+    private int DISTANCE_OFFSET = 60;
     private LocationTaskPresenter presenter;
-    //    private Handler mHandler = new Handler();
     private String[] split;
 
     private TextView popup_tv_btn;
@@ -76,7 +75,7 @@ public class LocationTaskActivity extends MyBaseActivity implements BDLocationLi
     private final String FAIL = "什么都没有发现";
     private final String NET_EXCEPTION = "网络错误";
     private final String SUCESS = "找到新线索";
-    private TaskResultHelper taskResultHelper;
+    //    private TaskResultHelper taskResultHelper;
     private Handler mHandler = new Handler();
 
     @Override
@@ -240,6 +239,8 @@ public class LocationTaskActivity extends MyBaseActivity implements BDLocationLi
         } else {
             popup_tv_result.setText("找到新线索");
         }
+        //震动提示
+        VibratorHelper.startVibrator(this);
 
         //                stopAnim();
         //                Intent intent = new Intent();

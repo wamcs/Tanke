@@ -9,8 +9,8 @@ android {
         applicationId "com.lptiyu.tanke"
         minSdkVersion 16
         targetSdkVersion 23
-        versionCode 1
-        versionName "1.0"
+        versionCode 2
+        versionName "1.0.1"
         //突破65535的限制
         multiDexEnabled true
 
@@ -46,7 +46,7 @@ android {
             // 不显示Log
             buildConfigField "boolean", "LOG_DEBUG", "false"
             //混淆
-            minifyEnabled true
+            minifyEnabled false
             //zipAlign优化
             zipAlignEnabled true
             //移除无用的resource文件

@@ -8,6 +8,7 @@ import android.util.Log;
 import com.lptiyu.tanke.RunApplication;
 import com.lptiyu.tanke.io.net.HttpService;
 import com.lptiyu.tanke.io.net.Response;
+import com.lptiyu.tanke.utils.xutils3.APKDownloader;
 import com.lptiyu.tanke.widget.dialog.TextDialog;
 
 import java.lang.ref.WeakReference;
@@ -28,13 +29,14 @@ public class UpdateHelper {
     private TextDialog mNotifyUpdateDialog;
 
     private String apkUrl;
-    private DownloadHelper downloadHelper;
+    //    private DownloadHelper downloadHelper;
     private WeakReference<Context> weakReference;
+    private APKDownloader apkDownloader;
 
     public UpdateHelper(Context context) {
         weakReference = new WeakReference<>(context);
         initDialog();
-        downloadHelper = new DownloadHelper(context);
+        //        downloadHelper = new DownloadHelper(context);
     }
 
     public void checkForUpdate() {
@@ -64,13 +66,14 @@ public class UpdateHelper {
                         Context context = weakReference.get();
                         PackageManager pm = context.getPackageManager();//context为当前Activity上下文
                         try {
-                            PackageInfo pi = pm.getPackageInfo(context.getPackageName(), 0);
+                            PackageInfo pi = pm.getPackageInfo(context.getPackageName(), PackageManager
+                                    .GET_CONFIGURATIONS);
                             Log.i("jason", "当签名版本号：" + pi.versionCode + ",当前版本名称：" + pi.versionName);
-                            if (versionCode > pi.versionCode && pi.versionCode > minVersion) {
-                                showChooseUpdateDialog(pi.versionName, versionName);
-                            }
-                            if (versionCode > pi.versionCode && pi.versionCode < minVersion) {
-                                showMustUpdateDialog();
+                            if (versionCode > pi.versionCode) {
+                                if (pi.versionCode >= minVersion)
+                                    showChooseUpdateDialog(pi.versionName, versionName);
+                                else
+                                    showMustUpdateDialog();
                             }
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -105,7 +108,9 @@ public class UpdateHelper {
             mNotifyUpdateDialog.setmListener(new TextDialog.OnTextDialogButtonClickListener() {
                 @Override
                 public void onPositiveClicked() {
-                    downloadHelper.startDownload(apkUrl);
+                    //                    downloadHelper.startDownload(apkUrl);
+                    apkDownloader = new APKDownloader(weakReference.get(), apkUrl);
+                    mNotifyUpdateDialog.dismiss();
                 }
 
                 @Override

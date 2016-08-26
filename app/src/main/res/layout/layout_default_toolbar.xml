@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@id/rl_title"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="@dimen/default_toolbar_height"
+    android:background="@drawable/toolbar_gradient">
 
     <ImageView
         android:id="@id/default_tool_bar_imageview"
@@ -10,10 +12,10 @@
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:contentDescription="@null"
-        android:paddingTop="@dimen/default_toolbar_imageview_padding"
         android:paddingBottom="@dimen/default_toolbar_imageview_padding"
-        android:paddingRight="@dimen/default_toolbar_imageview_padding"
         android:paddingLeft="@dimen/default_toolbar_imageview_padding_left"
+        android:paddingRight="@dimen/default_toolbar_imageview_padding"
+        android:paddingTop="@dimen/default_toolbar_imageview_padding"
         android:src="@mipmap/img_last_white"/>
 
     <com.lptiyu.tanke.widget.CustomTextView

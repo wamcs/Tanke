@@ -19,7 +19,7 @@ import java.io.File;
  */
 public class XUtilsHelper {
     private static XUtilsHelper instance;
-    private Callback.Cancelable cancelable;
+    public Callback.Cancelable cancelable;
     private static Gson gson = new Gson();
 
     private XUtilsHelper() {

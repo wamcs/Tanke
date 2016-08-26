@@ -4,27 +4,25 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical">
 
-    <android.support.v7.widget.Toolbar
-        android:id="@id/tool_bar"
-        style="@style/Toolbar"/>
-
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/default_toolbar_height"
-        android:background="@drawable/gradient_rect_style">
+        android:background="@color/colorPrimary">
 
         <ImageView
-            android:id="@id/sign_up_return_button"
+            android:id="@+id/sign_up_return_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="10dp"
-            android:paddingBottom="10dp"
-            android:paddingLeft="20dp"
-            android:paddingRight="20dp"
-            android:paddingTop="10dp"
-            android:src="@drawable/img_last_white"/>
-
+            android:background="@null"
+            android:onClick="click"
+            android:paddingBottom="@dimen/default_toolbar_imageview_padding"
+            android:paddingLeft="@dimen/default_toolbar_imageview_padding_left"
+            android:paddingRight="@dimen/default_toolbar_imageview_padding"
+            android:paddingTop="@dimen/default_toolbar_imageview_padding"
+            android:scaleType="centerInside"
+            android:src="@mipmap/img_last_white"
+            />
 
         <com.lptiyu.tanke.widget.CustomTextView
             android:id="@id/sign_up_title"

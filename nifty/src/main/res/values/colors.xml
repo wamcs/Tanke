@@ -5,7 +5,8 @@
     <color name="msg_color">#FFFFFFFF</color>
     <color name="dialog_bg">#ffe74c3c</color>
 
-    <color name="colorPrimary">#769df6</color>
+    <color name="colorPrimary2">#769df6</color>
+    <color name="colorPrimary">#6C97FD</color>
     <color name="white10">#FFFFFFFF</color>
 
     <color name="btn_press_color">#66000000</color>

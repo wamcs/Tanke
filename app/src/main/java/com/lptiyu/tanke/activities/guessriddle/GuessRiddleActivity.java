@@ -32,6 +32,7 @@ import com.lptiyu.tanke.global.Conf;
 import com.lptiyu.tanke.pojo.UpLoadGameRecord;
 import com.lptiyu.tanke.pojo.UploadGameRecordResponse;
 import com.lptiyu.tanke.utils.PopupWindowUtils;
+import com.lptiyu.tanke.utils.VibratorHelper;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -208,6 +209,9 @@ public class GuessRiddleActivity extends MyBaseActivity implements RiddleContact
         } else {
             popup_tv_result.setText("找到新线索");
         }
+        //震动提示
+        VibratorHelper.startVibrator(this);
+
     }
 
     @Override
