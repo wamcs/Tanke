@@ -395,7 +395,7 @@ public class ElasticHeaderViewHolder extends BaseViewHolder<GameDisplayEntity> {
             return;
         }
         Glide.with(fragment).load(entity.getImg())
-                .error(R.mipmap.need_to_remove)
+                .error(R.drawable.default_pic)
                 .into(imageView);
         textView.setText(entity.getTitle());
         if (entity.getType() == GameType.TEAM_TYPE) {

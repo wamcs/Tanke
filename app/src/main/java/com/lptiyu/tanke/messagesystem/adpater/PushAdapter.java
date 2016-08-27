@@ -66,7 +66,7 @@ public class PushAdapter extends MessageBaseAdapter {
                 break;
             case VIEW_TYPE_MESSAGE:
                 MessageViewHolder holder2 = (MessageViewHolder) holder;
-                Glide.with(context).load(messages.getImage()).error(R.mipmap.need_to_remove_4_so_big).into(holder2
+                Glide.with(context).load(messages.getImage()).error(R.drawable.default_pic).into(holder2
                         .mImage);
                 holder2.mTitle.setText(messages.getTitle());
                 holder2.mTime.setText(TimeUtils.parseCompleteTime(messages.getTime()));

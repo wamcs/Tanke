@@ -3,6 +3,8 @@ package com.lptiyu.tanke.base.recyclerview;
 import android.support.annotation.NonNull;
 
 import com.lptiyu.tanke.R;
+import com.lptiyu.tanke.RunApplication;
+import com.lptiyu.tanke.pojo.GameDisplayEntity;
 import com.lptiyu.tanke.utils.NetworkUtil;
 import com.lptiyu.tanke.utils.ToastUtil;
 
@@ -55,7 +57,9 @@ class BaseListControllerImpl<Data> implements ListController{
         .subscribe(new Action1<List<Data>>() {
           @Override
           public void call(List<Data> datas) {
+
             listener.getAdapter().setData(datas);
+            RunApplication.gameList = (List<GameDisplayEntity>)listener.getAdapter().getData();
             changeRefreshState(false);
           }
         }, new Action1<Throwable>() {
@@ -92,6 +96,7 @@ class BaseListControllerImpl<Data> implements ListController{
               mListPage--;
             }
             listener.getAdapter().addData(datas);
+            RunApplication.gameList = (List<GameDisplayEntity>)listener.getAdapter().getData();
             changeRefreshState(false);
           }
         }, new Action1<Throwable>() {

@@ -28,7 +28,6 @@ import com.lptiyu.tanke.base.ui.BaseActivity;
 import com.lptiyu.tanke.enums.GameType;
 import com.lptiyu.tanke.enums.PlayStatus;
 import com.lptiyu.tanke.enums.ResultCode;
-import com.lptiyu.tanke.gamedisplay.GameDisplayAdapter;
 import com.lptiyu.tanke.global.Accounts;
 import com.lptiyu.tanke.global.Conf;
 import com.lptiyu.tanke.io.net.HttpService;
@@ -218,7 +217,7 @@ public class GameDetailsController extends ActivityController {
 
                 break;
         }
-        Glide.with(getActivity()).load(entity.pic).error(R.mipmap.need_to_remove).centerCrop().into(mImageCover);
+        Glide.with(getActivity()).load(entity.pic).error(R.drawable.default_pic).centerCrop().into(mImageCover);
     }
 
     /**
@@ -425,9 +424,8 @@ public class GameDetailsController extends ActivityController {
                         if (response.getStatus() == Response.RESPONSE_OK) {
 
                             /*标记游戏状态为已放弃*/
-                            GameDisplayAdapter displayAdapter = RunApplication.getDisplayAdapter();
-                            if (displayAdapter != null)
-                                displayAdapter.SetGameDataByGameId(gameId,PlayStatus.NEVER_ENTER_GANME,"");
+
+                            RunApplication.getInstance().setGameDataByGameId(gameId,PlayStatus.NEVER_ENTER_GANME,"");
 
                             //同时清空该游戏的记录
                             RunApplication.setgetPlayingThemeLine(null);
@@ -462,9 +460,7 @@ public class GameDetailsController extends ActivityController {
                     tempGameZipUrl = response.getData().game_zip;
 
                     /*标记游戏状态为已经进入*/
-                    GameDisplayAdapter displayAdapter = RunApplication.getDisplayAdapter();
-                    if (displayAdapter != null)
-                        displayAdapter.SetGameDataByGameId(gameId,PlayStatus.HAVE_ENTERED_bUT_NOT_START_GAME,tempGameZipUrl);
+                    RunApplication.getInstance().setGameDataByGameId(gameId,PlayStatus.HAVE_ENTERED_bUT_NOT_START_GAME,tempGameZipUrl);
 
                     if (new GameZipUtils().isParsedFileExist(gameId) == null) {
                         //根据获取到的游戏包下载链接去下载游戏

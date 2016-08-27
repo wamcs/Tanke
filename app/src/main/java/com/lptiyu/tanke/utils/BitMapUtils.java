@@ -1,7 +1,11 @@
 package com.lptiyu.tanke.utils;
 
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.util.Log;
 
 import java.io.File;
@@ -226,5 +230,28 @@ public final class BitMapUtils {
         public String path;
         public int width;
         public int height;
+    }
+
+
+    //
+    public static Drawable decodeLargeResourceImage(Resources resources, int resId) {
+        Drawable drawable;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            drawable = resources.getDrawable(resId, null);
+        } else {
+            try {
+                BitmapFactory.Options opt = new BitmapFactory.Options();
+                opt.inPurgeable = true;
+                opt.inInputShareable = true;
+                opt.inJustDecodeBounds =  false;
+                opt.inSampleSize =  1;   // width，hight设为原来的n分一
+                opt.inPreferredConfig =  Bitmap.Config.RGB_565;
+                InputStream is = resources.openRawResource(resId);
+                drawable = new BitmapDrawable(resources, BitmapFactory.decodeStream(is, null, opt));
+            } catch (OutOfMemoryError e) {
+                drawable = null;
+            }
+        }
+        return drawable;
     }
 }

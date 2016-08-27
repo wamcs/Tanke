@@ -154,7 +154,7 @@ public class NormalViewHolder extends BaseViewHolder<GameDisplayEntity> {
 
     private void parseImage(GameDisplayEntity entity) {
         Glide.with(fragment).load(entity.getImg())
-                .error(R.mipmap.need_to_remove)
+                .error(R.drawable.default_pic)
                 .into(imageView);
     }
 

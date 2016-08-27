@@ -77,7 +77,7 @@ public class UserGameFinishedHolder extends BaseViewHolder<GameFinishedEntity> {
         }
         currentEntity = entity;
         final long gameId = entity.getGameId();
-        Glide.with(getContext()).load(entity.getImg()).error(R.mipmap.need_to_remove).into(mItemPicture);
+        Glide.with(getContext()).load(entity.getImg()).error(R.drawable.default_pic).into(mItemPicture);
         title.setText(entity.getName());
         type.setText("");
         String ftime = entity.getEndTime();

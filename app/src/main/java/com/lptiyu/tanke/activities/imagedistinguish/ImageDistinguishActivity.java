@@ -35,9 +35,6 @@ import com.lptiyu.tanke.pojo.UpLoadGameRecord;
 import com.lptiyu.tanke.pojo.UploadGameRecordResponse;
 import com.lptiyu.tanke.utils.PopupWindowUtils;
 import com.lptiyu.tanke.utils.ToastUtil;
-import com.lptiyu.tanke.utils.thread;
-
-import java.util.TimerTask;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -115,12 +112,23 @@ public class ImageDistinguishActivity extends MyBaseActivity implements Imagedis
 
     private Handler mHandler = new Handler();
 
+    private boolean isInit = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         MyC2Java.showContext = this;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_image_distinguish);
         ButterKnife.bind(this);
+    }
+
+    protected void init()
+    {
+        //如果初始化过就直接返回
+        if (isInit)
+            return;
+
+        isInit = true;
 
         presenter = new ImagedistinguishPresenter(this);
 
@@ -195,6 +203,9 @@ public class ImageDistinguishActivity extends MyBaseActivity implements Imagedis
                 }
             }, 800);
         }
+
+
+        img_waiting.setVisibility(View.GONE);
     }
 
     private Handler timerHandler;
@@ -451,6 +462,13 @@ public class ImageDistinguishActivity extends MyBaseActivity implements Imagedis
     }
 
     @Override
+    protected void onStart() {
+        super.onStart();
+        if (!isInit)
+            init();
+    }
+
+    @Override
     protected void onDestroy() {
         super.onDestroy();
         nativeDestory();
@@ -461,6 +479,7 @@ public class ImageDistinguishActivity extends MyBaseActivity implements Imagedis
 
     @Override
     protected void onResume() {
+
         super.onResume();
         EasyAR.onResume();
     }

@@ -87,8 +87,16 @@
             android:id="@+id/dragview"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:scaleType="fitXY"
-            android:src="@drawable/clue_list_guide"/>
+            android:scaleType="fitXY" />
     </com.lptiyu.tanke.widget.DragLayout>
+
+    <ImageView
+        android:id="@+id/img_waiting"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clickable="false"
+        android:scaleType="fitXY"
+        android:src="@drawable/bg_login"
+        android:visibility="gone"/>
 
 </RelativeLayout>

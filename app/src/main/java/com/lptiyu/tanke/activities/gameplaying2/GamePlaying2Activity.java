@@ -1,6 +1,9 @@
 package com.lptiyu.tanke.activities.gameplaying2;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -31,6 +34,7 @@ import com.lptiyu.tanke.pojo.GameDetailResponse;
 import com.lptiyu.tanke.pojo.GameDisplayEntity;
 import com.lptiyu.tanke.pojo.GameFinishedEntity;
 import com.lptiyu.tanke.pojo.GamePlayingEntity;
+import com.lptiyu.tanke.utils.BitMapUtils;
 import com.lptiyu.tanke.utils.GameZipUtils;
 import com.lptiyu.tanke.utils.NetworkUtil;
 import com.lptiyu.tanke.utils.PopupWindowUtils;
@@ -196,19 +200,32 @@ public class GamePlaying2Activity extends MyBaseActivity implements GamePlaying2
             Toast.makeText(GamePlaying2Activity.this, "游戏包不存在", Toast.LENGTH_SHORT).show();
         }
 
-        dragLayout.setChildView(dragview);
-        //如果用户是第一次打开app，则显示导航提示
+        //如果用户是第一次进入此Activity，则显示导航提示
         if (AppData.isFirstInGamePlaying2Activity()) {
-            dragLayout.setVisibility(View.VISIBLE);
-        } else {
-            dragLayout.setVisibility(View.GONE);
-        }
-        dragLayout.setOnDragOverListener(new DragLayout.OnDragOverListener() {
-            @Override
-            public void onDrag() {
-                dragLayout.setVisibility(View.GONE);
+
+
+            Drawable drawable = BitMapUtils.decodeLargeResourceImage(this.getResources(),R.drawable.game_list_guide);
+            if (drawable != null && dragLayout!=null && dragview != null)
+            {
+                dragview.setImageDrawable(drawable);
+
+                dragLayout.setChildView(dragview);
+                dragLayout.setOnDragOverListener(new DragLayout.OnDragOverListener() {
+                    @Override
+                    public void onDrag() {
+                        dragLayout.setVisibility(View.GONE);
+                    }
+                });
+
+                dragLayout.setVisibility(View.VISIBLE);
             }
-        });
+
+
+        } else {
+            if (dragLayout != null)
+                dragLayout.setVisibility(View.GONE);
+        }
+
     }
 
     @Override
@@ -459,7 +476,28 @@ public class GamePlaying2Activity extends MyBaseActivity implements GamePlaying2
         }
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
 
+        if(dragview !=  null &&  dragview.getDrawable() != null){
+
+            Bitmap oldBitmap =  ((BitmapDrawable) dragview.getDrawable()).getBitmap();
+
+            dragview.setImageDrawable(null);
+
+
+            if(oldBitmap !=  null){
+
+                oldBitmap.recycle();
+
+                oldBitmap =  null;
+
+            }
+
+        }
+
+    }
     //上传游戏记录后回调
     @Override
     public void successUpLoadRecord() {

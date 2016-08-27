@@ -40,7 +40,7 @@
                 android:layout_marginTop="@dimen/item_game_data_start_image_margin_top"
                 android:contentDescription="@string/content_description"
                 android:scaleType="centerCrop"
-                android:src="@mipmap/need_to_remove"
+                android:src="@drawable/default_pic"
                 app:riv_corner_radius="@dimen/item_game_finished_img_corner_radius"/>
 
             <com.lptiyu.tanke.widget.CustomTextView
