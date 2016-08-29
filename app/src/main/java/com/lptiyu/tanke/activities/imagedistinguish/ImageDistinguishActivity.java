@@ -8,8 +8,6 @@ import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Message;
-import android.os.Vibrator;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Surface;
@@ -20,10 +18,10 @@ import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.lptiyu.tanke.R;
 import com.lptiyu.tanke.activities.base.MyBaseActivity;
+import com.lptiyu.tanke.activities.locationtask.LocationTaskActivity;
 import com.lptiyu.tanke.entity.Point;
 import com.lptiyu.tanke.entity.Task;
 import com.lptiyu.tanke.enums.PlayStatus;
@@ -37,9 +35,6 @@ import com.lptiyu.tanke.pojo.UploadGameRecordResponse;
 import com.lptiyu.tanke.utils.PopupWindowUtils;
 import com.lptiyu.tanke.utils.ToastUtil;
 import com.lptiyu.tanke.utils.VibratorHelper;
-import com.lptiyu.tanke.utils.thread;
-
-import java.util.TimerTask;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -266,10 +261,9 @@ public class ImageDistinguishActivity extends MyBaseActivity implements Imagedis
         popup_tv_btn = (TextView) popupView.findViewById(R.id.tv_continue_scan);
         popup_img_result = (ImageView) popupView.findViewById(R.id.img_result);
         popup_tv_result = (TextView) popupView.findViewById(R.id.tv_result_tip);
-
-        popup_tv_btn.setOnClickListener(new View.OnClickListener() {
+        popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
             @Override
-            public void onClick(View v) {
+            public void onDismiss() {
                 if (isOK) {
                     popupWindow.dismiss();
                     Intent intent = new Intent();
@@ -279,6 +273,21 @@ public class ImageDistinguishActivity extends MyBaseActivity implements Imagedis
                 } else {
                     hidePopup();
                 }
+            }
+        });
+
+        popup_tv_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                popupWindow.dismiss();
+                //                if (isOK) {
+                //                    Intent intent = new Intent();
+                //                    intent.putExtra(Conf.UPLOAD_RECORD_RESPONSE, resultRecord);
+                //                    ImageDistinguishActivity.this.setResult(ResultCode.IMAGE_DISTINGUISH, intent);
+                //                    finish();
+                //                } else {
+                //                    hidePopup();
+                //                }
             }
         });
     }
@@ -291,23 +300,33 @@ public class ImageDistinguishActivity extends MyBaseActivity implements Imagedis
                 break;
             case R.id.img_startScan:
                 if (!isScanning) {
-                    if (timer == null) {
-                        initTimerTask();
-                    }
-                    timer.start();
-
-                    ImageDistinguishActivity.nativeStartAr();
-                    imgStartScan.setImageResource(R.drawable.img_distinguish);
-                    tvScanningTip.setVisibility(View.VISIBLE);
+                    startScan();
                 } else {
-                    timer.cancel();
-                    ImageDistinguishActivity.nativeStopAr();
-                    imgStartScan.setImageResource(R.drawable.img_start_distinguish);
-                    tvScanningTip.setVisibility(View.GONE);
+                    stopScan();
                 }
                 isScanning = !isScanning;
                 break;
         }
+    }
+
+    private void stopScan() {
+        if (timer != null) {
+            timer.cancel();
+        }
+        ImageDistinguishActivity.nativeStopAr();
+        imgStartScan.setImageResource(R.drawable.img_start_distinguish);
+        tvScanningTip.setVisibility(View.GONE);
+    }
+
+    private void startScan() {
+        if (timer == null) {
+            initTimerTask();
+        }
+        timer.start();
+
+        ImageDistinguishActivity.nativeStartAr();
+        imgStartScan.setImageResource(R.drawable.img_distinguish);
+        tvScanningTip.setVisibility(View.VISIBLE);
     }
 
     private boolean isScanning = false;
@@ -425,6 +444,10 @@ public class ImageDistinguishActivity extends MyBaseActivity implements Imagedis
         if (anim != null) {
             anim.stop();
         }
+        if (timer != null) {
+            timer.cancel();
+            timer=null;
+        }
     }
 
     @Override
@@ -437,5 +460,11 @@ public class ImageDistinguishActivity extends MyBaseActivity implements Imagedis
     protected void onPause() {
         super.onPause();
         EasyAR.onPause();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        stopScan();
     }
 }

@@ -23,7 +23,7 @@ public class LocationTaskPresenter implements LocationTaskContact.ILocationTaskP
     }
 
     @Override
-    public void uploadRecord(UpLoadGameRecord record) {
+    public void uploadRecord(final UpLoadGameRecord record) {
         HttpService.getGameService()
                 .upLoadGameRecord(Accounts.getId(), Long.parseLong(record.game_id), Long.parseLong(record.point_id),
                         Long.parseLong(record.task_id), Long.parseLong(record.point_statu))
@@ -36,8 +36,12 @@ public class LocationTaskPresenter implements LocationTaskContact.ILocationTaskP
                         if (response.getStatus() == Response.RESPONSE_OK) {
                             view.successUploadRecord(response.getData());
                         } else {
-                            Log.i("jason", "游戏记录上传失败：" + response.getInfo());
-                            view.failUploadRecord();
+                            if (response.getInfo() != null) {
+                                Log.i("jason", "游戏记录上传失败：" + response.getInfo());
+                                view.failUploadRecord(response.getInfo());
+                            } else {
+                                view.netException();
+                            }
                         }
                     }
                 }, new Action1<Throwable>() {

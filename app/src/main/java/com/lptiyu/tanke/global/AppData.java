@@ -156,6 +156,17 @@ public class AppData {
         }
     }
 
+    public static boolean isFirstInSettingActivity() {
+        // 如果获取不到这个键，就返回true, 则判断为第一次进入这个App
+        if (ShaPrefer.getBoolean(Conf.IS_FIRST_IN_SETTING_ACTIVITY, true)) {
+            // 现在把该值变成false, 即，以后进入不是第一次进入
+            ShaPrefer.put(Conf.IS_FIRST_IN_SETTING_ACTIVITY, false);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     public static void init(Context context) {
         sContext = context.getApplicationContext();
     }

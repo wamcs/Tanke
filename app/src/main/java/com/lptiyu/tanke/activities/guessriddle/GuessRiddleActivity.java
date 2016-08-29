@@ -113,11 +113,9 @@ public class GuessRiddleActivity extends MyBaseActivity implements RiddleContact
         popup_tv_btn = (TextView) popupView.findViewById(R.id.tv_continue_scan);
         popup_img_result = (ImageView) popupView.findViewById(R.id.img_result);
         popup_tv_result = (TextView) popupView.findViewById(R.id.tv_result_tip);
-
-        popup_tv_btn.setOnClickListener(new View.OnClickListener() {
+        popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
             @Override
-            public void onClick(View v) {
-                popupWindow.dismiss();
+            public void onDismiss() {
                 if (isOK) {
                     Intent intent = new Intent();
                     intent.putExtra(Conf.UPLOAD_RECORD_RESPONSE, resultRecord);
@@ -126,6 +124,21 @@ public class GuessRiddleActivity extends MyBaseActivity implements RiddleContact
                 } else {
                     hidePopup();
                 }
+            }
+        });
+
+        popup_tv_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                popupWindow.dismiss();
+//                if (isOK) {
+//                    Intent intent = new Intent();
+//                    intent.putExtra(Conf.UPLOAD_RECORD_RESPONSE, resultRecord);
+//                    GuessRiddleActivity.this.setResult(ResultCode.GUESS_RIDDLE, intent);
+//                    finish();
+//                } else {
+//                    hidePopup();
+//                }
             }
         });
     }

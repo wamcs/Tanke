@@ -20,6 +20,7 @@ public final class Conf {
     public static final String IS_FIRST_IN_CAPTURE_ACTIVITY = "is_first_in_capture";
     public static final String IS_FIRST_IN_GAME_pLAYING2_ACTIVITY = "is_first_in_game_playing2";
     public static final String IS_FIRST_IN_POINT_TASK_ACTIVITY = "is_first_in_point_task";
+    public static final String IS_FIRST_IN_SETTING_ACTIVITY = "is_first_in_setting";
     /**
      * Sign up conf
      */

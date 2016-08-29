@@ -104,17 +104,24 @@ public class LocationTaskActivity extends MyBaseActivity implements BDLocationLi
 
         locateHelper = new LocateHelper(this);
         locateHelper.registerLocationListener(this);
-        locateHelper.startLocate();
+        //        locateHelper.startLocate();
 
         if (AppData.isFirstInLocationActivity()) {
             mHandler.postDelayed(new Runnable() {
                 public void run() {
                     PopupWindowUtils.getInstance().showTaskGuide(LocationTaskActivity.this,
-                            "这是定位任务，正在验证您当前的位置，验证通过即可通关");
+                            "这是定位任务，点击验证您当前的位置，验证通过即可通关", new PopupWindowUtils.DismissCallback() {
+                                @Override
+                                public void onDismisss() {
+                                    locateHelper.startLocate();
+                                    //                                    checkLocation();
+                                }
+                            });
                 }
             }, 500);
+        } else {
+            locateHelper.startLocate();
         }
-
     }
 
     private void initData() {
@@ -172,7 +179,9 @@ public class LocationTaskActivity extends MyBaseActivity implements BDLocationLi
         longitude = bdLocation.getLongitude();
         Log.i("jason", "定位信息latitude：" + latitude + ", longitude:" + longitude);
         //核对位置
-        checkLocation();
+        if (!AppData.isFirstInLocationActivity()) {
+            checkLocation();
+        }
     }
 
     private void checkLocation() {
@@ -250,10 +259,10 @@ public class LocationTaskActivity extends MyBaseActivity implements BDLocationLi
     }
 
     @Override
-    public void failUploadRecord() {
-        showFailResult();
+    public void failUploadRecord(String errorMsg) {
+        //        showFailResult();
         //        stopAnim();
-        //        ToastUtil.TextToast("位置验证失败");
+        ToastUtil.TextToast(errorMsg);
     }
 
     @Override
@@ -325,6 +334,19 @@ public class LocationTaskActivity extends MyBaseActivity implements BDLocationLi
                 true);
         popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         //        popupWindow.setAnimationStyle(R.style.Popup_Animation);
+        popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                if (isOK) {
+                    Intent intent = new Intent();
+                    intent.putExtra(Conf.UPLOAD_RECORD_RESPONSE, resultRecord);
+                    LocationTaskActivity.this.setResult(ResultCode.LOCATION_TASK, intent);
+                    finish();
+                } else {
+                    hidePopup();
+                }
+            }
+        });
 
         popup_tv_btn = (TextView) popupView.findViewById(R.id.tv_continue_scan);
         popup_img_result = (ImageView) popupView.findViewById(R.id.img_result);
@@ -334,14 +356,14 @@ public class LocationTaskActivity extends MyBaseActivity implements BDLocationLi
             @Override
             public void onClick(View v) {
                 popupWindow.dismiss();
-                if (isOK) {
-                    Intent intent = new Intent();
-                    intent.putExtra(Conf.UPLOAD_RECORD_RESPONSE, resultRecord);
-                    LocationTaskActivity.this.setResult(ResultCode.LOCATION_TASK, intent);
-                    finish();
-                } else {
-                    hidePopup();
-                }
+                //                if (isOK) {
+                //                    Intent intent = new Intent();
+                //                    intent.putExtra(Conf.UPLOAD_RECORD_RESPONSE, resultRecord);
+                //                    LocationTaskActivity.this.setResult(ResultCode.LOCATION_TASK, intent);
+                //                    finish();
+                //                } else {
+                //                    hidePopup();
+                //                }
             }
         });
     }

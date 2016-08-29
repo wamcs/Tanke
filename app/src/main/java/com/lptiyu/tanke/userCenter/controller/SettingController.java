@@ -10,6 +10,7 @@ import com.lptiyu.tanke.R;
 import com.lptiyu.tanke.activities.feedback.FeedBackActivity;
 import com.lptiyu.tanke.base.controller.ActivityController;
 import com.lptiyu.tanke.global.Accounts;
+import com.lptiyu.tanke.global.AppData;
 import com.lptiyu.tanke.initialization.ui.LoginActivity;
 import com.lptiyu.tanke.userCenter.ui.AboutUsActivity;
 import com.lptiyu.tanke.utils.DataCleanManager;
@@ -61,6 +62,9 @@ public class SettingController extends ActivityController {
 
     private void init() {
         //    mMsgPush.setChecked(ShaPreferManager.getMsgPush());
+        if (AppData.isFirstInSettingActivity()) {
+            ShaPreferManager.setMobileVibrate(true);
+        }
         mVibrate.setChecked(ShaPreferManager.getMobileVibrate());
         //    mScreenLight.setChecked(ShaPreferManager.getScreenLight());
         //        try {

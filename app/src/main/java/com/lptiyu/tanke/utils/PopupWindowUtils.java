@@ -75,6 +75,38 @@ public class PopupWindowUtils {
         popupWindow.setOutsideTouchable(true);
     }
 
+    public void showTaskGuide(Context context, String content, final DismissCallback callback) {
+        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View popupView = inflater.inflate(R.layout.popup_task_guide, null);
+        final PopupWindow popupWindow = new PopupWindow(popupView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup
+                .LayoutParams.WRAP_CONTENT, true);
+        popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        popupWindow.setOutsideTouchable(false);
+        popupWindow.setTouchable(true);
+        popupWindow.showAtLocation(popupView, Gravity.CENTER, 0, 0);
+        popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                if (callback != null) {
+                    callback.onDismisss();
+                }
+            }
+        });
+
+        TextView tv_content_tip = (TextView) popupView.findViewById(R.id.tv_content_tip);
+        TextView tv_ok = (TextView) popupView.findViewById(R.id.tv_ok);
+        tv_content_tip.setText(content);
+        tv_ok.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                popupWindow.dismiss();
+                //                if (callback != null) {
+                //                    callback.onDismisss();
+                //                }
+            }
+        });
+    }
+
     public void showTaskGuide(Context context, String content) {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View popupView = inflater.inflate(R.layout.popup_task_guide, null);
@@ -94,5 +126,9 @@ public class PopupWindowUtils {
                 popupWindow.dismiss();
             }
         });
+    }
+
+    public interface DismissCallback {
+        void onDismisss();
     }
 }

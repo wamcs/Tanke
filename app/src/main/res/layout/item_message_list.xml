@@ -53,7 +53,7 @@
 
     <com.lptiyu.tanke.widget.CustomTextView
         android:id="@+id/message_list_item_content"
-        android:layout_width="@dimen/x525"
+        android:layout_width="@dimen/x800"
         android:layout_height="wrap_content"
         android:layout_below="@id/message_list_item_name"
         android:layout_marginTop="@dimen/y8"
