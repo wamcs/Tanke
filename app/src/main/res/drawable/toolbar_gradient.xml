@@ -5,7 +5,7 @@
     <!--android:centerColor="@color/middle_blue"-->
     <!--android:endColor="@color/dark_blue"-->
     <!--android:startColor="@color/light_blue"/>-->
-    <solid android:color="@color/register_activity_gradient_end"/>
+    <solid android:color="@color/colorPrimary"/>
     <!--
         <corners android:radius="5dp"/>-->
 </shape>

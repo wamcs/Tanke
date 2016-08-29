@@ -4,6 +4,7 @@
     android:id="@+id/layout_message_item_right_root"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/y26"
     android:layout_marginBottom="@dimen/message_item_right_margin_top_bottom"
     android:layout_marginLeft="@dimen/message_item_right_margin_left_right"
     android:layout_marginRight="@dimen/message_item_right_margin_left_right"

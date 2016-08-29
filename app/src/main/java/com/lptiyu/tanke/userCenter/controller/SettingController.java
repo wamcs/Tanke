@@ -10,6 +10,7 @@ import com.lptiyu.tanke.R;
 import com.lptiyu.tanke.activities.feedback.FeedBackActivity;
 import com.lptiyu.tanke.base.controller.ActivityController;
 import com.lptiyu.tanke.global.Accounts;
+import com.lptiyu.tanke.global.AppData;
 import com.lptiyu.tanke.initialization.ui.LoginActivity;
 import com.lptiyu.tanke.userCenter.ui.AboutUsActivity;
 import com.lptiyu.tanke.utils.DataCleanManager;
@@ -61,14 +62,17 @@ public class SettingController extends ActivityController {
 
     private void init() {
         //    mMsgPush.setChecked(ShaPreferManager.getMsgPush());
+        if (AppData.isFirstInSettingActivity()) {
+            ShaPreferManager.setMobileVibrate(true);
+        }
         mVibrate.setChecked(ShaPreferManager.getMobileVibrate());
         //    mScreenLight.setChecked(ShaPreferManager.getScreenLight());
-        try {
-            String cacheSize = DataCleanManager.getTotalCacheSize(getContext());
-            mCacheSize.setText(cacheSize);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        //        try {
+        //            String cacheSize = DataCleanManager.getTotalCacheSize(getContext());
+        //            mCacheSize.setText(cacheSize);
+        //        } catch (Exception e) {
+        //            e.printStackTrace();
+        //        }
     }
 
     @OnClick(R.id.setting_activity_feedback)
@@ -88,20 +92,22 @@ public class SettingController extends ActivityController {
 
     @OnClick(R.id.clear_cache)
     void clearCache() {
-        new AlertDialog.Builder(getContext()).setMessage("清除后会导致游戏包丢失，确认清除吗？").setCancelable(true).setPositiveButton
-                ("确认", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        try {
-                            String cacheSize = DataCleanManager.getTotalCacheSize(getContext());
-                            DataCleanManager.clearAllCache(getContext());
-                            ToastUtil.TextToast("共清理" + cacheSize + "垃圾");
-                            mCacheSize.setText(DataCleanManager.getTotalCacheSize(getContext()));
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }).setNegativeButton("取消", null).show();
+        try {
+            String cacheSize = DataCleanManager.getTotalCacheSize(getContext());
+            new AlertDialog.Builder(getContext()).setMessage("缓存共计" + cacheSize + "，确认清除吗？").setCancelable(true)
+                    .setPositiveButton
+                            ("确认", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    DataCleanManager.clearAllCache(getContext());
+                                    ToastUtil.TextToast("清理完毕");
+                                    //                                    mCacheSize.setText("0KB");
+
+                                }
+                            }).setNegativeButton("取消", null).show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @OnClick(R.id.default_tool_bar_imageview)

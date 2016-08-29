@@ -80,8 +80,8 @@ public class LocateHelper implements BDLocationListener {
     private void initLocation() {
         LocationClientOption option = new LocationClientOption();
         option.setLocationMode(LocationClientOption.LocationMode.Hight_Accuracy);
-        option.setCoorType(DEFAULT_COOR_TYPE);
-        option.setScanSpan(DEFAULT_SPAN);//可选，默认0，即仅定位一次，设置发起定位请求的间隔需要大于等于1000ms才是有效的
+        option.setCoorType(DEFAULT_COOR_TYPE);//坐标类型
+        option.setScanSpan(DEFAULT_SPAN);//定位间隔时间，可选，默认0，即仅定位一次，设置发起定位请求的间隔需要大于等于1000ms才是有效的
         option.setIsNeedAddress(true);//可选，设置是否需要地址信息，默认不需要
         option.setOpenGps(true);//可选，默认false,设置是否使用gps
         option.setLocationNotify(false);//可选，默认false，设置是否当gps有效时按照1S1次频率输出GPS结果

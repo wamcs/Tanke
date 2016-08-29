@@ -3,7 +3,6 @@ package com.lptiyu.tanke.initialization.controller;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.TextView;
 
 import com.lptiyu.tanke.R;
@@ -36,7 +35,8 @@ public class SignUpController extends ActivityController {
 
     public SignUpController(AppCompatActivity activity, View view) {
         super(activity, view);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        //        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams
+        // .FLAG_FULLSCREEN);
         ButterKnife.bind(this, view);
         init(activity, view);
     }

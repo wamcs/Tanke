@@ -5,7 +5,7 @@
 
     <!-- Default toolbar dimens-->
     <dimen name="default_toolbar_imageview_padding">@dimen/x40</dimen>
-    <dimen name="default_toolbar_imageview_padding_left">@dimen/x26</dimen>
+    <dimen name="default_toolbar_imageview_padding_left">@dimen/x40</dimen>
     <dimen name="default_toolbar_textview_margin_left">@dimen/x39</dimen>
     <dimen name="default_toolbar_textview_padding">@dimen/x13</dimen>
     <dimen name="default_toolbar_textview_text_size">18sp</dimen>

@@ -23,14 +23,14 @@ public class MyCountDownTimer extends CountDownTimer {
     @Override
     public void onTick(long millisUntilFinished) {
         if (listener != null) {
-            onTick(millisUntilFinished);
+            listener.onTick(millisUntilFinished);
         }
     }
 
     @Override
     public void onFinish() {
         if (listener != null) {
-            onFinish();
+            listener.onFinish();
         }
     }
 

@@ -5,13 +5,9 @@
               android:layout_height="match_parent"
               android:orientation="vertical">
 
-    <android.support.v7.widget.Toolbar
-        android:id="@id/tool_bar"
-        style="@style/Toolbar">
 
-        <include layout="@layout/layout_default_toolbar"/>
+    <include layout="@layout/layout_default_toolbar"/>
 
-    </android.support.v7.widget.Toolbar>
 
     <RelativeLayout
         android:id="@+id/rl_popup"

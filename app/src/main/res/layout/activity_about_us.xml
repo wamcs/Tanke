@@ -6,20 +6,16 @@
     android:layout_height="match_parent"
     tools:context="com.lptiyu.tanke.userCenter.ui.AboutUsActivity">
 
-    <android.support.v7.widget.Toolbar
-        android:id="@id/tool_bar"
-        style="@style/Toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
 
-        <include layout="@layout/layout_default_toolbar"/>
-    </android.support.v7.widget.Toolbar>
+    <include
+        android:id="@+id/rl_title"
+        layout="@layout/layout_default_toolbar"/>
 
     <ImageView
         android:id="@+id/activity_about_us_logo"
         android:layout_width="@dimen/login_title_size"
         android:layout_height="wrap_content"
-        android:layout_below="@id/tool_bar"
+        android:layout_below="@id/rl_title"
         android:layout_centerHorizontal="true"
         android:layout_gravity="center"
         android:layout_marginTop="@dimen/y80"

@@ -4,28 +4,24 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <android.support.v7.widget.Toolbar
-        android:id="@id/tool_bar"
-        style="@style/Toolbar">
 
-        <include layout="@layout/layout_default_toolbar"/>
+    <include layout="@layout/layout_default_toolbar"/>
 
-    </android.support.v7.widget.Toolbar>
 
     <ListView
         android:id="@+id/locate_activity_listview_province"
-        android:layout_below="@id/tool_bar"
-        android:background="@color/black01"
-        android:divider="@null"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        android:layout_below="@id/rl_title"
+        android:background="@color/black01"
+        android:divider="@null"/>
 
     <ListView
         android:id="@+id/locate_activity_listview_city"
-        android:layout_below="@id/tool_bar"
-        android:background="@color/black01"
-        android:divider="@null"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        android:layout_below="@id/rl_title"
+        android:background="@color/black01"
+        android:divider="@null"/>
 
 </RelativeLayout>

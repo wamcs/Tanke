@@ -73,9 +73,13 @@ public class MainActivity extends BaseActivity {
             return;
         }
 
-        selectTab(index == 0, tab1, R.drawable.home_page_selected, R.drawable.home_page_normal);
-        selectTab(index == 1, tab2, R.drawable.message_selected, R.drawable.message_normal);
-        selectTab(index == 2, tab3, R.drawable.mine_selected, R.drawable.mine_normal);
+        //                selectTab(index == 0, tab1, R.drawable.home_page_selected, R.drawable.home_page_normal);
+        //                selectTab(index == 1, tab2, R.drawable.message_selected, R.drawable.message_normal);
+        //                selectTab(index == 2, tab3, R.drawable.mine_selected, R.drawable.mine_normal);
+
+        selectTab(index == 0, tab1, R.drawable.tab_home_selected, R.drawable.tab_home_normal);
+        selectTab(index == 1, tab2, R.drawable.tab_message_selected, R.drawable.tab_message_normal);
+        selectTab(index == 2, tab3, R.drawable.tab_mine_selected, R.drawable.tab_mine_normal);
         mCurrentIndex = index;
     }
 

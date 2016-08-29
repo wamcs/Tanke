@@ -36,8 +36,8 @@ import com.lptiyu.tanke.pojo.UploadGameRecordResponse;
 import com.lptiyu.tanke.utils.DistanceFormatter;
 import com.lptiyu.tanke.utils.NetworkUtil;
 import com.lptiyu.tanke.utils.PopupWindowUtils;
-import com.lptiyu.tanke.utils.TaskResultHelper;
 import com.lptiyu.tanke.utils.ToastUtil;
+import com.lptiyu.tanke.utils.VibratorHelper;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -60,9 +60,8 @@ public class LocationTaskActivity extends MyBaseActivity implements BDLocationLi
     private Point point;
     private boolean isPointOver;
     private Task task;
-    private int DISTANCE_OFFSET = 20;
+    private int DISTANCE_OFFSET = 60;
     private LocationTaskPresenter presenter;
-    //    private Handler mHandler = new Handler();
     private String[] split;
 
     private TextView popup_tv_btn;
@@ -76,7 +75,7 @@ public class LocationTaskActivity extends MyBaseActivity implements BDLocationLi
     private final String FAIL = "什么都没有发现";
     private final String NET_EXCEPTION = "网络错误";
     private final String SUCESS = "找到新线索";
-    private TaskResultHelper taskResultHelper;
+    //    private TaskResultHelper taskResultHelper;
     private Handler mHandler = new Handler();
 
     @Override
@@ -105,17 +104,24 @@ public class LocationTaskActivity extends MyBaseActivity implements BDLocationLi
 
         locateHelper = new LocateHelper(this);
         locateHelper.registerLocationListener(this);
-        locateHelper.startLocate();
+        //        locateHelper.startLocate();
 
         if (AppData.isFirstInLocationActivity()) {
             mHandler.postDelayed(new Runnable() {
                 public void run() {
                     PopupWindowUtils.getInstance().showTaskGuide(LocationTaskActivity.this,
-                            "这是定位任务，正在验证您当前的位置，验证通过即可通关");
+                            "这是定位任务，点击验证您当前的位置，验证通过即可通关", new PopupWindowUtils.DismissCallback() {
+                                @Override
+                                public void onDismisss() {
+                                    locateHelper.startLocate();
+                                    //                                    checkLocation();
+                                }
+                            });
                 }
             }, 500);
+        } else {
+            locateHelper.startLocate();
         }
-
     }
 
     private void initData() {
@@ -173,7 +179,9 @@ public class LocationTaskActivity extends MyBaseActivity implements BDLocationLi
         longitude = bdLocation.getLongitude();
         Log.i("jason", "定位信息latitude：" + latitude + ", longitude:" + longitude);
         //核对位置
-        checkLocation();
+        if (!AppData.isFirstInLocationActivity()) {
+            checkLocation();
+        }
     }
 
     private void checkLocation() {
@@ -240,6 +248,8 @@ public class LocationTaskActivity extends MyBaseActivity implements BDLocationLi
         } else {
             popup_tv_result.setText("找到新线索");
         }
+        //震动提示
+        VibratorHelper.startVibrator(this);
 
         //                stopAnim();
         //                Intent intent = new Intent();
@@ -249,10 +259,10 @@ public class LocationTaskActivity extends MyBaseActivity implements BDLocationLi
     }
 
     @Override
-    public void failUploadRecord() {
-        showFailResult();
+    public void failUploadRecord(String errorMsg) {
+        //        showFailResult();
         //        stopAnim();
-        //        ToastUtil.TextToast("位置验证失败");
+        ToastUtil.TextToast(errorMsg);
     }
 
     @Override
@@ -324,6 +334,19 @@ public class LocationTaskActivity extends MyBaseActivity implements BDLocationLi
                 true);
         popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         //        popupWindow.setAnimationStyle(R.style.Popup_Animation);
+        popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                if (isOK) {
+                    Intent intent = new Intent();
+                    intent.putExtra(Conf.UPLOAD_RECORD_RESPONSE, resultRecord);
+                    LocationTaskActivity.this.setResult(ResultCode.LOCATION_TASK, intent);
+                    finish();
+                } else {
+                    hidePopup();
+                }
+            }
+        });
 
         popup_tv_btn = (TextView) popupView.findViewById(R.id.tv_continue_scan);
         popup_img_result = (ImageView) popupView.findViewById(R.id.img_result);
@@ -333,14 +356,14 @@ public class LocationTaskActivity extends MyBaseActivity implements BDLocationLi
             @Override
             public void onClick(View v) {
                 popupWindow.dismiss();
-                if (isOK) {
-                    Intent intent = new Intent();
-                    intent.putExtra(Conf.UPLOAD_RECORD_RESPONSE, resultRecord);
-                    LocationTaskActivity.this.setResult(ResultCode.LOCATION_TASK, intent);
-                    finish();
-                } else {
-                    hidePopup();
-                }
+                //                if (isOK) {
+                //                    Intent intent = new Intent();
+                //                    intent.putExtra(Conf.UPLOAD_RECORD_RESPONSE, resultRecord);
+                //                    LocationTaskActivity.this.setResult(ResultCode.LOCATION_TASK, intent);
+                //                    finish();
+                //                } else {
+                //                    hidePopup();
+                //                }
             }
         });
     }

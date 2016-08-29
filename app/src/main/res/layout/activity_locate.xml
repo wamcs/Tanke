@@ -1,44 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
-    <android.support.v7.widget.Toolbar
-        style="@style/Toolbar"
-        android:id="@id/tool_bar"
-        >
-        <include layout="@layout/layout_default_toolbar" />
-    </android.support.v7.widget.Toolbar>
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
+
+    <include layout="@layout/layout_default_toolbar"/>
+
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/label_header_bg_color"
-        android:clickable="false"
-        android:orientation="vertical">
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:background="@color/label_header_bg_color"
+                  android:clickable="false"
+                  android:orientation="vertical">
+
         <com.lptiyu.tanke.widget.CustomTextView
             android:layout_width="match_parent"
             android:layout_height="@dimen/y3"
             android:background="@color/divider_color"/>
+
         <com.lptiyu.tanke.widget.CustomTextView
             android:layout_width="wrap_content"
-            android:clickable="false"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/x66"
             android:layout_marginTop="@dimen/y39"
+            android:clickable="false"
             android:paddingBottom="@dimen/y13"
             android:paddingTop="@dimen/y13"
             android:text="@string/current_location"
             android:textColor="@color/label_header_color"/>
+
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="@dimen/y3"
             android:src="@color/divider_color"/>
     </LinearLayout>
+
     <LinearLayout
         android:id="@id/locate_activity_locate_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/style_locate_activity_list_item"
         android:orientation="horizontal">
+
         <com.lptiyu.tanke.widget.CustomTextView
             android:id="@id/locate_activity_locate_city"
             android:layout_width="wrap_content"
@@ -49,44 +52,50 @@
             android:text="武汉"
             android:textColor="@color/black08"
             android:textSize="18sp"/>
+
         <com.lptiyu.tanke.widget.CustomTextView
             android:id="@id/locate_activity_locate_error_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingBottom="@dimen/item_locate_activity_list_item_padding_top_bottom"
             android:paddingLeft="@dimen/x39"
-            android:textSize="12sp"
-            android:textColor="#ff0000"
+            android:paddingTop="@dimen/item_locate_activity_list_item_padding_top_bottom"
             android:text="@string/city_not_open"
-            android:paddingTop="@dimen/item_locate_activity_list_item_padding_top_bottom"/>
+            android:textColor="#ff0000"
+            android:textSize="12sp"/>
     </LinearLayout>
+
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/label_header_bg_color"
-        android:clickable="false"
-        android:orientation="vertical">
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:background="@color/label_header_bg_color"
+                  android:clickable="false"
+                  android:orientation="vertical">
+
         <com.lptiyu.tanke.widget.CustomTextView
             android:layout_width="match_parent"
             android:layout_height="@dimen/y3"
             android:background="@color/divider_color"/>
+
         <com.lptiyu.tanke.widget.CustomTextView
             android:layout_width="wrap_content"
-            android:clickable="false"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/x66"
             android:layout_marginTop="@dimen/y39"
+            android:clickable="false"
             android:paddingBottom="@dimen/y13"
             android:paddingTop="@dimen/y13"
             android:text="@string/open_location"
             android:textColor="@color/label_header_color"/>
+
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="@dimen/y3"
             android:src="@color/divider_color"/>
     </LinearLayout>
+
     <android.support.v7.widget.RecyclerView
+        android:id="@+id/location_recycler_View"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/location_recycler_View"/>
+        android:layout_height="match_parent"/>
 </LinearLayout>

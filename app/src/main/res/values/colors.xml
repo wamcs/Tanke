@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#769df6</color>
-    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorPrimary2">#769df6</color>
+    <color name="colorPrimary">#6C97FD</color>
+    <color name="colorPrimaryDark2">#303F9F</color>
+    <color name="colorPrimaryDark">#6C97FD</color>
     <color name="colorAccent">#FF4081</color>
     <color name="windowBackground">#f3f3f3</color>
 
@@ -46,9 +48,11 @@
     <color name="grey00">#FF000000</color>
 
     <color name="purple_shadow_color">#6489849b</color>
-    <color name="main_page_shadow_color_dark">#12000000</color>
-    <color name="main_page_shadow_color_mid">#09000000</color>
+    <color name="main_page_shadow_color_dark">#04000000</color>
+    <color name="main_page_shadow_color_mid">#02000000</color>
     <color name="main_page_shadpw_color_light">#0000</color>
+
+    <color name="black333">#333333</color>
 
     <color name="green">#40b553</color>
 
