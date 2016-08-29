@@ -58,6 +58,8 @@ public class UserManagerGameController extends BaseListActivityController<GameMa
   @BindView(R.id.recycler_view)
   RecyclerView recyclerView;
 
+  private LinearLayoutManager mLayoutManager;
+
   private UserManagerAdapter adapter = new UserManagerAdapter();
 
   public UserManagerGameController(UserManagerGameActivity activity, View view) {
@@ -75,8 +77,23 @@ public class UserManagerGameController extends BaseListActivityController<GameMa
         refreshTop();
       }
     });
-    recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+    recyclerView.setLayoutManager(mLayoutManager = new LinearLayoutManager(getContext()));
     recyclerView.setAdapter(adapter);
+
+    recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+
+      @Override
+      public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+        super.onScrolled(recyclerView, dx, dy);
+
+        int lastVisibleItem = mLayoutManager.findLastVisibleItemPosition();
+        int totalItemCount = mLayoutManager.getItemCount();
+        if (lastVisibleItem >= totalItemCount - 1 && dy > 0) {
+          refreshBottom();
+        }
+      }
+    });
+
   }
 
   @Override
@@ -92,7 +109,7 @@ public class UserManagerGameController extends BaseListActivityController<GameMa
                 }
                 List<GameManageEntity> result = gameManageEntityResponse.getData();
                 if (result.size() == 0) {
-                  if (mNoDataImage != null) {
+                  if (mNoDataImage != null && mLayoutManager.getItemCount() <= 0) {
                     thread.mainThread(new Runnable() {
                       @Override
                       public void run() {

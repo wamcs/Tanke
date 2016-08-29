@@ -48,6 +48,7 @@ public class GamePlayingListController extends BaseListActivityController<GamePl
     @BindView(R.id.GameListRefreshLayout)
     SwipeRefreshLayout swipeRefreshLayout;
 
+    private LinearLayoutManager mLayoutManager;
     GamePlayingAdapter adapter = new GamePlayingAdapter();
 
     public GamePlayingListController(AppCompatActivity activity, View view) {
@@ -59,8 +60,22 @@ public class GamePlayingListController extends BaseListActivityController<GamePl
     private void init() {
         mTitle.setText("正在进行");
         swipeRefreshLayout.setOnRefreshListener(this);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerView.setLayoutManager(mLayoutManager = new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(adapter);
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+
+                int lastVisibleItem = mLayoutManager.findLastVisibleItemPosition();
+                int totalItemCount = mLayoutManager.getItemCount();
+                if (lastVisibleItem >= totalItemCount - 1 && dy > 0) {
+                    refreshBottom();
+                }
+            }
+        });
+
         refreshTop();
     }
 
@@ -78,7 +93,7 @@ public class GamePlayingListController extends BaseListActivityController<GamePl
                         }
                         List<GamePlayingEntity> result = response.getData();
                         if (result.size() == 0) {
-                            if (mNoDataImage != null) {
+                            if (mNoDataImage != null && mLayoutManager.getItemCount() <= 0) {
                                 thread.mainThread(new Runnable() {
                                     @Override
                                     public void run() {
@@ -126,4 +141,5 @@ public class GamePlayingListController extends BaseListActivityController<GamePl
     public void onRefresh() {
         refreshTop();
     }
+
 }
