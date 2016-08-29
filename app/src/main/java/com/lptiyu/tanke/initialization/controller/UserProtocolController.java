@@ -1,7 +1,6 @@
 package com.lptiyu.tanke.initialization.controller;
 
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.WindowManager;
 import android.webkit.WebView;
@@ -28,8 +27,7 @@ public class UserProtocolController extends ActivityController {
 
   @BindView(R.id.protocol_web_view)
   WebView mWebView;
-  @BindView(R.id.tool_bar)
-  Toolbar toolbar;
+
 
   public UserProtocolController(AppCompatActivity activity, View view) {
     super(activity, view);

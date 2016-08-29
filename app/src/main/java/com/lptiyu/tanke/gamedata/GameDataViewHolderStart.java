@@ -9,14 +9,10 @@ import com.lptiyu.tanke.base.recyclerview.BaseViewHolder;
 import com.lptiyu.tanke.io.net.HttpService;
 import com.lptiyu.tanke.io.net.Response;
 import com.lptiyu.tanke.pojo.GameDataEntity;
-import com.lptiyu.tanke.pojo.GameDataNormalEntity;
 import com.lptiyu.tanke.pojo.GameDataStartEntity;
-import com.lptiyu.tanke.pojo.GameDetailsEntity;
 import com.lptiyu.tanke.utils.TimeUtils;
 import com.lptiyu.tanke.widget.CustomTextView;
 import com.makeramen.roundedimageview.RoundedImageView;
-
-import java.util.Date;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -72,7 +68,7 @@ public class GameDataViewHolderStart extends BaseViewHolder<GameDataEntity> {
           }
         });
 
-    Glide.with(getContext()).load(Uri.parse(startEntity.getGameImage())).error(R.mipmap.need_to_remove_4_so_big).into(roundedImageView);
+    Glide.with(getContext()).load(Uri.parse(startEntity.getGameImage())).error(R.drawable.default_pic).into(roundedImageView);
     gameTitle.setText(startEntity.getGameTitle());
     gameLocation.setText(startEntity.getGameLoc());
   }

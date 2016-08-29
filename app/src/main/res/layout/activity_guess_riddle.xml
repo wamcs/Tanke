@@ -34,12 +34,13 @@
         android:paddingBottom="10dp"
         android:paddingTop="10dp"
         android:textColor="@color/white10"
-        android:textColorHint="@color/white10"/>
+        android:textColorHint="@color/blackccc"
+        android:textSize="16sp"/>
 
     <TextView
         android:id="@+id/tv_seperator"
         android:layout_width="match_parent"
-        android:layout_height="1dp"
+        android:layout_height="1px"
         android:layout_alignLeft="@id/et_writeAnswer"
         android:layout_alignRight="@id/et_writeAnswer"
         android:layout_below="@id/et_writeAnswer"
@@ -59,7 +60,8 @@
         android:gravity="center"
         android:padding="10dp"
         android:text="提交"
-        android:textColor="@color/white10"/>
+        android:textColor="@color/white10"
+        android:textSize="16sp"/>
 
     <RelativeLayout
         android:id="@+id/rl_submit_record"

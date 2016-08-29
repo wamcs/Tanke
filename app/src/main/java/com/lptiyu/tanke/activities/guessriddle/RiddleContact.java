@@ -10,7 +10,7 @@ public class RiddleContact {
     interface IRiddleView {
         void successUploadRecord(UploadGameRecordResponse response);
 
-        void failUploadRecord();
+        void failUploadRecord(String errorMsg);
 
         void netException();
     }

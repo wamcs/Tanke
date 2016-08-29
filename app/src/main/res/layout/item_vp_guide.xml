@@ -21,7 +21,7 @@
         android:drawablePadding="10dp"
         android:drawableRight="@drawable/guide_back"
         android:text="跳过"
-        android:textColor="@color/black10"
+        android:textColor="@color/black666"
         android:textSize="16sp"/>
 
     <TextView

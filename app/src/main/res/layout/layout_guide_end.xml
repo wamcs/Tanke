@@ -9,7 +9,6 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="4"
-        android:background="@mipmap/img_splash_header_3"
         android:contentDescription="@string/content_description"
         android:scaleType="centerCrop"
         android:src="@mipmap/img_splash_header_cover"/>

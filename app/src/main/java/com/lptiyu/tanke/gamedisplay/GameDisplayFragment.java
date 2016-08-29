@@ -14,7 +14,6 @@ import android.widget.RelativeLayout;
 
 import com.lptiyu.tanke.MainActivityController;
 import com.lptiyu.tanke.R;
-import com.lptiyu.tanke.RunApplication;
 import com.lptiyu.tanke.base.ui.BaseFragment;
 import com.lptiyu.tanke.pojo.City;
 import com.lptiyu.tanke.utils.NetworkUtil;
@@ -99,7 +98,6 @@ public class GameDisplayFragment extends BaseFragment {
         recyclerView.setLayoutManager(mLayoutManager = new LinearLayoutManager(getContext()));
 
         adapter = new GameDisplayAdapter(this);
-        RunApplication.setDisplayAdapter(adapter);
 
         recyclerView.setAdapter(adapter);
         //用于下拉刷新监听
@@ -154,7 +152,7 @@ public class GameDisplayFragment extends BaseFragment {
                     swipe.setRefreshing(false);
                     showNetUnConnectDialog();
                 }
-                else if (adapter.getItemCount() < 3)
+                else if (adapter.getItemCount() < 3)//如果有的话就不更新
                 {
                     controller.refreshTop();
                 }

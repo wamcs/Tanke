@@ -51,7 +51,7 @@
             android:paddingTop="@dimen/item_locate_activity_list_item_padding_top_bottom"
             android:text="武汉"
             android:textColor="@color/black08"
-            android:textSize="18sp"/>
+            android:textSize="16sp"/>
 
         <com.lptiyu.tanke.widget.CustomTextView
             android:id="@id/locate_activity_locate_error_text"

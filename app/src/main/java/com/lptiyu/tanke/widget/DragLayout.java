@@ -51,6 +51,10 @@ public class DragLayout extends RelativeLayout {
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
         super.onLayout(changed, l, t, r, b);
+
+        if(mDragView == null)
+            return;
+
         LEFT_SNAPPING_POINT = 0;
         MIDDLE_SNAPPING_POINT = getMeasuredWidth() / 2 - mDragView.getMeasuredWidth() / 2;
         RIGHT_SNAPPING_POINT = getMeasuredWidth() - mDragView.getMeasuredWidth();

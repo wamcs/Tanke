@@ -206,7 +206,7 @@ public class LoginController extends ActivityController {
                     @Override
                     public void call(Response<UserEntity> userEntityResponse) {
                         int status = userEntityResponse.getStatus();
-                        ToastUtil.TextToast("status:" + status);
+                       // ToastUtil.TextToast("status:" + status);
                         if (status != 1) {
                             ToastUtil.TextToast("登录失败：" + userEntityResponse.getInfo());
                             return;

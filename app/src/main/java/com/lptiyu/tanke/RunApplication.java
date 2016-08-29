@@ -10,17 +10,18 @@ import com.avos.avoscloud.PushService;
 import com.baidu.mapapi.BMapManager;
 import com.baidu.mapapi.SDKInitializer;
 import com.lptiyu.tanke.entity.ThemeLine;
-import com.lptiyu.tanke.gamedisplay.GameDisplayAdapter;
 import com.lptiyu.tanke.global.Accounts;
 import com.lptiyu.tanke.global.AppData;
 import com.lptiyu.tanke.global.Conf;
 import com.lptiyu.tanke.location.LocationFileParser;
 import com.lptiyu.tanke.messagesystem.MessageActivity;
+import com.lptiyu.tanke.pojo.GameDisplayEntity;
 import com.lptiyu.tanke.utils.DirUtils;
 import com.lptiyu.tanke.utils.thread;
 
 import org.xutils.x;
 
+import java.util.List;
 import java.util.Stack;
 
 import cn.sharesdk.framework.ShareSDK;
@@ -38,7 +39,7 @@ public class RunApplication extends MultiDexApplication {
     private static RunApplication singleton;
     private BMapManager manager;
 
-    private static GameDisplayAdapter displayAdapter;//暂时维护游戏列表全局变量
+    public static List<GameDisplayEntity> gameList; //维护一份列表数据的索引，避免回收
     private static ThemeLine  themeLine;//维护一个正在玩的游戏数据
 
     private static long lastLoginUserId = 0;
@@ -99,14 +100,6 @@ public class RunApplication extends MultiDexApplication {
     // Returns the application instance
     public static RunApplication getInstance() {
         return singleton;
-    }
-
-    public static GameDisplayAdapter getDisplayAdapter() {
-        return displayAdapter;
-    }
-
-    public static void setDisplayAdapter(GameDisplayAdapter adapter) {
-        displayAdapter = adapter;
     }
 
     public static ThemeLine getPlayingThemeLine() {
@@ -194,6 +187,24 @@ public class RunApplication extends MultiDexApplication {
         try {
             finishAllActivity();
         } catch (Exception e) {
+        }
+    }
+
+
+    //主要是改游戏状态和下载包链接
+    public void setGameDataByGameId(long game_id,int game_statu,String game_zip_url)
+    {
+        if(gameList == null)
+            return;
+
+        for (int i =0;i < gameList.size();i++)
+        {
+            GameDisplayEntity tmp = gameList.get(i);
+            if (game_id == tmp.getId())
+            {
+                tmp.setPlayStatu(game_statu);
+                tmp.setGameZipUrl(game_zip_url);
+            }
         }
     }
 

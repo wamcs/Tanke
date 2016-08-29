@@ -200,7 +200,7 @@ public class CompleteInformationController extends ActivityController implements
                 mGenderFemaleButton.setBackgroundColor(getResources().getColor(R.color.white00));
                 mGenderFemaleButton.setTextColor(getResources().getColor(R.color.grey06));
                 if (!isAvatarSet) {
-                    mAvatarImageView.setBackground(getDrawable(R.mipmap.img_male));
+                    mAvatarImageView.setBackground(getDrawable(R.drawable.default_pic));
                 }
                 mUserGender = MALE_TYPE;
                 break;
@@ -210,7 +210,7 @@ public class CompleteInformationController extends ActivityController implements
                 mGenderMaleButton.setBackgroundColor(getResources().getColor(R.color.white00));
                 mGenderMaleButton.setTextColor(getResources().getColor(R.color.grey06));
                 if (!isAvatarSet) {
-                    mAvatarImageView.setBackground(getDrawable(R.mipmap.img_female));
+                    mAvatarImageView.setBackground(getDrawable(R.drawable.default_pic));
                 }
                 mUserGender = FEMALE_TYPE;
                 break;

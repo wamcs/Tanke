@@ -99,8 +99,8 @@
             android:paddingLeft="10dp"
             android:paddingTop="10dp"
             android:text="@string/my_point_progress"
-            android:textColor="#333"
-            android:textSize="18sp"/>
+            android:textColor="@color/black333"
+            android:textSize="17sp"/>
 
         <com.lptiyu.tanke.widget.CustomTextView
             android:id="@+id/ctv_have_gone_throungh_game"
@@ -112,7 +112,7 @@
             android:layout_toRightOf="@id/ctv_my_progress"
             android:text="@string/have_gone_through_game"
             android:textColor="@color/orange"
-            android:textSize="18sp"
+            android:textSize="17sp"
             android:visibility="gone"/>
 
         <GridView
@@ -137,16 +137,16 @@
 
     <com.lptiyu.tanke.widget.DragLayout
         android:id="@+id/drag_layout"
-        android:visibility="gone"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:visibility="gone">
 
         <ImageView
             android:id="@+id/dragview"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scaleType="fitXY"
-            android:src="@drawable/game_list_guide"/>
+            />
     </com.lptiyu.tanke.widget.DragLayout>
 
 </RelativeLayout>

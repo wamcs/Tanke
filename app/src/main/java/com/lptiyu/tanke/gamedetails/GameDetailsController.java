@@ -2,12 +2,9 @@ package com.lptiyu.tanke.gamedetails;
 
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.location.LocationManager;
-import android.provider.Settings;
 import android.support.v7.app.AlertDialog;
 import android.text.Html;
 import android.util.Log;
@@ -24,11 +21,9 @@ import com.lptiyu.tanke.R;
 import com.lptiyu.tanke.RunApplication;
 import com.lptiyu.tanke.activities.gameplaying2.GamePlaying2Activity;
 import com.lptiyu.tanke.base.controller.ActivityController;
-import com.lptiyu.tanke.base.ui.BaseActivity;
 import com.lptiyu.tanke.enums.GameType;
 import com.lptiyu.tanke.enums.PlayStatus;
 import com.lptiyu.tanke.enums.ResultCode;
-import com.lptiyu.tanke.gamedisplay.GameDisplayAdapter;
 import com.lptiyu.tanke.global.Accounts;
 import com.lptiyu.tanke.global.Conf;
 import com.lptiyu.tanke.io.net.HttpService;
@@ -218,7 +213,7 @@ public class GameDetailsController extends ActivityController {
 
                 break;
         }
-        Glide.with(getActivity()).load(entity.pic).error(R.mipmap.need_to_remove).centerCrop().into(mImageCover);
+        Glide.with(getActivity()).load(entity.pic).error(R.drawable.default_pic).centerCrop().into(mImageCover);
     }
 
     /**
@@ -278,12 +273,12 @@ public class GameDetailsController extends ActivityController {
         //默认显示武汉
         String lat = "30.515372";
         String lon = "114.419876";
-        if (mGameDetailsResponse.latitude != null && mGameDetailsResponse.latitude !="" && Double.valueOf(mGameDetailsResponse.latitude) > 0.1)
+        if (mGameDetailsResponse.latitude != null && mGameDetailsResponse.latitude.equals("") && Double.valueOf(mGameDetailsResponse.latitude) > 0.1)
         {
             lat = mGameDetailsResponse.latitude;
         }
 
-        if (mGameDetailsResponse.longtitude != null && mGameDetailsResponse.longtitude !="" && Double.valueOf(mGameDetailsResponse.longtitude) > 0.1)
+        if (mGameDetailsResponse.longtitude != null && mGameDetailsResponse.longtitude.equals("") && Double.valueOf(mGameDetailsResponse.longtitude) > 0.1)
         {
             lon = mGameDetailsResponse.longtitude;
         }
@@ -352,22 +347,12 @@ public class GameDetailsController extends ActivityController {
                     ToastUtil.TextToast("团队赛正在开发中");
                     return;
                 }
-                //        checkDiskAndNextStep();
                 //请求加入游戏接口，获取游戏包下载链接
                 loadNet();
                 break;
             case Conf.GamePlay2Activity:
                 // 放弃游戏
                 showPopup();
-                //                new android.app.AlertDialog.Builder(getContext()).setMessage("您确定要放弃本游戏？")
-                // .setPositiveButton("确定",
-                //                        new DialogInterface
-                //                                .OnClickListener() {
-                //                            @Override
-                //                            public void onClick(DialogInterface dialog, int which) {
-                //                                abandonGame();
-                //                            }
-                //                        }).setNegativeButton("取消", null).show();
                 break;
         }
     }
@@ -425,9 +410,8 @@ public class GameDetailsController extends ActivityController {
                         if (response.getStatus() == Response.RESPONSE_OK) {
 
                             /*标记游戏状态为已放弃*/
-                            GameDisplayAdapter displayAdapter = RunApplication.getDisplayAdapter();
-                            if (displayAdapter != null)
-                                displayAdapter.SetGameDataByGameId(gameId,PlayStatus.NEVER_ENTER_GANME,"");
+
+                            RunApplication.getInstance().setGameDataByGameId(gameId,PlayStatus.NEVER_ENTER_GANME,"");
 
                             //同时清空该游戏的记录
                             RunApplication.setgetPlayingThemeLine(null);
@@ -462,9 +446,7 @@ public class GameDetailsController extends ActivityController {
                     tempGameZipUrl = response.getData().game_zip;
 
                     /*标记游戏状态为已经进入*/
-                    GameDisplayAdapter displayAdapter = RunApplication.getDisplayAdapter();
-                    if (displayAdapter != null)
-                        displayAdapter.SetGameDataByGameId(gameId,PlayStatus.HAVE_ENTERED_bUT_NOT_START_GAME,tempGameZipUrl);
+                    RunApplication.getInstance().setGameDataByGameId(gameId,PlayStatus.HAVE_ENTERED_bUT_NOT_START_GAME,tempGameZipUrl);
 
                     if (new GameZipUtils().isParsedFileExist(gameId) == null) {
                         //根据获取到的游戏包下载链接去下载游戏
@@ -501,12 +483,6 @@ public class GameDetailsController extends ActivityController {
                 GameZipUtils gameZipUtils = new GameZipUtils();
                 //解压文件
                 gameZipUtils.parseZipFile(zippedFilePath);
-                //                if (FileUtils.isFileExist(parsedFilePath)) {
-                //                    file.delete();
-                //                    startPlayingGame();
-                //                } else {
-                //                    Toast.makeText(getContext(), "游戏包解压失败", Toast.LENGTH_SHORT).show();
-                //                }
                 String parsedFilePath = gameZipUtils.isParsedFileExist(gameId);
                 if (parsedFilePath != null) {
                     file.delete();
@@ -545,39 +521,6 @@ public class GameDetailsController extends ActivityController {
         super.onDestroy();
         if (gameDetailsSubscription != null && !gameDetailsSubscription.isUnsubscribed()) {
             gameDetailsSubscription.unsubscribe();
-        }
-    }
-
-    /**
-     * 判断用户是否打开GPS，如果没有，则进入到设置页面打开GPS
-     */
-    private void initGPS() {
-        LocationManager locationManager = (LocationManager) getContext().getSystemService(Context.LOCATION_SERVICE);
-        // 判断GPS模块是否开启，如果没有则开启
-        if (!locationManager.isProviderEnabled(android.location.LocationManager.GPS_PROVIDER)) {
-            AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity());
-            dialog.setMessage("为了定位更加精确，请打开GPS");
-            dialog.setPositiveButton("确定",
-                    new android.content.DialogInterface.OnClickListener() {
-
-                        @Override
-                        public void onClick(DialogInterface arg0, int arg1) {
-                            // 转到手机设置界面，用户设置GPS
-                            Intent intent = new Intent(
-                                    Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                            startActivityForResult(intent, 0); // 设置完成后返回到原来的界面
-
-                        }
-                    });
-            dialog.setNegativeButton("取消", new android.content.DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface arg0, int arg1) {
-                    arg0.dismiss();
-                }
-            });
-            dialog.show();
-        } else {
-            PermissionDispatcher.startLocateWithCheck(((BaseActivity) getActivity()));
         }
     }
 }

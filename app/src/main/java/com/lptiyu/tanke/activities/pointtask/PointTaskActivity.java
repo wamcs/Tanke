@@ -4,6 +4,9 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Handler;
@@ -34,6 +37,7 @@ import com.lptiyu.tanke.global.AppData;
 import com.lptiyu.tanke.global.Conf;
 import com.lptiyu.tanke.pojo.UpLoadGameRecord;
 import com.lptiyu.tanke.pojo.UploadGameRecordResponse;
+import com.lptiyu.tanke.utils.BitMapUtils;
 import com.lptiyu.tanke.utils.ToastUtil;
 import com.lptiyu.tanke.widget.CustomTextView;
 import com.lptiyu.tanke.widget.DragLayout;
@@ -61,6 +65,9 @@ public class PointTaskActivity extends MyBaseActivity implements PointTaskContac
     ImageView dragview;
     @BindView(R.id.drag_layout)
     DragLayout dragLayout;
+
+    @BindView(R.id.img_waiting)
+    ImageView imgWaiting;
 
     private int pointIndex;
     private LVForPointTaskAdapter adapter;
@@ -139,19 +146,31 @@ public class PointTaskActivity extends MyBaseActivity implements PointTaskContac
 
         setAdapter();
 
-        dragLayout.setChildView(dragview);
         //如果用户是第一次进入此Activity，则显示导航提示
         if (AppData.isFirstInPointTaskActivity()) {
-            dragLayout.setVisibility(View.VISIBLE);
-        } else {
-            dragLayout.setVisibility(View.GONE);
-        }
-        dragLayout.setOnDragOverListener(new DragLayout.OnDragOverListener() {
-            @Override
-            public void onDrag() {
-                dragLayout.setVisibility(View.GONE);
+
+
+            Drawable drawable = BitMapUtils.decodeLargeResourceImage(this.getResources(),R.drawable.clue_list_guide);
+            if (drawable != null && dragLayout!=null && dragview != null)
+            {
+                dragview.setImageDrawable(drawable);
+
+                dragLayout.setChildView(dragview);
+                dragLayout.setOnDragOverListener(new DragLayout.OnDragOverListener() {
+                    @Override
+                    public void onDrag() {
+                        dragLayout.setVisibility(View.GONE);
+                    }
+                });
+
+                dragLayout.setVisibility(View.VISIBLE);
             }
-        });
+
+
+        } else {
+            if (dragLayout != null)
+             dragLayout.setVisibility(View.GONE);
+        }
 
         //如果当前章节点只有一个任务并且是FINISH类型的任务，则表示该章节点结束（这种情况一般在最后一个章节点出现）
         if (Integer.parseInt(list_task.get(0).type) == TaskType.FINISH && (point.state != PointTaskStatus.FINISHED)) {
@@ -416,6 +435,7 @@ public class PointTaskActivity extends MyBaseActivity implements PointTaskContac
                 switch (Integer.parseInt(currentTask.type)) {
                     case TaskType.DISTINGUISH:
                         dialog = ProgressDialog.show(this, null, "正在启动摄像头...");
+                        imgWaiting.setVisibility(View.VISIBLE);
                         mHandler.postDelayed(new Runnable() {
                             @Override
                             public void run() {
@@ -431,7 +451,7 @@ public class PointTaskActivity extends MyBaseActivity implements PointTaskContac
                                     }
                                 });
                             }
-                        }, 2000);
+                        }, 10);
                         break;
                     case TaskType.FINISH:
                         Log.i("jason", "finish任务");
@@ -470,6 +490,35 @@ public class PointTaskActivity extends MyBaseActivity implements PointTaskContac
             dialog.dismiss();
             dialog = null;
         }
+
+        if (imgWaiting != null)
+        {
+            imgWaiting.setVisibility(View.GONE);
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+
+        if(dragview !=  null &&  dragview.getDrawable() != null){
+
+            Bitmap oldBitmap =  ((BitmapDrawable) dragview.getDrawable()).getBitmap();
+
+            dragview.setImageDrawable(null);
+
+
+            if(oldBitmap !=  null){
+
+                oldBitmap.recycle();
+
+                oldBitmap =  null;
+
+            }
+
+        }
+
     }
 
     private Handler mHandler = new Handler();

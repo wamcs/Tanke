@@ -1,27 +1,19 @@
 package com.lptiyu.tanke.activities.imagedistinguish;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.graphics.Color;
-import android.graphics.drawable.AnimationDrawable;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
-import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.Surface;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ImageView;
-import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.lptiyu.tanke.R;
 import com.lptiyu.tanke.activities.base.MyBaseActivity;
-import com.lptiyu.tanke.activities.locationtask.LocationTaskActivity;
 import com.lptiyu.tanke.entity.Point;
 import com.lptiyu.tanke.entity.Task;
 import com.lptiyu.tanke.enums.PlayStatus;
@@ -32,7 +24,9 @@ import com.lptiyu.tanke.global.AppData;
 import com.lptiyu.tanke.global.Conf;
 import com.lptiyu.tanke.pojo.UpLoadGameRecord;
 import com.lptiyu.tanke.pojo.UploadGameRecordResponse;
+import com.lptiyu.tanke.utils.NetworkUtil;
 import com.lptiyu.tanke.utils.PopupWindowUtils;
+import com.lptiyu.tanke.utils.TaskResultHelper;
 import com.lptiyu.tanke.utils.ToastUtil;
 import com.lptiyu.tanke.utils.VibratorHelper;
 
@@ -42,11 +36,6 @@ import butterknife.OnClick;
 import cn.easyar.engine.EasyAR;
 
 public class ImageDistinguishActivity extends MyBaseActivity implements ImagedistinguishContact.ImagedistinguishView {
-
-    private final String FAIL = "什么都没有发现";
-    private final String NET_EXCEPTION = "网络错误";
-    private final String SUCESS = "找到新线索";
-
     /*
     * Steps to create the key for this sample:
     *  1. login www.easyar.com
@@ -68,30 +57,22 @@ public class ImageDistinguishActivity extends MyBaseActivity implements Imagedis
     ImageView imgStartScan;
     @BindView(R.id.img_anim)
     ImageView imgAnim;
-    @BindView(R.id.rl_submit_record)
-    RelativeLayout rlSubmitRecord;
-    @BindView(R.id.tv_is_scanning)
-    TextView tv_is_scanning;
     @BindView(R.id.img_waiting)
     ImageView img_waiting;
     @BindView(R.id.tv_scanning_tip)
     TextView tvScanningTip;
+    @BindView(R.id.rl_submit_record)
+    RelativeLayout rlSubmitRecord;
 
-    private TextView popup_tv_btn;
-    private ImageView popup_img_result;
-    private TextView popup_tv_result;
-    private PopupWindow popupWindow;
-    private View popupView;
-    private boolean isOK;
-    private AnimationDrawable anim;
+    private boolean isOK = false;
     private ImagedistinguishPresenter presenter;
     private long gameId;
-    //    private long gameType;
     private Point point;
     private Task task;
     private boolean isPointOver;
     private String[] imgArr;
     private MyCountDownTimer timer;
+    private TaskResultHelper taskResultHelper;
 
     public static native void nativeInitGL();
 
@@ -113,12 +94,22 @@ public class ImageDistinguishActivity extends MyBaseActivity implements Imagedis
 
     private Handler mHandler = new Handler();
 
+    private boolean isInit = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         MyC2Java.showContext = this;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_image_distinguish);
         ButterKnife.bind(this);
+    }
+
+    protected void init() {
+        //如果初始化过就直接返回
+        if (isInit)
+            return;
+
+        isInit = true;
 
         presenter = new ImagedistinguishPresenter(this);
 
@@ -126,7 +117,6 @@ public class ImageDistinguishActivity extends MyBaseActivity implements Imagedis
                 .FLAG_KEEP_SCREEN_ON);
 
         EasyAR.initialize(this, key);
-        //        nativeInit();
         String parent_dir = getIntent().getStringExtra(Conf.PARENT_DIR);
         String imgPath = getIntent().getStringExtra(Conf.IMG_DISTINGUISH_URL) + "";//有可能有多张图片，是用逗号隔开的
         String[] split = imgPath.split(",");
@@ -139,7 +129,6 @@ public class ImageDistinguishActivity extends MyBaseActivity implements Imagedis
             imgArr = split;
         }
         gameId = getIntent().getLongExtra(Conf.GAME_ID, 0);
-        //        gameType = getIntent().getLongExtra(Conf.GAME_TYPE, 0);
         point = getIntent().getParcelableExtra(Conf.POINT);
         task = getIntent().getParcelableExtra(Conf.CURRENT_TASK);
         isPointOver = getIntent().getBooleanExtra(Conf.IS_POINT_OVER, false);
@@ -155,8 +144,13 @@ public class ImageDistinguishActivity extends MyBaseActivity implements Imagedis
                 .MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         nativeRotationChange(getWindowManager().getDefaultDisplay().getRotation() == Surface.ROTATION_0);
 
-        initPopupwindow();
-        initAnim();
+        taskResultHelper = new TaskResultHelper(this, rlSubmitRecord, imgAnim, new TaskResultHelper
+                .TaskResultCallback() {
+            @Override
+            public void onSuccess() {
+                setActivityResult();
+            }
+        });
 
         /**
          * 识别成功回调
@@ -165,12 +159,11 @@ public class ImageDistinguishActivity extends MyBaseActivity implements Imagedis
             @Override
             public void onSuccess() {
                 isOK = true;
-                tv_is_scanning.setText("提交中...");
-                startAnim();
+                taskResultHelper.startAnim();
                 timer.cancel();
                 timer = null;
                 mHandler = null;
-                upLoadGameRecord();
+                loadNetWorkData();
             }
         });
 
@@ -182,6 +175,28 @@ public class ImageDistinguishActivity extends MyBaseActivity implements Imagedis
                 }
             }, 800);
         }
+
+
+        img_waiting.setVisibility(View.GONE);
+    }
+
+    private void loadNetWorkData() {
+        if (NetworkUtil.checkIsNetworkConnected()) {
+            upLoadGameRecord();
+        } else {
+            showNetUnConnectDialog();
+        }
+    }
+
+    // 网络异常对话框
+    private void showNetUnConnectDialog() {
+        PopupWindowUtils.getInstance().showNetExceptionPopupwindow(this, new PopupWindowUtils
+                .OnNetExceptionListener() {
+            @Override
+            public void onClick(View view) {
+                loadNetWorkData();
+            }
+        });
     }
 
     private void initTimerTask() {
@@ -204,92 +219,12 @@ public class ImageDistinguishActivity extends MyBaseActivity implements Imagedis
         });
     }
 
-    /**
-     * 展示成功信息
-     */
-    private void showSuccessResult() {
-        tvScanningTip.setVisibility(View.GONE);
-        //        imgStartScan.setEnabled(true);
-        isOK = true;
-        stopAnim();
-        popup_tv_btn.setText("查看");
-        popup_img_result.setImageResource(R.drawable.task_result_right);
-        popup_tv_result.setText(SUCESS);
-        showPopup();
-        ImageDistinguishActivity.nativeStopAr();
-    }
 
-    /**
-     * 展示失败信息
-     */
-    private void showFailResult() {
-        tvScanningTip.setVisibility(View.GONE);
-        //        imgStartScan.setEnabled(true);
-        isOK = false;
-        stopAnim();
-        popup_tv_btn.setText("关闭");
-        popup_img_result.setImageResource(R.drawable.task_result_wrong);
-        popup_tv_result.setText(FAIL);
-        showPopup();
-        ImageDistinguishActivity.nativeStopAr();
-    }
-
-    /**
-     * 展示网络异常信息
-     */
-    private void showNetException() {
-        tvScanningTip.setVisibility(View.GONE);
-        //        imgStartScan.setEnabled(true);
-        isOK = false;
-        stopAnim();
-        popup_tv_btn.setText("关闭");
-        popup_img_result.setImageResource(R.drawable.task_result_wrong);
-        popup_tv_result.setText(NET_EXCEPTION);
-        showPopup();
-        ImageDistinguishActivity.nativeStopAr();
-    }
-
-
-    private void initPopupwindow() {
-        LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        popupView = inflater.inflate(R.layout.popup_scan_result, null);
-        popupWindow = new PopupWindow(popupView, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup
-                .LayoutParams.MATCH_PARENT,
-                true);
-        popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-
-        popup_tv_btn = (TextView) popupView.findViewById(R.id.tv_continue_scan);
-        popup_img_result = (ImageView) popupView.findViewById(R.id.img_result);
-        popup_tv_result = (TextView) popupView.findViewById(R.id.tv_result_tip);
-        popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
-            @Override
-            public void onDismiss() {
-                if (isOK) {
-                    popupWindow.dismiss();
-                    Intent intent = new Intent();
-                    intent.putExtra(Conf.UPLOAD_RECORD_RESPONSE, resultRecord);
-                    ImageDistinguishActivity.this.setResult(ResultCode.IMAGE_DISTINGUISH, intent);
-                    finish();
-                } else {
-                    hidePopup();
-                }
-            }
-        });
-
-        popup_tv_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                popupWindow.dismiss();
-                //                if (isOK) {
-                //                    Intent intent = new Intent();
-                //                    intent.putExtra(Conf.UPLOAD_RECORD_RESPONSE, resultRecord);
-                //                    ImageDistinguishActivity.this.setResult(ResultCode.IMAGE_DISTINGUISH, intent);
-                //                    finish();
-                //                } else {
-                //                    hidePopup();
-                //                }
-            }
-        });
+    private void setActivityResult() {
+        Intent intent = new Intent();
+        intent.putExtra(Conf.UPLOAD_RECORD_RESPONSE, resultRecord);
+        ImageDistinguishActivity.this.setResult(ResultCode.IMAGE_DISTINGUISH, intent);
+        finish();
     }
 
     @OnClick({R.id.img_close, R.id.img_startScan})
@@ -339,7 +274,6 @@ public class ImageDistinguishActivity extends MyBaseActivity implements Imagedis
     private void upLoadGameRecord() {
         UpLoadGameRecord record = new UpLoadGameRecord();
         record.uid = Accounts.getId() + "";
-        //        record.type = gameType + "";
         record.point_id = point.id + "";
         record.game_id = gameId + "";
         if (isPointOver)
@@ -358,11 +292,13 @@ public class ImageDistinguishActivity extends MyBaseActivity implements Imagedis
     @Override
     public void successUploadRecord(UploadGameRecordResponse response) {
         resultRecord = response;
-        showSuccessResult();
+        taskResultHelper.showSuccessResult();
+        taskResultHelper.stopAnim();
+        ImageDistinguishActivity.nativeStopAr();
         if (response.game_statu == PlayStatus.GAME_OVER) {
-            popup_tv_result.setText("游戏完成");
+            taskResultHelper.popup_tv_result.setText("游戏完成");
         } else {
-            popup_tv_result.setText("找到新线索");
+            taskResultHelper.popup_tv_result.setText("找到新线索");
         }
         //震动提示
         VibratorHelper.startVibrator(this);
@@ -372,8 +308,11 @@ public class ImageDistinguishActivity extends MyBaseActivity implements Imagedis
      * 上传失败回调
      */
     @Override
-    public void failUploadRecord() {
-        showFailResult();
+    public void failUploadRecord(String errorMsg) {
+        ToastUtil.TextToast(errorMsg);
+        taskResultHelper.showFailResult();
+        taskResultHelper.stopAnim();
+        ImageDistinguishActivity.nativeStopAr();
     }
 
     /**
@@ -381,55 +320,10 @@ public class ImageDistinguishActivity extends MyBaseActivity implements Imagedis
      */
     @Override
     public void netException() {
-        showNetException();
+        taskResultHelper.showNetException();
+        taskResultHelper.stopAnim();
+        ImageDistinguishActivity.nativeStopAr();
     }
-
-    /**
-     * 初始化逐帧动画
-     */
-    private void initAnim() {
-        imgAnim.setBackgroundResource(R.drawable.anim_upload_record);
-        anim = (AnimationDrawable) imgAnim.getBackground();
-    }
-
-    /**
-     * 开启动画
-     */
-    private void startAnim() {
-        if (anim != null) {
-            anim.start();
-        }
-        rlSubmitRecord.setVisibility(View.VISIBLE);
-    }
-
-    /**
-     * 停止动画
-     */
-    private void stopAnim() {
-        if (anim != null) {
-            anim.stop();
-        }
-        rlSubmitRecord.setVisibility(View.GONE);
-    }
-
-    /**
-     * 显示popupWindow
-     */
-    private void showPopup() {
-        if (popupView != null && popupWindow != null) {
-            popupWindow.showAtLocation(popupView, Gravity.CENTER, 0, 0);
-        }
-    }
-
-    /**
-     * 隐藏popupWindow
-     */
-    private void hidePopup() {
-        if (popupWindow != null && popupWindow.isShowing()) {
-            popupWindow.dismiss();
-        }
-    }
-
 
     @Override
     public void onConfigurationChanged(Configuration config) {
@@ -438,20 +332,25 @@ public class ImageDistinguishActivity extends MyBaseActivity implements Imagedis
     }
 
     @Override
+    protected void onStart() {
+        super.onStart();
+        if (!isInit)
+            init();
+    }
+
+    @Override
     protected void onDestroy() {
         super.onDestroy();
         nativeDestory();
-        if (anim != null) {
-            anim.stop();
-        }
         if (timer != null) {
             timer.cancel();
-            timer=null;
+            timer = null;
         }
     }
 
     @Override
     protected void onResume() {
+
         super.onResume();
         EasyAR.onResume();
     }

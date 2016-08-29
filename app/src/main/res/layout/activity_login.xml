@@ -37,7 +37,7 @@
             android:inputType="textPhonetic"
             android:padding="10dp"
             android:textColor="@color/white10"
-            android:textColorHint="@color/white10"
+            android:textColorHint="@color/blackccc"
             android:textSize="14sp"/>
 
         <TextView
@@ -65,7 +65,7 @@
             android:inputType="textPassword"
             android:padding="10dp"
             android:textColor="@color/white10"
-            android:textColorHint="@color/white10"
+            android:textColorHint="@color/blackccc"
             android:textSize="14sp"/>
 
         <TextView

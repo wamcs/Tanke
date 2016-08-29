@@ -37,7 +37,10 @@ public class RiddlePresenter implements RiddleContact.IRiddlePresenter {
                             view.successUploadRecord(response.getData());
                         } else {
                             Log.i("jason", "游戏记录上传失败：" + response.getInfo());
-                            view.failUploadRecord();
+                            if (response.getInfo() != null)
+                                view.failUploadRecord(response.getInfo());
+                            else
+                                view.netException();
                         }
                     }
                 }, new Action1<Throwable>() {

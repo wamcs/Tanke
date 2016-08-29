@@ -94,7 +94,7 @@
                         android:layout_width="@dimen/complete_user_avatar_size"
                         android:layout_height="@dimen/complete_user_avatar_size"
                         android:layout_gravity="center"
-                        android:background="@mipmap/img_male" />
+                        android:background="@drawable/default_pic" />
                 </FrameLayout>
             </LinearLayout>
 

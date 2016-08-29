@@ -23,7 +23,7 @@
             android:layout_marginLeft="@dimen/x26"
             android:contentDescription="@string/content_description"
             android:scaleType="centerCrop"
-            android:src="@mipmap/need_to_remove"
+            android:src="@drawable/default_pic"
             app:riv_corner_radius="@dimen/x13"/>
 
 

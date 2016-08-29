@@ -57,23 +57,6 @@ public class GameDisplayAdapter extends BaseAdapter<GameDisplayEntity> {
         return result;
     }
 
-    //主要是改游戏状态和下载包链接
-    public void SetGameDataByGameId(long game_id,int game_statu,String game_zip_url)
-    {
-        if(dataList == null)
-            return;
-
-        for (int i =0;i < dataList.size();i++)
-        {
-            GameDisplayEntity tmp = dataList.get(i);
-            if (game_id == tmp.getId())
-            {
-                tmp.setPlayStatu(game_statu);
-                tmp.setGameZipUrl(game_zip_url);
-            }
-        }
-    }
-
 
     @Override
     public void onBindViewHolder(BaseViewHolder<GameDisplayEntity> holder, int position) {
@@ -136,6 +119,8 @@ public class GameDisplayAdapter extends BaseAdapter<GameDisplayEntity> {
     public void hideFooter() {
         footerHolder.mRoot.setVisibility(View.GONE);
     }
+
+
 
     class FooterViewHolder extends BaseViewHolder<GameDisplayEntity> {
         @BindView(R.id.item_loading_root)

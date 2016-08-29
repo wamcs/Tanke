@@ -23,7 +23,7 @@ public class ImagedistinguishPresenter implements ImagedistinguishContact.Imaged
     }
 
     @Override
-    public void uploadRecord(UpLoadGameRecord record) {
+    public void uploadRecord(final UpLoadGameRecord record) {
         HttpService.getGameService()
                 .upLoadGameRecord(Accounts.getId(), Long.parseLong(record.game_id), Long.parseLong(record.point_id),
                         Long.parseLong(record.task_id), Long.parseLong(record.point_statu))
@@ -36,8 +36,10 @@ public class ImagedistinguishPresenter implements ImagedistinguishContact.Imaged
                         if (response.getStatus() == Response.RESPONSE_OK) {
                             view.successUploadRecord(response.getData());
                         } else {
-                            view.failUploadRecord();
-                            Log.i("jason", "游戏记录上传失败：" + response.getInfo());
+                            if (response.getInfo() != null)
+                                view.failUploadRecord(response.getInfo());
+                            else
+                                view.netException();
                         }
                     }
                 }, new Action1<Throwable>() {

@@ -15,7 +15,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:padding="@dimen/x26"
+            android:padding="@dimen/default_toolbar_imageview_padding"
             android:src="@mipmap/img_last_white"/>
 
         <com.lptiyu.tanke.widget.CustomTextView
