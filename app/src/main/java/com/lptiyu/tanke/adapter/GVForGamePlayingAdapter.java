@@ -110,7 +110,7 @@ public class GVForGamePlayingAdapter extends BaseAdapter {
             vh.img.setImageResource(R.drawable.default_pic);
         } else {
             //压缩处理
-            Bitmap bitmap = BitMapUtils.getBitmap(path, 100, 100);
+            Bitmap bitmap = BitMapUtils.getBitmap(path, 250, 250);
             vh.img.setImageBitmap(bitmap);
             //            vh.img.setImageBitmap(BitmapFactory.decodeFile(path));
         }

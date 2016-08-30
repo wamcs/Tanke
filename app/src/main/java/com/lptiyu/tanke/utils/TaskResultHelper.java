@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.lptiyu.tanke.R;
@@ -27,14 +28,27 @@ public class TaskResultHelper {
     public boolean isOK;
     private TaskResultCallback callback;
     private ImageView imgAnim;
+    public RelativeLayout rl_submitting;
 
     private final String FAIL = "什么都没有发现";
     private final String NET_EXCEPTION = "网络错误";
     private final String SUCESS = "找到新线索";
+    private final String CLOSE = "关闭";
+    private final String LOOK = "查看";
     private AnimationDrawable anim;
 
     public TaskResultHelper(Context context, ImageView imageView, TaskResultCallback callback) {
         this.imgAnim = imageView;
+        this.callback = callback;
+        this.context = context;
+        initPopupwindow();
+        initAnim();
+    }
+
+    public TaskResultHelper(Context context, RelativeLayout rl_submitting, ImageView imageView, TaskResultCallback
+            callback) {
+        this.imgAnim = imageView;
+        this.rl_submitting = rl_submitting;
         this.callback = callback;
         this.context = context;
         initPopupwindow();
@@ -46,9 +60,13 @@ public class TaskResultHelper {
      */
     public void showSuccessResult() {
         isOK = true;
-        popup_tv_btn.setText("查看");
-        popup_img_result.setImageResource(R.drawable.task_result_right);
-        popup_tv_result.setText(SUCESS);
+        stopAnim();
+        if (popup_img_result != null)
+            popup_img_result.setImageResource(R.drawable.task_result_right);
+        if (popup_tv_btn != null)
+            popup_tv_btn.setText(LOOK);
+        if (popup_tv_result != null)
+            popup_tv_result.setText(SUCESS);
         showPopup();
     }
 
@@ -57,9 +75,13 @@ public class TaskResultHelper {
      */
     public void showFailResult() {
         isOK = false;
-        popup_tv_btn.setText("关闭");
-        popup_img_result.setImageResource(R.drawable.task_result_wrong);
-        popup_tv_result.setText(FAIL);
+        stopAnim();
+        if (popup_img_result != null)
+            popup_img_result.setImageResource(R.drawable.task_result_wrong);
+        if (popup_tv_btn != null)
+            popup_tv_btn.setText(CLOSE);
+        if (popup_tv_result != null)
+            popup_tv_result.setText(FAIL);
         showPopup();
     }
 
@@ -68,9 +90,13 @@ public class TaskResultHelper {
      */
     public void showNetException() {
         isOK = false;
-        popup_tv_btn.setText("关闭");
-        popup_img_result.setImageResource(R.drawable.task_result_wrong);
-        popup_tv_result.setText(NET_EXCEPTION);
+        stopAnim();
+        if (popup_tv_btn != null)
+            popup_tv_btn.setText(CLOSE);
+        if (popup_img_result != null)
+            popup_img_result.setImageResource(R.drawable.task_result_wrong);
+        if (popup_tv_result != null)
+            popup_tv_result.setText(NET_EXCEPTION);
         showPopup();
     }
 
@@ -98,11 +124,9 @@ public class TaskResultHelper {
         popup_tv_btn = (TextView) popupView.findViewById(R.id.tv_continue_scan);
         popup_img_result = (ImageView) popupView.findViewById(R.id.img_result);
         popup_tv_result = (TextView) popupView.findViewById(R.id.tv_result_tip);
-
-        popup_tv_btn.setOnClickListener(new View.OnClickListener() {
+        popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
             @Override
-            public void onClick(View v) {
-                popupWindow.dismiss();
+            public void onDismiss() {
                 if (isOK) {
                     //成功之后的回调
                     if (callback != null) {
@@ -113,14 +137,25 @@ public class TaskResultHelper {
                 }
             }
         });
+
+        popup_tv_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (popupWindow != null) {
+                    popupWindow.dismiss();
+                }
+            }
+        });
     }
 
     /**
      * 初始化动画
      */
     private void initAnim() {
-        imgAnim.setBackgroundResource(R.drawable.anim_upload_record);
-        anim = (AnimationDrawable) imgAnim.getBackground();
+        if (imgAnim != null) {
+            imgAnim.setBackgroundResource(R.drawable.anim_upload_record);
+            anim = (AnimationDrawable) imgAnim.getBackground();
+        }
     }
 
     /**
@@ -130,7 +165,11 @@ public class TaskResultHelper {
         if (anim != null) {
             anim.start();
         }
-        imgAnim.setVisibility(View.VISIBLE);
+        //        if (imgAnim != null)
+        //            imgAnim.setVisibility(View.VISIBLE);
+        if (rl_submitting != null) {
+            rl_submitting.setVisibility(View.VISIBLE);
+        }
     }
 
     /**
@@ -140,7 +179,11 @@ public class TaskResultHelper {
         if (anim != null) {
             anim.stop();
         }
-        imgAnim.setVisibility(View.GONE);
+        //        if (imgAnim != null)
+        //            imgAnim.setVisibility(View.GONE);
+        if (rl_submitting != null) {
+            rl_submitting.setVisibility(View.GONE);
+        }
     }
 
     public interface TaskResultCallback {

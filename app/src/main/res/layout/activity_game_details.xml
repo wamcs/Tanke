@@ -118,7 +118,7 @@
                             android:drawablePadding="@dimen/x15"
                             android:gravity="center_vertical"
                             android:text="洪山区-华科校区"
-                            android:textColor="#333"
+                            android:textColor="@color/black333"
                             android:textSize="14sp"/>
 
                         <ImageView
@@ -141,7 +141,7 @@
                         android:layout_marginTop="@dimen/y25"
                         android:gravity="center_vertical"
                         android:text="白天-黑夜"
-                        android:textColor="#666"
+                        android:textColor="@color/black666"
                         android:textSize="13sp"
                         />
 
@@ -214,7 +214,7 @@
                         android:layout_height="wrap_content"
                         android:gravity="center_vertical"
                         android:text="情节简介"
-                        android:textColor="#333"
+                        android:textColor="@color/black333"
                         android:textSize="16sp"/>
 
                     <com.lptiyu.tanke.widget.CustomTextView
@@ -224,7 +224,7 @@
                         android:layout_marginTop="@dimen/x15"
                         android:paddingTop="@dimen/y18"
                         android:text="从荒芜到一片森林，从东到西。一段神秘旅途，在绝望中看到光线，在这里开启你的探险之路"
-                        android:textColor="@color/grey03"
+                        android:textColor="@color/black666"
                         android:textSize="13sp"/>
 
                     <com.lptiyu.tanke.widget.CustomTextView

@@ -60,13 +60,13 @@
             />
 
         <TextView
-            android:id="@+id/tv_is_scanning"
+            android:id="@+id/tv_submitting"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/img_anim"
             android:layout_centerInParent="true"
             android:layout_marginTop="10dp"
-            android:text="正在扫描..."
+            android:text="提交中..."
             android:textColor="@color/white10"
             />
     </RelativeLayout>

@@ -10,8 +10,8 @@
         android:layout_height="wrap_content"
         android:background="@color/default_font_color"
         android:paddingLeft="30dp"
-        android:paddingRight="30dp"
-        android:paddingTop="10dp">
+        android:paddingRight="20dp"
+        android:paddingTop="20dp">
 
         <TextView
             android:id="@+id/tv_share_to"
@@ -42,10 +42,9 @@
         android:horizontalSpacing="@dimen/x3"
         android:listSelector="@android:color/transparent"
         android:numColumns="3"
-        android:paddingBottom="@dimen/y26"
+        android:paddingBottom="@dimen/y52"
         android:paddingLeft="@dimen/x26"
         android:paddingRight="@dimen/x26"
-        android:paddingTop="@dimen/y10"
         android:stretchMode="columnWidth"
         android:verticalSpacing="@dimen/x3">
 
