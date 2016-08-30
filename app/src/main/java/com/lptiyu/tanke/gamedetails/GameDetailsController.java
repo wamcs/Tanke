@@ -423,12 +423,22 @@ public class GameDetailsController extends ActivityController {
                         } else {
                             Toast.makeText(getContext(), "放弃该游戏失败", Toast.LENGTH_SHORT).show();
                         }
+
+                        if (progressDialog != null)
+                        {
+                            progressDialog.dismiss();
+                        }
                     }
                 }, new Action1<Throwable>() {
                     @Override
                     public void call(Throwable throwable) {
                         Toast.makeText(getContext(), "放弃该游戏失败", Toast.LENGTH_SHORT).show();
                         Log.i("jason", "abandon game error:" + throwable.getMessage());
+
+                        if (progressDialog != null)
+                        {
+                            progressDialog.dismiss();
+                        }
                     }
                 });
     }

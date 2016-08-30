@@ -350,7 +350,6 @@ public class ImageDistinguishActivity extends MyBaseActivity implements Imagedis
 
     @Override
     protected void onResume() {
-
         super.onResume();
         EasyAR.onResume();
     }
