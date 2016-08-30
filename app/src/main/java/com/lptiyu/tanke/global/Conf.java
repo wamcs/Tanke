@@ -217,4 +217,10 @@ public final class Conf {
     public static final String PARENT_DIR = "parent_dir";
     public static final String TASK_IMG = "task_img";
 
+    public static final String APP_NAME = "appName";
+    public static final String PACKAGE_NAME = "packageName";
+    public static final String VERSION_NAME = "versionName";
+    public static final String VERSION_CODE = "versionCode";
+    public static final String ICON = "icon";
+
 }

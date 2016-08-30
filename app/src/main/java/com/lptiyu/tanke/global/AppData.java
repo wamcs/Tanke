@@ -28,6 +28,8 @@ public class AppData {
 
     private static int versionCode = -1;
 
+    private static String versionName;
+
     private static Gson sGson;
 
     static {
@@ -72,6 +74,22 @@ public class AppData {
         }
 
         return -1;
+    }
+
+    /**
+     * 获取versionName
+     *
+     * @return
+     */
+    public static String getVersionName() {
+        PackageManager manager = sContext.getPackageManager();
+        try {
+            PackageInfo info = manager.getPackageInfo(sContext.getPackageName(), 0);
+            return info.versionName;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        return "";
     }
 
     /**

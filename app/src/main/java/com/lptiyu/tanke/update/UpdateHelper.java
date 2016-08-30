@@ -1,11 +1,9 @@
 package com.lptiyu.tanke.update;
 
 import android.content.Context;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
-import android.util.Log;
 
 import com.lptiyu.tanke.RunApplication;
+import com.lptiyu.tanke.global.AppData;
 import com.lptiyu.tanke.io.net.HttpService;
 import com.lptiyu.tanke.io.net.Response;
 import com.lptiyu.tanke.utils.xutils3.APKDownloader;
@@ -32,6 +30,8 @@ public class UpdateHelper {
     //    private DownloadHelper downloadHelper;
     private WeakReference<Context> weakReference;
     private APKDownloader apkDownloader;
+    private int versionCode;
+    private String versionName;
 
     public UpdateHelper(Context context) {
         weakReference = new WeakReference<>(context);
@@ -59,24 +59,15 @@ public class UpdateHelper {
                 .subscribe(new Action1<VersionEntity>() {
                     @Override
                     public void call(VersionEntity versionEntity) {
-                        int versionCode = versionEntity.getVersionCode();
-                        String versionName = versionEntity.getVersionName();
+                        versionCode = versionEntity.getVersionCode();
+                        versionName = versionEntity.getVersionName();
                         int minVersion = versionEntity.getMin_version();
                         apkUrl = versionEntity.getUrl();
-                        Context context = weakReference.get();
-                        PackageManager pm = context.getPackageManager();//context为当前Activity上下文
-                        try {
-                            PackageInfo pi = pm.getPackageInfo(context.getPackageName(), PackageManager
-                                    .GET_CONFIGURATIONS);
-                            Log.i("jason", "当签名版本号：" + pi.versionCode + ",当前版本名称：" + pi.versionName);
-                            if (versionCode > pi.versionCode) {
-                                if (pi.versionCode >= minVersion)
-                                    showChooseUpdateDialog(pi.versionName, versionName);
-                                else
-                                    showMustUpdateDialog();
-                            }
-                        } catch (Exception e) {
-                            e.printStackTrace();
+                        if (versionCode > AppData.getVersionCode()) {
+                            if (AppData.getVersionCode() >= minVersion)
+                                showChooseUpdateDialog(AppData.getVersionName(), versionName);
+                            else
+                                showMustUpdateDialog();
                         }
                     }
                 }, new Action1<Throwable>() {
@@ -109,7 +100,7 @@ public class UpdateHelper {
                 @Override
                 public void onPositiveClicked() {
                     //                    downloadHelper.startDownload(apkUrl);
-                    apkDownloader = new APKDownloader(weakReference.get(), apkUrl);
+                    apkDownloader = new APKDownloader(weakReference.get(), apkUrl, versionCode);
                     mNotifyUpdateDialog.dismiss();
                 }
 

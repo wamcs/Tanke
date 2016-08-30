@@ -38,12 +38,12 @@ public class XUtilsHelper {
     }
 
     /**
-     * 下载游戏包
+     * 下载
      *
      * @param fileUrl
-     * @param listener
+     * @param callback
      */
-    public void downLoadGameZip(String fileUrl, final IDownloadGameZipFileListener listener) {
+    public void downLoad(String fileUrl, final IDownloadCallback callback) {
         //xutils不支持非http协议
         RequestParams params;
         if (fileUrl.startsWith("http://"))
@@ -71,27 +71,27 @@ public class XUtilsHelper {
             @Override
             public void onLoading(long total, long current, boolean isDownloading) {
                 //进度条
-                if (listener != null) {
-                    listener.progress(total, current, isDownloading);
+                if (callback != null) {
+                    callback.progress(total, current, isDownloading);
                 }
             }
 
             @Override
             public void onSuccess(File file) {
-                Log.i("jason", "xutils3.0下载的游戏包路径：" + file.getAbsolutePath());
+                Log.i("jason", "xutils3.0下载的路径：" + file.getAbsolutePath());
                 Log.i("jason", "文件名：" + file.getName());
                 Log.i("jason", "父目录：" + file.getParentFile());
 
-                if (listener != null) {
-                    listener.successs(file);
+                if (callback != null) {
+                    callback.successs(file);
                 }
 
             }
 
             @Override
             public void onError(Throwable ex, boolean isOnCallback) {
-                if (listener != null) {
-                    listener.onError(ex.getMessage());
+                if (callback != null) {
+                    callback.onError(ex.getMessage());
                 }
             }
 
@@ -102,8 +102,8 @@ public class XUtilsHelper {
 
             @Override
             public void onFinished() {
-                if (listener != null) {
-                    listener.finished();
+                if (callback != null) {
+                    callback.finished();
                 }
             }
         });
@@ -112,7 +112,7 @@ public class XUtilsHelper {
     /**
      * 下载回调接口
      */
-    public interface IDownloadGameZipFileListener {
+    public interface IDownloadCallback {
         void successs(File file);
 
         void progress(long total, long current, boolean isDownloading);
@@ -240,7 +240,8 @@ public class XUtilsHelper {
 
     //对参数进行封装格式，为了方便以后的维护，在这里可以统一处理头部信息以及一些上传下载的配置
     private RequestParams getRequestParams(Object req, String url) {
-        RequestParams requestParams = new RequestParams(url);
+        //        RequestParams requestParams = new RequestParams(url);
+        RequestParams requestParams = RequestParamsHelper.getBaseRequestParam(url);
         requestParams.setConnectTimeout(15000);
         if (req instanceof String) {
             requestParams.setBodyContent(String.valueOf(req));

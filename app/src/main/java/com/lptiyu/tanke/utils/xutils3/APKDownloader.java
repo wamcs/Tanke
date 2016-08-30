@@ -27,15 +27,25 @@ public class APKDownloader {
     private String apkUrl;
     private Context context;
     private Handler handler;
+    private int targetVersionCode;
     private final double ONE_MILLION_BYTE = 1024 * 1024.0;
 
-    public APKDownloader(Context context, String tempGameZipUrl) {
+    public APKDownloader(Context context, String apkUrl, int targetVersionCode) {
         this.context = context;
-        this.apkUrl = tempGameZipUrl;
+        this.targetVersionCode = targetVersionCode;
+        this.apkUrl = apkUrl;
         handler = new Handler();
+        init();
+    }
 
-        initProgressDialog();
-        chooseToDownload();
+    private void init() {
+        File localAPKFile = FileUtils.isLocalAPKFileExist(targetVersionCode);
+        if (localAPKFile != null) {
+            update(localAPKFile);
+        } else {
+            initProgressDialog();
+            chooseToDownload();
+        }
     }
 
     private void initProgressDialog() {
@@ -84,15 +94,11 @@ public class APKDownloader {
         }).show();
     }
 
-    public interface FinishDownloadCallback {
-        void onFinishedDownload();
-    }
-
     public void startDownloadByXUtils() {
         if (!progressDialog.isShowing()) {
             progressDialog.show();
         }
-        XUtilsHelper.getInstance().downLoadGameZip(apkUrl, new XUtilsHelper.IDownloadGameZipFileListener() {
+        XUtilsHelper.getInstance().downLoad(apkUrl, new XUtilsHelper.IDownloadCallback() {
             @Override
             public void successs(File file) {
                 progressDialog.setMessage("下载完成");

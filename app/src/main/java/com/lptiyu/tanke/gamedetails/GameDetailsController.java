@@ -476,7 +476,7 @@ public class GameDetailsController extends ActivityController {
      * 根据游戏下载包链接下载该游戏包
      */
     private void downloadGameZipFile() {
-        XUtilsHelper.getInstance().downLoadGameZip(tempGameZipUrl, new XUtilsHelper.IDownloadGameZipFileListener() {
+        XUtilsHelper.getInstance().downLoad(tempGameZipUrl, new XUtilsHelper.IDownloadCallback() {
             @Override
             public void successs(File file) {
                 String zippedFilePath = file.getAbsolutePath();

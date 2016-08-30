@@ -22,7 +22,7 @@ public class DirUtils {
     private static final String CRASH_lOG = "/CRASH_lOG";
     private static final String RES = "/res";
     private static final String RECORD = "/record";
-    private static final String GAME = "/game";
+    private static final String APK = "/apk";
     private static final String VIDEO = "/video";
     private static final String AUDIO = "/audio";
     private static final String ANDROID_RESOURCE = "android.resource://";
@@ -134,8 +134,7 @@ public class DirUtils {
      * @return
      */
     public static File getGameDirectory() {
-        return getDirectory(DATA_ROOT_DIR, GAME);
+        //        return getDirectory(DATA_ROOT_DIR, APK);
+        return getDirectory(SDCARD_ROOT_DIR, APK);
     }
-
-
 }
