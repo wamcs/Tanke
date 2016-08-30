@@ -52,6 +52,7 @@ public class APKDownloader {
         progressDialog = ProgressDialogHelper.getHorizontalProgressDialog(context);
         progressDialog = new ProgressDialog(context);
         progressDialog.setProgressNumberFormat("%1d MB/%2d MB");
+        progressDialog.setMax(0);
         progressDialog.setTitle("应用更新");
         progressDialog.setMessage("正在下载，请稍后...");
         progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);

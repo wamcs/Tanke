@@ -25,7 +25,7 @@
     <TextView
         android:id="@+id/tv_seperator1"
         android:layout_width="match_parent"
-        android:layout_height="14dp"
+        android:layout_height="@dimen/seperator_height"
         android:layout_below="@id/vp"
         android:background="@color/windowBackground"/>
 
@@ -178,8 +178,9 @@
 
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="14dp"
+        android:layout_height="@dimen/seperator_height"
         android:layout_below="@id/ll_hot_list"
-        android:background="@color/windowBackground"/>
+        android:background="@color/windowBackground"
+        android:visibility="visible"/>
 
 </RelativeLayout>

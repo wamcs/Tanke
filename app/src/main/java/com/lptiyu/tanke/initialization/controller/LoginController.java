@@ -206,7 +206,7 @@ public class LoginController extends ActivityController {
                     @Override
                     public void call(Response<UserEntity> userEntityResponse) {
                         int status = userEntityResponse.getStatus();
-                       // ToastUtil.TextToast("status:" + status);
+                        // ToastUtil.TextToast("status:" + status);
                         if (status != 1) {
                             ToastUtil.TextToast("登录失败：" + userEntityResponse.getInfo());
                             return;
@@ -216,8 +216,8 @@ public class LoginController extends ActivityController {
                         Accounts.setToken(entity.getToken());
                         Accounts.setPhoneNumber(entity.getPhone());
                         Accounts.setPlatform(Platform.TEL);
-                        //Accounts.setNickName(entity.getNickname());
-                        //Accounts.setAvatar(entity.getAvatar());
+                        Accounts.setNickName(entity.getNickname());
+                        Accounts.setAvatar(entity.getAvatar());
                         //nickname 和 avatar 干什么用？不造
                         Intent intent = new Intent(getActivity(), MainActivity.class);
                         startActivity(intent);
