@@ -1,10 +1,16 @@
 package com.lptiyu.tanke.utils;
 
 
+import android.content.Context;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+
 import com.file.zip.ZipEntry;
 import com.file.zip.ZipFile;
 import com.google.gson.stream.JsonReader;
 import com.lptiyu.tanke.global.AppData;
+import com.lptiyu.tanke.global.Conf;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -20,6 +26,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Enumeration;
+import java.util.HashMap;
 
 
 /**
@@ -316,5 +323,48 @@ public class FileUtils {
             urlcon.disconnect();
         }
         return 0;
+    }
+
+    public static HashMap<String, String> getAPKInfo(Context context, String apkFilePath) {
+        if (apkFilePath == null || context == null || !apkFilePath.endsWith(".apk")) {
+            return null;
+        }
+        //        String archiveFilePath = this.getExternalFilesDir(null).getAbsolutePath() + "/budao.apk";//安装包路径
+        //        String archiveFilePath = apkFilePath;
+        PackageManager pm = context.getPackageManager();
+        PackageInfo info = pm.getPackageArchiveInfo(apkFilePath, PackageManager.GET_ACTIVITIES);
+        if (info != null) {
+            HashMap<String, String> hashMap = new HashMap<>();
+            ApplicationInfo appInfo = info.applicationInfo;
+            String appName = pm.getApplicationLabel(appInfo).toString();
+            String packageName = appInfo.packageName;  //得到安装包名称
+            String versionName = info.versionName;
+            int versionCode = info.versionCode;
+            //            Drawable icon = pm.getApplicationIcon(appInfo);//得到图标信息
+            hashMap.put(Conf.APP_NAME, appName);
+            hashMap.put(Conf.PACKAGE_NAME, packageName);
+            hashMap.put(Conf.VERSION_NAME, versionName);
+            hashMap.put(Conf.VERSION_CODE, versionCode + "");
+            return hashMap;
+        }
+        return null;
+    }
+
+    public static File isLocalAPKFileExist(int targetVersionCode) {
+        File[] files = DirUtils.getGameDirectory().listFiles();
+        if (files != null && files.length > 0) {
+            for (File file : files) {
+                HashMap<String, String> map = getAPKInfo(AppData.getContext(), file.getAbsolutePath());
+                if (map != null) {
+                    String packageName = map.get(Conf.PACKAGE_NAME);
+                    String versionCode = map.get(Conf.VERSION_CODE);
+                    if (packageName.equals(AppData.getPackageName()) && targetVersionCode == Integer.parseInt
+                            (versionCode)) {
+                        return file;
+                    }
+                }
+            }
+        }
+        return null;
     }
 }
