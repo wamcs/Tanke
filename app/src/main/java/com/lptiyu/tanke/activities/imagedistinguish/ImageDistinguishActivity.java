@@ -4,9 +4,6 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Message;
-import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.Surface;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +11,6 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.lptiyu.tanke.R;
 import com.lptiyu.tanke.activities.base.MyBaseActivity;
@@ -354,7 +350,6 @@ public class ImageDistinguishActivity extends MyBaseActivity implements Imagedis
 
     @Override
     protected void onResume() {
-
         super.onResume();
         EasyAR.onResume();
     }
