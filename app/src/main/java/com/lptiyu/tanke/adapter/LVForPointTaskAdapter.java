@@ -134,6 +134,7 @@ public class LVForPointTaskAdapter extends BaseAdapter {
                         + "p[j].style.color=\"#666666\";}"
                         + "var objs = document.getElementsByTagName(\"img\"); "
                         + "for(var i=0;i<objs.length;i++)  " + "{"
+                        + "objs[i].style.width=document.documentElement.clientWidth;"
                         + "    objs[i].onclick=function()  " + "    {  "
                         + "        var url =  this.src.replace(\"_thumbs/Images\",\"images\"); "
                         + "        window.imagelistner.openImage(url);  "
