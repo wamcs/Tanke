@@ -70,14 +70,14 @@ public class RegisterHelper extends SignUpHelper {
 
     @Override
     public boolean next() {
-        signUpNextButton.setEnabled(false);
-        signUpNextButton.setText("注册中...");
         if (!super.next()) {
             return false;
         }
         String phone = signUpPhoneEditText.getText().toString();
         String password = signUpPasswordEditText.getText().toString();
         String code = signUpCodeEditText.getText().toString();
+        signUpNextButton.setEnabled(false);
+        signUpNextButton.setText("注册中...");
 
         if (type == UserService.USER_TYPE_NORMAL) {
             //普通用户注册

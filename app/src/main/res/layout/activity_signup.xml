@@ -155,11 +155,17 @@
 
     <Button
         android:id="@id/sign_up_next_button"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/linearLayout2"
         android:layout_centerHorizontal="true"
-        android:background="@drawable/regist_over"/>
+        android:layout_marginLeft="40dp"
+        android:layout_marginRight="40dp"
+        android:background="@drawable/shape_bg_login"
+        android:gravity="center"
+        android:text="完成"
+        android:textColor="@color/white10"
+        android:textSize="16sp"/>
 
     <LinearLayout
         android:layout_width="wrap_content"

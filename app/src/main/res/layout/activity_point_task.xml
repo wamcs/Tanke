@@ -96,7 +96,7 @@
         android:layout_height="match_parent"
         android:clickable="false"
         android:scaleType="fitXY"
-        android:src="@drawable/bg_login"
+        android:src="@drawable/shape_bg_login"
         android:visibility="gone"/>
 
 </RelativeLayout>

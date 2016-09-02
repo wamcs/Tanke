@@ -77,6 +77,8 @@ public class BindTelHelper extends SignUpHelper {
         final String phone = signUpPhoneEditText.getText().toString();
         String password = signUpPasswordEditText.getText().toString();
         String code = signUpCodeEditText.getText().toString();
+        signUpNextButton.setEnabled(false);
+        signUpNextButton.setText("绑定中...");
 
         RequestParams params = RequestParamsHelper.getBaseRequestParam(XUtilsUrls.BIND_PHONE);
         params.addBodyParameter("phone", phone);
@@ -97,6 +99,8 @@ public class BindTelHelper extends SignUpHelper {
             @Override
             protected void onFailed(String errorMsg) {
                 ToastUtil.TextToast("绑定失败");
+                signUpNextButton.setEnabled(true);
+                signUpNextButton.setText("完成");
             }
         }, BaseResponse.class);
 

@@ -166,8 +166,10 @@ public class ImageDistinguishActivity extends MyBaseActivity implements Imagedis
             public void onSuccess() {
                 isOK = true;
                 taskResultHelper.startAnim();
-                timer.cancel();
-                timer = null;
+                if (timer != null) {
+                    timer.cancel();
+                    timer = null;
+                }
                 mHandler = null;
                 loadNetWorkData();
             }

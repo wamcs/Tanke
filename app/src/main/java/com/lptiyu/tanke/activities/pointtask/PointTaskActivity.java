@@ -69,10 +69,10 @@ public class PointTaskActivity extends MyBaseActivity implements PointTaskContac
     private LVForPointTaskAdapter adapter;
     private PointTaskPresenter presenter;
     private long gameId;
-   // private ArrayList<TaskRecord> list_task_record;
+    // private ArrayList<TaskRecord> list_task_record;
     private ArrayList<Task> list_task;
     private int selectPosition;
-   // private PointRecord point_record;
+    // private PointRecord point_record;
     private String unZippedDir;
     private Task currentTask;
     private boolean isPointOver = false;
@@ -126,8 +126,7 @@ public class PointTaskActivity extends MyBaseActivity implements PointTaskContac
         }
         list_task = point.list_task;
 
-        if(point.state == PointTaskStatus.FINISHED)
-        {
+        if (point.state == PointTaskStatus.FINISHED) {
             imgGetKey.setVisibility(View.GONE);
         }
         ctvTaskName.setText(point.point_title + "");
@@ -140,9 +139,8 @@ public class PointTaskActivity extends MyBaseActivity implements PointTaskContac
 
         //如果用户是第一次进入此Activity，则显示导航提示
         if (AppData.isFirstInPointTaskActivity()) {
-            Drawable drawable = BitMapUtils.decodeLargeResourceImage(this.getResources(),R.drawable.clue_list_guide);
-            if (drawable != null && dragLayout!=null && dragview != null)
-            {
+            Drawable drawable = BitMapUtils.decodeLargeResourceImage(this.getResources(), R.drawable.clue_list_guide);
+            if (drawable != null && dragLayout != null && dragview != null) {
                 dragview.setImageDrawable(drawable);
 
                 dragLayout.setChildView(dragview);
@@ -159,7 +157,7 @@ public class PointTaskActivity extends MyBaseActivity implements PointTaskContac
 
         } else {
             if (dragLayout != null)
-             dragLayout.setVisibility(View.GONE);
+                dragLayout.setVisibility(View.GONE);
         }
 
         //如果当前章节点只有一个任务并且是FINISH类型的任务，则表示该章节点结束（这种情况一般在最后一个章节点出现）
@@ -227,28 +225,23 @@ public class PointTaskActivity extends MyBaseActivity implements PointTaskContac
             selectPosition = 0;
         } else {//章节点已开启
 
-                for (int i = 0; i < list_task.size(); i++) {
-                    Task task = list_task.get(i);
-                    if (task.state == PointTaskStatus.PLAYING)
-                    {
-                        selectPosition = i;
-                        if (i == list_task.size()-1)
-                        {
-                            isPointOver = true;
-                        }
-                        else if ((i < list_task.size()-1) && (Integer.parseInt(list_task.get(i+1).type) == TaskType.FINISH))
-                        {
-                            //如果下一个任务是结束任务的话，表示完成此任务章节点就要结束了
-                            isPointOver = true;
+            for (int i = 0; i < list_task.size(); i++) {
+                Task task = list_task.get(i);
+                if (task.state == PointTaskStatus.PLAYING) {
+                    selectPosition = i;
+                    if (i == list_task.size() - 1) {
+                        isPointOver = true;
+                    } else if ((i < list_task.size() - 1) && (Integer.parseInt(list_task.get(i + 1).type) == TaskType
+                            .FINISH)) {
+                        //如果下一个任务是结束任务的话，表示完成此任务章节点就要结束了
+                        isPointOver = true;
 
-                        }
-                        else
-                        {
-                            isPointOver = false;
-                        }
+                    } else {
+                        isPointOver = false;
                     }
-
                 }
+
+            }
         }
     }
 
@@ -353,21 +346,19 @@ public class PointTaskActivity extends MyBaseActivity implements PointTaskContac
             return;
         Point point = themeLine.list_points.get(pointIndex);
 
-        themeLine.play_statu = response.game_statu+"";
+        themeLine.play_statu = response.game_statu + "";
         //更新当前任务的记录信息
         currentTask.finishTime = response.task_finish_time;
         currentTask.state = PointTaskStatus.FINISHED;
         currentTask.exp = Integer.parseInt(response.get_exp);
-        if (isPointOver)
-        {
+        if (isPointOver) {
             point.state = PointTaskStatus.FINISHED;
 
-            if (pointIndex < themeLine.list_points.size() - 1)
-            {
+            if (pointIndex < themeLine.list_points.size() - 1) {
                 //下一个任务设置为new
-                themeLine.list_points.get(pointIndex+1).isNew = true;
-                themeLine.list_points.get(pointIndex+1).state = PointTaskStatus.PLAYING;
-                themeLine.list_points.get(pointIndex+1).list_task.get(0).state = PointTaskStatus.PLAYING;
+                themeLine.list_points.get(pointIndex + 1).isNew = true;
+                themeLine.list_points.get(pointIndex + 1).state = PointTaskStatus.PLAYING;
+                themeLine.list_points.get(pointIndex + 1).list_task.get(0).state = PointTaskStatus.PLAYING;
             }
         }
 
@@ -389,11 +380,10 @@ public class PointTaskActivity extends MyBaseActivity implements PointTaskContac
         setAdapter();
 
         //如果攻击点结束 而且当前任务的最后一个任务不是结束任务的话
-        if(isPointOver && Integer.parseInt(list_task.get(list_task.size()-1).type) != TaskType.FINISH)
-        {
+        if (isPointOver && Integer.parseInt(list_task.get(list_task.size() - 1).type) != TaskType.FINISH) {
             //直接关闭新的攻击点
             finish();
-            ToastUtil.TextToast("发现新线索，经验值+"+currentTask.exp);
+            ToastUtil.TextToast("发现新线索，经验值+" + currentTask.exp);
         }
     }
 
@@ -489,8 +479,7 @@ public class PointTaskActivity extends MyBaseActivity implements PointTaskContac
             dialog = null;
         }
 
-        if (imgWaiting != null)
-        {
+        if (imgWaiting != null) {
             imgWaiting.setVisibility(View.GONE);
         }
     }
@@ -500,18 +489,18 @@ public class PointTaskActivity extends MyBaseActivity implements PointTaskContac
         super.onDestroy();
 
 
-        if(dragview !=  null &&  dragview.getDrawable() != null){
+        if (dragview != null && dragview.getDrawable() != null) {
 
-            Bitmap oldBitmap =  ((BitmapDrawable) dragview.getDrawable()).getBitmap();
+            Bitmap oldBitmap = ((BitmapDrawable) dragview.getDrawable()).getBitmap();
 
             dragview.setImageDrawable(null);
 
 
-            if(oldBitmap !=  null){
+            if (oldBitmap != null) {
 
                 oldBitmap.recycle();
 
-                oldBitmap =  null;
+                oldBitmap = null;
 
             }
 

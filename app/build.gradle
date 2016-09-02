@@ -9,8 +9,8 @@ android {
         applicationId "com.lptiyu.tanke"
         minSdkVersion 15
         targetSdkVersion 23
-        versionCode 7
-        versionName "1.0.7"
+        versionCode 8
+        versionName "1.0.8"
         //突破65535的限制
         multiDexEnabled true
 
