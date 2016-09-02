@@ -410,6 +410,10 @@ public class GameDetailsController extends ActivityController {
                             //同时清空该游戏的记录
                             RunApplication.setgetPlayingThemeLine(null);
 
+
+                            //标记下游戏状态已经变更，通知正在玩和已经完成的列表进行更新
+                            RunApplication.isPlayingStatusChanged = true;
+
                             getActivity().setResult(ResultCode.LEAVE_GAME);
                             getActivity().finish();
                             //                            RunApplication.getInstance().finishActivity();

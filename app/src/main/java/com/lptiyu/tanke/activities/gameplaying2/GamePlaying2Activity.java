@@ -451,6 +451,8 @@ public class GamePlaying2Activity extends MyBaseActivity implements GamePlaying2
         }
         //放弃游戏回调
         if (requestCode == RequestCode.LEAVE_GAME && resultCode == ResultCode.LEAVE_GAME) {
+
+            setResult(ResultCode.LEAVE_GAME);
             finish();
         }
     }
