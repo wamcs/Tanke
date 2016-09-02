@@ -387,6 +387,14 @@ public class PointTaskActivity extends MyBaseActivity implements PointTaskContac
         }
         checkTaskState();
         setAdapter();
+
+        //如果攻击点结束 而且当前任务的最后一个任务不是结束任务的话
+        if(isPointOver && Integer.parseInt(list_task.get(list_task.size()-1).type) != TaskType.FINISH)
+        {
+            //直接关闭新的攻击点
+            finish();
+            ToastUtil.TextToast("发现新线索，经验值+"+currentTask.exp);
+        }
     }
 
     @Override
