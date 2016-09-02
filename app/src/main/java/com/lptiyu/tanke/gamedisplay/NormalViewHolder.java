@@ -70,10 +70,10 @@ public class NormalViewHolder extends BaseViewHolder<GameDisplayEntity> {
     GameDisplayEntity gameDisplayEntity;
 
     private GameDisplayFragment fragment;
-//    private int gameZipDownloadFailedNum = 3;
-//    private ProgressDialog progressDialog;
-//    //    private final GameZipHelper gameZipHelper;
-//    //    private GameZipScanner mGameZipScanner;
+    //    private int gameZipDownloadFailedNum = 3;
+    //    private ProgressDialog progressDialog;
+    //    //    private final GameZipHelper gameZipHelper;
+    //    //    private GameZipScanner mGameZipScanner;
 
     NormalViewHolder(ViewGroup parent, GameDisplayFragment fragment) {
         super(fromResLayout(parent, R.layout.item_game_display));
@@ -106,16 +106,13 @@ public class NormalViewHolder extends BaseViewHolder<GameDisplayEntity> {
             return;
         }
         int play_statu = gameDisplayEntity.getPlayStatu();
+        Log.i("jason", "gameDisplayEntity.getPlayStatu():" + gameDisplayEntity.getPlayStatu());
         String tempGameZipUrl = gameDisplayEntity.getGameZipUrl();
-        if (play_statu == PlayStatus.NO_STATUS)
-        {
+        if (play_statu == PlayStatus.NO_STATUS) {
             loadNetWorkData();
-        }
-        else if (play_statu != PlayStatus.NEVER_ENTER_GANME && (tempGameZipUrl == null || tempGameZipUrl.isEmpty()))
-        {
+        } else if (play_statu != PlayStatus.NEVER_ENTER_GANME && (tempGameZipUrl == null || tempGameZipUrl.isEmpty())) {
             loadNetWorkData();
-        }
-        else//如果之前已经请求过状态了，就记录下来，避免每次网络请求
+        } else//如果之前已经请求过状态了，就记录下来，避免每次网络请求
         {
             startGameByPlayStatu(play_statu);
         }
@@ -245,7 +242,7 @@ public class NormalViewHolder extends BaseViewHolder<GameDisplayEntity> {
         }
     }
 
-    private void  startGameByPlayStatu(int play_statu) {
+    private void startGameByPlayStatu(int play_statu) {
 
         switch (play_statu) {
             case PlayStatus.NEVER_ENTER_GANME://从未玩过游戏，进入到游戏详情界面
@@ -262,7 +259,7 @@ public class NormalViewHolder extends BaseViewHolder<GameDisplayEntity> {
                 //进入到玩游戏界面之前，先检测游戏包是否存在，存在则直接进入，否则要先下载游戏包
                 //检查游戏包是否存在或者游戏解压后为空，判断完后游戏包已经被解压缩，并且已经将文件解析成实体类对象，此时可以直接从内存中取数据了
                 String tempGameZipUrl = gameDisplayEntity.getGameZipUrl();
-                if (tempGameZipUrl == null || tempGameZipUrl=="")
+                if (tempGameZipUrl == null || tempGameZipUrl == "")
                     return;
 
                 new XUtilsDownloader(getContext(), tempGameZipUrl, gameDisplayEntity.getId(), new
@@ -294,7 +291,7 @@ public class NormalViewHolder extends BaseViewHolder<GameDisplayEntity> {
 
                             gameDisplayEntity.setGameZipUrl(tempGameZipUrl);
                             gameDisplayEntity.setPlayStatu(response.getData().play_statu);
-                            startGameByPlayStatu (gameDisplayEntity.getPlayStatu());
+                            startGameByPlayStatu(gameDisplayEntity.getPlayStatu());
                         } else {
                             Log.i("jason", "获取游戏状态错误信息：" + response.getInfo());
                         }

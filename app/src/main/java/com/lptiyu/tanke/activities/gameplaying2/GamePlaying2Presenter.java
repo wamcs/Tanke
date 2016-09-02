@@ -1,7 +1,5 @@
 package com.lptiyu.tanke.activities.gameplaying2;
 
-import android.util.Log;
-
 import com.lptiyu.tanke.database.DBGameRecord;
 import com.lptiyu.tanke.database.DBGameRecordDao;
 import com.lptiyu.tanke.database.DBHelper;
@@ -48,15 +46,15 @@ public class GamePlaying2Presenter implements GamePlaying2Contract.IGamePlayingP
                     public void call(Response<GameRecord> response) {
                         //                        Log.i("jason", "请求游戏记录结果：" + response);
                         if (response.getStatus() != Response.RESPONSE_OK) {
-                            Log.i("jason", "请求游戏记录失败：" + response.getInfo());
+                            //                            Log.i("jason", "请求游戏记录失败：" + response.getInfo());
                             view.failDownLoadRecord();
 
                         } else {
                             List<PointRecord> record_text = response.getData().record_text;
                             if (record_text != null) {
-                                Log.i("jason", "请求游戏记录数目：" + record_text.size());
+                                //                                Log.i("jason", "请求游戏记录数目：" + record_text.size());
                             } else {
-                                Log.i("jason", "请求游戏记录数目为0");
+                                //                                Log.i("jason", "请求游戏记录数目为0");
                             }
                             view.successDownLoadRecord(response.getData());
                         }
@@ -64,7 +62,7 @@ public class GamePlaying2Presenter implements GamePlaying2Contract.IGamePlayingP
                 }, new Action1<Throwable>() {
                     @Override
                     public void call(Throwable throwable) {
-                        Log.i("jason", "请求游戏记录失败throwable：" + throwable.getMessage());
+                        //                        Log.i("jason", "请求游戏记录失败throwable：" + throwable.getMessage());
                     }
                 });
     }
@@ -102,18 +100,18 @@ public class GamePlaying2Presenter implements GamePlaying2Contract.IGamePlayingP
                 .subscribe(new Action1<Response<UploadGameRecordResponse>>() {
                     @Override
                     public void call(Response<UploadGameRecordResponse> response) {
-                        Log.i("jason", "上传游戏记录结果:" + response);
+//                        Log.i("jason", "上传游戏记录结果:" + response);
                         if (response.getStatus() == Response.RESPONSE_OK) {
                             view.successUpLoadRecord();
                         } else {
-                            Log.i("jason", "游戏记录上传失败：" + response.getInfo());
+//                            Log.i("jason", "游戏记录上传失败：" + response.getInfo());
                             //                            view.failUpLoad();
                         }
                     }
                 }, new Action1<Throwable>() {
                     @Override
                     public void call(Throwable throwable) {
-                        Log.i("jason", "upload records error:" + throwable.getMessage());
+//                        Log.i("jason", "upload records error:" + throwable.getMessage());
                     }
                 });
     }

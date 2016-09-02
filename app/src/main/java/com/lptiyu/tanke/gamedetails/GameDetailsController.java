@@ -400,7 +400,7 @@ public class GameDetailsController extends ActivityController {
                 .subscribe(new Action1<Response<Void>>() {
                     @Override
                     public void call(Response<Void> response) {
-                        Log.i("jason", "放弃游戏结果:" + response);
+                        //                        Log.i("jason", "放弃游戏结果:" + response);
                         if (response.getStatus() == Response.RESPONSE_OK) {
 
                             /*标记游戏状态为已放弃*/
@@ -427,7 +427,7 @@ public class GameDetailsController extends ActivityController {
                     @Override
                     public void call(Throwable throwable) {
                         Toast.makeText(getContext(), "放弃该游戏失败", Toast.LENGTH_SHORT).show();
-                        Log.i("jason", "abandon game error:" + throwable.getMessage());
+                        //                        Log.i("jason", "abandon game error:" + throwable.getMessage());
 
                         if (progressDialog != null) {
                             progressDialog.dismiss();

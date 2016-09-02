@@ -5,7 +5,6 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
@@ -127,22 +126,22 @@ public class GamePlaying2Activity extends MyBaseActivity implements GamePlaying2
         String title = intent.getStringExtra(Conf.BANNER_TITLE);
         m_title = "";
         if (gameDisplayEntity != null) {
-            Log.i("jason", "接收的游戏列表的实体类：" + gameDisplayEntity);
+//            Log.i("jason", "接收的游戏列表的实体类：" + gameDisplayEntity);
             gameType = gameDisplayEntity.getType();
             m_title = gameDisplayEntity.getTitle();
         }
         if (gameDetailsResponse != null) {
-            Log.i("jason", "接收的游戏详情的实体类：" + gameDetailsResponse);
+//            Log.i("jason", "接收的游戏详情的实体类：" + gameDetailsResponse);
             gameType = gameDetailsResponse.type;
             m_title = gameDetailsResponse.title;
         }
         if (gamePlayingEntity != null) {
-            Log.i("jason", "接收的正在玩的游戏实体类：" + gamePlayingEntity);
+//            Log.i("jason", "接收的正在玩的游戏实体类：" + gamePlayingEntity);
             gameType = gamePlayingEntity.getType();
             m_title = gamePlayingEntity.getName();
         }
         if (gameFinishedEntity != null) {
-            Log.i("jason", "接收的完成的游戏实体类：" + gameFinishedEntity);
+//            Log.i("jason", "接收的完成的游戏实体类：" + gameFinishedEntity);
             gameType = gameFinishedEntity.getType();
             m_title = gameFinishedEntity.getName();
         }
@@ -417,7 +416,7 @@ public class GamePlaying2Activity extends MyBaseActivity implements GamePlaying2
                 if (currentPoint.state == PointTaskStatus.UNSTARTED) {
                     //控制Toast的显示
                     if (toast != null) {
-                        Log.i("jason", "执行了");
+//                        Log.i("jason", "执行了");
                         toast.show();
                         toast = null;
                         if (thread == null) {

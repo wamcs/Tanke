@@ -252,6 +252,7 @@ public class ElasticHeaderViewHolder extends BaseViewHolder<GameDisplayEntity> {
 
         gameDisplayEntity = gameDisplayEntities.get(index);
         int play_statu = gameDisplayEntity.getPlayStatu();
+        Log.i("jason", "gameDisplayEntity.getPlayStatu():" + gameDisplayEntity.getPlayStatu());
         String tempGameZipUrl = gameDisplayEntity.getGameZipUrl();
         if (play_statu == PlayStatus.NO_STATUS) {
             loadNetWorkData(index);
