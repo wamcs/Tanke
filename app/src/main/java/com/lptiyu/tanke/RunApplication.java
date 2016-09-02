@@ -44,6 +44,8 @@ public class RunApplication extends MultiDexApplication {
 
     private static long lastLoginUserId = 0;
 
+    public static boolean isPlayingStatusChanged = false;
+
     @Override
     public void onCreate() {
         super.onCreate();

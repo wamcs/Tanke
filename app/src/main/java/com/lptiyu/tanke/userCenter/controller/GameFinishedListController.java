@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.lptiyu.tanke.R;
+import com.lptiyu.tanke.RunApplication;
 import com.lptiyu.tanke.base.recyclerview.BaseAdapter;
 import com.lptiyu.tanke.base.recyclerview.BaseListActivityController;
 import com.lptiyu.tanke.base.recyclerview.BaseViewHolder;
@@ -145,6 +146,16 @@ public class GameFinishedListController extends BaseListActivityController<GameF
   @Override
   public void onError(Throwable t) {
     ToastUtil.TextToast(t.getMessage());
+  }
+
+  @Override
+  public void onResume() {
+
+    if (RunApplication.isPlayingStatusChanged)
+    {
+      refreshTop();
+      RunApplication.isPlayingStatusChanged = false;
+    }
   }
 
 }
