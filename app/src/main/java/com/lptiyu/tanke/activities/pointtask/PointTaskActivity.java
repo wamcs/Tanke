@@ -53,10 +53,6 @@ public class PointTaskActivity extends MyBaseActivity implements PointTaskContac
 
     @BindView(R.id.ctv_taskName)
     CustomTextView ctvTaskName;
-    //    @BindView(R.id.et_input_answer)
-    //    EditText etInputAnswer;
-    //    @BindView(R.id.ctv_getAnswer)
-    //    CustomTextView ctvGetAnswer;
     @BindView(R.id.lv)
     ListView lv;
     @BindView(R.id.img_getKey)
@@ -73,7 +69,6 @@ public class PointTaskActivity extends MyBaseActivity implements PointTaskContac
     private LVForPointTaskAdapter adapter;
     private PointTaskPresenter presenter;
     private long gameId;
-    //    private long gameType;
    // private ArrayList<TaskRecord> list_task_record;
     private ArrayList<Task> list_task;
     private int selectPosition;
@@ -81,8 +76,6 @@ public class PointTaskActivity extends MyBaseActivity implements PointTaskContac
     private String unZippedDir;
     private Task currentTask;
     private boolean isPointOver = false;
-  // private boolean isFinishedPoint;
-    private boolean isLastAvaliableTask;
     private ProgressDialog dialog;
 
     @Override
@@ -116,7 +109,6 @@ public class PointTaskActivity extends MyBaseActivity implements PointTaskContac
         pointIndex = bundle.getInt(Conf.POINT);
 
         gameId = bundle.getLong(Conf.GAME_ID, -1);
-        //        gameType = bundle.getLong(Conf.GAME_TYPE, -1);
         unZippedDir = bundle.getString(Conf.UNZIPPED_DIR);
 
         ThemeLine themeLine = RunApplication.getPlayingThemeLine();
@@ -148,8 +140,6 @@ public class PointTaskActivity extends MyBaseActivity implements PointTaskContac
 
         //如果用户是第一次进入此Activity，则显示导航提示
         if (AppData.isFirstInPointTaskActivity()) {
-
-
             Drawable drawable = BitMapUtils.decodeLargeResourceImage(this.getResources(),R.drawable.clue_list_guide);
             if (drawable != null && dragLayout!=null && dragview != null)
             {

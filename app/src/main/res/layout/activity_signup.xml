@@ -173,7 +173,7 @@
             android:id="@+id/sign_up_protocol_button_tip"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="点击下一步即代表您已同意"
+            android:text="点击完成即代表您已同意"
             android:textColor="@color/grey05"/>
 
         <com.lptiyu.tanke.widget.CustomTextView
