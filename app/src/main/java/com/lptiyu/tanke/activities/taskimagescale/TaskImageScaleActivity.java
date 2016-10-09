@@ -1,19 +1,19 @@
 package com.lptiyu.tanke.activities.taskimagescale;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.Window;
 import android.view.WindowManager;
 
 import com.bumptech.glide.Glide;
 import com.lptiyu.tanke.R;
+import com.lptiyu.tanke.mybase.MyBaseActivity;
 import com.lptiyu.tanke.global.Conf;
 import com.lptiyu.tanke.widget.ZoomImageView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class TaskImageScaleActivity extends AppCompatActivity {
+public class TaskImageScaleActivity extends MyBaseActivity {
 
     @BindView(R.id.zoomImg)
     ZoomImageView zoomImg;
@@ -32,9 +32,4 @@ public class TaskImageScaleActivity extends AppCompatActivity {
         String imgUrl = getIntent().getStringExtra(Conf.TASK_IMG);
         Glide.with(this).load(imgUrl).error(R.drawable.ic_launcher).into(zoomImg);
     }
-
-//    @OnClick(R.id.rl_out)
-    //    public void onClick() {
-    //        finish();
-    //    }
 }

@@ -17,14 +17,14 @@ import com.lptiyu.tanke.database.MessageNotificationDao;
 import com.lptiyu.tanke.database.MessageNotificationList;
 import com.lptiyu.tanke.global.Accounts;
 import com.lptiyu.tanke.global.Conf;
-import com.lptiyu.tanke.io.net.HttpService;
-import com.lptiyu.tanke.io.net.Response;
 import com.lptiyu.tanke.messagesystem.SystemWebActivity;
 import com.lptiyu.tanke.messagesystem.adpater.MessageBaseAdapter;
 import com.lptiyu.tanke.messagesystem.adpater.PushAdapter;
+import com.lptiyu.tanke.net.HttpService;
+import com.lptiyu.tanke.net.Response;
 import com.lptiyu.tanke.pojo.MessageEntity;
+import com.lptiyu.tanke.utils.ThreadUtils;
 import com.lptiyu.tanke.utils.ToastUtil;
-import com.lptiyu.tanke.utils.thread;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -178,7 +178,7 @@ public class PushHelper extends MessageHelper implements
                         adapter.notifyDataSetChanged();
                         if (messagesList == null || messagesList.size() == 0) {
                             if (mNoDataImageView != null) {
-                                thread.mainThread(new Runnable() {
+                                ThreadUtils.mainThread(new Runnable() {
                                     @Override
                                     public void run() {
                                         mNoDataImageView.setVisibility(View.VISIBLE);
@@ -188,7 +188,7 @@ public class PushHelper extends MessageHelper implements
                             }
                         } else {
                             if (mNoDataImageView != null) {
-                                thread.mainThread(new Runnable() {
+                                ThreadUtils.mainThread(new Runnable() {
                                     @Override
                                     public void run() {
                                         mNoDataImageView.setVisibility(View.GONE);
@@ -228,7 +228,7 @@ public class PushHelper extends MessageHelper implements
 
                         //                        if (messageEntityList == null || messageEntityList.size() == 0) {
                         //                            if (mNoDataImageView != null) {
-                        //                                thread.mainThread(new Runnable() {
+                        //                                ThreadUtils.mainThread(new Runnable() {
                         //                                    @Override
                         //                                    public void run() {
                         //                                        mNoDataImageView.setVisibility(View.VISIBLE);
@@ -238,7 +238,7 @@ public class PushHelper extends MessageHelper implements
                         //                            }
                         //                        } else {
                         //                            if (mNoDataImageView != null) {
-                        //                                thread.mainThread(new Runnable() {
+                        //                                ThreadUtils.mainThread(new Runnable() {
                         //                                    @Override
                         //                                    public void run() {
                         //                                        mNoDataImageView.setVisibility(View.GONE);
@@ -263,7 +263,7 @@ public class PushHelper extends MessageHelper implements
 
                         if (messagesList == null || messagesList.size() == 0) {
                             if (mNoDataImageView != null) {
-                                thread.mainThread(new Runnable() {
+                                ThreadUtils.mainThread(new Runnable() {
                                     @Override
                                     public void run() {
                                         mNoDataImageView.setVisibility(View.VISIBLE);
@@ -273,7 +273,7 @@ public class PushHelper extends MessageHelper implements
                             }
                         } else {
                             if (mNoDataImageView != null) {
-                                thread.mainThread(new Runnable() {
+                                ThreadUtils.mainThread(new Runnable() {
                                     @Override
                                     public void run() {
                                         mNoDataImageView.setVisibility(View.GONE);

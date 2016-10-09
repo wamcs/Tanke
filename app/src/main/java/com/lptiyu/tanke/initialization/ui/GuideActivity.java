@@ -16,7 +16,7 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.lptiyu.tanke.R;
-import com.lptiyu.tanke.activities.base.MyBaseActivity;
+import com.lptiyu.tanke.mybase.MyBaseActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

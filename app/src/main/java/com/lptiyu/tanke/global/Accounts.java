@@ -87,4 +87,57 @@ public class Accounts {
     public static void logOut() {
         setId(0L);
     }
+
+    public static void setSignUp(boolean isSignUp) {
+        ShaPrefer.put("is_sign_up", isSignUp);
+    }
+
+    public static boolean isSignUp() {
+        return ShaPrefer.getBoolean("is_sign_up", false);
+    }
+
+    public static void setDayIndex(int index) {
+        ShaPrefer.put("day_index", index);
+    }
+
+    public static int getDayIndex() {
+        return ShaPrefer.getInt("day_index", -1);
+    }
+
+    public static void setCityCode(String cityCode) {
+        ShaPrefer.put("city_code", cityCode);
+    }
+
+    public static String getCityCode() {
+        return ShaPrefer.getString("city_code", "027");//027是高德地图的武汉编码
+    }
+
+    public static void setCity(String city) {
+        ShaPrefer.put("city_name", city);
+    }
+
+    public static String getCity() {
+        return ShaPrefer.getString("city_name", "武汉");
+    }
+
+    public static void setLatitude(float latitude) {
+        ShaPrefer.put("latitude", latitude);
+    }
+
+    public static float getLatitude() {
+        return ShaPrefer.getFloat("latitude", 30.516670f);
+    }
+
+    public static void setLongitude(float longitude) {
+        ShaPrefer.put("longitude", longitude);
+    }
+
+    public static float getLongitude() {
+        return ShaPrefer.getFloat("longitude", 114.316670f);
+    }
+
+    /*
+    武汉的经纬度
+    * 114.31667,30.51667
+    * */
 }

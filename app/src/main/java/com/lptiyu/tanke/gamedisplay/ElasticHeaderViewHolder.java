@@ -1,7 +1,6 @@
 package com.lptiyu.tanke.gamedisplay;
 
 import android.animation.ObjectAnimator;
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
@@ -14,28 +13,27 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.lptiyu.tanke.R;
-import com.lptiyu.tanke.activities.gameplaying2.GamePlaying2Activity;
+import com.lptiyu.tanke.activities.gameplaying.GamePlayingActivity;
 import com.lptiyu.tanke.adapter.BannerPagerAdapter;
 import com.lptiyu.tanke.base.recyclerview.BaseViewHolder;
+import com.lptiyu.tanke.entity.GetGameStatusResponse;
+import com.lptiyu.tanke.entity.response.Banner;
+import com.lptiyu.tanke.entity.response.BannerResponse;
 import com.lptiyu.tanke.enums.GameType;
 import com.lptiyu.tanke.enums.PlayStatus;
 import com.lptiyu.tanke.gamedetails.GameDetailsActivity;
 import com.lptiyu.tanke.global.Accounts;
 import com.lptiyu.tanke.global.Conf;
-import com.lptiyu.tanke.io.net.HttpService;
-import com.lptiyu.tanke.io.net.Response;
+import com.lptiyu.tanke.net.HttpService;
+import com.lptiyu.tanke.net.Response;
 import com.lptiyu.tanke.pojo.GameDisplayEntity;
-import com.lptiyu.tanke.pojo.GetGameStatusResponse;
 import com.lptiyu.tanke.utils.NetworkUtil;
 import com.lptiyu.tanke.utils.PopupWindowUtils;
-import com.lptiyu.tanke.utils.ShaPrefer;
 import com.lptiyu.tanke.utils.XUtilsDownloader;
 import com.lptiyu.tanke.utils.xutils3.RequestParamsHelper;
 import com.lptiyu.tanke.utils.xutils3.XUtilsHelper;
 import com.lptiyu.tanke.utils.xutils3.XUtilsRequestCallBack;
 import com.lptiyu.tanke.utils.xutils3.XUtilsUrls;
-import com.lptiyu.tanke.utils.xutils3.response.Banner;
-import com.lptiyu.tanke.utils.xutils3.response.BannerResponse;
 import com.lptiyu.tanke.widget.CircularImageView;
 import com.lptiyu.tanke.widget.CustomTextView;
 
@@ -98,7 +96,7 @@ public class ElasticHeaderViewHolder extends BaseViewHolder<GameDisplayEntity> {
     ImageView middleImgGameType;
     @BindView(R.id.right_img_game_type)
     ImageView rightImgGameType;
-    private ProgressDialog progressDialog;
+    //    private ProgressDialog progressDialog;
     private GameDisplayEntity gameDisplayEntity;
 
     //    private GameZipScanner mGameZipScanner;
@@ -123,7 +121,7 @@ public class ElasticHeaderViewHolder extends BaseViewHolder<GameDisplayEntity> {
     //            }
     //        }
     //    };
-    private int currentIndex;
+    //    private int currentIndex;
     //    private String gameZipUrl;
 
     public ElasticHeaderViewHolder(ViewGroup parent, GameDisplayFragment fragment) {
@@ -150,7 +148,7 @@ public class ElasticHeaderViewHolder extends BaseViewHolder<GameDisplayEntity> {
 
     public void loadBanner() {
         RequestParams params = RequestParamsHelper.getBaseRequestParam(XUtilsUrls.GET_BANNER);
-        String cityCode = ShaPrefer.getCity().getId();
+        String cityCode = Accounts.getCityCode();
         Log.i("jason", "cityCode:" + cityCode);
         params.addBodyParameter("city_code", cityCode + "");
         XUtilsHelper.getInstance().get(params, new
@@ -287,7 +285,7 @@ public class ElasticHeaderViewHolder extends BaseViewHolder<GameDisplayEntity> {
                 break;
             case PlayStatus.GAME_OVER://游戏结束，暂不考虑
                 //TODO 需要进入到游戏完成界面
-            case PlayStatus.HAVE_ENTERED_bUT_NOT_START_GAME://进入过但没开始游戏，进入到玩游戏界面
+            case PlayStatus.HAVE_ENTERED_BUT_NOT_START_GAME://进入过但没开始游戏，进入到玩游戏界面
             case PlayStatus.HAVE_STARTED_GAME://进入并且已经开始游戏，进入到玩游戏界面
                 //进入到玩游戏界面之前，先检测游戏包是否存在，存在则直接进入，否则要先下载游戏包
                 String tempGameZipUrl = gameDisplayEntity.getGameZipUrl();
@@ -451,7 +449,7 @@ public class ElasticHeaderViewHolder extends BaseViewHolder<GameDisplayEntity> {
     }
 
     public void startPlayingGame() {
-        Intent intent = new Intent(getContext(), GamePlaying2Activity.class);
+        Intent intent = new Intent(getContext(), GamePlayingActivity.class);
         intent.putExtra(Conf.GAME_ID, gameDisplayEntity.getId());
         intent.putExtra(Conf.GAME_DISPLAY_ENTITY, gameDisplayEntity);
         fragment.startActivity(intent);

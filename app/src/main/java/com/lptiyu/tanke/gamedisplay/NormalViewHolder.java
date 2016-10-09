@@ -9,20 +9,20 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.lptiyu.tanke.R;
-import com.lptiyu.tanke.activities.gameplaying2.GamePlaying2Activity;
+import com.lptiyu.tanke.activities.gameplaying.GamePlayingActivity;
 import com.lptiyu.tanke.base.recyclerview.BaseViewHolder;
+import com.lptiyu.tanke.entity.GetGameStatusResponse;
 import com.lptiyu.tanke.enums.GameState;
 import com.lptiyu.tanke.enums.GameType;
 import com.lptiyu.tanke.enums.PlayStatus;
 import com.lptiyu.tanke.gamedetails.GameDetailsActivity;
 import com.lptiyu.tanke.global.Accounts;
 import com.lptiyu.tanke.global.Conf;
-import com.lptiyu.tanke.io.net.HttpService;
-import com.lptiyu.tanke.io.net.Response;
+import com.lptiyu.tanke.net.HttpService;
+import com.lptiyu.tanke.net.Response;
 import com.lptiyu.tanke.permission.PermissionDispatcher;
 import com.lptiyu.tanke.permission.TargetMethod;
 import com.lptiyu.tanke.pojo.GameDisplayEntity;
-import com.lptiyu.tanke.pojo.GetGameStatusResponse;
 import com.lptiyu.tanke.utils.NetworkUtil;
 import com.lptiyu.tanke.utils.PopupWindowUtils;
 import com.lptiyu.tanke.utils.TimeUtils;
@@ -70,10 +70,6 @@ public class NormalViewHolder extends BaseViewHolder<GameDisplayEntity> {
     GameDisplayEntity gameDisplayEntity;
 
     private GameDisplayFragment fragment;
-    //    private int gameZipDownloadFailedNum = 3;
-    //    private ProgressDialog progressDialog;
-    //    //    private final GameZipHelper gameZipHelper;
-    //    //    private GameZipScanner mGameZipScanner;
 
     NormalViewHolder(ViewGroup parent, GameDisplayFragment fragment) {
         super(fromResLayout(parent, R.layout.item_game_display));
@@ -106,7 +102,6 @@ public class NormalViewHolder extends BaseViewHolder<GameDisplayEntity> {
             return;
         }
         int play_statu = gameDisplayEntity.getPlayStatu();
-        Log.i("jason", "gameDisplayEntity.getPlayStatu():" + gameDisplayEntity.getPlayStatu());
         String tempGameZipUrl = gameDisplayEntity.getGameZipUrl();
         if (play_statu == PlayStatus.NO_STATUS) {
             loadNetWorkData();
@@ -116,21 +111,11 @@ public class NormalViewHolder extends BaseViewHolder<GameDisplayEntity> {
         {
             startGameByPlayStatu(play_statu);
         }
-
-
-        /*暂时没有用
-        GameDisplayController controller = fragment.getController();
-        if (controller == null) {
-            Timber.e("GameDisplayFragment get Controller is null");
-            return;
-        }
-        controller.onItemClick(gameDisplayEntity);
-        */
     }
 
     @TargetMethod(requestCode = PermissionDispatcher.PERMISSION_REQUEST_CODE_LOCATION)
     public void startPlayingGame() {
-        Intent intent = new Intent(getContext(), GamePlaying2Activity.class);
+        Intent intent = new Intent(getContext(), GamePlayingActivity.class);
         intent.putExtra(Conf.GAME_ID, gameDisplayEntity.getId());
         intent.putExtra(Conf.GAME_DISPLAY_ENTITY, gameDisplayEntity);
         fragment.startActivity(intent);
@@ -254,7 +239,7 @@ public class NormalViewHolder extends BaseViewHolder<GameDisplayEntity> {
                 break;
             case PlayStatus.GAME_OVER://游戏结束，暂不考虑
                 //TODO 需要进入到游戏完成界面
-            case PlayStatus.HAVE_ENTERED_bUT_NOT_START_GAME://进入过但没开始游戏，进入到玩游戏界面
+            case PlayStatus.HAVE_ENTERED_BUT_NOT_START_GAME://进入过但没开始游戏，进入到玩游戏界面
             case PlayStatus.HAVE_STARTED_GAME://进入并且已经开始游戏，进入到玩游戏界面
                 //进入到玩游戏界面之前，先检测游戏包是否存在，存在则直接进入，否则要先下载游戏包
                 //检查游戏包是否存在或者游戏解压后为空，判断完后游戏包已经被解压缩，并且已经将文件解析成实体类对象，此时可以直接从内存中取数据了

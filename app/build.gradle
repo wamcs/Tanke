@@ -3,14 +3,14 @@ apply plugin: 'com.neenbedankt.android-apt'
 
 android {
     compileSdkVersion 23
-    buildToolsVersion "23.0.3"
+    buildToolsVersion '24.0.2'
 
     defaultConfig {
         applicationId "com.lptiyu.tanke"
         minSdkVersion 15
         targetSdkVersion 23
-        versionCode 8
-        versionName "1.0.8"
+        versionCode 9
+        versionName "1.0.9"
         //突破65535的限制
         multiDexEnabled true
 
@@ -67,11 +67,12 @@ android {
         }
     }
 
-    sourceSets.main {
-        //jni.srcDirs = []
-        jni.srcDirs 'src/main/jni'
-        jni.srcDirs 'include'
-
+    sourceSets {
+        main {
+            jni.srcDirs = ['libs']
+            jni.srcDirs 'src/main/jni'
+            jni.srcDirs 'include'
+        }
     }
 
     splits {
@@ -115,18 +116,13 @@ dependencies {
     compile files('libs/protobuf-java-2.6.1.jar')
     compile files('libs/avoscloud-feedback-v3.13.12.jar')
     compile files('libs/ZipEntry.jar')
-    //    Baidu Map
-    compile files('libs/BaiduLBS_Android.jar')
-    compile files('libs/BaiduTraceSDK_v2_1_9.jar')
-    //    ButterKnife
     apt 'com.jakewharton:butterknife-compiler:8.0.1'
-    //    Zxing
     compile project(path: ':zxinglib')
     compile project(':number_picker')
     compile project(path: ':nifty')
     testCompile 'junit:junit:4.12'
     testCompile 'org.robolectric:robolectric:3.1-rc1'
-    testCompile "org.robolectric:shadows-multidex:3.0"
+    testCompile 'org.robolectric:shadows-multidex:3.0'
     testCompile 'org.robolectric:shadows-multidex:3.1-rc1'
     compile 'com.makeramen:roundedimageview:2.2.1'
     compile 'com.squareup.okhttp3:okhttp:3.2.0'
@@ -149,5 +145,10 @@ dependencies {
     compile 'com.android.support:design:23.4.0'
     compile 'com.android.support:multidex:1.0.1'
     compile 'org.xutils:xutils:3.3.36'
-//    compile 'de.hdodenhof:circleimageview:2.1.0'
+    compile 'in.srain.cube:ultra-ptr:1.0.11'
+    compile 'com.gxz.pagerslidingtabstrip:library:1.1'
+    compile 'com.github.frank-zhu:pullzoomview:1.0.0'
+    compile project(':LRecyclerview_library')
+    compile project(':StickLayout_library')
+    compile files('libs/AMap3DMap_4.0.1_AMapLocation_3.0.0_20160923.jar')
 }

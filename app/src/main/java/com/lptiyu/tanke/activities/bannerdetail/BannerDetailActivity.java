@@ -9,7 +9,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import com.lptiyu.tanke.R;
-import com.lptiyu.tanke.activities.base.MyBaseActivity;
+import com.lptiyu.tanke.mybase.MyBaseActivity;
 import com.lptiyu.tanke.global.Conf;
 import com.lptiyu.tanke.widget.GradientProgressBar;
 
@@ -28,8 +28,6 @@ public class BannerDetailActivity extends MyBaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_banner_detail);
         ButterKnife.bind(this);
-        //        mWebView = (WebView) findViewById(R.id.webView);
-        //        progressBar = (GradientProgressBar) findViewById(R.id.progress_bar);
         init();
     }
 
@@ -70,10 +68,10 @@ public class BannerDetailActivity extends MyBaseActivity {
 
     @Override
     public void onDestroy() {
+        super.onDestroy();
         mWebView.stopLoading();
         mWebView.removeAllViews();
         mWebView.destroy();
         mWebView = null;
-        super.onDestroy();
     }
 }

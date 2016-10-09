@@ -4,18 +4,30 @@ import android.os.Bundle;
 import android.support.annotation.IntDef;
 import android.widget.ImageView;
 
+import com.amap.api.location.AMapLocation;
 import com.lptiyu.tanke.base.controller.ActivityController;
 import com.lptiyu.tanke.base.ui.BaseActivity;
+import com.lptiyu.tanke.entity.response.SignUpResponse;
 import com.lptiyu.tanke.global.Accounts;
-import com.lptiyu.tanke.io.net.HttpService;
-import com.lptiyu.tanke.io.net.Response;
+import com.lptiyu.tanke.net.HttpService;
+import com.lptiyu.tanke.net.Response;
+import com.lptiyu.tanke.utils.LocationHelper;
+import com.lptiyu.tanke.utils.LogUtils;
 import com.lptiyu.tanke.utils.NetworkUtil;
+import com.lptiyu.tanke.utils.PopupWindowUtils;
 import com.lptiyu.tanke.utils.ToastUtil;
+import com.lptiyu.tanke.utils.xutils3.RequestParamsHelper;
+import com.lptiyu.tanke.utils.xutils3.XUtilsHelper;
+import com.lptiyu.tanke.utils.xutils3.XUtilsRequestCallBack;
+import com.lptiyu.tanke.utils.xutils3.XUtilsUrls;
+
+import org.xutils.http.RequestParams;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
+import java.util.Calendar;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -50,6 +62,52 @@ public class MainActivity extends BaseActivity {
         mController = new MainActivityController(this, getWindow().getDecorView());
         init();
         uploadInstallationId(Accounts.getId(), Accounts.getToken());
+        //自动签到
+        int dayIndex = Calendar.getInstance().get(Calendar.DAY_OF_YEAR);
+        //如果当前的天数跟存储的天数不相等，则表示用户上一次签到是在昨天
+        if (dayIndex != Accounts.getDayIndex()) {
+            signIn(Accounts.getId());
+        } else {
+            if (!Accounts.isSignUp()) {
+                signIn(Accounts.getId());
+            }
+        }
+        //定位当前城市和经纬度
+        LocationHelper locationHelper = new LocationHelper(this, new LocationHelper.OnLocationResultListener() {
+            @Override
+            public void onLocationChanged(AMapLocation aMapLocation) {
+                Accounts.setCity(aMapLocation.getCity());
+                Accounts.setCityCode(aMapLocation.getCityCode());
+                Accounts.setLatitude((float) aMapLocation.getLatitude());
+                Accounts.setLongitude((float) aMapLocation.getLongitude());
+                LogUtils.i("定位信息：" + aMapLocation.getCity() + aMapLocation.getCityCode() + ", 经纬度：" + aMapLocation
+                        .getLatitude() + ", " + aMapLocation.getLongitude());
+            }
+        });
+        locationHelper.setOnceLocation(true);
+        locationHelper.startLocation();
+    }
+
+    private void signIn(long id) {
+        RequestParams params = RequestParamsHelper.getBaseRequestParam(XUtilsUrls.HOME_SIGN_IN);
+        params.addBodyParameter("uid", id + "");
+        XUtilsHelper.getInstance().get(params, new XUtilsRequestCallBack<SignUpResponse>() {
+            @Override
+            protected void onSuccess(SignUpResponse signUpResponse) {
+                if (signUpResponse.status == 1) {
+                    PopupWindowUtils.getInstance().showSucessSignUp(MainActivity.this, signUpResponse.info + "");
+                    Accounts.setSignUp(true);
+                    Accounts.setDayIndex(Calendar.getInstance().get(Calendar.DAY_OF_YEAR));
+                } else {
+                    PopupWindowUtils.getInstance().showSucessSignUp(MainActivity.this, signUpResponse.info + "");
+                }
+            }
+
+            @Override
+            protected void onFailed(String errorMsg) {
+                ToastUtil.TextToast(errorMsg);
+            }
+        }, SignUpResponse.class);
     }
 
     @Override
@@ -72,11 +130,6 @@ public class MainActivity extends BaseActivity {
         if (mCurrentIndex == index) {
             return;
         }
-
-        //                selectTab(index == 0, tab1, R.drawable.home_page_selected, R.drawable.home_page_normal);
-        //                selectTab(index == 1, tab2, R.drawable.message_selected, R.drawable.message_normal);
-        //                selectTab(index == 2, tab3, R.drawable.mine_selected, R.drawable.mine_normal);
-
         selectTab(index == 0, tab1, R.drawable.tab_home_selected, R.drawable.tab_home_normal);
         selectTab(index == 1, tab2, R.drawable.tab_message_selected, R.drawable.tab_message_normal);
         selectTab(index == 2, tab3, R.drawable.tab_mine_selected, R.drawable.tab_mine_normal);
@@ -115,7 +168,6 @@ public class MainActivity extends BaseActivity {
                     }
                 });
     }
-
 }
 
 

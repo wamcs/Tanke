@@ -1,10 +1,8 @@
 package com.lptiyu.tanke.gamedisplay;
 
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -12,17 +10,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
-import com.lptiyu.tanke.MainActivityController;
 import com.lptiyu.tanke.R;
-import com.lptiyu.tanke.base.ui.BaseFragment;
-import com.lptiyu.tanke.pojo.City;
+import com.lptiyu.tanke.mybase.MyBaseFragment;
 import com.lptiyu.tanke.utils.NetworkUtil;
 import com.lptiyu.tanke.utils.PopupWindowUtils;
 import com.lptiyu.tanke.utils.xutils3.SwipeRefreshLayoutUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import timber.log.Timber;
 
 /**
  * EMAIL : danxionglei@foxmail.com
@@ -30,12 +25,10 @@ import timber.log.Timber;
  *
  * @author ldx
  */
-public class GameDisplayFragment extends BaseFragment {
+public class GameDisplayFragment extends MyBaseFragment {
 
     @BindView(R.id.swipe)
     SwipeRefreshLayout swipe;
-
-    private GameDisplayController controller;
 
     @BindView(R.id.relative_layout)
     RelativeLayout toolBar;
@@ -52,7 +45,6 @@ public class GameDisplayFragment extends BaseFragment {
         View view = inflater.inflate(R.layout.fragment_game_display, container, false);
         ButterKnife.bind(this, view);
         init();
-        controller = new GameDisplayController(this, (MainActivityController) getActivityController(), view);
         return view;
     }
 
@@ -72,7 +64,6 @@ public class GameDisplayFragment extends BaseFragment {
 
                 if (adapter.getItemCount() < 3)//为什么是小于3，getItemCount没有任何数据时候也会返回2
                 {
-                    controller.refreshTop();
                 }
 
                 //TODO 当网络请求完毕时才隐藏刷新标志
@@ -116,9 +107,6 @@ public class GameDisplayFragment extends BaseFragment {
                 int lastVisibleItem = mLayoutManager.findLastVisibleItemPosition();
                 int totalItemCount = mLayoutManager.getItemCount();
                 if (lastVisibleItem >= totalItemCount - 1 && dy > 0) {
-                    if (controller != null && !controller.isRefreshing()) {
-                        controller.refreshBottom();
-                    }
                 }
             }
         });
@@ -126,16 +114,12 @@ public class GameDisplayFragment extends BaseFragment {
         listener.setOnRefreshListener(new ElasticTouchListener.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                if (!controller.isRefreshing()) {
-                    controller.refreshTop();
-                }
             }
         });
     }
 
     private void loadNetWorkData() {
         if (NetworkUtil.checkIsNetworkConnected()) {
-            controller.refreshTop();
         } else {
             swipe.setRefreshing(false);
             showNetUnConnectDialog();
@@ -151,10 +135,8 @@ public class GameDisplayFragment extends BaseFragment {
                 if (!NetworkUtil.checkIsNetworkConnected()) {
                     swipe.setRefreshing(false);
                     showNetUnConnectDialog();
-                }
-                else if (adapter.getItemCount() < 3)//如果有的话就不更新
+                } else if (adapter.getItemCount() < 3)//如果有的话就不更新
                 {
-                    controller.refreshTop();
                 }
             }
         });
@@ -164,24 +146,6 @@ public class GameDisplayFragment extends BaseFragment {
         return adapter;
     }
 
-    public void changeToCurrentCityDialog(final City city) {
-        new AlertDialog.Builder(getContext())
-                .setMessage(String.format(getString(R.string.change_city_dialog_message), city.getName()))
-                .setPositiveButton(R.string.ensure, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        controller.changeCurrentCity(city);
-                    }
-                })
-                .setNegativeButton(R.string.dismiss, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        Timber.v("用户取消了City(%s)的修改", city.getName());
-                    }
-                })
-        ;
-    }
-
     public void loading(boolean enable) {
         if (!enable) {
             if (adapter.isFooterVisible()) {
@@ -189,14 +153,4 @@ public class GameDisplayFragment extends BaseFragment {
             }
         }
     }
-
-    public void loadingError(Throwable t) {
-        Timber.d(t, "loading Error...");
-    }
-
-    @Override
-    public GameDisplayController getController() {
-        return controller;
-    }
-
 }

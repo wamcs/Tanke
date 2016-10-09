@@ -1,12 +1,12 @@
 package com.lptiyu.tanke.activities.feedback;
 
 import com.lptiyu.tanke.global.Accounts;
-import com.lptiyu.tanke.io.net.Response;
+import com.lptiyu.tanke.net.Response;
 import com.lptiyu.tanke.utils.xutils3.RequestParamsHelper;
 import com.lptiyu.tanke.utils.xutils3.XUtilsHelper;
 import com.lptiyu.tanke.utils.xutils3.XUtilsRequestCallBack;
 import com.lptiyu.tanke.utils.xutils3.XUtilsUrls;
-import com.lptiyu.tanke.utils.xutils3.response.FeedbackResponse;
+import com.lptiyu.tanke.entity.response.FeedbackResponse;
 
 import org.xutils.http.RequestParams;
 

@@ -24,8 +24,8 @@ import com.lptiyu.tanke.enums.ResultCode;
 import com.lptiyu.tanke.global.Accounts;
 import com.lptiyu.tanke.global.Conf;
 import com.lptiyu.tanke.initialization.ui.SignUpActivity;
-import com.lptiyu.tanke.io.net.HttpService;
-import com.lptiyu.tanke.io.net.Response;
+import com.lptiyu.tanke.net.HttpService;
+import com.lptiyu.tanke.net.Response;
 import com.lptiyu.tanke.pojo.UserDetails;
 import com.lptiyu.tanke.userCenter.ui.ModifyUserInfoActivity;
 import com.lptiyu.tanke.userCenter.ui.SettingActivity;
@@ -137,7 +137,7 @@ public class UserCenterFragment extends BaseFragment {
         }
 
         String serverAvatar = details.getAvatar();
-        checkAndLoadUserAvatar(serverAvatar);
+        loadUserAvatar(serverAvatar);
         Accounts.setNickName(details.getNickname());
         Accounts.setPhoneNumber(details.getPhone() + "");
 
@@ -149,8 +149,7 @@ public class UserCenterFragment extends BaseFragment {
         mUserGamePlayingNum.setText(String.valueOf(details.getPlayingGameNum()));
         mUserGameFinishedNum.setText(String.valueOf(details.getFinishedGameNum()));
 
-        if(details.getTaskCount() > 0)
-        {
+        if (details.getTaskCount() > 0) {
             mUserJudgeGame.setVisibility(RelativeLayout.VISIBLE);
         }
 
@@ -204,8 +203,6 @@ public class UserCenterFragment extends BaseFragment {
         } else {
             tvPlatformTelInfo.setText(String.format(getContext().getString(R.string.platform_info_bind_tel)
                     , platform, Accounts.getPhoneNumber()));
-            //            rlPopup.setBackgroundResource(R.color.grey08);
-            //            rlPopup.setEnabled(false);
             rlPopup.setVisibility(View.GONE);
         }
     }
@@ -223,36 +220,6 @@ public class UserCenterFragment extends BaseFragment {
                 currentLevelNeedExp)));
         mUserProgressNeedExp.setText(String.format(getString(R.string.need_exp_formatter), currentExp,
                 nextExp));
-    }
-
-    /**
-     * Check the cache url is equal with avatar url from server
-     * if the url is match, do nothing
-     * reload the avatar the url is not match
-     *
-     * @param serverAvatar avatar url from server
-     */
-    private void checkAndLoadUserAvatar(String serverAvatar) {
-        //    String avatar = Accounts.getAvatar();
-        //    Timber.e("1");
-        //    if (avatar == null || avatar.length() == 0) {
-        //      Timber.e("2");
-        //      // local url is null or not exist, load avatar from server
-        //      loadUserAvatar(serverAvatar);
-        //    } else {
-        //      Timber.e("3");
-        //      // the local url is exist, check is need load serverAvatar or not
-        //      if (serverAvatar == null || serverAvatar.length() == 0) {
-        //        Timber.e("4");
-        //        Glide.with(this).load(Uri.parse(avatar)).error(R.mipmap.default_avatar).into(mUserAvatar);
-        //      } else {
-        //        Timber.e("5");
-        //        if (!avatar.equals(serverAvatar)) {
-        //          Timber.e("6");
-        loadUserAvatar(serverAvatar);
-        //        }
-        //      }
-        //    }
     }
 
     /**
@@ -296,11 +263,6 @@ public class UserCenterFragment extends BaseFragment {
     void user_game_finished() {
         startActivity(new Intent(getContext(), UserGameFinishedListActivity.class));
     }
-
-    //  @OnClick(R.id.user_rewards)
-    //  void user_rewards() {
-    //    startActivity(playing Intent(getContext(), UserRewardActivity.class));
-    //  }
 
     @OnClick(R.id.setting)
     public void setting() {

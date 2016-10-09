@@ -15,12 +15,12 @@ import com.lptiyu.tanke.base.recyclerview.BaseAdapter;
 import com.lptiyu.tanke.base.recyclerview.BaseListActivityController;
 import com.lptiyu.tanke.base.recyclerview.BaseViewHolder;
 import com.lptiyu.tanke.global.Accounts;
-import com.lptiyu.tanke.io.net.HttpService;
-import com.lptiyu.tanke.io.net.Response;
+import com.lptiyu.tanke.net.HttpService;
+import com.lptiyu.tanke.net.Response;
 import com.lptiyu.tanke.pojo.GameFinishedEntity;
 import com.lptiyu.tanke.userCenter.viewholder.UserGameFinishedHolder;
+import com.lptiyu.tanke.utils.ThreadUtils;
 import com.lptiyu.tanke.utils.ToastUtil;
-import com.lptiyu.tanke.utils.thread;
 import com.lptiyu.tanke.widget.CustomTextView;
 
 import java.util.List;
@@ -105,7 +105,7 @@ public class GameFinishedListController extends BaseListActivityController<GameF
             List<GameFinishedEntity> result = response.getData();
             if (result.size() == 0) {
               if (mNoDataImage != null && mLayoutManager.getItemCount() <= 0) {
-                thread.mainThread(new Runnable() {
+                ThreadUtils.mainThread(new Runnable() {
                   @Override
                   public void run() {
                     mNoDataImage.setVisibility(View.VISIBLE);
@@ -114,7 +114,7 @@ public class GameFinishedListController extends BaseListActivityController<GameF
               }
             } else {
               if (mNoDataImage != null) {
-                thread.mainThread(new Runnable() {
+                ThreadUtils.mainThread(new Runnable() {
                   @Override
                   public void run() {
                     mNoDataImage.setVisibility(View.GONE);

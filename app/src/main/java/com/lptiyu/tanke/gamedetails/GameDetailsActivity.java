@@ -8,17 +8,17 @@ import com.lptiyu.tanke.base.ui.BaseActivity;
 
 public class GameDetailsActivity extends BaseActivity {
 
-  GameDetailsController controller;
+    GameDetailsController controller;
 
-  @Override
-  protected void onCreate(Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
-    setContentView(R.layout.activity_game_details);
-    controller = new GameDetailsController(this, getWindow().getDecorView());
-  }
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_game_details);
+        controller = new GameDetailsController(this, getWindow().getDecorView());
+    }
 
-  @Override
-  public ActivityController getController() {
-    return controller;
-  }
+    @Override
+    public ActivityController getController() {
+        return controller;
+    }
 }

@@ -45,7 +45,7 @@ public class Task implements Comparable<Task>, Parcelable {
 
     public int state = PointTaskStatus.UNSTARTED;//默认没有完成
     public String finishTime = "";
-    public int exp = 0;
+    public String exp;
 
     @Override
     public int compareTo(Task another) {
@@ -74,6 +74,8 @@ public class Task implements Comparable<Task>, Parcelable {
         dest.writeString(this.task_index);
         dest.writeString(this.next_task);
         dest.writeInt(this.state);
+        dest.writeString(this.finishTime);
+        dest.writeString(this.exp);
     }
 
     public Task() {
@@ -88,6 +90,8 @@ public class Task implements Comparable<Task>, Parcelable {
         this.task_index = in.readString();
         this.next_task = in.readString();
         this.state = in.readInt();
+        this.finishTime = in.readString();
+        this.exp = in.readString();
     }
 
     public static final Parcelable.Creator<Task> CREATOR = new Parcelable.Creator<Task>() {
@@ -101,18 +105,4 @@ public class Task implements Comparable<Task>, Parcelable {
             return new Task[size];
         }
     };
-
-    @Override
-    public String toString() {
-        return "Task{" +
-                "id='" + id + '\'' +
-                ", point_id='" + point_id + '\'' +
-                ", content='" + content + '\'' +
-                ", type='" + type + '\'' +
-                ", pwd='" + pwd + '\'' +
-                ", task_index='" + task_index + '\'' +
-                ", next_task='" + next_task + '\'' +
-                ", state=" + state +
-                '}';
-    }
 }

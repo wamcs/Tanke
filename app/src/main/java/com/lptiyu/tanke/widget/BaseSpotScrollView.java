@@ -170,11 +170,11 @@ public class BaseSpotScrollView extends HorizontalScrollView {
   public interface OnSpotItemClickListener {
 
     /**
-     * Callback method to be invoked when an item in this AdapterView has
+     * Callback method to be invoked when an item_home_display in this AdapterView has
      * been clicked.
      * <p/>
      * Implementers can call getItemAtPosition(position) if they need
-     * to access the data associated with the selected item.
+     * to access the data associated with the selected item_home_display.
      *
      * @param view
      * @param position

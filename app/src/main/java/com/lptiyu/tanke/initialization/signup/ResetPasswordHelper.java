@@ -2,13 +2,13 @@ package com.lptiyu.tanke.initialization.signup;
 
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.Toast;
 
 import com.lptiyu.tanke.R;
-import com.lptiyu.tanke.io.net.HttpService;
-import com.lptiyu.tanke.io.net.Response;
-import com.lptiyu.tanke.io.net.UserService;
+import com.lptiyu.tanke.net.HttpService;
+import com.lptiyu.tanke.net.Response;
+import com.lptiyu.tanke.net.UserService;
 import com.lptiyu.tanke.utils.ToastUtil;
-import com.lptiyu.tanke.utils.rx.ToastExceptionAction;
 
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
@@ -57,7 +57,12 @@ public class ResetPasswordHelper extends SignUpHelper {
                         timeCounter.start();
                         signUpNextButton.setEnabled(true);
                     }
-                }, new ToastExceptionAction(signUpGetCodeButton.getContext().getApplicationContext()));
+                }, new Action1<Throwable>() {
+                    @Override
+                    public void call(Throwable throwable) {
+                        Toast.makeText(context, throwable.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
 
         return true;
     }

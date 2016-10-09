@@ -4,16 +4,16 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.view.View;
+import android.widget.Toast;
 
 import com.lptiyu.tanke.MainActivity;
 import com.lptiyu.tanke.R;
 import com.lptiyu.tanke.global.Accounts;
-import com.lptiyu.tanke.io.net.HttpService;
-import com.lptiyu.tanke.io.net.Response;
-import com.lptiyu.tanke.io.net.UserService;
+import com.lptiyu.tanke.net.HttpService;
+import com.lptiyu.tanke.net.Response;
+import com.lptiyu.tanke.net.UserService;
 import com.lptiyu.tanke.pojo.UserEntity;
 import com.lptiyu.tanke.utils.ToastUtil;
-import com.lptiyu.tanke.utils.rx.ToastExceptionAction;
 
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
@@ -64,7 +64,12 @@ public class RegisterHelper extends SignUpHelper {
                         signUpNextButton.setClickable(true);
                         signUpNextButton.setEnabled(true);
                     }
-                }, new ToastExceptionAction(signUpGetCodeButton.getContext().getApplicationContext()));
+                }, new Action1<Throwable>() {
+                    @Override
+                    public void call(Throwable throwable) {
+                        Toast.makeText(context, throwable.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
         return true;
     }
 
@@ -134,7 +139,12 @@ public class RegisterHelper extends SignUpHelper {
                             intent.setClass(context, MainActivity.class);
                             context.startActivity(intent);
                         }
-                    }, new ToastExceptionAction(context.getApplicationContext()));
+                    }, new Action1<Throwable>() {
+                        @Override
+                        public void call(Throwable throwable) {
+                            Toast.makeText(context, throwable.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    });
         }
         return true;
     }

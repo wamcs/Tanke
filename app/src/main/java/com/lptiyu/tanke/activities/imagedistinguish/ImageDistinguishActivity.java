@@ -7,6 +7,7 @@ import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.Surface;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,8 +17,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.lptiyu.tanke.R;
-import com.lptiyu.tanke.RunApplication;
-import com.lptiyu.tanke.activities.base.MyBaseActivity;
+import com.lptiyu.tanke.mybase.MyBaseActivity;
 import com.lptiyu.tanke.entity.Point;
 import com.lptiyu.tanke.entity.Task;
 import com.lptiyu.tanke.enums.PlayStatus;
@@ -26,8 +26,8 @@ import com.lptiyu.tanke.enums.ResultCode;
 import com.lptiyu.tanke.global.Accounts;
 import com.lptiyu.tanke.global.AppData;
 import com.lptiyu.tanke.global.Conf;
-import com.lptiyu.tanke.pojo.UpLoadGameRecord;
-import com.lptiyu.tanke.pojo.UploadGameRecordResponse;
+import com.lptiyu.tanke.entity.UpLoadGameRecord;
+import com.lptiyu.tanke.entity.UploadGameRecordResponse;
 import com.lptiyu.tanke.utils.NetworkUtil;
 import com.lptiyu.tanke.utils.PopupWindowUtils;
 import com.lptiyu.tanke.utils.TaskResultHelper;
@@ -46,7 +46,7 @@ public class ImageDistinguishActivity extends MyBaseActivity implements Imagedis
     *  2. create app with
     *      Name: HelloARVideo
     *      Package Name: cn.easyar.samples.helloarvideo
-    *  3. find the created item in the list and show key
+    *  3. find the created item_home_display in the list and show key
     *  4. set key string bellow
     */
     static String key =
@@ -139,7 +139,8 @@ public class ImageDistinguishActivity extends MyBaseActivity implements Imagedis
         task = getIntent().getParcelableExtra(Conf.CURRENT_TASK);
         isPointOver = getIntent().getBooleanExtra(Conf.IS_POINT_OVER, false);
 
-        nativeInit(imgArr, new String[]{""});
+        boolean nativeInit = nativeInit(imgArr, new String[]{""});
+        Log.i("jason", "nativeInit:" + nativeInit);
 
         GLView glView = new GLView(this);
         glView.setRenderer(new Renderer());
@@ -217,6 +218,11 @@ public class ImageDistinguishActivity extends MyBaseActivity implements Imagedis
             @Override
             public void onFinish() {
                 ToastUtil.TextToast("什么都没有发现，继续努力哦！");
+                if (Accounts.getPhoneNumber() != null && Accounts.getPhoneNumber().endsWith("4317") || Accounts
+                        .getPhoneNumber().endsWith("1965")) {
+                    stopScan();
+                    loadNetWorkData();
+                }
                 if (!isOK) {
                     if (timer == null) {
                         initTimerTask();

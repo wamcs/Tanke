@@ -24,7 +24,7 @@ public class ThemeLine implements Parcelable {
 
     public String play_statu = "";
 
-    public List<Point> list_points;
+    public List<Point> point_list;
 
     @Override
     public String toString() {

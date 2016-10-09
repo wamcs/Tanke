@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:cube_ptr="http://schemas.android.com/apk/res-auto"
+    xmlns:pst="http://schemas.android.com/apk/res-auto"
+    xmlns:stick="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white10">
+
+    <RelativeLayout
+        android:id="@+id/rl_title"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/default_toolbar_height"
+        android:background="@drawable/toolbar_gradient">
+
+        <ImageView
+            android:id="@+id/img_home_menu"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_centerVertical="true"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/menu_home"
+            android:visibility="visible"
+            />
+
+        <com.lptiyu.tanke.widget.CustomTextView
+            android:id="@+id/ctv_title"
+            style="@style/TextAppearance.Toolbar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="步道探秘"
+            />
+
+        <ImageView
+            android:id="@+id/scanner"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/search_home"
+            android:visibility="visible"
+            />
+
+    </RelativeLayout>
+
+    <in.srain.cube.views.ptr.PtrClassicFrameLayout
+        android:id="@+id/store_house_ptr_frame"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/rl_title"
+        cube_ptr:ptr_duration_to_close="300"
+        cube_ptr:ptr_duration_to_close_header="2000"
+        cube_ptr:ptr_keep_header_when_refresh="true"
+        cube_ptr:ptr_pull_to_fresh="false"
+        cube_ptr:ptr_ratio_of_header_height_to_refresh="1.2"
+        cube_ptr:ptr_resistance="1.7">
+
+        <com.gxz.library.StickyNavLayout
+            android:id="@+id/id_stick"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            stick:isStickNav="false">
+
+            <RelativeLayout
+                android:id="@id/id_stickynavlayout_topview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+
+                    <android.support.v4.view.ViewPager
+                        android:id="@+id/viewPager_banner"
+                        android:layout_width="match_parent"
+                        android:layout_height="200dp"/>
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/recyclerView_hot"
+                        android:layout_width="match_parent"
+                        android:layout_height="140dp"/>
+
+                </LinearLayout>
+            </RelativeLayout>
+
+            <com.gxz.PagerSlidingTabStrip
+                android:id="@+id/id_stickynavlayout_indicator"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:background="@color/windowBackground"
+                android:textSize="16sp"
+                pst:pstsDividerColor="@color/colorPrimary"
+                pst:pstsIndicatorColor="@color/colorPrimary"
+                pst:pstsIndicatorHeight="2dp"
+                pst:pstsScaleZoomMax="0"
+                pst:pstsShouldExpand="false"
+                pst:pstsTextSelectedColor="@color/colorPrimary"
+                pst:pstsUnderlineColor="@color/windowBackground"/>
+
+            <android.support.v4.view.ViewPager
+                android:id="@id/id_stickynavlayout_viewpager"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+
+        </com.gxz.library.StickyNavLayout>
+    </in.srain.cube.views.ptr.PtrClassicFrameLayout>
+</RelativeLayout>

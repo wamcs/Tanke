@@ -36,8 +36,7 @@ public class Point implements Comparable<Point>, Parcelable {
 
     public boolean isNew = false;
 
-    public ArrayList<Task> list_task;
-
+    public ArrayList<Task> task_list;
 
     @Override
     public int compareTo(Point another) {
@@ -70,7 +69,7 @@ public class Point implements Comparable<Point>, Parcelable {
                 ", first_task='" + first_task + '\'' +
                 ", state=" + state +
                 ", isNew=" + isNew +
-                ", list_task=" + list_task +
+                ", task_list=" + task_list +
                 '}';
     }
 
@@ -87,7 +86,7 @@ public class Point implements Comparable<Point>, Parcelable {
         dest.writeString(this.first_task);
         dest.writeInt(this.state);
         dest.writeByte(this.isNew ? (byte) 1 : (byte) 0);
-        dest.writeTypedList(this.list_task);
+        dest.writeTypedList(this.task_list);
     }
 
     public Point() {
@@ -105,7 +104,7 @@ public class Point implements Comparable<Point>, Parcelable {
         this.first_task = in.readString();
         this.state = in.readInt();
         this.isNew = in.readByte() != 0;
-        this.list_task = in.createTypedArrayList(Task.CREATOR);
+        this.task_list = in.createTypedArrayList(Task.CREATOR);
     }
 
     public static final Parcelable.Creator<Point> CREATOR = new Parcelable.Creator<Point>() {

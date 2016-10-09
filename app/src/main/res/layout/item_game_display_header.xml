@@ -64,8 +64,8 @@
 
                 <com.lptiyu.tanke.widget.CircularImageView
                     android:id="@+id/left_image_view"
-                    android:layout_width="@dimen/left_right_image_view_width_height"
-                    android:layout_height="@dimen/left_right_image_view_width_height"
+                    android:layout_width="@dimen/elastic_width_height"
+                    android:layout_height="@dimen/elastic_width_height"
                     />
 
                 <ImageView
@@ -75,7 +75,8 @@
                     android:layout_alignBottom="@id/left_image_view"
                     android:layout_alignRight="@id/left_image_view"
                     android:scaleType="centerInside"
-                    android:src="@drawable/team_game_type"/>
+                    android:src="@drawable/team_game_type"
+                    android:visibility="gone"/>
 
             </RelativeLayout>
 
@@ -107,8 +108,8 @@
 
                 <com.lptiyu.tanke.widget.CircularImageView
                     android:id="@+id/middle_image_view"
-                    android:layout_width="@dimen/left_right_image_view_width_height"
-                    android:layout_height="@dimen/left_right_image_view_width_height"
+                    android:layout_width="@dimen/elastic_width_height"
+                    android:layout_height="@dimen/elastic_width_height"
                     />
 
                 <ImageView
@@ -118,7 +119,8 @@
                     android:layout_alignBottom="@id/middle_image_view"
                     android:layout_alignRight="@id/middle_image_view"
                     android:scaleType="centerInside"
-                    android:src="@drawable/team_game_type"/>
+                    android:src="@drawable/team_game_type"
+                    android:visibility="gone"/>
 
             </RelativeLayout>
 
@@ -148,8 +150,8 @@
 
                 <com.lptiyu.tanke.widget.CircularImageView
                     android:id="@+id/right_image_view"
-                    android:layout_width="@dimen/left_right_image_view_width_height"
-                    android:layout_height="@dimen/left_right_image_view_width_height"
+                    android:layout_width="@dimen/elastic_width_height"
+                    android:layout_height="@dimen/elastic_width_height"
                     />
 
                 <ImageView
@@ -159,7 +161,8 @@
                     android:layout_alignBottom="@id/right_image_view"
                     android:layout_alignRight="@id/right_image_view"
                     android:scaleType="centerInside"
-                    android:src="@drawable/team_game_type"/>
+                    android:src="@drawable/team_game_type"
+                    android:visibility="gone"/>
 
             </RelativeLayout>
 

@@ -9,15 +9,15 @@ import android.widget.RelativeLayout;
 
 import com.bumptech.glide.Glide;
 import com.lptiyu.tanke.R;
-import com.lptiyu.tanke.activities.gameplaying2.GamePlaying2Activity;
+import com.lptiyu.tanke.activities.gameplaying.GamePlayingActivity;
 import com.lptiyu.tanke.base.recyclerview.BaseViewHolder;
+import com.lptiyu.tanke.entity.GetGameStatusResponse;
 import com.lptiyu.tanke.enums.PlayStatus;
 import com.lptiyu.tanke.global.Accounts;
 import com.lptiyu.tanke.global.Conf;
-import com.lptiyu.tanke.io.net.HttpService;
-import com.lptiyu.tanke.io.net.Response;
+import com.lptiyu.tanke.net.HttpService;
+import com.lptiyu.tanke.net.Response;
 import com.lptiyu.tanke.pojo.GameFinishedEntity;
-import com.lptiyu.tanke.pojo.GetGameStatusResponse;
 import com.lptiyu.tanke.utils.GameZipUtils;
 import com.lptiyu.tanke.utils.NetworkUtil;
 import com.lptiyu.tanke.utils.PopupWindowUtils;
@@ -103,8 +103,7 @@ public class UserGameFinishedHolder extends BaseViewHolder<GameFinishedEntity> {
                 {
                     ToastUtil.TextToast("该游戏已经下线");
                     return;
-                }
-                else if (entity.getStates() == 2 || entity.getStates()==0)//维护中的游戏s
+                } else if (entity.getStates() == 2 || entity.getStates() == 0)//维护中的游戏s
                 {
                     ToastUtil.TextToast("该游戏正在维护中，尽请期待");
                     return;
@@ -162,7 +161,7 @@ public class UserGameFinishedHolder extends BaseViewHolder<GameFinishedEntity> {
                                             });
                                     break;
                                 case PlayStatus.NEVER_ENTER_GANME://从未玩过游戏，进入到游戏详情界面
-                                case PlayStatus.HAVE_ENTERED_bUT_NOT_START_GAME://进入过但没开始游戏，进入到玩游戏界面
+                                case PlayStatus.HAVE_ENTERED_BUT_NOT_START_GAME://进入过但没开始游戏，进入到玩游戏界面
                                 case PlayStatus.HAVE_STARTED_GAME://进入并且已经开始游戏，进入到玩游戏界面
                                     //进入到玩游戏界面之前，先检测游戏包是否存在，存在则直接进入，否则要先下载游戏包
                                     //检查游戏包是否存在或者游戏解压后为空，判断完后游戏包已经被解压缩，并且已经将文件解析成实体类对象，此时可以直接从内存中取数据了
@@ -183,7 +182,7 @@ public class UserGameFinishedHolder extends BaseViewHolder<GameFinishedEntity> {
 
     private void startPlayingGame() {
         //        Intent intent = playing Intent(getContext(), GameDetailsActivity.class);
-        Intent intent = new Intent(getContext(), GamePlaying2Activity.class);
+        Intent intent = new Intent(getContext(), GamePlayingActivity.class);
         intent.putExtra(Conf.GAME_ID, currentEntity.getGameId());
         intent.putExtra(Conf.GAME_FINISHED_ENTITY, currentEntity);
         getContext().startActivity(intent);

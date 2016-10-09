@@ -19,19 +19,19 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.lptiyu.tanke.R;
 import com.lptiyu.tanke.RunApplication;
-import com.lptiyu.tanke.activities.gameplaying2.GamePlaying2Activity;
+import com.lptiyu.tanke.activities.gameplaying.GamePlayingActivity;
 import com.lptiyu.tanke.base.controller.ActivityController;
+import com.lptiyu.tanke.entity.EnterGameResponse;
+import com.lptiyu.tanke.entity.GameDetailResponse;
 import com.lptiyu.tanke.enums.GameType;
 import com.lptiyu.tanke.enums.PlayStatus;
 import com.lptiyu.tanke.enums.ResultCode;
 import com.lptiyu.tanke.global.Accounts;
 import com.lptiyu.tanke.global.Conf;
-import com.lptiyu.tanke.io.net.HttpService;
-import com.lptiyu.tanke.io.net.Response;
+import com.lptiyu.tanke.net.HttpService;
+import com.lptiyu.tanke.net.Response;
 import com.lptiyu.tanke.permission.PermissionDispatcher;
 import com.lptiyu.tanke.permission.TargetMethod;
-import com.lptiyu.tanke.pojo.EnterGameResponse;
-import com.lptiyu.tanke.pojo.GameDetailResponse;
 import com.lptiyu.tanke.utils.GameZipUtils;
 import com.lptiyu.tanke.utils.NetworkUtil;
 import com.lptiyu.tanke.utils.PopupWindowUtils;
@@ -264,23 +264,6 @@ public class GameDetailsController extends ActivityController {
     @OnClick(R.id.rl_time_location)
     public void startLocationDetailMap() {
 
-        //默认显示武汉
-        String lat = "30.515372";
-        String lon = "114.419876";
-        if (mGameDetailsResponse.latitude != null && mGameDetailsResponse.latitude.equals("") && Double.valueOf
-                (mGameDetailsResponse.latitude) > 0.1) {
-            lat = mGameDetailsResponse.latitude;
-        }
-
-        if (mGameDetailsResponse.longtitude != null && mGameDetailsResponse.longtitude.equals("") && Double.valueOf
-                (mGameDetailsResponse.longtitude) > 0.1) {
-            lon = mGameDetailsResponse.longtitude;
-        }
-
-        Intent intent = new Intent(getActivity(), GameDetailsLocationActivity.class);
-        intent.putExtra(Conf.LATITUDE, Double.valueOf(lat));
-        intent.putExtra(Conf.LONGITUDE, Double.valueOf(lon));
-        startActivity(intent);
     }
 
 
@@ -299,7 +282,7 @@ public class GameDetailsController extends ActivityController {
 
     @TargetMethod(requestCode = PermissionDispatcher.PERMISSION_REQUEST_CODE_LOCATION)
     public void startPlayingGame() {
-        Intent intent = new Intent(getContext(), GamePlaying2Activity.class);
+        Intent intent = new Intent(getContext(), GamePlayingActivity.class);
         intent.putExtra(Conf.GAME_ID, gameId);
         intent.putExtra(Conf.GAME_DETAIL, mGameDetailsResponse);
         //        //从游戏详情进入玩游戏界面，说明这是用户第一次进入到游戏，所以需要传入数据库所需要的字段
@@ -454,7 +437,7 @@ public class GameDetailsController extends ActivityController {
 
                     /*标记游戏状态为已经进入*/
                     RunApplication.getInstance().setGameDataByGameId(gameId, PlayStatus
-                            .HAVE_ENTERED_bUT_NOT_START_GAME, tempGameZipUrl);
+                            .HAVE_ENTERED_BUT_NOT_START_GAME, tempGameZipUrl);
 
                     if (new GameZipUtils().isParsedFileExist(gameId) == null) {
                         //根据获取到的游戏包下载链接去下载游戏

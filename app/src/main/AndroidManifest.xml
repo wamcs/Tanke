@@ -48,21 +48,12 @@
         android:largeHeap="true"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
         <meta-data
-            android:name="com.baidu.lbsapi.API_KEY"
-            android:value="qnETHCCOsjRZouq6GUXQR8AQKTOQnS8U"/>
+            android:name="com.amap.api.v2.apikey"
+            android:value="0c494eec21c7e1f92d6e545ae22364d5"/>
 
-        <!-- the service used to support locate_orange -->
-        <service
-            android:name="com.baidu.location.f"
-            android:enabled="true"
-            android:process=":remote"/>
-
-        <!-- the service used to support trace -->
-        <service
-            android:name="com.baidu.trace.LBSTraceService"
-            android:enabled="true"
-            android:exported="true"/>
+        <service android:name="com.amap.api.location.APSService"></service>
 
         <activity
             android:name=".MainActivity"
@@ -88,10 +79,6 @@
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait"/>
         <activity
-            android:name=".initialization.ui.CompleteInformationActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"
-            android:screenOrientation="portrait"/>
-        <activity
             android:name=".initialization.ui.SignUpActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait"/>
@@ -109,14 +96,6 @@
             android:screenOrientation="portrait"/>
         <activity
             android:name=".userCenter.ui.UserGamePlayingListActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"
-            android:screenOrientation="portrait"/>
-        <activity
-            android:name=".userCenter.ui.LocateActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"
-            android:screenOrientation="portrait"/>
-        <activity
-            android:name=".location.LocateUserActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait"/>
         <activity
@@ -190,31 +169,9 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".gameplaying.GamePlayingActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"
-            android:screenOrientation="portrait"/>
-        <activity
-            android:name=".gameplaying.task.GameTaskActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"
-            android:screenOrientation="portrait"/>
-        <activity
             android:name=".gamedetails.GameDetailsActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait"/>
-        <activity
-            android:name=".gamedetails.GameDetailsLocationActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"
-            android:screenOrientation="portrait"/>
-        <activity
-            android:name=".gamedata.GameDataActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"
-            android:screenOrientation="portrait"/>
-        <activity
-            android:name=".gameplaying.parser.ClueDisplayActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"
-            android:screenOrientation="portrait"
-            android:theme="@style/ApparentActivity">
-        </activity>
 
         <service android:name="com.avos.avoscloud.PushService"/>
 
@@ -242,10 +199,6 @@
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait"/>
         <activity
-            android:name=".gameplaying.GameShareActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"
-            android:screenOrientation="portrait"/>
-        <activity
             android:name=".messagesystem.SystemWebActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait"/>
@@ -254,16 +207,11 @@
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait"/>
         <activity
-            android:name=".activities.gameplaying2.GamePlaying2Activity"
+            android:name=".activities.gameplaying.GamePlayingActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait"/>
         <activity
             android:name=".activities.guessriddle.GuessRiddleActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"
-            android:screenOrientation="portrait">
-        </activity>
-        <activity
-            android:name=".activities.baidumapmode.GameMapShowActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait">
         </activity>
@@ -299,6 +247,16 @@
         </activity>
         <activity
             android:name=".activities.taskimagescale.TaskImageScaleActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="portrait">
+        </activity>
+        <activity
+            android:name=".activities.gamedetail.GameDetailActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="portrait">
+        </activity>
+        <activity
+            android:name=".activities.gameplaying_v2.GamePlayingV2Activity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait">
         </activity>

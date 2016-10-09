@@ -21,8 +21,8 @@
 
     #指定代码的压缩级别
     -optimizationpasses 5
-        #忽略警告
-        -ignorewarning
+    #忽略警告
+    -ignorewarning
 
 
     #包明不混合大小写
@@ -258,4 +258,25 @@
     -keep class com.squareup.** { *;}
     #rx产品,因为rx用到反射，不keep反射会出问题
     -keep class rx.** { *;}
+
+    #3D 地图
+    -keep   class com.amap.api.mapcore.**{*;}
+    -keep   class com.amap.api.maps.**{*;}
+    -keep   class com.autonavi.amap.mapcore.*{*;}
+
+    #定位
+    -keep class com.amap.api.location.**{*;}
+    -keep class com.amap.api.fence.**{*;}
+    -keep class com.autonavi.aps.amapapi.model.**{*;}
+
+    #搜索
+#    -keep   class com.amap.api.services.**{*;}
+
+    #2D地图
+#    -keep class com.amap.api.maps2d.**{*;}
+#    -keep class com.amap.api.mapcore2d.**{*;}
+
+    #导航
+#    -keep class com.amap.api.navi.**{*;}
+#    -keep class com.autonavi.**{*;}
 

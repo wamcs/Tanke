@@ -43,7 +43,8 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            >
 
             <com.lptiyu.tanke.widget.CustomTextView
                 style="@style/SettingActivityItemTextBase"
@@ -51,6 +52,8 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:gravity="center_vertical"
+                android:paddingBottom="15dp"
+                android:paddingTop="15dp"
                 android:text="@string/setting_activity_vibrate_mobile"/>
 
             <com.lptiyu.tanke.widget.SwitchButton
@@ -76,7 +79,8 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            >
 
             <com.lptiyu.tanke.widget.CustomTextView
                 android:id="@+id/setting_activity_feedback"
@@ -85,6 +89,8 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:gravity="center_vertical"
+                android:paddingBottom="15dp"
+                android:paddingTop="15dp"
                 android:text="@string/setting_activity_feedback"/>
 
             <ImageView
@@ -94,18 +100,6 @@
                 android:layout_centerVertical="true"
                 android:layout_marginRight="@dimen/setting_activity_arrow_margin_right"
                 android:src="@mipmap/arrow_left_black"/>
-
-            <com.lptiyu.tanke.widget.CustomTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="@dimen/x20"
-                android:gravity="center_vertical"
-                android:text="@string/app_mail"
-                android:textColor="@color/grey06"
-                android:textSize="16sp"
-                android:visibility="gone"/>
 
         </RelativeLayout>
 
@@ -118,7 +112,8 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            >
 
             <com.lptiyu.tanke.widget.CustomTextView
                 android:id="@+id/setting_activity_wechat_public"
@@ -127,6 +122,8 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:gravity="center_vertical"
+                android:paddingBottom="15dp"
+                android:paddingTop="15dp"
                 android:text="@string/setting_activity_wechat_public"/>
 
             <com.lptiyu.tanke.widget.CustomTextView
@@ -152,7 +149,8 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            >
 
             <com.lptiyu.tanke.widget.CustomTextView
                 android:id="@+id/clear_cache"
@@ -161,6 +159,8 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:gravity="center_vertical"
+                android:paddingBottom="15dp"
+                android:paddingTop="15dp"
                 android:text="清理缓存"/>
 
             <com.lptiyu.tanke.widget.CustomTextView
@@ -186,7 +186,8 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            >
 
             <com.lptiyu.tanke.widget.CustomTextView
                 android:id="@+id/setting_activity_about_us"
@@ -195,6 +196,8 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:gravity="center_vertical"
+                android:paddingBottom="15dp"
+                android:paddingTop="15dp"
                 android:text="@string/setting_activity_about_us"/>
 
             <ImageView
@@ -217,7 +220,8 @@
         android:layout_marginTop="@dimen/setting_activity_item_margin_top"
         android:background="@drawable/style_locate_activity_list_item"
         android:gravity="center"
-        android:padding="10dp"
+        android:paddingBottom="15dp"
+        android:paddingTop="15dp"
         android:text="@string/setting_activity_logout"
         android:textColor="@color/colorPrimary"
         android:textSize="@dimen/setting_activity_logout_text_size"/>

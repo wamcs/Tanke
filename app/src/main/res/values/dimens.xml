@@ -12,7 +12,10 @@
     <dimen name="default_toolbar_textview_menu_text_size">18sp</dimen>
 
     <!--Default toolbar height-->
-    <dimen name="default_toolbar_height">@dimen/y147</dimen>
+    <dimen name="default_toolbar_height">60dp</dimen>
+    <dimen name="elastic_width_height">90dp</dimen>
+    <dimen name="game_image_width">120dp</dimen>
+    <dimen name="game_image_height">90dp</dimen>
     <!-- Number Picker Dimens-->
     <dimen name="number_picker_margin">@dimen/x26</dimen>
 
@@ -41,7 +44,7 @@
     <!--User Center-->
     <dimen name="user_center_linear_layout_height">@dimen/y52</dimen>
     <dimen name="user_center_linear_layout_paddingLeft">@dimen/x52</dimen>
-    <dimen name="user_center_linear_layout_left_image_width">@dimen/x80</dimen>
+    <dimen name="user_center_linear_layout_left_image_width">20dp</dimen>
     <dimen name="user_center_linear_layout_left_image_height">@dimen/y80</dimen>
     <dimen name="user_center_linear_layout_paddingRight">@dimen/x79</dimen>
     <dimen name="user_center_linear_layout_bottom_line_height">@dimen/y1</dimen>
@@ -237,7 +240,7 @@
 
 
     <!-- UserCenterFragment Dimens-->
-    <dimen name="fragment_user_center_item_height">@dimen/y150</dimen>
+    <dimen name="fragment_user_center_item_height">50dp</dimen>
 
     <!-- SettingActivity Dimens Area-->
     <dimen name="activity_setting_item_height">@dimen/y140</dimen>

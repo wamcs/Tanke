@@ -14,8 +14,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.lptiyu.tanke.R;
-import com.lptiyu.tanke.utils.RegularExpressionHelper;
-import com.lptiyu.tanke.utils.Strings;
 import com.lptiyu.tanke.utils.TimeUtils;
 
 import butterknife.BindView;
@@ -55,7 +53,7 @@ public class SignUpHelper {
 
     public boolean getCode() {
         String phone = signUpPhoneEditText.getText().toString().trim();
-        if (phone.length() != 11 || !Strings.checkPhone(phone)) {
+        if (phone.length() != 11) {
             spannableString = new SpannableString(context.getResources().getString(R.string.error_user_phone));
             spannableString.setSpan(new ForegroundColorSpan(Color.RED),
                     0, spannableString.length(),
@@ -70,7 +68,8 @@ public class SignUpHelper {
 
     public boolean next() {
         Editable phone = signUpPhoneEditText.getText();
-        if (!RegularExpressionHelper.isPhoneNumber(phone + "")) {
+        if ((phone + "").length() != 11) {
+            //        if (!RegularExpressionHelper.isPhoneNumber(phone + "")) {
 
             spannableString = new SpannableString(context.getResources().getString(R.string.error_user_phone));
             spannableString.setSpan(new ForegroundColorSpan(Color.RED),

@@ -1,13 +1,15 @@
 package com.lptiyu.tanke.activities.imagedistinguish;
 
-import com.lptiyu.tanke.pojo.UpLoadGameRecord;
-import com.lptiyu.tanke.pojo.UploadGameRecordResponse;
+import com.lptiyu.tanke.entity.UpLoadGameRecord;
+import com.lptiyu.tanke.entity.UploadGameRecordResponse;
+import com.lptiyu.tanke.mybase.IBasePresenter;
+import com.lptiyu.tanke.mybase.IBaseView;
 
 /**
  * Created by Jason on 2016/8/9.
  */
 public class ImagedistinguishContact {
-    interface ImagedistinguishView {
+    interface ImagedistinguishView extends IBaseView {
         void successUploadRecord(UploadGameRecordResponse response);
 
         void failUploadRecord(String errorMsg);
@@ -15,7 +17,7 @@ public class ImagedistinguishContact {
         void netException();
     }
 
-    interface ImagedistinguishPresenter {
+    interface ImagedistinguishPresenter extends IBasePresenter {
         void uploadRecord(UpLoadGameRecord upLoadGameRecord);
     }
 }

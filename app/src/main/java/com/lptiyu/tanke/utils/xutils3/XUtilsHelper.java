@@ -27,7 +27,11 @@ public class XUtilsHelper {
 
     public static XUtilsHelper getInstance() {
         if (instance == null)
-            instance = new XUtilsHelper();
+            synchronized (XUtilsHelper.class) {
+                if (instance == null) {
+                    instance = new XUtilsHelper();
+                }
+            }
         return instance;
     }
 
@@ -240,7 +244,6 @@ public class XUtilsHelper {
 
     //对参数进行封装格式，为了方便以后的维护，在这里可以统一处理头部信息以及一些上传下载的配置
     private RequestParams getRequestParams(Object req, String url) {
-        //        RequestParams requestParams = new RequestParams(url);
         RequestParams requestParams = RequestParamsHelper.getBaseRequestParam(url);
         requestParams.setConnectTimeout(15000);
         if (req instanceof String) {

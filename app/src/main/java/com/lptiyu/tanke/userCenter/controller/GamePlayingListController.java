@@ -15,12 +15,12 @@ import com.lptiyu.tanke.RunApplication;
 import com.lptiyu.tanke.base.recyclerview.BaseAdapter;
 import com.lptiyu.tanke.base.recyclerview.BaseListActivityController;
 import com.lptiyu.tanke.global.Accounts;
-import com.lptiyu.tanke.io.net.HttpService;
-import com.lptiyu.tanke.io.net.Response;
+import com.lptiyu.tanke.net.HttpService;
+import com.lptiyu.tanke.net.Response;
 import com.lptiyu.tanke.pojo.GamePlayingEntity;
 import com.lptiyu.tanke.userCenter.adapter.GamePlayingAdapter;
+import com.lptiyu.tanke.utils.ThreadUtils;
 import com.lptiyu.tanke.utils.ToastUtil;
-import com.lptiyu.tanke.utils.thread;
 
 import java.util.List;
 
@@ -95,7 +95,7 @@ public class GamePlayingListController extends BaseListActivityController<GamePl
                         List<GamePlayingEntity> result = response.getData();
                         if (result.size() == 0) {
                             if (mNoDataImage != null && mLayoutManager.getItemCount() <= 0) {
-                                thread.mainThread(new Runnable() {
+                                ThreadUtils.mainThread(new Runnable() {
                                     @Override
                                     public void run() {
                                         mNoDataImage.setVisibility(View.VISIBLE);
@@ -104,7 +104,7 @@ public class GamePlayingListController extends BaseListActivityController<GamePl
                             }
                         } else {
                             if (mNoDataImage != null) {
-                                thread.mainThread(new Runnable() {
+                                ThreadUtils.mainThread(new Runnable() {
                                     @Override
                                     public void run() {
                                         mNoDataImage.setVisibility(View.GONE);

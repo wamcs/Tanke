@@ -20,13 +20,12 @@ import com.lptiyu.tanke.enums.ResultCode;
 import com.lptiyu.tanke.global.Accounts;
 import com.lptiyu.tanke.global.Conf;
 import com.lptiyu.tanke.initialization.ui.SignUpActivity;
-import com.lptiyu.tanke.io.net.HttpService;
-import com.lptiyu.tanke.io.net.Response;
-import com.lptiyu.tanke.io.net.UserService;
-import com.lptiyu.tanke.location.CityStruct;
-import com.lptiyu.tanke.location.LocateUserActivity;
+import com.lptiyu.tanke.net.HttpService;
+import com.lptiyu.tanke.net.Response;
+import com.lptiyu.tanke.net.UserService;
 import com.lptiyu.tanke.permission.PermissionDispatcher;
 import com.lptiyu.tanke.permission.TargetMethod;
+import com.lptiyu.tanke.pojo.CityStruct;
 import com.lptiyu.tanke.pojo.UserDetails;
 import com.lptiyu.tanke.utils.ToastUtil;
 import com.lptiyu.tanke.widget.CircularImageView;
@@ -333,8 +332,8 @@ public class ModifyUserInfoController extends ActivityController {
 
     @OnClick(R.id.modify_user_info_location_button)
     void modifyLocation() {
-        Intent intent = new Intent(getActivity(), LocateUserActivity.class);
-        startActivityForResult(intent, Conf.REQUEST_CODE_START_USER_LOCATE);
+        //        Intent intent = new Intent(getActivity(), LocateUserActivity.class);
+        //        startActivityForResult(intent, Conf.REQUEST_CODE_START_USER_LOCATE);
     }
 
     @OnClick(R.id.modify_user_info_phone_button)
@@ -454,5 +453,4 @@ public class ModifyUserInfoController extends ActivityController {
         finish();
         return true;
     }
-
 }

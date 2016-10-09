@@ -130,7 +130,7 @@ public class TimeUtils {
     }
 
     /**
-     * Parse time for GameDisplayFragment and GameDetailsActivity
+     * Parse time for HomeFragment and GameDetailsActivity
      *
      * @param context
      * @param startDate

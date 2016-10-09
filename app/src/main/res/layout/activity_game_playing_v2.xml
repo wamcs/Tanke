@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_game_playing_v2"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.lptiyu.tanke.activities.gameplaying_v2.GamePlayingV2Activity">
+
+    <RelativeLayout
+        android:id="@+id/rl_title"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/default_toolbar_height"
+        android:background="@drawable/toolbar_gradient"
+        >
+
+        <ImageView
+            android:id="@+id/back_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:background="@null"
+            android:onClick="click"
+            android:paddingBottom="@dimen/default_toolbar_imageview_padding"
+            android:paddingLeft="@dimen/default_toolbar_imageview_padding_left"
+            android:paddingRight="@dimen/default_toolbar_imageview_padding"
+            android:paddingTop="@dimen/default_toolbar_imageview_padding"
+            android:scaleType="centerInside"
+            android:src="@mipmap/img_last_white"
+            />
+
+        <com.lptiyu.tanke.widget.CustomTextView
+            android:id="@+id/game_playing_title"
+            style="@style/TextAppearance.Toolbar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="步道探秘"
+            />
+
+        <ImageView
+            android:id="@+id/img_game_detail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:clickable="true"
+            android:onClick="click"
+            android:paddingBottom="@dimen/default_toolbar_imageview_padding"
+            android:paddingLeft="@dimen/default_toolbar_imageview_padding_left"
+            android:paddingRight="@dimen/default_toolbar_imageview_padding"
+            android:paddingTop="@dimen/default_toolbar_imageview_padding"
+            android:src="@mipmap/detail"
+            android:visibility="visible"
+            />
+
+    </RelativeLayout>
+
+    <com.amap.api.maps.TextureMapView
+        android:id="@+id/textureMapView"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_below="@id/rl_title"/>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/textureMapView"/>
+
+</RelativeLayout>

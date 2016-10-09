@@ -37,13 +37,13 @@ public class TaskResultHelper {
     private final String LOOK = "查看";
     private AnimationDrawable anim;
 
-    public TaskResultHelper(Context context, ImageView imageView, TaskResultCallback callback) {
-        this.imgAnim = imageView;
-        this.callback = callback;
-        this.context = context;
-        initPopupwindow();
-        initAnim();
-    }
+//    public TaskResultHelper(Context context, ImageView imageView, TaskResultCallback callback) {
+//        this.imgAnim = imageView;
+//        this.callback = callback;
+//        this.context = context;
+//        initPopupwindow();
+//        initAnim();
+//    }
 
     public TaskResultHelper(Context context, RelativeLayout rl_submitting, ImageView imageView, TaskResultCallback
             callback) {

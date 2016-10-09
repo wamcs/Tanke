@@ -18,9 +18,9 @@ import com.lptiyu.tanke.database.MessageNotificationDao;
 import com.lptiyu.tanke.database.MessageNotificationList;
 import com.lptiyu.tanke.global.Accounts;
 import com.lptiyu.tanke.global.Conf;
-import com.lptiyu.tanke.io.net.HttpService;
-import com.lptiyu.tanke.io.net.Response;
 import com.lptiyu.tanke.messagesystem.adpater.MessageListAdapter;
+import com.lptiyu.tanke.net.HttpService;
+import com.lptiyu.tanke.net.Response;
 import com.lptiyu.tanke.pojo.MessageEntity;
 import com.lptiyu.tanke.utils.ToastUtil;
 
@@ -101,7 +101,7 @@ public class MessageListFragment extends BaseFragment implements
                             messageDao.insertOrReplace(messages);
                         }
 
-                        //update the official msg item
+                        //update the official msg item_home_display
                         MessageEntity lastMsg = serverMessageDatas.get(0);
                         result = new MessageNotificationList();
                         result.setName(getString(R.string.message_type_official));

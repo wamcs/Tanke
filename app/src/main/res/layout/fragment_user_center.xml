@@ -61,8 +61,8 @@
 
         <com.lptiyu.tanke.widget.CircularImageView
             android:id="@+id/user_avatar"
-            android:layout_width="@dimen/x300"
-            android:layout_height="@dimen/x300"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
             android:layout_gravity="center_vertical"
             android:src="@mipmap/default_avatar"
             app:cuiv_border="true"
@@ -135,7 +135,7 @@
 
 
             <RelativeLayout
-                android:layout_width="@dimen/x500"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/user_id_pre"
                 android:layout_marginTop="@dimen/y21">
@@ -145,6 +145,7 @@
                     style="@style/TextAppearance.UserCenter.TAG"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
                     android:background="@drawable/blue_round_corner"
                     android:text="LV.7"/>
 
@@ -162,6 +163,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
+                    android:layout_toLeftOf="@id/user_progress_right"
+                    android:layout_toRightOf="@id/user_progress_left"
+                    android:ellipsize="middle"
+                    android:gravity="center"
+                    android:maxLines="1"
                     android:text="100 / 200 经验值"
                     android:textColor="@color/grey06"
                     android:textSize="10sp"/>
@@ -175,16 +181,6 @@
                     app:src="@drawable/user_center_exp_progress_bar_solid"/>
 
             </RelativeLayout>
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="@dimen/setting_activity_arrow_margin_right"
-                android:src="@mipmap/arrow_left_black"
-                android:visibility="gone"/>
-
 
         </RelativeLayout>
 
@@ -320,64 +316,11 @@
 
     </RelativeLayout>
 
-
-    <RelativeLayout
-        android:id="@+id/user_rewards"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/fragment_user_center_item_height"
-        android:layout_below="@id/user_game_finished"
-        android:background="@drawable/fragment_user_center_item_bg"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:visibility="gone">
-
-        <ImageView
-            android:id="@id/image"
-            android:layout_width="@dimen/user_center_linear_layout_left_image_width"
-            android:layout_height="@dimen/user_center_linear_layout_left_image_width"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/user_center_linear_layout_paddingLeft"
-            android:scaleType="centerInside"
-            android:src="@mipmap/icon_rewards"/>
-
-        <com.lptiyu.tanke.widget.CustomTextView
-            android:id="@id/name"
-            style="@style/TextAppearance.UserCenter.middle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_toRightOf="@id/image"
-            android:gravity="center"
-            android:paddingLeft="@dimen/x52"
-            android:text="我的奖励"/>
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-
-        <View
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/user_center_linear_layout_bottom_line_height"
-            android:layout_alignParentBottom="true"
-            android:layout_marginLeft="@dimen/x47"
-            android:layout_marginRight="@dimen/x47"
-            android:background="@color/user_center_split_line"/>
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="@dimen/setting_activity_arrow_margin_right"
-            android:src="@mipmap/arrow_left_black"/>
-    </RelativeLayout>
-
-
     <RelativeLayout
         android:id="@+id/user_judge_game"
         android:layout_width="match_parent"
         android:layout_height="@dimen/fragment_user_center_item_height"
-        android:layout_below="@id/user_rewards"
+        android:layout_below="@id/user_game_finished"
         android:background="@drawable/fragment_user_center_item_bg"
         android:gravity="center_vertical"
         android:orientation="horizontal"
@@ -453,19 +396,6 @@
             android:gravity="center"
             android:paddingLeft="@dimen/x52"
             android:text="设置"/>
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-
-        <View
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/user_center_linear_layout_bottom_line_height"
-            android:layout_alignParentBottom="true"
-            android:layout_marginLeft="@dimen/x26"
-            android:layout_marginRight="@dimen/x26"
-            android:background="@color/user_center_split_line"
-            android:visibility="gone"/>
 
         <ImageView
             android:layout_width="wrap_content"

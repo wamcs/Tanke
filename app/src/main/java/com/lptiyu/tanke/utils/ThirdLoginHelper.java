@@ -7,9 +7,9 @@ import android.content.Intent;
 import com.lptiyu.tanke.MainActivity;
 import com.lptiyu.tanke.global.Accounts;
 import com.lptiyu.tanke.global.AppData;
-import com.lptiyu.tanke.io.net.HttpService;
-import com.lptiyu.tanke.io.net.Response;
-import com.lptiyu.tanke.io.net.UserService;
+import com.lptiyu.tanke.net.HttpService;
+import com.lptiyu.tanke.net.Response;
+import com.lptiyu.tanke.net.UserService;
 import com.lptiyu.tanke.pojo.UserDetails;
 import com.lptiyu.tanke.pojo.UserEntity;
 

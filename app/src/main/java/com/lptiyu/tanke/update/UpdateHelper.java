@@ -4,8 +4,8 @@ import android.content.Context;
 
 import com.lptiyu.tanke.RunApplication;
 import com.lptiyu.tanke.global.AppData;
-import com.lptiyu.tanke.io.net.HttpService;
-import com.lptiyu.tanke.io.net.Response;
+import com.lptiyu.tanke.net.HttpService;
+import com.lptiyu.tanke.net.Response;
 import com.lptiyu.tanke.utils.xutils3.APKDownloader;
 import com.lptiyu.tanke.widget.dialog.TextDialog;
 

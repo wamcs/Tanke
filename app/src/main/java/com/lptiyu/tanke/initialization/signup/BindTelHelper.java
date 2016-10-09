@@ -3,19 +3,19 @@ package com.lptiyu.tanke.initialization.signup;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.view.View;
+import android.widget.Toast;
 
 import com.lptiyu.tanke.enums.ResultCode;
 import com.lptiyu.tanke.global.Accounts;
-import com.lptiyu.tanke.io.net.HttpService;
-import com.lptiyu.tanke.io.net.Response;
-import com.lptiyu.tanke.io.net.UserService;
+import com.lptiyu.tanke.net.HttpService;
+import com.lptiyu.tanke.net.Response;
+import com.lptiyu.tanke.net.UserService;
 import com.lptiyu.tanke.utils.ToastUtil;
-import com.lptiyu.tanke.utils.rx.ToastExceptionAction;
 import com.lptiyu.tanke.utils.xutils3.RequestParamsHelper;
 import com.lptiyu.tanke.utils.xutils3.XUtilsHelper;
 import com.lptiyu.tanke.utils.xutils3.XUtilsRequestCallBack;
 import com.lptiyu.tanke.utils.xutils3.XUtilsUrls;
-import com.lptiyu.tanke.utils.xutils3.response.BaseResponse;
+import com.lptiyu.tanke.entity.response.BaseResponse;
 
 import org.xutils.http.RequestParams;
 
@@ -65,7 +65,12 @@ public class BindTelHelper extends SignUpHelper {
                         signUpNextButton.setClickable(true);
                         signUpNextButton.setEnabled(true);
                     }
-                }, new ToastExceptionAction(signUpGetCodeButton.getContext().getApplicationContext()));
+                }, new Action1<Throwable>() {
+                    @Override
+                    public void call(Throwable throwable) {
+                        Toast.makeText(context, throwable.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
         return true;
     }
 

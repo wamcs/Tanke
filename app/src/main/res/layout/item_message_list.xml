@@ -1,75 +1,75 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/message_list_item_layout"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/y240"
-    android:background="@color/windowBackground"
-    android:paddingLeft="@dimen/x50"
-    android:paddingRight="@dimen/x50">
+    android:layout_height="wrap_content"
+    android:background="@color/white10"
+    android:padding="10dp">
 
     <ImageView
         android:id="@+id/message_list_item_picture"
-        android:layout_width="@dimen/x160"
-        android:layout_height="@dimen/x160"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
         android:layout_centerVertical="true"
-        android:layout_marginRight="@dimen/x30"
         android:background="@color/transparent"
         android:src="@mipmap/ic_launcher"/>
 
-    <com.lptiyu.tanke.widget.CustomTextView
-        android:id="@+id/message_list_item_name"
-        android:layout_width="wrap_content"
+    <RelativeLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@id/message_list_item_picture"
-        android:layout_marginTop="@dimen/y10"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="10dp"
         android:layout_toRightOf="@id/message_list_item_picture"
-        android:paddingBottom="@dimen/x8"
-        android:paddingLeft="@dimen/x8"
-        android:text="官方资讯"
-        android:textSize="16sp"
-        />
+        >
 
-    <ImageView
-        android:id="@+id/message_list_item_red_spot"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@id/message_list_item_name"
-        android:layout_toRightOf="@id/message_list_item_name"
-        android:contentDescription="@string/content_description"
-        android:src="@mipmap/img_red_spot"/>
+        <com.lptiyu.tanke.widget.CustomTextView
+            android:id="@+id/message_list_item_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="官方资讯"
+            android:textSize="16sp"
+            />
 
-    <com.lptiyu.tanke.widget.CustomTextView
-        android:id="@+id/message_list_item_time"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_alignTop="@id/message_list_item_name"
-        android:padding="@dimen/x8"
-        android:text="2016-07-04"
-        android:textColor="@color/grey06"
-        android:textSize="14sp"/>
+        <ImageView
+            android:id="@+id/message_list_item_red_spot"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@id/message_list_item_name"
+            android:layout_toRightOf="@id/message_list_item_name"
+            android:contentDescription="@string/content_description"
+            android:src="@mipmap/img_red_spot"/>
 
-    <com.lptiyu.tanke.widget.CustomTextView
-        android:id="@+id/message_list_item_content"
-        android:layout_width="@dimen/x800"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/message_list_item_name"
-        android:layout_marginTop="@dimen/y8"
-        android:layout_toRightOf="@id/message_list_item_picture"
-        android:maxLines="1"
-        android:paddingBottom="@dimen/x8"
-        android:paddingLeft="@dimen/x8"
-        android:text="官方咨询"
-        android:textColor="@color/grey06"
-        android:textSize="14sp"/>
+        <com.lptiyu.tanke.widget.CustomTextView
+            android:id="@+id/message_list_item_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignTop="@id/message_list_item_name"
+            android:text="2016-07-04"
+            android:textColor="@color/grey06"
+            android:textSize="14sp"/>
 
-    <View
-        android:layout_width="wrap_content"
-        android:layout_height="@dimen/user_center_linear_layout_bottom_line_height"
-        android:layout_below="@+id/message_list_item_picture"
-        android:layout_marginTop="10dp"
-        android:background="@color/user_center_split_line"/>
+        <com.lptiyu.tanke.widget.CustomTextView
+            android:id="@+id/message_list_item_content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/message_list_item_name"
+            android:layout_marginTop="@dimen/y8"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:paddingBottom="@dimen/x8"
+            android:paddingLeft="@dimen/x8"
+            android:text="官方咨询"
+            android:textColor="@color/grey06"
+            android:textSize="14sp"/>
+
+        <View
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/user_center_linear_layout_bottom_line_height"
+            android:layout_marginTop="10dp"
+            android:background="@color/user_center_split_line"
+            android:visibility="gone"/>
+    </RelativeLayout>
 
 </RelativeLayout>

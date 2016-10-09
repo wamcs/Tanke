@@ -2,7 +2,6 @@ package com.lptiyu.tanke.adapter;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.v4.view.PagerAdapter;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,19 +10,19 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.lptiyu.tanke.R;
 import com.lptiyu.tanke.activities.bannerdetail.BannerDetailActivity;
-import com.lptiyu.tanke.activities.gameplaying2.GamePlaying2Activity;
+import com.lptiyu.tanke.activities.gameplaying.GamePlayingActivity;
+import com.lptiyu.tanke.entity.GetGameStatusResponse;
 import com.lptiyu.tanke.enums.BannerType;
 import com.lptiyu.tanke.enums.PlayStatus;
 import com.lptiyu.tanke.gamedetails.GameDetailsActivity;
 import com.lptiyu.tanke.global.Accounts;
 import com.lptiyu.tanke.global.Conf;
-import com.lptiyu.tanke.io.net.HttpService;
-import com.lptiyu.tanke.io.net.Response;
-import com.lptiyu.tanke.pojo.GetGameStatusResponse;
+import com.lptiyu.tanke.net.HttpService;
+import com.lptiyu.tanke.net.Response;
 import com.lptiyu.tanke.utils.NetworkUtil;
 import com.lptiyu.tanke.utils.PopupWindowUtils;
 import com.lptiyu.tanke.utils.XUtilsDownloader;
-import com.lptiyu.tanke.utils.xutils3.response.Banner;
+import com.lptiyu.tanke.entity.response.Banner;
 
 import java.util.List;
 
@@ -34,26 +33,13 @@ import rx.schedulers.Schedulers;
 /**
  * Created by Jason on 2016/8/12.
  */
-public class BannerPagerAdapter extends PagerAdapter {
-    private List<Banner> list;
-    private Context context;
+public class BannerPagerAdapter extends BasePagerAdapter<Banner> {
     private long gameId;
     private String tempGameZipUrl;
     private String title;
 
     public BannerPagerAdapter(Context context, List<Banner> list) {
-        this.list = list;
-        this.context = context;
-    }
-
-    @Override
-    public int getCount() {
-        return list == null ? 0 : list.size();
-    }
-
-    @Override
-    public boolean isViewFromObject(View view, Object object) {
-        return view == object;
+        super(list, context);
     }
 
     @Override
@@ -69,7 +55,6 @@ public class BannerPagerAdapter extends PagerAdapter {
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO banner点击事件
                 if (banner.type == BannerType.OPEN_URL) {
                     Intent intent = new Intent(context, BannerDetailActivity.class);
                     intent.putExtra(Conf.CONTENT, banner.content);
@@ -85,17 +70,6 @@ public class BannerPagerAdapter extends PagerAdapter {
             }
         });
         return imageView;
-    }
-
-    @Override
-    public void destroyItem(ViewGroup container, int position, Object object) {
-        //        super.destroyItem(container, position, object);
-        container.removeView((View) object);
-    }
-
-    @Override
-    public int getItemPosition(Object object) {
-        return POSITION_NONE;
     }
 
     private void loadNetWorkData() {
@@ -137,7 +111,7 @@ public class BannerPagerAdapter extends PagerAdapter {
                                     break;
                                 case PlayStatus.GAME_OVER://游戏结束，暂不考虑
                                     //TODO 需要进入到游戏完成界面
-                                case PlayStatus.HAVE_ENTERED_bUT_NOT_START_GAME://进入过但没开始游戏，进入到玩游戏界面
+                                case PlayStatus.HAVE_ENTERED_BUT_NOT_START_GAME://进入过但没开始游戏，进入到玩游戏界面
                                 case PlayStatus.HAVE_STARTED_GAME://进入并且已经开始游戏，进入到玩游戏界面
                                     //进入到玩游戏界面之前，先检测游戏包是否存在，存在则直接进入，否则要先下载游戏包
                                     new XUtilsDownloader(context, tempGameZipUrl, gameId, new XUtilsDownloader
@@ -164,7 +138,7 @@ public class BannerPagerAdapter extends PagerAdapter {
     }
 
     private void startPlayingGame() {
-        Intent intent = new Intent(context, GamePlaying2Activity.class);
+        Intent intent = new Intent(context, GamePlayingActivity.class);
         intent.putExtra(Conf.GAME_ID, gameId);
         intent.putExtra(Conf.BANNER_TITLE, title);
         context.startActivity(intent);

@@ -17,11 +17,11 @@ import com.lptiyu.tanke.base.recyclerview.BaseListActivityController;
 import com.lptiyu.tanke.base.recyclerview.BaseViewHolder;
 import com.lptiyu.tanke.base.ui.BaseActivity;
 import com.lptiyu.tanke.global.Accounts;
-import com.lptiyu.tanke.io.net.HttpService;
-import com.lptiyu.tanke.io.net.Response;
+import com.lptiyu.tanke.net.HttpService;
+import com.lptiyu.tanke.net.Response;
 import com.lptiyu.tanke.pojo.Reward;
+import com.lptiyu.tanke.utils.ThreadUtils;
 import com.lptiyu.tanke.utils.ToastUtil;
-import com.lptiyu.tanke.utils.thread;
 
 import java.util.List;
 
@@ -30,7 +30,6 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import rx.Observable;
 import rx.functions.Func1;
-import timber.log.Timber;
 
 public class UserRewardActivity extends BaseActivity {
 
@@ -91,7 +90,7 @@ public class UserRewardActivity extends BaseActivity {
               List<Reward> result = listResponse.getData();
               if (result.size() == 0) {
                 if (mNoDataImage != null) {
-                  thread.mainThread(new Runnable() {
+                  ThreadUtils.mainThread(new Runnable() {
                     @Override
                     public void run() {
                       mNoDataImage.setVisibility(View.VISIBLE);
@@ -100,7 +99,7 @@ public class UserRewardActivity extends BaseActivity {
                 }
               } else {
                 if (mNoDataImage != null) {
-                  thread.mainThread(new Runnable() {
+                  ThreadUtils.mainThread(new Runnable() {
                     @Override
                     public void run() {
                       mNoDataImage.setVisibility(View.GONE);

@@ -6,7 +6,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.lptiyu.tanke.R;
-import com.lptiyu.tanke.activities.base.MyBaseActivity;
+import com.lptiyu.tanke.mybase.MyBaseActivity;
 import com.lptiyu.tanke.utils.ToastUtil;
 
 import butterknife.BindView;

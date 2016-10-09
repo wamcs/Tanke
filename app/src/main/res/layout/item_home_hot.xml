@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:paddingBottom="10dp"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:paddingTop="10dp">
+
+    <com.lptiyu.tanke.widget.CircularImageView
+        android:id="@+id/cImg"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_centerHorizontal="true"
+        android:src="@mipmap/default_avatar"
+        app:cuiv_border="true"
+        app:cuiv_border_color="#fff"
+        app:cuiv_border_width="0px"
+        app:cuiv_shadow="true"
+        app:cuiv_shadow_color="@color/user_avatar_shadow_color"
+        app:cuiv_shadow_radius="0"/>
+
+    <TextView
+        android:id="@+id/tv_tag"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@id/cImg"
+        android:layout_alignTop="@id/cImg"
+        android:layout_marginLeft="2dp"
+        android:layout_marginTop="2dp"
+        android:background="@drawable/shape_rounded_bg_hot_tag"
+        android:padding="2dp"
+        android:text="华科"
+        android:textColor="@color/white10"
+        android:textSize="10sp"/>
+
+    <TextView
+        android:id="@+id/tv_game_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/cImg"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:text="游戏名"/>
+
+</RelativeLayout>

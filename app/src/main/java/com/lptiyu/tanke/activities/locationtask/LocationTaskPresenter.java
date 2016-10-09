@@ -2,11 +2,11 @@ package com.lptiyu.tanke.activities.locationtask;
 
 import android.util.Log;
 
+import com.lptiyu.tanke.entity.UpLoadGameRecord;
+import com.lptiyu.tanke.entity.UploadGameRecordResponse;
 import com.lptiyu.tanke.global.Accounts;
-import com.lptiyu.tanke.io.net.HttpService;
-import com.lptiyu.tanke.io.net.Response;
-import com.lptiyu.tanke.pojo.UpLoadGameRecord;
-import com.lptiyu.tanke.pojo.UploadGameRecordResponse;
+import com.lptiyu.tanke.net.HttpService;
+import com.lptiyu.tanke.net.Response;
 
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;

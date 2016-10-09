@@ -18,16 +18,20 @@ import com.lptiyu.tanke.R;
 
 public class PopupWindowUtils {
     private static PopupWindowUtils popupWindowUtils;
+    private static LayoutInflater inflater;
 
     private PopupWindowUtils() {
     }
 
     public static PopupWindowUtils getInstance() {
         if (popupWindowUtils == null) {
-            return new PopupWindowUtils();
-        } else {
-            return popupWindowUtils;
+            synchronized (PopupWindowUtils.class) {
+                if (popupWindowUtils == null) {
+                    popupWindowUtils = new PopupWindowUtils();
+                }
+            }
         }
+        return popupWindowUtils;
     }
 
     public void showNetExceptionPopupwindow(Context context, final OnNetExceptionListener listener) {
@@ -100,9 +104,6 @@ public class PopupWindowUtils {
             @Override
             public void onClick(View v) {
                 popupWindow.dismiss();
-                //                if (callback != null) {
-                //                    callback.onDismisss();
-                //                }
             }
         });
     }
@@ -121,6 +122,32 @@ public class PopupWindowUtils {
         TextView tv_ok = (TextView) popupView.findViewById(R.id.tv_ok);
         tv_content_tip.setText(content);
         tv_ok.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                popupWindow.dismiss();
+            }
+        });
+    }
+
+    /**
+     * 签到成功弹出的PopupWindow
+     *
+     * @param context
+     * @param content
+     */
+    public void showSucessSignUp(Context context, String content) {
+        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View popupView = inflater.inflate(R.layout.popup_home_signup, null);
+        final PopupWindow popupWindow = new PopupWindow(popupView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup
+                .LayoutParams.WRAP_CONTENT, true);
+        popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        popupWindow.setOutsideTouchable(false);
+        popupWindow.setTouchable(true);
+        popupWindow.showAtLocation(popupView, Gravity.CENTER, 0, 0);
+
+        TextView tv_show = (TextView) popupView.findViewById(R.id.tv_show);
+        tv_show.setText(content);
+        popupView.findViewById(R.id.img_close).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 popupWindow.dismiss();
