@@ -30,6 +30,6 @@ public class MyBaseActivity extends AppCompatActivity implements IBaseView {
 
     @Override
     public void netException() {
-
+        Toast.makeText(this, "请求异常", Toast.LENGTH_SHORT).show();
     }
 }

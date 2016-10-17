@@ -13,23 +13,18 @@ import android.widget.Toast;
 
 import com.lptiyu.tanke.R;
 import com.lptiyu.tanke.RunApplication;
-import com.lptiyu.tanke.mybase.MyBaseActivity;
 import com.lptiyu.tanke.activities.pointtask.PointTaskActivity;
 import com.lptiyu.tanke.adapter.GVForGamePlayingAdapter;
+import com.lptiyu.tanke.entity.GameDetailResponse;
 import com.lptiyu.tanke.entity.GameRecord;
 import com.lptiyu.tanke.entity.Point;
-import com.lptiyu.tanke.entity.PointRecord;
-import com.lptiyu.tanke.entity.Task;
-import com.lptiyu.tanke.entity.TaskRecord;
-import com.lptiyu.tanke.entity.ThemeLine;
 import com.lptiyu.tanke.enums.PointTaskStatus;
 import com.lptiyu.tanke.enums.RequestCode;
 import com.lptiyu.tanke.enums.ResultCode;
 import com.lptiyu.tanke.gamedetails.GameDetailsActivity;
-import com.lptiyu.tanke.global.Accounts;
 import com.lptiyu.tanke.global.AppData;
 import com.lptiyu.tanke.global.Conf;
-import com.lptiyu.tanke.entity.GameDetailResponse;
+import com.lptiyu.tanke.mybase.MyBaseActivity;
 import com.lptiyu.tanke.pojo.GameDisplayEntity;
 import com.lptiyu.tanke.pojo.GameFinishedEntity;
 import com.lptiyu.tanke.pojo.GamePlayingEntity;
@@ -40,12 +35,11 @@ import com.lptiyu.tanke.utils.PopupWindowUtils;
 import com.lptiyu.tanke.widget.CustomTextView;
 import com.lptiyu.tanke.widget.DragLayout;
 
-import java.util.ArrayList;
-import java.util.Collections;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+
+import static com.lptiyu.tanke.RunApplication.gameRecord;
 
 public class GamePlayingActivity extends MyBaseActivity implements GamePlayingContract.IGamePlayingView {
 
@@ -89,7 +83,7 @@ public class GamePlayingActivity extends MyBaseActivity implements GamePlayingCo
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_game_playing2);
+        setContentView(R.layout.activity_game_playing);
         ButterKnife.bind(this);
 
         //        mapView = (TextureMapView) findViewById(R.id.map_view);
@@ -149,7 +143,7 @@ public class GamePlayingActivity extends MyBaseActivity implements GamePlayingCo
             m_title = title;
         }
 
-        ThemeLine themeLine = RunApplication.getPlayingThemeLine();
+        //        ThemeLine gameRecord = RunApplication.getInstance().getPlayingThemeLine();
 
 
         gameZipUtils = new GameZipUtils();
@@ -158,37 +152,36 @@ public class GamePlayingActivity extends MyBaseActivity implements GamePlayingCo
             unZippedDir = parsedFilePath;
 
             //之前有的直接使用
-            if (themeLine != null && Long.parseLong(themeLine.game_id) == gameId && Long.parseLong(themeLine.uid) ==
-                    Accounts.getId()) {
+            if (gameRecord != null && Long.parseLong(gameRecord.game_id) == gameId) {
 
             } else {
                 boolean isSuccess = gameZipUtils.transformParsedFileToEntity(parsedFilePath);
                 if (isSuccess) {
 
-                    RunApplication.setgetPlayingThemeLine(gameZipUtils.mThemeLine);
-                    themeLine = RunApplication.getPlayingThemeLine();
-                    themeLine.uid = Accounts.getId() + "";//存上账户信息
-                    if (themeLine == null)
+                    //                    RunApplication.getInstance().setgetPlayingThemeLine(gameZipUtils.mThemeLine);
+                    //                    gameRecord = RunApplication.getInstance().getPlayingThemeLine();
+                    //                    gameRecord.uid = Accounts.getId() + "";//存上账户信息
+                    if (gameRecord == null)
                         return;
 
-                    themeLine.point_list = gameZipUtils.mPoints;
+                    //                    gameRecord.point_list = gameZipUtils.mPoints;
 
 
-                    //将任务添加到攻击点中去
-                    Collections.sort(themeLine.point_list);
-                    //将Task添加到Point中
-                    for (Point point : themeLine.point_list) {
-                        point.isNew = false;
-                        ArrayList<Task> list_tasks = new ArrayList<>();
-                        for (Task task : gameZipUtils.mTasks) {
-                            if (task.point_id.equals(point.id)) {
-                                list_tasks.add(task);
-                            }
-                        }
-                        point.task_list = list_tasks;
-                        //对list_task进行排序
-                        Collections.sort(point.task_list);
-                    }
+                    //                    //将任务添加到攻击点中去
+                    //                    Collections.sort(gameRecord.point_list);
+                    //                    //将Task添加到Point中
+                    //                    for (Point point : gameRecord.point_list) {
+                    //                        point.isNew = false;
+                    //                        ArrayList<Task> list_tasks = new ArrayList<>();
+                    //                        for (Task task : gameZipUtils.mTasks) {
+                    //                            if (task.point_id.equals(point.id)) {
+                    //                                list_tasks.add(task);
+                    //                            }
+                    //                        }
+                    //                        point.task_list = list_tasks;
+                    //                        //对list_task进行排序
+                    //                        Collections.sort(point.task_list);
+                    //                    }
 
                 } else {
                     Toast.makeText(GamePlayingActivity.this, "游戏包解析错误", Toast.LENGTH_SHORT).show();
@@ -241,74 +234,77 @@ public class GamePlayingActivity extends MyBaseActivity implements GamePlayingCo
 
     private void initPointStatuByGameRecord(GameRecord gameRecord) {
 
-        ThemeLine themeLine = RunApplication.getPlayingThemeLine();
-        if (themeLine == null || gameRecord == null)
+        //        ThemeLine gameRecord = RunApplication.getInstance().getPlayingThemeLine();
+        if (RunApplication.gameRecord == null || gameRecord == null)
             return;
 
-        //如果不一致返回
-        if (!themeLine.id.equals(gameRecord.line_id))
-            return;
+        //        //如果不一致返回
+        //        if (!gameRecord.id.equals(gameRecord.line_id))
+        //            return;
 
-        themeLine.play_statu = gameRecord.play_statu;
+        //        gameRecord.play_statu = gameRecord.play_statu;
 
-        if (gameRecord.record_text != null && gameRecord.record_text.size() > 0) {
-            //将所有完成的章节点设置状态为完成状态
-            int i = 0;
-            for (; i < gameRecord.record_text.size(); i++) {
-                PointRecord pointRecord = gameRecord.record_text.get(i);
-                //应该是一一对应的
-                for (int j = 0; j < themeLine.point_list.size(); j++) {
-                    Point point = themeLine.point_list.get(j);
-                    if (Long.parseLong(point.id) == pointRecord.id) {
-                        //游戏攻击点的状态更新
-                        point.state = Integer.parseInt(pointRecord.statu);
-
-                        //更新任务状态
-                        for (int i1 = 0; i1 < pointRecord.task.size(); i1++) {
-                            TaskRecord task_record = pointRecord.task.get(i1);
-                            int j1 = 0;
-                            for (; j1 < point.task_list.size(); j1++) {
-                                Task task = point.task_list.get(j1);
-                                if (task_record.id == Integer.parseInt(task.id)) {
-                                    task.state = PointTaskStatus.FINISHED;
-                                    task.finishTime = task_record.ftime;
-                                    task.exp = task_record.exp;
-                                    break;
-                                }
-
-                            }
-
-                            //如果当前点还没有结束，则判断此时处于哪个任务
-                            if (point.state == PointTaskStatus.PLAYING) {
-                                if (i1 == pointRecord.task.size() && i1 > 0 && point.task_list.size() >= i1) {
-                                    point.task_list.get(i1).state = PointTaskStatus.PLAYING;
-                                }
-                            }
-
-                        }
-
-                        break;
-                    }
-                }
-            }
-
-
-            //更新下一个点的状态
-            if (i == gameRecord.record_text.size() && i > 0 && themeLine.point_list.size() > i) {
-                //如果当前点已经完成，则标记下一个点的状态和任务
-                if (themeLine.point_list.get(i - 1).state == PointTaskStatus.FINISHED) {
-                    themeLine.point_list.get(i).state = PointTaskStatus.PLAYING;
-                    themeLine.point_list.get(i).task_list.get(0).state = PointTaskStatus.PLAYING;
-                }
-            }
-
-        } else {
-            //没有游戏记录，也就是所有攻击点都没有玩过，第一个点标记为正在进行中
-            Point point = themeLine.point_list.get(0);
-            point.state = PointTaskStatus.PLAYING;
-            point.task_list.get(0).state = PointTaskStatus.PLAYING;
-
-        }
+        //        if (gameRecord.record_text != null && gameRecord.record_text.size() > 0) {
+        //            //将所有完成的章节点设置状态为完成状态
+        //            int i = 0;
+        //            for (; i < gameRecord.record_text.size(); i++) {
+        //                PointRecord pointRecord = gameRecord.record_text.get(i);
+        //                //应该是一一对应的
+        //                for (int j = 0; j < gameRecord.point_list.size(); j++) {
+        //                    Point point = gameRecord.point_list.get(j);
+        //                    if (Long.parseLong(point.id) == pointRecord.id) {
+        //                        //游戏攻击点的状态更新
+        //                        point.status = Integer.parseInt(pointRecord.statu);
+        //
+        //                        //更新任务状态
+        //                        for (int i1 = 0; i1 < pointRecord.task.size(); i1++) {
+        //                            TaskRecord task_record = pointRecord.task.get(i1);
+        //                            int j1 = 0;
+        //                            for (; j1 < point.task_list.size(); j1++) {
+        //                                Task task = point.task_list.get(j1);
+        //                                if (task_record.id == Integer.parseInt(task.id)) {
+        //                                    //                                    task.status = PointTaskStatus
+        // .FINISHED;
+        //                                    task.ftime = task_record.ftime;
+        //                                    task.exp = task_record.exp;
+        //                                    break;
+        //                                }
+        //
+        //                            }
+        //
+        //                            //如果当前点还没有结束，则判断此时处于哪个任务
+        //                            if (point.status == PointTaskStatus.PLAYING) {
+        //                                if (i1 == pointRecord.task.size() && i1 > 0 && point.task_list.size() >= i1) {
+        //                                    //                                    point.task_list.get(i1).status =
+        //                                    // PointTaskStatus.PLAYING;
+        //                                }
+        //                            }
+        //
+        //                        }
+        //
+        //                        break;
+        //                    }
+        //                }
+        //            }
+        //
+        //
+        //            //更新下一个点的状态
+        //            if (i == gameRecord.record_text.size() && i > 0 && gameRecord.point_list.size() > i) {
+        //                //如果当前点已经完成，则标记下一个点的状态和任务
+        //                if (gameRecord.point_list.get(i - 1).status == PointTaskStatus.FINISHED) {
+        //                    gameRecord.point_list.get(i).status = PointTaskStatus.PLAYING;
+        //                    //                    gameRecord.point_list.get(i).task_list.get(0).status =
+        // PointTaskStatus.PLAYING;
+        //                }
+        //            }
+        //
+        //        } else {
+        //            //没有游戏记录，也就是所有攻击点都没有玩过，第一个点标记为正在进行中
+        //            Point point = gameRecord.point_list.get(0);
+        //            point.status = PointTaskStatus.PLAYING;
+        //            //            point.task_list.get(0).status = PointTaskStatus.PLAYING;
+        //
+        //        }
     }
 
     @Override
@@ -317,21 +313,21 @@ public class GamePlayingActivity extends MyBaseActivity implements GamePlayingCo
 
         //loadNetWorkData();
 
-        ThemeLine themeLine = RunApplication.getPlayingThemeLine();
-        if (themeLine == null || themeLine.play_statu == null || themeLine.play_statu == "") {
-            loadNetWorkData();
-        } else {
-            //恢复时直接读取本地数据
-
-            gamePlayingTitle.setText(m_title + "");
-            setAdapter();
-            if (Integer.parseInt(themeLine.play_statu) == 2) {
-                ctv_throungh_game.setVisibility(View.VISIBLE);
-            } else {
-                ctv_throungh_game.setVisibility(View.GONE);
-            }
-
-        }
+        //        ThemeLine gameRecord = RunApplication.getInstance().getPlayingThemeLine();
+        //        if (gameRecord == null || gameRecord.play_statu == null || gameRecord.play_statu == "") {
+        //            loadNetWorkData();
+        //        } else {
+        //            //恢复时直接读取本地数据
+        //
+        //            gamePlayingTitle.setText(m_title + "");
+        //            setAdapter();
+        //            if (Integer.parseInt(gameRecord.play_statu) == 2) {
+        //                ctv_throungh_game.setVisibility(View.VISIBLE);
+        //            } else {
+        //                ctv_throungh_game.setVisibility(View.GONE);
+        //            }
+        //
+        //        }
     }
 
     private void loadNetWorkData() {
@@ -344,9 +340,9 @@ public class GamePlayingActivity extends MyBaseActivity implements GamePlayingCo
 
     // 网络异常对话框
     private void showNetUnConnectDialog() {
-        PopupWindowUtils.getInstance().showNetExceptionPopupwindow(this, new PopupWindowUtils.OnNetExceptionListener() {
+        PopupWindowUtils.getInstance().showNetExceptionPopupwindow(this, new PopupWindowUtils.OnRetryCallback() {
             @Override
-            public void onClick(View view) {
+            public void onRetry() {
                 loadNetWorkData();
             }
         });
@@ -380,29 +376,29 @@ public class GamePlayingActivity extends MyBaseActivity implements GamePlayingCo
 
     private void setAdapter() {
 
-        ThemeLine themeLine = RunApplication.getPlayingThemeLine();
-        if (themeLine == null)
+        //        ThemeLine gameRecord = RunApplication.getInstance().getPlayingThemeLine();
+        if (gameRecord == null)
             return;
 
         initTimeTask();
         initToast();
-        adapter = new GVForGamePlayingAdapter(this, themeLine.point_list, unZippedDir);
+        //        adapter = new GVForGamePlayingAdapter(this, gameRecord.point_list, unZippedDir);
         gv.setAdapter(adapter);
         gv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 
-                ThemeLine themeLine = RunApplication.getPlayingThemeLine();
-                if (themeLine == null)
+                //                ThemeLine gameRecord = RunApplication.getInstance().getPlayingThemeLine();
+                if (gameRecord == null)
                     return;
                 currentPointIndex = i;
-                currentPoint = themeLine.point_list.get(i);
+                //                currentPoint = gameRecord.point_list.get(i);
                 if (currentPoint.isNew) {
                     currentPoint.isNew = false;
                 }
                 adapter.notifyDataSetChanged();
                 //                Log.i("jason", "点击的point：" + currentPoint);
-                if (currentPoint.state == PointTaskStatus.UNSTARTED) {
+                if (currentPoint.status == PointTaskStatus.UNSTARTED) {
                     //控制Toast的显示
                     if (toast != null) {
                         //                        Log.i("jason", "执行了");
@@ -435,7 +431,7 @@ public class GamePlayingActivity extends MyBaseActivity implements GamePlayingCo
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == RequestCode.SKIP_TO_TASK_ACTIVITY && resultCode == ResultCode.POINT_OVER && currentPoint
-                .state != PointTaskStatus.FINISHED) {
+                .status != PointTaskStatus.FINISHED) {
 
         }
         //放弃游戏回调
@@ -454,7 +450,7 @@ public class GamePlayingActivity extends MyBaseActivity implements GamePlayingCo
                 //进入游戏详情页面
                 Intent intent = new Intent(GamePlayingActivity.this, GameDetailsActivity.class);
                 intent.putExtra(Conf.GAME_ID, gameId);
-                intent.putExtra(Conf.FROM_WHERE, Conf.GamePlay2Activity);
+                intent.putExtra(Conf.FROM_WHERE, Conf.GAME_PLAYing_V2_ACTIVITY);
                 startActivityForResult(intent, RequestCode.LEAVE_GAME);
                 break;
             case R.id.img_zoom_full_screen:

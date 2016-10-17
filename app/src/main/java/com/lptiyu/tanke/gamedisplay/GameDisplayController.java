@@ -105,7 +105,7 @@
 //    // 网络异常对话框
 //    private void showNetUnConnectDialog() {
 //        PopupWindowUtils.getInstance().showNetExceptionPopupwindow(getContext(), new PopupWindowUtils
-//                .OnNetExceptionListener() {
+//                .OnRetryCallback() {
 //            @Override
 //            public void onClick(View view) {
 //                loadNetWorkData();

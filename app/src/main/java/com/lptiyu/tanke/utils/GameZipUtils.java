@@ -184,13 +184,13 @@ public class GameZipUtils {
      * @return
      */
     public String parseZipFile(String zippedFilePath) {
-        boolean isFileExist = FileUtils.isFileExist(zippedFilePath);
-        if (isFileExist) {
-            String parsedFilePath = FileUtils.unzipFile(zippedFilePath);
-            return parsedFilePath;
-        } else {
-            return null;
-        }
+        //        boolean isFileExist = FileUtils.isFileExist(zippedFilePath);
+        //        if (isFileExist) {
+        //            String parsedFilePath = FileUtils.unzipFile(zippedFilePath);
+        //            return parsedFilePath;
+        //        } else {
+        return null;
+        //        }
     }
 
     public boolean transformParsedFileToEntity(String parsedFilePath) {

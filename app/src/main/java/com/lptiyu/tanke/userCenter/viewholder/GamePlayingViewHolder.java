@@ -78,8 +78,7 @@ public class GamePlayingViewHolder extends BaseViewHolder<GamePlayingEntity> {
                 {
                     ToastUtil.TextToast("该游戏已经下线");
                     return;
-                }
-                else if (entity.getStates() == 2 || entity.getStates()==0)//维护中的游戏s
+                } else if (entity.getStates() == 2 || entity.getStates() == 0)//维护中的游戏s
                 {
                     ToastUtil.TextToast("该游戏正在维护中，尽请期待");
                     return;
@@ -107,10 +106,9 @@ public class GamePlayingViewHolder extends BaseViewHolder<GamePlayingEntity> {
 
     // 网络异常对话框
     private void showNetUnConnectDialog() {
-        PopupWindowUtils.getInstance().showNetExceptionPopupwindow(getContext(), new PopupWindowUtils
-                .OnNetExceptionListener() {
+        PopupWindowUtils.getInstance().showNetExceptionPopupwindow(getContext(), new PopupWindowUtils.OnRetryCallback() {
             @Override
-            public void onClick(View view) {
+            public void onRetry() {
                 loadNetWorkData();
             }
         });

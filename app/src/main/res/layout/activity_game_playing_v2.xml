@@ -62,10 +62,25 @@
         android:layout_height="200dp"
         android:layout_below="@id/rl_title"/>
 
+    <TextView
+        android:id="@+id/ctv_my_progress"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textureMapView"
+        android:background="@color/white10"
+        android:gravity="left|center_vertical"
+        android:paddingBottom="20dp"
+        android:paddingLeft="20dp"
+        android:paddingTop="20dp"
+        android:text="@string/game_progress"
+        android:textColor="@color/black333"
+        android:textSize="17sp"/>
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/textureMapView"/>
+        android:layout_below="@id/ctv_my_progress"
+        android:background="@color/white10"/>
 
 </RelativeLayout>

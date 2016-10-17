@@ -11,6 +11,7 @@ import com.lptiyu.tanke.enums.PlayStatus;
 
 public class HomeGameList implements Parcelable {
     public String area = "";
+    public int cid;
     public String city = "";
     public String end_date = "";
     public String end_time = "";
@@ -38,6 +39,7 @@ public class HomeGameList implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(this.area);
+        dest.writeInt(this.cid);
         dest.writeString(this.city);
         dest.writeString(this.end_date);
         dest.writeString(this.end_time);
@@ -63,6 +65,7 @@ public class HomeGameList implements Parcelable {
 
     protected HomeGameList(Parcel in) {
         this.area = in.readString();
+        this.cid = in.readInt();
         this.city = in.readString();
         this.end_date = in.readString();
         this.end_time = in.readString();

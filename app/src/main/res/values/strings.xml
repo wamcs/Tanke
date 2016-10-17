@@ -196,8 +196,8 @@
     <string name="task_num">任务完成</string>
     <string name="get_exp">获得经验</string>
     <string name="meter">米</string>
-    <string name="game_share_form_game_finished_num_formatter" formatter="false">有%d支队伍完成了比赛
-    </string>
+    <string name="game_share_form_game_finished_num_formatter" formatter="false">有%d支队伍完成了比赛</string>
+    <!--<string name="direction_qun_over_show_result" formatter="false">您一共跑了%s公里，用时%s，获取经验值%s，获得红包%s元</string>-->
     <string name="game_share_minute">分钟</string>
     <string name="game_share_distance">公里</string>
     <string name="task_unit">个任务</string>
@@ -242,7 +242,6 @@
     <string name="current_location">当前位置</string>
     <string name="open_location">开通城市</string>
 
-
     <!-- gameList Text Area-->
     <string name="game_progress">游戏进度:</string>
 
@@ -252,12 +251,19 @@
 
     <string name="platform_info_bind_tel" formatted="false">已用%s登录，手机号：%s</string>
     <string name="platform_info_unbind_tel" formatted="false">%s登录，绑定手机号拿奖励更方便，快戳我</string>
+    <string name="not_arrive_any_direction_run_point" formatted="false">请到达地图上任意点的位置开始乐跑，最近的距您还有%s公里</string>
+    <string name="not_arrive_next_direction_run_point" formatted="false">距离下一个最近的乐跑点还有%s公里</string>
 
     <!-- AboutUsActivity Text Area-->
     <string name="about_us_activity">关于我们</string>
 
     <string name="my_point_progress">我的进度</string>
     <string name="have_gone_through_game">(已通关)</string>
+    <string name="sign_up">打卡</string>
+    <string name="duration">时长</string>
+    <string name="start_run">开始乐跑</string>
+    <string name="stop_run">结束乐跑</string>
+    <string name="distance">距离（公里）</string>
 
 
 </resources>

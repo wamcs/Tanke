@@ -43,6 +43,6 @@ public class WebViewUtils {
             j=15;
         //设置字体大小
         webSettings.setDefaultFontSize(j);
-        //webSettings.setDefaultFontSize(Display.sp2px(context, 20f));
+        //webSettings.setDefaultFontSize(DisplayUtils.sp2px(context, 20f));
     }
 }

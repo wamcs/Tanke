@@ -32,7 +32,7 @@ public class Point implements Comparable<Point>, Parcelable {
     public String point_title;
     public String point_img;
     public String first_task;
-    public int state = PointTaskStatus.UNSTARTED;
+    public int status = PointTaskStatus.UNSTARTED;//0未完成，1完成
 
     public boolean isNew = false;
 
@@ -67,7 +67,7 @@ public class Point implements Comparable<Point>, Parcelable {
                 ", point_title='" + point_title + '\'' +
                 ", point_img='" + point_img + '\'' +
                 ", first_task='" + first_task + '\'' +
-                ", state=" + state +
+                ", status=" + status +
                 ", isNew=" + isNew +
                 ", task_list=" + task_list +
                 '}';
@@ -84,7 +84,7 @@ public class Point implements Comparable<Point>, Parcelable {
         dest.writeString(this.point_title);
         dest.writeString(this.point_img);
         dest.writeString(this.first_task);
-        dest.writeInt(this.state);
+        dest.writeInt(this.status);
         dest.writeByte(this.isNew ? (byte) 1 : (byte) 0);
         dest.writeTypedList(this.task_list);
     }
@@ -102,7 +102,7 @@ public class Point implements Comparable<Point>, Parcelable {
         this.point_title = in.readString();
         this.point_img = in.readString();
         this.first_task = in.readString();
-        this.state = in.readInt();
+        this.status = in.readInt();
         this.isNew = in.readByte() != 0;
         this.task_list = in.createTypedArrayList(Task.CREATOR);
     }

@@ -140,6 +140,7 @@ public class XUtilsHelper {
                         } catch (JsonSyntaxException e) {
                             e.printStackTrace();
                             Log.i("result", "gson解析异常:" + e.getMessage());
+                            callBack.onFailed("gson解析异常：" + e.getMessage());
                         }
                     } else {
                         callBack.onSuccess(null);
@@ -161,7 +162,6 @@ public class XUtilsHelper {
             public void onFinished() {
 
             }
-
         });
     }
 

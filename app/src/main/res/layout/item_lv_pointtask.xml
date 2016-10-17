@@ -21,11 +21,11 @@
         android:id="@+id/rl_finishInfo"
         android:layout_width="match_parent"
         android:layout_height="25dp"
-        android:layout_below="@id/webView"
         android:layout_alignLeft="@id/webView"
         android:layout_alignRight="@id/webView"
-        android:layout_marginBottom="5dp"
+        android:layout_below="@id/webView"
         android:layout_centerHorizontal="true"
+        android:layout_marginBottom="5dp"
         android:gravity="left">
 
         <ImageView
@@ -71,8 +71,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignBottom="@+id/ctv_finish"
-            android:layout_toRightOf="@id/ctv_exp"
             android:layout_marginLeft="12dp"
+            android:layout_toRightOf="@id/ctv_exp"
             android:text="2016-12-12 12:12"
             android:textColor="@color/grey06"
             android:textSize="11sp"/>
@@ -87,5 +87,5 @@
     </RelativeLayout>
 
 
-    </RelativeLayout>
+</RelativeLayout>
 

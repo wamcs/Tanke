@@ -48,12 +48,11 @@
         android:largeHeap="true"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
         <meta-data
             android:name="com.amap.api.v2.apikey"
             android:value="0c494eec21c7e1f92d6e545ae22364d5"/>
 
-        <service android:name="com.amap.api.location.APSService"></service>
+        <service android:name="com.amap.api.location.APSService"/>
 
         <activity
             android:name=".MainActivity"
@@ -84,10 +83,6 @@
             android:screenOrientation="portrait"/>
         <activity
             android:name=".initialization.ui.UserProtocolActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"
-            android:screenOrientation="portrait"/>
-        <activity
-            android:name=".messagesystem.MessageActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait"/>
         <activity
@@ -129,9 +124,6 @@
             android:exported="true"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
-
-        <!-- 用户反馈 -->
-        <activity android:name="com.avos.avoscloud.feedback.ThreadActivity"/>
         <activity
             android:name="com.lptiyu.zxinglib.android.CaptureActivity"
             android:clearTaskOnLaunch="true"
@@ -172,24 +164,6 @@
             android:name=".gamedetails.GameDetailsActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait"/>
-
-        <service android:name="com.avos.avoscloud.PushService"/>
-
-        <receiver android:name="com.avos.avoscloud.AVBroadcastReceiver">
-            <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED"/>
-                <action android:name="android.intent.action.USER_PRESENT"/>
-            </intent-filter>
-        </receiver>
-        <receiver android:name=".pushreceiver.PushReceiver">
-            <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED"/>
-                <action android:name="android.intent.action.USER_PRESENT"/>
-                <action android:name="android.net.conn.CONNECTIVITY_CHANGE"/>
-                <action android:name="com.tanke.PUSH_ACTION"/>
-            </intent-filter>
-        </receiver>
-
         <activity
             android:name=".userCenter.UserManagerGameActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
@@ -199,7 +173,7 @@
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait"/>
         <activity
-            android:name=".messagesystem.SystemWebActivity"
+            android:name=".activities.messagedetail.SystemWebActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait"/>
         <activity
@@ -257,6 +231,17 @@
         </activity>
         <activity
             android:name=".activities.gameplaying_v2.GamePlayingV2Activity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="portrait">
+        </activity>
+        <activity
+            android:name=".activities.pointtasknew.PointTaskV2Activity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="portrait"
+            android:theme="@style/PointTaskActivity">
+        </activity>
+        <activity
+            android:name=".activities.directionrun.DirectionRunActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait">
         </activity>

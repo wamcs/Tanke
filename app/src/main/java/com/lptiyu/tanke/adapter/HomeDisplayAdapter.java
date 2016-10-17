@@ -3,7 +3,6 @@ package com.lptiyu.tanke.adapter;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RatingBar;
@@ -28,9 +27,7 @@ public class HomeDisplayAdapter extends BaseRecyclerViewAdapter<HomeGameList> {
     private int sortIndex;
 
     public HomeDisplayAdapter(Context context, List<HomeGameList> list, int sortIndex) {
-        this.mDataList = list;
-        mLayoutInflater = LayoutInflater.from(context);
-        mContext = context;
+        super(context, list);
         this.sortIndex = sortIndex;
     }
 
@@ -41,7 +38,7 @@ public class HomeDisplayAdapter extends BaseRecyclerViewAdapter<HomeGameList> {
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        HomeGameList gameEntity = mDataList.get(position);
+        HomeGameList gameEntity = list.get(position);
 
         ViewHolder viewHolder = (ViewHolder) holder;
         viewHolder.title.setText(gameEntity.title + "");

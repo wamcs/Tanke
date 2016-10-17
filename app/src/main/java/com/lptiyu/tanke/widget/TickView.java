@@ -20,7 +20,7 @@ import android.view.animation.DecelerateInterpolator;
 import android.view.animation.ScaleAnimation;
 
 import com.lptiyu.tanke.R;
-import com.lptiyu.tanke.utils.Display;
+import com.lptiyu.tanke.utils.DisplayUtils;
 
 import java.util.Date;
 
@@ -70,9 +70,9 @@ public class TickView extends View {
   private static final int DEFAULT_OUTER_CIRCLE_COLOR = 0xffffff;
   private static final int DEFAULT_FILL_COLOR = 0x40b553;
   private static final int DEFAULT_TEXT_SIZE = 80;
-  private static final float DEFAULT_INNER_CIRCLE_RADIUS = Display.dip2px(30);
-  private static final float DEFAULT_OUTER_CIRCLE_RADIUS = Display.dip2px(40);
-  private static final float DEFAULT_FILL_WIDTH = Display.dip2px(5);
+  private static final float DEFAULT_INNER_CIRCLE_RADIUS = DisplayUtils.dp2px(30);
+  private static final float DEFAULT_OUTER_CIRCLE_RADIUS = DisplayUtils.dp2px(40);
+  private static final float DEFAULT_FILL_WIDTH = DisplayUtils.dp2px(5);
   private static final float DEFAULT_START_ANGLE = 270.0f;
   private static final long DEFAULT_TICK_INTERVAL = 16L;
 

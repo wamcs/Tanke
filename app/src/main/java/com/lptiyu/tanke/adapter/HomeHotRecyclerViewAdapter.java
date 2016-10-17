@@ -10,7 +10,6 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.lptiyu.tanke.R;
-import com.lptiyu.tanke.interfaces.OnRecyclerViewItemClickListener;
 import com.lptiyu.tanke.entity.response.Recommend;
 import com.lptiyu.tanke.widget.CircularImageView;
 
@@ -23,18 +22,9 @@ import butterknife.ButterKnife;
  * Created by Jason on 2016/9/23.
  */
 
-public class HomeHotRecyclerViewAdapter extends RecyclerView.Adapter<HomeHotRecyclerViewAdapter.MyViewHolder> {
-    private Context mContext;
-    private List<Recommend> mDataList;
-    private OnRecyclerViewItemClickListener listener;
-
-    public void setOnRecyclerViewItemClickListener(OnRecyclerViewItemClickListener listener) {
-        this.listener = listener;
-    }
-
+public class HomeHotRecyclerViewAdapter extends BaseRecyclerViewAdapter<Recommend> {
     public HomeHotRecyclerViewAdapter(Context mContext, List<Recommend> mDataList) {
-        this.mContext = mContext;
-        this.mDataList = mDataList;
+        super(mContext, mDataList);
     }
 
     @Override
@@ -62,21 +52,22 @@ public class HomeHotRecyclerViewAdapter extends RecyclerView.Adapter<HomeHotRecy
     }
 
     @Override
-    public void onBindViewHolder(MyViewHolder holder, int position) {
-        Recommend recommend = mDataList.get(position);
-        holder.tvGameName.setText(recommend.title + "");
-        Glide.with(mContext).load(recommend.pic).error(R.drawable.default_pic).into(holder.cImg);
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+        MyViewHolder myViewHolder = (MyViewHolder) holder;
+        Recommend recommend = list.get(position);
+        myViewHolder.tvGameName.setText(recommend.title + "");
+        Glide.with(mContext).load(recommend.pic).error(R.drawable.default_pic).into(myViewHolder.cImg);
         if (recommend.address_short == null || TextUtils.isEmpty(recommend.address_short)) {
-            holder.tvTag.setVisibility(View.GONE);
+            myViewHolder.tvTag.setVisibility(View.GONE);
         } else {
-            holder.tvTag.setVisibility(View.VISIBLE);
-            holder.tvTag.setTag(recommend.address_short);
+            myViewHolder.tvTag.setVisibility(View.VISIBLE);
+            myViewHolder.tvTag.setTag(recommend.address_short);
         }
     }
 
     @Override
     public int getItemCount() {
-        return mDataList == null ? 0 : mDataList.size();
+        return list == null ? 0 : list.size();
     }
 
     class MyViewHolder extends RecyclerView.ViewHolder {

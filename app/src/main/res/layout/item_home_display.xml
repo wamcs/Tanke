@@ -77,7 +77,9 @@
             android:layout_marginLeft="10dp"
             android:layout_marginRight="20dp"
             android:layout_toRightOf="@id/title"
+            android:ellipsize="end"
             android:gravity="right"
+            android:maxLines="1"
             android:text="651km"
             android:textColor="@color/colorPrimary"
             android:textSize="15sp"/>
@@ -147,6 +149,6 @@
         android:layout_below="@id/image_view"
         android:layout_marginTop="10dp"
         android:background="@drawable/shape_rounded_black_bg"
-        android:visibility="visible"/>
+        android:visibility="gone"/>
 
 </RelativeLayout>

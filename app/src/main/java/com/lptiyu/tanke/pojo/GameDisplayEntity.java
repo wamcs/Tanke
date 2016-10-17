@@ -37,7 +37,7 @@ public class GameDisplayEntity implements Parcelable {
     @SerializedName("start_time")
     protected String startTime = "";
 
-    @SerializedName("state")
+    @SerializedName("status")
     protected int state;
 
     protected int time_type;

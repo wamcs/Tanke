@@ -115,7 +115,7 @@ public interface GameService {
             @Query("distance") String distanceFromRecords,
             @Query("x") String x,
             @Query("y") String y,
-            @Query("state") @RecordType int state
+            @Query("status") @RecordType int state
     );
 
     /**
@@ -134,7 +134,7 @@ public interface GameService {
             @Query("x") String x,
             @Query("y") String y,
             @Query("type") @TeamOrUserRecord int type,
-            @Query("state") int state
+            @Query("status") int state
     );
 
     /**

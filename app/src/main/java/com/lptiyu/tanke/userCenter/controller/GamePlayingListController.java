@@ -11,7 +11,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.lptiyu.tanke.R;
-import com.lptiyu.tanke.RunApplication;
 import com.lptiyu.tanke.base.recyclerview.BaseAdapter;
 import com.lptiyu.tanke.base.recyclerview.BaseListActivityController;
 import com.lptiyu.tanke.global.Accounts;
@@ -145,12 +144,6 @@ public class GamePlayingListController extends BaseListActivityController<GamePl
 
     @Override
     public void onResume() {
-
-        if (RunApplication.isPlayingStatusChanged)
-        {
-            refreshTop();
-            RunApplication.isPlayingStatusChanged = false;
-        }
+        refreshTop();
     }
-
 }

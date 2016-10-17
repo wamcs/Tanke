@@ -2,7 +2,6 @@ package com.lptiyu.tanke.adapter;
 
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.view.ViewGroup;
 
 import java.util.List;
 
@@ -29,7 +28,7 @@ public abstract class BaseFragmentPagerAdapter<T> extends FragmentPagerAdapter {
     }
 
     @Override
-    public Object instantiateItem(ViewGroup container, final int position) {
-        return super.instantiateItem(container, position);
+    public int getItemPosition(Object object) {
+        return POSITION_NONE;
     }
 }

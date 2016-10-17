@@ -6,7 +6,7 @@ import android.view.View;
 
 import com.lptiyu.tanke.base.controller.ActivityController;
 import com.lptiyu.tanke.fragments.home.HomeFragment;
-import com.lptiyu.tanke.messagesystem.MessageListFragment;
+import com.lptiyu.tanke.fragments.messagesystem.MessageListFragment;
 import com.lptiyu.tanke.update.UpdateHelper;
 import com.lptiyu.tanke.userCenter.UserCenterFragment;
 import com.lptiyu.tanke.utils.ToastUtil;
@@ -40,6 +40,7 @@ public class MainActivityController extends ActivityController {
         this.activity = activity;
         init();
     }
+
 
     private void init() {
 
@@ -98,6 +99,11 @@ public class MainActivityController extends ActivityController {
             ft.show(fragment);
         }
         ft.commit();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
     }
 
     @Override

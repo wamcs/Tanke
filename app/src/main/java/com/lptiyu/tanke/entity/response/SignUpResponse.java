@@ -5,5 +5,6 @@ package com.lptiyu.tanke.entity.response;
  */
 
 public class SignUpResponse extends BaseResponse {
+    public SignUp data;
 
 }

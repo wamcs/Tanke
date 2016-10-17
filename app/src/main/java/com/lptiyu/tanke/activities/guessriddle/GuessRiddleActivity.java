@@ -1,6 +1,5 @@
 package com.lptiyu.tanke.activities.guessriddle;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -12,21 +11,23 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.lptiyu.tanke.R;
-import com.lptiyu.tanke.mybase.MyBaseActivity;
+import com.lptiyu.tanke.RunApplication;
 import com.lptiyu.tanke.entity.Point;
 import com.lptiyu.tanke.entity.Task;
+import com.lptiyu.tanke.entity.UpLoadGameRecord;
+import com.lptiyu.tanke.entity.response.UpLoadGameRecordResult;
 import com.lptiyu.tanke.enums.PlayStatus;
 import com.lptiyu.tanke.enums.PointTaskStatus;
-import com.lptiyu.tanke.enums.ResultCode;
 import com.lptiyu.tanke.global.Accounts;
 import com.lptiyu.tanke.global.AppData;
 import com.lptiyu.tanke.global.Conf;
-import com.lptiyu.tanke.entity.UpLoadGameRecord;
-import com.lptiyu.tanke.entity.UploadGameRecordResponse;
+import com.lptiyu.tanke.mybase.MyBaseActivity;
 import com.lptiyu.tanke.utils.PopupWindowUtils;
 import com.lptiyu.tanke.utils.TaskResultHelper;
 import com.lptiyu.tanke.utils.ToastUtil;
 import com.lptiyu.tanke.utils.VibratorHelper;
+
+import org.greenrobot.eventbus.EventBus;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -62,10 +63,10 @@ public class GuessRiddleActivity extends MyBaseActivity implements RiddleContact
     }
 
     private void initData() {
-        Intent intent = getIntent();
-        task = intent.getParcelableExtra(Conf.CURRENT_TASK);
-        gameId = getIntent().getLongExtra(Conf.GAME_ID, 0);
-        point = getIntent().getParcelableExtra(Conf.POINT);
+        task = RunApplication.gameRecord.game_detail.point_list.get(RunApplication.currentPointIndex).task_list.get
+                (RunApplication.currentTaskIndex);
+        gameId = RunApplication.gameId;
+        point = RunApplication.gameRecord.game_detail.point_list.get(RunApplication.currentPointIndex);
         isPointOver = getIntent().getBooleanExtra(Conf.IS_POINT_OVER, false);
         Log.i("jason", "当前task：" + task);
 
@@ -90,9 +91,7 @@ public class GuessRiddleActivity extends MyBaseActivity implements RiddleContact
     }
 
     private void setActivityResult() {
-        Intent intent = new Intent();
-        intent.putExtra(Conf.UPLOAD_RECORD_RESPONSE, resultRecord);
-        GuessRiddleActivity.this.setResult(ResultCode.GUESS_RIDDLE, intent);
+        EventBus.getDefault().post(resultRecord);//通知PointTaskFragment刷新数据
         finish();
     }
 
@@ -108,10 +107,12 @@ public class GuessRiddleActivity extends MyBaseActivity implements RiddleContact
                     Toast.makeText(this, "请先输入答案", Toast.LENGTH_SHORT).show();
                     return;
                 }
+                //TODO 给自己埋下彩蛋
                 if (Accounts.getPhoneNumber() != null && Accounts.getPhoneNumber().endsWith("4317") || Accounts
                         .getPhoneNumber().endsWith("1965")) {
                     taskResultHelper.startAnim();
                     upLoadGameRecord();
+                    return;
                 }
                 if (answer.equals(task.pwd)) {
                     taskResultHelper.startAnim();
@@ -136,10 +137,10 @@ public class GuessRiddleActivity extends MyBaseActivity implements RiddleContact
         presenter.uploadRecord(record);
     }
 
-    private UploadGameRecordResponse resultRecord;
+    private UpLoadGameRecordResult resultRecord;
 
     @Override
-    public void successUploadRecord(UploadGameRecordResponse response) {
+    public void successUploadRecord(UpLoadGameRecordResult response) {
         resultRecord = response;
         taskResultHelper.showSuccessResult();
         taskResultHelper.stopAnim();

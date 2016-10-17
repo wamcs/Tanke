@@ -1,7 +1,7 @@
 package com.lptiyu.tanke.activities.imagedistinguish;
 
 import com.lptiyu.tanke.entity.UpLoadGameRecord;
-import com.lptiyu.tanke.entity.UploadGameRecordResponse;
+import com.lptiyu.tanke.entity.response.UpLoadGameRecordResult;
 import com.lptiyu.tanke.mybase.IBasePresenter;
 import com.lptiyu.tanke.mybase.IBaseView;
 
@@ -10,7 +10,7 @@ import com.lptiyu.tanke.mybase.IBaseView;
  */
 public class ImagedistinguishContact {
     interface ImagedistinguishView extends IBaseView {
-        void successUploadRecord(UploadGameRecordResponse response);
+        void successUploadRecord(UpLoadGameRecordResult response);
 
         void failUploadRecord(String errorMsg);
 

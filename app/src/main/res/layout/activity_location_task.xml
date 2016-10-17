@@ -42,13 +42,4 @@
             />
     </RelativeLayout>
 
-    <Button
-        android:id="@+id/btn_startLocating"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:text="开始定位"
-        android:visibility="gone"/>
-
 </RelativeLayout>

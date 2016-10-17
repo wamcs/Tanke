@@ -15,7 +15,7 @@ import android.widget.SimpleAdapter;
 
 import com.lptiyu.tanke.R;
 import com.lptiyu.tanke.global.Conf;
-import com.lptiyu.tanke.utils.Display;
+import com.lptiyu.tanke.utils.DisplayUtils;
 import com.lptiyu.tanke.utils.ShareHelper;
 
 import java.util.ArrayList;
@@ -67,9 +67,9 @@ public class ShareDialog extends AppCompatActivity {
         mShareUrl = intent.getStringExtra(Conf.SHARE_URL);
         Window window = getWindow();
         WindowManager.LayoutParams params = window.getAttributes();
-        //        params.height = (int) (Display.height() * 0.15f);
+        //        params.height = (int) (DisplayUtils.height() * 0.15f);
         params.height = WindowManager.LayoutParams.WRAP_CONTENT;
-        params.width = Display.width();
+        params.width = DisplayUtils.width();
         window.setAttributes(params);
         window.setGravity(Gravity.BOTTOM);
     }

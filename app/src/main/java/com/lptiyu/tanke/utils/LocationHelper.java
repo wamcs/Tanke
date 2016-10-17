@@ -82,6 +82,15 @@ public class LocationHelper implements AMapLocationListener {
         }
     }
 
+    public void setInterval(long interval) {
+        if (mOption != null) {
+            mOption.setInterval(interval);
+            if (mLocationClient != null) {
+                mLocationClient.setLocationOption(mOption);
+            }
+        }
+    }
+
     @Override
     public void onLocationChanged(AMapLocation aMapLocation) {
         if (listener != null) {

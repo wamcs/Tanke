@@ -169,8 +169,6 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
         if (isFirstInLocationActivity) {
             mHandler.postDelayed(new Runnable() {
                 public void run() {
-                    //                    PopupWindowUtils.getInstance().showTaskGuide(CaptureActivity.this,
-                    //                            "这是扫码任务，找到神奇的二维码即可通关");
                     showTaskGuide(CaptureActivity.this, "这是扫码任务，找到神奇的二维码即可通关");
                 }
             }, 500);
@@ -510,41 +508,6 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
             beepManager.playBeepSoundAndVibrate();
             drawResultPoints(barcode, scaleFactor, rawResult);
         }
-
-        /********************************/
-        //上传游戏记录
-        //        RequestParams params = new RequestParams(upload_record_url);
-        //        params.addBodyParameter("uid", uid + "");
-        //        params.addBodyParameter("game_id", gameId + "");
-        //        params.addBodyParameter("point_id", point_id);
-        //        params.addBodyParameter("task_id", task_id);
-        //        params.addBodyParameter("type", gameType + "");
-        //        params.addBodyParameter("point_statu", "0");
-        //        //        params.addBodyParameter("ranks_id",rankId);
-        //        x.http().get(params, new Callback.CommonCallback<UpLoadGameRecord>() {
-        //            @Override
-        //            public void onSuccess(UpLoadGameRecord result) {
-        //                if (result.status == 1) {
-        //                    resultResponse = result.data;
-        //                    handleDecodeInternally(rawResult, resultHandler, barcode);
-        //                }
-        //            }
-        //
-        //            @Override
-        //            public void onError(Throwable ex, boolean isOnCallback) {
-        //
-        //            }
-        //
-        //            @Override
-        //            public void onCancelled(CancelledException cex) {
-        //
-        //            }
-        //
-        //            @Override
-        //            public void onFinished() {
-        //
-        //            }
-        //        });
 
         handleDecodeInternally(rawResult, resultHandler, barcode);
 

@@ -1,7 +1,5 @@
 package com.lptiyu.tanke.entity;
 
-import java.util.List;
-
 /**
  * Created by Jason on 2016/7/20.
  */
@@ -14,9 +12,10 @@ public class GameRecord {
     public String play_statu;
     public String ranks_id;
     public String uid;
-    public List<PointRecord> record_text;
-    public String point_num;
+    public String game_point_num;
     public String game_finish_point;
     public ThemeLine game_detail;
+    //    public ArrayList<PointRecord> record_text;
+    //            public String record_text;
 
 }

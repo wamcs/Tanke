@@ -3,38 +3,20 @@ package com.lptiyu.tanke.entity;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import java.util.List;
+import java.util.ArrayList;
 
 /**
  * Created by Jason on 2016/8/2.
  */
 public class ThemeLine implements Parcelable {
-    /**
-     * id : 1
-     * game_id : 1
-     * line_name : 唯一一条路线
-     * point_count : 7
-     */
 
     public String id;
     public String game_id;
     public String line_name;
     public String point_count;
-    public String uid = "";
-
-    public String play_statu = "";
-
-    public List<Point> point_list;
-
-    @Override
-    public String toString() {
-        return "ThemeLine{" +
-                "id='" + id + '\'' +
-                ", game_id='" + game_id + '\'' +
-                ", line_name='" + line_name + '\'' +
-                ", point_count='" + point_count + '\'' +
-                '}';
-    }
+    //    public String uid = "";
+    //    public String play_statu = "";
+    public ArrayList<Point> point_list;
 
     @Override
     public int describeContents() {
@@ -47,6 +29,9 @@ public class ThemeLine implements Parcelable {
         dest.writeString(this.game_id);
         dest.writeString(this.line_name);
         dest.writeString(this.point_count);
+        //        dest.writeString(this.uid);
+        //        dest.writeString(this.play_statu);
+        dest.writeTypedList(this.point_list);
     }
 
     public ThemeLine() {
@@ -57,6 +42,9 @@ public class ThemeLine implements Parcelable {
         this.game_id = in.readString();
         this.line_name = in.readString();
         this.point_count = in.readString();
+        //        this.uid = in.readString();
+        //        this.play_statu = in.readString();
+        this.point_list = in.createTypedArrayList(Point.CREATOR);
     }
 
     public static final Parcelable.Creator<ThemeLine> CREATOR = new Parcelable.Creator<ThemeLine>() {

@@ -14,24 +14,35 @@ import com.amap.api.location.AMapLocation;
 import com.amap.api.maps.AMap;
 import com.amap.api.maps.CameraUpdateFactory;
 import com.amap.api.maps.TextureMapView;
+import com.amap.api.maps.UiSettings;
 import com.amap.api.maps.model.CameraPosition;
 import com.amap.api.maps.model.LatLng;
 import com.amap.api.maps.model.Marker;
 import com.amap.api.maps.model.MarkerOptions;
 import com.amap.api.maps.model.PolygonOptions;
 import com.lptiyu.tanke.R;
+import com.lptiyu.tanke.RunApplication;
+import com.lptiyu.tanke.activities.gamedetail.GameDetailActivity;
+import com.lptiyu.tanke.activities.pointtasknew.PointTaskV2Activity;
 import com.lptiyu.tanke.adapter.PointListAdapter;
 import com.lptiyu.tanke.entity.GameRecord;
 import com.lptiyu.tanke.entity.Point;
-import com.lptiyu.tanke.entity.ThemeLine;
+import com.lptiyu.tanke.entity.eventbus.NotifyPointTaskV2RefreshData;
 import com.lptiyu.tanke.entity.response.HomeGameList;
 import com.lptiyu.tanke.entity.response.Recommend;
+import com.lptiyu.tanke.enums.PointTaskStatus;
+import com.lptiyu.tanke.enums.RequestCode;
+import com.lptiyu.tanke.enums.ResultCode;
 import com.lptiyu.tanke.global.Conf;
+import com.lptiyu.tanke.interfaces.OnRecyclerViewItemClickListener;
 import com.lptiyu.tanke.mybase.MyBaseActivity;
 import com.lptiyu.tanke.utils.LocationHelper;
 import com.lptiyu.tanke.utils.NetworkUtil;
 import com.lptiyu.tanke.utils.PopupWindowUtils;
 import com.lptiyu.tanke.widget.CustomTextView;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -54,7 +65,7 @@ public class GamePlayingV2Activity extends MyBaseActivity implements GamePlaying
     CustomTextView gamePlayingTitle;
     private AMap aMap;
 
-    private List<Point> totallist;
+    private ArrayList<Point> totallist;
 
     private double currentLatitude;
     private double currentLongitude;
@@ -64,31 +75,86 @@ public class GamePlayingV2Activity extends MyBaseActivity implements GamePlaying
     private MarkerOptions currentMarkerOptions;
     private GamePlayingV2Presenter presenter;
     private long gameId;
-    private String point_count;
-
     private String title;
+    private PointListAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game_playing_v2);
         ButterKnife.bind(this);
+        EventBus.getDefault().register(this);
 
         presenter = new GamePlayingV2Presenter(this);
 
         textureMapView.onCreate(savedInstanceState);
         aMap = textureMapView.getMap();
-        aMap.getUiSettings().setAllGesturesEnabled(true);//支持手势
+        UiSettings uiSettings = aMap.getUiSettings();
+        uiSettings.setAllGesturesEnabled(true);//支持手势
+        uiSettings.setZoomControlsEnabled(false);
 
         gamePlayingTitle.setText("加载中...");
 
         //初始化游戏区域的四个点
         initLatlng();
-        //获取游戏数据和游戏记录
-        initData();
         initLocation();
         //将地图中心移动到武汉市
         moveToLocation(WUHAN);
+
+        //获取游戏数据和游戏记录
+        initData();
+        loadNetData();
+    }
+
+    private void initData() {
+        Intent intent = getIntent();
+        gameId = intent.getLongExtra(Conf.GAME_ID, Conf.TEMP_GAME_ID);
+        HomeGameList homeGameList = intent.getParcelableExtra(Conf.HOME_TAB_ENTITY);
+        Recommend recommend = intent.getParcelableExtra(Conf.RECOMMEND);
+        //还有其他更多的入口需要考虑，比如已完成的游戏界面进来的，正在进行的游戏界面进来的
+        if (homeGameList != null) {
+            title = homeGameList.title;
+        }
+        if (recommend != null) {
+            title = recommend.title;
+        }
+    }
+
+    private void loadNetData() {
+        if (NetworkUtil.checkIsNetworkConnected()) {
+            presenter.downLoadGameRecord(gameId);
+        } else {
+            PopupWindowUtils.getInstance().showNetExceptionPopupwindow(getContext(), new PopupWindowUtils
+                    .OnRetryCallback() {
+                @Override
+                public void onRetry() {
+                    loadNetData();
+                }
+            });
+        }
+    }
+
+    private void setAdapter() {
+        recyclerView.setLayoutManager(new GridLayoutManager(this, 3));
+        adapter = new PointListAdapter(this, totallist);
+        recyclerView.setAdapter(adapter);
+        adapter.setOnRecyclerViewItemClickListener(new OnRecyclerViewItemClickListener() {
+            @Override
+            public void onClick(int position) {
+                RunApplication.currentPointIndex = position;
+                if (totallist.get(position).status == PointTaskStatus.UNSTARTED) {
+                    Toast.makeText(GamePlayingV2Activity.this, "未解锁", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                Intent intent = new Intent(GamePlayingV2Activity.this, PointTaskV2Activity.class);
+                GamePlayingV2Activity.this.startActivity(intent);
+            }
+
+            @Override
+            public void onLongClick(int position) {
+
+            }
+        });
     }
 
     private void initLocation() {
@@ -109,37 +175,6 @@ public class GamePlayingV2Activity extends MyBaseActivity implements GamePlaying
         drawPolygon(latLngs);
     }
 
-    private void initData() {
-        Intent intent = getIntent();
-        //获取gameId
-        gameId = intent.getLongExtra(Conf.GAME_ID, Conf.TEMP_GAME_ID);
-        HomeGameList homeGameList = intent.getParcelableExtra(Conf.HOME_TAB_ENTITY);
-        Recommend recommend = intent.getParcelableExtra(Conf.HOME_HOT_ENTITY);
-        if (homeGameList != null) {
-            title = homeGameList.title;
-        }
-        if (recommend != null) {
-            title = recommend.title;
-        }
-        if (NetworkUtil.checkIsNetworkConnected()) {
-            presenter.downLoadGameRecord(gameId);
-        } else {
-            PopupWindowUtils.getInstance().showNetExceptionPopupwindow(getContext(), new PopupWindowUtils
-                    .OnNetExceptionListener() {
-                @Override
-                public void onClick(View view) {
-                    initData();
-                }
-            });
-        }
-    }
-
-    private void setAdapter() {
-        recyclerView.setLayoutManager(new GridLayoutManager(this, 3));
-        PointListAdapter adapter = new PointListAdapter(this, totallist);
-        recyclerView.setAdapter(adapter);
-    }
-
     //绘制一个长方形
     private void drawPolygon(List<LatLng> latLngs) {
         PolygonOptions polygonOptions = new PolygonOptions().addAll(latLngs);
@@ -155,6 +190,13 @@ public class GamePlayingV2Activity extends MyBaseActivity implements GamePlaying
         }
     }
 
+    /*无论在哪个线程发送都在主线程接收*/
+    @Subscribe
+    public void onEventMainThread(NotifyPointTaskV2RefreshData result) {
+        //刷新数据
+        loadNetData();
+    }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -163,6 +205,7 @@ public class GamePlayingV2Activity extends MyBaseActivity implements GamePlaying
         if (locationHelper != null) {
             locationHelper.onDestroy();
         }
+        EventBus.getDefault().unregister(this);
     }
 
     @Override
@@ -170,6 +213,9 @@ public class GamePlayingV2Activity extends MyBaseActivity implements GamePlaying
         super.onResume();
         //在activity执行onResume时执行mMapView.onResume ()，实现地图生命周期管理
         textureMapView.onResume();
+        if (adapter != null) {
+            adapter.refreshData();
+        }
     }
 
     @Override
@@ -244,8 +290,18 @@ public class GamePlayingV2Activity extends MyBaseActivity implements GamePlaying
                 finish();
                 break;
             case R.id.img_game_detail:
-                startLocation();
+                Intent intent = new Intent(GamePlayingV2Activity.this, GameDetailActivity.class);
+                intent.putExtra(Conf.FROM_WHERE, Conf.GAME_PLAYing_V2_ACTIVITY);
+                startActivityForResult(intent, RequestCode.LEAVE_GAME);
                 break;
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == RequestCode.LEAVE_GAME && resultCode == ResultCode.LEAVE_GAME) {
+            finish();
         }
     }
 
@@ -258,11 +314,11 @@ public class GamePlayingV2Activity extends MyBaseActivity implements GamePlaying
     public void successDownLoadRecord(GameRecord gameRecord) {
         gamePlayingTitle.setText(title);
         if (gameRecord != null) {
-            ThemeLine themeLine = gameRecord.game_detail;
-            if (themeLine != null) {
-                point_count = themeLine.point_count;
-                if (themeLine.point_list != null) {
-                    totallist = themeLine.point_list;
+            RunApplication.gameRecord = gameRecord;
+            if (RunApplication.gameRecord != null) {
+                if (RunApplication.gameRecord.game_detail.point_list != null) {
+                    totallist = RunApplication.gameRecord.game_detail.point_list;
+                    checkPointStatus();
                     setAdapter();
                 } else {
                     Toast.makeText(this, "暂无游戏数据", Toast.LENGTH_SHORT).show();
@@ -272,6 +328,21 @@ public class GamePlayingV2Activity extends MyBaseActivity implements GamePlaying
             }
         } else {
             Toast.makeText(this, "gameRecord为空", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private int max_index = -1;//第一个未解锁的point的角标
+
+    private void checkPointStatus() {
+        for (int i = 0; i < totallist.size(); i++) {
+            if (totallist.get(i).status == PointTaskStatus.UNSTARTED) {
+                max_index = i;
+                break;
+            }
+        }
+        if (max_index == -1) {//所有point都已完成
+        } else {
+            totallist.get(max_index).status = PointTaskStatus.PLAYING;
         }
     }
 }

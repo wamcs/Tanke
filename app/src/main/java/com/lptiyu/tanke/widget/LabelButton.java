@@ -1,14 +1,11 @@
 package com.lptiyu.tanke.widget;
 
-import android.annotation.TargetApi;
 import android.content.Context;
-import android.os.Build;
 import android.util.AttributeSet;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.lptiyu.tanke.R;
-import com.lptiyu.tanke.utils.Display;
+import com.lptiyu.tanke.utils.DisplayUtils;
 
 
 /**
@@ -34,9 +31,9 @@ public class LabelButton extends CustomTextView {
   }
 
   private void init(Context context) {
-    int paddingHorizontol = Display.dip2px(8);
-    int paddingVertial = Display.dip2px(8);
-    int margin = Display.dip2px(10);
+    int paddingHorizontol = DisplayUtils.dp2px(8);
+    int paddingVertial = DisplayUtils.dp2px(8);
+    int margin = DisplayUtils.dp2px(10);
     setBackgroundResource(R.drawable.label_text_bg);
     setTextColor(context.getResources().getColor(R.color.white10));
     LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(

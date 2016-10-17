@@ -16,9 +16,11 @@ import com.github.jdsjlzx.recyclerview.LRecyclerViewAdapter;
 import com.github.jdsjlzx.util.RecyclerViewStateUtils;
 import com.github.jdsjlzx.view.LoadingFooter;
 import com.lptiyu.tanke.R;
+import com.lptiyu.tanke.RunApplication;
 import com.lptiyu.tanke.activities.gamedetail.GameDetailActivity;
 import com.lptiyu.tanke.activities.gameplaying_v2.GamePlayingV2Activity;
 import com.lptiyu.tanke.adapter.HomeDisplayAdapter;
+import com.lptiyu.tanke.entity.eventbus.NotifyHomeRefreshData;
 import com.lptiyu.tanke.entity.response.HomeGameList;
 import com.lptiyu.tanke.enums.PlayStatus;
 import com.lptiyu.tanke.global.Conf;
@@ -26,6 +28,9 @@ import com.lptiyu.tanke.mybase.MyBaseFragment;
 import com.lptiyu.tanke.utils.NetworkUtil;
 import com.lptiyu.tanke.utils.PopupWindowUtils;
 import com.lptiyu.tanke.utils.ToastUtil;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.List;
 
@@ -50,6 +55,7 @@ public class HomeTabFragment extends MyBaseFragment implements HomeTabContact.IH
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        EventBus.getDefault().register(this);
 
         Bundle bundle = getArguments();
         if (bundle != null) {
@@ -78,9 +84,9 @@ public class HomeTabFragment extends MyBaseFragment implements HomeTabContact.IH
             presenter.firstLoadGameList(cid);
         } else {
             PopupWindowUtils.getInstance().showNetExceptionPopupwindow(getContext(), new PopupWindowUtils
-                    .OnNetExceptionListener() {
+                    .OnRetryCallback() {
                 @Override
-                public void onClick(View view) {
+                public void onRetry() {
                     firstLoadData(cid);
                 }
             });
@@ -115,24 +121,9 @@ public class HomeTabFragment extends MyBaseFragment implements HomeTabContact.IH
                 RecyclerViewStateUtils.setFooterViewState(getActivity(), mRecycleView, 10,
                         LoadingFooter.State.Loading, null);
                 Toast.makeText(getActivity(), "到底啦", Toast.LENGTH_SHORT).show();
-                //                new Thread(new Runnable() {
-                //                    @Override
-                //                    public void run() {
-                //                        try {
-                //                            Thread.sleep(2000);
-                //                            getActivity().runOnUiThread(new Runnable() {
-                //                                @Override
-                //                                public void run() {
-                //                                    RecyclerViewStateUtils.setFooterViewState(mRecycleView,
-                // LoadingFooter.State.Normal);
-                //                                    mRecycleView.refreshComplete();
-                //                                }
-                //                            });
-                //                        } catch (InterruptedException e) {
-                //                            e.printStackTrace();
-                //                        }
-                //                    }
-                //                }).start();
+                RecyclerViewStateUtils.setFooterViewState(mRecycleView,
+                        LoadingFooter.State.Normal);
+                mRecycleView.refreshComplete();
             }
 
             @Override
@@ -149,15 +140,18 @@ public class HomeTabFragment extends MyBaseFragment implements HomeTabContact.IH
             @Override
             public void onItemClick(View view, int position) {
                 HomeGameList homeGameList = list.get(position);
+                RunApplication.gameId = homeGameList.id;
                 Intent intent = new Intent();
                 switch (homeGameList.play_status) {
                     case PlayStatus.NEVER_ENTER_GANME://从未玩过游戏，进入到游戏详情界面
-                        intent.setClass(getActivity(), GameDetailActivity.class);
                         intent.putExtra(Conf.GAME_ID, homeGameList.id);
+                        intent.putExtra(Conf.GAME_TYPE, homeGameList.type);
                         intent.putExtra(Conf.FROM_WHERE, Conf.HOME_TAB);
+                        intent.putExtra(Conf.HOME_TAB_ENTITY, homeGameList);
+                        intent.setClass(getActivity(), GameDetailActivity.class);
                         break;
                     case PlayStatus.GAME_OVER://游戏结束，暂不考虑
-                    case PlayStatus.HAVE_ENTERED_BUT_NOT_START_GAME://进入过但没开始游戏，进入到玩游戏界面
+                    case PlayStatus.HAVE_ENTERED_BUT_NOT_START_GAME://进入过但没开始游戏，进入到游戏详情界面
                     case PlayStatus.HAVE_STARTED_GAME://进入并且已经开始游戏，进入到玩游戏界面
                         intent.putExtra(Conf.GAME_ID, homeGameList.id);
                         intent.putExtra(Conf.HOME_TAB_ENTITY, homeGameList);
@@ -174,10 +168,23 @@ public class HomeTabFragment extends MyBaseFragment implements HomeTabContact.IH
         });
     }
 
+
     @Override
     public void successFirstLoadGameList(List<HomeGameList> list) {
         if (list != null && list.size() > 0) {
             setRecyclerViewAdapter(list);
         }
+    }
+
+    /*无论在哪个线程发送都在主线程接收，接收到通知后刷新数据源*/
+    @Subscribe
+    public void onEventMainThread(NotifyHomeRefreshData nhfd) {
+        firstLoadData(sortIndex);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 }

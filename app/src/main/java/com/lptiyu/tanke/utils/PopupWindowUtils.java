@@ -34,7 +34,7 @@ public class PopupWindowUtils {
         return popupWindowUtils;
     }
 
-    public void showNetExceptionPopupwindow(Context context, final OnNetExceptionListener listener) {
+    public void showNetExceptionPopupwindow(Context context, final OnRetryCallback listener) {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View popupView = inflater.inflate(R.layout.popup_net_exception, null);
         final PopupWindow popupWindow = new PopupWindow(popupView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup
@@ -48,7 +48,7 @@ public class PopupWindowUtils {
             public void onClick(View v) {
                 popupWindow.dismiss();
                 if (listener != null) {
-                    listener.onClick(v);
+                    listener.onRetry();
                 }
             }
         });
@@ -62,10 +62,6 @@ public class PopupWindowUtils {
                 .LayoutParams.WRAP_CONTENT, true);
         popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         popupWindow.showAtLocation(popupView, Gravity.CENTER, 0, -100);
-    }
-
-    public interface OnNetExceptionListener {
-        void onClick(View view);
     }
 
     public void showUsageTip(Context context, View parent, int xOffset, int yOffset) {
@@ -155,7 +151,40 @@ public class PopupWindowUtils {
         });
     }
 
+    public static void showLeaveGamePopup(Context context, final OnClickPopupListener listener) {
+        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View popupView = inflater.inflate(R.layout.popup_abandon_game, null);
+        final PopupWindow popupWindow = new PopupWindow(popupView, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup
+                .LayoutParams.WRAP_CONTENT, true);
+        popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        popupWindow.setAnimationStyle(R.style.Popup_Animation);
+        popupWindow.showAtLocation(popupView, Gravity.BOTTOM, 0, 0);
+
+        popupView.findViewById(R.id.tv_cancle).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                popupWindow.dismiss();
+            }
+        });
+        popupView.findViewById(R.id.tv_ensure).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (listener != null) {
+                    listener.onClick(v);
+                }
+            }
+        });
+    }
+
     public interface DismissCallback {
         void onDismisss();
+    }
+
+    public interface OnClickPopupListener {
+        void onClick(View view);
+    }
+
+    public interface OnRetryCallback {
+        void onRetry();
     }
 }

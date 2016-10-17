@@ -19,7 +19,7 @@ public class Recommend implements Parcelable {
      * end_date :
      * start_time :
      * end_time :
-     * state : 4
+     * status : 4
      * type : 2
      * recommend : 1
      * address_short :
@@ -28,6 +28,7 @@ public class Recommend implements Parcelable {
      */
 
     public String id;
+    public int cid;
     public String pic;
     public String title;
     public String area;
@@ -57,7 +58,7 @@ public class Recommend implements Parcelable {
                 ", end_date='" + end_date + '\'' +
                 ", start_time='" + start_time + '\'' +
                 ", end_time='" + end_time + '\'' +
-                ", state=" + state +
+                ", status=" + state +
                 ", type=" + type +
                 ", recommend=" + recommend +
                 ", address_short='" + address_short + '\'' +
@@ -74,6 +75,7 @@ public class Recommend implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(this.id);
+        dest.writeInt(cid);
         dest.writeString(this.pic);
         dest.writeString(this.title);
         dest.writeString(this.area);
@@ -96,6 +98,7 @@ public class Recommend implements Parcelable {
 
     protected Recommend(Parcel in) {
         this.id = in.readString();
+        this.cid = in.readInt();
         this.pic = in.readString();
         this.title = in.readString();
         this.area = in.readString();

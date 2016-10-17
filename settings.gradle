@@ -1,1 +1,1 @@
-include ':app', ':zxinglib', ':number_picker', ':nifty', ':daogenerator', ':LRecyclerview_library', ':StickLayout_library', ':JPushExample(500284)'
+include ':app', ':zxinglib', ':number_picker', ':nifty', ':LRecyclerview_library', ':StickLayout_library'

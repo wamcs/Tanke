@@ -66,7 +66,7 @@ public class GVForGamePlayingAdapter extends BaseAdapter {
         Point point = list_points.get(position);
         setImgBitmap(vh, point.point_img);
 
-        switch (point.state) {
+        switch (point.status) {
             case PointTaskStatus.UNSTARTED://未开启
                 vh.ctvPointName.setText("未解锁");
                 vh.imgLabel.setVisibility(View.GONE);

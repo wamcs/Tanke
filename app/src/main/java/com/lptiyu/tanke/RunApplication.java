@@ -4,22 +4,16 @@ import android.app.Activity;
 import android.support.multidex.MultiDex;
 import android.support.multidex.MultiDexApplication;
 
-import com.avos.avoscloud.AVInstallation;
-import com.avos.avoscloud.AVOSCloud;
-import com.avos.avoscloud.PushService;
+import com.lptiyu.tanke.entity.GameRecord;
 import com.lptiyu.tanke.entity.ThemeLine;
-import com.lptiyu.tanke.global.Accounts;
 import com.lptiyu.tanke.global.AppData;
 import com.lptiyu.tanke.global.Conf;
-import com.lptiyu.tanke.utils.LocationFileParser;
-import com.lptiyu.tanke.messagesystem.MessageActivity;
-import com.lptiyu.tanke.pojo.GameDisplayEntity;
 import com.lptiyu.tanke.utils.DirUtils;
+import com.lptiyu.tanke.utils.LocationFileParser;
 import com.lptiyu.tanke.utils.ThreadUtils;
 
 import org.xutils.x;
 
-import java.util.List;
 import java.util.Stack;
 
 import cn.sharesdk.framework.ShareSDK;
@@ -33,17 +27,12 @@ import timber.log.Timber;
  */
 public class RunApplication extends MultiDexApplication {
 
-    private static Stack<Activity> activityStack;
+    public static Stack<Activity> activityStack;
     private static RunApplication singleton;
-    //    private BMapManager manager;
-
-    public static List<GameDisplayEntity> gameList; //维护一份列表数据的索引，避免回收
-    private static ThemeLine themeLine;//维护一个正在玩的游戏数据
-    //    public static boolean isGameDisplayEntity = false;
-
-    private static long lastLoginUserId = 0;
-
-    public static boolean isPlayingStatusChanged = false;
+    public static GameRecord gameRecord;//维护一个正在玩的游戏数据
+    public static int currentPointIndex;
+    public static int currentTaskIndex;
+    public static long gameId;
 
     @Override
     public void onCreate() {
@@ -61,23 +50,12 @@ public class RunApplication extends MultiDexApplication {
         /*
         初始化程序崩溃记录器
          */
-        CrashHandler crashHandler = CrashHandler.getInstance();
-        crashHandler.init(this);
+        CrashHandler.getInstance().init(this);
 
         try {
             ShareSDK.initSDK(this.getApplicationContext(), "1276c2d783264");
-            AVOSCloud.initialize(AppData.getContext(), "Wqseclbr8wx2kFAS7YseVc5n-gzGzoHsz", "1z4GofW1zaArBjcj53u3oBm1");
-            PushService.setDefaultPushCallback(this, MessageActivity.class);
-            //            SDKInitializer.initialize(this);
             DirUtils.init(this);
-            if (Accounts.getInstallationId().isEmpty()) {
-                String installationId = AVInstallation.getCurrentInstallation().getInstallationId();
-                Accounts.setInstallationId(installationId);
-                Timber.d("this device installation is %s", installationId);
-            }
-
         } catch (Exception e) {
-            // To test it automatically.
             Timber.e(e, e.getMessage());
         }
 
@@ -95,23 +73,12 @@ public class RunApplication extends MultiDexApplication {
         return singleton;
     }
 
-    public static ThemeLine getPlayingThemeLine() {
-        return themeLine;
+    public ThemeLine getPlayingThemeLine() {
+        return null;
     }
 
-    public static void setgetPlayingThemeLine(ThemeLine playLine) {
-        themeLine = playLine;
+    public void setgetPlayingThemeLine(ThemeLine playLine) {
     }
-
-    //获取上一次的登录账户
-    public static long getLastLoginUserId() {
-        return lastLoginUserId;
-    }
-
-    public static void setLastLoginUserId(long id) {
-        lastLoginUserId = id;
-    }
-
 
     /**
      * add Activity 添加Activity到栈
@@ -182,20 +149,4 @@ public class RunApplication extends MultiDexApplication {
         } catch (Exception e) {
         }
     }
-
-
-    //主要是改游戏状态和下载包链接
-    public void setGameDataByGameId(long game_id, int game_statu, String game_zip_url) {
-        if (gameList == null)
-            return;
-
-        for (int i = 0; i < gameList.size(); i++) {
-            GameDisplayEntity tmp = gameList.get(i);
-            if (game_id == tmp.getId()) {
-                tmp.setPlayStatu(game_statu);
-                tmp.setGameZipUrl(game_zip_url);
-            }
-        }
-    }
-
 }

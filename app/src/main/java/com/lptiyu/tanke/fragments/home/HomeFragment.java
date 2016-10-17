@@ -15,11 +15,13 @@ import android.widget.Toast;
 import com.gxz.PagerSlidingTabStrip;
 import com.gxz.library.StickyNavLayout;
 import com.lptiyu.tanke.R;
+import com.lptiyu.tanke.RunApplication;
 import com.lptiyu.tanke.activities.gamedetail.GameDetailActivity;
 import com.lptiyu.tanke.activities.gameplaying_v2.GamePlayingV2Activity;
 import com.lptiyu.tanke.adapter.BannerPagerAdapter;
 import com.lptiyu.tanke.adapter.HomeHotRecyclerViewAdapter;
 import com.lptiyu.tanke.adapter.HomeTabFragmentPagerAdapter;
+import com.lptiyu.tanke.entity.eventbus.NotifyHomeRefreshData;
 import com.lptiyu.tanke.entity.response.Banner;
 import com.lptiyu.tanke.entity.response.HomeBannerAndHot;
 import com.lptiyu.tanke.entity.response.HomeSort;
@@ -33,6 +35,9 @@ import com.lptiyu.tanke.mybase.MyBaseFragment;
 import com.lptiyu.tanke.utils.NetworkUtil;
 import com.lptiyu.tanke.utils.PopupWindowUtils;
 import com.lptiyu.tanke.widget.CustomTextView;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -63,10 +68,14 @@ public class HomeFragment extends MyBaseFragment implements HomeContact.IHomeVie
     @BindView(R.id.recyclerView_hot)
     RecyclerView recyclerViewHot;
     HomePresenter presenter;
+    private List<MyBaseFragment> fragments;
+    private ArrayList<String> titles;
+    private HomeTabFragmentPagerAdapter adapter;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        EventBus.getDefault().register(this);
 
         presenter = new HomePresenter(this);
         firstLoadData();
@@ -78,9 +87,9 @@ public class HomeFragment extends MyBaseFragment implements HomeContact.IHomeVie
             presenter.loadSort();
         } else {
             PopupWindowUtils.getInstance().showNetExceptionPopupwindow(getContext(), new PopupWindowUtils
-                    .OnNetExceptionListener() {
+                    .OnRetryCallback() {
                 @Override
-                public void onClick(View view) {
+                public void onRetry() {
                     firstLoadData();
                 }
             });
@@ -104,6 +113,7 @@ public class HomeFragment extends MyBaseFragment implements HomeContact.IHomeVie
         mPtrFrame.setPtrHandler(new PtrHandler() {
             @Override
             public void onRefreshBegin(PtrFrameLayout frame) {
+                refreshData();
                 mPtrFrame.refreshComplete();
             }
 
@@ -121,19 +131,20 @@ public class HomeFragment extends MyBaseFragment implements HomeContact.IHomeVie
         mPtrFrame.setDurationToCloseHeader(1000);
         mPtrFrame.setPullToRefresh(false);
         mPtrFrame.setKeepHeaderWhenRefresh(true);
+
+
     }
 
     //根据返回结果设置tab
     private void setTab(List<HomeSort> category) {
-        List<MyBaseFragment> fragments = new ArrayList<>();
-        ArrayList<String> titles = new ArrayList<>();
+        fragments = new ArrayList<>();
+        titles = new ArrayList<>();
         for (HomeSort homeSort : category) {
             fragments.add(HomeTabFragment.newInstance(homeSort.cid));
             titles.add(homeSort.name);
         }
 
-        HomeTabFragmentPagerAdapter adapter = new HomeTabFragmentPagerAdapter(getActivity().getSupportFragmentManager(),
-                fragments, titles);
+        adapter = new HomeTabFragmentPagerAdapter(getActivity().getSupportFragmentManager(), fragments, titles);
         viewPager.setAdapter(adapter);
         viewPager.setOffscreenPageLimit(titles.size() - 1);
         pagerSlidingTabStrip.setViewPager(viewPager);
@@ -184,6 +195,22 @@ public class HomeFragment extends MyBaseFragment implements HomeContact.IHomeVie
         }
     }
 
+    private void refreshData() {
+        if (NetworkUtil.checkIsNetworkConnected()) {
+            if (presenter != null) {
+                presenter.firstLoadBannerAndHot();
+            }
+        } else {
+            PopupWindowUtils.getInstance().showNetExceptionPopupwindow(getContext(), new PopupWindowUtils
+                    .OnRetryCallback() {
+                @Override
+                public void onRetry() {
+                    refreshData();
+                }
+            });
+        }
+    }
+
     private void setRecyclerViewAdapter(final List<Recommend> list) {
         recyclerViewHot.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
         HomeHotRecyclerViewAdapter adapter = new HomeHotRecyclerViewAdapter(getActivity(), list);
@@ -192,18 +219,20 @@ public class HomeFragment extends MyBaseFragment implements HomeContact.IHomeVie
             @Override
             public void onClick(int position) {
                 Recommend recommend = list.get(position);
+                RunApplication.gameId = Long.parseLong(recommend.id);
                 Intent intent = new Intent();
                 switch (Integer.parseInt(recommend.play_status)) {
                     case PlayStatus.NEVER_ENTER_GANME://从未玩过游戏，进入到游戏详情界面
                         intent.setClass(getActivity(), GameDetailActivity.class);
                         intent.putExtra(Conf.GAME_ID, recommend.id);
+                        intent.putExtra(Conf.RECOMMEND, recommend);
                         intent.putExtra(Conf.FROM_WHERE, Conf.HOME_HOT);
                         break;
                     case PlayStatus.GAME_OVER://游戏结束，暂不考虑
-                    case PlayStatus.HAVE_ENTERED_BUT_NOT_START_GAME://进入过但没开始游戏，进入到玩游戏界面
+                    case PlayStatus.HAVE_ENTERED_BUT_NOT_START_GAME://进入过但没开始游戏，进入到游戏详情界面
                     case PlayStatus.HAVE_STARTED_GAME://进入并且已经开始游戏，进入到玩游戏界面
                         intent.putExtra(Conf.GAME_ID, Long.parseLong(recommend.id));
-                        intent.putExtra(Conf.HOME_HOT_ENTITY, recommend);
+                        intent.putExtra(Conf.RECOMMEND, recommend);
                         intent.setClass(getActivity(), GamePlayingV2Activity.class);
                         break;
                 }
@@ -221,5 +250,17 @@ public class HomeFragment extends MyBaseFragment implements HomeContact.IHomeVie
         BannerPagerAdapter pagerAdapter = new BannerPagerAdapter(getContext(), list);
         viewPagerBanner.setAdapter(pagerAdapter);
         viewPagerBanner.setCurrentItem(0);
+    }
+
+    /*无论在哪个线程发送都在主线程接收，接收到通知后刷新数据源*/
+    @Subscribe
+    public void onEventMainThread(NotifyHomeRefreshData nhfd) {
+        refreshData();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 }

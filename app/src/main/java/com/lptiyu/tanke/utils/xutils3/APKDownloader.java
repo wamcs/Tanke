@@ -8,7 +8,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Handler;
 import android.util.Log;
-import android.view.View;
 
 import com.lptiyu.tanke.RunApplication;
 import com.lptiyu.tanke.utils.FileUtils;
@@ -125,10 +124,9 @@ public class APKDownloader {
 
             @Override
             public void onError(String errMsg) {
-                PopupWindowUtils.getInstance().showNetExceptionPopupwindow(context, new PopupWindowUtils
-                        .OnNetExceptionListener() {
+                PopupWindowUtils.getInstance().showNetExceptionPopupwindow(context, new PopupWindowUtils.OnRetryCallback() {
                     @Override
-                    public void onClick(View view) {
+                    public void onRetry() {
                         startDownloadByXUtils();
                     }
                 });

@@ -24,7 +24,6 @@ import com.lptiyu.tanke.base.controller.ActivityController;
 import com.lptiyu.tanke.entity.EnterGameResponse;
 import com.lptiyu.tanke.entity.GameDetailResponse;
 import com.lptiyu.tanke.enums.GameType;
-import com.lptiyu.tanke.enums.PlayStatus;
 import com.lptiyu.tanke.enums.ResultCode;
 import com.lptiyu.tanke.global.Accounts;
 import com.lptiyu.tanke.global.Conf;
@@ -179,7 +178,7 @@ public class GameDetailsController extends ActivityController {
         mTextGameIntro.setText(Html.fromHtml(Html.fromHtml(entity.content) + ""));
         //        mTextRule.setText(Html.fromHtml(Html.fromHtml(entity.getRule()) + ""));
         switch (from_where) {
-            case Conf.ElasticHeaderViewHolder: {
+            case Conf.ELASTIC_HEADER_VIEW_HOLDER: {
                 if (entity.states == 3)//游戏已经下线，但还展示在前台
                 {
                     mTextEnterGame.setText("游戏已经下线休息了~");
@@ -189,7 +188,7 @@ public class GameDetailsController extends ActivityController {
 
                 break;
             }
-            case Conf.NormalViewHolder:
+            case Conf.NORMAL_VIEW_HOLDER:
                 if (entity.states == 3)//游戏已经下线，但还展示在前台
                 {
                     mTextEnterGame.setText("游戏已经下线休息了~");
@@ -197,7 +196,7 @@ public class GameDetailsController extends ActivityController {
                     mTextEnterGame.setText("进入游戏");
                 }
                 break;
-            case Conf.GamePlay2Activity:
+            case Conf.GAME_PLAYing_V2_ACTIVITY:
                 if (entity.states == 3)//游戏已经下线，但还展示在前台
                 {
                     mTextEnterGame.setText("游戏已经下线休息了~");
@@ -296,10 +295,10 @@ public class GameDetailsController extends ActivityController {
 
     // 网络异常对话框
     private void showNetUnConnectDialog() {
-        PopupWindowUtils.getInstance().showNetExceptionPopupwindow(getContext(), new PopupWindowUtils
-                .OnNetExceptionListener() {
+        PopupWindowUtils.getInstance().showNetExceptionPopupwindow(getContext(), new PopupWindowUtils.OnRetryCallback
+                () {
             @Override
-            public void onClick(View view) {
+            public void onRetry() {
                 loadNet();
             }
         });
@@ -307,7 +306,6 @@ public class GameDetailsController extends ActivityController {
 
     @OnClick(R.id.enter_game)
     public void ensureClicked() {
-
         if (mGameDetailsResponse == null) {
             ToastUtil.TextToast("获取游戏信息失败");
             return;
@@ -318,8 +316,8 @@ public class GameDetailsController extends ActivityController {
         }
 
         switch (from_where) {
-            case Conf.ElasticHeaderViewHolder:
-            case Conf.NormalViewHolder:
+            case Conf.ELASTIC_HEADER_VIEW_HOLDER:
+            case Conf.NORMAL_VIEW_HOLDER:
                 if (mGameDetailsResponse.type == GameType.TEAM_TYPE) {
                     ToastUtil.TextToast("团队赛正在开发中");
                     return;
@@ -327,7 +325,7 @@ public class GameDetailsController extends ActivityController {
                 //请求加入游戏接口，获取游戏包下载链接
                 loadNet();
                 break;
-            case Conf.GamePlay2Activity:
+            case Conf.GAME_PLAYing_V2_ACTIVITY:
                 // 放弃游戏
                 showPopup();
                 break;
@@ -386,17 +384,8 @@ public class GameDetailsController extends ActivityController {
                         //                        Log.i("jason", "放弃游戏结果:" + response);
                         if (response.getStatus() == Response.RESPONSE_OK) {
 
-                            /*标记游戏状态为已放弃*/
-
-                            RunApplication.getInstance().setGameDataByGameId(gameId, PlayStatus.NEVER_ENTER_GANME, "");
-
                             //同时清空该游戏的记录
-                            RunApplication.setgetPlayingThemeLine(null);
-
-
-                            //标记下游戏状态已经变更，通知正在玩和已经完成的列表进行更新
-                            RunApplication.isPlayingStatusChanged = true;
-
+                            RunApplication.getInstance().setgetPlayingThemeLine(null);
                             getActivity().setResult(ResultCode.LEAVE_GAME);
                             getActivity().finish();
                             //                            RunApplication.getInstance().finishActivity();
@@ -433,12 +422,7 @@ public class GameDetailsController extends ActivityController {
             public void call(Response<EnterGameResponse> response) {
                 if (response.getStatus() == Response.RESPONSE_OK) {
 
-                    tempGameZipUrl = response.getData().game_zip;
-
-                    /*标记游戏状态为已经进入*/
-                    RunApplication.getInstance().setGameDataByGameId(gameId, PlayStatus
-                            .HAVE_ENTERED_BUT_NOT_START_GAME, tempGameZipUrl);
-
+                    //                    tempGameZipUrl = response.getData().game_zip;
                     if (new GameZipUtils().isParsedFileExist(gameId) == null) {
                         //根据获取到的游戏包下载链接去下载游戏
                         progressDialog = ProgressDialogHelper.getSpinnerProgressDialog(getContext());

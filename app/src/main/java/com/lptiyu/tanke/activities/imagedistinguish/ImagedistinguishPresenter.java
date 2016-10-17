@@ -1,16 +1,15 @@
 package com.lptiyu.tanke.activities.imagedistinguish;
 
-import android.util.Log;
-
 import com.lptiyu.tanke.entity.UpLoadGameRecord;
 import com.lptiyu.tanke.entity.UploadGameRecordResponse;
+import com.lptiyu.tanke.entity.response.BaseResponse;
 import com.lptiyu.tanke.global.Accounts;
-import com.lptiyu.tanke.net.HttpService;
-import com.lptiyu.tanke.net.Response;
+import com.lptiyu.tanke.utils.xutils3.RequestParamsHelper;
+import com.lptiyu.tanke.utils.xutils3.XUtilsHelper;
+import com.lptiyu.tanke.utils.xutils3.XUtilsRequestCallBack;
+import com.lptiyu.tanke.utils.xutils3.XUtilsUrls;
 
-import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
-import rx.schedulers.Schedulers;
+import org.xutils.http.RequestParams;
 
 /**
  * Created by Jason on 2016/8/9.
@@ -23,31 +22,35 @@ public class ImagedistinguishPresenter implements ImagedistinguishContact.Imaged
     }
 
     @Override
-    public void uploadRecord(final UpLoadGameRecord record) {
-        HttpService.getGameService()
-                .upLoadGameRecord(Accounts.getId(), Long.parseLong(record.game_id), Long.parseLong(record.point_id),
-                        Long.parseLong(record.task_id), Long.parseLong(record.point_statu))
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Action1<Response<UploadGameRecordResponse>>() {
-                    @Override
-                    public void call(Response<UploadGameRecordResponse> response) {
-                        Log.i("jason", "上传游戏记录结果:" + response);
-                        if (response.getStatus() == Response.RESPONSE_OK) {
-                            view.successUploadRecord(response.getData());
-                        } else {
-                            if (response.getInfo() != null)
-                                view.failUploadRecord(response.getInfo());
-                            else
-                                view.netException();
-                        }
-                    }
-                }, new Action1<Throwable>() {
-                    @Override
-                    public void call(Throwable throwable) {
-                        view.netException();
-                        Log.i("jason", "upload records error:" + throwable.getMessage());
-                    }
-                });
+    public void uploadRecord(UpLoadGameRecord record) {
+        RequestParams params = RequestParamsHelper.getBaseRequestParam(XUtilsUrls.UPLOAD_RECORD);
+        params.addBodyParameter("uid", Accounts.getId() + "");
+        params.addBodyParameter("game_id", record.game_id);
+        params.addBodyParameter("point_id", record.point_id);
+        params.addBodyParameter("task_id", record.task_id);
+        params.addBodyParameter("point_statu", record.point_statu);
+        params.addBodyParameter("ranks_id", record.ranks_id);
+        XUtilsHelper.getInstance().get(params, new XUtilsRequestCallBack<UploadGameRecordResponse>() {
+            @Override
+            protected void onSuccess(UploadGameRecordResponse response) {
+                if (response.status == BaseResponse.SUCCESS) {
+                    view.successUploadRecord(response.data);
+                } else {
+                    if (response.info != null)
+                        view.failUploadRecord(response.info);
+                    else
+                        view.failLoad();
+                }
+            }
+
+            @Override
+            protected void onFailed(String errorMsg) {
+                if (errorMsg != null) {
+                    view.failLoad(errorMsg);
+                } else {
+                    view.netException();
+                }
+            }
+        }, UploadGameRecordResponse.class);
     }
 }

@@ -11,7 +11,7 @@ import com.lptiyu.tanke.utils.ToastUtil;
 public class MyBaseFragment extends Fragment implements IBaseView {
     @Override
     public void failLoad() {
-        ToastUtil.TextToast("暂无数据");
+        //        ToastUtil.TextToast("暂无数据");
     }
 
     @Override

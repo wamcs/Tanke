@@ -81,7 +81,7 @@ public class GuideController extends ActivityController {
     //    }
     //
     //    @Override
-    //    public void onPageScrollStateChanged(int state) {
+    //    public void onPageScrollStateChanged(int status) {
     //
     //    }
     //
@@ -100,7 +100,7 @@ public class GuideController extends ActivityController {
     //        @BindView(R.id.layout_splash_ect)
     //        ImageView mEct;
     //
-    //        int width = Display.width();
+    //        int width = DisplayUtils.width();
     //
     //        public GuidePageHolder(View root) {
     //            mRoot = root;

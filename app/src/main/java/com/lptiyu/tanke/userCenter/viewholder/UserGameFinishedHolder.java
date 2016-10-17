@@ -131,10 +131,10 @@ public class UserGameFinishedHolder extends BaseViewHolder<GameFinishedEntity> {
 
     // 网络异常对话框
     private void showNetUnConnectDialog() {
-        PopupWindowUtils.getInstance().showNetExceptionPopupwindow(getContext(), new PopupWindowUtils
-                .OnNetExceptionListener() {
+        PopupWindowUtils.getInstance().showNetExceptionPopupwindow(getContext(), new PopupWindowUtils.OnRetryCallback
+                () {
             @Override
-            public void onClick(View view) {
+            public void onRetry() {
                 loadNetWorkData();
             }
         });

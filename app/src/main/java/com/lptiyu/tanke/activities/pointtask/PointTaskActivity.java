@@ -94,8 +94,8 @@ public class PointTaskActivity extends MyBaseActivity implements PointTaskContac
     //    private void initStyle() {
     //        Window window = getWindow();
     //        WindowManager.LayoutParams params = window.getAttributes();
-    //        params.height = (int) (Display.height() * 0.8f);
-    //        params.width = (int) (Display.width() * 0.9f);
+    //        params.height = (int) (DisplayUtils.height() * 0.8f);
+    //        params.width = (int) (DisplayUtils.width() * 0.9f);
     //        window.setAttributes(params);
     //        window.setGravity(Gravity.CENTER);
     //    }
@@ -111,7 +111,7 @@ public class PointTaskActivity extends MyBaseActivity implements PointTaskContac
         gameId = bundle.getLong(Conf.GAME_ID, -1);
         unZippedDir = bundle.getString(Conf.UNZIPPED_DIR);
 
-        ThemeLine themeLine = RunApplication.getPlayingThemeLine();
+        ThemeLine themeLine = RunApplication.getInstance().getPlayingThemeLine();
         if (themeLine == null || themeLine.point_list == null || themeLine.point_list.size() <= pointIndex)
             return;
 
@@ -126,7 +126,7 @@ public class PointTaskActivity extends MyBaseActivity implements PointTaskContac
         }
         list_task = point.task_list;
 
-        if (point.state == PointTaskStatus.FINISHED) {
+        if (point.status == PointTaskStatus.FINISHED) {
             imgGetKey.setVisibility(View.GONE);
         }
         ctvTaskName.setText(point.point_title + "");
@@ -161,7 +161,7 @@ public class PointTaskActivity extends MyBaseActivity implements PointTaskContac
         }
 
         //如果当前章节点只有一个任务并且是FINISH类型的任务，则表示该章节点结束（这种情况一般在最后一个章节点出现）
-        if (Integer.parseInt(list_task.get(0).type) == TaskType.FINISH && (point.state != PointTaskStatus.FINISHED)) {
+        if (Integer.parseInt(list_task.get(0).type) == TaskType.FINISH && (point.status != PointTaskStatus.FINISHED)) {
             imgGetKey.setVisibility(View.GONE);
             selectPosition = 0;
             isPointOver = true;
@@ -174,7 +174,7 @@ public class PointTaskActivity extends MyBaseActivity implements PointTaskContac
      */
     private void uploadPointOverRecord() {
 
-        ThemeLine themeLine = RunApplication.getPlayingThemeLine();
+        ThemeLine themeLine = RunApplication.getInstance().getPlayingThemeLine();
         if (themeLine == null || themeLine.point_list == null || themeLine.point_list.size() <= pointIndex)
             return;
         Point point = themeLine.point_list.get(pointIndex);
@@ -207,7 +207,7 @@ public class PointTaskActivity extends MyBaseActivity implements PointTaskContac
      * 根据游戏记录设置任务的状态
      */
     private void checkTaskState() {
-        ThemeLine themeLine = RunApplication.getPlayingThemeLine();
+        ThemeLine themeLine = RunApplication.getInstance().getPlayingThemeLine();
         if (themeLine == null || themeLine.point_list == null || themeLine.point_list.size() <= pointIndex)
             return;
         Point point = themeLine.point_list.get(pointIndex);
@@ -218,28 +218,29 @@ public class PointTaskActivity extends MyBaseActivity implements PointTaskContac
             isPointOver = true;
             imgGetKey.setVisibility(View.GONE);
             return;
-        } else if (point.state == PointTaskStatus.FINISHED) {//章节点已结束，所有任务已完成
+        } else if (point.status == PointTaskStatus.FINISHED) {//章节点已结束，所有任务已完成
             selectPosition = 0;
             imgGetKey.setVisibility(View.GONE);
-        } else if (point.state == PointTaskStatus.UNSTARTED) {//章节点未开启，所有任务未开启
+        } else if (point.status == PointTaskStatus.UNSTARTED) {//章节点未开启，所有任务未开启
             selectPosition = 0;
         } else {//章节点已开启
 
             for (int i = 0; i < list_task.size(); i++) {
                 Task task = list_task.get(i);
-                if (task.state == PointTaskStatus.PLAYING) {
-                    selectPosition = i;
-                    if (i == list_task.size() - 1) {
-                        isPointOver = true;
-                    } else if ((i < list_task.size() - 1) && (Integer.parseInt(list_task.get(i + 1).type) == TaskType
-                            .FINISH)) {
-                        //如果下一个任务是结束任务的话，表示完成此任务章节点就要结束了
-                        isPointOver = true;
-
-                    } else {
-                        isPointOver = false;
-                    }
-                }
+                //                if (task.status == PointTaskStatus.PLAYING) {
+                //                    selectPosition = i;
+                //                    if (i == list_task.size() - 1) {
+                //                        isPointOver = true;
+                //                    } else if ((i < list_task.size() - 1) && (Integer.parseInt(list_task.get(i + 1)
+                // .type) == TaskType
+                //                            .FINISH)) {
+                //                        //如果下一个任务是结束任务的话，表示完成此任务章节点就要结束了
+                //                        isPointOver = true;
+                //
+                //                    } else {
+                //                        isPointOver = false;
+                //                    }
+                //                }
 
             }
         }
@@ -305,7 +306,7 @@ public class PointTaskActivity extends MyBaseActivity implements PointTaskContac
      */
     private void upLoadGameRecord() {
 
-        ThemeLine themeLine = RunApplication.getPlayingThemeLine();
+        ThemeLine themeLine = RunApplication.getInstance().getPlayingThemeLine();
         if (themeLine == null || themeLine.point_list == null || themeLine.point_list.size() <= pointIndex)
             return;
         Point point = themeLine.point_list.get(pointIndex);
@@ -346,24 +347,25 @@ public class PointTaskActivity extends MyBaseActivity implements PointTaskContac
 
     private void refreshData(UploadGameRecordResponse response) {
 
-        ThemeLine themeLine = RunApplication.getPlayingThemeLine();
+        ThemeLine themeLine = RunApplication.getInstance().getPlayingThemeLine();
         if (themeLine == null || themeLine.point_list == null || themeLine.point_list.size() <= pointIndex)
             return;
         Point point = themeLine.point_list.get(pointIndex);
 
-        themeLine.play_statu = response.game_statu + "";
+        //        gameRecord.play_statu = response.game_statu + "";
         //更新当前任务的记录信息
-        currentTask.finishTime = response.task_finish_time;
-        currentTask.state = PointTaskStatus.FINISHED;
-        currentTask.exp = response.get_exp;
+        //        currentTask.ftime = response.task_finish_time;
+        //        currentTask.status = PointTaskStatus.FINISHED;
+        //        currentTask.exp = response.get_exp;
         if (isPointOver) {
-            point.state = PointTaskStatus.FINISHED;
+            point.status = PointTaskStatus.FINISHED;
 
             if (pointIndex < themeLine.point_list.size() - 1) {
                 //下一个任务设置为new
                 themeLine.point_list.get(pointIndex + 1).isNew = true;
-                themeLine.point_list.get(pointIndex + 1).state = PointTaskStatus.PLAYING;
-                themeLine.point_list.get(pointIndex + 1).task_list.get(0).state = PointTaskStatus.PLAYING;
+                themeLine.point_list.get(pointIndex + 1).status = PointTaskStatus.PLAYING;
+                //                gameRecord.point_list.get(pointIndex + 1).task_list.get(0).status = PointTaskStatus
+                // .PLAYING;
             }
         }
 
@@ -372,12 +374,12 @@ public class PointTaskActivity extends MyBaseActivity implements PointTaskContac
 
         } else {
             if (Integer.parseInt(list_task.get(selectPosition + 1).type) == TaskType.FINISH) {
-                list_task.get(selectPosition).state = PointTaskStatus.FINISHED;
-                list_task.get(selectPosition + 1).state = PointTaskStatus.FINISHED;
+                //                list_task.get(selectPosition).status = PointTaskStatus.FINISHED;
+                //                list_task.get(selectPosition + 1).status = PointTaskStatus.FINISHED;
                 imgGetKey.setVisibility(View.GONE);
             } else {
-                list_task.get(selectPosition).state = PointTaskStatus.FINISHED;
-                list_task.get(selectPosition + 1).state = PointTaskStatus.PLAYING;
+                //                list_task.get(selectPosition).status = PointTaskStatus.FINISHED;
+                //                list_task.get(selectPosition + 1).status = PointTaskStatus.PLAYING;
             }
             selectPosition += 1;
         }
@@ -403,7 +405,7 @@ public class PointTaskActivity extends MyBaseActivity implements PointTaskContac
 
     @OnClick({R.id.img_close, R.id.rl_title, R.id.ctv_taskName, R.id.rl_getKey, R.id.img_getKey})
     public void onClick(View view) {
-        ThemeLine themeLine = RunApplication.getPlayingThemeLine();
+        ThemeLine themeLine = RunApplication.getInstance().getPlayingThemeLine();
         if (themeLine == null || themeLine.point_list == null || themeLine.point_list.size() <= pointIndex)
             return;
         Point point = themeLine.point_list.get(pointIndex);
@@ -438,7 +440,7 @@ public class PointTaskActivity extends MyBaseActivity implements PointTaskContac
                                         Log.i("jason", "图像识别任务");
                                         intent.setClass(PointTaskActivity.this, ImageDistinguishActivity.class);
                                         Log.i("jason", "要识别的图片路径：" + unZippedDir + "/" + currentTask.pwd);
-                                        intent.putExtra(Conf.IMG_DISTINGUISH_URL, currentTask.pwd);
+                                        intent.putExtra(Conf.IMG_DISTINGUISH_ARRAY, currentTask.pwd);
                                         intent.putExtra(Conf.PARENT_DIR, unZippedDir);
                                         startActivityForResult(intent, RequestCode.IMAGE_DISTINGUISH);
                                     }
@@ -539,7 +541,7 @@ public class PointTaskActivity extends MyBaseActivity implements PointTaskContac
             dialog.show();
         } else {
 
-            ThemeLine themeLine = RunApplication.getPlayingThemeLine();
+            ThemeLine themeLine = RunApplication.getInstance().getPlayingThemeLine();
             if (themeLine == null || themeLine.point_list == null || themeLine.point_list.size() <= pointIndex)
                 return;
             Point point = themeLine.point_list.get(pointIndex);

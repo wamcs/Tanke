@@ -12,7 +12,7 @@ import com.lptiyu.tanke.R;
 import com.lptiyu.tanke.activities.gameplaying.GamePlayingActivity;
 import com.lptiyu.tanke.base.recyclerview.BaseViewHolder;
 import com.lptiyu.tanke.entity.GetGameStatusResponse;
-import com.lptiyu.tanke.enums.GameState;
+import com.lptiyu.tanke.enums.GameTag;
 import com.lptiyu.tanke.enums.GameType;
 import com.lptiyu.tanke.enums.PlayStatus;
 import com.lptiyu.tanke.gamedetails.GameDetailsActivity;
@@ -87,10 +87,9 @@ public class NormalViewHolder extends BaseViewHolder<GameDisplayEntity> {
 
     // 网络异常对话框
     private void showNetUnConnectDialog() {
-        PopupWindowUtils.getInstance().showNetExceptionPopupwindow(getContext(), new PopupWindowUtils
-                .OnNetExceptionListener() {
+        PopupWindowUtils.getInstance().showNetExceptionPopupwindow(getContext(), new PopupWindowUtils.OnRetryCallback() {
             @Override
-            public void onClick(View view) {
+            public void onRetry() {
                 loadNetWorkData();
             }
         });
@@ -180,16 +179,16 @@ public class NormalViewHolder extends BaseViewHolder<GameDisplayEntity> {
 
     private void parseTag(GameDisplayEntity entity) {
         switch (entity.getState()) {
-            case GameState.NORMAL:
+            case GameTag.NORMAL:
                 tag.setText("");
                 return;
-            case GameState.ALPHA_TEST:
+            case GameTag.ALPHA_TEST:
                 tag.setText("内测中");
                 return;
-            case GameState.MAINTAINING:
+            case GameTag.MAINTAINING:
                 tag.setText("维护中");
                 return;
-            case GameState.FINISHED:
+            case GameTag.FINISHED:
                 tag.setText("已结束");
                 return;
             default:
@@ -209,17 +208,17 @@ public class NormalViewHolder extends BaseViewHolder<GameDisplayEntity> {
 
     private void parseInnerTest(GameDisplayEntity entity) {
         switch (entity.getState()) {
-            case GameState.NORMAL:
+            case GameTag.NORMAL:
                 innerTest.setVisibility(View.GONE);
                 return;
-            case GameState.ALPHA_TEST:
+            case GameTag.ALPHA_TEST:
                 innerTest.setVisibility(View.VISIBLE);
                 innerTest.setImageResource(R.drawable.inner_test);
                 return;
-            case GameState.MAINTAINING:
+            case GameTag.MAINTAINING:
                 innerTest.setVisibility(View.GONE);
                 return;
-            case GameState.FINISHED:
+            case GameTag.FINISHED:
                 innerTest.setVisibility(View.VISIBLE);
                 innerTest.setImageResource(R.drawable.have_finished);
                 return;
@@ -234,7 +233,7 @@ public class NormalViewHolder extends BaseViewHolder<GameDisplayEntity> {
                 Intent intent = new Intent();
                 intent.setClass(getContext(), GameDetailsActivity.class);
                 intent.putExtra(Conf.GAME_ID, gameDisplayEntity.getId());
-                intent.putExtra(Conf.FROM_WHERE, Conf.NormalViewHolder);
+                intent.putExtra(Conf.FROM_WHERE, Conf.NORMAL_VIEW_HOLDER);
                 getContext().startActivity(intent);
                 break;
             case PlayStatus.GAME_OVER://游戏结束，暂不考虑

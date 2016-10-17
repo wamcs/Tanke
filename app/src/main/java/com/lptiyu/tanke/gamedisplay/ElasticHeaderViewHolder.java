@@ -136,10 +136,9 @@ public class ElasticHeaderViewHolder extends BaseViewHolder<GameDisplayEntity> {
         if (NetworkUtil.checkIsNetworkConnected()) {
             loadBanner();
         } else {
-            PopupWindowUtils.getInstance().showNetExceptionPopupwindow(getContext(), new PopupWindowUtils
-                    .OnNetExceptionListener() {
+            PopupWindowUtils.getInstance().showNetExceptionPopupwindow(getContext(), new PopupWindowUtils.OnRetryCallback() {
                 @Override
-                public void onClick(View view) {
+                public void onRetry() {
                     startLoadBanner();
                 }
             });
@@ -280,7 +279,7 @@ public class ElasticHeaderViewHolder extends BaseViewHolder<GameDisplayEntity> {
                 Intent intent = new Intent();
                 intent.setClass(getContext(), GameDetailsActivity.class);
                 intent.putExtra(Conf.GAME_ID, gameDisplayEntity.getId());
-                intent.putExtra(Conf.FROM_WHERE, Conf.ElasticHeaderViewHolder);
+                intent.putExtra(Conf.FROM_WHERE, Conf.ELASTIC_HEADER_VIEW_HOLDER);
                 getContext().startActivity(intent);
                 break;
             case PlayStatus.GAME_OVER://游戏结束，暂不考虑
@@ -307,10 +306,9 @@ public class ElasticHeaderViewHolder extends BaseViewHolder<GameDisplayEntity> {
 
     // 网络异常对话框
     private void showNetUnConnectDialog(final int index) {
-        PopupWindowUtils.getInstance().showNetExceptionPopupwindow(getContext(), new PopupWindowUtils
-                .OnNetExceptionListener() {
+        PopupWindowUtils.getInstance().showNetExceptionPopupwindow(getContext(), new PopupWindowUtils.OnRetryCallback() {
             @Override
-            public void onClick(View view) {
+            public void onRetry() {
                 loadNetWorkData(index);
             }
         });

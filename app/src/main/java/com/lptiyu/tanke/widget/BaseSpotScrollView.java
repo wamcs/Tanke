@@ -16,7 +16,7 @@ import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 
 import com.lptiyu.tanke.R;
-import com.lptiyu.tanke.utils.Display;
+import com.lptiyu.tanke.utils.DisplayUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -112,7 +112,7 @@ public class BaseSpotScrollView extends HorizontalScrollView {
       spotItemLineColor = a.getColor(R.styleable.BaseSpotScrollView_spotItemLineColor, DEFAULT_SPOT_ITEM_LINE_COLOR);
       spotItemLineHeight = a.getDimension(R.styleable.BaseSpotScrollView_spotItemLineHeight, DEFAULT_SPOT_ITEM_LINE_HEIGHT);
       spotItemLineWidth = a.getDimension(R.styleable.BaseSpotScrollView_spotItemLineWidth, DEFAULT_SPOT_ITEM_LINE_WIDTH);
-      spotTextSize = a.getDimension(R.styleable.BaseSpotScrollView_spotTextSize, Display.sp2px(getContext(), 12));
+      spotTextSize = a.getDimension(R.styleable.BaseSpotScrollView_spotTextSize, DisplayUtils.sp2px(getContext(), 12));
       spotCircleRadius = a.getDimension(R.styleable.BaseSpotScrollView_spotCircleRadius, DEFAULT_SPOT_CIRCLE_RADIUS);
     } finally {
       a.recycle();
@@ -428,16 +428,16 @@ public class BaseSpotScrollView extends HorizontalScrollView {
       switch (mState) {
         case STATE_DONE:
           mPaint.setColor(getResources().getColor(R.color.default_font_color));
-          canvas.drawCircle(mWidth / 2, mHeight / 2, mRadius + Display.dip2px(3), mPaint);
+          canvas.drawCircle(mWidth / 2, mHeight / 2, mRadius + DisplayUtils.dp2px(3), mPaint);
           mPaint.setColor(spotDoneColor);
           canvas.drawCircle(mWidth / 2, mHeight / 2, mRadius, mPaint);
           break;
 
         case STATE_DOING:
 //          mPaint.setColor(getResources().getColor(R.color.default_font_color));
-//          canvas.drawCircle(mWidth / 2, mHeight / 2, mRadius + Display.dip2px(3), mPaint);
+//          canvas.drawCircle(mWidth / 2, mHeight / 2, mRadius + DisplayUtils.dp2px(3), mPaint);
           mPaint.setColor(spotDoingColor);
-          canvas.drawCircle(mWidth / 2, mHeight / 2, mRadius + Display.dip2px(3), mPaint);
+          canvas.drawCircle(mWidth / 2, mHeight / 2, mRadius + DisplayUtils.dp2px(3), mPaint);
           mPaint.setColor(spotDoingAnimationColor);
           canvas.drawCircle(mWidth / 2, mHeight / 2, spotDoingAnimationRadius, mPaint);
           break;

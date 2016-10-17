@@ -2,13 +2,49 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/activity_game_detail"
+    android:id="@+id/ptScrollView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.lptiyu.tanke.activities.gamedetail.GameDetailActivity">
 
-    <com.ecloud.pulltozoomview.PullToZoomScrollViewEx
-        android:id="@+id/ptScrollView"
+    <RelativeLayout
+        android:id="@+id/rl_title"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:padding="10dp"
+            android:text="游戏详情"/>
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/tv_enter_game"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="10dp"
+        android:background="@drawable/shape_bg_enter_game"
+        android:gravity="center"
+        android:padding="10dp"
+        android:text="进入游戏"
+        android:textColor="@color/white10"
+        android:textSize="16sp"/>
+
+    <com.lptiyu.tanke.widget.PullToZoomScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/tv_enter_game"
+        android:layout_below="@id/rl_title">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        </RelativeLayout>
+    </com.lptiyu.tanke.widget.PullToZoomScrollView>
+
+
 </RelativeLayout>

@@ -11,7 +11,7 @@ import com.lptiyu.tanke.utils.TimeUtils;
 
 public final class Conf {
 
-    public static final String IMG_DISTINGUISH_URL = "img_distinguish_url";
+    public static final String IMG_DISTINGUISH_ARRAY = "img_distinguish_url";
 
     public static final String IS_FIRST_IN_APP = "is_first_in_app";
     public static final String IS_FIRST_IN_IMAGE_DISTINGUISH_ACTIVITY = "is_first_in_image_distinguish";
@@ -78,6 +78,7 @@ public final class Conf {
 
 
     public static final String GAME_ID = "game_id";
+    public static final String GAME_TYPE = "game_type";
     public static final String GAME_DETAIL = "game_detail";
 
     /**
@@ -122,13 +123,16 @@ public final class Conf {
     public static final long TEMP_GAME_ID = -1;
 
     public static final String POINT = "point";
+    public static final String CLICK_INDEX = "click_index";
+    public static final String INDEX = "index";
+    public static final String POINT_LIST = "point_list";
 
     public static final String UNZIPPED_DIR = "unZippedDir";
 
     public static final String FROM_WHERE = "from_where";
-    public static final String NormalViewHolder = "NormalViewHolder";
-    public static final String ElasticHeaderViewHolder = "ElasticHeaderViewHolder";
-    public static final String GamePlay2Activity = "GamePlay2Activity";
+    public static final String NORMAL_VIEW_HOLDER = "normal_view_holder";
+    public static final String ELASTIC_HEADER_VIEW_HOLDER = "elastic_header_view_holder";
+    public static final String GAME_PLAYing_V2_ACTIVITY = "game_playing_v2_activity";
 
     public static final String CURRENT_TASK = "current_task";
     public static final String IS_POINT_OVER = "is_point_over";
@@ -147,7 +151,7 @@ public final class Conf {
 
     public static final String HOME_HOT = "home_hot";
     public static final String HOME_TAB = "home_tab";
-    public static final String HOME_HOT_ENTITY = "home_hot_entity";
+    public static final String RECOMMEND = "home_hot_entity";
     public static final String HOME_TAB_ENTITY = "home_tab_entity";
 
 }

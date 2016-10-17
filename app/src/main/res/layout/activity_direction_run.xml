@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_direction_run"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.lptiyu.tanke.activities.directionrun.DirectionRunActivity">
+
+
+    <LinearLayout
+        android:id="@+id/rl_bottom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/grey08"
+        android:orientation="horizontal"
+        android:padding="20dp">
+
+        <RelativeLayout
+            android:id="@+id/rl_duration"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:padding="5dp">
+
+            <TextView
+                android:id="@+id/tv_duration_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:text="00:00:00"
+                android:textSize="22sp"
+                android:textStyle="bold"
+                android:visibility="gone"/>
+
+            <Chronometer
+                android:id="@+id/chronometer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:textSize="22sp"/>
+
+            <TextView
+                android:id="@+id/tv_duration_tip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/chronometer"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="10dp"
+                android:text="@string/duration"
+                android:textSize="16sp"/>
+
+            <Button
+                android:id="@+id/btn_start_or_stop_run"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tv_duration_tip"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="20dp"
+                android:enabled="false"
+                android:text="@string/start_run"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_distance"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:padding="5dp">
+
+            <TextView
+                android:id="@+id/tv_distance_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:text="0.0"
+                android:textSize="22sp"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/tv_distance_tip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tv_distance_value"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="10dp"
+                android:text="@string/distance"
+                android:textSize="16sp"/>
+
+            <Button
+                android:id="@+id/btn_signUp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tv_distance_tip"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="20dp"
+                android:enabled="false"
+                android:text="@string/sign_up"/>
+        </RelativeLayout>
+
+    </LinearLayout>
+
+    <com.amap.api.maps.TextureMapView
+        android:id="@+id/textureMapView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/rl_bottom"/>
+
+    <ImageView
+        android:id="@+id/img_show_current_location"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/textureMapView"
+        android:layout_alignLeft="@id/textureMapView"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:src="@drawable/wode"/>
+
+    <ImageView
+        android:id="@+id/img_show_next_task"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/img_show_current_location"
+        android:layout_alignLeft="@id/img_show_current_location"
+        android:src="@drawable/renwu"/>
+
+</RelativeLayout>

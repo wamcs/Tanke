@@ -146,7 +146,7 @@ public class CircularImageView extends ImageView {
 
     // circleCenter is the x or y of the view's center
     // radius is the radius in pixels of the cirle to be drawn
-    // paint contains the shader that will texture the shape
+    // paint contains the shader that will texture the shape_bg_enter_game
     int circleRadius = (int) (canvasSize - (borderWidth * 2)) / 2;
     // Draw Border
     canvas.drawCircle(circleRadius + borderWidth, circleRadius + borderWidth, circleRadius + borderWidth - (shadowRadius + shadowRadius / 2), paintBorder);

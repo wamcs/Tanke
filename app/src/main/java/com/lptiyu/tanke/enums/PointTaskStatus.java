@@ -5,6 +5,6 @@ package com.lptiyu.tanke.enums;
  */
 public interface PointTaskStatus {
     int FINISHED = 1;
-    int PLAYING = 0;
-    int UNSTARTED = -1;
+    int PLAYING = 2;
+    int UNSTARTED = 0;
 }

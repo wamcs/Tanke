@@ -14,7 +14,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.lptiyu.tanke.R;
-import com.lptiyu.tanke.utils.Display;
+import com.lptiyu.tanke.utils.DisplayUtils;
 import com.lptiyu.tanke.utils.Views;
 
 /**
@@ -70,7 +70,7 @@ public class LoginEditView extends LinearLayout {
         }
 
         mBaseColor = getResources().getColor(R.color.white10);
-        mTextSize = Display.dip2px(20);
+        mTextSize = DisplayUtils.dp2px(20);
         mHeight = 0;
         mImageDrawable = null;
         mDistance = 0;

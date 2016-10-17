@@ -21,7 +21,7 @@ import java.util.List;
 public class Team {
 
   // 当前用户的身份
-  @SerializedName("state")
+  @SerializedName("status")
   private UserStatus state;
 
   // 团队名称

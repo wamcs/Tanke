@@ -9,11 +9,8 @@ import com.lptiyu.tanke.base.controller.ActivityController;
 import com.lptiyu.tanke.base.ui.BaseActivity;
 import com.lptiyu.tanke.entity.response.SignUpResponse;
 import com.lptiyu.tanke.global.Accounts;
-import com.lptiyu.tanke.net.HttpService;
-import com.lptiyu.tanke.net.Response;
 import com.lptiyu.tanke.utils.LocationHelper;
 import com.lptiyu.tanke.utils.LogUtils;
-import com.lptiyu.tanke.utils.NetworkUtil;
 import com.lptiyu.tanke.utils.PopupWindowUtils;
 import com.lptiyu.tanke.utils.ToastUtil;
 import com.lptiyu.tanke.utils.xutils3.RequestParamsHelper;
@@ -31,10 +28,6 @@ import java.util.Calendar;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
-import rx.schedulers.Schedulers;
-import timber.log.Timber;
 
 public class MainActivity extends BaseActivity {
 
@@ -53,6 +46,7 @@ public class MainActivity extends BaseActivity {
 
     @BindView(R.id.page_3)
     ImageView tab3;
+    private boolean isSignUp = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,18 +54,7 @@ public class MainActivity extends BaseActivity {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         mController = new MainActivityController(this, getWindow().getDecorView());
-        init();
-        uploadInstallationId(Accounts.getId(), Accounts.getToken());
-        //自动签到
-        int dayIndex = Calendar.getInstance().get(Calendar.DAY_OF_YEAR);
-        //如果当前的天数跟存储的天数不相等，则表示用户上一次签到是在昨天
-        if (dayIndex != Accounts.getDayIndex()) {
-            signIn(Accounts.getId());
-        } else {
-            if (!Accounts.isSignUp()) {
-                signIn(Accounts.getId());
-            }
-        }
+
         //定位当前城市和经纬度
         LocationHelper locationHelper = new LocationHelper(this, new LocationHelper.OnLocationResultListener() {
             @Override
@@ -82,10 +65,32 @@ public class MainActivity extends BaseActivity {
                 Accounts.setLongitude((float) aMapLocation.getLongitude());
                 LogUtils.i("定位信息：" + aMapLocation.getCity() + aMapLocation.getCityCode() + ", 经纬度：" + aMapLocation
                         .getLatitude() + ", " + aMapLocation.getLongitude());
+                init();
             }
         });
         locationHelper.setOnceLocation(true);
         locationHelper.startLocation();
+    }
+
+    private void signUp() {
+        //自动签到
+        int dayIndex = Calendar.getInstance().get(Calendar.DAY_OF_YEAR);
+        //如果当前的天数跟存储的天数不相等，则表示用户上一次签到是在昨天
+        if (dayIndex != Accounts.getDayIndex()) {
+            signIn(Accounts.getId());
+        } else {
+            if (!Accounts.isSignUp()) {
+                signIn(Accounts.getId());
+            }
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (!isSignUp) {
+            signUp();
+        }
     }
 
     private void signIn(long id) {
@@ -94,12 +99,11 @@ public class MainActivity extends BaseActivity {
         XUtilsHelper.getInstance().get(params, new XUtilsRequestCallBack<SignUpResponse>() {
             @Override
             protected void onSuccess(SignUpResponse signUpResponse) {
+                isSignUp = true;
                 if (signUpResponse.status == 1) {
-                    PopupWindowUtils.getInstance().showSucessSignUp(MainActivity.this, signUpResponse.info + "");
+                    PopupWindowUtils.getInstance().showSucessSignUp(MainActivity.this, signUpResponse.data.tip + "");
                     Accounts.setSignUp(true);
                     Accounts.setDayIndex(Calendar.getInstance().get(Calendar.DAY_OF_YEAR));
-                } else {
-                    PopupWindowUtils.getInstance().showSucessSignUp(MainActivity.this, signUpResponse.info + "");
                 }
             }
 
@@ -142,31 +146,6 @@ public class MainActivity extends BaseActivity {
         } else {
             view.setImageResource(resUnselected);
         }
-    }
-
-    private void uploadInstallationId(long id, String token) {
-        HttpService.getUserService().registerInstallation(id, token, Accounts.getInstallationId())
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Action1<Response<Void>>() {
-                    @Override
-                    public void call(Response<Void> voidResponse) {
-                        int status = voidResponse.getStatus();
-                        if (status != 1) {
-                            ToastUtil.TextToast(voidResponse.getInfo());
-                        }
-                        Timber.d("绑定installationId成功");
-                    }
-                }, new Action1<Throwable>() {
-                    @Override
-                    public void call(Throwable throwable) {
-                        if (!NetworkUtil.checkIsNetworkConnected()) {
-                            ToastUtil.TextToast(R.string.no_network);
-                            return;
-                        }
-                        Timber.e(throwable, "loading error...");
-                    }
-                });
     }
 }
 

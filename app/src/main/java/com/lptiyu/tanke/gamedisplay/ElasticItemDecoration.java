@@ -9,7 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.lptiyu.tanke.R;
-import com.lptiyu.tanke.utils.Display;
+import com.lptiyu.tanke.utils.DisplayUtils;
 
 /**
  * EMAIL : danxionglei@foxmail.com
@@ -24,7 +24,7 @@ public class ElasticItemDecoration extends RecyclerView.ItemDecoration {
   private Drawable shadowDrawable;
   private Paint linePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 
-  private float shadowHeight = Display.dip2px(10);
+  private float shadowHeight = DisplayUtils.dp2px(10);
 
   private Context context;
 
@@ -66,8 +66,8 @@ public class ElasticItemDecoration extends RecyclerView.ItemDecoration {
         shadowDrawable.setBounds((int) rl, (int) top, (int) rr, (int) bottom);
         shadowDrawable.draw(c);
       } else {
-        bottom = top + Display.dip2px(0.5f);
-        c.drawLine(rl + Display.dip2px(21f), top, rr - Display.dip2px(15), bottom, linePaint);
+        bottom = top + DisplayUtils.dp2px(0.5f);
+        c.drawLine(rl + DisplayUtils.dp2px(21f), top, rr - DisplayUtils.dp2px(15), bottom, linePaint);
       }
     }
 
@@ -81,7 +81,7 @@ public class ElasticItemDecoration extends RecyclerView.ItemDecoration {
 //      outRect.set(0, 0, 0, (int) shadowHeight); // May be increase, for there is a shadow cast.
       outRect.set(0, 0, 0, 0);
     } else {
-      outRect.set(0, 0, 0, Display.dip2px(1)); // A line.
+      outRect.set(0, 0, 0, DisplayUtils.dp2px(1)); // A line.
     }
   }
 }

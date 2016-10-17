@@ -82,10 +82,9 @@ public class BannerPagerAdapter extends BasePagerAdapter<Banner> {
 
     // 网络异常对话框
     private void showNetUnConnectDialog() {
-        PopupWindowUtils.getInstance().showNetExceptionPopupwindow(context, new PopupWindowUtils
-                .OnNetExceptionListener() {
+        PopupWindowUtils.getInstance().showNetExceptionPopupwindow(context, new PopupWindowUtils.OnRetryCallback() {
             @Override
-            public void onClick(View view) {
+            public void onRetry() {
                 loadNetWorkData();
             }
         });
@@ -106,7 +105,7 @@ public class BannerPagerAdapter extends BasePagerAdapter<Banner> {
                                     Intent intent = new Intent();
                                     intent.setClass(context, GameDetailsActivity.class);
                                     intent.putExtra(Conf.GAME_ID, gameId);
-                                    intent.putExtra(Conf.FROM_WHERE, Conf.ElasticHeaderViewHolder);
+                                    intent.putExtra(Conf.FROM_WHERE, Conf.ELASTIC_HEADER_VIEW_HOLDER);
                                     context.startActivity(intent);
                                     break;
                                 case PlayStatus.GAME_OVER://游戏结束，暂不考虑

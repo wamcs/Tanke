@@ -13,7 +13,6 @@ import android.widget.RelativeLayout;
 import com.lptiyu.tanke.R;
 import com.lptiyu.tanke.activities.taskimagescale.TaskImageScaleActivity;
 import com.lptiyu.tanke.entity.Task;
-import com.lptiyu.tanke.enums.PointTaskStatus;
 import com.lptiyu.tanke.enums.TaskType;
 import com.lptiyu.tanke.global.Conf;
 import com.lptiyu.tanke.utils.WebViewUtils;
@@ -31,7 +30,7 @@ public class LVForPointTaskAdapter extends BaseAdapter {
     private List<Task> list_tasks;
     private Context context;
     private LayoutInflater inflater;
-  //  private ArrayList<TaskRecord> list_task_record;
+    //  private ArrayList<TaskRecord> list_task_record;
     private int count = 0;
 
     public LVForPointTaskAdapter(Context context, List<Task> list_tasks) {
@@ -40,22 +39,15 @@ public class LVForPointTaskAdapter extends BaseAdapter {
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         for (Task task : list_tasks) {
-            if (task.state == PointTaskStatus.FINISHED || task.state == PointTaskStatus.PLAYING) {
-                count++;
-            }
-            else {
-
-            }
+            //            if (task.status == PointTaskStatus.FINISHED || task.status == PointTaskStatus.PLAYING) {
+            //                count++;
+            //            }
         }
     }
 
     @Override
     public int getCount() {
-        //        Log.i("jason", "LVForPointTaskAdapter-->getCount():isPointOver=" + isPointOver + " list_tasks.size
-        // ()=" +
-        //                list_tasks.size() + "  count=" + count);
-        //return isPointOver ? list_tasks.size() : count + 1;
-        return  count;
+        return count;
     }
 
     @Override
@@ -85,11 +77,11 @@ public class LVForPointTaskAdapter extends BaseAdapter {
 
 
         //修改适合的字体，避免因为系统的设置，导致字体过大或过小
-//        int j = wSet.getDefaultFixedFontSize();
-//        if(j < 15)
-//            j=15;
-//        wSet.setDefaultFontSize(j);
-//        wSet.setMinimumFontSize(j);
+        //        int j = wSet.getDefaultFixedFontSize();
+        //        if(j < 15)
+        //            j=15;
+        //        wSet.setDefaultFontSize(j);
+        //        wSet.setMinimumFontSize(j);
 
         // 特别要注意这行代码,意思是在js中条用android中的第一个参数的实际名字。这里第一个参数是this。
         //也就是本类的实例。imgelistener是本类的实例在js中的名字。
@@ -143,22 +135,22 @@ public class LVForPointTaskAdapter extends BaseAdapter {
         });
 
 
-        switch (task.state) {
-            case PointTaskStatus.UNSTARTED://未开启
-                vh.rlFinishInfo.setVisibility(View.GONE);
-                break;
-            case PointTaskStatus.PLAYING://正在玩
-                vh.rlFinishInfo.setVisibility(View.GONE);
-                break;
-            case PointTaskStatus.FINISHED://已完成
-                {
-                    vh.rlFinishInfo.setVisibility(View.VISIBLE);
-
-                    vh.ctvExp.setText("+" + task.exp);
-                    if (task.finishTime != null && task.finishTime !="")
-                    vh.ctvFfinishTime.setText(task.finishTime.substring(0, task.finishTime.lastIndexOf(":")));
-                }
-        }
+        //        switch (task.status) {
+        //            case PointTaskStatus.UNSTARTED://未开启
+        //                vh.rlFinishInfo.setVisibility(View.GONE);
+        //                break;
+        //            case PointTaskStatus.PLAYING://正在玩
+        //                vh.rlFinishInfo.setVisibility(View.GONE);
+        //                break;
+        //            case PointTaskStatus.FINISHED://已完成
+        //            {
+        //                vh.rlFinishInfo.setVisibility(View.VISIBLE);
+        //
+        //                vh.ctvExp.setText("+" + task.exp);
+        //                if (task.ftime != null && task.ftime != "")
+        //                    vh.ctvFfinishTime.setText(task.ftime.substring(0, task.ftime.lastIndexOf(":")));
+        //            }
+        //        }
 
         if (Integer.parseInt(task.type) == TaskType.FINISH) {
             vh.rlFinishInfo.setVisibility(View.GONE);
