@@ -1,13 +1,17 @@
 package com.lptiyu.tanke.activities.locationtask;
 
+import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.drawable.AnimationDrawable;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
@@ -49,12 +53,12 @@ public class LocationTaskActivity extends MyBaseActivity implements BDLocationLi
     private LocateHelper locateHelper;
     private double latitude;
     private double longitude;
-    private AnimationDrawable anim;
+    //    private AnimationDrawable anim;
     private long gameId;
     private Point point;
     private boolean isPointOver;
     private Task task;
-    private int DISTANCE_OFFSET = 60;
+    private final int DISTANCE_OFFSET = 60;
     private LocationTaskPresenter presenter;
     private String[] split;
     private boolean isToastShow = true;
@@ -63,6 +67,9 @@ public class LocationTaskActivity extends MyBaseActivity implements BDLocationLi
 
     private TaskResultHelper taskResultHelper;
     private Handler mHandler = new Handler();
+
+    private final double ERROR_LOCATION_RETURN = 4.9E-324;
+    private AlertDialog permissionDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -124,6 +131,11 @@ public class LocationTaskActivity extends MyBaseActivity implements BDLocationLi
             locateHelper.stopLocate();
             locateHelper.unRegisterLocationListener(this);
         }
+        if (permissionDialog != null) {
+            if (permissionDialog.isShowing())
+                permissionDialog.dismiss();
+            permissionDialog = null;
+        }
     }
 
     @Override
@@ -133,8 +145,58 @@ public class LocationTaskActivity extends MyBaseActivity implements BDLocationLi
         //经度
         longitude = bdLocation.getLongitude();
         Log.i("jason", "定位信息latitude：" + latitude + ", longitude:" + longitude);
+        if (latitude == ERROR_LOCATION_RETURN || longitude == ERROR_LOCATION_RETURN) {
+            showPermissionFailTip();
+            return;
+        } else {
+            if (permissionDialog != null) {
+                permissionDialog.dismiss();
+            }
+        }
         //核对位置
         checkLocation();
+    }
+
+    private void showPermissionFailTip() {
+        if (permissionDialog == null) {
+            permissionDialog = new AlertDialog.Builder(this).setMessage("此功能需要您授予定位权限，请前往“设置”->“应用管理”，选择“步道探秘”进行授权设置")
+                    .setPositiveButton("前往设置", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            PackageManager pm = getPackageManager();
+                            PackageInfo info = null;
+                            try {
+                                info = pm.getPackageInfo(getPackageName(), 0);
+                            } catch (PackageManager.NameNotFoundException e) {
+                                e.printStackTrace();
+                            }
+                            Intent intent = new Intent();
+                            intent.setAction("android.intent.action.MAIN");
+                            intent.setClassName("com.android.settings", "com.android.settings" +
+                                    ".ManageApplications");
+                            intent.putExtra("extra_package_uid", info.applicationInfo.uid);
+                            try {
+                                startActivity(intent);
+                            } catch (Exception e) {
+                                Toast.makeText(LocationTaskActivity.this, "前往失败，请手动前往设置->应用管理授权", Toast
+                                        .LENGTH_SHORT).show();
+                            }
+                        }
+                    }).setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            LocationTaskActivity.this.finish();
+                        }
+                    }).setCancelable(false).create();
+        }
+        if (permissionDialog != null && !permissionDialog.isShowing()) {
+            permissionDialog.show();
+        }
+        //        if (locateHelper != null)
+        //            locateHelper.stopLocate();
+        //        if (taskResultHelper != null) {
+        //            taskResultHelper.stopAnim();
+        //        }
     }
 
     private void checkLocation() {
@@ -238,4 +300,5 @@ public class LocationTaskActivity extends MyBaseActivity implements BDLocationLi
         super.onPause();
         isToastShow = false;
     }
+
 }

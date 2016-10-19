@@ -124,6 +124,8 @@ public class ThirdLoginHelper implements PlatformActionListener {
                         Accounts.setId(entity.getUid());
                         Accounts.setToken(entity.getToken());
                         Accounts.setPlatform(platformType);
+                        Accounts.setNickName(entity.getNickname());
+                        Accounts.setAvatar(entity.getAvatar());
                         intentToSignUP.setClass(activity, MainActivity.class);
                         activity.startActivity(intentToSignUP);
                     }
@@ -148,27 +150,49 @@ public class ThirdLoginHelper implements PlatformActionListener {
         if (platform.getName().equals(QZONE)) {
             getQzoneUserInformation(hashMap);
             login(id, UserService.USER_TYPE_QQ, ANDROID, avatar_url, nick_name);
-            return;
+            //            return;
         }
 
         if (platform.getName().equals(WEIBO)) {
             getWeiboUserInformation(hashMap);
             login(id, UserService.USER_TYPE_WEIBO, ANDROID, avatar_url, nick_name);
-            return;
+            //            return;
         }
         if (platform.getName().equals(WECHAT)) {
             getWechatUserInformation(hashMap);
             login(id, UserService.USER_TYPE_WEIXIN, ANDROID, avatar_url, nick_name);
         }
+
+        if (callback != null) {
+            callback.onSuccess();
+        }
     }
 
     @Override
     public void onError(Platform platform, int i, Throwable throwable) {
-
+        if (callback != null) {
+            callback.onError();
+        }
     }
 
     @Override
     public void onCancel(Platform platform, int i) {
+        if (callback != null) {
+            callback.onCancle();
+        }
+    }
 
+    private OnThirdLoginCallback callback;
+
+    public void setThirdLoginCallback(OnThirdLoginCallback callback) {
+        this.callback = callback;
+    }
+
+    public interface OnThirdLoginCallback {
+        void onSuccess();
+
+        void onError();
+
+        void onCancle();
     }
 }

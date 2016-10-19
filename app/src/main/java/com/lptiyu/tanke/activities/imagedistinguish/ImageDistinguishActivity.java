@@ -1,7 +1,10 @@
 package com.lptiyu.tanke.activities.imagedistinguish;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.Surface;
@@ -13,6 +16,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.lptiyu.tanke.R;
+import com.lptiyu.tanke.RunApplication;
 import com.lptiyu.tanke.activities.base.MyBaseActivity;
 import com.lptiyu.tanke.entity.Point;
 import com.lptiyu.tanke.entity.Task;
@@ -49,8 +53,10 @@ public class ImageDistinguishActivity extends MyBaseActivity implements Imagedis
             "3tDDVYPVBvQ3sFL6qZYE208oShLmwE701HnisoQOtM1CHBw3a78VlWRF6YFgCjwijLdUdPAzlUfU7PspcMsueAXRoPfgLktEhoeG7e719f320a1b6dfd44356f8c4de9d7d8ARkKDZE562C3BwYoNN3mvUrW5KuxSn4hEV1AW0WmlffE1pIfsJhN9MSnvrEJOrTNjQW2";
 
     static {
-        System.loadLibrary("EasyAR");
-        System.loadLibrary("HelloARVideoNative");
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            System.loadLibrary("EasyAR");
+            System.loadLibrary("HelloARVideoNative");
+        }
     }
 
     @BindView(R.id.img_startScan)
@@ -86,7 +92,7 @@ public class ImageDistinguishActivity extends MyBaseActivity implements Imagedis
 
     public static native void nativeStopAr();
 
-    private native boolean nativeInit();
+    //    private native boolean nativeInit();
 
     private native void nativeDestory();
 
@@ -160,8 +166,10 @@ public class ImageDistinguishActivity extends MyBaseActivity implements Imagedis
             public void onSuccess() {
                 isOK = true;
                 taskResultHelper.startAnim();
-                timer.cancel();
-                timer = null;
+                if (timer != null) {
+                    timer.cancel();
+                    timer = null;
+                }
                 mHandler = null;
                 loadNetWorkData();
             }
@@ -248,7 +256,9 @@ public class ImageDistinguishActivity extends MyBaseActivity implements Imagedis
         if (timer != null) {
             timer.cancel();
         }
-        ImageDistinguishActivity.nativeStopAr();
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            ImageDistinguishActivity.nativeStopAr();
+        }
         imgStartScan.setImageResource(R.drawable.img_start_distinguish);
         tvScanningTip.setVisibility(View.GONE);
     }
@@ -334,6 +344,16 @@ public class ImageDistinguishActivity extends MyBaseActivity implements Imagedis
     @Override
     protected void onStart() {
         super.onStart();
+        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            new AlertDialog.Builder(this).setMessage("您当前的手机系统暂不支持此功能").setNegativeButton("确定", new DialogInterface
+                    .OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    finish();
+                }
+            }).create().show();
+            return;
+        }
         if (!isInit)
             init();
     }
@@ -341,7 +361,9 @@ public class ImageDistinguishActivity extends MyBaseActivity implements Imagedis
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        nativeDestory();
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            nativeDestory();
+        }
         if (timer != null) {
             timer.cancel();
             timer = null;

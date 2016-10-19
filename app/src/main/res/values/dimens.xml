@@ -302,4 +302,8 @@
     <dimen name="clue_display_title_size">20sp</dimen>
 
 
+    <dimen name="seperator_height">9dp</dimen>
+    <dimen name="item_seperator_height">7dp</dimen>
+
+
 </resources>

@@ -287,9 +287,9 @@ public class GamePlaying2Activity extends MyBaseActivity implements GamePlaying2
                             //如果当前点还没有结束，则判断此时处于哪个任务
                             if (point.state == PointTaskStatus.PLAYING)
                             {
-                                 if(i1 == pointRecord.task.size() && i1>0 && point.list_task.size() >= i1)
+                                 if(i1 == pointRecord.task.size()-1 && i1>=0 && point.list_task.size() > i1)
                                  {
-                                    point.list_task.get(i1).state = PointTaskStatus.PLAYING;
+                                    point.list_task.get(i1+1).state = PointTaskStatus.PLAYING;
                                  }
                             }
 

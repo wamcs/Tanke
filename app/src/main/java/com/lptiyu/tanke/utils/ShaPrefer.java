@@ -82,7 +82,7 @@ public class ShaPrefer {
       editor.putString(Conf.CITY_NAME, ((City) value).getName());
       editor.putString(Conf.CITY_CODE, ((City) value).getId());
     } else {
-      throw new IllegalArgumentException("ShaPrefer illegal argument");
+//      throw new IllegalArgumentException("ShaPrefer illegal argument");
     }
     editor.apply();
   }

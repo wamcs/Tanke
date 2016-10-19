@@ -59,7 +59,9 @@ class BaseListControllerImpl<Data> implements ListController{
           public void call(List<Data> datas) {
 
             listener.getAdapter().setData(datas);
-            RunApplication.gameList = (List<GameDisplayEntity>)listener.getAdapter().getData();
+            if (datas instanceof GameDisplayEntity){
+              RunApplication.gameList = (List<GameDisplayEntity>)listener.getAdapter().getData();
+            }
             changeRefreshState(false);
           }
         }, new Action1<Throwable>() {

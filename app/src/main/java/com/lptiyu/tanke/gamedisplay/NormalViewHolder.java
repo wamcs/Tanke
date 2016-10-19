@@ -1,6 +1,5 @@
 package com.lptiyu.tanke.gamedisplay;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.util.Log;
 import android.view.View;
@@ -71,10 +70,10 @@ public class NormalViewHolder extends BaseViewHolder<GameDisplayEntity> {
     GameDisplayEntity gameDisplayEntity;
 
     private GameDisplayFragment fragment;
-    private int gameZipDownloadFailedNum = 3;
-    private ProgressDialog progressDialog;
-    //    private final GameZipHelper gameZipHelper;
-    //    private GameZipScanner mGameZipScanner;
+//    private int gameZipDownloadFailedNum = 3;
+//    private ProgressDialog progressDialog;
+//    //    private final GameZipHelper gameZipHelper;
+//    //    private GameZipScanner mGameZipScanner;
 
     NormalViewHolder(ViewGroup parent, GameDisplayFragment fragment) {
         super(fromResLayout(parent, R.layout.item_game_display));

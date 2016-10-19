@@ -181,9 +181,9 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:visibility="gone"
                 android:layout_marginRight="@dimen/setting_activity_arrow_margin_right"
-                android:src="@mipmap/arrow_left_black"/>
+                android:src="@mipmap/arrow_left_black"
+                android:visibility="gone"/>
 
 
         </RelativeLayout>
@@ -194,7 +194,7 @@
     <View
         android:id="@+id/fragment_user_center_shadow"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/y26"
+        android:layout_height="@dimen/seperator_height"
         android:layout_below="@id/user_message_layout"
         android:background="@drawable/shadow"/>
 
@@ -202,8 +202,7 @@
         android:id="@+id/user_game_playing"
         android:layout_width="match_parent"
         android:layout_height="@dimen/fragment_user_center_item_height"
-        android:layout_below="@id/user_message_layout"
-        android:layout_marginTop="20.0px"
+        android:layout_below="@id/fragment_user_center_shadow"
         android:background="@drawable/fragment_user_center_item_bg"
         android:gravity="center_vertical"
         android:orientation="horizontal">

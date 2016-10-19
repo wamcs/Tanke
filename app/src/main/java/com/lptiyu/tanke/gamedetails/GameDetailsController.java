@@ -121,7 +121,7 @@ public class GameDetailsController extends ActivityController {
             gameDetailsSubscription = null;
         }
 
-     //
+        //
         // showLoadingDialog();
         mTextTitle.setText("加载中...");
 
@@ -133,7 +133,7 @@ public class GameDetailsController extends ActivityController {
                     @Override
                     public GameDetailResponse call(Response<GameDetailResponse> response) {
                         if (response.getStatus() != Response.RESPONSE_OK || response.getData() == null) {
-                           // mLoadingDialog.dismiss();
+                            // mLoadingDialog.dismiss();
                             Timber.e("Network Error (%d, %s)", response.getStatus(), response.getInfo());
                             throw new IllegalStateException(response.getInfo());
                         }
@@ -144,12 +144,12 @@ public class GameDetailsController extends ActivityController {
                     @Override
                     public void call(GameDetailResponse gameDetailsEntity) {
                         bind(gameDetailsEntity);
-                       // mLoadingDialog.dismiss();
+                        // mLoadingDialog.dismiss();
                     }
                 }, new Action1<Throwable>() {
                     @Override
                     public void call(Throwable throwable) {
-                       // mLoadingDialog.dismiss();
+                        // mLoadingDialog.dismiss();
                         ToastUtil.TextToast(throwable.getMessage());
                     }
                 });
@@ -183,9 +183,7 @@ public class GameDetailsController extends ActivityController {
                 if (entity.states == 3)//游戏已经下线，但还展示在前台
                 {
                     mTextEnterGame.setText("游戏已经下线休息了~");
-                }
-                else
-                {
+                } else {
                     mTextEnterGame.setText("进入游戏");
                 }
 
@@ -195,9 +193,7 @@ public class GameDetailsController extends ActivityController {
                 if (entity.states == 3)//游戏已经下线，但还展示在前台
                 {
                     mTextEnterGame.setText("游戏已经下线休息了~");
-                }
-                else
-                {
+                } else {
                     mTextEnterGame.setText("进入游戏");
                 }
                 break;
@@ -205,9 +201,7 @@ public class GameDetailsController extends ActivityController {
                 if (entity.states == 3)//游戏已经下线，但还展示在前台
                 {
                     mTextEnterGame.setText("游戏已经下线休息了~");
-                }
-                else
-                {
+                } else {
                     mTextEnterGame.setText("放弃游戏");
                 }
 
@@ -273,13 +267,13 @@ public class GameDetailsController extends ActivityController {
         //默认显示武汉
         String lat = "30.515372";
         String lon = "114.419876";
-        if (mGameDetailsResponse.latitude != null && mGameDetailsResponse.latitude.equals("") && Double.valueOf(mGameDetailsResponse.latitude) > 0.1)
-        {
+        if (mGameDetailsResponse.latitude != null && mGameDetailsResponse.latitude.equals("") && Double.valueOf
+                (mGameDetailsResponse.latitude) > 0.1) {
             lat = mGameDetailsResponse.latitude;
         }
 
-        if (mGameDetailsResponse.longtitude != null && mGameDetailsResponse.longtitude.equals("") && Double.valueOf(mGameDetailsResponse.longtitude) > 0.1)
-        {
+        if (mGameDetailsResponse.longtitude != null && mGameDetailsResponse.longtitude.equals("") && Double.valueOf
+                (mGameDetailsResponse.longtitude) > 0.1) {
             lon = mGameDetailsResponse.longtitude;
         }
 
@@ -411,7 +405,7 @@ public class GameDetailsController extends ActivityController {
 
                             /*标记游戏状态为已放弃*/
 
-                            RunApplication.getInstance().setGameDataByGameId(gameId,PlayStatus.NEVER_ENTER_GANME,"");
+                            RunApplication.getInstance().setGameDataByGameId(gameId, PlayStatus.NEVER_ENTER_GANME, "");
 
                             //同时清空该游戏的记录
                             RunApplication.setgetPlayingThemeLine(null);
@@ -421,15 +415,15 @@ public class GameDetailsController extends ActivityController {
                             RunApplication.isPlayingStatusChanged = true;
 
                             getActivity().setResult(ResultCode.LEAVE_GAME);
-                            RunApplication.getInstance().finishActivity();
+                            getActivity().finish();
+                            //                            RunApplication.getInstance().finishActivity();
                             //                            Toast.makeText(getContext(), "您已成功放弃该游戏", Toast
                             // .LENGTH_SHORT).show();
                         } else {
                             Toast.makeText(getContext(), "放弃该游戏失败", Toast.LENGTH_SHORT).show();
                         }
 
-                        if (progressDialog != null)
-                        {
+                        if (progressDialog != null) {
                             progressDialog.dismiss();
                         }
                     }
@@ -439,8 +433,7 @@ public class GameDetailsController extends ActivityController {
                         Toast.makeText(getContext(), "放弃该游戏失败", Toast.LENGTH_SHORT).show();
                         Log.i("jason", "abandon game error:" + throwable.getMessage());
 
-                        if (progressDialog != null)
-                        {
+                        if (progressDialog != null) {
                             progressDialog.dismiss();
                         }
                     }
@@ -460,7 +453,8 @@ public class GameDetailsController extends ActivityController {
                     tempGameZipUrl = response.getData().game_zip;
 
                     /*标记游戏状态为已经进入*/
-                    RunApplication.getInstance().setGameDataByGameId(gameId,PlayStatus.HAVE_ENTERED_bUT_NOT_START_GAME,tempGameZipUrl);
+                    RunApplication.getInstance().setGameDataByGameId(gameId, PlayStatus
+                            .HAVE_ENTERED_bUT_NOT_START_GAME, tempGameZipUrl);
 
                     if (new GameZipUtils().isParsedFileExist(gameId) == null) {
                         //根据获取到的游戏包下载链接去下载游戏

@@ -1,5 +1,6 @@
 package com.lptiyu.tanke.initialization.controller;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
@@ -7,6 +8,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.BounceInterpolator;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 
@@ -21,6 +23,7 @@ import com.lptiyu.tanke.io.net.HttpService;
 import com.lptiyu.tanke.io.net.Response;
 import com.lptiyu.tanke.io.net.UserService;
 import com.lptiyu.tanke.pojo.UserEntity;
+import com.lptiyu.tanke.utils.ProgressDialogHelper;
 import com.lptiyu.tanke.utils.ThirdLoginHelper;
 import com.lptiyu.tanke.utils.ToastUtil;
 
@@ -48,10 +51,13 @@ public class LoginController extends ActivityController {
     ImageView mWeixinLogin;
     @BindView(R.id.login_weibo_button)
     ImageView mWeiboLogin;
+    @BindView(R.id.login_login_button)
+    Button mCtvLogin;
 
     private boolean isButtonEnable = true;
 
     private ThirdLoginHelper helper;
+    private ProgressDialog dialog;
 
     public LoginController(AppCompatActivity activity, View view) {
         super(activity, view);
@@ -66,6 +72,7 @@ public class LoginController extends ActivityController {
         if (phoneNumber != null && !phoneNumber.equals("null") && !TextUtils.isEmpty(phoneNumber))
             mInputPhoneEditText.setText(phoneNumber);
         initClickEvent();
+        dialog = ProgressDialogHelper.getSpinnerProgressDialog(getActivity());
     }
 
     private void initClickEvent() {
@@ -77,6 +84,9 @@ public class LoginController extends ActivityController {
                 }
 
                 if (event.getAction() == MotionEvent.ACTION_UP) {
+                    if (dialog != null && !dialog.isShowing()) {
+                        dialog.show();
+                    }
                     isButtonEnable = false;
                     mQqLogin.postDelayed(new Runnable() {
                         @Override
@@ -108,6 +118,9 @@ public class LoginController extends ActivityController {
                 }
 
                 if (event.getAction() == MotionEvent.ACTION_UP) {
+                    if (dialog != null && !dialog.isShowing()) {
+                        dialog.show();
+                    }
                     isButtonEnable = false;
                     mWeixinLogin.postDelayed(new Runnable() {
                         @Override
@@ -161,6 +174,32 @@ public class LoginController extends ActivityController {
                 return true;
             }
         });
+
+        helper.setThirdLoginCallback(new ThirdLoginHelper.OnThirdLoginCallback() {
+            @Override
+            public void onSuccess() {
+                if (dialog != null) {
+                    dialog.setMessage("登录中...");
+                    dialog.show();
+                }
+            }
+
+            @Override
+            public void onError() {
+                if (dialog != null) {
+                    dialog.dismiss();
+                }
+                ToastUtil.TextToast("登录失败");
+            }
+
+            @Override
+            public void onCancle() {
+                if (dialog != null) {
+                    dialog.dismiss();
+                }
+                ToastUtil.TextToast("您取消了授权");
+            }
+        });
     }
 
     @OnClick(R.id.login_forget_password_button)
@@ -198,6 +237,9 @@ public class LoginController extends ActivityController {
         final String phoneNumber = mInputPhoneEditText.getText().toString();
         final String password = mInputPasswordEditText.getText().toString();
 
+        mCtvLogin.setText("登录中...");
+        mCtvLogin.setEnabled(false);
+
         HttpService.getUserService().login(phoneNumber, password)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
@@ -206,9 +248,11 @@ public class LoginController extends ActivityController {
                     @Override
                     public void call(Response<UserEntity> userEntityResponse) {
                         int status = userEntityResponse.getStatus();
-                       // ToastUtil.TextToast("status:" + status);
+                        // ToastUtil.TextToast("status:" + status);
                         if (status != 1) {
                             ToastUtil.TextToast("登录失败：" + userEntityResponse.getInfo());
+                            mCtvLogin.setText("登录");
+                            mCtvLogin.setEnabled(true);
                             return;
                         }
                         UserEntity entity = userEntityResponse.getData();
@@ -216,8 +260,8 @@ public class LoginController extends ActivityController {
                         Accounts.setToken(entity.getToken());
                         Accounts.setPhoneNumber(entity.getPhone());
                         Accounts.setPlatform(Platform.TEL);
-                        //Accounts.setNickName(entity.getNickname());
-                        //Accounts.setAvatar(entity.getAvatar());
+                        Accounts.setNickName(entity.getNickname());
+                        Accounts.setAvatar(entity.getAvatar());
                         //nickname 和 avatar 干什么用？不造
                         Intent intent = new Intent(getActivity(), MainActivity.class);
                         startActivity(intent);
@@ -227,6 +271,8 @@ public class LoginController extends ActivityController {
                     @Override
                     public void call(Throwable throwable) {
                         ToastUtil.TextToast("登录失败");
+                        mCtvLogin.setText("登录");
+                        mCtvLogin.setEnabled(true);
                     }
                 });
 
@@ -235,5 +281,15 @@ public class LoginController extends ActivityController {
     @Override
     protected boolean isToolbarEnable() {
         return false;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (dialog != null) {
+            if (dialog.isShowing())
+                dialog.dismiss();
+            dialog = null;
+        }
     }
 }
