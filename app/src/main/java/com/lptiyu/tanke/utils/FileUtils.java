@@ -351,7 +351,7 @@ public class FileUtils {
     }
 
     public static File isLocalAPKFileExist(int targetVersionCode) {
-        File[] files = DirUtils.getGameDirectory().listFiles();
+        File[] files = DirUtils.getAPKDirectory().listFiles();
         if (files != null && files.length > 0) {
             for (File file : files) {
                 HashMap<String, String> map = getAPKInfo(AppData.getContext(), file.getAbsolutePath());

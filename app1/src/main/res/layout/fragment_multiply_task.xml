@@ -1,0 +1,42 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:context=".gameplaying.task.MultiplyTaskFragment">
+
+    <RelativeLayout
+        android:id="@+id/task_answer_area"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/task_answer_area_height"
+        android:layout_alignParentBottom="true"
+        android:background="@color/colorPrimary"
+        android:visibility="gone">
+
+    </RelativeLayout>
+
+    <WebView
+        android:id="@+id/web_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/task_answer_area"/>
+
+    <ImageView
+        android:id="@+id/seal_not_open"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true"
+        android:contentDescription="@string/content_description"
+        android:scaleType="centerCrop"
+        android:src="@drawable/bg_riddle"/>
+
+    <ImageView
+        android:id="@+id/seal_finished"
+        android:layout_width="@dimen/x525"
+        android:layout_height="@dimen/y367"
+        android:layout_centerInParent="true"
+        android:contentDescription="@string/content_description"
+        android:rotation="-30"
+        android:src="@mipmap/img_seal_finished"
+        android:visibility="gone"/>
+
+</RelativeLayout>

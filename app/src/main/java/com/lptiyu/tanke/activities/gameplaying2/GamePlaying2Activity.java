@@ -5,7 +5,6 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
@@ -23,6 +22,7 @@ import com.lptiyu.tanke.entity.PointRecord;
 import com.lptiyu.tanke.entity.Task;
 import com.lptiyu.tanke.entity.TaskRecord;
 import com.lptiyu.tanke.entity.ThemeLine;
+import com.lptiyu.tanke.enums.PlayStatus;
 import com.lptiyu.tanke.enums.PointTaskStatus;
 import com.lptiyu.tanke.enums.RequestCode;
 import com.lptiyu.tanke.enums.ResultCode;
@@ -63,8 +63,6 @@ public class GamePlaying2Activity extends MyBaseActivity implements GamePlaying2
     long gameType;
     String m_title;
 
-    //    @BindView(R.id.map_view)
-    //    TextureMapView mapView;
     @BindView(R.id.img_zoom_full_screen)
     ImageView imgZoomFullScreen;
     @BindView(R.id.dragview)
@@ -76,8 +74,6 @@ public class GamePlaying2Activity extends MyBaseActivity implements GamePlaying2
 
     private String unZippedDir;
 
-    private static final int CAMERA_PERMISSION_REQUEST_CODE = 1;
-    private static final int IMAGE_DISTINGUISH = 2;
     private GVForGamePlayingAdapter adapter;
     private GameZipUtils gameZipUtils;
     private Toast toast;
@@ -93,16 +89,11 @@ public class GamePlaying2Activity extends MyBaseActivity implements GamePlaying2
         setContentView(R.layout.activity_game_playing2);
         ButterKnife.bind(this);
 
-        //        mapView = (TextureMapView) findViewById(R.id.map_view);
-
         presenter = new GamePlaying2Presenter(this);
-
-
         gamePlayingTitle.setText("加载中...");
 
         //接受过来的数据
         initData();
-
 
         //从服务器请求游戏数据(扔到onResume()里面做了)
         //        presenter.downLoadGameRecord(gameId, gameType);
@@ -127,22 +118,22 @@ public class GamePlaying2Activity extends MyBaseActivity implements GamePlaying2
         String title = intent.getStringExtra(Conf.BANNER_TITLE);
         m_title = "";
         if (gameDisplayEntity != null) {
-            Log.i("jason", "接收的游戏列表的实体类：" + gameDisplayEntity);
+            //            Log.i("jason", "接收的游戏列表的实体类：" + gameDisplayEntity);
             gameType = gameDisplayEntity.getType();
             m_title = gameDisplayEntity.getTitle();
         }
         if (gameDetailsResponse != null) {
-            Log.i("jason", "接收的游戏详情的实体类：" + gameDetailsResponse);
+            //            Log.i("jason", "接收的游戏详情的实体类：" + gameDetailsResponse);
             gameType = gameDetailsResponse.type;
             m_title = gameDetailsResponse.title;
         }
         if (gamePlayingEntity != null) {
-            Log.i("jason", "接收的正在玩的游戏实体类：" + gamePlayingEntity);
+            //            Log.i("jason", "接收的正在玩的游戏实体类：" + gamePlayingEntity);
             gameType = gamePlayingEntity.getType();
             m_title = gamePlayingEntity.getName();
         }
         if (gameFinishedEntity != null) {
-            Log.i("jason", "接收的完成的游戏实体类：" + gameFinishedEntity);
+            //            Log.i("jason", "接收的完成的游戏实体类：" + gameFinishedEntity);
             gameType = gameFinishedEntity.getType();
             m_title = gameFinishedEntity.getName();
         }
@@ -159,17 +150,16 @@ public class GamePlaying2Activity extends MyBaseActivity implements GamePlaying2
             unZippedDir = parsedFilePath;
 
             //之前有的直接使用
-            if (themeLine != null && Long.parseLong(themeLine.game_id) == gameId && Long.parseLong(themeLine.uid) == Accounts.getId())
-            {
+            if (themeLine != null && Long.parseLong(themeLine.game_id) == gameId && Long.parseLong(themeLine.uid) ==
+                    Accounts.getId()) {
 
-            }
-            else {
+            } else {
                 boolean isSuccess = gameZipUtils.transformParsedFileToEntity(parsedFilePath);
                 if (isSuccess) {
 
                     RunApplication.setgetPlayingThemeLine(gameZipUtils.mThemeLine);
                     themeLine = RunApplication.getPlayingThemeLine();
-                    themeLine.uid = Accounts.getId()+"";//存上账户信息
+                    themeLine.uid = Accounts.getId() + "";//存上账户信息
                     if (themeLine == null)
                         return;
 
@@ -204,9 +194,8 @@ public class GamePlaying2Activity extends MyBaseActivity implements GamePlaying2
         if (AppData.isFirstInGamePlaying2Activity()) {
 
 
-            Drawable drawable = BitMapUtils.decodeLargeResourceImage(this.getResources(),R.drawable.game_list_guide);
-            if (drawable != null && dragLayout!=null && dragview != null)
-            {
+            Drawable drawable = BitMapUtils.decodeLargeResourceImage(this.getResources(), R.drawable.game_list_guide);
+            if (drawable != null && dragLayout != null && dragview != null) {
                 dragview.setImageDrawable(drawable);
 
                 dragLayout.setChildView(dragview);
@@ -230,6 +219,7 @@ public class GamePlaying2Activity extends MyBaseActivity implements GamePlaying2
 
     @Override
     public void successDownLoadRecord(GameRecord gameRecord) {
+        RunApplication.isNeededRefresh = false;
         gamePlayingTitle.setText(m_title + "");
         //根据游戏记录核更新 每个任务点的状态
         initPointStatuByGameRecord(gameRecord);
@@ -255,8 +245,6 @@ public class GamePlaying2Activity extends MyBaseActivity implements GamePlaying2
         themeLine.play_statu = gameRecord.play_statu;
 
         if (gameRecord.record_text != null && gameRecord.record_text.size() > 0) {
-
-
             //将所有完成的章节点设置状态为完成状态
             int i = 0;
             for (; i < gameRecord.record_text.size(); i++) {
@@ -269,11 +257,9 @@ public class GamePlaying2Activity extends MyBaseActivity implements GamePlaying2
                         point.state = Integer.parseInt(pointRecord.statu);
 
                         //更新任务状态
-                        for(int i1 = 0;i1 < pointRecord.task.size();i1++)
-                        {
+                        for (int i1 = 0; i1 < pointRecord.task.size(); i1++) {
                             TaskRecord task_record = pointRecord.task.get(i1);
-                            int j1 = 0;
-                            for(;j1 < point.list_task.size();j1++) {
+                            for (int j1 = 0; j1 < point.list_task.size(); j1++) {
                                 Task task = point.list_task.get(j1);
                                 if (task_record.id == Integer.parseInt(task.id)) {
                                     task.state = PointTaskStatus.FINISHED;
@@ -281,18 +267,14 @@ public class GamePlaying2Activity extends MyBaseActivity implements GamePlaying2
                                     task.exp = Integer.parseInt(task_record.exp);
                                     break;
                                 }
-
                             }
 
                             //如果当前点还没有结束，则判断此时处于哪个任务
-                            if (point.state == PointTaskStatus.PLAYING)
-                            {
-                                 if(i1 == pointRecord.task.size() && i1>0 && point.list_task.size() >= i1)
-                                 {
-                                    point.list_task.get(i1).state = PointTaskStatus.PLAYING;
-                                 }
+                            if (point.state == PointTaskStatus.PLAYING) {
+                                if (i1 == pointRecord.task.size() - 1 && i1 >= 0 && point.list_task.size() > i1) {
+                                    point.list_task.get(i1 + 1).state = PointTaskStatus.PLAYING;
+                                }
                             }
-
                         }
 
                         break;
@@ -302,11 +284,9 @@ public class GamePlaying2Activity extends MyBaseActivity implements GamePlaying2
 
 
             //更新下一个点的状态
-            if (i == gameRecord.record_text.size() && i>0 && themeLine.list_points.size() >i)
-            {
+            if (i == gameRecord.record_text.size() && i > 0 && themeLine.list_points.size() > i) {
                 //如果当前点已经完成，则标记下一个点的状态和任务
-                if(themeLine.list_points.get(i-1).state == PointTaskStatus.FINISHED)
-                {
+                if (themeLine.list_points.get(i - 1).state == PointTaskStatus.FINISHED) {
                     themeLine.list_points.get(i).state = PointTaskStatus.PLAYING;
                     themeLine.list_points.get(i).list_task.get(0).state = PointTaskStatus.PLAYING;
                 }
@@ -328,11 +308,10 @@ public class GamePlaying2Activity extends MyBaseActivity implements GamePlaying2
         //loadNetWorkData();
 
         ThemeLine themeLine = RunApplication.getPlayingThemeLine();
-        if (themeLine == null || themeLine.play_statu == null || themeLine.play_statu=="" )
-        {
+        if (RunApplication.isNeededRefresh || themeLine == null || themeLine.play_statu == null || themeLine
+                .play_statu.equals("") || themeLine.play_statu.equals(PlayStatus.NEVER_ENTER_GANME + "")) {
             loadNetWorkData();
-        }
-        else {
+        } else {
             //恢复时直接读取本地数据
 
             gamePlayingTitle.setText(m_title + "");
@@ -365,8 +344,8 @@ public class GamePlaying2Activity extends MyBaseActivity implements GamePlaying2
     }
 
     @Override
-    public void failDownLoadRecord() {
-        showNetUnConnectDialog();
+    public void failDownLoadRecord(String errMsg) {
+        Toast.makeText(this, errMsg + "", Toast.LENGTH_SHORT).show();
     }
 
     private void initTimeTask() {
@@ -413,11 +392,11 @@ public class GamePlaying2Activity extends MyBaseActivity implements GamePlaying2
                     currentPoint.isNew = false;
                 }
                 adapter.notifyDataSetChanged();
-//                Log.i("jason", "点击的point：" + currentPoint);
+                //                Log.i("jason", "点击的point：" + currentPoint);
                 if (currentPoint.state == PointTaskStatus.UNSTARTED) {
                     //控制Toast的显示
                     if (toast != null) {
-                        Log.i("jason", "执行了");
+                        //                        Log.i("jason", "执行了");
                         toast.show();
                         toast = null;
                         if (thread == null) {
@@ -431,7 +410,7 @@ public class GamePlaying2Activity extends MyBaseActivity implements GamePlaying2
                 Bundle bundle = new Bundle();
                 bundle.putInt(Conf.POINT, currentPointIndex);
                 bundle.putLong(Conf.GAME_ID, gameId);
-//                bundle.putLong(Conf.GAME_TYPE, gameType);
+                //                bundle.putLong(Conf.GAME_TYPE, gameType);
                 bundle.putString(Conf.UNZIPPED_DIR, unZippedDir);
                 intent.putExtras(bundle);
                 startActivityForResult(intent, RequestCode.SKIP_TO_TASK_ACTIVITY);
@@ -446,12 +425,9 @@ public class GamePlaying2Activity extends MyBaseActivity implements GamePlaying2
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == RequestCode.SKIP_TO_TASK_ACTIVITY && resultCode == ResultCode.POINT_OVER && currentPoint
-                .state != PointTaskStatus.FINISHED) {
-
-        }
         //放弃游戏回调
         if (requestCode == RequestCode.LEAVE_GAME && resultCode == ResultCode.LEAVE_GAME) {
+            //            setResult(ResultCode.LEAVE_GAME);
             finish();
         }
     }
@@ -480,24 +456,25 @@ public class GamePlaying2Activity extends MyBaseActivity implements GamePlaying2
     protected void onDestroy() {
         super.onDestroy();
 
-        if(dragview !=  null &&  dragview.getDrawable() != null){
+        if (dragview != null && dragview.getDrawable() != null) {
 
-            Bitmap oldBitmap =  ((BitmapDrawable) dragview.getDrawable()).getBitmap();
+            Bitmap oldBitmap = ((BitmapDrawable) dragview.getDrawable()).getBitmap();
 
             dragview.setImageDrawable(null);
 
 
-            if(oldBitmap !=  null){
+            if (oldBitmap != null) {
 
                 oldBitmap.recycle();
 
-                oldBitmap =  null;
+                oldBitmap = null;
 
             }
 
         }
 
     }
+
     //上传游戏记录后回调
     @Override
     public void successUpLoadRecord() {

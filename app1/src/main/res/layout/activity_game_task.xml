@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    tools:context=".gameplaying.task.GameTaskActivity">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@id/tool_bar"
+        style="@style/Toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <include layout="@layout/layout_default_toolbar"/>
+
+    </android.support.v7.widget.Toolbar>
+
+    <com.ogaclejapan.smarttablayout.SmartTabLayout
+        android:id="@+id/view_pager_tab"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/task_fragment_tab_height"
+        android:layout_below="@id/tool_bar"
+        android:background="@color/colorPrimary"
+        android:clipToPadding="false"
+        android:paddingLeft="@dimen/x10"
+        android:paddingRight="@dimen/x10"
+        app:stl_distributeEvenly="true"
+        app:stl_clickable="true"
+        app:stl_defaultTabTextColor="@color/default_font_color"
+        app:stl_defaultTabTextHorizontalPadding="@dimen/x47"
+        app:stl_defaultTabTextSize="@dimen/task_fragment_tab_text_size"
+        app:stl_dividerColor="@color/transparent"
+        app:stl_dividerThickness="0dp"
+        app:stl_indicatorColor="@color/black02"
+        app:stl_indicatorCornerRadius="@dimen/task_fragment_tab_corner_radius"
+        app:stl_indicatorGravity="center"
+        app:stl_indicatorInterpolation="smart"
+        app:stl_indicatorThickness="@dimen/task_fragment_tab_indicator_thick"
+        app:stl_underlineColor="@color/transparent"
+        app:stl_underlineThickness="0dp"
+    />
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/view_pager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/view_pager_tab"/>
+
+</RelativeLayout>

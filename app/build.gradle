@@ -7,10 +7,10 @@ android {
 
     defaultConfig {
         applicationId "com.lptiyu.tanke"
-        minSdkVersion 16
-        targetSdkVersion 23
-        versionCode 7
-        versionName "1.0.7"
+        minSdkVersion 15
+        targetSdkVersion 22
+        versionCode 10
+        versionName "1.0.10"
         //突破65535的限制
         multiDexEnabled true
 
@@ -50,7 +50,7 @@ android {
             //zipAlign优化
             zipAlignEnabled true
             //移除无用的resource文件
-            shrinkResources true
+            shrinkResources false
             //加载默认混淆配置文件
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             //签名

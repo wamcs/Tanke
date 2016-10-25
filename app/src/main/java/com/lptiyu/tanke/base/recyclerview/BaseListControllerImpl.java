@@ -23,129 +23,129 @@ import timber.log.Timber;
  *
  * @author ldx
  */
-class BaseListControllerImpl<Data> implements ListController{
+class BaseListControllerImpl<Data> implements ListController {
 
-  private int mListPage = INIT_PAGE;
-  private boolean m_need_load_more = true;//是否需要加载更多
+    private int mListPage = INIT_PAGE;
+    private boolean m_need_load_more = true;//是否需要加载更多
 
-  private Subscription lastRequest;
+    private Subscription lastRequest;
 
-  private boolean isRefreshing = false;
+    private boolean isRefreshing = false;
 
-  private DataInteractionListener<Data> listener;
+    private DataInteractionListener<Data> listener;
 
-  private static final int INIT_PAGE = 1;
+    private static final int INIT_PAGE = 1;
 
-  public BaseListControllerImpl(DataInteractionListener<Data> listener) {
-    if (listener == null) {
-      throw new IllegalArgumentException("DataInteractionListener can not be null.");
+    public BaseListControllerImpl(DataInteractionListener<Data> listener) {
+        if (listener == null) {
+            throw new IllegalArgumentException("DataInteractionListener can not be null.");
+        }
+        this.listener = listener;
     }
-    this.listener = listener;
-  }
 
-  @Override
-  public void refreshTop() {
-    if (isRefreshing) {
-      return;
+    @Override
+    public void refreshTop() {
+        if (isRefreshing) {
+            return;
+        }
+        mListPage = INIT_PAGE;
+        m_need_load_more = true;
+        changeRefreshState(true);
+        lastRequest = listener.requestData(mListPage)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Action1<List<Data>>() {
+                    @Override
+                    public void call(List<Data> datas) {
+
+                        listener.getAdapter().setData(datas);
+                        RunApplication.gameList = (List<GameDisplayEntity>) listener.getAdapter().getData();
+                        changeRefreshState(false);
+                    }
+                }, new Action1<Throwable>() {
+                    @Override
+                    public void call(Throwable throwable) {
+                        onError(throwable);
+                        changeRefreshState(false);
+                    }
+                });
     }
-    mListPage = INIT_PAGE;
-    m_need_load_more = true;
-    changeRefreshState(true);
-    lastRequest = listener.requestData(mListPage)
-        .subscribeOn(Schedulers.io())
-        .observeOn(AndroidSchedulers.mainThread())
-        .subscribe(new Action1<List<Data>>() {
-          @Override
-          public void call(List<Data> datas) {
 
-            listener.getAdapter().setData(datas);
-            RunApplication.gameList = (List<GameDisplayEntity>)listener.getAdapter().getData();
+    @Override
+    public void refreshBottom() {
+        if (isRefreshing) {
+            return;
+        }
+
+        if (!m_need_load_more)//不需要加载
+        {
             changeRefreshState(false);
-          }
-        }, new Action1<Throwable>() {
-          @Override
-          public void call(Throwable throwable) {
-            onError(throwable);
-            changeRefreshState(false);
-          }
-        });
-  }
+            return;
+        }
 
-  @Override
-  public void refreshBottom() {
-    if (isRefreshing) {
-      return;
+        mListPage++;
+        changeRefreshState(true);
+        lastRequest = listener.requestData(mListPage)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Action1<List<Data>>() {
+                    @Override
+                    public void call(List<Data> datas) {
+                        if (datas.size() == 0) {
+                            m_need_load_more = false;
+                            mListPage--;
+                        }
+                        listener.getAdapter().addData(datas);
+                        RunApplication.gameList = (List<GameDisplayEntity>) listener.getAdapter().getData();
+                        changeRefreshState(false);
+                    }
+                }, new Action1<Throwable>() {
+                    @Override
+                    public void call(Throwable throwable) {
+                        m_need_load_more = true;
+                        mListPage--;
+                        onError(throwable);
+                        changeRefreshState(false);
+                    }
+                });
     }
 
-    if (!m_need_load_more)//不需要加载
-    {
-      changeRefreshState(false);
-      return;
+    @Override
+    public boolean isRefreshing() {
+        return isRefreshing;
     }
 
-    mListPage++;
-    changeRefreshState(true);
-    lastRequest = listener.requestData(mListPage)
-        .subscribeOn(Schedulers.io())
-        .observeOn(AndroidSchedulers.mainThread())
-        .subscribe(new Action1<List<Data>>() {
-          @Override
-          public void call(List<Data> datas) {
-            if (datas.size() == 0) {
-              m_need_load_more = false;
-              mListPage--;
-            }
-            listener.getAdapter().addData(datas);
-            RunApplication.gameList = (List<GameDisplayEntity>)listener.getAdapter().getData();
-            changeRefreshState(false);
-          }
-        }, new Action1<Throwable>() {
-          @Override
-          public void call(Throwable throwable) {
-            m_need_load_more = true;
-            mListPage--;
-            onError(throwable);
-            changeRefreshState(false);
-          }
-        });
-  }
-
-  @Override
-  public boolean isRefreshing() {
-    return isRefreshing;
-  }
-
-  private void changeRefreshState(boolean refreshing) {
-    this.isRefreshing = refreshing;
-    onRefreshStateChanged(refreshing);
-  }
-
-  private void onRefreshStateChanged(boolean isRefreshing) {
-    if (listener != null) {
-      listener.onRefreshStateChanged(isRefreshing);
+    private void changeRefreshState(boolean refreshing) {
+        this.isRefreshing = refreshing;
+        onRefreshStateChanged(refreshing);
     }
-  }
 
-  private void onError(Throwable t) {
-    if (!NetworkUtil.checkIsNetworkConnected()) {
-      ToastUtil.TextToast(R.string.no_network);
-      return;
+    private void onRefreshStateChanged(boolean isRefreshing) {
+        if (listener != null) {
+            listener.onRefreshStateChanged(isRefreshing);
+        }
     }
-    Timber.e(t, "Loading error...");
-    listener.onError(t);
-  }
 
-  public interface DataInteractionListener<T> {
+    private void onError(Throwable t) {
+        if (!NetworkUtil.checkIsNetworkConnected()) {
+            ToastUtil.TextToast(R.string.no_network);
+            return;
+        }
+        Timber.e(t, "Loading error...");
+        listener.onError(t);
+    }
 
-    Observable<List<T>> requestData(int page);
+    public interface DataInteractionListener<T> {
 
-    @NonNull
-    BaseAdapter<T> getAdapter();
+        Observable<List<T>> requestData(int page);
 
-    void onRefreshStateChanged(boolean isRefreshing);
+        @NonNull
+        BaseAdapter<T> getAdapter();
 
-    void onError(Throwable t);
+        void onRefreshStateChanged(boolean isRefreshing);
 
-  }
+        void onError(Throwable t);
+
+    }
 
 }

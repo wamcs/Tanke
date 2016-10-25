@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/layout_dialog_margin_left_right"
+                android:layout_marginRight="@dimen/layout_dialog_margin_left_right">
+
+    <net.simonvt.numberpicker.NumberPicker
+        android:id="@+id/layout_dialog_number_picker_picker"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/layout_dialog_date_picker_picker_root_height"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="@dimen/layout_dialog_date_picker_margin"
+        style= "@style/NPWidget.Holo.Light.NumberPicker"/>
+<!--
+    <net.simonvt.numberpicker.NumberPicker
+        android:id="@+id/layout_dialog_number_picker_picker"
+        android:layout_width="@dimen/layout_dialog_number_picker_width"
+        android:layout_height="@dimen/layout_dialog_date_picker_picker_root_height"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="@dimen/layout_dialog_date_picker_margin"
+        style= "@style/NPWidget.Holo.Light.NumberPicker"/>
+-->
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/layout_dialog_number_picker_picker"
+        android:layout_margin="@dimen/x13"
+        android:orientation="horizontal"
+        android:padding="@dimen/x13">
+
+        <com.lptiyu.tanke.widget.CustomTextView
+            android:id="@+id/layout_dialog_number_picker_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/x13"
+            android:textColor="@color/colorPrimary"
+            android:padding="@dimen/x21"
+            android:text="@string/dismiss"/>
+
+        <com.lptiyu.tanke.widget.CustomTextView
+            android:id="@+id/layout_dialog_number_picker_ensure"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorPrimary"
+            android:layout_margin="@dimen/x13"
+            android:padding="@dimen/x21"
+            android:text="@string/ensure"/>
+
+    </LinearLayout>
+</RelativeLayout>
