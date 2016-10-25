@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="com.lptiyu.tanke"
-          android:versionCode="7"
-          android:versionName="1.0.7">
+          android:versionCode="10"
+          android:versionName="1.0.10">
 
     <uses-sdk
-        android:minSdkVersion="16"
-        android:targetSdkVersion="23"/>
+        android:minSdkVersion="15"
+        android:targetSdkVersion="22"/>
     <!-- ***************************** Dangerous Permissions need to be requested ***************************** -->
     <uses-permission android:name="android.permission.CAMERA"/>
     <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
@@ -41,7 +41,8 @@
     <!-- Permission above added for barcode scanner -->
     <application
         android:name=".RunApplication"
-        android:allowBackup="true"
+        android:allowBackup="false"
+        android:hardwareAccelerated="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:largeHeap="true"

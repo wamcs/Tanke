@@ -40,9 +40,12 @@ public class RunApplication extends MultiDexApplication {
     private BMapManager manager;
 
     public static List<GameDisplayEntity> gameList; //维护一份列表数据的索引，避免回收
-    private static ThemeLine  themeLine;//维护一个正在玩的游戏数据
+    private static ThemeLine themeLine;//维护一个正在玩的游戏数据
 
     private static long lastLoginUserId = 0;
+
+    public static boolean isPlayingStatusChanged = false;
+    public static boolean isNeededRefresh = false;
 
     @Override
     public void onCreate() {
@@ -115,8 +118,8 @@ public class RunApplication extends MultiDexApplication {
         return lastLoginUserId;
     }
 
-    public static  void setLastLoginUserId(long id) {
-        lastLoginUserId =id;
+    public static void setLastLoginUserId(long id) {
+        lastLoginUserId = id;
     }
 
 
@@ -192,16 +195,13 @@ public class RunApplication extends MultiDexApplication {
 
 
     //主要是改游戏状态和下载包链接
-    public void setGameDataByGameId(long game_id,int game_statu,String game_zip_url)
-    {
-        if(gameList == null)
+    public void setGameDataByGameId(long game_id, int game_statu, String game_zip_url) {
+        if (gameList == null)
             return;
 
-        for (int i =0;i < gameList.size();i++)
-        {
+        for (int i = 0; i < gameList.size(); i++) {
             GameDisplayEntity tmp = gameList.get(i);
-            if (game_id == tmp.getId())
-            {
+            if (game_id == tmp.getId()) {
                 tmp.setPlayStatu(game_statu);
                 tmp.setGameZipUrl(game_zip_url);
             }

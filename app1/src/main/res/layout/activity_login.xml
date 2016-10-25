@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+    >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/bg_login"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/login_activity_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="80dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/login_title_icon"
+            />
+
+        <EditText
+            android:id="@id/login_input_phone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/login_activity_title"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="20dp"
+            android:background="@color/transparent"
+            android:drawableLeft="@drawable/input_username"
+            android:drawablePadding="10dp"
+            android:hint="请输入手机号"
+            android:inputType="phone"
+            android:padding="10dp"
+            android:textColor="@color/white10"
+            android:textColorHint="@color/blackccc"
+            android:textSize="14sp"/>
+
+        <TextView
+            android:id="@+id/tv_seperator_phone"
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:layout_alignLeft="@id/login_input_phone"
+            android:layout_alignRight="@id/login_input_phone"
+            android:layout_below="@id/login_input_phone"
+            android:background="@color/white10"
+            />
+
+        <EditText
+            android:id="@id/login_input_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@id/login_input_phone"
+            android:layout_alignRight="@id/login_input_phone"
+            android:layout_below="@id/tv_seperator_phone"
+            android:layout_marginTop="20dp"
+            android:background="@color/transparent"
+            android:drawableLeft="@drawable/input_password"
+            android:drawablePadding="10dp"
+            android:hint="请输入密码"
+            android:inputType="textPassword"
+            android:padding="10dp"
+            android:textColor="@color/white10"
+            android:textColorHint="@color/blackccc"
+            android:textSize="14sp"/>
+
+        <TextView
+            android:id="@+id/tv_seperator_password"
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:layout_alignLeft="@id/login_input_password"
+            android:layout_alignRight="@id/login_input_password"
+            android:layout_below="@id/login_input_password"
+            android:background="@color/white10"
+            />
+
+
+        <com.lptiyu.tanke.widget.CustomTextView
+            android:id="@+id/login_login_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_seperator_password"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="40dp"
+            android:background="@drawable/login_btn"
+            />
+
+
+        <com.lptiyu.tanke.widget.CustomTextView
+            android:id="@+id/login_sign_up_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@id/login_login_button"
+            android:layout_alignRight="@id/login_login_button"
+            android:layout_below="@id/login_login_button"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/regist_btn"
+            />
+
+        <TextView
+            android:id="@+id/login_forget_password_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/login_sign_up_button"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            android:text="忘记密码？"
+            android:textColor="@color/white10"
+            android:textSize="12sp"/>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true">
+
+            <RelativeLayout
+                android:id="@+id/rl_you_can_try"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.lptiyu.tanke.widget.CustomTextView
+                    android:id="@+id/ctv_you_can_try"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:layout_gravity="center"
+                    android:text="You can try"
+                    android:textColor="@color/white10"
+                    android:textSize="12sp"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="20dp"
+                    android:layout_toLeftOf="@id/ctv_you_can_try"
+                    android:background="@color/white10"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="20dp"
+                    android:layout_toRightOf="@id/ctv_you_can_try"
+                    android:background="@color/white10"/>
+
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/rl_you_can_try"
+                android:layout_centerHorizontal="true">
+
+                <ImageView
+                    android:id="@id/login_qq_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/y40"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/qq_login"/>
+
+                <ImageView
+                    android:id="@id/login_weixin_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/y40"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/wechat_login"/>
+
+                <ImageView
+                    android:id="@id/login_weibo_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@mipmap/img_weibo"
+                    android:scaleType="centerInside"
+                    android:visibility="gone"/>
+
+            </LinearLayout>
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+</RelativeLayout>
+

@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+    <WebView
+        android:id="@+id/webView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/rl_title"
+        android:layout_alignRight="@id/rl_title"
+        android:layout_below="@id/rl_title"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="10dp"
+        android:background="@android:color/white"
+        android:visibility="visible"/>
+
+    <RelativeLayout
+        android:id="@+id/rl_finishInfo"
+        android:layout_width="match_parent"
+        android:layout_height="25dp"
+        android:layout_below="@id/webView"
+        android:layout_alignLeft="@id/webView"
+        android:layout_alignRight="@id/webView"
+        android:layout_marginBottom="5dp"
+        android:layout_centerHorizontal="true"
+        android:gravity="left">
+
+        <ImageView
+            android:id="@+id/img_flag"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:layout_alignBottom="@+id/ctv_finish"
+            android:src="@drawable/flag"/>
+
+        <com.lptiyu.tanke.widget.CustomTextView
+            android:id="@+id/ctv_finish"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_toRightOf="@id/img_flag"
+            android:text="已完成"
+            android:textColor="@color/orange"
+            android:textSize="13sp"/>
+
+        <com.lptiyu.tanke.widget.CustomTextView
+            android:id="@+id/ctv_jingyan_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/ctv_finish"
+            android:layout_marginLeft="12dp"
+            android:layout_toRightOf="@id/ctv_finish"
+            android:text="经验"
+            android:textColor="@color/grey04"
+            android:textSize="12sp"/>
+
+        <com.lptiyu.tanke.widget.CustomTextView
+            android:id="@+id/ctv_exp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/ctv_finish"
+            android:layout_toRightOf="@id/ctv_jingyan_label"
+            android:text="+3"
+            android:textColor="@color/orange"
+            android:textSize="12sp"/>
+
+        <com.lptiyu.tanke.widget.CustomTextView
+            android:id="@+id/ctv_finish_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/ctv_finish"
+            android:layout_toRightOf="@id/ctv_exp"
+            android:layout_marginLeft="12dp"
+            android:text="2016-12-12 12:12"
+            android:textColor="@color/grey06"
+            android:textSize="11sp"/>
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:layout_below="@id/img_flag"
+            android:layout_marginBottom="5dp"
+            android:background="@color/orange"/>
+    </RelativeLayout>
+
+
+    </RelativeLayout>
+

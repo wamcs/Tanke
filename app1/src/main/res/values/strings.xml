@@ -1,0 +1,263 @@
+<resources>
+    <string name="app_name">步道探秘</string>
+    <string name="app_mail">hello@lptiyu.com</string>
+    <string name="wechat_public">步道探秘</string>
+    <string name="scanner">扫一扫</string>
+    <string name="no_network">当前没有网络</string>
+    <string name="no_camera_permission">请您打开相机权限</string>
+    <string name="no_location_permission">请您打开定位权限</string>
+    <string name="camera_permission_rationale">我们需要使用您的相机来进行扫描二维码的功能，请点击确认前往授权，谢谢^_^</string>
+    <string name="location_permission_rationale">我们需要使用您的位置信息，为了继续为您提供服务，清点击确认前往授权，谢谢^_^</string>
+    <string name="loading_error">加载失败，请稍后再试</string>
+    <string name="loading">拼命加载中…</string>
+    <string name="content_description">Image</string>
+    <string name="ensure">确定</string>
+    <string name="dismiss">取消</string>
+    <string name="exit">再按一次退出</string>
+    <string name="has_downloaded_mask">has_downloaded_mask_%d</string>
+
+    <!-- SplashActivity Text Area-->
+    <string name="splash_title_1">你熟悉的世界&#160;&#160;&#160;&#160;隐藏着更多秘密</string>
+    <string name="splash_brief_1">或隐藏于市井,或流传于民间众口,都等待着你去发掘,这可能需要你的不懈努力</string>
+    <string name="splash_brief_2">谁也不知道这条路通向哪里,途中你也许会绝望,但终点的绝景与心境,一定让你不虚此行</string>
+    <string name="splash_title_2">一条未知路线&#160;&#160;&#160;&#160;挑战智慧和勇气</string>
+    <string name="splash_brief_3">只有经历过汗水的洗礼，才能更加体会到达终点的喜悦</string>
+    <string name="splash_title_3">你的参与&#160;&#160;&#160;&#160;让生活更精彩</string>
+
+    <!--Game display page-->
+    <string name="change_city_dialog_message">是否需要切换到当前城市(%s)?</string>
+    <string name="main_page_location_key">main_page_location</string>
+    <string name="loading_more">加载更多&#8230;&#8230;&#8230;</string>
+
+    <!-- LoginActivity Text Area-->
+    <string name="main_page_date_formatter" formatted="false">%d月%d日-%d月%d日</string>
+    <string name="main_page_date_format_pattern" formatted="false">%d月%d日-%d月%d日</string>
+    <string name="main_page_forever">白天-黑夜</string>
+    <string name="team_type_team">团队赛</string>
+    <string name="team_type_individule">个人赛</string>
+
+    <!-- GameDetailsLocation Text Area-->
+    <string name="game_details_location">活动地点</string>
+    <string name="enter_game_play">进入游戏</string>
+    <string name="enter_game_share">查看战绩</string>
+    <string name="team_game_formatter" formatted="false">%d人团队赛</string>
+
+    <!--UserCenter start-->
+    <string name="userCenter">用户中心</string>
+    <string name="user_level" formatted="false">LV.%d</string>
+    <string name="need_exp_formatter" formatted="false">%d / %d 经验值</string>
+
+    <!-- MessageList Text Area-->
+    <string name="messagesList">消息中心</string>
+    <string name="message_type_official">步道官方</string>
+
+    <!-- MessageActivity Text Area-->
+    <string name="message_type_system">系统推送</string>
+
+    <!-- SystemWebActivity Text Area-->
+    <string name="system_web_activity">系统消息</string>
+
+    <!--SettingActivity Text Area-->
+    <string name="setting">设置</string>
+    <string name="setting_activity_set_account">账号设置</string>
+    <string name="setting_activity_push_msg">消息推送</string>
+    <string name="setting_activity_vibrate_mobile">手机震动</string>
+    <string name="setting_activity_light_screen">运动时手机常亮</string>
+    <string name="setting_activity_feedback">意见反馈</string>
+    <string name="setting_activity_about_us">关于我们</string>
+    <string name="setting_activity_wechat_public">微信公众号</string>
+
+    <string name="setting_activity_logout">退出登录</string>
+
+    <!-- UserReward-->
+    <string name="user_reward">我的奖励</string>
+
+    <!-- UserManagerGame-->
+    <string name="user_manager">裁判任务</string>
+
+    <string name="name">步 道 运 动</string>
+    <string name="please_input_password">请输入密码</string>
+    <string name="please_input_phone">请输入手机号</string>
+    <string name="login_new_user">新用户注册 ></string>
+    <string name="login_forget_password">忘记密码？</string>
+    <string name="login_other_method">使用其他账号登陆</string>
+    <string name="login">登录</string>
+
+    <!-- GuideActivity Text Area-->
+    <string name="skip">跳过</string>
+
+    <!-- Register and resetPassword Text Area-->
+    <string name="register_title">手机号注册</string>
+    <string name="reset_password_title">找回密码</string>
+    <string name="phone">手机号</string>
+    <string name="area_code">+86</string>
+    <string name="password">密码</string>
+    <string name="verify_code">验证码</string>
+    <string name="none_user_phone">未输入手机号</string>
+    <string name="none_user_password">未输入密码</string>
+    <string name="none_user_code">未输入验证码</string>
+    <string name="error_user_code">验证码错误</string>
+    <string name="error_user_phone">手机号格式错误</string>
+    <string name="error_user_password">密码格式错误</string>
+    <string name="input_phone">请输入您的手机号码</string>
+    <string name="input_password">请输入6位以上密码</string>
+    <string name="input_verify_code">请输入验证码</string>
+    <string name="get_verify_code">获取验证码</string>
+    <string name="next">下一步</string>
+    <string name="reset_title">找回密码</string>
+    <string name="click_user_protocol">点击阅读《用户协议》</string>
+
+    <!--ImageChooseDialog Text Area-->
+    <string name="dialog_user_avatar_take_photo">拍照</string>
+    <string name="dialog_user_avatar_gallery">从相册中选择</string>
+    <string name="select_image">选择图像</string>
+
+    <!-- CompleteInformationActivity Text Area-->
+    <string name="complete">完成</string>
+    <string name="input_nickname">点击输入昵称</string>
+    <string name="avatar">头像</string>
+    <string name="nickname">昵称</string>
+    <string name="gender">性别</string>
+    <string name="male">男</string>
+    <string name="female">女</string>
+    <string name="height">身高</string>
+    <string name="weight">体重</string>
+    <string name="birthday">出生日期</string>
+    <string name="change_city">点击切换城市</string>
+    <string name="year">年</string>
+    <string name="month">月</string>
+    <string name="day">日</string>
+    <string name="hour">时</string>
+    <string name="minute">分</string>
+    <string name="please_select_avatar">请选择头像</string>
+    <string name="please_input_nick_name">请填写昵称</string>
+    <string name="upload_avatar_error">上传头像失败</string>
+    <string name="upload_avatar_success">上传头像成功</string>
+
+
+    <!-- GamePlayingActivity Text Area -->
+    <string name="reach_attack_point">已到达攻击点，点击该点开始任务</string>
+    <string name="start_task">开始任务</string>
+    <string name="parse_zip_error">游戏包解析错误</string>
+
+    <!-- GameDataActivity Text Area-->
+    <string name="complete_person_num_formatter" formatted="false">%d人已完成</string>
+    <string name="complete_task_consuming_time_formatter" formatted="false">%d分%d秒</string>
+    <string name="complete_time_formatter" formatted="false">%04d.%02d.%02d %02d:%02d</string>
+    <string name="complete_time_without_year_formatter" formatted="false">%02d.%02d %02d:%02d
+    </string>
+    <string name="get_exp_formatter" formatted="false">获得%d经验值</string>
+    <string name="scan_task">扫码任务</string>
+    <string name="locate_task">定位任务</string>
+    <string name="riddle_task">谜底任务</string>
+    <string name="distinguish_task">扫描任务</string>
+    <string name="timing_task">定时任务</string>
+    <string name="finish_task">结束任务</string>
+    <string name="consume_time">总共用时 :</string>
+
+
+    <!-- Protocol Activity Text Area-->
+    <string name="user_protocol">用户协议</string>
+    <string name="ps">注：点击“下一步”即代表您已阅读并同意上述协议的所有内容</string>
+
+    <!-- GameTaskActivity Text Area -->
+    <string name="exit_task_activity_when_loading">任务还在加载中，您确定要终止加载吗？</string>
+    <string name="exit_task_activity_when_doing">"当前攻击点任务还未全部完成，您确定要中断吗？"</string>
+    <string name="scan_game_manager_qrcode">扫描通关二维码</string>
+    <string name="scan_error">扫码有误，请重试</string>
+
+    <string name="start_timing_task">启动定时器</string>
+    <string name="timing_dialog_message_formatter" formatted="false">任务将在%d秒后揭晓</string>
+    <string name="tick_view_message_formatter" formatted="false">%tM%n : %tS%n</string>
+
+    <string name="please_input_answer">请输入答案</string>
+    <string name="error_input">您的输入不规范</string>
+    <string name="right_answer">恭喜您，回答正确</string>
+    <string name="error_answer">答案不正确，请重新输入</string>
+
+    <string name="distinguish_photo">开始拍照</string>
+
+    <string name="finish_this_point_task">点击开启下一攻击点</string>
+
+    <string name="check_locate_task">点我进行地点验证</string>
+    <string name="locate_task_locating">定位验证中.....</string>
+    <string name="cancel_locating">取消定位验证</string>
+    <string name="right_location">恭喜您，找到目的地</string>
+    <string name="error_location">抱歉，与目的地不符</string>
+
+    <!-- GameDataActivity Text Area-->
+    <string name="game_data">游戏数据</string>
+
+    <!-- GameShareActivity Text Area-->
+    <string name="game_share">游戏战绩</string>
+    <string name="my_track">我的轨迹</string>
+    <string name="total_time">总计时间</string>
+    <string name="total_distance">全程距离</string>
+    <string name="task_num">任务完成</string>
+    <string name="get_exp">获得经验</string>
+    <string name="meter">米</string>
+    <string name="game_share_form_game_finished_num_formatter" formatter="false">有%d支队伍完成了比赛
+    </string>
+    <string name="game_share_minute">分钟</string>
+    <string name="game_share_distance">公里</string>
+    <string name="task_unit">个任务</string>
+    <string name="game_share_form_exp">经验值</string>
+    <string name="game_share_form_complete_time">任务完成时刻</string>
+
+    <!-- ModifyInfo Text Area-->
+    <string name="modify_info_height_formatter" formatter="false">%s cm</string>
+    <string name="modify_info_weight_formatter" formatter="false">%s kg</string>
+
+    <string name="save">保存</string>
+    <string name="modify_info_failed">修改失败</string>
+    <string name="modify_info_success">修改成功</string>
+    <string name="change_nickname">更改昵称</string>
+    <string name="change_height">更改身高</string>
+
+    <string name="change_nickname_hint">取一个好的昵称能让朋友更容易记住你</string>
+    <string name="change_weight">更改体重</string>
+    <string name="change_nickname_error">昵称格式错误</string>
+    <string name="change_height_hint">写下你的身高吧，单位是CM</string>
+    <string name="change_height_error" formatted="false">身高规定范围为%dCM~%dCM,填写超出范围</string>
+    <string name="change_weight_hint">写下你的体重吧，单位是KG</string>
+    <string name="change_weight_error" formatted="false">体重规定范围为%dKG~%dKG,填写超出范围</string>
+
+    <string name="date_picker_date_formatter" formatted="false">%4d-%02d-%02d</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_user_judge_game">UserJudgeGameActivity</string>
+
+    <!-- LocateActivity Text Area-->
+    <string name="city_not_open">(该城市尚未开通)</string>
+    <string name="current_city_not_open">当前城市尚未开通</string>
+    <string name="is_locating">正在定位中...</string>
+    <string name="locate_success">定位成功</string>
+    <string name="locate_failed">定位失败</string>
+
+    <!--LocateUserActivity Text Area-->
+    <string name="all_location">全部地区</string>
+    <string name="choose_area">选择地区</string>
+    <string name="hot_location">热门城市</string>
+    <string name="current_location">当前位置</string>
+    <string name="open_location">开通城市</string>
+
+
+    <!-- gameList Text Area-->
+    <string name="game_progress">游戏进度:</string>
+
+    <!-- UserGameFinishedList Text Area-->
+    <string name="user_game_finished_get_exp_formatter">%d</string>
+    <string name="complete_game_consuming_time_formatter" formatted="false">%d小时%d分钟</string>
+
+    <string name="platform_info_bind_tel" formatted="false">已用%s登录，手机号：%s</string>
+    <string name="platform_info_unbind_tel" formatted="false">%s登录，绑定手机号拿奖励更方便，快戳我</string>
+
+    <!-- AboutUsActivity Text Area-->
+    <string name="about_us_activity">关于我们</string>
+
+    <string name="my_point_progress">我的进度</string>
+    <string name="have_gone_through_game">(已通关)</string>
+
+
+</resources>

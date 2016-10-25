@@ -252,16 +252,14 @@ public class ElasticHeaderViewHolder extends BaseViewHolder<GameDisplayEntity> {
 
         gameDisplayEntity = gameDisplayEntities.get(index);
         int play_statu = gameDisplayEntity.getPlayStatu();
+        Log.i("jason", "gameDisplayEntity.getPlayStatu():" + gameDisplayEntity.getPlayStatu());
         String tempGameZipUrl = gameDisplayEntity.getGameZipUrl();
-        if (play_statu == PlayStatus.NO_STATUS)
-        {
+        if (play_statu == PlayStatus.NO_STATUS) {
             loadNetWorkData(index);
-        }
-        else if (play_statu != PlayStatus.NEVER_ENTER_GANME && (tempGameZipUrl == null || tempGameZipUrl.isEmpty()))
-        {//为-1时，本身就是没有返回游戏包，因为路径还没有确定
+        } else if (play_statu != PlayStatus.NEVER_ENTER_GANME && (tempGameZipUrl == null || tempGameZipUrl.isEmpty())
+                ) {//为-1时，本身就是没有返回游戏包，因为路径还没有确定
             loadNetWorkData(index);
-        }
-        else//如果之前已经请求过状态了，就记录下来，避免每次网络请求
+        } else//如果之前已经请求过状态了，就记录下来，避免每次网络请求
         {
             startGameByPlayStatu(play_statu);
         }
@@ -277,7 +275,7 @@ public class ElasticHeaderViewHolder extends BaseViewHolder<GameDisplayEntity> {
         }
     }
 
-    private void  startGameByPlayStatu(int play_statu) {
+    private void startGameByPlayStatu(int play_statu) {
         //判断游戏状态
         switch (play_statu) {
             case PlayStatus.NEVER_ENTER_GANME://从未玩过游戏，进入到游戏详情界面
@@ -293,7 +291,7 @@ public class ElasticHeaderViewHolder extends BaseViewHolder<GameDisplayEntity> {
             case PlayStatus.HAVE_STARTED_GAME://进入并且已经开始游戏，进入到玩游戏界面
                 //进入到玩游戏界面之前，先检测游戏包是否存在，存在则直接进入，否则要先下载游戏包
                 String tempGameZipUrl = gameDisplayEntity.getGameZipUrl();
-                if (tempGameZipUrl == null || tempGameZipUrl=="")
+                if (tempGameZipUrl == null || tempGameZipUrl == "")
                     return;
                 new XUtilsDownloader(getContext(), tempGameZipUrl, gameDisplayEntity.getId(), new
                         XUtilsDownloader.FinishDownloadCallback() {
@@ -340,7 +338,7 @@ public class ElasticHeaderViewHolder extends BaseViewHolder<GameDisplayEntity> {
 
                             gameDisplayEntity.setGameZipUrl(tempGameZipUrl);
                             gameDisplayEntity.setPlayStatu(response.getData().play_statu);
-                            startGameByPlayStatu (gameDisplayEntity.getPlayStatu());
+                            startGameByPlayStatu(gameDisplayEntity.getPlayStatu());
 
                         } else {
                             Log.i("jason", "获取游戏状态错误信息：" + response.getInfo());
@@ -458,7 +456,6 @@ public class ElasticHeaderViewHolder extends BaseViewHolder<GameDisplayEntity> {
         intent.putExtra(Conf.GAME_DISPLAY_ENTITY, gameDisplayEntity);
         fragment.startActivity(intent);
     }
-
 
 
     /**

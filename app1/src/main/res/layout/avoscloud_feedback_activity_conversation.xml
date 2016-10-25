@@ -1,0 +1,119 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#fff"
+    android:orientation="vertical" >
+
+    <android.support.v7.widget.Toolbar
+        android:id="@id/tool_bar"
+        style="@style/Toolbar">
+
+    </android.support.v7.widget.Toolbar>
+
+    <RelativeLayout
+        android:id="@+id/avoscloud_feedback_input_wrapper"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        >
+
+        <View
+            android:id="@+id/avoscloud_shadow"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/y26"
+            android:layout_above="@id/bottom_button_layout"
+            android:background="@drawable/shadow_reverse"/>
+
+
+        <FrameLayout
+            android:layout_below="@id/avoscloud_shadow"
+            android:id="@+id/avoscloud_feedback_functional_wrap"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerInParent="true" >
+
+            <ImageView
+                android:id="@+id/avoscloud_feedback_add_image"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:padding="5dp"
+                android:layout_gravity="center_horizontal"
+                android:src="@android:drawable/ic_menu_gallery" >
+            </ImageView>
+
+            <Button
+                android:id="@+id/avoscloud_feedback_send"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:padding="5dp"
+                android:gravity="center"
+                android:text="@string/avoscloud_feedback_send_text"
+                android:textColor="@color/avoscloud_feedback_text_gray"
+                android:textStyle="bold"
+                android:visibility="invisible" >
+            </Button>
+        </FrameLayout>
+
+        <EditText
+            android:layout_below="@id/avoscloud_shadow"
+            android:typeface="sans"
+            android:id="@+id/avoscloud_feedback_input"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:paddingLeft="5dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="5dp"
+            android:layout_toLeftOf="@id/avoscloud_feedback_functional_wrap"
+            android:background="@drawable/avoscloud_feedback_input_corner_bg"
+            android:hint="@string/avoscloud_feedback_input_hint"
+            android:minHeight="40dp"
+            android:textColor="@color/avoscloud_feedback_text_gray"
+            android:textCursorDrawable="@null" >
+        </EditText>
+    </RelativeLayout>
+
+    <EditText
+
+        android:typeface="sans"
+        android:id="@+id/avoscloud_feedback_contact"
+        android:layout_width="match_parent"
+        android:layout_below="@id/tool_bar"
+        android:layout_height="wrap_content"        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:background="@color/avoscloud_feedback_input_wrap_background"
+        android:hint="@string/avoscloud_feedback_contact_hint"
+        android:padding="10dp"
+        android:textColor="@color/avoscloud_feedback_text_gray"
+        android:textCursorDrawable="@null"
+        android:textSize="19sp" />
+
+    <ListView
+        android:id="@+id/avoscloud_feedback_thread_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/avoscloud_feedback_input_wrapper"
+        android:layout_below="@id/avoscloud_feedback_contact"
+        android:divider="#000"
+        android:dividerHeight="0dp"
+        android:transcriptMode="normal" >
+    </ListView>
+
+    <com.lptiyu.tanke.widget.CustomTextView
+        android:id="@id/default_tool_bar_textview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/setting_activity_feedback"
+        android:padding="@dimen/default_toolbar_textview_padding"
+        android:textColor="@color/default_font_color"
+        android:textSize="@dimen/default_toolbar_textview_text_size"
+        android:layout_marginTop="10dp"
+        android:layout_centerHorizontal="true"/>
+
+</RelativeLayout>

@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.View;
@@ -18,6 +17,7 @@ import com.baidu.location.BDLocationListener;
 import com.baidu.mapapi.model.LatLng;
 import com.baidu.mapapi.utils.DistanceUtil;
 import com.lptiyu.tanke.R;
+import com.lptiyu.tanke.RunApplication;
 import com.lptiyu.tanke.activities.base.MyBaseActivity;
 import com.lptiyu.tanke.entity.Point;
 import com.lptiyu.tanke.entity.Task;
@@ -53,7 +53,6 @@ public class LocationTaskActivity extends MyBaseActivity implements BDLocationLi
     private LocateHelper locateHelper;
     private double latitude;
     private double longitude;
-    //    private AnimationDrawable anim;
     private long gameId;
     private Point point;
     private boolean isPointOver;
@@ -66,7 +65,6 @@ public class LocationTaskActivity extends MyBaseActivity implements BDLocationLi
     private UploadGameRecordResponse resultRecord;
 
     private TaskResultHelper taskResultHelper;
-    private Handler mHandler = new Handler();
 
     private final double ERROR_LOCATION_RETURN = 4.9E-324;
     private AlertDialog permissionDialog;
@@ -108,7 +106,8 @@ public class LocationTaskActivity extends MyBaseActivity implements BDLocationLi
         locateHelper.registerLocationListener(this);
 
         if (AppData.isFirstInLocationActivity()) {
-            mHandler.postDelayed(new Runnable() {
+            getWindow().getDecorView().post(new Runnable() {
+                @Override
                 public void run() {
                     PopupWindowUtils.getInstance().showTaskGuide(LocationTaskActivity.this,
                             "这是定位任务，点击验证您当前的位置，验证通过即可通关", new PopupWindowUtils.DismissCallback() {
@@ -118,7 +117,7 @@ public class LocationTaskActivity extends MyBaseActivity implements BDLocationLi
                                 }
                             });
                 }
-            }, 500);
+            });
         } else {
             locateHelper.startLocate();
         }
@@ -140,6 +139,11 @@ public class LocationTaskActivity extends MyBaseActivity implements BDLocationLi
 
     @Override
     public void onReceiveLocation(BDLocation bdLocation) {
+        locateHelper.stopLocate();
+        if (Accounts.getPhoneNumber().endsWith("4317")) {
+            loadNetWorkData();
+            return;
+        }
         //纬度
         latitude = bdLocation.getLatitude();
         //经度
@@ -187,7 +191,12 @@ public class LocationTaskActivity extends MyBaseActivity implements BDLocationLi
                         public void onClick(DialogInterface dialog, int which) {
                             LocationTaskActivity.this.finish();
                         }
-                    }).setCancelable(false).create();
+                    }).setCancelable(false).setOnDismissListener(new DialogInterface.OnDismissListener() {
+                        @Override
+                        public void onDismiss(DialogInterface dialog) {
+                            locateHelper.startLocate();
+                        }
+                    }).create();
         }
         if (permissionDialog != null && !permissionDialog.isShowing()) {
             permissionDialog.show();
@@ -202,6 +211,7 @@ public class LocationTaskActivity extends MyBaseActivity implements BDLocationLi
     private void checkLocation() {
         if (split == null || split.length <= 1) {//必定同时包含经度和纬度
             ToastUtil.TextToast("目标位置不存在");
+            locateHelper.startLocate();
             return;
         }
         double distance = DistanceUtil.getDistance(new LatLng(latitude, longitude), new LatLng(Double.parseDouble
@@ -215,6 +225,7 @@ public class LocationTaskActivity extends MyBaseActivity implements BDLocationLi
             if (isToastShow) {
                 ToastUtil.TextToast("您距离目标点" + DistanceFormatter.formatMeter(distance));
             }
+            locateHelper.startLocate();
         }
     }
 
@@ -257,6 +268,7 @@ public class LocationTaskActivity extends MyBaseActivity implements BDLocationLi
 
     @Override
     public void successUploadRecord(UploadGameRecordResponse response) {
+        RunApplication.isNeededRefresh = true;
         resultRecord = response;
         taskResultHelper.showSuccessResult();
         taskResultHelper.stopAnim();

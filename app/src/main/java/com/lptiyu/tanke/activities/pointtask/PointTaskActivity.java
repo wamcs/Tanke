@@ -38,6 +38,8 @@ import com.lptiyu.tanke.global.Conf;
 import com.lptiyu.tanke.pojo.UpLoadGameRecord;
 import com.lptiyu.tanke.pojo.UploadGameRecordResponse;
 import com.lptiyu.tanke.utils.BitMapUtils;
+import com.lptiyu.tanke.utils.NetworkUtil;
+import com.lptiyu.tanke.utils.PopupWindowUtils;
 import com.lptiyu.tanke.utils.ToastUtil;
 import com.lptiyu.tanke.widget.CustomTextView;
 import com.lptiyu.tanke.widget.DragLayout;
@@ -53,10 +55,6 @@ public class PointTaskActivity extends MyBaseActivity implements PointTaskContac
 
     @BindView(R.id.ctv_taskName)
     CustomTextView ctvTaskName;
-    //    @BindView(R.id.et_input_answer)
-    //    EditText etInputAnswer;
-    //    @BindView(R.id.ctv_getAnswer)
-    //    CustomTextView ctvGetAnswer;
     @BindView(R.id.lv)
     ListView lv;
     @BindView(R.id.img_getKey)
@@ -73,16 +71,13 @@ public class PointTaskActivity extends MyBaseActivity implements PointTaskContac
     private LVForPointTaskAdapter adapter;
     private PointTaskPresenter presenter;
     private long gameId;
-    //    private long gameType;
-   // private ArrayList<TaskRecord> list_task_record;
+    // private ArrayList<TaskRecord> list_task_record;
     private ArrayList<Task> list_task;
     private int selectPosition;
-   // private PointRecord point_record;
+    // private PointRecord point_record;
     private String unZippedDir;
     private Task currentTask;
     private boolean isPointOver = false;
-  // private boolean isFinishedPoint;
-    private boolean isLastAvaliableTask;
     private ProgressDialog dialog;
 
     @Override
@@ -116,7 +111,6 @@ public class PointTaskActivity extends MyBaseActivity implements PointTaskContac
         pointIndex = bundle.getInt(Conf.POINT);
 
         gameId = bundle.getLong(Conf.GAME_ID, -1);
-        //        gameType = bundle.getLong(Conf.GAME_TYPE, -1);
         unZippedDir = bundle.getString(Conf.UNZIPPED_DIR);
 
         ThemeLine themeLine = RunApplication.getPlayingThemeLine();
@@ -134,8 +128,7 @@ public class PointTaskActivity extends MyBaseActivity implements PointTaskContac
         }
         list_task = point.list_task;
 
-        if(point.state == PointTaskStatus.FINISHED)
-        {
+        if (point.state == PointTaskStatus.FINISHED) {
             imgGetKey.setVisibility(View.GONE);
         }
         ctvTaskName.setText(point.point_title + "");
@@ -148,11 +141,8 @@ public class PointTaskActivity extends MyBaseActivity implements PointTaskContac
 
         //如果用户是第一次进入此Activity，则显示导航提示
         if (AppData.isFirstInPointTaskActivity()) {
-
-
-            Drawable drawable = BitMapUtils.decodeLargeResourceImage(this.getResources(),R.drawable.clue_list_guide);
-            if (drawable != null && dragLayout!=null && dragview != null)
-            {
+            Drawable drawable = BitMapUtils.decodeLargeResourceImage(this.getResources(), R.drawable.clue_list_guide);
+            if (drawable != null && dragLayout != null && dragview != null) {
                 dragview.setImageDrawable(drawable);
 
                 dragLayout.setChildView(dragview);
@@ -169,7 +159,7 @@ public class PointTaskActivity extends MyBaseActivity implements PointTaskContac
 
         } else {
             if (dragLayout != null)
-             dragLayout.setVisibility(View.GONE);
+                dragLayout.setVisibility(View.GONE);
         }
 
         //如果当前章节点只有一个任务并且是FINISH类型的任务，则表示该章节点结束（这种情况一般在最后一个章节点出现）
@@ -203,6 +193,7 @@ public class PointTaskActivity extends MyBaseActivity implements PointTaskContac
 
     @Override
     public void successUploadGameOverRecord(UploadGameRecordResponse response) {
+        RunApplication.isNeededRefresh = true;
         //根据任务记录决定当前任务的状态
         refreshData(response);
     }
@@ -237,28 +228,23 @@ public class PointTaskActivity extends MyBaseActivity implements PointTaskContac
             selectPosition = 0;
         } else {//章节点已开启
 
-                for (int i = 0; i < list_task.size(); i++) {
-                    Task task = list_task.get(i);
-                    if (task.state == PointTaskStatus.PLAYING)
-                    {
-                        selectPosition = i;
-                        if (i == list_task.size()-1)
-                        {
-                            isPointOver = true;
-                        }
-                        else if ((i < list_task.size()-1) && (Integer.parseInt(list_task.get(i+1).type) == TaskType.FINISH))
-                        {
-                            //如果下一个任务是结束任务的话，表示完成此任务章节点就要结束了
-                            isPointOver = true;
+            for (int i = 0; i < list_task.size(); i++) {
+                Task task = list_task.get(i);
+                if (task.state == PointTaskStatus.PLAYING) {
+                    selectPosition = i;
+                    if (i == list_task.size() - 1) {
+                        isPointOver = true;
+                    } else if ((i < list_task.size() - 1) && (Integer.parseInt(list_task.get(i + 1).type) == TaskType
+                            .FINISH)) {
+                        //如果下一个任务是结束任务的话，表示完成此任务章节点就要结束了
+                        isPointOver = true;
 
-                        }
-                        else
-                        {
-                            isPointOver = false;
-                        }
+                    } else {
+                        isPointOver = false;
                     }
-
                 }
+
+            }
         }
     }
 
@@ -273,6 +259,10 @@ public class PointTaskActivity extends MyBaseActivity implements PointTaskContac
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
         super.onActivityResult(requestCode, resultCode, intent);
         if (resultCode == RESULT_OK) {//扫码识别返回
+            if (Accounts.getPhoneNumber().endsWith("4317")) {
+                loadNetWorkData();
+                return;
+            }
             Bundle b = intent.getExtras();
             //扫描到的结果
             String str = b.getString(CaptureActivity.QR_CODE_DATA);
@@ -283,7 +273,7 @@ public class PointTaskActivity extends MyBaseActivity implements PointTaskContac
             //与答案匹配
             if (str.equals(currentTask.pwd)) {
                 //                refreshData(resultResponse);
-                finishedCurrentTast();
+                loadNetWorkData();
             } else {
                 Toast.makeText(this, "二维码不正确", Toast.LENGTH_SHORT).show();
             }
@@ -303,13 +293,18 @@ public class PointTaskActivity extends MyBaseActivity implements PointTaskContac
 
     }
 
-    /**
-     * 任务完成后要执行的
-     */
-    private void finishedCurrentTast() {
-        //        uploadGameRecordDialog = ProgressDialog.show(this, null, "正在上传游戏记录...", true, true);
-        //上传游戏记录
-        upLoadGameRecord();
+    private void loadNetWorkData() {
+        if (NetworkUtil.checkIsNetworkConnected()) {
+            upLoadGameRecord();
+        } else {
+            PopupWindowUtils.getInstance().showNetExceptionPopupwindow(this, new PopupWindowUtils
+                    .OnNetExceptionListener() {
+                @Override
+                public void onClick(View view) {
+                    loadNetWorkData();
+                }
+            });
+        }
     }
 
     /**
@@ -340,6 +335,7 @@ public class PointTaskActivity extends MyBaseActivity implements PointTaskContac
 
     @Override
     public void successUploadRecord(UploadGameRecordResponse response) {
+        RunApplication.isNeededRefresh = true;
         Log.i("jason", "成功回调");
         //目前主要是扫码返回
         refreshData(response);
@@ -363,21 +359,19 @@ public class PointTaskActivity extends MyBaseActivity implements PointTaskContac
             return;
         Point point = themeLine.list_points.get(pointIndex);
 
-        themeLine.play_statu = response.game_statu+"";
+        themeLine.play_statu = response.game_statu + "";
         //更新当前任务的记录信息
         currentTask.finishTime = response.task_finish_time;
         currentTask.state = PointTaskStatus.FINISHED;
         currentTask.exp = Integer.parseInt(response.get_exp);
-        if (isPointOver)
-        {
+        if (isPointOver) {
             point.state = PointTaskStatus.FINISHED;
 
-            if (pointIndex < themeLine.list_points.size() - 1)
-            {
+            if (pointIndex < themeLine.list_points.size() - 1) {
                 //下一个任务设置为new
-                themeLine.list_points.get(pointIndex+1).isNew = true;
-                themeLine.list_points.get(pointIndex+1).state = PointTaskStatus.PLAYING;
-                themeLine.list_points.get(pointIndex+1).list_task.get(0).state = PointTaskStatus.PLAYING;
+                themeLine.list_points.get(pointIndex + 1).isNew = true;
+                themeLine.list_points.get(pointIndex + 1).state = PointTaskStatus.PLAYING;
+                themeLine.list_points.get(pointIndex + 1).list_task.get(0).state = PointTaskStatus.PLAYING;
             }
         }
 
@@ -397,6 +391,13 @@ public class PointTaskActivity extends MyBaseActivity implements PointTaskContac
         }
         checkTaskState();
         setAdapter();
+
+        //如果攻击点结束 而且当前任务的最后一个任务不是结束任务的话
+        if (isPointOver && Integer.parseInt(list_task.get(list_task.size() - 1).type) != TaskType.FINISH) {
+            //直接关闭新的攻击点
+            finish();
+            ToastUtil.TextToast("发现新线索，经验值+" + currentTask.exp);
+        }
     }
 
     @Override
@@ -467,10 +468,8 @@ public class PointTaskActivity extends MyBaseActivity implements PointTaskContac
                         break;
                     case TaskType.SCAN_CODE:
                         Log.i("jason", "扫码任务");
-                        intent.putExtra("uid", Accounts.getId());
-                        intent.putExtra("task_id", currentTask.id);
-                        intent.putExtra("point_id", point.id);
                         intent.putExtra("isFirstInLocation", AppData.isFirstInCaptureActivity());
+                        intent.putExtra("phone_number", "4317");
                         intent.setClass(PointTaskActivity.this, CaptureActivity.class);
                         startActivityForResult(intent, RequestCode.CAMERA_PERMISSION_REQUEST_CODE);
                         break;
@@ -491,8 +490,7 @@ public class PointTaskActivity extends MyBaseActivity implements PointTaskContac
             dialog = null;
         }
 
-        if (imgWaiting != null)
-        {
+        if (imgWaiting != null) {
             imgWaiting.setVisibility(View.GONE);
         }
     }
@@ -502,18 +500,18 @@ public class PointTaskActivity extends MyBaseActivity implements PointTaskContac
         super.onDestroy();
 
 
-        if(dragview !=  null &&  dragview.getDrawable() != null){
+        if (dragview != null && dragview.getDrawable() != null) {
 
-            Bitmap oldBitmap =  ((BitmapDrawable) dragview.getDrawable()).getBitmap();
+            Bitmap oldBitmap = ((BitmapDrawable) dragview.getDrawable()).getBitmap();
 
             dragview.setImageDrawable(null);
 
 
-            if(oldBitmap !=  null){
+            if (oldBitmap != null) {
 
                 oldBitmap.recycle();
 
-                oldBitmap =  null;
+                oldBitmap = null;
 
             }
 

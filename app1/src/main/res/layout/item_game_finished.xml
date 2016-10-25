@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:id="@id/game_finished_list_item"
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="@dimen/y26"
+                android:paddingLeft="@dimen/x26"
+                android:paddingRight="@dimen/x26"
+                android:paddingTop="@dimen/y26">
+
+    <com.makeramen.roundedimageview.RoundedImageView
+        android:id="@+id/image_view"
+        android:layout_width="@dimen/main_page_item_img_width"
+        android:layout_height="@dimen/main_page_item_img_height"
+        android:layout_gravity="center_vertical"
+        android:layout_marginLeft="@dimen/x26"
+        android:layout_marginTop="@dimen/y13"
+        android:layout_marginBottom="@dimen/y13"
+        android:contentDescription="@string/content_description"
+        android:scaleType="centerCrop"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y230"
+        android:layout_alignBottom="@id/image_view"
+        android:layout_alignTop="@id/image_view"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/item_game_finished_content_root_margin_left"
+        android:layout_toRightOf="@id/image_view"
+        android:paddingRight="@dimen/x26">
+
+        <com.lptiyu.tanke.widget.CustomTextView
+            android:id="@+id/item_finished_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:padding="@dimen/item_finished_title_padding"
+            android:text="华科森林记"
+            android:layout_marginBottom="5dp"
+            android:textColor="@color/grey02"
+            android:textSize="16sp" />
+
+        <com.lptiyu.tanke.widget.CustomTextView
+            android:id="@+id/item_finished_type"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/item_finished_title"
+            android:padding="@dimen/item_finished_title_padding"
+            android:text="团队赛"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="12sp"/>
+
+        <RelativeLayout
+            android:id="@+id/item_game_finished_time_root"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:orientation="horizontal"
+            android:padding="@dimen/item_finished_title_padding"
+            >
+
+            <!--<ImageView-->
+                <!--android:id="@+id/item_game_finished_time_image"-->
+                <!--android:layout_width="@dimen/item_game_finished_time_image"-->
+                <!--android:layout_height="@dimen/item_game_finished_time_image"-->
+                <!--android:layout_gravity="center_vertical"-->
+                <!--android:scaleType="fitCenter"-->
+                <!--android:src="@mipmap/game_detail_time"/>-->
+
+            <com.lptiyu.tanke.widget.CustomTextView
+                android:id="@+id/item_finished_complete_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_toRightOf="@+id/item_game_finished_time_image"
+                android:layout_marginTop="@dimen/x20"
+                android:gravity="center_vertical"
+                android:text="2016.06.21 18:36"
+                android:textColor="@color/grey06"
+                android:textSize="12sp"
+            />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/item_game_finished_time_root"
+            android:padding="@dimen/item_finished_title_padding"
+            android:layout_alignParentBottom="true"
+            android:layout_alignLeft="@id/item_game_finished_time_root"
+            android:orientation="horizontal">
+
+
+            <com.lptiyu.tanke.widget.CustomTextView
+                android:id="@+id/item_finished_consuming_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="用时45分钟"
+                android:textColor="@color/grey06"
+                android:textSize="12sp"/>
+
+            <com.lptiyu.tanke.widget.CustomTextView
+                android:id="@+id/item_finished_exp_pre"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="获得"
+                android:layout_gravity="center_vertical"
+                android:textColor="@color/grey06"
+                android:layout_marginLeft="@dimen/x16"
+                android:layout_toLeftOf="@+id/item_finished_exp"
+                android:textSize="12sp"/>
+
+            <com.lptiyu.tanke.widget.CustomTextView
+                android:id="@+id/item_finished_exp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_toLeftOf="@+id/item_exp_label"
+                android:text="112"
+                android:textColor="@color/orange"
+                android:textSize="12sp"/>
+
+            <com.lptiyu.tanke.widget.CustomTextView
+                android:id="@+id/item_exp_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_alignParentRight="true"
+                android:text="经验值"
+                android:textColor="@color/grey06"
+                android:textSize="12sp"/>
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/user_center_linear_layout_bottom_line_height"
+        android:layout_alignParentBottom="true"
+        android:layout_marginLeft="@dimen/x26"
+        android:layout_marginRight="@dimen/x26"
+        android:background="@color/user_center_split_line"/>
+
+</RelativeLayout>

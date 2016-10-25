@@ -36,7 +36,7 @@ public class RegisterHelper extends SignUpHelper {
 
     protected void init() {
         signUpTitle.setText(R.string.register_title);
-//        signUpNextButton.setText(R.string.next);
+        //        signUpNextButton.setText(R.string.next);
     }
 
     @Override
@@ -76,6 +76,8 @@ public class RegisterHelper extends SignUpHelper {
         String phone = signUpPhoneEditText.getText().toString();
         String password = signUpPasswordEditText.getText().toString();
         String code = signUpCodeEditText.getText().toString();
+        signUpNextButton.setEnabled(false);
+        signUpNextButton.setText("注册中...");
 
         if (type == UserService.USER_TYPE_NORMAL) {
             //普通用户注册
@@ -100,7 +102,14 @@ public class RegisterHelper extends SignUpHelper {
                             intent.setClass(context, MainActivity.class);
                             context.startActivity(intent);
                         }
-                    }, new ToastExceptionAction(context.getApplicationContext()));
+                    }, new Action1<Throwable>() {
+                        @Override
+                        public void call(Throwable throwable) {
+                            ToastUtil.TextToast(throwable.getMessage());
+                            signUpNextButton.setEnabled(true);
+                            signUpNextButton.setText("完成");
+                        }
+                    });
         } else {
             //第三方用户注册
             HttpService.getUserService().registerThird(phone, password, code, type, Accounts.getOpenId(), Accounts

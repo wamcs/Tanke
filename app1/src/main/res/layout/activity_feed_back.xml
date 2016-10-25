@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.lptiyu.tanke.activities.feedback.FeedBackActivity">
+
+    <RelativeLayout
+        android:id="@+id/relative_title"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/default_toolbar_height"
+        android:background="@drawable/toolbar_gradient">
+
+        <ImageView
+            android:id="@+id/back_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:background="@null"
+            android:onClick="click"
+            android:paddingBottom="@dimen/default_toolbar_imageview_padding"
+            android:paddingLeft="@dimen/default_toolbar_imageview_padding_left"
+            android:paddingRight="@dimen/default_toolbar_imageview_padding"
+            android:paddingTop="@dimen/default_toolbar_imageview_padding"
+            android:scaleType="centerInside"
+            android:src="@mipmap/img_last_white"
+            />
+
+        <com.lptiyu.tanke.widget.CustomTextView
+            android:id="@+id/ctv_feed_back"
+            style="@style/TextAppearance.Toolbar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="意见反馈"
+            />
+
+    </RelativeLayout>
+
+    <EditText
+        android:id="@+id/et_input_contact"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/relative_title"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/shape_edittext_feed_back"
+        android:hint="手机号/邮箱"
+        android:padding="10dp"
+        android:textColor="@color/black10"
+        android:textColorHint="@color/grey05"
+        android:textSize="14sp"/>
+
+    <EditText
+        android:id="@+id/et_input_feedback"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/et_input_contact"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/shape_edittext_feed_back"
+        android:gravity="top|left"
+        android:hint="您对我们有哪些意见或建议"
+        android:inputType="textMultiLine"
+        android:maxLines="6"
+        android:minLines="6"
+        android:padding="10dp"
+        android:textColor="@color/black10"
+        android:textColorHint="@color/grey05"
+        android:textSize="14sp"/>
+
+    <TextView
+        android:id="@+id/tv_commit_feedback"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/et_input_feedback"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="20dp"
+        android:background="@color/colorPrimary"
+        android:gravity="center"
+        android:padding="10dp"
+        android:text="提交"
+        android:textColor="@color/white10"
+        android:textColorHint="@color/grey05"
+        android:textSize="16sp"/>
+
+</RelativeLayout>

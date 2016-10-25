@@ -3,6 +3,7 @@ package com.lptiyu.tanke.initialization.controller;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.lptiyu.tanke.R;
@@ -30,6 +31,8 @@ public class SignUpController extends ActivityController {
     TextView mProtocolButton;
     @BindView(R.id.sign_up_protocol_button_tip)
     TextView mProtocolButtonTip;
+    @BindView(R.id.sign_up_next_button)
+    Button mBtnFinish;
 
     private SignUpHelper signUpHelper;
 

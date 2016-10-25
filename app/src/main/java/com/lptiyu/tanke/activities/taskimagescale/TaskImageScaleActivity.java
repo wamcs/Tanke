@@ -30,11 +30,6 @@ public class TaskImageScaleActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         String imgUrl = getIntent().getStringExtra(Conf.TASK_IMG);
-        Glide.with(this).load(imgUrl).error(R.drawable.ic_launcher).into(zoomImg);
+        Glide.with(this).load(imgUrl).error(R.drawable.ic_launcher).placeholder(R.drawable.default_pic).into(zoomImg);
     }
-
-//    @OnClick(R.id.rl_out)
-    //    public void onClick() {
-    //        finish();
-    //    }
 }

@@ -43,12 +43,12 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/activity_setting_item_height">
+            android:layout_height="wrap_content">
 
             <com.lptiyu.tanke.widget.CustomTextView
                 style="@style/SettingActivityItemTextBase"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:gravity="center_vertical"
                 android:text="@string/setting_activity_vibrate_mobile"/>
@@ -76,13 +76,13 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/activity_setting_item_height">
+            android:layout_height="wrap_content">
 
             <com.lptiyu.tanke.widget.CustomTextView
                 android:id="@+id/setting_activity_feedback"
                 style="@style/SettingActivityItemTextNormal"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:gravity="center_vertical"
                 android:text="@string/setting_activity_feedback"/>
@@ -118,23 +118,24 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/activity_setting_item_height">
+            android:layout_height="wrap_content">
 
             <com.lptiyu.tanke.widget.CustomTextView
                 android:id="@+id/setting_activity_wechat_public"
                 style="@style/SettingActivityItemTextNormal"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:gravity="center_vertical"
                 android:text="@string/setting_activity_wechat_public"/>
 
             <com.lptiyu.tanke.widget.CustomTextView
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
-                android:layout_marginRight="@dimen/x20"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/x40"
                 android:gravity="center_vertical"
                 android:text="@string/wechat_public"
                 android:textColor="@color/grey06"
@@ -151,13 +152,13 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/activity_setting_item_height">
+            android:layout_height="wrap_content">
 
             <com.lptiyu.tanke.widget.CustomTextView
                 android:id="@+id/clear_cache"
                 style="@style/SettingActivityItemTextNormal"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:gravity="center_vertical"
                 android:text="清理缓存"/>
@@ -165,7 +166,7 @@
             <com.lptiyu.tanke.widget.CustomTextView
                 android:id="@+id/ctv_cache_size"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
                 android:layout_marginRight="@dimen/x20"
@@ -185,13 +186,13 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/activity_setting_item_height">
+            android:layout_height="wrap_content">
 
             <com.lptiyu.tanke.widget.CustomTextView
                 android:id="@+id/setting_activity_about_us"
                 style="@style/SettingActivityItemTextNormal"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:gravity="center_vertical"
                 android:text="@string/setting_activity_about_us"/>
@@ -211,11 +212,12 @@
     <com.lptiyu.tanke.widget.CustomTextView
         android:id="@+id/setting_activity_logout"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/activity_setting_item_height"
+        android:layout_height="wrap_content"
         android:layout_below="@id/setting_activity_information_block"
         android:layout_marginTop="@dimen/setting_activity_item_margin_top"
         android:background="@drawable/style_locate_activity_list_item"
         android:gravity="center"
+        android:padding="10dp"
         android:text="@string/setting_activity_logout"
         android:textColor="@color/colorPrimary"
         android:textSize="@dimen/setting_activity_logout_text_size"/>
