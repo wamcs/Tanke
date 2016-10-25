@@ -3,20 +3,15 @@ package com.lptiyu.tanke.location;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.TextView;
 
 import com.lptiyu.tanke.R;
 import com.lptiyu.tanke.base.controller.ActivityController;
-import com.lptiyu.tanke.base.ui.BaseActivity;
-import com.lptiyu.tanke.permission.PermissionDispatcher;
-import com.lptiyu.tanke.permission.TargetMethod;
 import com.lptiyu.tanke.utils.thread;
 import com.lptiyu.tanke.widget.CustomTextView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import timber.log.Timber;
 
 /**
  * @author: xiaoxiaoda

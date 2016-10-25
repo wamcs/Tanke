@@ -6,8 +6,6 @@ import com.lptiyu.tanke.R;
 import com.lptiyu.tanke.base.recyclerview.BaseViewHolder;
 import com.lptiyu.tanke.pojo.GameDataEntity;
 import com.lptiyu.tanke.pojo.GameDataFinishEntity;
-import com.lptiyu.tanke.pojo.GameDataNormalEntity;
-import com.lptiyu.tanke.pojo.GameFinishedEntity;
 import com.lptiyu.tanke.widget.CustomTextView;
 
 import butterknife.BindView;

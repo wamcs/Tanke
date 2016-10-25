@@ -10,7 +10,6 @@ import com.lptiyu.tanke.base.controller.ActivityController;
 import com.lptiyu.tanke.base.ui.BaseFragment;
 import com.lptiyu.tanke.gameplaying.pojo.GAME_ACTIVITY_FINISH_TYPE;
 import com.lptiyu.tanke.utils.Inflater;
-import com.lptiyu.tanke.utils.ToastUtil;
 
 import timber.log.Timber;
 

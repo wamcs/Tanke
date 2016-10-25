@@ -11,7 +11,6 @@ import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
 import com.lptiyu.tanke.R;
 import com.lptiyu.tanke.base.controller.ContextController;
-import com.lptiyu.tanke.global.AppData;
 import com.lptiyu.tanke.global.Conf;
 import com.lptiyu.tanke.utils.Display;
 import com.lptiyu.tanke.utils.ToastUtil;
@@ -20,7 +19,6 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import timber.log.Timber;
 
 /**
  * @author: xiaoxiaoda

@@ -6,7 +6,6 @@ import com.lptiyu.tanke.base.recyclerview.BaseAdapter;
 import com.lptiyu.tanke.base.recyclerview.BaseViewHolder;
 import com.lptiyu.tanke.pojo.GameDataEntity;
 import com.lptiyu.tanke.pojo.GameDataFinishEntity;
-import com.lptiyu.tanke.pojo.GameDataNormalEntity;
 import com.lptiyu.tanke.pojo.GameDataStartEntity;
 
 import java.util.ArrayList;

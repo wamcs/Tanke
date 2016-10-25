@@ -5,7 +5,6 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-
 import com.lptiyu.tanke.R;
 import com.lptiyu.tanke.utils.Inflater;
 

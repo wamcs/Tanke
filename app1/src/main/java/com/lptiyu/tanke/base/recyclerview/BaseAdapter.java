@@ -1,7 +1,6 @@
 package com.lptiyu.tanke.base.recyclerview;
 
 import android.support.v7.widget.RecyclerView;
-import android.view.ViewGroup;
 
 import java.util.List;
 

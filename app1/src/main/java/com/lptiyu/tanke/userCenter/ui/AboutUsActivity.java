@@ -1,6 +1,5 @@
 package com.lptiyu.tanke.userCenter.ui;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import com.lptiyu.tanke.R;

@@ -1,8 +1,8 @@
 package com.lptiyu.tanke.database;
 
-import java.util.List;
-
 import com.lptiyu.tanke.database.DaoSession;
+
+import java.util.List;
 
 import de.greenrobot.dao.DaoException;
 

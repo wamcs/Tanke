@@ -16,7 +16,6 @@ import android.widget.TextView;
 import com.lptiyu.tanke.R;
 import com.lptiyu.tanke.utils.Strings;
 import com.lptiyu.tanke.utils.TimeUtils;
-import com.lptiyu.tanke.utils.ToastUtil;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

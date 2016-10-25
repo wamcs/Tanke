@@ -5,7 +5,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-
 import com.lptiyu.tanke.R;
 import com.lptiyu.tanke.base.controller.ContextController;
 import com.lptiyu.tanke.global.Conf;

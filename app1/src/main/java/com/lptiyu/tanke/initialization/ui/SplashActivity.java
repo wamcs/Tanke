@@ -1,6 +1,5 @@
 package com.lptiyu.tanke.initialization.ui;
 
-import android.net.Uri;
 import android.os.Bundle;
 
 import com.lptiyu.tanke.base.splash.BaseSplashActivity;

@@ -10,8 +10,6 @@ import android.widget.Toast;
 
 import com.lptiyu.tanke.global.AppData;
 
-import timber.log.Timber;
-
 /**
  * @author : xiaoxiaoda
  *         date: 16-5-6

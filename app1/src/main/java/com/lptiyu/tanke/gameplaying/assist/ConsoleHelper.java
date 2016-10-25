@@ -6,7 +6,6 @@ import android.view.View;
 
 import com.lptiyu.tanke.R;
 import com.lptiyu.tanke.gameplaying.pojo.Point;
-import com.lptiyu.tanke.utils.ToastUtil;
 import com.lptiyu.tanke.widget.BaseSpotScrollView;
 import com.lptiyu.tanke.widget.RunningSpotScrollView;
 

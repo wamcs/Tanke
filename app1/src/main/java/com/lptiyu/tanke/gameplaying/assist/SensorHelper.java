@@ -6,8 +6,6 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 
-import timber.log.Timber;
-
 /**
  * @author : xiaoxiaoda
  *         date: 16-5-23

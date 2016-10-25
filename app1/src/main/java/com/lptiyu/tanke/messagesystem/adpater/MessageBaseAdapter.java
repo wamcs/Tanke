@@ -7,12 +7,10 @@ import android.text.style.URLSpan;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.lptiyu.tanke.R;
 import com.lptiyu.tanke.widget.CustomTextView;
-import com.makeramen.roundedimageview.RoundedImageView;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

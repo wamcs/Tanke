@@ -8,8 +8,6 @@ import com.lptiyu.tanke.base.controller.ActivityController;
 import com.lptiyu.tanke.base.ui.BaseActivity;
 import com.lptiyu.tanke.initialization.controller.LoginController;
 
-import timber.log.Timber;
-
 /**
  * author:wamcs
  * date:2016/5/19
