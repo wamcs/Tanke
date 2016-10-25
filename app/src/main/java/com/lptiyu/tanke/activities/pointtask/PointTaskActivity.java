@@ -259,10 +259,10 @@ public class PointTaskActivity extends MyBaseActivity implements PointTaskContac
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
         super.onActivityResult(requestCode, resultCode, intent);
         if (resultCode == RESULT_OK) {//扫码识别返回
-            if (Accounts.getPhoneNumber().endsWith("4317")) {
-                loadNetWorkData();
-                return;
-            }
+            //            if (Accounts.getPhoneNumber().endsWith("4317")) {
+            //                loadNetWorkData();
+            //                return;
+            //            }
             Bundle b = intent.getExtras();
             //扫描到的结果
             String str = b.getString(CaptureActivity.QR_CODE_DATA);
@@ -440,17 +440,12 @@ public class PointTaskActivity extends MyBaseActivity implements PointTaskContac
                         mHandler.postDelayed(new Runnable() {
                             @Override
                             public void run() {
-                                runOnUiThread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        Log.i("jason", "图像识别任务");
-                                        intent.setClass(PointTaskActivity.this, ImageDistinguishActivity.class);
-                                        Log.i("jason", "要识别的图片路径：" + unZippedDir + "/" + currentTask.pwd);
-                                        intent.putExtra(Conf.IMG_DISTINGUISH_URL, currentTask.pwd);
-                                        intent.putExtra(Conf.PARENT_DIR, unZippedDir);
-                                        startActivityForResult(intent, RequestCode.IMAGE_DISTINGUISH);
-                                    }
-                                });
+                                Log.i("jason", "图像识别任务");
+                                intent.setClass(PointTaskActivity.this, ImageDistinguishActivity.class);
+                                Log.i("jason", "要识别的图片路径：" + unZippedDir + "/" + currentTask.pwd);
+                                intent.putExtra(Conf.IMG_DISTINGUISH_URL, currentTask.pwd);
+                                intent.putExtra(Conf.PARENT_DIR, unZippedDir);
+                                startActivityForResult(intent, RequestCode.IMAGE_DISTINGUISH);
                             }
                         }, 10);
                         break;
@@ -469,7 +464,6 @@ public class PointTaskActivity extends MyBaseActivity implements PointTaskContac
                     case TaskType.SCAN_CODE:
                         Log.i("jason", "扫码任务");
                         intent.putExtra("isFirstInLocation", AppData.isFirstInCaptureActivity());
-                        intent.putExtra("phone_number", "4317");
                         intent.setClass(PointTaskActivity.this, CaptureActivity.class);
                         startActivityForResult(intent, RequestCode.CAMERA_PERMISSION_REQUEST_CODE);
                         break;

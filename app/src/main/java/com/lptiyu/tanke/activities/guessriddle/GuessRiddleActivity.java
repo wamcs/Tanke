@@ -103,10 +103,10 @@ public class GuessRiddleActivity extends MyBaseActivity implements RiddleContact
                 finish();
                 break;
             case R.id.tv_submitAnswer:
-                if (Accounts.getPhoneNumber().endsWith("4317")) {
-                    loadNetWorkData();
-                    return;
-                }
+                //                if (Accounts.getPhoneNumber().endsWith("4317")) {
+                //                    loadNetWorkData();
+                //                    return;
+                //                }
                 String answer = etWriteAnswer.getText() + "";
                 if (answer.equals("")) {
                     Toast.makeText(this, "请先输入答案", Toast.LENGTH_SHORT).show();

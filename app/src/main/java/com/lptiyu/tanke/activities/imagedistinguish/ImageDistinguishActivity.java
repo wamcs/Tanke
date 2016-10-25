@@ -235,10 +235,10 @@ public class ImageDistinguishActivity extends MyBaseActivity implements Imagedis
                 finish();
                 break;
             case R.id.img_startScan:
-                if (Accounts.getPhoneNumber().endsWith("4317")) {
-                    upLoadGameRecord();
-                    return;
-                }
+                //                if (Accounts.getPhoneNumber().endsWith("4317")) {
+                //                    upLoadGameRecord();
+                //                    return;
+                //                }
                 if (!isScanning) {
                     startScan();
                 } else {

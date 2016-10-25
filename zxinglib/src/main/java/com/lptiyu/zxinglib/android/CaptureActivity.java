@@ -54,8 +54,6 @@ import android.widget.TextView;
 
 import com.lptiyu.zxinglib.R;
 import com.lptiyu.zxinglib.android.camera.CameraManager;
-import com.lptiyu.zxinglib.android.entity.Conf;
-import com.lptiyu.zxinglib.android.entity.UploadGameRecordResponse;
 import com.lptiyu.zxinglib.android.history.HistoryItem;
 import com.lptiyu.zxinglib.android.history.HistoryManager;
 import com.lptiyu.zxinglib.android.result.ResultHandler;
@@ -120,14 +118,6 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
     private InactivityTimer inactivityTimer;
     private BeepManager beepManager;
     private AmbientLightManager ambientLightManager;
-    private long gameId;
-    private long gameType;
-    private String task_id;
-    private String point_id;
-    private boolean isPointOver;
-    private String upload_record_url = "http://192.168.1.5/trunk/lepao/api.php/system/Rankslog";
-    private long uid;
-    private UploadGameRecordResponse resultResponse;
     private boolean isFirstInLocationActivity;
 
     ViewfinderView getViewfinderView() {
@@ -141,11 +131,6 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
     CameraManager getCameraManager() {
         return cameraManager;
     }
-
-    /*******************************************/
-    private Handler mHandler = new Handler();
-
-    /*******************************************/
 
     @Override
     public void onCreate(Bundle icicle) {
@@ -164,16 +149,14 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
 
         /*********************************/
-        //                initData();
         isFirstInLocationActivity = getIntent().getBooleanExtra("isFirstInLocation", false);
         if (isFirstInLocationActivity) {
-            mHandler.postDelayed(new Runnable() {
+            getWindow().getDecorView().post(new Runnable() {
+                @Override
                 public void run() {
-                    //                    PopupWindowUtils.getInstance().showTaskGuide(CaptureActivity.this,
-                    //                            "这是扫码任务，找到神奇的二维码即可通关");
                     showTaskGuide(CaptureActivity.this, "这是扫码任务，找到神奇的二维码即可通关");
                 }
-            }, 500);
+            });
         }
         /*********************************/
     }
@@ -511,67 +494,8 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
             drawResultPoints(barcode, scaleFactor, rawResult);
         }
 
-        /********************************/
-        //上传游戏记录
-        //        RequestParams params = new RequestParams(upload_record_url);
-        //        params.addBodyParameter("uid", uid + "");
-        //        params.addBodyParameter("game_id", gameId + "");
-        //        params.addBodyParameter("point_id", point_id);
-        //        params.addBodyParameter("task_id", task_id);
-        //        params.addBodyParameter("type", gameType + "");
-        //        params.addBodyParameter("point_statu", "0");
-        //        //        params.addBodyParameter("ranks_id",rankId);
-        //        x.http().get(params, new Callback.CommonCallback<UpLoadGameRecord>() {
-        //            @Override
-        //            public void onSuccess(UpLoadGameRecord result) {
-        //                if (result.status == 1) {
-        //                    resultResponse = result.data;
-        //                    handleDecodeInternally(rawResult, resultHandler, barcode);
-        //                }
-        //            }
-        //
-        //            @Override
-        //            public void onError(Throwable ex, boolean isOnCallback) {
-        //
-        //            }
-        //
-        //            @Override
-        //            public void onCancelled(CancelledException cex) {
-        //
-        //            }
-        //
-        //            @Override
-        //            public void onFinished() {
-        //
-        //            }
-        //        });
-
         handleDecodeInternally(rawResult, resultHandler, barcode);
 
-        //    switch (source) {
-        //      case NATIVE_APP_INTENT:
-        //      case PRODUCT_SEARCH_LINK:
-        //        handleDecodeExternally(rawResult, resultHandler, barcode);
-        //        break;
-        //      case ZXING_LINK:
-        //        if (scanFromWebPageManager == null || !scanFromWebPageManager.isScanFromWebPage()) {
-        //        } else {
-        //          handleDecodeExternally(rawResult, resultHandler, barcode);
-        //        }
-        //        break;
-        //      case NONE:
-        //        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        //        if (fromLiveScan && prefs.getBoolean(PreferencesActivity.KEY_BULK_MODE, false)) {
-        //          Toast.makeText(getApplicationContext(),
-        //              getResources().getString(R.string.msg_bulk_mode_scanned) + " (" + rawResult.getText() + ')',
-        //              Toast.LENGTH_SHORT).show();
-        //          // Wait a moment or else it will scan the same barcode continuously about 3 times
-        //          restartPreviewAfterDelay(BULK_MODE_SCAN_DELAY_MS);
-        //        } else {
-        //          handleDecodeInternally(rawResult, resultHandler, barcode);
-        //        }
-        //        break;
-        //    }
     }
 
     /**
@@ -617,28 +541,12 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
         }
     }
 
-    private void initData() {
-        Intent intent = getIntent();
-        gameId = getIntent().getLongExtra(Conf.GAME_ID, 0);
-        gameType = getIntent().getLongExtra(Conf.GAME_TYPE, 0);
-        isPointOver = getIntent().getBooleanExtra(Conf.IS_POINT_OVER, false);
-        uid = getIntent().getLongExtra("uid", 0);
-        task_id = getIntent().getStringExtra("task_id");
-        point_id = getIntent().getStringExtra("point_id");
-    }
-
     // Put up our own UI for how to handle the decoded contents.
     private void handleDecodeInternally(Result rawResult, ResultHandler resultHandler, Bitmap barcode) {
 
         CharSequence displayContents = resultHandler.getDisplayContents();
-
         Intent intent = new Intent();
         intent.putExtra(QR_CODE_DATA, displayContents);
-
-        /***********************/
-        //        intent.putExtra(Conf.UPLOAD_RECORD_RESPONSE, resultResponse);
-        /***********************/
-
         setResult(RESULT_OK, intent);
         finish();
 

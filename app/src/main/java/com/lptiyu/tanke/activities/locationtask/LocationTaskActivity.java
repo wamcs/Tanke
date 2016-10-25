@@ -140,10 +140,10 @@ public class LocationTaskActivity extends MyBaseActivity implements BDLocationLi
     @Override
     public void onReceiveLocation(BDLocation bdLocation) {
         locateHelper.stopLocate();
-        if (Accounts.getPhoneNumber().endsWith("4317")) {
-            loadNetWorkData();
-            return;
-        }
+        //        if (Accounts.getPhoneNumber().endsWith("4317")) {
+        //            loadNetWorkData();
+        //            return;
+        //        }
         //纬度
         latitude = bdLocation.getLatitude();
         //经度

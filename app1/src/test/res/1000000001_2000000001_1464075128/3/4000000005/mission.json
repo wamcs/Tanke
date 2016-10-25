@@ -1,8 +1,0 @@
-{
-    "id": "4000000005",
-    "type": "1",
-    "mission_name":"this is the name of task",
-    "content": "content.html",
-    "pwd": "pwd.txt",
-    "exp": "10"
-}
