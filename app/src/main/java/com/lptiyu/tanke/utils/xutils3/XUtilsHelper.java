@@ -53,7 +53,7 @@ public class XUtilsHelper {
         //设置断点续传
         params.setAutoResume(true);
         String fileName = fileUrl.substring(fileUrl.lastIndexOf('/'));
-        params.setSaveFilePath(DirUtils.getGameDirectory() + "/" + fileName);
+        params.setSaveFilePath(DirUtils.getAPKDirectory() + "/" + fileName);
         params.setAutoRename(false);
         params.setConnectTimeout(15000);
         //进度条

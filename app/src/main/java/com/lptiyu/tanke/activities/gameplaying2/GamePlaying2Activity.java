@@ -223,6 +223,20 @@ public class GamePlaying2Activity extends MyBaseActivity implements GamePlaying2
         gamePlayingTitle.setText(m_title + "");
         //根据游戏记录核更新 每个任务点的状态
         initPointStatuByGameRecord(gameRecord);
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////
+        //TODO 此处有一个逻辑bug，有可能所有章节点都没有解锁，原因待查
+        //临时解决办法：强行判断第一个点是否为未开启状态，如果是，则设置为正在玩的状态，并且当前点的第一个任务也为正在玩的状态
+        ThemeLine themeLine = RunApplication.getPlayingThemeLine();
+        if (themeLine != null && themeLine.list_points != null && themeLine.list_points.size() > 0) {
+            Point point = themeLine.list_points.get(0);
+            if (point.state == PointTaskStatus.UNSTARTED) {
+                point.state = PointTaskStatus.PLAYING;
+                if (point.list_task != null && point.list_task.size() > 0) {
+                    point.list_task.get(0).state = PointTaskStatus.PLAYING;
+                }
+            }
+        }
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////
         setAdapter();
         if (Integer.parseInt(gameRecord.play_statu) == 2) {
             ctv_throungh_game.setVisibility(View.VISIBLE);
