@@ -22,7 +22,7 @@ import com.lptiyu.tanke.utils.GameZipUtils;
 import com.lptiyu.tanke.utils.NetworkUtil;
 import com.lptiyu.tanke.utils.PopupWindowUtils;
 import com.lptiyu.tanke.utils.ToastUtil;
-import com.lptiyu.tanke.utils.XUtilsDownloader;
+import com.lptiyu.tanke.utils.GameZipDownloader;
 import com.lptiyu.tanke.widget.GradientProgressBar;
 import com.makeramen.roundedimageview.RoundedImageView;
 
@@ -131,8 +131,8 @@ public class GamePlayingViewHolder extends BaseViewHolder<GamePlayingEntity> {
                                 case PlayStatus.HAVE_STARTED_GAME://进入并且已经开始游戏，进入到玩游戏界面
                                     //进入到玩游戏界面之前，先检测游戏包是否存在，存在则直接进入，否则要先下载游戏包
                                     //检查游戏包是否存在或者游戏解压后为空，判断完后游戏包已经被解压缩，并且已经将文件解析成实体类对象，此时可以直接从内存中取数据了
-                                    new XUtilsDownloader(getContext(), tempGameZipUrl, currentEntity.getGameId(), new
-                                            XUtilsDownloader.FinishDownloadCallback() {
+                                    new GameZipDownloader(getContext(), tempGameZipUrl, currentEntity.getGameId(), new
+                                            GameZipDownloader.FinishDownloadCallback() {
                                                 @Override
                                                 public void onFinishedDownload() {
                                                     startPlayingGame();

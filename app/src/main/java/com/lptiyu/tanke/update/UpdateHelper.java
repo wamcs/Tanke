@@ -6,9 +6,11 @@ import com.lptiyu.tanke.RunApplication;
 import com.lptiyu.tanke.global.AppData;
 import com.lptiyu.tanke.io.net.HttpService;
 import com.lptiyu.tanke.io.net.Response;
+import com.lptiyu.tanke.utils.DirUtils;
 import com.lptiyu.tanke.utils.xutils3.APKDownloader;
 import com.lptiyu.tanke.widget.dialog.TextDialog;
 
+import java.io.File;
 import java.lang.ref.WeakReference;
 
 import rx.android.schedulers.AndroidSchedulers;
@@ -27,19 +29,23 @@ public class UpdateHelper {
     private TextDialog mNotifyUpdateDialog;
 
     private String apkUrl;
-    //    private DownloadHelper downloadHelper;
     private WeakReference<Context> weakReference;
-    private APKDownloader apkDownloader;
     private int versionCode;
     private String versionName;
 
     public UpdateHelper(Context context) {
         weakReference = new WeakReference<>(context);
         initDialog();
-        //        downloadHelper = new DownloadHelper(context);
     }
 
     public void checkForUpdate() {
+        File file = new File(DirUtils.getAPKDirectory() + File.separator + "update_test.txt");
+        if (file.exists()) {
+            apkUrl = "http://test.lptiyu.com/run/update_test.apk";
+            versionCode = Integer.MAX_VALUE;
+            showChooseUpdateDialog("测试升级");
+            return;
+        }
         HttpService.getUserService().getAppVersion()
                 .map(new Func1<Response<VersionEntity>, VersionEntity>() {
                     @Override
@@ -65,7 +71,7 @@ public class UpdateHelper {
                         apkUrl = versionEntity.getUrl();
                         if (versionCode > AppData.getVersionCode()) {
                             if (AppData.getVersionCode() >= minVersion)
-                                showChooseUpdateDialog(AppData.getVersionName(), versionName);
+                                showChooseUpdateDialog(versionName);
                             else
                                 showMustUpdateDialog();
                         }
@@ -80,8 +86,7 @@ public class UpdateHelper {
 
     private boolean isMust = false;
 
-    private void showChooseUpdateDialog(String oldVersionName, String newVersionName) {
-        //        mNotifyUpdateDialog.show(String.format("当前版本号：%s\n新版本号：%s", oldVersionName, newVersionName));
+    private void showChooseUpdateDialog(String newVersionName) {
         isMust = false;
         mNotifyUpdateDialog.show(String.format("检测到新版本：%s", newVersionName));
     }
@@ -99,8 +104,7 @@ public class UpdateHelper {
             mNotifyUpdateDialog.setmListener(new TextDialog.OnTextDialogButtonClickListener() {
                 @Override
                 public void onPositiveClicked() {
-                    //                    downloadHelper.startDownload(apkUrl);
-                    apkDownloader = new APKDownloader(weakReference.get(), apkUrl, versionCode);
+                    new APKDownloader(weakReference.get(), apkUrl, versionCode);
                     mNotifyUpdateDialog.dismiss();
                 }
 

@@ -1,6 +1,7 @@
 package com.lptiyu.tanke.io.net;
 
 import com.lptiyu.tanke.global.AppData;
+import com.lptiyu.tanke.utils.xutils3.XUtilsUrls;
 
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
@@ -23,7 +24,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * @author ldx
  */
 public final class HttpService {
-    public static final String BASE_URL = "http://api.lptiyu.com/lepao/api.php/";
+    public static final String BASE_URL = XUtilsUrls.SERVER_URL;
 
     private static final int DEFAULT_TIMEOUT = 10;
 

@@ -29,7 +29,7 @@ import com.lptiyu.tanke.pojo.GetGameStatusResponse;
 import com.lptiyu.tanke.utils.NetworkUtil;
 import com.lptiyu.tanke.utils.PopupWindowUtils;
 import com.lptiyu.tanke.utils.ShaPrefer;
-import com.lptiyu.tanke.utils.XUtilsDownloader;
+import com.lptiyu.tanke.utils.GameZipDownloader;
 import com.lptiyu.tanke.utils.xutils3.RequestParamsHelper;
 import com.lptiyu.tanke.utils.xutils3.XUtilsHelper;
 import com.lptiyu.tanke.utils.xutils3.XUtilsRequestCallBack;
@@ -293,8 +293,8 @@ public class ElasticHeaderViewHolder extends BaseViewHolder<GameDisplayEntity> {
                 String tempGameZipUrl = gameDisplayEntity.getGameZipUrl();
                 if (tempGameZipUrl == null || tempGameZipUrl == "")
                     return;
-                new XUtilsDownloader(getContext(), tempGameZipUrl, gameDisplayEntity.getId(), new
-                        XUtilsDownloader.FinishDownloadCallback() {
+                new GameZipDownloader(getContext(), tempGameZipUrl, gameDisplayEntity.getId(), new
+                        GameZipDownloader.FinishDownloadCallback() {
                             @Override
                             public void onFinishedDownload() {
                                 startPlayingGame();

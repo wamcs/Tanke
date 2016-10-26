@@ -32,6 +32,7 @@ import com.lptiyu.tanke.permission.PermissionDispatcher;
 import com.lptiyu.tanke.permission.TargetMethod;
 import com.lptiyu.tanke.pojo.EnterGameResponse;
 import com.lptiyu.tanke.pojo.GameDetailResponse;
+import com.lptiyu.tanke.utils.DirUtils;
 import com.lptiyu.tanke.utils.GameZipUtils;
 import com.lptiyu.tanke.utils.NetworkUtil;
 import com.lptiyu.tanke.utils.PopupWindowUtils;
@@ -484,43 +485,44 @@ public class GameDetailsController extends ActivityController {
      * 根据游戏下载包链接下载该游戏包
      */
     private void downloadGameZipFile() {
-        XUtilsHelper.getInstance().downLoad(tempGameZipUrl, new XUtilsHelper.IDownloadCallback() {
-            @Override
-            public void successs(File file) {
-                String zippedFilePath = file.getAbsolutePath();
-                GameZipUtils gameZipUtils = new GameZipUtils();
-                //解压文件
-                gameZipUtils.parseZipFile(zippedFilePath);
-                String parsedFilePath = gameZipUtils.isParsedFileExist(gameId);
-                if (parsedFilePath != null) {
-                    file.delete();
-                    startPlayingGame();
-                } else {
-                    Toast.makeText(getContext(), "游戏包解压失败", Toast.LENGTH_SHORT).show();
-                }
-            }
+        XUtilsHelper.getInstance().downLoad(tempGameZipUrl, DirUtils.getGameDirectory().getAbsolutePath(), new
+                XUtilsHelper.IDownloadCallback() {
+                    @Override
+                    public void successs(File file) {
+                        String zippedFilePath = file.getAbsolutePath();
+                        GameZipUtils gameZipUtils = new GameZipUtils();
+                        //解压文件
+                        gameZipUtils.parseZipFile(zippedFilePath);
+                        String parsedFilePath = gameZipUtils.isParsedFileExist(gameId);
+                        if (parsedFilePath != null) {
+                            file.delete();
+                            startPlayingGame();
+                        } else {
+                            Toast.makeText(getContext(), "游戏包解压失败", Toast.LENGTH_SHORT).show();
+                        }
+                    }
 
-            @Override
-            public void progress(long total, long current, boolean isDownloading) {
-                //游戏进度
-                if (progressDialog != null) {
-                    progressDialog.setMessage("加载中" + current * 100 / total + "%");
-                }
+                    @Override
+                    public void progress(long total, long current, boolean isDownloading) {
+                        //游戏进度
+                        if (progressDialog != null) {
+                            progressDialog.setMessage("加载中" + current * 100 / total + "%");
+                        }
 
-            }
+                    }
 
-            @Override
-            public void finished() {
-                if (progressDialog != null) {
-                    progressDialog.dismiss();
-                }
-            }
+                    @Override
+                    public void finished() {
+                        if (progressDialog != null) {
+                            progressDialog.dismiss();
+                        }
+                    }
 
-            @Override
-            public void onError(String errMsg) {
-                PopupWindowUtils.getInstance().showFailLoadPopupwindow(getContext());
-            }
-        });
+                    @Override
+                    public void onError(String errMsg) {
+                        PopupWindowUtils.getInstance().showFailLoadPopupwindow(getContext());
+                    }
+                });
 
     }
 

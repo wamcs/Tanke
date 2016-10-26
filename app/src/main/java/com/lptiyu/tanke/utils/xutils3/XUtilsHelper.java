@@ -43,7 +43,7 @@ public class XUtilsHelper {
      * @param fileUrl
      * @param callback
      */
-    public void downLoad(String fileUrl, final IDownloadCallback callback) {
+    public void downLoad(String fileUrl, String fileSavePath, final IDownloadCallback callback) {
         //xutils不支持非http协议
         RequestParams params;
         if (fileUrl.startsWith("http://"))
@@ -53,7 +53,11 @@ public class XUtilsHelper {
         //设置断点续传
         params.setAutoResume(true);
         String fileName = fileUrl.substring(fileUrl.lastIndexOf('/'));
-        params.setSaveFilePath(DirUtils.getAPKDirectory() + "/" + fileName);
+        if (fileSavePath != null)
+            params.setSaveFilePath(fileSavePath + "/" + fileName);
+        else
+            params.setSaveFilePath(DirUtils.getGameDirectory() + "/" + fileName);
+
         params.setAutoRename(false);
         params.setConnectTimeout(15000);
         //进度条

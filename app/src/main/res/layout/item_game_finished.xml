@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout android:id="@id/game_finished_list_item"
-                xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@id/game_finished_list_item"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingBottom="@dimen/y26"
@@ -13,10 +13,11 @@
         android:id="@+id/image_view"
         android:layout_width="@dimen/main_page_item_img_width"
         android:layout_height="@dimen/main_page_item_img_height"
+        android:layout_centerVertical="true"
         android:layout_gravity="center_vertical"
+        android:layout_marginBottom="@dimen/y13"
         android:layout_marginLeft="@dimen/x26"
         android:layout_marginTop="@dimen/y13"
-        android:layout_marginBottom="@dimen/y13"
         android:contentDescription="@string/content_description"
         android:scaleType="centerCrop"/>
 
@@ -35,11 +36,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
+            android:layout_marginBottom="5dp"
             android:padding="@dimen/item_finished_title_padding"
             android:text="华科森林记"
-            android:layout_marginBottom="5dp"
             android:textColor="@color/grey02"
-            android:textSize="16sp" />
+            android:textSize="16sp"/>
 
         <com.lptiyu.tanke.widget.CustomTextView
             android:id="@+id/item_finished_type"
@@ -61,36 +62,36 @@
             >
 
             <!--<ImageView-->
-                <!--android:id="@+id/item_game_finished_time_image"-->
-                <!--android:layout_width="@dimen/item_game_finished_time_image"-->
-                <!--android:layout_height="@dimen/item_game_finished_time_image"-->
-                <!--android:layout_gravity="center_vertical"-->
-                <!--android:scaleType="fitCenter"-->
-                <!--android:src="@mipmap/game_detail_time"/>-->
+            <!--android:id="@+id/item_game_finished_time_image"-->
+            <!--android:layout_width="@dimen/item_game_finished_time_image"-->
+            <!--android:layout_height="@dimen/item_game_finished_time_image"-->
+            <!--android:layout_gravity="center_vertical"-->
+            <!--android:scaleType="fitCenter"-->
+            <!--android:src="@mipmap/game_detail_time"/>-->
 
             <com.lptiyu.tanke.widget.CustomTextView
                 android:id="@+id/item_finished_complete_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:layout_toRightOf="@+id/item_game_finished_time_image"
                 android:layout_marginTop="@dimen/x20"
+                android:layout_toRightOf="@+id/item_game_finished_time_image"
                 android:gravity="center_vertical"
                 android:text="2016.06.21 18:36"
                 android:textColor="@color/grey06"
                 android:textSize="12sp"
-            />
+                />
 
         </RelativeLayout>
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/item_game_finished_time_root"
-            android:padding="@dimen/item_finished_title_padding"
-            android:layout_alignParentBottom="true"
             android:layout_alignLeft="@id/item_game_finished_time_root"
-            android:orientation="horizontal">
+            android:layout_alignParentBottom="true"
+            android:layout_below="@id/item_game_finished_time_root"
+            android:orientation="horizontal"
+            android:padding="@dimen/item_finished_title_padding">
 
 
             <com.lptiyu.tanke.widget.CustomTextView
@@ -106,11 +107,11 @@
                 android:id="@+id/item_finished_exp_pre"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="获得"
                 android:layout_gravity="center_vertical"
-                android:textColor="@color/grey06"
                 android:layout_marginLeft="@dimen/x16"
                 android:layout_toLeftOf="@+id/item_finished_exp"
+                android:text="获得"
+                android:textColor="@color/grey06"
                 android:textSize="12sp"/>
 
             <com.lptiyu.tanke.widget.CustomTextView
@@ -127,8 +128,8 @@
                 android:id="@+id/item_exp_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
                 android:layout_alignParentRight="true"
+                android:layout_gravity="center_vertical"
                 android:text="经验值"
                 android:textColor="@color/grey06"
                 android:textSize="12sp"/>

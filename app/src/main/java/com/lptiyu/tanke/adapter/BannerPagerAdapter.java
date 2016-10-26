@@ -22,7 +22,7 @@ import com.lptiyu.tanke.io.net.Response;
 import com.lptiyu.tanke.pojo.GetGameStatusResponse;
 import com.lptiyu.tanke.utils.NetworkUtil;
 import com.lptiyu.tanke.utils.PopupWindowUtils;
-import com.lptiyu.tanke.utils.XUtilsDownloader;
+import com.lptiyu.tanke.utils.GameZipDownloader;
 import com.lptiyu.tanke.utils.xutils3.response.Banner;
 
 import java.util.List;
@@ -140,7 +140,7 @@ public class BannerPagerAdapter extends PagerAdapter {
                                 case PlayStatus.HAVE_ENTERED_bUT_NOT_START_GAME://进入过但没开始游戏，进入到玩游戏界面
                                 case PlayStatus.HAVE_STARTED_GAME://进入并且已经开始游戏，进入到玩游戏界面
                                     //进入到玩游戏界面之前，先检测游戏包是否存在，存在则直接进入，否则要先下载游戏包
-                                    new XUtilsDownloader(context, tempGameZipUrl, gameId, new XUtilsDownloader
+                                    new GameZipDownloader(context, tempGameZipUrl, gameId, new GameZipDownloader
                                             .FinishDownloadCallback() {
                                         @Override
                                         public void onFinishedDownload() {

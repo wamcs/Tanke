@@ -26,7 +26,7 @@ import com.lptiyu.tanke.pojo.GetGameStatusResponse;
 import com.lptiyu.tanke.utils.NetworkUtil;
 import com.lptiyu.tanke.utils.PopupWindowUtils;
 import com.lptiyu.tanke.utils.TimeUtils;
-import com.lptiyu.tanke.utils.XUtilsDownloader;
+import com.lptiyu.tanke.utils.GameZipDownloader;
 import com.makeramen.roundedimageview.RoundedImageView;
 
 import butterknife.BindView;
@@ -252,8 +252,8 @@ public class NormalViewHolder extends BaseViewHolder<GameDisplayEntity> {
                 if (tempGameZipUrl == null || tempGameZipUrl.equals(""))
                     return;
 
-                new XUtilsDownloader(getContext(), tempGameZipUrl, gameDisplayEntity.getId(), new
-                        XUtilsDownloader.FinishDownloadCallback() {
+                new GameZipDownloader(getContext(), tempGameZipUrl, gameDisplayEntity.getId(), new
+                        GameZipDownloader.FinishDownloadCallback() {
                             @Override
                             public void onFinishedDownload() {
                                 startPlayingGame();

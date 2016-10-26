@@ -23,7 +23,7 @@ import com.lptiyu.tanke.utils.NetworkUtil;
 import com.lptiyu.tanke.utils.PopupWindowUtils;
 import com.lptiyu.tanke.utils.TimeUtils;
 import com.lptiyu.tanke.utils.ToastUtil;
-import com.lptiyu.tanke.utils.XUtilsDownloader;
+import com.lptiyu.tanke.utils.GameZipDownloader;
 import com.lptiyu.tanke.widget.CustomTextView;
 import com.makeramen.roundedimageview.RoundedImageView;
 
@@ -153,8 +153,8 @@ public class UserGameFinishedHolder extends BaseViewHolder<GameFinishedEntity> {
                             //判断游戏状态
                             switch (response.getData().play_statu) {
                                 case PlayStatus.GAME_OVER://游戏结束，暂不考虑
-                                    new XUtilsDownloader(getContext(), tempGameZipUrl, currentEntity.getGameId(), new
-                                            XUtilsDownloader.FinishDownloadCallback() {
+                                    new GameZipDownloader(getContext(), tempGameZipUrl, currentEntity.getGameId(), new
+                                            GameZipDownloader.FinishDownloadCallback() {
                                                 @Override
                                                 public void onFinishedDownload() {
                                                     startPlayingGame();
