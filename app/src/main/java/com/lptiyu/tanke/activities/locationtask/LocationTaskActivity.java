@@ -68,6 +68,7 @@ public class LocationTaskActivity extends MyBaseActivity implements BDLocationLi
 
     private final double ERROR_LOCATION_RETURN = 4.9E-324;
     private AlertDialog permissionDialog;
+    private boolean isStop;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -124,22 +125,10 @@ public class LocationTaskActivity extends MyBaseActivity implements BDLocationLi
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if (locateHelper != null) {
-            locateHelper.stopLocate();
-            locateHelper.unRegisterLocationListener(this);
-        }
-        if (permissionDialog != null) {
-            if (permissionDialog.isShowing())
-                permissionDialog.dismiss();
-            permissionDialog = null;
-        }
-    }
-
-    @Override
     public void onReceiveLocation(BDLocation bdLocation) {
-        locateHelper.stopLocate();
+        if (isStop) {
+            return;
+        }
         //        if (Accounts.getPhoneNumber().endsWith("4317")) {
         //            loadNetWorkData();
         //            return;
@@ -150,6 +139,7 @@ public class LocationTaskActivity extends MyBaseActivity implements BDLocationLi
         longitude = bdLocation.getLongitude();
         Log.i("jason", "定位信息latitude：" + latitude + ", longitude:" + longitude);
         if (latitude == ERROR_LOCATION_RETURN || longitude == ERROR_LOCATION_RETURN) {
+            isStop = true;
             showPermissionFailTip();
             return;
         } else {
@@ -194,30 +184,25 @@ public class LocationTaskActivity extends MyBaseActivity implements BDLocationLi
                     }).setCancelable(false).setOnDismissListener(new DialogInterface.OnDismissListener() {
                         @Override
                         public void onDismiss(DialogInterface dialog) {
-                            locateHelper.startLocate();
+                            isStop = false;
                         }
                     }).create();
         }
         if (permissionDialog != null && !permissionDialog.isShowing()) {
             permissionDialog.show();
         }
-        //        if (locateHelper != null)
-        //            locateHelper.stopLocate();
-        //        if (taskResultHelper != null) {
-        //            taskResultHelper.stopAnim();
-        //        }
     }
 
     private void checkLocation() {
         if (split == null || split.length <= 1) {//必定同时包含经度和纬度
             ToastUtil.TextToast("目标位置不存在");
-            locateHelper.startLocate();
             return;
         }
         double distance = DistanceUtil.getDistance(new LatLng(latitude, longitude), new LatLng(Double.parseDouble
                 (split[1]), Double.parseDouble(split[0])));
         if (distance <= DISTANCE_OFFSET) {
             //验证成功，上传游戏记录
+            isStop = true;
             if (locateHelper != null)
                 locateHelper.stopLocate();
             loadNetWorkData();
@@ -225,7 +210,6 @@ public class LocationTaskActivity extends MyBaseActivity implements BDLocationLi
             if (isToastShow) {
                 ToastUtil.TextToast("您距离目标点" + DistanceFormatter.formatMeter(distance));
             }
-            locateHelper.startLocate();
         }
     }
 
@@ -294,13 +278,6 @@ public class LocationTaskActivity extends MyBaseActivity implements BDLocationLi
         taskResultHelper.stopAnim();
     }
 
-    @OnClick(R.id.btn_startLocating)
-    public void onClick() {
-        taskResultHelper.startAnim();
-        if (locateHelper != null)
-            locateHelper.startLocate();
-    }
-
     @Override
     protected void onResume() {
         super.onResume();
@@ -311,6 +288,20 @@ public class LocationTaskActivity extends MyBaseActivity implements BDLocationLi
     protected void onPause() {
         super.onPause();
         isToastShow = false;
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (locateHelper != null) {
+            locateHelper.stopLocate();
+            locateHelper.unRegisterLocationListener(this);
+        }
+        if (permissionDialog != null) {
+            if (permissionDialog.isShowing())
+                permissionDialog.dismiss();
+            permissionDialog = null;
+        }
     }
 
 }
