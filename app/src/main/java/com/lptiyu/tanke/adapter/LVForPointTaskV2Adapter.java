@@ -98,7 +98,8 @@ public class LVForPointTaskV2Adapter extends BaseAdapter {
             }
         });
 
-        vh.webView.setVisibility(View.GONE);
+        //        vh.webView.setVisibility(View.GONE);
+        vh.tvContent.setVisibility(View.GONE);
         URLImageGetter imageGetter = new URLImageGetter(context, vh.tvContent);
         vh.tvContent.setText(Html.fromHtml(task.content, imageGetter, null));
         vh.tvContent.setMovementMethod(ScrollingMovementMethod.getInstance());//滚动

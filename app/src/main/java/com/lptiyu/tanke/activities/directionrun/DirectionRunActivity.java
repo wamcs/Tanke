@@ -1,7 +1,7 @@
 package com.lptiyu.tanke.activities.directionrun;
 
 import android.content.DialogInterface;
-import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AlertDialog;
@@ -19,38 +19,42 @@ import com.amap.api.maps.AMap;
 import com.amap.api.maps.AMapUtils;
 import com.amap.api.maps.CameraUpdateFactory;
 import com.amap.api.maps.TextureMapView;
-import com.amap.api.maps.model.BitmapDescriptorFactory;
 import com.amap.api.maps.model.CameraPosition;
 import com.amap.api.maps.model.LatLng;
+import com.amap.api.maps.model.LatLngBounds;
 import com.amap.api.maps.model.Marker;
-import com.amap.api.maps.model.MarkerOptions;
+import com.amap.api.maps.model.PolylineOptions;
 import com.amap.api.trace.LBSTraceClient;
 import com.amap.api.trace.TraceLocation;
 import com.amap.api.trace.TraceOverlay;
 import com.lptiyu.tanke.R;
-import com.lptiyu.tanke.RunApplication;
+import com.lptiyu.tanke.entity.greendao.LocationResult;
 import com.lptiyu.tanke.entity.response.DirectionRunPoint;
 import com.lptiyu.tanke.entity.response.RunLine;
 import com.lptiyu.tanke.entity.response.RunSignUp;
 import com.lptiyu.tanke.entity.response.StartRun;
 import com.lptiyu.tanke.entity.response.StopRun;
 import com.lptiyu.tanke.mybase.MyBaseActivity;
+import com.lptiyu.tanke.utils.AMapViewUtils;
+import com.lptiyu.tanke.utils.DBHelper;
+import com.lptiyu.tanke.utils.DBManager;
 import com.lptiyu.tanke.utils.DistanceFormatUtils;
 import com.lptiyu.tanke.utils.LocationHelper;
+import com.lptiyu.tanke.utils.LogUtils;
+import com.lptiyu.tanke.utils.MarkerOptionHelper;
 import com.lptiyu.tanke.utils.TimeFormatUtils;
-import com.lptiyu.tanke.utils.TraceAsset;
 import com.lptiyu.tanke.utils.TracerHelper;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+
+import static com.lptiyu.tanke.RunApplication.gameId;
+import static com.lptiyu.tanke.utils.AMapViewUtils.parseJingweiToLatLng;
 
 public class DirectionRunActivity extends MyBaseActivity implements DirectionRunContact.IDirectionRunView {
 
@@ -70,32 +74,39 @@ public class DirectionRunActivity extends MyBaseActivity implements DirectionRun
     LinearLayout rlBottom;
     @BindView(R.id.img_show_current_location)
     ImageView imgShowCurrentLocation;
-    @BindView(R.id.img_show_next_task)
+    @BindView(R.id.img_show_all_point)
     ImageView imgShowNextTask;
     @BindView(R.id.chronometer)
     Chronometer chronometer;
+    @BindView(R.id.tv_tip)
+    TextView tvTip;
     private AMap map;
     private LocationHelper locationHelper;
-    private MarkerOptions currentMarkerOptions;
     private DirectionRunPresenter presenter;
     private ArrayList<DirectionRunPoint> runPoints;
-    private final float DISTANCE_DELTA = 200.0f;
+    private final float DISTANCE_DELTA = 50.0f;//起跑点以及打卡点误差范围
     private ArrayList<Integer> list_distance_delta = new ArrayList<>();
     private DirectionRunPoint startedPoint;
+    private DirectionRunPoint currentPoint;
     private boolean isNearByStartPoint = false;
-    private TracerHelper tracerHelper;
-    private ConcurrentMap<Integer, TraceOverlay> mOverlayList = new ConcurrentHashMap();
-    private List<TraceLocation> mTraceList;
-    private int mSequenceLineID = 1000;
-    private int mCoordinateType = LBSTraceClient.TYPE_AMAP;
+    private List<TraceLocation> traceLocationList;
+    private int traceLineID = 1000;
+    private int coordinateType = LBSTraceClient.TYPE_AMAP;
     private long second;
     private boolean isStarted;
+    private boolean isFinished;
     private StartRun startRun;
     private final double MIN_DEEDED_DISTANCE = 1d;//结束乐跑时，超过1km才有乐跑统计显示
-    private DirectionRunPoint nextPoint;
     private boolean isArrivedNextPoint;
-    private long distance;
-    private boolean isRunFinished;
+    private double runDistance = 1d;//单位：公里
+    private MarkerOptionHelper markerOptionHelper;
+    private Marker currentMarker;
+    private DirectionRunPoint previousPoint;
+    private LatLng currentLatLng;
+    private LatLng previousLatLng;
+    private final int INTERVAL = 1000;
+    private TraceOverlay traceOverlay;
+    private TracerHelper tracerHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -119,57 +130,75 @@ public class DirectionRunActivity extends MyBaseActivity implements DirectionRun
                     return;
                 }
                 LatLng latLng = new LatLng(aMapLocation.getLatitude(), aMapLocation.getLongitude());
+                previousLatLng = currentLatLng;
+                currentLatLng = latLng;
+                if (isStarted) {
+                    //将定位点存储到数据库中
+                    DBHelper.insertDataToDB(DirectionRunActivity.this, aMapLocation);
+                    // 添加轨迹数据源
+                    addTraceData(aMapLocation);
+                    //开始绘制轨迹并记录里程数
+                    startTrace();
+                    drawLine();
+                }
                 //将地图中心移到当前位置
                 moveToLocation(latLng);
                 //用图标标注当前位置
-                addMarker(latLng);
+                if (currentMarker != null) {
+                    currentMarker.remove();
+                }
+                addCurrentPositionMarker(latLng);
                 //判断用户是否在起跑点附近
                 if (!isNearByStartPoint) {
                     checkUserIsNearByStartPoint(latLng);
                 }
                 //如果游戏已经开始，则验证是否到达下一个乐跑点
-                if (isStarted) {
+                if (isStarted && !isArrivedNextPoint) {
                     checkUserIsArrivedNextPoint(latLng);
                 }
             }
         });
         locationHelper.setOnceLocation(false);
-        locationHelper.setInterval(5000);
+        locationHelper.setInterval(INTERVAL);
         locationHelper.startLocation();
 
         tracerHelper = new TracerHelper(this, new TracerHelper.TraceCallback() {
             @Override
             public void onRequestFailed(int lineID, String errorInfo) {
-                Toast.makeText(DirectionRunActivity.this, "轨迹纠偏失败:" + errorInfo, Toast.LENGTH_SHORT).show();
-                if (mOverlayList.containsKey(lineID)) {
-                    TraceOverlay overlay = mOverlayList.get(lineID);
-                    overlay.setTraceStatus(TraceOverlay.TRACE_STATUS_FAILURE);
-                }
+                LogUtils.i(errorInfo);
+                //                if (traceOverlay != null) {
+                //                    traceOverlay.setTraceStatus(TraceOverlay.TRACE_STATUS_FAILURE);
+                //                }
             }
 
             @Override
-            public void onTraceProcessing(int lineID, int i1, List<LatLng> segments) {
+            public void onTraceProcessing(int lineID, int index, List<LatLng> segments) {
                 if (segments == null) {
                     return;
                 }
-                if (mOverlayList.containsKey(lineID)) {
-                    TraceOverlay overlay = mOverlayList.get(lineID);
-                    overlay.setTraceStatus(TraceOverlay.TRACE_STATUS_PROCESSING);
-                    overlay.add(segments);
-                }
+                //                if (traceOverlay != null) {
+                //                    traceOverlay.setTraceStatus(TraceOverlay.TRACE_STATUS_PROCESSING);
+                //添加此行代码即可显示高德地图绘制的轨迹
+                //                    traceOverlay.add(segments);
+                //                }
             }
 
             @Override
             public void onFinished(int lineID, List<LatLng> list, int distance, int watingtime) {
-                Toast.makeText(DirectionRunActivity.this, "轨迹纠偏完毕", Toast.LENGTH_SHORT).show();
-                if (mOverlayList.containsKey(lineID)) {
-                    TraceOverlay overlay = mOverlayList.get(lineID);
-                    overlay.setTraceStatus(TraceOverlay.TRACE_STATUS_FINISH);
-                    overlay.setDistance(distance);
-                    overlay.setWaitTime(watingtime);
-                }
+                LogUtils.i("onFinished:有效点" + list.size() + ",路程：" + distance + "米");
+                //                if (traceOverlay != null) {
+                //                    traceOverlay.setTraceStatus(TraceOverlay.TRACE_STATUS_FINISH);
+                //                    traceOverlay.setDistance(distance);
+                //                    traceOverlay.setWaitTime(watingtime);
+                //                }
+                //                drawLine(list);
+                DirectionRunActivity.this.runDistance = distance;
+                tvDistanceValue.setText(DistanceFormatUtils.formatMeterToKiloMeter(distance) + "");
             }
         });
+
+        markerOptionHelper = new MarkerOptionHelper();
+        markerOptionHelper.icon(getResources(), R.drawable.locate_orange);
 
         chronometer.setText(TimeFormatUtils.formatSecond(0));
         chronometer.setOnChronometerTickListener(new Chronometer.OnChronometerTickListener() {
@@ -180,7 +209,54 @@ public class DirectionRunActivity extends MyBaseActivity implements DirectionRun
         });
 
         presenter = new DirectionRunPresenter(this);
-        presenter.getRunLine(RunApplication.gameId);
+        presenter.getRunLine(gameId);
+    }
+
+    private void addTraceData(AMapLocation aMapLocation) {
+        TraceLocation traceLocation = new TraceLocation();
+        traceLocation.setBearing(aMapLocation.getBearing());
+        traceLocation.setTime(aMapLocation.getTime());
+        traceLocation.setLatitude(aMapLocation.getLatitude());
+        traceLocation.setLongitude(aMapLocation.getLongitude());
+        traceLocation.setSpeed(aMapLocation.getSpeed());
+        if (traceLocationList == null) {
+            traceLocationList = new ArrayList<>();
+        }
+        traceLocationList.add(traceLocation);
+    }
+
+    private void drawLine() {
+        if (currentLatLng == null || previousLatLng == null) {
+            return;
+        }
+        PolylineOptions polylineOptions = new PolylineOptions();
+        polylineOptions.width(5).color(Color.argb(255, 255, 0, 0));
+        polylineOptions.add(previousLatLng);
+        polylineOptions.add(currentLatLng);
+        map.addPolyline(polylineOptions);
+    }
+
+    private void drawLine(List<LatLng> latLngs) {
+        if (latLngs == null || latLngs.size() <= 1) {
+            return;
+        }
+        for (LatLng latLng : latLngs) {
+            PolylineOptions polylineOptions = new PolylineOptions();
+            polylineOptions.width(10).color(Color.argb(255, 255, 0, 0));
+            polylineOptions.add(latLng);
+            map.addPolyline(polylineOptions);
+        }
+    }
+
+    //添加marker
+    public void addCurrentPositionMarker(LatLng latLng) {
+        if (markerOptionHelper == null) {
+            markerOptionHelper = new MarkerOptionHelper();
+        }
+        if (map != null) {
+            currentMarker = map.addMarker(markerOptionHelper.position(latLng));
+            currentMarker.showInfoWindow();
+        }
     }
 
     /**
@@ -189,58 +265,67 @@ public class DirectionRunActivity extends MyBaseActivity implements DirectionRun
      * @param currentLaLng 当前位置的经纬度
      */
     private void checkUserIsNearByStartPoint(LatLng currentLaLng) {
-        int min = getMinDistancePoint(currentLaLng);
+        int min = getMinDistance(currentLaLng, runPoints);
         if (min == -1) {
             return;
         }
         for (int i = 0; i < list_distance_delta.size(); i++) {
             if (list_distance_delta.get(i).intValue() == min) {
                 startedPoint = runPoints.get(i);
+                currentPoint = runPoints.get(i);
                 break;
             }
         }
         if (min > DISTANCE_DELTA) {
-            Toast.makeText(this, String.format(getString(R.string.not_arrive_any_direction_run_point),
-                    DistanceFormatUtils.formatMeter(min)), Toast.LENGTH_SHORT).show();
+            tvTip.setText(String.format(getString(R.string.not_arrive_any_direction_run_point),
+                    DistanceFormatUtils.formatMeterToKiloMeter(min)));
+            //            Toast.makeText(this, String.format(getString(R.string.not_arrive_any_direction_run_point),
+            //                    DistanceFormatUtils.formatMeterToKiloMeter(min)), Toast.LENGTH_SHORT).show();
+            btnStartOrStopRun.setEnabled(false);
+            isNearByStartPoint = false;
         } else {
             //可以开始乐跑了
             Toast.makeText(this, "您已到达最近的乐跑点，点击下方开始乐跑按钮开始这段旅程吧", Toast.LENGTH_SHORT).show();
             btnStartOrStopRun.setEnabled(true);
-            locationHelper.stopLocation();
             isNearByStartPoint = true;
         }
     }
 
     private void checkUserIsArrivedNextPoint(LatLng currentLaLng) {
-        int min = getMinDistancePoint(currentLaLng);
+        int min = getMinDistance(currentLaLng, runPoints);
         if (min == -1) {
             return;
         }
-        if (list_distance_delta.size() <= 0) {
-            //所有乐跑点都已打卡
-            Toast.makeText(this, "恭喜你所有乐跑点全部已打卡", Toast.LENGTH_SHORT).show();
-            isRunFinished = true;
-            return;
-        }
         for (int i = 0; i < list_distance_delta.size(); i++) {
-            if (list_distance_delta.get(i).intValue() == min) {
-                nextPoint = runPoints.get(i);
-                break;
+            if (list_distance_delta.get(i).intValue() == min && currentPoint != null && !runPoints.get(i).id.equals
+                    (currentPoint.id)) {
+                previousPoint = currentPoint;
+                currentPoint = runPoints.get(i);
+                if (min <= DISTANCE_DELTA) {
+                    //可以开始乐跑了
+                    Toast.makeText(this, "您已到达下一个乐跑点，点击下方打卡按钮签个到吧", Toast.LENGTH_SHORT).show();
+                    btnSignUp.setEnabled(true);
+                    isArrivedNextPoint = true;
+                } else {
+                    isArrivedNextPoint = false;
+                    btnSignUp.setEnabled(false);
+                }
+                return;
             }
         }
-        if (min > DISTANCE_DELTA) {
-            Toast.makeText(this, String.format(getString(R.string.not_arrive_next_direction_run_point),
-                    DistanceFormatUtils.formatMeter(min)), Toast.LENGTH_SHORT).show();
-        } else {
-            //可以开始乐跑了
-            Toast.makeText(this, "您已到达下一个乐跑点，点击下方打卡按钮签个到吧", Toast.LENGTH_SHORT).show();
-            btnSignUp.setEnabled(true);
-            locationHelper.stopLocation();
-            isArrivedNextPoint = true;
-        }
+        //从剩下的乐跑点中找出距离当前位置最近的那一个点，并计算出距离呈现给用户
+        ArrayList<DirectionRunPoint> leftPoints = new ArrayList<>();
+        leftPoints.addAll(runPoints);
+        leftPoints.remove(currentPoint);
+        int leftMin = getMinDistance(currentLaLng, leftPoints);
+        tvTip.setText(String.format(getString(R.string.not_arrive_next_direction_run_point),
+                DistanceFormatUtils.formatMeterToKiloMeter(leftMin)));
+        //        Toast.makeText(this, String.format(getString(R.string.not_arrive_next_direction_run_point),
+        //                DistanceFormatUtils.formatMeterToKiloMeter(leftMin)), Toast.LENGTH_SHORT)
+        //                .show();
     }
 
-    private int getMinDistancePoint(LatLng currentLaLng) {
+    private int getMinDistance(LatLng currentLaLng, List<DirectionRunPoint> runPoints) {
         if (currentLaLng == null) {
             Toast.makeText(this, "未获取到当前位置", Toast.LENGTH_SHORT).show();
             return -1;
@@ -264,82 +349,24 @@ public class DirectionRunActivity extends MyBaseActivity implements DirectionRun
 
     //地图中心移动到指定位置
     private void moveToLocation(LatLng latLng) {
-        CameraPosition cameraPosition = new CameraPosition(latLng, 13, 0, 0);
-        map.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition), 1000, null);
-    }
-
-    //添加marker,带文字显示
-    private void addMarker(LatLng latLng, String title, String snippet) {
-        if (currentMarkerOptions == null)
-            currentMarkerOptions = new MarkerOptions();
-        currentMarkerOptions.position(latLng).title("当前位置：" + title).snippet(snippet).draggable(true);
-        // 将Marker设置为贴地显示，可以双指下拉看效果
-        currentMarkerOptions.setFlat(true);
-        if (map != null) {
-            Marker marker = map.addMarker(currentMarkerOptions);
-            marker.showInfoWindow();
+        float zoom = map.getCameraPosition().zoom;//第一次会默认返回北京天安门的数据,zoom=10.0
+        if (zoom > 9.99999 && zoom < 10.00001) {
+            zoom = 16f;
         }
-    }
-
-    //添加marker
-    private void addMarker(LatLng latLng) {
-        if (currentMarkerOptions == null)
-            currentMarkerOptions = new MarkerOptions();
-        currentMarkerOptions.position(latLng).draggable(true);
-        currentMarkerOptions.icon(BitmapDescriptorFactory.fromBitmap(BitmapFactory.decodeResource(getResources(), R
-                .drawable.locate_orange)));
-        // 将Marker设置为贴地显示，可以双指下拉看效果
-        currentMarkerOptions.setFlat(true);
-        if (map != null) {
-            Marker marker = map.addMarker(currentMarkerOptions);
-            marker.showInfoWindow();
-        }
-    }
-
-    //添加marker
-    private void addMarker(LatLng latLng, int imgResource) {
-        if (currentMarkerOptions == null)
-            currentMarkerOptions = new MarkerOptions();
-        currentMarkerOptions.position(latLng).draggable(true);
-        currentMarkerOptions.icon(BitmapDescriptorFactory.fromBitmap(BitmapFactory.decodeResource(getResources(), R
-                .drawable.ic_launcher)));
-        // 将Marker设置为贴地显示，可以双指下拉看效果
-        currentMarkerOptions.setFlat(true);
-        if (map != null) {
-            Marker marker = map.addMarker(currentMarkerOptions);
-            marker.showInfoWindow();
-        }
+        map.animateCamera(CameraUpdateFactory.newCameraPosition(new CameraPosition(latLng, zoom, 0, 0)), 1500, null);
     }
 
     /**
-     * 调起一次轨迹纠偏
+     * 调起轨迹纠偏
      */
-    private void traceGrasp() {
-        if (mTraceList == null) {
-            Toast.makeText(this, "轨迹点为空", Toast.LENGTH_SHORT).show();
+    private void startTrace() {
+        if (traceLocationList == null || traceLocationList.size() <= 1) {
             return;
         }
-        //        Toast.makeText(this, "共有" + mTraceList.size() + "个数据点", Toast.LENGTH_SHORT).show();
-        TraceOverlay mTraceOverlay = new TraceOverlay(map);
-        List<LatLng> mapList = traceLocationToMap(mTraceList);
-        mTraceOverlay.setProperCamera(mapList);
-        mOverlayList.put(mSequenceLineID, mTraceOverlay);
-        tracerHelper.queryProcessedTrace(mSequenceLineID, mTraceList, mCoordinateType);
-    }
-
-    /**
-     * 轨迹纠偏点转换为地图LatLng
-     *
-     * @param traceLocationList
-     * @return
-     */
-    public List<LatLng> traceLocationToMap(List<TraceLocation> traceLocationList) {
-        List<LatLng> mapList = new ArrayList();
-        for (TraceLocation location : traceLocationList) {
-            LatLng latlng = new LatLng(location.getLatitude(), location.getLongitude());
-            mapList.add(latlng);
+        if (traceOverlay == null) {
+            traceOverlay = new TraceOverlay(map);
         }
-        return mapList;
+        tracerHelper.queryProcessedTrace(traceLineID, traceLocationList, coordinateType);
     }
 
     @Override
@@ -350,7 +377,12 @@ public class DirectionRunActivity extends MyBaseActivity implements DirectionRun
         if (locationHelper != null) {
             locationHelper.onDestroy();
         }
-        //TODO 用户强制杀掉进程时需要保存当前数据，以便用户在下次进入app时提示用户是否继续乐跑
+        //todo 用户强制杀掉进程时需要保存当前数据，以便用户在下次进入app时提示用户是否继续乐跑
+        if (!isFinished) {
+            if (startedPoint != null) {
+
+            }
+        }
     }
 
     @Override
@@ -374,7 +406,7 @@ public class DirectionRunActivity extends MyBaseActivity implements DirectionRun
         textureMapView.onSaveInstanceState(outState);
     }
 
-    @OnClick({R.id.btn_start_or_stop_run, R.id.btn_signUp, R.id.img_show_current_location, R.id.img_show_next_task})
+    @OnClick({R.id.btn_start_or_stop_run, R.id.btn_signUp, R.id.img_show_current_location, R.id.img_show_all_point})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btn_start_or_stop_run:
@@ -384,7 +416,7 @@ public class DirectionRunActivity extends MyBaseActivity implements DirectionRun
                         return;
                     }
                     btnStartOrStopRun.setClickable(false);
-                    presenter.startRun(RunApplication.gameId, Long.parseLong(startedPoint.id));
+                    presenter.startRun(gameId, Long.parseLong(startedPoint.id));
                 } else {
                     if (startRun != null) {
                         new AlertDialog.Builder(this).setMessage("您尚未完成乐跑，确定结束乐跑吗？").setNegativeButton("我点错了", null)
@@ -392,8 +424,17 @@ public class DirectionRunActivity extends MyBaseActivity implements DirectionRun
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
                                         btnStartOrStopRun.setClickable(false);
-                                        presenter.stopRun(RunApplication.gameId, Long.parseLong(startRun.record_id),
-                                                distance);
+                                        LatLng startLatLng = parseJingweiToLatLng(startedPoint.jingwei);
+                                        if (startLatLng == null) {
+                                            Toast.makeText(DirectionRunActivity.this, "起跑点数据错误", Toast.LENGTH_SHORT)
+                                                    .show();
+                                            return;
+                                        }
+                                        DirectionRunActivity.this.runDistance = AMapUtils.calculateLineDistance
+                                                (currentLatLng, startLatLng);
+                                        presenter.stopRun(gameId, Long.parseLong(startRun.record_id),
+                                                Double.parseDouble(DistanceFormatUtils.formatMeterToKiloMeter
+                                                        (runDistance)));
                                     }
                                 }).show();
                     } else {
@@ -404,17 +445,90 @@ public class DirectionRunActivity extends MyBaseActivity implements DirectionRun
             case R.id.btn_signUp:
                 btnSignUp.setEnabled(false);
                 isArrivedNextPoint = true;
-                presenter.runSignUp(RunApplication.gameId, Long.parseLong(nextPoint.id), Long.parseLong(startRun
-                        .record_id), distance);
+                if (currentPoint != null && startRun != null) {
+                    LatLng currentLatLng = parseJingweiToLatLng(currentPoint.jingwei);
+                    LatLng previousLatLng = parseJingweiToLatLng(previousPoint.jingwei);
+                    if (currentLatLng == null || previousLatLng == null) {
+                        Toast.makeText(this, "打卡点数据错误", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    this.runDistance = (long) AMapUtils.calculateLineDistance(currentLatLng, previousLatLng);
+                    presenter.runSignUp(gameId, Long.parseLong(currentPoint.id), Long.parseLong
+                            (startRun.record_id), this.runDistance);
+                }
                 break;
             case R.id.img_show_current_location:
                 if (locationHelper != null) {
                     locationHelper.startLocation();
                 }
                 break;
-            case R.id.img_show_next_task:
+            case R.id.img_show_all_point:
+                if (runPoints == null || runPoints.size() <= 0) {
+                    Toast.makeText(this, "乐跑点数据为空", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                LatLngBounds.Builder builder = LatLngBounds.builder();
+                for (DirectionRunPoint point : runPoints) {
+                    LatLng latLng = parseJingweiToLatLng(point.jingwei);
+                    if (latLng != null) {
+                        builder.include(latLng);
+                    }
+                }
+                LatLngBounds bounds = builder.build();
+                map.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 50));
+
                 break;
         }
+    }
+
+    private void addPointToMap() {
+        if (runPoints == null || runPoints.size() <= 0) {
+            Toast.makeText(this, "暂无任何乐跑点", Toast.LENGTH_SHORT).show();
+            return;
+        } else {
+            for (int i = 0; i < runPoints.size(); i++) {
+                DirectionRunPoint point = runPoints.get(i);
+                String[] latLng = point.jingwei.split(",");
+                if (latLng == null || latLng.length < 2) {
+                    Toast.makeText(this, "乐跑点数据错误", Toast.LENGTH_SHORT).show();
+                } else {
+                    AMapViewUtils.addMarker(map, new LatLng(Double.parseDouble(latLng[0]),
+                            Double.parseDouble(latLng[1])), R.drawable.diand, i + 1 + "", "");
+                }
+            }
+        }
+    }
+
+    private void setTraceDataFromDB() {
+        //从数据库中获取轨迹点
+        List<LocationResult> locationResults = DBManager.getInstance(this).queryLocationList();
+        //将轨迹点转化为轨迹纠偏所需要的数据
+        List<TraceLocation> traceLocations = parseLocationResultToTraceLocation(locationResults);
+        if (traceLocations == null) {
+            return;
+        }
+        if (traceLocationList == null) {
+            traceLocationList = new ArrayList<>();
+        }
+        traceLocationList.clear();
+        traceLocationList.addAll(traceLocations);
+    }
+
+    private List<TraceLocation> parseLocationResultToTraceLocation(List<LocationResult> locationResults) {
+        if (locationResults == null || locationResults.size() <= 0) {
+            return null;
+        }
+        List<TraceLocation> traceLocations = new ArrayList<>();
+        for (LocationResult result : locationResults) {
+            TraceLocation traceLocation = new TraceLocation();
+            traceLocation.setTime(result.time);
+            traceLocation.setSpeed(result.speed);
+            traceLocation.setLongitude(result.longitude);
+            traceLocation.setLatitude(result.latitude);
+            traceLocation.setBearing(result.bearing);
+            traceLocations.add(traceLocation);
+        }
+        return traceLocations;
     }
 
     @Override
@@ -423,27 +537,8 @@ public class DirectionRunActivity extends MyBaseActivity implements DirectionRun
         btnStartOrStopRun.setClickable(true);
         btnStartOrStopRun.setText("结束乐跑");
         isStarted = true;
-        isNearByStartPoint = false;
-        if (locationHelper != null) {
-            locationHelper.setInterval(1000);
-            locationHelper.setOnceLocation(false);
-            locationHelper.startLocation();
-        }
-        //TODO 开始绘制轨迹并记录里程数
-        //        setTraceDataFromAssets();
-        //        traceGrasp();
         // 开始计时
         chronometer.start();
-    }
-
-    private void setTraceDataFromAssets() {
-        List<TraceLocation> traceLocations = TraceAsset.parseLocationsData(DirectionRunActivity.this.getAssets(),
-                "traceRecord" + File.separator + "AMapTrace.txt");
-        if (mTraceList == null) {
-            mTraceList = new ArrayList<>();
-        }
-        mTraceList.clear();
-        mTraceList.addAll(traceLocations);
     }
 
     @Override
@@ -458,22 +553,6 @@ public class DirectionRunActivity extends MyBaseActivity implements DirectionRun
         }
     }
 
-    private void addPointToMap() {
-        if (runPoints == null || runPoints.size() <= 0) {
-            Toast.makeText(this, "暂无任何乐跑点", Toast.LENGTH_SHORT).show();
-            return;
-        } else {
-            for (DirectionRunPoint point : runPoints) {
-                String[] latLng = point.jingwei.split(",");
-                if (latLng == null || latLng.length < 2) {
-                    Toast.makeText(this, "乐跑点数据错误", Toast.LENGTH_SHORT).show();
-                } else {
-                    addMarker(new LatLng(Double.parseDouble(latLng[0]), Double.parseDouble(latLng[1])), -1);
-                }
-            }
-        }
-    }
-
     @Override
     public void successRunSignUp(RunSignUp runSignUp) {
         Toast.makeText(this, "打卡成功", Toast.LENGTH_SHORT).show();
@@ -484,6 +563,10 @@ public class DirectionRunActivity extends MyBaseActivity implements DirectionRun
     @Override
     public void successStopRun(StopRun stopRun) {
         Toast.makeText(this, "结束乐跑成功", Toast.LENGTH_SHORT).show();
+        btnStartOrStopRun.setEnabled(false);
+        chronometer.stop();
+        isStarted = false;
+        isFinished = true;
         if (stopRun != null) {
             if (Double.parseDouble(stopRun.distance) < MIN_DEEDED_DISTANCE) {
                 handler.postDelayed(new Runnable() {
@@ -499,13 +582,14 @@ public class DirectionRunActivity extends MyBaseActivity implements DirectionRun
         } else {
             Toast.makeText(this, "结束乐跑返回数据为空", Toast.LENGTH_SHORT).show();
         }
+        LogUtils.i("数据库查询结果：" + DBManager.getInstance(this).queryLocationList().size() + "条数据");
+        DBManager.getInstance(this).deleteLocationAll();
     }
 
     private Handler handler = new Handler();
 
     @Override
     public void onBackPressed() {
-        //        super.onBackPressed();
         if (isStarted) {
             new AlertDialog.Builder(this).setTitle("").setMessage("无法退出当前界面，您需要先结束乐跑")
                     .setPositiveButton("我知道了", new DialogInterface.OnClickListener() {

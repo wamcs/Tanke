@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/JPushExample(500284)/JPushExample(500284).iml" filepath="$PROJECT_DIR$/JPushExample(500284)/JPushExample(500284).iml" />
       <module fileurl="file://$PROJECT_DIR$/LRecyclerview_library/LRecyclerview_library.iml" filepath="$PROJECT_DIR$/LRecyclerview_library/LRecyclerview_library.iml" />
       <module fileurl="file://$PROJECT_DIR$/StickLayout_library/StickLayout_library.iml" filepath="$PROJECT_DIR$/StickLayout_library/StickLayout_library.iml" />
       <module fileurl="file://$PROJECT_DIR$/Tanke.iml" filepath="$PROJECT_DIR$/Tanke.iml" />

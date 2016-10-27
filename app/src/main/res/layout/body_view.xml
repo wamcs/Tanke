@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/rl_time_location"
+        android:layout_width="match_parent"
+        android:layout_height="130dp"
+        android:layout_marginBottom="7dp"
+        android:background="@color/white10">
+
+        <RelativeLayout
+            android:id="@+id/rl_title_location_date"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:padding="10dp">
+
+            <TextView
+                android:id="@+id/tv_game_detail_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:gravity="center_vertical"
+                android:maxLines="1"
+                android:text="华科森林记"
+                android:textColor="@color/black333"
+                android:textSize="16sp"/>
+
+            <TextView
+                android:id="@+id/tv_game_detail_location"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tv_game_detail_name"
+                android:layout_marginTop="5dp"
+                android:ellipsize="end"
+                android:gravity="center_vertical"
+                android:maxLines="1"
+                android:text="游戏区域：华科校区"
+                android:textColor="@color/black333"
+                android:textSize="15sp"/>
+
+            <TextView
+                android:id="@+id/tv_game_detail_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tv_game_detail_location"
+                android:ellipsize="end"
+                android:gravity="center_vertical"
+                android:maxLines="1"
+                android:text="游戏时间：04.10--04.12"
+                android:textColor="@color/black666"
+                android:textSize="14sp"/>
+        </RelativeLayout>
+
+        <com.amap.api.maps.TextureMapView
+            android:id="@+id/textureMapView_game_detail"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_toRightOf="@id/rl_title_location_date"/>
+
+        <TextView
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
+            android:layout_alignLeft="@id/textureMapView_game_detail"
+            android:layout_alignTop="@id/textureMapView_game_detail"
+            android:background="@drawable/shape_shadow_texturemapview"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rl_ranks"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white10"
+        android:gravity="center_vertical"
+        android:padding="20dp">
+
+        <RelativeLayout
+            android:id="@+id/rl_play_num"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:id="@+id/tv_ranks_tip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableRight="@drawable/hua"
+                android:text="大神排行榜"
+                android:textColor="@color/colorPrimary"
+                android:textSize="16sp"/>
+
+            <TextView
+                android:id="@+id/tv_play_num"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_ranks_tip"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:text="634人在玩"
+                android:textColor="@color/colorPrimary"/>
+        </RelativeLayout>
+
+        <ImageView
+            android:id="@+id/img_arrow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:scaleType="centerInside"
+            android:src="@drawable/jin"/>
+
+        <LinearLayout
+            android:id="@+id/ll_ranks_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@id/img_arrow"
+            android:layout_toRightOf="@id/rl_play_num"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/rl_time_location"
+        android:layout_marginTop="7dp"
+        android:background="@color/white10"
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/y42"
+        android:paddingLeft="@dimen/x52"
+        android:paddingRight="@dimen/x52"
+        android:paddingTop="@dimen/y52">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:text="情节简介"
+            android:textColor="@color/black333"
+            android:textSize="16sp"/>
+
+        <TextView
+            android:id="@+id/tv_game_detail_introduction"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/x15"
+            android:paddingTop="@dimen/y18"
+            android:text="@string/juqing"
+            android:textColor="@color/black666"
+            android:textSize="13sp"/>
+    </LinearLayout>
+</LinearLayout>

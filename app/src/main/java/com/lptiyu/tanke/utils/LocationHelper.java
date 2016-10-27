@@ -76,6 +76,7 @@ public class LocationHelper implements AMapLocationListener {
     public void setOnceLocation(boolean flag) {
         if (mOption != null) {
             mOption.setOnceLocation(flag);
+            mOption.setOnceLocationLatest(flag);
             if (mLocationClient != null) {
                 mLocationClient.setLocationOption(mOption);
             }

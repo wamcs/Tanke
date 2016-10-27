@@ -139,7 +139,7 @@ public class DirUtils {
     }
 
     /**
-     * 获取SDCard文件目录下的game目录
+     * 获取SDCard文件目录下的apk目录
      *
      * @return
      */

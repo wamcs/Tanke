@@ -253,6 +253,9 @@
     <string name="platform_info_unbind_tel" formatted="false">%s登录，绑定手机号拿奖励更方便，快戳我</string>
     <string name="not_arrive_any_direction_run_point" formatted="false">请到达地图上任意点的位置开始乐跑，最近的距您还有%s公里</string>
     <string name="not_arrive_next_direction_run_point" formatted="false">距离下一个最近的乐跑点还有%s公里</string>
+    <string name="game_detail_play_num" formatted="false">%s人在玩</string>
+    <string name="game_detail_area" formatted="false">游戏区域：%s</string>
+    <string name="game_detail_date_time" formatted="false">游戏时间：%s</string>
 
     <!-- AboutUsActivity Text Area-->
     <string name="about_us_activity">关于我们</string>
@@ -264,6 +267,7 @@
     <string name="start_run">开始乐跑</string>
     <string name="stop_run">结束乐跑</string>
     <string name="distance">距离（公里）</string>
+    <string name="juqing">从荒芜到一片森林，从东到西。一段神秘旅途，在绝望中看到光线，在这里开启你的探险之路从荒芜到一片森林，从东到西。一段神秘旅途，在绝望中看到光线，在这里开启你的探险之路从荒芜到一片森林，从东到西。一段神秘旅途，在绝望中看到光线，在这里开启你的探险之路从荒芜到一片森林，从东到西。一段神秘旅途，在绝望中看到光线，在这里开启你的探险之路从荒芜到一片森林，从东到西。一段神秘旅途，在绝望中看到光线，在这里开启你的探险之路从荒芜到一片森林，从东到西。一段神秘旅途，在绝望中看到光线，在这里开启你的探险之路从荒芜到一片森林，从东到西。一段神秘旅途，在绝望中看到光线，在这里开启你的探险之路从荒芜到一片森林，从东到西。一段神秘旅途，在绝望中看到光线，在这里开启你的探险之路从荒芜到一片森林，从东到西。一段神秘旅途，在绝望中看到光线，在这里开启你的探险之路从荒芜到一片森林，从东到西。一段神秘旅途，在绝望中看到光线，在这里开启你的探险之路</string>
 
 
 </resources>

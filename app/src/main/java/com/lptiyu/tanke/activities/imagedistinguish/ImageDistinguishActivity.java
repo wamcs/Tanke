@@ -17,9 +17,12 @@ import android.widget.Toast;
 
 import com.lptiyu.tanke.R;
 import com.lptiyu.tanke.RunApplication;
+import com.lptiyu.tanke.entity.GameRecord;
 import com.lptiyu.tanke.entity.Point;
 import com.lptiyu.tanke.entity.Task;
-import com.lptiyu.tanke.entity.UpLoadGameRecord;
+import com.lptiyu.tanke.entity.UploadGameRecord;
+import com.lptiyu.tanke.entity.eventbus.NotifyGamePlayingV2RefreshData;
+import com.lptiyu.tanke.entity.eventbus.NotifyPointTaskV2RefreshData;
 import com.lptiyu.tanke.entity.response.UpLoadGameRecordResult;
 import com.lptiyu.tanke.enums.PlayStatus;
 import com.lptiyu.tanke.enums.PointTaskStatus;
@@ -39,6 +42,10 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.easyar.engine.EasyAR;
+
+import static com.lptiyu.tanke.RunApplication.currentPoint;
+import static com.lptiyu.tanke.RunApplication.currentTask;
+import static com.lptiyu.tanke.RunApplication.gameRecord;
 
 public class ImageDistinguishActivity extends MyBaseActivity implements ImagedistinguishContact.ImagedistinguishView {
     /*
@@ -79,6 +86,7 @@ public class ImageDistinguishActivity extends MyBaseActivity implements Imagedis
     private boolean isPointOver;
     private MyCountDownTimer timer;
     private TaskResultHelper taskResultHelper;
+    private int index;
 
     public static native void nativeInitGL();
 
@@ -97,8 +105,6 @@ public class ImageDistinguishActivity extends MyBaseActivity implements Imagedis
     private native void nativeDestory();
 
     private native void nativeRotationChange(boolean portrait);
-
-    private Handler mHandler = new Handler();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -120,11 +126,14 @@ public class ImageDistinguishActivity extends MyBaseActivity implements Imagedis
             return;
         }
 
-        task = RunApplication.gameRecord.game_detail.point_list.get(RunApplication.currentPointIndex).task_list.get
-                (RunApplication.currentTaskIndex);
+        if (currentPoint == null || currentTask == null) {
+            return;
+        }
+        task = currentTask;
         gameId = RunApplication.gameId;
-        point = RunApplication.gameRecord.game_detail.point_list.get(RunApplication.currentPointIndex);
-        isPointOver = getIntent().getBooleanExtra(Conf.IS_POINT_OVER, false);
+        point = currentPoint;
+        isPointOver = RunApplication.isPointOver;
+        index = getIntent().getIntExtra(Conf.INDEX, -1);
 
         EasyAR.initialize(this, key);
         nativeInit(imgArr, new String[]{""});
@@ -157,18 +166,17 @@ public class ImageDistinguishActivity extends MyBaseActivity implements Imagedis
                     timer.cancel();
                     timer = null;
                 }
-                mHandler = null;
                 loadNetWorkData();
             }
         });
 
         if (AppData.isFirstInImageDistinguishActivity()) {
-            mHandler.postDelayed(new Runnable() {
+            getWindow().getDecorView().post(new Runnable() {
                 public void run() {
                     PopupWindowUtils.getInstance().showTaskGuide(ImageDistinguishActivity.this,
                             "这是个识图任务，将摄像头对准目标对象，点击蓝色按钮开始识别，识别成功即可通关");
                 }
-            }, 800);
+            });
         }
 
 
@@ -202,12 +210,6 @@ public class ImageDistinguishActivity extends MyBaseActivity implements Imagedis
 
             @Override
             public void onFinish() {
-                if (Accounts.getPhoneNumber() != null && Accounts.getPhoneNumber().endsWith("4317") || Accounts
-                        .getPhoneNumber().endsWith("1965")) {
-                    stopScan();
-                    loadNetWorkData();
-                    return;
-                }
                 ToastUtil.TextToast("什么都没有发现，继续努力哦！");
                 if (!isOK) {
                     if (timer == null) {
@@ -221,7 +223,9 @@ public class ImageDistinguishActivity extends MyBaseActivity implements Imagedis
 
 
     private void setActivityResult() {
-        EventBus.getDefault().post(resultRecord);//通知PointTaskFragment刷新数据
+        //发通知销毁PointTaskV2Activity，GamePlayingV2Activity刷新数据
+        EventBus.getDefault().post(new NotifyPointTaskV2RefreshData());
+        EventBus.getDefault().post(new NotifyGamePlayingV2RefreshData());
         finish();
     }
 
@@ -232,6 +236,11 @@ public class ImageDistinguishActivity extends MyBaseActivity implements Imagedis
                 finish();
                 break;
             case R.id.img_startScan:
+                if (Accounts.getPhoneNumber() != null && Accounts.getPhoneNumber().equals("18272164317")) {
+                    stopScan();
+                    loadNetWorkData();
+                    return;
+                }
                 if (!isScanning) {
                     startScan();
                 } else {
@@ -272,7 +281,7 @@ public class ImageDistinguishActivity extends MyBaseActivity implements Imagedis
      * 上传游戏记录
      */
     private void upLoadGameRecord() {
-        UpLoadGameRecord record = new UpLoadGameRecord();
+        UploadGameRecord record = new UploadGameRecord();
         record.uid = Accounts.getId() + "";
         record.point_id = point.id + "";
         record.game_id = gameId + "";
@@ -292,6 +301,7 @@ public class ImageDistinguishActivity extends MyBaseActivity implements Imagedis
     @Override
     public void successUploadRecord(UpLoadGameRecordResult response) {
         resultRecord = response;
+        resultRecord.index = this.index;
         taskResultHelper.showSuccessResult();
         taskResultHelper.stopAnim();
         ImageDistinguishActivity.nativeStopAr();

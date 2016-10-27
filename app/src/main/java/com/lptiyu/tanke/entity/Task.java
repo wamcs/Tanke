@@ -13,7 +13,6 @@ public class Task implements Comparable<Task>, Parcelable {
     public String type;
     public String pwd;
     public String task_index;
-    //    public String next_task;
     public String ftime = "";
     public String exp;
 

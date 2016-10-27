@@ -10,16 +10,16 @@ import java.util.Collection;
 import java.util.List;
 
 public abstract class BaseRecyclerViewAdapter<T> extends RecyclerView.Adapter {
-    protected Context mContext;
+    protected Context context;
 
     protected List<T> list;
 
-    protected LayoutInflater mLayoutInflater;
+    protected LayoutInflater inflater;
 
     public BaseRecyclerViewAdapter(Context mContext, List<T> mDataList) {
-        this.mContext = mContext;
+        this.context = mContext;
         this.list = mDataList;
-        this.mLayoutInflater = LayoutInflater.from(mContext);
+        this.inflater = LayoutInflater.from(mContext);
     }
 
     @Override
@@ -55,9 +55,15 @@ public abstract class BaseRecyclerViewAdapter<T> extends RecyclerView.Adapter {
         notifyDataSetChanged();
     }
 
-    public OnRecyclerViewItemClickListener listener;
+    public OnRecyclerViewItemClickListener clickListener;
 
     public void setOnRecyclerViewItemClickListener(OnRecyclerViewItemClickListener listener) {
-        this.listener = listener;
+        this.clickListener = listener;
     }
+
+    //    public OnRecyclerViewScrollListener scrollListener;
+    //
+    //    public void setOnRecyclerViewScrollListener(OnRecyclerViewScrollListener listener) {
+    //        this.scrollListener = listener;
+    //    }
 }

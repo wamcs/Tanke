@@ -64,7 +64,7 @@ public class City implements Parcelable{
         ", name='" + name + '\'' +
         ", province='" + province + '\'' +
         ", latitude=" + latitude +
-        ", longitude=" + longitude +
+        ", longtitude=" + longitude +
         '}';
   }
 

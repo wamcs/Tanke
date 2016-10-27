@@ -15,6 +15,22 @@ public class Accounts {
         ShaPrefer.put("user_phone", number);
     }
 
+    //    public static void setStartPointId(long startPointId) {
+    //        ShaPrefer.put("start_Point_id", startPointId);
+    //    }
+    //
+    //    public static long getStartPointId() {
+    //        return ShaPrefer.getLong("start_Point_id", -1);
+    //    }
+    //
+    //    public static void setGameId(long gameId) {
+    //        ShaPrefer.put("game_id", gameId);
+    //    }
+    //
+    //    public static long getGameId() {
+    //        return ShaPrefer.getLong("game_id", -1);
+    //    }
+
     public static void setCrashLog(boolean isLogExist) {
         ShaPrefer.put("is_crash_log_exist", isLogExist);
     }
@@ -129,11 +145,11 @@ public class Accounts {
     }
 
     public static void setLongitude(float longitude) {
-        ShaPrefer.put("longitude", longitude);
+        ShaPrefer.put("longtitude", longitude);
     }
 
     public static float getLongitude() {
-        return ShaPrefer.getFloat("longitude", 114.316670f);
+        return ShaPrefer.getFloat("longtitude", 114.316670f);
     }
 
     /*

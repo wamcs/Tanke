@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.lptiyu.tanke.R;
-import com.lptiyu.tanke.entity.response.HomeGameList;
+import com.lptiyu.tanke.entity.response.HomeTabEntity;
 import com.lptiyu.tanke.enums.SortIndex;
 import com.makeramen.roundedimageview.RoundedImageView;
 
@@ -23,43 +23,62 @@ import butterknife.ButterKnife;
  * Created by Jason on 2016/9/23.
  */
 
-public class HomeDisplayAdapter extends BaseRecyclerViewAdapter<HomeGameList> {
+public class HomeDisplayAdapter extends BaseRecyclerViewAdapter<HomeTabEntity> {
     private int sortIndex;
 
-    public HomeDisplayAdapter(Context context, List<HomeGameList> list, int sortIndex) {
+    public HomeDisplayAdapter(Context context, List<HomeTabEntity> list, int sortIndex) {
         super(context, list);
         this.sortIndex = sortIndex;
     }
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new ViewHolder(mLayoutInflater.inflate(R.layout.item_home_display, parent, false));
+        View view = inflater.inflate(R.layout.item_home_display, parent, false);
+        final MyViewHolder myViewHolder = new MyViewHolder(view);
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (clickListener != null) {
+                    clickListener.onClick(myViewHolder.getAdapterPosition());
+                }
+            }
+        });
+        view.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                if (clickListener != null) {
+                    clickListener.onLongClick(myViewHolder.getAdapterPosition());
+                }
+                return true;
+            }
+        });
+        return myViewHolder;
     }
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        HomeGameList gameEntity = list.get(position);
+        HomeTabEntity gameEntity = list.get(position);
 
-        ViewHolder viewHolder = (ViewHolder) holder;
-        viewHolder.title.setText(gameEntity.title + "");
-        viewHolder.tvPlayerCount.setText(gameEntity.player_num + "人在玩");
-        Glide.with(mContext).load(gameEntity.pic).error(R.drawable.default_pic).into(viewHolder.imageView);
-        viewHolder.ratingBar.setRating(gameEntity.difficulty);
+        MyViewHolder myViewHolder = (MyViewHolder) holder;
+        myViewHolder.title.setText(gameEntity.title + "");
+        myViewHolder.tvPlayerCount.setText(gameEntity.player_num + "人在玩");
+        Glide.with(context).load(gameEntity.pic).error(R.drawable.default_pic).into(myViewHolder.imageView);
+        myViewHolder.ratingBar.setRating(gameEntity.difficulty);
         if (gameEntity.tag == null || TextUtils.isEmpty(gameEntity.tag)) {
-            viewHolder.tvCompetitonTag.setVisibility(View.GONE);
+            myViewHolder.tvCompetitonTag.setVisibility(View.GONE);
         } else {
-            viewHolder.tvCompetitonTag.setVisibility(View.VISIBLE);
-            viewHolder.tvCompetitonTag.setText(gameEntity.tag);
+            myViewHolder.tvCompetitonTag.setVisibility(View.VISIBLE);
+            myViewHolder.tvCompetitonTag.setText(gameEntity.tag);
         }
-        viewHolder.tvDistance.setText("<" + gameEntity.distince + "km");
-        viewHolder.location.setText("游戏区域：" + gameEntity.area);
+        myViewHolder.tvDistance.setText("<" + gameEntity.distince + "km");
+        myViewHolder.location.setText("游戏区域：" + gameEntity.area);
 
         switch (sortIndex) {
             case SortIndex.NEAR_GAME:
                 break;
             case SortIndex.ONLINE_PLAYABLE:
-                viewHolder.tvDistance.setVisibility(View.GONE);
-                viewHolder.location.setVisibility(View.GONE);
+                myViewHolder.tvDistance.setVisibility(View.GONE);
+                myViewHolder.location.setVisibility(View.GONE);
                 break;
             case SortIndex.DIRECTION_RUN:
                 break;
@@ -69,7 +88,7 @@ public class HomeDisplayAdapter extends BaseRecyclerViewAdapter<HomeGameList> {
 
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder {
+    class MyViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.image_view)
         RoundedImageView imageView;
         @BindView(R.id.title)
@@ -84,10 +103,8 @@ public class HomeDisplayAdapter extends BaseRecyclerViewAdapter<HomeGameList> {
         TextView tvPlayerCount;
         @BindView(R.id.tv_competition_tag)
         TextView tvCompetitonTag;
-        //        @BindView(R.id.tv_direction_run_tag)
-        //        TextView tvDirectionalRun;
 
-        ViewHolder(View view) {
+        MyViewHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);
         }

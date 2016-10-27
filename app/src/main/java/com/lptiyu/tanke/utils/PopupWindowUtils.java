@@ -169,6 +169,7 @@ public class PopupWindowUtils {
         popupView.findViewById(R.id.tv_ensure).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                popupWindow.dismiss();
                 if (listener != null) {
                     listener.onClick(v);
                 }

@@ -9,9 +9,9 @@ android {
     defaultConfig {
         applicationId "com.lptiyu.tanke"
         minSdkVersion 15
-        targetSdkVersion 23
-        versionCode 9
-        versionName "1.0.9"
+        targetSdkVersion 22
+        versionCode 12
+        versionName "1.0.12"
         //突破65535的限制
         multiDexEnabled true
 
@@ -144,7 +144,7 @@ dependencies {
 }
 
 greendao {
-    targetGenDir 'src/main/java/com/lptiyu/tanke/entity/greendao'
+    targetGenDir 'src/main/java'
     schemaVersion 1
-    daoPackage 'database'
+    daoPackage 'greendao'
 }

@@ -11,32 +11,19 @@ import java.util.ArrayList;
  * Created by Jason on 2016/8/2.
  */
 public class Point implements Comparable<Point>, Parcelable {
-    /**
-     * id : 1
-     * line_id : 1
-     * point_index : 1
-     * latitude : 30.536156
-     * longitude : 114.408642
-     * address_name : 艺术与传媒学院
-     * point_title : 尸体线索
-     * point_img : point1.jpg
-     * first_task : task1_1.json
-     */
 
     public String id;
     public String line_id;
     public String point_index;
     public String latitude;
-    public String longitude;
-    public String address_name;
+    public String longtitude;
+    public String address;
     public String point_title;
     public String point_img;
-    public String first_task;
     public int status = PointTaskStatus.UNSTARTED;//0未完成，1完成
+    public ArrayList<Task> task_list;
 
     public boolean isNew = false;
-
-    public ArrayList<Task> task_list;
 
     @Override
     public int compareTo(Point another) {
@@ -62,11 +49,10 @@ public class Point implements Comparable<Point>, Parcelable {
                 ", line_id='" + line_id + '\'' +
                 ", point_index='" + point_index + '\'' +
                 ", latitude='" + latitude + '\'' +
-                ", longitude='" + longitude + '\'' +
-                ", address_name='" + address_name + '\'' +
+                ", longtitude='" + longtitude + '\'' +
+                ", address='" + address + '\'' +
                 ", point_title='" + point_title + '\'' +
                 ", point_img='" + point_img + '\'' +
-                ", first_task='" + first_task + '\'' +
                 ", status=" + status +
                 ", isNew=" + isNew +
                 ", task_list=" + task_list +
@@ -79,11 +65,10 @@ public class Point implements Comparable<Point>, Parcelable {
         dest.writeString(this.line_id);
         dest.writeString(this.point_index);
         dest.writeString(this.latitude);
-        dest.writeString(this.longitude);
-        dest.writeString(this.address_name);
+        dest.writeString(this.longtitude);
+        dest.writeString(this.address);
         dest.writeString(this.point_title);
         dest.writeString(this.point_img);
-        dest.writeString(this.first_task);
         dest.writeInt(this.status);
         dest.writeByte(this.isNew ? (byte) 1 : (byte) 0);
         dest.writeTypedList(this.task_list);
@@ -97,11 +82,10 @@ public class Point implements Comparable<Point>, Parcelable {
         this.line_id = in.readString();
         this.point_index = in.readString();
         this.latitude = in.readString();
-        this.longitude = in.readString();
-        this.address_name = in.readString();
+        this.longtitude = in.readString();
+        this.address = in.readString();
         this.point_title = in.readString();
         this.point_img = in.readString();
-        this.first_task = in.readString();
         this.status = in.readInt();
         this.isNew = in.readByte() != 0;
         this.task_list = in.createTypedArrayList(Task.CREATOR);

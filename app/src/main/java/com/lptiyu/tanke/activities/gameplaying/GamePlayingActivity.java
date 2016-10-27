@@ -15,7 +15,7 @@ import com.lptiyu.tanke.R;
 import com.lptiyu.tanke.RunApplication;
 import com.lptiyu.tanke.activities.pointtask.PointTaskActivity;
 import com.lptiyu.tanke.adapter.GVForGamePlayingAdapter;
-import com.lptiyu.tanke.entity.GameDetailResponse;
+import com.lptiyu.tanke.entity.response.GameDetail;
 import com.lptiyu.tanke.entity.GameRecord;
 import com.lptiyu.tanke.entity.Point;
 import com.lptiyu.tanke.enums.PointTaskStatus;
@@ -111,7 +111,7 @@ public class GamePlayingActivity extends MyBaseActivity implements GamePlayingCo
         //获取游戏列表实体类（从游戏列表进来）
         GameDisplayEntity gameDisplayEntity = intent.getParcelableExtra(Conf.GAME_DISPLAY_ENTITY);
         //获取游戏详情实体类（从游戏详情进来）
-        GameDetailResponse gameDetailsResponse = intent.getParcelableExtra(Conf.GAME_DETAIL);
+        GameDetail gameDetailsResponse = intent.getParcelableExtra(Conf.GAME_DETAIL);
         //获取游戏详情实体类（从正在玩的游戏进来）
         GamePlayingEntity gamePlayingEntity = intent.getParcelableExtra(Conf.GAME_PLAYING_ENTITY);
         //获取游戏详情实体类（从已完成的游戏进来）

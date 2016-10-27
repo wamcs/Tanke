@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="com.lptiyu.tanke"
-          android:versionCode="8"
-          android:versionName="1.0.8">
+          android:versionCode="12"
+          android:versionName="1.0.12">
 
     <uses-sdk
         android:minSdkVersion="15"
-        android:targetSdkVersion="23"/>
+        android:targetSdkVersion="22"/>
     <!-- ***************************** Dangerous Permissions need to be requested ***************************** -->
     <uses-permission android:name="android.permission.CAMERA"/>
     <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
@@ -225,7 +225,7 @@
             android:screenOrientation="portrait">
         </activity>
         <activity
-            android:name=".activities.gamedetail.GameDetailActivity"
+            android:name=".activities.gamedetailv2.GameDetailV2Activity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait">
         </activity>
@@ -235,7 +235,7 @@
             android:screenOrientation="portrait">
         </activity>
         <activity
-            android:name=".activities.pointtasknew.PointTaskV2Activity"
+            android:name=".activities.pointtaskv2.PointTaskV2Activity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait"
             android:theme="@style/PointTaskActivity">

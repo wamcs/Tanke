@@ -4,7 +4,10 @@ import android.app.Activity;
 import android.support.multidex.MultiDex;
 import android.support.multidex.MultiDexApplication;
 
+import com.lptiyu.tanke.entity.BaseEntity;
 import com.lptiyu.tanke.entity.GameRecord;
+import com.lptiyu.tanke.entity.Point;
+import com.lptiyu.tanke.entity.Task;
 import com.lptiyu.tanke.entity.ThemeLine;
 import com.lptiyu.tanke.global.AppData;
 import com.lptiyu.tanke.global.Conf;
@@ -32,7 +35,11 @@ public class RunApplication extends MultiDexApplication {
     public static GameRecord gameRecord;//维护一个正在玩的游戏数据
     public static int currentPointIndex;
     public static int currentTaskIndex;
+    public static Task currentTask;
+    public static Point currentPoint;
     public static long gameId;
+    public static boolean isPointOver;
+    public static BaseEntity entity;//点击的某个游戏实体
 
     @Override
     public void onCreate() {

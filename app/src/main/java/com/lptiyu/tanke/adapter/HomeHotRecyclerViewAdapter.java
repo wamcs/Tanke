@@ -3,7 +3,6 @@ package com.lptiyu.tanke.adapter;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -23,27 +22,27 @@ import butterknife.ButterKnife;
  */
 
 public class HomeHotRecyclerViewAdapter extends BaseRecyclerViewAdapter<Recommend> {
-    public HomeHotRecyclerViewAdapter(Context mContext, List<Recommend> mDataList) {
-        super(mContext, mDataList);
+    public HomeHotRecyclerViewAdapter(Context mContext, List<Recommend> list) {
+        super(mContext, list);
     }
 
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(mContext).inflate(R.layout.item_home_hot, parent, false);
+        View view = inflater.inflate(R.layout.item_home_hot, parent, false);
         final MyViewHolder myViewHolder = new MyViewHolder(view);
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (listener != null) {
-                    listener.onClick(myViewHolder.getAdapterPosition());
+                if (clickListener != null) {
+                    clickListener.onClick(myViewHolder.getAdapterPosition());
                 }
             }
         });
         view.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                if (listener != null) {
-                    listener.onLongClick(myViewHolder.getAdapterPosition());
+                if (clickListener != null) {
+                    clickListener.onLongClick(myViewHolder.getAdapterPosition());
                 }
                 return true;
             }
@@ -56,7 +55,7 @@ public class HomeHotRecyclerViewAdapter extends BaseRecyclerViewAdapter<Recommen
         MyViewHolder myViewHolder = (MyViewHolder) holder;
         Recommend recommend = list.get(position);
         myViewHolder.tvGameName.setText(recommend.title + "");
-        Glide.with(mContext).load(recommend.pic).error(R.drawable.default_pic).into(myViewHolder.cImg);
+        Glide.with(context).load(recommend.pic).error(R.drawable.default_pic).into(myViewHolder.cImg);
         if (recommend.address_short == null || TextUtils.isEmpty(recommend.address_short)) {
             myViewHolder.tvTag.setVisibility(View.GONE);
         } else {

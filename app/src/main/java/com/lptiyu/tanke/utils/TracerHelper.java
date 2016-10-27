@@ -14,19 +14,17 @@ import java.util.List;
  */
 
 public class TracerHelper implements TraceListener {
-    public LBSTraceClient traceClient;
     public TraceCallback callback;
+    private Context context;
 
     public TracerHelper(Context context, TraceCallback callback) {
-        traceClient = new LBSTraceClient(context.getApplicationContext());
         this.callback = callback;
+        this.context = context;
 
     }
 
     public void queryProcessedTrace(int lineID, List<TraceLocation> traceLocations, int coordinateType) {
-        if (traceClient != null) {
-            traceClient.queryProcessedTrace(lineID, traceLocations, coordinateType, this);
-        }
+        new LBSTraceClient(context).queryProcessedTrace(lineID, traceLocations, coordinateType, this);
     }
 
     @Override

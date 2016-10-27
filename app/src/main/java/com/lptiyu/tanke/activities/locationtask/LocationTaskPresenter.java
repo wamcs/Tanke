@@ -1,6 +1,6 @@
 package com.lptiyu.tanke.activities.locationtask;
 
-import com.lptiyu.tanke.entity.UpLoadGameRecord;
+import com.lptiyu.tanke.entity.UploadGameRecord;
 import com.lptiyu.tanke.entity.UploadGameRecordResponse;
 import com.lptiyu.tanke.entity.response.BaseResponse;
 import com.lptiyu.tanke.global.Accounts;
@@ -22,7 +22,7 @@ public class LocationTaskPresenter implements LocationTaskContact.ILocationTaskP
     }
 
     @Override
-    public void uploadRecord(UpLoadGameRecord record) {
+    public void uploadRecord(UploadGameRecord record) {
         RequestParams params = RequestParamsHelper.getBaseRequestParam(XUtilsUrls.UPLOAD_RECORD);
         params.addBodyParameter("uid", Accounts.getId() + "");
         params.addBodyParameter("game_id", record.game_id);

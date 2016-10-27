@@ -54,8 +54,6 @@ import android.widget.TextView;
 
 import com.lptiyu.zxinglib.R;
 import com.lptiyu.zxinglib.android.camera.CameraManager;
-import com.lptiyu.zxinglib.android.entity.Conf;
-import com.lptiyu.zxinglib.android.entity.UploadGameRecordResponse;
 import com.lptiyu.zxinglib.android.history.HistoryItem;
 import com.lptiyu.zxinglib.android.history.HistoryManager;
 import com.lptiyu.zxinglib.android.result.ResultHandler;
@@ -120,14 +118,6 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
     private InactivityTimer inactivityTimer;
     private BeepManager beepManager;
     private AmbientLightManager ambientLightManager;
-    private long gameId;
-    private long gameType;
-    private String task_id;
-    private String point_id;
-    private boolean isPointOver;
-    private String upload_record_url = "http://192.168.1.5/trunk/lepao/api.php/system/Rankslog";
-    private long uid;
-    private UploadGameRecordResponse resultResponse;
     private boolean isFirstInLocationActivity;
 
     ViewfinderView getViewfinderView() {
@@ -141,11 +131,6 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
     CameraManager getCameraManager() {
         return cameraManager;
     }
-
-    /*******************************************/
-    private Handler mHandler = new Handler();
-
-    /*******************************************/
 
     @Override
     public void onCreate(Bundle icicle) {
@@ -164,15 +149,15 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
 
         /*********************************/
-        //                initData();
         isFirstInLocationActivity = getIntent().getBooleanExtra("isFirstInLocation", false);
         if (isFirstInLocationActivity) {
-            mHandler.postDelayed(new Runnable() {
+            getWindow().getDecorView().post(new Runnable() {
                 public void run() {
                     showTaskGuide(CaptureActivity.this, "这是扫码任务，找到神奇的二维码即可通关");
                 }
-            }, 500);
+            });
         }
+        setResultWithEmptyData();
         /*********************************/
     }
 
@@ -193,6 +178,16 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
             @Override
             public void onClick(View v) {
                 popupWindow.dismiss();
+                setResultWithEmptyData();
+            }
+        });
+    }
+
+    private void setResultWithEmptyData() {
+        new Handler().post(new Runnable() {
+            @Override
+            public void run() {
+                setResult(RESULT_OK, new Intent());
             }
         });
     }
@@ -580,31 +575,14 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
         }
     }
 
-    private void initData() {
-        Intent intent = getIntent();
-        gameId = getIntent().getLongExtra(Conf.GAME_ID, 0);
-        gameType = getIntent().getLongExtra(Conf.GAME_TYPE, 0);
-        isPointOver = getIntent().getBooleanExtra(Conf.IS_POINT_OVER, false);
-        uid = getIntent().getLongExtra("uid", 0);
-        task_id = getIntent().getStringExtra("task_id");
-        point_id = getIntent().getStringExtra("point_id");
-    }
-
     // Put up our own UI for how to handle the decoded contents.
     private void handleDecodeInternally(Result rawResult, ResultHandler resultHandler, Bitmap barcode) {
 
         CharSequence displayContents = resultHandler.getDisplayContents();
-
         Intent intent = new Intent();
         intent.putExtra(QR_CODE_DATA, displayContents);
-
-        /***********************/
-        //        intent.putExtra(Conf.UPLOAD_RECORD_RESPONSE, resultResponse);
-        /***********************/
-
         setResult(RESULT_OK, intent);
         finish();
-
     }
 
     private void initCamera(SurfaceHolder surfaceHolder) {

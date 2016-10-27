@@ -1,7 +1,8 @@
-package com.lptiyu.tanke.activities.gamedetail;
+package com.lptiyu.tanke.activities.gamedetailv2;
 
 import com.lptiyu.tanke.entity.EnterGameResponse;
 import com.lptiyu.tanke.entity.response.BaseResponse;
+import com.lptiyu.tanke.entity.response.GameDetailResponse;
 import com.lptiyu.tanke.global.Accounts;
 import com.lptiyu.tanke.utils.xutils3.RequestParamsHelper;
 import com.lptiyu.tanke.utils.xutils3.XUtilsHelper;
@@ -19,6 +20,34 @@ public class GameDetailPresenter implements GameDetailContact.IGameDetailPresent
 
     public GameDetailPresenter(GameDetailContact.IGameDetailView view) {
         this.view = view;
+    }
+
+    @Override
+    public void getGameDetail(long gameId) {
+        RequestParams params = RequestParamsHelper.getBaseRequestParam(XUtilsUrls.GAME_DETAIL);
+        params.addBodyParameter("game_id", gameId + "");
+        XUtilsHelper.getInstance().get(params, new XUtilsRequestCallBack<GameDetailResponse>() {
+            @Override
+            protected void onSuccess(GameDetailResponse response) {
+                if (response.status == BaseResponse.SUCCESS) {
+                    view.successGetGameDetail(response.data);
+                } else {
+                    if (response.info != null) {
+                        view.failLoad(response.info);
+                    } else {
+                        view.failLoad();
+                    }
+                }
+            }
+
+            @Override
+            protected void onFailed(String errorMsg) {
+                if (errorMsg != null)
+                    view.failLoad(errorMsg);
+                else
+                    view.netException();
+            }
+        }, GameDetailResponse.class);
     }
 
     @Override

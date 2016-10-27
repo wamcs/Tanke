@@ -20,6 +20,7 @@ import android.widget.Toast;
 
 import com.lptiyu.tanke.R;
 import com.lptiyu.tanke.RunApplication;
+import com.lptiyu.tanke.entity.UploadGameRecord;
 import com.lptiyu.tanke.mybase.MyBaseActivity;
 import com.lptiyu.tanke.activities.guessriddle.GuessRiddleActivity;
 import com.lptiyu.tanke.activities.imagedistinguish.ImageDistinguishActivity;
@@ -35,7 +36,6 @@ import com.lptiyu.tanke.enums.TaskType;
 import com.lptiyu.tanke.global.Accounts;
 import com.lptiyu.tanke.global.AppData;
 import com.lptiyu.tanke.global.Conf;
-import com.lptiyu.tanke.entity.UpLoadGameRecord;
 import com.lptiyu.tanke.entity.UploadGameRecordResponse;
 import com.lptiyu.tanke.utils.BitMapUtils;
 import com.lptiyu.tanke.utils.ToastUtil;
@@ -179,7 +179,7 @@ public class PointTaskActivity extends MyBaseActivity implements PointTaskContac
             return;
         Point point = themeLine.point_list.get(pointIndex);
 
-        UpLoadGameRecord record = new UpLoadGameRecord();
+        UploadGameRecord record = new UploadGameRecord();
         record.uid = Accounts.getId() + "";
         //        record.type = gameType + "";
         record.point_id = point.id + "";
@@ -259,7 +259,7 @@ public class PointTaskActivity extends MyBaseActivity implements PointTaskContac
         if (resultCode == RESULT_OK) {//扫码识别返回
             if (Accounts.getPhoneNumber() != null && Accounts.getPhoneNumber().endsWith("4317") || Accounts
                     .getPhoneNumber().endsWith("1965")) {
-                finishedCurrentTast();
+                finishedCurrentTask();
                 return;
             }
             Bundle b = intent.getExtras();
@@ -272,7 +272,7 @@ public class PointTaskActivity extends MyBaseActivity implements PointTaskContac
             //与答案匹配
             if (str.equals(currentTask.pwd)) {
                 //                refreshData(resultResponse);
-                finishedCurrentTast();
+                finishedCurrentTask();
             } else {
                 Toast.makeText(this, "二维码不正确", Toast.LENGTH_SHORT).show();
             }
@@ -295,7 +295,7 @@ public class PointTaskActivity extends MyBaseActivity implements PointTaskContac
     /**
      * 任务完成后要执行的
      */
-    private void finishedCurrentTast() {
+    private void finishedCurrentTask() {
         //        uploadGameRecordDialog = ProgressDialog.show(this, null, "正在上传游戏记录...", true, true);
         //上传游戏记录
         upLoadGameRecord();
@@ -312,7 +312,7 @@ public class PointTaskActivity extends MyBaseActivity implements PointTaskContac
         Point point = themeLine.point_list.get(pointIndex);
 
 
-        UpLoadGameRecord record = new UpLoadGameRecord();
+        UploadGameRecord record = new UploadGameRecord();
         record.uid = Accounts.getId() + "";
         //        record.type = gameType + "";
         record.point_id = point.id + "";
@@ -352,11 +352,6 @@ public class PointTaskActivity extends MyBaseActivity implements PointTaskContac
             return;
         Point point = themeLine.point_list.get(pointIndex);
 
-        //        gameRecord.play_statu = response.game_statu + "";
-        //更新当前任务的记录信息
-        //        currentTask.ftime = response.task_finish_time;
-        //        currentTask.status = PointTaskStatus.FINISHED;
-        //        currentTask.exp = response.get_exp;
         if (isPointOver) {
             point.status = PointTaskStatus.FINISHED;
 
@@ -404,7 +399,7 @@ public class PointTaskActivity extends MyBaseActivity implements PointTaskContac
     }
 
     @OnClick({R.id.img_close, R.id.rl_title, R.id.ctv_taskName, R.id.rl_getKey, R.id.img_getKey})
-    public void onClick(View view) {
+    public void ononClick(View view) {
         ThemeLine themeLine = RunApplication.getInstance().getPlayingThemeLine();
         if (themeLine == null || themeLine.point_list == null || themeLine.point_list.size() <= pointIndex)
             return;

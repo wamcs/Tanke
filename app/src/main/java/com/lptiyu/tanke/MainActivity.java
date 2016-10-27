@@ -46,7 +46,6 @@ public class MainActivity extends BaseActivity {
 
     @BindView(R.id.page_3)
     ImageView tab3;
-    private boolean isSignUp = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,11 +64,18 @@ public class MainActivity extends BaseActivity {
                 Accounts.setLongitude((float) aMapLocation.getLongitude());
                 LogUtils.i("定位信息：" + aMapLocation.getCity() + aMapLocation.getCityCode() + ", 经纬度：" + aMapLocation
                         .getLatitude() + ", " + aMapLocation.getLongitude());
-                init();
+
             }
         });
         locationHelper.setOnceLocation(true);
         locationHelper.startLocation();
+        getWindow().getDecorView().post(new Runnable() {
+            @Override
+            public void run() {
+                init();
+                signUp();
+            }
+        });
     }
 
     private void signUp() {
@@ -85,21 +91,12 @@ public class MainActivity extends BaseActivity {
         }
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        if (!isSignUp) {
-            signUp();
-        }
-    }
-
     private void signIn(long id) {
         RequestParams params = RequestParamsHelper.getBaseRequestParam(XUtilsUrls.HOME_SIGN_IN);
         params.addBodyParameter("uid", id + "");
         XUtilsHelper.getInstance().get(params, new XUtilsRequestCallBack<SignUpResponse>() {
             @Override
             protected void onSuccess(SignUpResponse signUpResponse) {
-                isSignUp = true;
                 if (signUpResponse.status == 1) {
                     PopupWindowUtils.getInstance().showSucessSignUp(MainActivity.this, signUpResponse.data.tip + "");
                     Accounts.setSignUp(true);

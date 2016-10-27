@@ -30,21 +30,21 @@ public class PointListAdapter extends BaseRecyclerViewAdapter<Point> {
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = mLayoutInflater.inflate(R.layout.item_recyclerview_point_list, parent, false);
+        View view = inflater.inflate(R.layout.item_recyclerview_point_list, parent, false);
         final ViewHolder viewHolder = new ViewHolder(view);
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (listener != null) {
-                    listener.onClick(viewHolder.getAdapterPosition());
+                if (clickListener != null) {
+                    clickListener.onClick(viewHolder.getAdapterPosition());
                 }
             }
         });
         view.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                if (listener != null) {
-                    listener.onLongClick(viewHolder.getAdapterPosition());
+                if (clickListener != null) {
+                    clickListener.onLongClick(viewHolder.getAdapterPosition());
                 }
                 return true;
             }
@@ -57,7 +57,7 @@ public class PointListAdapter extends BaseRecyclerViewAdapter<Point> {
         Point point = list.get(position);
         ViewHolder vh = (ViewHolder) holder;
         vh.tvPointName.setText(point.point_title + "");
-        Glide.with(mContext).load(point.point_img).error(R.drawable.default_pic).into(vh.img);
+        Glide.with(context).load(point.point_img).error(R.drawable.default_pic).into(vh.img);
 
         switch (point.status) {
             case PointTaskStatus.UNSTARTED://未开启

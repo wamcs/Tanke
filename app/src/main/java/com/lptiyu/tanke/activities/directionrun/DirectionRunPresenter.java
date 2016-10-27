@@ -86,7 +86,7 @@ public class DirectionRunPresenter implements DirectionRunContact.IDirectionRunP
     }
 
     @Override
-    public void runSignUp(long gameId, long pointId, long recordId, long distance) {
+    public void runSignUp(long gameId, long pointId, long recordId, double distance) {
         RequestParams params = RequestParamsHelper.getBaseRequestParam(XUtilsUrls.LOG_RUN);
         params.addBodyParameter("uid", Accounts.getId() + "");
         params.addBodyParameter("game_id", gameId + "");
@@ -119,7 +119,7 @@ public class DirectionRunPresenter implements DirectionRunContact.IDirectionRunP
     }
 
     @Override
-    public void stopRun(long gameId, long recordId, long distance) {
+    public void stopRun(long gameId, long recordId, double distance) {
         RequestParams params = RequestParamsHelper.getBaseRequestParam(XUtilsUrls.STOP_RUN);
         params.addBodyParameter("uid", Accounts.getId() + "");
         params.addBodyParameter("game_id", gameId + "");

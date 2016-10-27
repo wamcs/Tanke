@@ -1,36 +1,19 @@
-package com.lptiyu.tanke.entity;
+package com.lptiyu.tanke.entity.response;
 
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.lptiyu.tanke.entity.BaseEntity;
+
+import java.util.List;
+
 /**
  * Created by Jason on 2016/8/5.
  */
-public class GameDetailResponse implements Parcelable {
-    /**
-     * pic : http://api.lptiyu.com/run/Public/Upload/pic//game/2016-08-01/579eadfa14d38.png
-     * title : 信
-     * area : 西班牙风情街
-     * city : 1
-     * time_type : 0
-     * start_date :
-     * end_date :
-     * start_time :
-     * end_time :
-     * type : 2
-     * num : 112
-     * content : <html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/></head><body><p>无</p>
-     * </body></html>
-     * rule : null
-     * longtitude : 114.412957
-     * latitude : 30.508005
-     * min : 0
-     * max : 0
-     * url : http://api.lptiyu.com/lepao/api.php/Home/game?game_id=3
-     */
+public class GameDetail extends BaseEntity implements Parcelable {
 
     public String pic;
-    public String title;
+    //    public String title;
     public String area;
     public String city;
     public String time_type;
@@ -48,8 +31,9 @@ public class GameDetailResponse implements Parcelable {
     public String max;
     public String url;
     public int states;
-
-
+    public int difficulty;
+    //    public int cid;
+    public List<Ranks> rank_list;
 
     @Override
     public int describeContents() {
@@ -77,12 +61,15 @@ public class GameDetailResponse implements Parcelable {
         dest.writeString(this.max);
         dest.writeString(this.url);
         dest.writeInt(this.states);
+        dest.writeInt(this.difficulty);
+        dest.writeInt(this.cid);
+        dest.writeTypedList(this.rank_list);
     }
 
-    public GameDetailResponse() {
+    public GameDetail() {
     }
 
-    protected GameDetailResponse(Parcel in) {
+    protected GameDetail(Parcel in) {
         this.pic = in.readString();
         this.title = in.readString();
         this.area = in.readString();
@@ -102,23 +89,26 @@ public class GameDetailResponse implements Parcelable {
         this.max = in.readString();
         this.url = in.readString();
         this.states = in.readInt();
+        this.difficulty = in.readInt();
+        this.cid = in.readInt();
+        this.rank_list = in.createTypedArrayList(Ranks.CREATOR);
     }
 
-    public static final Parcelable.Creator<GameDetailResponse> CREATOR = new Parcelable.Creator<GameDetailResponse>() {
+    public static final Parcelable.Creator<GameDetail> CREATOR = new Parcelable.Creator<GameDetail>() {
         @Override
-        public GameDetailResponse createFromParcel(Parcel source) {
-            return new GameDetailResponse(source);
+        public GameDetail createFromParcel(Parcel source) {
+            return new GameDetail(source);
         }
 
         @Override
-        public GameDetailResponse[] newArray(int size) {
-            return new GameDetailResponse[size];
+        public GameDetail[] newArray(int size) {
+            return new GameDetail[size];
         }
     };
 
     @Override
     public String toString() {
-        return "GameDetailResponse{" +
+        return "GameDetail{" +
                 "pic='" + pic + '\'' +
                 ", title='" + title + '\'' +
                 ", area='" + area + '\'' +
@@ -131,13 +121,16 @@ public class GameDetailResponse implements Parcelable {
                 ", type=" + type +
                 ", num='" + num + '\'' +
                 ", content='" + content + '\'' +
-                ", rule=" + rule +
+                ", rule='" + rule + '\'' +
                 ", longtitude='" + longtitude + '\'' +
                 ", latitude='" + latitude + '\'' +
                 ", min='" + min + '\'' +
                 ", max='" + max + '\'' +
                 ", url='" + url + '\'' +
-                ", states='" + states + '\'' +
+                ", states=" + states +
+                ", difficulty=" + difficulty +
+                ", cid=" + cid +
+                ", rank_list=" + rank_list +
                 '}';
     }
 }

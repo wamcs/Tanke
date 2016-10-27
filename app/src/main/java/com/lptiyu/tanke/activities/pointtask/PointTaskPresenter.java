@@ -2,7 +2,7 @@ package com.lptiyu.tanke.activities.pointtask;
 
 import android.util.Log;
 
-import com.lptiyu.tanke.entity.UpLoadGameRecord;
+import com.lptiyu.tanke.entity.UploadGameRecord;
 import com.lptiyu.tanke.entity.UploadGameRecordResponse;
 import com.lptiyu.tanke.global.Accounts;
 import com.lptiyu.tanke.net.HttpService;
@@ -23,7 +23,7 @@ public class PointTaskPresenter implements PointTaskContact.IPointTaskPresenter 
     }
 
     @Override
-    public void uploadRecord(UpLoadGameRecord record) {
+    public void uploadRecord(UploadGameRecord record) {
         HttpService.getGameService()
                 .upLoadGameRecord(Accounts.getId(), Long.parseLong(record.game_id), Long.parseLong(record.point_id),
                         Long.parseLong(record.task_id), Long.parseLong(record.point_statu))
@@ -93,7 +93,7 @@ public class PointTaskPresenter implements PointTaskContact.IPointTaskPresenter 
     }
 
     @Override
-    public void uploadGameOverRecord(UpLoadGameRecord record) {
+    public void uploadGameOverRecord(UploadGameRecord record) {
         HttpService.getGameService()
                 .upLoadGameRecord(Accounts.getId(), Long.parseLong(record.game_id), Long.parseLong(record.point_id),
                         Long.parseLong(record.task_id), Long.parseLong(record.point_statu))

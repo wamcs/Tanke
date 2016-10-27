@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:cube_ptr="http://schemas.android.com/apk/res-auto"
     xmlns:pst="http://schemas.android.com/apk/res-auto"
+    xmlns:ptr="http://schemas.android.com/apk/res-auto"
     xmlns:stick="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -26,8 +26,8 @@
             android:visibility="visible"
             />
 
-        <com.lptiyu.tanke.widget.CustomTextView
-            android:id="@+id/ctv_title"
+        <TextView
+            android:id="@+id/tv_title"
             style="@style/TextAppearance.Toolbar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -55,12 +55,12 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/rl_title"
-        cube_ptr:ptr_duration_to_close="300"
-        cube_ptr:ptr_duration_to_close_header="2000"
-        cube_ptr:ptr_keep_header_when_refresh="true"
-        cube_ptr:ptr_pull_to_fresh="false"
-        cube_ptr:ptr_ratio_of_header_height_to_refresh="1.2"
-        cube_ptr:ptr_resistance="1.7">
+        ptr:ptr_duration_to_close="300"
+        ptr:ptr_duration_to_close_header="2000"
+        ptr:ptr_keep_header_when_refresh="true"
+        ptr:ptr_pull_to_fresh="false"
+        ptr:ptr_ratio_of_header_height_to_refresh="1.2"
+        ptr:ptr_resistance="1.7">
 
         <com.gxz.library.StickyNavLayout
             android:id="@+id/id_stick"
@@ -105,7 +105,8 @@
                 pst:pstsIndicatorColor="@color/colorPrimary"
                 pst:pstsIndicatorHeight="1dp"
                 pst:pstsScaleZoomMax="0"
-                pst:pstsShouldExpand="false"
+                pst:pstsShouldExpand="true"
+                pst:pstsTabPaddingLeftRight="3dp"
                 pst:pstsTextSelectedColor="@color/colorPrimary"
                 pst:pstsUnderlineColor="@color/windowBackground"/>
 

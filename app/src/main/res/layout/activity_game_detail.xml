@@ -5,28 +5,15 @@
     android:id="@+id/ptScrollView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.lptiyu.tanke.activities.gamedetail.GameDetailActivity">
+    tools:context="com.lptiyu.tanke.activities.gamedetailv2.GameDetailV2Activity">
 
-    <RelativeLayout
-        android:id="@+id/rl_title"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:padding="10dp"
-            android:text="游戏详情"/>
-    </RelativeLayout>
-
-    <TextView
+    <Button
         android:id="@+id/tv_enter_game"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_margin="10dp"
-        android:background="@drawable/shape_bg_enter_game"
+        android:background="@drawable/selector_button"
         android:gravity="center"
         android:padding="10dp"
         android:text="进入游戏"
@@ -35,16 +22,40 @@
 
     <com.lptiyu.tanke.widget.PullToZoomScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_above="@id/tv_enter_game"
         android:layout_below="@id/rl_title">
 
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
 
-        </RelativeLayout>
+            <include
+                layout="@layout/top_view"/>
+
+            <include
+                layout="@layout/body_view"/>
+
+        </LinearLayout>
     </com.lptiyu.tanke.widget.PullToZoomScrollView>
 
+    <ImageView
+        android:id="@+id/img_back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="20dp"
+        android:scaleType="centerInside"
+        android:src="@drawable/fan"/>
 
+    <ImageView
+        android:id="@+id/img_share"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:padding="20dp"
+        android:scaleType="centerInside"
+        android:src="@drawable/fenxiang"/>
 </RelativeLayout>

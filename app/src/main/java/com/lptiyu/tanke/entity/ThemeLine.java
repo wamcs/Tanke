@@ -14,8 +14,6 @@ public class ThemeLine implements Parcelable {
     public String game_id;
     public String line_name;
     public String point_count;
-    //    public String uid = "";
-    //    public String play_statu = "";
     public ArrayList<Point> point_list;
 
     @Override
@@ -29,8 +27,6 @@ public class ThemeLine implements Parcelable {
         dest.writeString(this.game_id);
         dest.writeString(this.line_name);
         dest.writeString(this.point_count);
-        //        dest.writeString(this.uid);
-        //        dest.writeString(this.play_statu);
         dest.writeTypedList(this.point_list);
     }
 
@@ -42,8 +38,6 @@ public class ThemeLine implements Parcelable {
         this.game_id = in.readString();
         this.line_name = in.readString();
         this.point_count = in.readString();
-        //        this.uid = in.readString();
-        //        this.play_statu = in.readString();
         this.point_list = in.createTypedArrayList(Point.CREATOR);
     }
 

@@ -3,7 +3,7 @@ package com.lptiyu.tanke.entity;
 /**
  * Created by Jason on 2016/7/18.
  */
-public class UpLoadGameRecord {
+public class UploadGameRecord {
     public String uid;
     public String game_id;
     public String point_id;
@@ -16,7 +16,7 @@ public class UpLoadGameRecord {
 
     @Override
     public String toString() {
-        return "UpLoadGameRecord{" +
+        return "UploadGameRecord{" +
                 "uid='" + uid + '\'' +
                 ", game_id='" + game_id + '\'' +
                 ", point_id='" + point_id + '\'' +

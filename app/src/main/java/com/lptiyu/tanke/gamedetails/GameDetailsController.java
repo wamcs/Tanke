@@ -22,7 +22,7 @@ import com.lptiyu.tanke.RunApplication;
 import com.lptiyu.tanke.activities.gameplaying.GamePlayingActivity;
 import com.lptiyu.tanke.base.controller.ActivityController;
 import com.lptiyu.tanke.entity.EnterGameResponse;
-import com.lptiyu.tanke.entity.GameDetailResponse;
+import com.lptiyu.tanke.entity.response.GameDetail;
 import com.lptiyu.tanke.enums.GameType;
 import com.lptiyu.tanke.enums.ResultCode;
 import com.lptiyu.tanke.global.Accounts;
@@ -71,10 +71,10 @@ public class GameDetailsController extends ActivityController {
     @BindView(R.id.team_type_text)
     CustomTextView mTextTeamType;
 
-    @BindView(R.id.game_detail_location)
+    @BindView(R.id.tv_game_detail_location)
     CustomTextView mTextLocation;
 
-    @BindView(R.id.game_detail_time)
+    @BindView(R.id.tv_game_detail_date)
     CustomTextView mTextTime;
 
     @BindView(R.id.game_detail_intro)
@@ -99,7 +99,7 @@ public class GameDetailsController extends ActivityController {
     private long gameId;
     private String tempGameZipUrl;
 
-    private GameDetailResponse mGameDetailsResponse;
+    private GameDetail mGameDetailsResponse;
     private final String from_where;
 
     public GameDetailsController(GameDetailsActivity activity, View view) {
@@ -112,7 +112,7 @@ public class GameDetailsController extends ActivityController {
 
     /**
      * 对整个界面进行初始化的操作，还有根据gameId从服务器获取游戏详情的数据json
-     * 获取成功之后用{@link GameDetailsController#bind(GameDetailResponse)}方法来进行数据的绑定操作
+     * 获取成功之后用{@link GameDetailsController#bind(GameDetail)}方法来进行数据的绑定操作
      */
     private void init() {
         if (gameDetailsSubscription != null) {
@@ -128,9 +128,9 @@ public class GameDetailsController extends ActivityController {
         gameDetailsSubscription = HttpService.getGameService().getGameDetails(gameId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .map(new Func1<Response<GameDetailResponse>, GameDetailResponse>() {
+                .map(new Func1<Response<GameDetail>, GameDetail>() {
                     @Override
-                    public GameDetailResponse call(Response<GameDetailResponse> response) {
+                    public GameDetail call(Response<GameDetail> response) {
                         if (response.getStatus() != Response.RESPONSE_OK || response.getData() == null) {
                             // mLoadingDialog.dismiss();
                             Timber.e("Network Error (%d, %s)", response.getStatus(), response.getInfo());
@@ -139,9 +139,9 @@ public class GameDetailsController extends ActivityController {
                         return response.getData();
                     }
                 })
-                .subscribe(new Action1<GameDetailResponse>() {
+                .subscribe(new Action1<GameDetail>() {
                     @Override
-                    public void call(GameDetailResponse gameDetailsEntity) {
+                    public void call(GameDetail gameDetailsEntity) {
                         bind(gameDetailsEntity);
                         // mLoadingDialog.dismiss();
                     }
@@ -159,7 +159,7 @@ public class GameDetailsController extends ActivityController {
      *
      * @param entity
      */
-    private void bind(GameDetailResponse entity) {
+    private void bind(GameDetail entity) {
         this.mGameDetailsResponse = entity;
         mTextTitle.setText(entity.title);
         //        mTextLocation.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG); //下划线
@@ -215,15 +215,14 @@ public class GameDetailsController extends ActivityController {
      * @param textView
      * @param entity
      */
-    public void parseTime(final CustomTextView textView, GameDetailResponse entity) {
+    public void parseTime(final CustomTextView textView, GameDetail entity) {
         Observable.just(entity).map(
-                new Func1<GameDetailResponse, String>() {
+                new Func1<GameDetail, String>() {
                     @Override
-                    public String call(GameDetailResponse entity) {
-                        String[] time = TimeUtils.parseTime(getContext(),
+                    public String call(GameDetail entity) {
+                        return TimeUtils.parseTime(getContext(),
                                 entity.start_date, entity.end_date,
                                 entity.start_time, entity.end_time);
-                        return time[0] + " " + time[1];
                     }
                 })
                 .subscribeOn(Schedulers.computation())//CPU密集型计算

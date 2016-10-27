@@ -27,8 +27,8 @@ public class DirectionRunContact {
 
         void getRunLine(long gameId);
 
-        void runSignUp(long gameId, long pointId, long recordId, long distance);
+        void runSignUp(long gameId, long pointId, long recordId, double distance);
 
-        void stopRun(long gameId, long recordId, long distance);
+        void stopRun(long gameId, long recordId, double distance);
     }
 }

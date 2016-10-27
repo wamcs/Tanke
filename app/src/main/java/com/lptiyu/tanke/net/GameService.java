@@ -2,10 +2,10 @@ package com.lptiyu.tanke.net;
 
 import android.support.annotation.IntDef;
 
+import com.lptiyu.tanke.entity.response.GameDetail;
 import com.lptiyu.tanke.entity.GameRecord;
 import com.lptiyu.tanke.pojo.City;
 import com.lptiyu.tanke.entity.EnterGameResponse;
-import com.lptiyu.tanke.entity.GameDetailResponse;
 import com.lptiyu.tanke.pojo.GameDisplayEntity;
 import com.lptiyu.tanke.entity.GetGameStatusResponse;
 import com.lptiyu.tanke.pojo.MessageEntity;
@@ -44,7 +44,7 @@ public interface GameService {
      * 2.13 游戏详情
      */
     @GET("Home/Details")
-    Observable<Response<GameDetailResponse>> getGameDetails(
+    Observable<Response<GameDetail>> getGameDetails(
             @Query("game_id") long gameId);
 
     /**

@@ -111,7 +111,7 @@
                         android:layout_height="wrap_content">
 
                         <com.lptiyu.tanke.widget.CustomTextView
-                            android:id="@+id/game_detail_location"
+                            android:id="@+id/tv_game_detail_location"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:drawableLeft="@drawable/location_gray"
@@ -124,17 +124,17 @@
                         <ImageView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_alignBottom="@id/game_detail_location"
-                            android:layout_alignTop="@id/game_detail_location"
+                            android:layout_alignBottom="@id/tv_game_detail_location"
+                            android:layout_alignTop="@id/tv_game_detail_location"
                             android:layout_marginLeft="50dp"
-                            android:layout_toRightOf="@id/game_detail_location"
+                            android:layout_toRightOf="@id/tv_game_detail_location"
                             android:scaleType="centerInside"
                             android:src="@drawable/enter_map"/>
                     </RelativeLayout>
 
 
                     <com.lptiyu.tanke.widget.CustomTextView
-                        android:id="@+id/game_detail_time"
+                        android:id="@+id/tv_game_detail_date"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_below="@id/rl_location"

@@ -3,15 +3,14 @@ package com.lptiyu.tanke.entity.response;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.lptiyu.tanke.enums.PlayStatus;
+import com.lptiyu.tanke.entity.BaseEntity;
 
 /**
  * Created by Jason on 2016/9/23.
  */
 
-public class HomeGameList implements Parcelable {
+public class HomeTabEntity extends BaseEntity implements Parcelable {
     public String area = "";
-    public int cid;
     public String city = "";
     public String end_date = "";
     public String end_time = "";
@@ -22,9 +21,7 @@ public class HomeGameList implements Parcelable {
     public String start_time = "";
     public int state;
     public int time_type;
-    public String title = "";
     public int type;
-    public int play_status = PlayStatus.NO_STATUS;
     public String game_zip_url = "";
     public int difficulty;
     public int player_num;
@@ -60,10 +57,10 @@ public class HomeGameList implements Parcelable {
         dest.writeInt(this.distince);
     }
 
-    public HomeGameList() {
+    public HomeTabEntity() {
     }
 
-    protected HomeGameList(Parcel in) {
+    protected HomeTabEntity(Parcel in) {
         this.area = in.readString();
         this.cid = in.readInt();
         this.city = in.readString();
@@ -86,15 +83,15 @@ public class HomeGameList implements Parcelable {
         this.distince = in.readInt();
     }
 
-    public static final Parcelable.Creator<HomeGameList> CREATOR = new Parcelable.Creator<HomeGameList>() {
+    public static final Parcelable.Creator<HomeTabEntity> CREATOR = new Parcelable.Creator<HomeTabEntity>() {
         @Override
-        public HomeGameList createFromParcel(Parcel source) {
-            return new HomeGameList(source);
+        public HomeTabEntity createFromParcel(Parcel source) {
+            return new HomeTabEntity(source);
         }
 
         @Override
-        public HomeGameList[] newArray(int size) {
-            return new HomeGameList[size];
+        public HomeTabEntity[] newArray(int size) {
+            return new HomeTabEntity[size];
         }
     };
 }

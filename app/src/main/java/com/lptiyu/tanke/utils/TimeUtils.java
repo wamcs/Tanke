@@ -139,10 +139,11 @@ public class TimeUtils {
      * @param endTime
      * @return
      */
-    public static String[] parseTime(final Context context,
-                                     String startDate, String endDate,
-                                     String startTime, String endTime) {
+    public static String parseTime(Context context,
+                                   String startDate, String endDate,
+                                   String startTime, String endTime) {
         String[] result = new String[]{"", ""};
+        String timeResult = "";
         Calendar calendar = Calendar.getInstance();
 
         Date date = parseDate(startDate, dateFormatter);
@@ -156,23 +157,20 @@ public class TimeUtils {
             int _endDate = calendar.get(Calendar.DATE);
             result[0] = String.format(Locale.CHINA, context.getString(R.string.main_page_date_format_pattern),
                     _startMonth, _startDate, _endMonth, _endDate);
+            timeResult = String.format(Locale.CHINA, context.getString(R.string.main_page_date_format_pattern),
+                    _startMonth, _startDate, _endMonth, _endDate);
         }
 
         if (startTime == null || startTime.equals("")) {
             result[1] = context.getString(R.string.main_page_forever);
+            timeResult = context.getString(R.string.main_page_forever);
         } else {
-            result[1] = (startTime + "-" + endTime);
+            result[1] = startTime + "-" + endTime;
+            timeResult = startTime + "-" + endTime;
         }
-        //    String time = formatHourMinute(startTime);
-        //    if (time == null) {
-        //      result += context.getString(R.string.main_page_forever);
-        //    } else {
-        //      result += formatHourMinute(startTime);
-        //      result += "-";
-        //      result += formatHourMinute(endTime);
-        //    }
+        return timeResult;
 
-        return result;
+        //        return result;
     }
 
     public static String formatHourMinute(String content) {
@@ -262,14 +260,14 @@ public class TimeUtils {
             return seconds + "秒";
         }
         if (seconds >= 60 && seconds < 3600) {
-            return seconds/60 + "分" + seconds % 60 + "秒";
+            return seconds / 60 + "分" + seconds % 60 + "秒";
         } else {
-            return seconds/3600 + "小时" + (seconds % 3600)/60 + "分" + seconds % 60 + "秒";
+            return seconds / 3600 + "小时" + (seconds % 3600) / 60 + "分" + seconds % 60 + "秒";
         }
     }
 
     public static String parseFinishTimeForTaskFinished(long time) {
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm",Locale.CHINA);
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.CHINA);
         Long timestamp = Long.parseLong(String.valueOf(time)) * 1000;
         Date data = new Date(timestamp);
         return formatter.format(data);

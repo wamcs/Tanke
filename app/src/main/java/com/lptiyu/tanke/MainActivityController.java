@@ -44,7 +44,6 @@ public class MainActivityController extends ActivityController {
 
     private void init() {
 
-        //        fragments.add(new GameDisplayFragment());
         fragments.add(new HomeFragment());
         fragments.add(new MessageListFragment());
         fragments.add(new UserCenterFragment());

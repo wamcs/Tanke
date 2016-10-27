@@ -1,6 +1,6 @@
 package com.lptiyu.tanke.fragments.pointtask;
 
-import com.lptiyu.tanke.entity.UpLoadGameRecord;
+import com.lptiyu.tanke.entity.UploadGameRecord;
 import com.lptiyu.tanke.entity.response.UpLoadGameRecordResult;
 import com.lptiyu.tanke.mybase.IBasePresenter;
 import com.lptiyu.tanke.mybase.IBaseView;
@@ -17,6 +17,6 @@ public class PointTaskContact {
     }
 
     interface IPointTaskPresenter extends IBasePresenter {
-        void uploadRecord(UpLoadGameRecord record);
+        void uploadRecord(UploadGameRecord record);
     }
 }

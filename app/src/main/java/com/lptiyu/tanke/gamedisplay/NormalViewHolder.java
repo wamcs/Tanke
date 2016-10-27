@@ -87,7 +87,8 @@ public class NormalViewHolder extends BaseViewHolder<GameDisplayEntity> {
 
     // 网络异常对话框
     private void showNetUnConnectDialog() {
-        PopupWindowUtils.getInstance().showNetExceptionPopupwindow(getContext(), new PopupWindowUtils.OnRetryCallback() {
+        PopupWindowUtils.getInstance().showNetExceptionPopupwindow(getContext(), new PopupWindowUtils.OnRetryCallback
+                () {
             @Override
             public void onRetry() {
                 loadNetWorkData();
@@ -156,14 +157,9 @@ public class NormalViewHolder extends BaseViewHolder<GameDisplayEntity> {
                 new Func1<GameDisplayEntity, String>() {
                     @Override
                     public String call(GameDisplayEntity entity) {
-                        String[] time = TimeUtils.parseTime(fragment.getContext(),
+                        return TimeUtils.parseTime(fragment.getContext(),
                                 entity.getStartDate(), entity.getEndDate(),
                                 entity.getStartTime(), entity.getEndTime());
-                        if (time[0] != null && !time[0].equals("")) {
-                            return time[0];
-                        } else {
-                            return time[1];
-                        }
                     }
                 })
                 .subscribeOn(Schedulers.computation())

@@ -7,5 +7,5 @@ import java.util.List;
  */
 
 public class HomeGameListResponse extends BaseResponse {
-    public List<HomeGameList> data;
+    public List<HomeTabEntity> data;
 }

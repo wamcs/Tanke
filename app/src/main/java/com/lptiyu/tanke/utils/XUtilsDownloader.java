@@ -52,24 +52,6 @@ public class XUtilsDownloader {
                 callback.onFinishedDownload();
             }
         }
-
-
-        //        if (gameZipUtils.isParsedFileExist(gameId) == null) {
-        //            //游戏包不存在，需要下载游戏包
-        //            chooseToDownload();
-        //        } else if (gameZipUtils.isGameUpdated(gameId, tempGameZipUrl
-        //                .substring(tempGameZipUrl.lastIndexOf('/') + 1, tempGameZipUrl
-        //                        .lastIndexOf('.')))) {
-        //            String parsedFileExist = gameZipUtils.isParsedFileExist(gameId);
-        //            //删除旧的游戏包
-        //            boolean b = FileUtils.deleteDirectory(parsedFileExist);
-        //            //下载新的游戏包
-        //            chooseToDownload();
-        //        } else {
-        //            if (callback != null) {
-        //                callback.onFinishedDownload();
-        //            }
-        //        }
     }
 
     private void initProgressDialog() {

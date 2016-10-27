@@ -39,4 +39,6 @@ public interface XUtilsUrls {
     String RUN_LINE = SERVER_URL_TEST + "Run/getRunLine";
 
     String LOG_RUN = SERVER_URL_TEST + "Run/logRun";
+
+    String GAME_DETAIL = SERVER_URL_TEST + "home/details";
 }

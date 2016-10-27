@@ -1,5 +1,6 @@
-package com.lptiyu.tanke.activities.gamedetail;
+package com.lptiyu.tanke.activities.gamedetailv2;
 
+import com.lptiyu.tanke.entity.response.GameDetail;
 import com.lptiyu.tanke.mybase.IBasePresenter;
 import com.lptiyu.tanke.mybase.IBaseView;
 
@@ -13,6 +14,8 @@ public class GameDetailContact {
 
         void successLeaveGame();
 
+        void successGetGameDetail(GameDetail gameDetail);
+
         void failLeaveGame(String errMsg);
     }
 
@@ -21,5 +24,6 @@ public class GameDetailContact {
 
         void leaveGame(long gameId);
 
+        void getGameDetail(long gameId);
     }
 }

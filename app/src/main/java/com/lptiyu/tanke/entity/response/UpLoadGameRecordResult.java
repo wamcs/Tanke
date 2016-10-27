@@ -22,6 +22,8 @@ public class UpLoadGameRecordResult implements Parcelable {
     public String game_id;
     public String uid;
 
+    public int index;
+
     @Override
     public int describeContents() {
         return 0;
@@ -32,6 +34,7 @@ public class UpLoadGameRecordResult implements Parcelable {
         dest.writeString(this.task_finish_time);
         dest.writeInt(this.game_statu);
         dest.writeString(this.get_exp);
+        dest.writeInt(index);
         dest.writeString(this.get_points);
         dest.writeString(this.get_extra_points);
         dest.writeString(this.get_extra_money);
@@ -48,6 +51,7 @@ public class UpLoadGameRecordResult implements Parcelable {
 
     protected UpLoadGameRecordResult(Parcel in) {
         this.task_finish_time = in.readString();
+        this.index = in.readInt();
         this.game_statu = in.readInt();
         this.get_exp = in.readString();
         this.get_points = in.readString();

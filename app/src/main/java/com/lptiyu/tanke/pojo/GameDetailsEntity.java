@@ -229,7 +229,7 @@ public class GameDetailsEntity implements Parcelable {
         ", zipUrl='" + zipUrl + '\'' +
         ", shareUrl='" + shareUrl + '\'' +
         ", latitude='" + latitude + '\'' +
-        ", longitude='" + longitude + '\'' +
+        ", longtitude='" + longitude + '\'' +
         ", minNum=" + minNum +
         ", maxNum=" + maxNum +
         '}';

@@ -3,34 +3,16 @@ package com.lptiyu.tanke.entity.response;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.lptiyu.tanke.entity.BaseEntity;
+
 /**
  * Created by Jason on 2016/9/29.
  */
 
-public class Recommend implements Parcelable {
-    /**
-     * id : 44
-     * pic : http://test.lptiyu.com/run/Public/Upload/pic//game/2016-09-03/57ca376dc6a42.jpg
-     * title : 正午一梦
-     * area : 线上
-     * city : 0
-     * time_type : 0
-     * start_date :
-     * end_date :
-     * start_time :
-     * end_time :
-     * status : 4
-     * type : 2
-     * recommend : 1
-     * address_short :
-     * difficulty : 0
-     * play_status : 0
-     */
+public class Recommend extends BaseEntity implements Parcelable {
 
     public String id;
-    public int cid;
     public String pic;
-    public String title;
     public String area;
     public String city;
     public String time_type;
@@ -43,7 +25,6 @@ public class Recommend implements Parcelable {
     public int recommend;
     public String address_short;
     public int difficulty;
-    public String play_status;
 
     @Override
     public String toString() {
@@ -90,7 +71,7 @@ public class Recommend implements Parcelable {
         dest.writeInt(this.recommend);
         dest.writeString(this.address_short);
         dest.writeInt(this.difficulty);
-        dest.writeString(this.play_status);
+        dest.writeInt(this.play_status);
     }
 
     public Recommend() {
@@ -113,7 +94,7 @@ public class Recommend implements Parcelable {
         this.recommend = in.readInt();
         this.address_short = in.readString();
         this.difficulty = in.readInt();
-        this.play_status = in.readString();
+        this.play_status = in.readInt();
     }
 
     public static final Parcelable.Creator<Recommend> CREATOR = new Parcelable.Creator<Recommend>() {

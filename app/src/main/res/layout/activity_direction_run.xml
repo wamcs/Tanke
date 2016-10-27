@@ -13,7 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:background="@color/grey08"
+        android:background="@color/white10"
         android:orientation="horizontal"
         android:padding="20dp">
 
@@ -59,8 +59,10 @@
                 android:layout_below="@id/tv_duration_tip"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="20dp"
+                android:background="@drawable/selector_button"
                 android:enabled="false"
-                android:text="@string/start_run"/>
+                android:text="@string/start_run"
+                android:textColor="@color/white10"/>
 
         </RelativeLayout>
 
@@ -97,8 +99,10 @@
                 android:layout_below="@id/tv_distance_tip"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="20dp"
+                android:background="@drawable/selector_button"
                 android:enabled="false"
-                android:text="@string/sign_up"/>
+                android:text="@string/sign_up"
+                android:textColor="@color/white10"/>
         </RelativeLayout>
 
     </LinearLayout>
@@ -121,11 +125,21 @@
         android:src="@drawable/wode"/>
 
     <ImageView
-        android:id="@+id/img_show_next_task"
+        android:id="@+id/img_show_all_point"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@id/img_show_current_location"
         android:layout_alignLeft="@id/img_show_current_location"
         android:src="@drawable/renwu"/>
+
+    <TextView
+        android:id="@+id/tv_tip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/rl_bottom"
+        android:layout_centerHorizontal="true"
+        android:text="提示"
+        android:textSize="12sp"/>
+
 
 </RelativeLayout>

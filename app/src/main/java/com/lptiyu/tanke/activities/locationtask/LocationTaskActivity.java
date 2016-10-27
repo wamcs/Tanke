@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.widget.ImageView;
@@ -13,13 +12,20 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.amap.api.location.AMapLocation;
+import com.amap.api.maps.AMap;
 import com.amap.api.maps.AMapUtils;
+import com.amap.api.maps.CameraUpdateFactory;
+import com.amap.api.maps.TextureMapView;
+import com.amap.api.maps.UiSettings;
+import com.amap.api.maps.model.CameraPosition;
 import com.amap.api.maps.model.LatLng;
 import com.lptiyu.tanke.R;
 import com.lptiyu.tanke.RunApplication;
 import com.lptiyu.tanke.entity.Point;
 import com.lptiyu.tanke.entity.Task;
-import com.lptiyu.tanke.entity.UpLoadGameRecord;
+import com.lptiyu.tanke.entity.UploadGameRecord;
+import com.lptiyu.tanke.entity.eventbus.NotifyGamePlayingV2RefreshData;
+import com.lptiyu.tanke.entity.eventbus.NotifyPointTaskV2RefreshData;
 import com.lptiyu.tanke.entity.response.UpLoadGameRecordResult;
 import com.lptiyu.tanke.enums.PlayStatus;
 import com.lptiyu.tanke.enums.PointTaskStatus;
@@ -41,6 +47,9 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+import static com.lptiyu.tanke.RunApplication.currentPoint;
+import static com.lptiyu.tanke.RunApplication.currentTask;
+
 public class LocationTaskActivity extends MyBaseActivity implements LocationTaskContact
         .ILocationTaskView {
 
@@ -50,6 +59,8 @@ public class LocationTaskActivity extends MyBaseActivity implements LocationTask
     ImageView imgAnim;
     @BindView(R.id.rl_submit_record)
     RelativeLayout rlSubmitRecord;
+    @BindView(R.id.textureMapView)
+    TextureMapView textureMapView;
     private double latitude;
     private double longitude;
     private long gameId;
@@ -60,21 +71,36 @@ public class LocationTaskActivity extends MyBaseActivity implements LocationTask
     private LocationTaskPresenter presenter;
     private String[] latLong;
     private boolean isToastShow = true;
+    private AMap aMap;
 
     private UpLoadGameRecordResult resultRecord;
 
     private TaskResultHelper taskResultHelper;
-    private Handler mHandler = new Handler();
 
     private final double ERROR_LOCATION_RETURN = 4.9E-324;
     private AlertDialog permissionDialog;
     private LocationHelper locationHelper;
+    private int index;
+    private boolean isStop;
+    private int ZOOM_VALUE = 16;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_location_task);
         ButterKnife.bind(this);
+        textureMapView.onCreate(savedInstanceState);
+        if (aMap == null) {
+            aMap = textureMapView.getMap();
+        }
+        UiSettings uiSettings = aMap.getUiSettings();
+        uiSettings.setAllGesturesEnabled(false);//不支持任何手势
+        uiSettings.setZoomControlsEnabled(false);
+        uiSettings.setCompassEnabled(false);
+        uiSettings.setLogoLeftMargin(-200);
+        uiSettings.setLogoBottomMargin(-200);
+        uiSettings.setZoomPosition(ZOOM_VALUE);
+        uiSettings.setMyLocationButtonEnabled(false);
 
         taskResultHelper = new TaskResultHelper(this, rlSubmitRecord, imgAnim, new TaskResultHelper
                 .TaskResultCallback() {
@@ -88,16 +114,22 @@ public class LocationTaskActivity extends MyBaseActivity implements LocationTask
     }
 
     private void setActivityResult() {
-        EventBus.getDefault().post(resultRecord);//通知PointTaskFragment刷新数据
+        //发通知销毁PointTaskV2Activity，GamePlayingV2Activity刷新数据
+        EventBus.getDefault().post(new NotifyPointTaskV2RefreshData());
+        EventBus.getDefault().post(new NotifyGamePlayingV2RefreshData());
         finish();
     }
 
     private void initData() {
-        task = RunApplication.gameRecord.game_detail.point_list.get(RunApplication.currentPointIndex).task_list.get
-                (RunApplication.currentTaskIndex);
+        if (currentPoint == null || currentTask == null) {
+            return;
+        }
+        task = currentTask;
         gameId = RunApplication.gameId;
-        point = RunApplication.gameRecord.game_detail.point_list.get(RunApplication.currentPointIndex);
-        isPointOver = getIntent().getBooleanExtra(Conf.IS_POINT_OVER, false);
+        point = currentPoint;
+        isPointOver = RunApplication.isPointOver;
+        index = getIntent().getIntExtra(Conf.INDEX, -1);
+        index = getIntent().getIntExtra(Conf.INDEX, -1);
         latLong = task.pwd.split(",");
 
         presenter = new LocationTaskPresenter(this);
@@ -112,7 +144,7 @@ public class LocationTaskActivity extends MyBaseActivity implements LocationTask
         locationHelper.setOnceLocation(false);
 
         if (AppData.isFirstInLocationActivity()) {
-            mHandler.postDelayed(new Runnable() {
+            getWindow().getDecorView().post(new Runnable() {
                 public void run() {
                     PopupWindowUtils.getInstance().showTaskGuide(LocationTaskActivity.this,
                             "这是定位任务，点击验证您当前的位置，验证通过即可通关", new PopupWindowUtils.DismissCallback() {
@@ -124,39 +156,34 @@ public class LocationTaskActivity extends MyBaseActivity implements LocationTask
                                 }
                             });
                 }
-            }, 500);
+            });
         } else {
             locationHelper.startLocation();
         }
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if (locationHelper != null) {
-            locationHelper.stopLocation();
-            locationHelper.onDestroy();
-        }
-        if (permissionDialog != null) {
-            if (permissionDialog.isShowing())
-                permissionDialog.dismiss();
-            permissionDialog = null;
-        }
+    //地图中心移动到指定位置
+    private void moveToLocation(LatLng latLng) {
+        CameraPosition cameraPosition = new CameraPosition(latLng, ZOOM_VALUE, 0, 0);
+        aMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition), 1000, null);
     }
 
     private void handleLocationResult(AMapLocation location) {
-        //TODO 给自己埋下彩蛋
-        if (Accounts.getPhoneNumber() != null && Accounts.getPhoneNumber().endsWith("4317") || Accounts
-                .getPhoneNumber().endsWith("1965")) {
+        moveToLocation(new LatLng(location.getLatitude(), location.getLongitude()));
+        if (Accounts.getPhoneNumber() != null && Accounts.getPhoneNumber().equals("18272164317")) {
             upLoadGameRecord();
+            return;
+        }
+        if (isStop) {
             return;
         }
         //纬度
         latitude = location.getLatitude();
         //经度
         longitude = location.getLongitude();
-        Log.i("jason", "定位信息latitude：" + latitude + ", longitude:" + longitude);
+        Log.i("jason", "定位信息latitude：" + latitude + ", longtitude:" + longitude);
         if (latitude == ERROR_LOCATION_RETURN || longitude == ERROR_LOCATION_RETURN) {
+            isStop = true;
             showPermissionFailTip();
             return;
         } else {
@@ -198,10 +225,12 @@ public class LocationTaskActivity extends MyBaseActivity implements LocationTask
                         public void onClick(DialogInterface dialog, int which) {
                             LocationTaskActivity.this.finish();
                         }
-                    }).setCancelable(false).create();
-        }
-        if (permissionDialog != null && !permissionDialog.isShowing()) {
-            permissionDialog.show();
+                    }).setOnDismissListener(new DialogInterface.OnDismissListener() {
+                        @Override
+                        public void onDismiss(DialogInterface dialog) {
+                            isStop = false;
+                        }
+                    }).setCancelable(false).show();
         }
         if (taskResultHelper != null) {
             taskResultHelper.stopAnim();
@@ -217,12 +246,13 @@ public class LocationTaskActivity extends MyBaseActivity implements LocationTask
                 .parseDouble(latLong[1]), Double.parseDouble(latLong[0])));
         if (distance <= DISTANCE_OFFSET) {
             //验证成功，上传游戏记录
+            isStop = true;
             if (locationHelper != null)
                 locationHelper.stopLocation();
             loadNetWorkData();
         } else {
             if (isToastShow) {
-                ToastUtil.TextToast("您距离目标点" + DistanceFormatUtils.formatMeter(distance));
+                ToastUtil.TextToast("您距离目标点" + DistanceFormatUtils.formatMeterToKiloMeter(distance) + "公里");
             }
         }
     }
@@ -246,7 +276,7 @@ public class LocationTaskActivity extends MyBaseActivity implements LocationTask
     }
 
     private void upLoadGameRecord() {
-        UpLoadGameRecord record = new UpLoadGameRecord();
+        UploadGameRecord record = new UploadGameRecord();
         record.uid = Accounts.getId() + "";
         record.point_id = point.id + "";
         record.game_id = gameId + "";
@@ -266,6 +296,7 @@ public class LocationTaskActivity extends MyBaseActivity implements LocationTask
     @Override
     public void successUploadRecord(UpLoadGameRecordResult response) {
         resultRecord = response;
+        resultRecord.index = this.index;
         taskResultHelper.showSuccessResult();
         taskResultHelper.stopAnim();
         if (response.game_statu == PlayStatus.GAME_OVER) {
@@ -279,6 +310,7 @@ public class LocationTaskActivity extends MyBaseActivity implements LocationTask
 
     @Override
     public void failUploadRecord(String errorMsg) {
+        isStop = false;
         ToastUtil.TextToast(errorMsg);
         taskResultHelper.showFailResult();
         taskResultHelper.stopAnim();
@@ -286,6 +318,7 @@ public class LocationTaskActivity extends MyBaseActivity implements LocationTask
 
     @Override
     public void netException() {
+        isStop = false;
         taskResultHelper.showNetException();
         taskResultHelper.stopAnim();
     }
@@ -293,12 +326,39 @@ public class LocationTaskActivity extends MyBaseActivity implements LocationTask
     @Override
     protected void onResume() {
         super.onResume();
+        //在activity执行onResume时执行mMapView.onResume ()，实现地图生命周期管理
+        textureMapView.onResume();
         isToastShow = true;
     }
 
     @Override
     protected void onPause() {
         super.onPause();
+        //在activity执行onPause时执行mMapView.onPause ()，实现地图生命周期管理
+        textureMapView.onPause();
         isToastShow = false;
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        //在activity执行onSaveInstanceState时执行mMapView.onSaveInstanceState (outState)，实现地图生命周期管理
+        textureMapView.onSaveInstanceState(outState);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        //在activity执行onDestroy时执行mMapView.onDestroy()，实现地图生命周期管理
+        textureMapView.onDestroy();
+        if (locationHelper != null) {
+            locationHelper.stopLocation();
+            locationHelper.onDestroy();
+        }
+        if (permissionDialog != null) {
+            if (permissionDialog.isShowing())
+                permissionDialog.dismiss();
+            permissionDialog = null;
+        }
     }
 }

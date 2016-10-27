@@ -1,6 +1,6 @@
 package com.lptiyu.tanke.fragments.hometab;
 
-import com.lptiyu.tanke.entity.response.HomeGameList;
+import com.lptiyu.tanke.entity.response.HomeTabEntity;
 import com.lptiyu.tanke.mybase.IBasePresenter;
 import com.lptiyu.tanke.mybase.IBaseView;
 
@@ -16,6 +16,6 @@ public class HomeTabContact {
     }
 
     public interface IHomeTabView extends IBaseView {
-        void successFirstLoadGameList(List<HomeGameList> list);
+        void successFirstLoadGameList(List<HomeTabEntity> list);
     }
 }
