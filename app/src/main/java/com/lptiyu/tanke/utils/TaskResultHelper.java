@@ -14,6 +14,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.lptiyu.tanke.R;
+import com.lptiyu.tanke.entity.response.UpLoadGameRecordResult;
 
 /**
  * Created by Jason on 2016/8/20.
@@ -32,10 +33,16 @@ public class TaskResultHelper {
 
     private final String FAIL = "什么都没有发现";
     private final String NET_EXCEPTION = "网络错误";
-    private final String SUCESS = "找到新线索";
+    private final String SUCESS = "恭喜你，找到答案了！";
     private final String CLOSE = "关闭";
-    private final String LOOK = "查看";
+    private final String CONTINUE_GAME = "继续游戏";
     private AnimationDrawable anim;
+    public TextView popup_tv_exp;
+    public TextView popup_tv_score;
+    public TextView popup_tv_red_wallet;
+    public RelativeLayout popup_rl_red_wallet;
+    private RelativeLayout popup_rl_exp;
+    private RelativeLayout popup_rl_score;
 
     public TaskResultHelper(Context context, RelativeLayout rl_submitting, ImageView imageView, TaskResultCallback
             callback) {
@@ -50,15 +57,24 @@ public class TaskResultHelper {
     /**
      * 展示成功信息
      */
-    public void showSuccessResult() {
+    public void showSuccessResult(UpLoadGameRecordResult result) {
         isOK = true;
         stopAnim();
         if (popup_img_result != null)
             popup_img_result.setImageResource(R.drawable.task_result_right);
         if (popup_tv_btn != null)
-            popup_tv_btn.setText(LOOK);
+            popup_tv_btn.setText(CONTINUE_GAME);
         if (popup_tv_result != null)
             popup_tv_result.setText(SUCESS);
+        if (popup_tv_exp != null && result != null) {
+            popup_tv_exp.setText("+" + result.get_exp);
+        }
+        if (popup_tv_score != null && result != null) {
+            popup_tv_score.setText("+" + result.get_extra_points);
+        }
+        if (popup_tv_red_wallet != null && result != null) {
+            popup_tv_red_wallet.setText("获得" + result.get_extra_money + "元红包");
+        }
         showPopup();
     }
 
@@ -74,6 +90,15 @@ public class TaskResultHelper {
             popup_tv_btn.setText(CLOSE);
         if (popup_tv_result != null)
             popup_tv_result.setText(FAIL);
+        if (popup_rl_exp != null) {
+            popup_rl_exp.setVisibility(View.GONE);
+        }
+        if (popup_rl_score != null) {
+            popup_rl_score.setVisibility(View.GONE);
+        }
+        if (popup_rl_red_wallet != null) {
+            popup_rl_red_wallet.setVisibility(View.GONE);
+        }
         showPopup();
     }
 
@@ -89,6 +114,15 @@ public class TaskResultHelper {
             popup_img_result.setImageResource(R.drawable.task_result_wrong);
         if (popup_tv_result != null)
             popup_tv_result.setText(NET_EXCEPTION);
+        if (popup_rl_exp != null) {
+            popup_rl_exp.setVisibility(View.GONE);
+        }
+        if (popup_rl_score != null) {
+            popup_rl_score.setVisibility(View.GONE);
+        }
+        if (popup_rl_red_wallet != null) {
+            popup_rl_red_wallet.setVisibility(View.GONE);
+        }
         showPopup();
     }
 
@@ -111,11 +145,16 @@ public class TaskResultHelper {
                 .LayoutParams.MATCH_PARENT,
                 true);
         popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        //        popupWindow.setAnimationStyle(R.style.Popup_Animation);
 
         popup_tv_btn = (TextView) popupView.findViewById(R.id.tv_continue_scan);
         popup_img_result = (ImageView) popupView.findViewById(R.id.img_result);
         popup_tv_result = (TextView) popupView.findViewById(R.id.tv_result_tip);
+        popup_tv_exp = (TextView) popupView.findViewById(R.id.tv_exp_value);
+        popup_tv_score = (TextView) popupView.findViewById(R.id.tv_score_value);
+        popup_tv_red_wallet = (TextView) popupView.findViewById(R.id.tv_red_wallet_value);
+        popup_rl_red_wallet = (RelativeLayout) popupView.findViewById(R.id.rl_red_wallet);
+        popup_rl_exp = (RelativeLayout) popupView.findViewById(R.id.rl_exp);
+        popup_rl_score = (RelativeLayout) popupView.findViewById(R.id.rl_score);
         popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
             @Override
             public void onDismiss() {
@@ -157,8 +196,6 @@ public class TaskResultHelper {
         if (anim != null) {
             anim.start();
         }
-        //        if (imgAnim != null)
-        //            imgAnim.setVisibility(View.VISIBLE);
         if (rl_submitting != null) {
             rl_submitting.setVisibility(View.VISIBLE);
         }
@@ -171,8 +208,6 @@ public class TaskResultHelper {
         if (anim != null) {
             anim.stop();
         }
-        //        if (imgAnim != null)
-        //            imgAnim.setVisibility(View.GONE);
         if (rl_submitting != null) {
             rl_submitting.setVisibility(View.GONE);
         }

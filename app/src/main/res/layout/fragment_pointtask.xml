@@ -25,15 +25,21 @@
 
     </RelativeLayout>
 
-    <ListView
-        android:id="@+id/lv"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@id/rl_getKey"
-        android:background="@color/white10"
-        android:divider="@null"
-        android:dividerHeight="0dp"
-        android:listSelector="@null"
-        android:scrollbars="vertical"/>
+        android:background="@drawable/shape_rounded_white_bg">
+
+        <ListView
+            android:id="@+id/lv"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:divider="@null"
+            android:dividerHeight="0dp"
+            android:listSelector="@null"
+            android:scrollbars="vertical"/>
+    </RelativeLayout>
+
 
 </RelativeLayout>

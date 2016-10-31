@@ -38,7 +38,7 @@
                 android:ellipsize="end"
                 android:gravity="center_vertical"
                 android:maxLines="1"
-                android:text="游戏区域：华科校区"
+                android:text="地址：华科校区"
                 android:textColor="@color/black333"
                 android:textSize="15sp"/>
 
@@ -50,23 +50,30 @@
                 android:ellipsize="end"
                 android:gravity="center_vertical"
                 android:maxLines="1"
-                android:text="游戏时间：04.10--04.12"
+                android:text="时间：04.10--04.12"
                 android:textColor="@color/black666"
                 android:textSize="14sp"/>
         </RelativeLayout>
 
         <com.amap.api.maps.TextureMapView
-            android:id="@+id/textureMapView_game_detail"
+            android:id="@+id/textureMapView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_toRightOf="@id/rl_title_location_date"/>
 
         <TextView
-            android:layout_width="50dp"
+            android:layout_width="100dp"
             android:layout_height="match_parent"
-            android:layout_alignLeft="@id/textureMapView_game_detail"
-            android:layout_alignTop="@id/textureMapView_game_detail"
+            android:layout_alignLeft="@id/textureMapView"
+            android:layout_alignTop="@id/textureMapView"
             android:background="@drawable/shape_shadow_texturemapview"/>
+
+        <View
+            android:id="@+id/view_click_into_detail_area"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_toRightOf="@id/rl_title_location_date"
+            android:background="#0000"/>
 
     </RelativeLayout>
 

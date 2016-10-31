@@ -29,6 +29,7 @@ import com.bumptech.glide.Glide;
 import com.lptiyu.tanke.R;
 import com.lptiyu.tanke.RunApplication;
 import com.lptiyu.tanke.activities.directionrun.DirectionRunActivity;
+import com.lptiyu.tanke.activities.gamedetailarea.GameDetailAreaActivity;
 import com.lptiyu.tanke.activities.gameplaying_v2.GamePlayingV2Activity;
 import com.lptiyu.tanke.entity.BaseEntity;
 import com.lptiyu.tanke.entity.response.GameDetail;
@@ -63,7 +64,7 @@ public class GameDetailV2Activity extends MyBaseActivity implements GameDetailCo
     TextView tvGameDetailLocation;
     @BindView(R.id.tv_game_detail_date)
     TextView tvGameDetailDate;
-    @BindView(R.id.textureMapView_game_detail)
+    @BindView(R.id.textureMapView)
     TextureMapView mapView;
     @BindView(R.id.tv_play_num)
     TextView tvPlayNum;
@@ -79,6 +80,7 @@ public class GameDetailV2Activity extends MyBaseActivity implements GameDetailCo
     private ProgressDialog abandonGameDialog;
     private AMap map;
     private BaseEntity entity;
+    private GameDetail gameDetail;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -182,10 +184,13 @@ public class GameDetailV2Activity extends MyBaseActivity implements GameDetailCo
 
     @Override
     public void successGetGameDetail(GameDetail gameDetail) {
-        bindData(gameDetail);
+        if (gameDetail != null) {
+            this.gameDetail = gameDetail;
+            bindData();
+        }
     }
 
-    private void bindData(GameDetail gameDetail) {
+    private void bindData() {
         if (gameDetail != null) {
             Glide.with(this).load(gameDetail.pic).error(R.drawable.default_pic).placeholder(R.drawable.default_pic)
                     .into(imageCover);
@@ -277,7 +282,7 @@ public class GameDetailV2Activity extends MyBaseActivity implements GameDetailCo
         }
     }
 
-    @OnClick({R.id.img_back, R.id.img_share, R.id.tv_enter_game, R.id.rl_play_num})
+    @OnClick({R.id.img_back, R.id.img_share, R.id.tv_enter_game, R.id.rl_play_num, R.id.view_click_into_detail_area})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.img_back:
@@ -290,6 +295,15 @@ public class GameDetailV2Activity extends MyBaseActivity implements GameDetailCo
                 break;
             case R.id.rl_play_num:
                 //进入大神排行榜页面
+                break;
+            case R.id.view_click_into_detail_area:
+                if (gameDetail == null || gameDetail.game_zone == null || gameDetail.game_zone.size() < 3) {
+                    Toast.makeText(this, "游戏区域为空", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                Intent intent = new Intent(GameDetailV2Activity.this, GameDetailAreaActivity.class);
+                intent.putExtra(Conf.GAME_DETAIL, gameDetail);
+                startActivity(intent);
                 break;
         }
     }

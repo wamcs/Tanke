@@ -42,7 +42,7 @@
             android:layout_centerInParent="true"
             android:layout_marginTop="10dp"
             android:text="位置验证中..."
-            android:textColor="@color/white10"
+            android:textColor="@color/colorPrimary"
             />
     </RelativeLayout>
 

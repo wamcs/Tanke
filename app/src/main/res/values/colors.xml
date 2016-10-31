@@ -133,6 +133,7 @@
 
 
     <color name="orange">#FF8201</color>
+    <color name="bg_popupwindow_game_over">#2E2E2E</color>
 
     <color name="half_transparent">#8000</color>
 

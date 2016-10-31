@@ -42,9 +42,6 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import in.srain.cube.views.ptr.PtrClassicFrameLayout;
-import in.srain.cube.views.ptr.PtrFrameLayout;
-import in.srain.cube.views.ptr.PtrHandler;
 
 /**
  * Created by Jason on 2016/9/23.
@@ -55,8 +52,8 @@ public class HomeFragment extends MyBaseFragment implements HomeContact.IHomeVie
     PagerSlidingTabStrip pagerSlidingTabStrip;
     @BindView(R.id.id_stickynavlayout_viewpager)
     ViewPager viewPager;
-    @BindView(R.id.store_house_ptr_frame)
-    PtrClassicFrameLayout mPtrFrame;
+    //    @BindView(R.id.store_house_ptr_frame)
+    //    PtrClassicFrameLayout mPtrFrame;
     @BindView(R.id.id_stick)
     StickyNavLayout stickyNavLayout;
     @BindView(R.id.tv_title)
@@ -106,28 +103,28 @@ public class HomeFragment extends MyBaseFragment implements HomeContact.IHomeVie
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        mPtrFrame.setLastUpdateTimeRelateObject(this);
-        mPtrFrame.setPtrHandler(new PtrHandler() {
-            @Override
-            public void onRefreshBegin(PtrFrameLayout frame) {
-                refreshData();
-                mPtrFrame.refreshComplete();
-            }
-
-            @Override
-            public boolean checkCanDoRefresh(PtrFrameLayout frame, View content, View header) {
-                //设置下拉刷新的条件
-                return stickyNavLayout.getScrollY() == 0;
-            }
-        });
-
-        // the following are default settings
-        mPtrFrame.setResistance(1.7f);
-        mPtrFrame.setRatioOfHeaderHeightToRefresh(1.2f);
-        mPtrFrame.setDurationToClose(200);
-        mPtrFrame.setDurationToCloseHeader(1000);
-        mPtrFrame.setPullToRefresh(false);
-        mPtrFrame.setKeepHeaderWhenRefresh(true);
+        //        mPtrFrame.setLastUpdateTimeRelateObject(this);
+        //        mPtrFrame.setPtrHandler(new PtrHandler() {
+        //            @Override
+        //            public void onRefreshBegin(PtrFrameLayout frame) {
+        //                refreshData();
+        //                mPtrFrame.refreshComplete();
+        //            }
+        //
+        //            @Override
+        //            public boolean checkCanDoRefresh(PtrFrameLayout frame, View content, View header) {
+        //                //设置下拉刷新的条件
+        //                return stickyNavLayout.getScrollY() == 0;
+        //            }
+        //        });
+        //
+        //        // the following are default settings
+        //        mPtrFrame.setResistance(1.7f);
+        //        mPtrFrame.setRatioOfHeaderHeightToRefresh(1.2f);
+        //        mPtrFrame.setDurationToClose(200);
+        //        mPtrFrame.setDurationToCloseHeader(1000);
+        //        mPtrFrame.setPullToRefresh(false);
+        //        mPtrFrame.setKeepHeaderWhenRefresh(true);
 
     }
 

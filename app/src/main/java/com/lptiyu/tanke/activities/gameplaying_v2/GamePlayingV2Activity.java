@@ -92,6 +92,8 @@ public class GamePlayingV2Activity extends MyBaseActivity implements GamePlaying
         UiSettings uiSettings = aMap.getUiSettings();
         uiSettings.setAllGesturesEnabled(true);//支持手势
         uiSettings.setZoomControlsEnabled(false);
+        uiSettings.setLogoLeftMargin(-200);
+        uiSettings.setLogoBottomMargin(-200);
         //如果是线上游戏，则隐藏地图
         if (RunApplication.entity != null && RunApplication.entity.cid == ONLINE_GAME) {
             textureMapView.setVisibility(View.GONE);
@@ -218,10 +220,10 @@ public class GamePlayingV2Activity extends MyBaseActivity implements GamePlaying
     private void moveToLocation(LatLng latLng) {
         float zoom = aMap.getCameraPosition().zoom;
         if (zoom > 9.99999 && zoom < 10.00001) {
-            zoom = 12;
+            zoom = 13;
         }
         CameraPosition cameraPosition = new CameraPosition(latLng, zoom, 0, 0);
-        aMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition), 1000, null);
+        aMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition), 1, null);
     }
 
     //添加marker

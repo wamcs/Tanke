@@ -31,6 +31,7 @@ import com.lptiyu.tanke.net.HttpService;
 import com.lptiyu.tanke.net.Response;
 import com.lptiyu.tanke.permission.PermissionDispatcher;
 import com.lptiyu.tanke.permission.TargetMethod;
+import com.lptiyu.tanke.utils.DirUtils;
 import com.lptiyu.tanke.utils.GameZipUtils;
 import com.lptiyu.tanke.utils.NetworkUtil;
 import com.lptiyu.tanke.utils.PopupWindowUtils;
@@ -450,7 +451,8 @@ public class GameDetailsController extends ActivityController {
      * 根据游戏下载包链接下载该游戏包
      */
     private void downloadGameZipFile() {
-        XUtilsHelper.getInstance().downLoad(tempGameZipUrl, new XUtilsHelper.IDownloadCallback() {
+        XUtilsHelper.getInstance().downLoad(tempGameZipUrl, DirUtils.getGameDirectory().getAbsolutePath(), new
+                XUtilsHelper.IDownloadCallback() {
             @Override
             public void successs(File file) {
                 String zippedFilePath = file.getAbsolutePath();

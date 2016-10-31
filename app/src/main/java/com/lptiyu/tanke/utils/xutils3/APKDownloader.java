@@ -10,6 +10,7 @@ import android.os.Handler;
 import android.util.Log;
 
 import com.lptiyu.tanke.RunApplication;
+import com.lptiyu.tanke.utils.DirUtils;
 import com.lptiyu.tanke.utils.FileUtils;
 import com.lptiyu.tanke.utils.NetworkUtil;
 import com.lptiyu.tanke.utils.PopupWindowUtils;
@@ -98,7 +99,8 @@ public class APKDownloader {
         if (!progressDialog.isShowing()) {
             progressDialog.show();
         }
-        XUtilsHelper.getInstance().downLoad(apkUrl, new XUtilsHelper.IDownloadCallback() {
+        XUtilsHelper.getInstance().downLoad(apkUrl, DirUtils.getAPKDirectory().getAbsolutePath(), new XUtilsHelper
+                .IDownloadCallback() {
             @Override
             public void successs(File file) {
                 progressDialog.setMessage("下载完成");
@@ -124,7 +126,8 @@ public class APKDownloader {
 
             @Override
             public void onError(String errMsg) {
-                PopupWindowUtils.getInstance().showNetExceptionPopupwindow(context, new PopupWindowUtils.OnRetryCallback() {
+                PopupWindowUtils.getInstance().showNetExceptionPopupwindow(context, new PopupWindowUtils
+                        .OnRetryCallback() {
                     @Override
                     public void onRetry() {
                         startDownloadByXUtils();

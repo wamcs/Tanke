@@ -6,6 +6,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RatingBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -23,10 +24,10 @@ import butterknife.ButterKnife;
  * Created by Jason on 2016/9/23.
  */
 
-public class HomeDisplayAdapter extends BaseRecyclerViewAdapter<HomeTabEntity> {
+public class HomeTabAdapter extends BaseRecyclerViewAdapter<HomeTabEntity> {
     private int sortIndex;
 
-    public HomeDisplayAdapter(Context context, List<HomeTabEntity> list, int sortIndex) {
+    public HomeTabAdapter(Context context, List<HomeTabEntity> list, int sortIndex) {
         super(context, list);
         this.sortIndex = sortIndex;
     }
@@ -61,7 +62,9 @@ public class HomeDisplayAdapter extends BaseRecyclerViewAdapter<HomeTabEntity> {
 
         MyViewHolder myViewHolder = (MyViewHolder) holder;
         myViewHolder.title.setText(gameEntity.title + "");
-        myViewHolder.tvPlayerCount.setText(gameEntity.player_num + "人在玩");
+        myViewHolder.tvPlayerCountDiretionRun.setText(gameEntity.player_num + "人在玩");
+        myViewHolder.tvPlayerCountOnlinePlayable.setText(gameEntity.player_num + "人在玩");
+        myViewHolder.tvPlayerCountNearGame.setText(gameEntity.player_num + "人在玩");
         Glide.with(context).load(gameEntity.pic).error(R.drawable.default_pic).into(myViewHolder.imageView);
         myViewHolder.ratingBar.setRating(gameEntity.difficulty);
         if (gameEntity.tag == null || TextUtils.isEmpty(gameEntity.tag)) {
@@ -70,19 +73,29 @@ public class HomeDisplayAdapter extends BaseRecyclerViewAdapter<HomeTabEntity> {
             myViewHolder.tvCompetitonTag.setVisibility(View.VISIBLE);
             myViewHolder.tvCompetitonTag.setText(gameEntity.tag);
         }
-        myViewHolder.tvDistance.setText("<" + gameEntity.distince + "km");
-        myViewHolder.location.setText("游戏区域：" + gameEntity.area);
+        myViewHolder.tvDistance.setText(gameEntity.distince + "km");
+        myViewHolder.location.setText(gameEntity.area);
 
         switch (sortIndex) {
             case SortIndex.NEAR_GAME:
+                myViewHolder.tvPlayerCountDiretionRun.setVisibility(View.GONE);
+                myViewHolder.tvPlayerCountOnlinePlayable.setVisibility(View.GONE);
+                myViewHolder.rlDifficult.setVisibility(View.GONE);
                 break;
             case SortIndex.ONLINE_PLAYABLE:
                 myViewHolder.tvDistance.setVisibility(View.GONE);
-                myViewHolder.location.setVisibility(View.GONE);
+                myViewHolder.location.setText("");
+                myViewHolder.tvPlayerCountNearGame.setVisibility(View.GONE);
+                myViewHolder.tvPlayerCountDiretionRun.setVisibility(View.GONE);
+                myViewHolder.tvDistance.setVisibility(View.GONE);
                 break;
             case SortIndex.DIRECTION_RUN:
+                myViewHolder.tvPlayerCountNearGame.setVisibility(View.GONE);
+                myViewHolder.tvPlayerCountOnlinePlayable.setVisibility(View.GONE);
                 break;
             case SortIndex.COMPETITION_ACTIVITY:
+                myViewHolder.tvPlayerCountNearGame.setVisibility(View.GONE);
+                myViewHolder.tvPlayerCountOnlinePlayable.setVisibility(View.GONE);
                 break;
         }
 
@@ -99,10 +112,16 @@ public class HomeDisplayAdapter extends BaseRecyclerViewAdapter<HomeTabEntity> {
         TextView location;
         @BindView(R.id.ratingBar)
         RatingBar ratingBar;
-        @BindView(R.id.tv_player_count)
-        TextView tvPlayerCount;
+        @BindView(R.id.tv_player_count_direction_run)
+        TextView tvPlayerCountDiretionRun;
+        @BindView(R.id.tv_player_count_near_game)
+        TextView tvPlayerCountNearGame;
+        @BindView(R.id.tv_player_count_online_playable)
+        TextView tvPlayerCountOnlinePlayable;
         @BindView(R.id.tv_competition_tag)
         TextView tvCompetitonTag;
+        @BindView(R.id.rl_difficult)
+        RelativeLayout rlDifficult;
 
         MyViewHolder(View view) {
             super(view);

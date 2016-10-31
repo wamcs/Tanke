@@ -3,6 +3,7 @@ package com.lptiyu.tanke.activities.pointtaskv2;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.lptiyu.tanke.R;
@@ -14,12 +15,14 @@ import com.lptiyu.tanke.entity.UploadGameRecord;
 import com.lptiyu.tanke.entity.eventbus.NotifyGamePlayingV2RefreshData;
 import com.lptiyu.tanke.entity.eventbus.NotifyPointTaskV2RefreshData;
 import com.lptiyu.tanke.entity.response.UpLoadGameRecordResult;
+import com.lptiyu.tanke.enums.PlayStatus;
 import com.lptiyu.tanke.enums.PointTaskStatus;
 import com.lptiyu.tanke.fragments.pointtask.EmptyFragment;
 import com.lptiyu.tanke.fragments.pointtask.PointTaskFragment;
 import com.lptiyu.tanke.global.Accounts;
 import com.lptiyu.tanke.mybase.MyBaseActivity;
 import com.lptiyu.tanke.mybase.MyBaseFragment;
+import com.lptiyu.tanke.utils.GameOverHelper;
 import com.lptiyu.tanke.widget.DepthPageTransformer;
 import com.lptiyu.tanke.widget.GalleryViewPager;
 import com.lptiyu.zxinglib.android.CaptureActivity;
@@ -50,6 +53,7 @@ public class PointTaskV2Activity extends MyBaseActivity implements PointTaskV2Co
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_point_task_v2);
         ButterKnife.bind(this);
         EventBus.getDefault().register(this);
@@ -70,11 +74,11 @@ public class PointTaskV2Activity extends MyBaseActivity implements PointTaskV2Co
                 }
             }
             if (totallist.size() == point_list.size()) {//全部完成
-
+                max_index = totallist.size() - 1;
             } else {
                 totallist.add(EmptyFragment.create());
+                max_index = totallist.size() - 2;
             }
-            max_index = totallist.size() - 2;
         }
         presenter = new PointTaskV2Presenter(this);
     }
@@ -177,8 +181,25 @@ public class PointTaskV2Activity extends MyBaseActivity implements PointTaskV2Co
     }
 
     @Override
-    public void successUploadRecord(UpLoadGameRecordResult response) {
-        finish();
+    public void successUploadRecord(UpLoadGameRecordResult result) {
+        String tip = "";
+        if (result != null) {
+            tip = "恭喜你找到答案了，经验 +" + result.get_exp + ", 积分 +" + result.get_extra_points + ", 红包 +" + result
+                    .get_extra_money + "元";
+        }
+        Toast.makeText(this, tip, Toast.LENGTH_SHORT).show();
+        if (result.game_statu == PlayStatus.GAME_OVER) {//游戏通关，需要弹出通关视图，弹出通关视图
+            //TODO 弹出通关视图
+            GameOverHelper gameOverHelper = new GameOverHelper(this, new GameOverHelper.OnPopupWindowDismissCallback() {
+                @Override
+                public void onDismiss() {
+                    finish();
+                }
+            });
+            gameOverHelper.showPopup();
+        } else {
+            finish();
+        }
         EventBus.getDefault().post(new NotifyGamePlayingV2RefreshData());
     }
 }

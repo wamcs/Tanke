@@ -34,6 +34,7 @@ public class GameDetail extends BaseEntity implements Parcelable {
     public int difficulty;
     //    public int cid;
     public List<Ranks> rank_list;
+    public List<Jingwei> game_zone;
 
     @Override
     public int describeContents() {
@@ -43,7 +44,6 @@ public class GameDetail extends BaseEntity implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(this.pic);
-        dest.writeString(this.title);
         dest.writeString(this.area);
         dest.writeString(this.city);
         dest.writeString(this.time_type);
@@ -62,8 +62,8 @@ public class GameDetail extends BaseEntity implements Parcelable {
         dest.writeString(this.url);
         dest.writeInt(this.states);
         dest.writeInt(this.difficulty);
-        dest.writeInt(this.cid);
         dest.writeTypedList(this.rank_list);
+        dest.writeTypedList(this.game_zone);
     }
 
     public GameDetail() {
@@ -71,7 +71,6 @@ public class GameDetail extends BaseEntity implements Parcelable {
 
     protected GameDetail(Parcel in) {
         this.pic = in.readString();
-        this.title = in.readString();
         this.area = in.readString();
         this.city = in.readString();
         this.time_type = in.readString();
@@ -90,8 +89,8 @@ public class GameDetail extends BaseEntity implements Parcelable {
         this.url = in.readString();
         this.states = in.readInt();
         this.difficulty = in.readInt();
-        this.cid = in.readInt();
         this.rank_list = in.createTypedArrayList(Ranks.CREATOR);
+        this.game_zone = in.createTypedArrayList(Jingwei.CREATOR);
     }
 
     public static final Parcelable.Creator<GameDetail> CREATOR = new Parcelable.Creator<GameDetail>() {
@@ -105,32 +104,4 @@ public class GameDetail extends BaseEntity implements Parcelable {
             return new GameDetail[size];
         }
     };
-
-    @Override
-    public String toString() {
-        return "GameDetail{" +
-                "pic='" + pic + '\'' +
-                ", title='" + title + '\'' +
-                ", area='" + area + '\'' +
-                ", city='" + city + '\'' +
-                ", time_type='" + time_type + '\'' +
-                ", start_date='" + start_date + '\'' +
-                ", end_date='" + end_date + '\'' +
-                ", start_time='" + start_time + '\'' +
-                ", end_time='" + end_time + '\'' +
-                ", type=" + type +
-                ", num='" + num + '\'' +
-                ", content='" + content + '\'' +
-                ", rule='" + rule + '\'' +
-                ", longtitude='" + longtitude + '\'' +
-                ", latitude='" + latitude + '\'' +
-                ", min='" + min + '\'' +
-                ", max='" + max + '\'' +
-                ", url='" + url + '\'' +
-                ", states=" + states +
-                ", difficulty=" + difficulty +
-                ", cid=" + cid +
-                ", rank_list=" + rank_list +
-                '}';
-    }
 }

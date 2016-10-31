@@ -84,7 +84,8 @@ public class XUtilsDownloader {
 
     public void download() {
         progressDialog.show();
-        XUtilsHelper.getInstance().downLoad(tempGameZipUrl, new XUtilsHelper.IDownloadCallback() {
+        XUtilsHelper.getInstance().downLoad(tempGameZipUrl, DirUtils.getGameDirectory().getAbsolutePath(), new
+                XUtilsHelper.IDownloadCallback() {
             @Override
             public void successs(File file) {
                 String zippedFilePath = file.getAbsolutePath();

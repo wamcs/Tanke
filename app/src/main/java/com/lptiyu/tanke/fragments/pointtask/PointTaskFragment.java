@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,12 +27,14 @@ import com.lptiyu.tanke.activities.guessriddle.GuessRiddleActivity;
 import com.lptiyu.tanke.activities.imagedistinguish.ImageDistinguishActivity;
 import com.lptiyu.tanke.activities.locationtask.LocationTaskActivity;
 import com.lptiyu.tanke.adapter.LVForPointTaskV2Adapter;
+import com.lptiyu.tanke.entity.GameRecord;
 import com.lptiyu.tanke.entity.Point;
 import com.lptiyu.tanke.entity.Task;
 import com.lptiyu.tanke.entity.UploadGameRecord;
 import com.lptiyu.tanke.entity.eventbus.NotifyGamePlayingV2RefreshData;
 import com.lptiyu.tanke.entity.eventbus.NotifyPointTaskV2RefreshData;
 import com.lptiyu.tanke.entity.response.UpLoadGameRecordResult;
+import com.lptiyu.tanke.enums.PlayStatus;
 import com.lptiyu.tanke.enums.PointTaskStatus;
 import com.lptiyu.tanke.enums.RequestCode;
 import com.lptiyu.tanke.enums.TaskType;
@@ -40,11 +43,13 @@ import com.lptiyu.tanke.global.AppData;
 import com.lptiyu.tanke.global.Conf;
 import com.lptiyu.tanke.mybase.MyBaseFragment;
 import com.lptiyu.tanke.utils.DirUtils;
+import com.lptiyu.tanke.utils.GameOverHelper;
 import com.lptiyu.tanke.utils.LogUtils;
 import com.lptiyu.tanke.utils.StringUtils;
 import com.lptiyu.tanke.utils.ToastUtil;
 import com.lptiyu.tanke.utils.xutils3.XUtilsHelper;
 import com.lptiyu.zxinglib.android.CaptureActivity;
+import com.makeramen.roundedimageview.RoundedImageView;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -52,6 +57,7 @@ import java.io.File;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 import static com.lptiyu.tanke.RunApplication.currentTaskIndex;
 import static com.lptiyu.tanke.RunApplication.gameId;
@@ -63,9 +69,11 @@ public class PointTaskFragment extends MyBaseFragment implements PointTaskContac
 
     @BindView(R.id.img_getKey)
     ImageView imgGetKey;
+    @BindView(R.id.rl_getKey)
+    RelativeLayout rlGetKey;
     @BindView(R.id.lv)
     ListView lv;
-    private ImageView img;
+    private RoundedImageView img;
     private TextView tv_title;
     private LVForPointTaskV2Adapter adapter;
     private boolean isPointOver = false;
@@ -91,7 +99,9 @@ public class PointTaskFragment extends MyBaseFragment implements PointTaskContac
         Bundle bundle = getArguments();
         if (bundle != null) {
             index = bundle.getInt(Conf.INDEX);
-            currentPoint = RunApplication.gameRecord.game_detail.point_list.get(index);
+            GameRecord gameRecord = RunApplication.gameRecord;
+            if (gameRecord != null && gameRecord.game_detail != null && gameRecord.game_detail.point_list != null)
+                currentPoint = gameRecord.game_detail.point_list.get(index);
         }
         presenter = new PointTaskPresenter(this);
     }
@@ -102,7 +112,7 @@ public class PointTaskFragment extends MyBaseFragment implements PointTaskContac
         ButterKnife.bind(this, view);
         View header = inflater.inflate(R.layout.header_listview_pointtask, null);
         tv_title = (TextView) header.findViewById(R.id.tv_title);
-        img = (ImageView) header.findViewById(R.id.img);
+        img = (RoundedImageView) header.findViewById(R.id.img);
         lv.addHeaderView(header);
         return view;
     }
@@ -112,44 +122,40 @@ public class PointTaskFragment extends MyBaseFragment implements PointTaskContac
         super.onActivityCreated(savedInstanceState);
 
         bindData();
-        imgGetKey.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                skipToAnswerTask();
-            }
-        });
     }
 
     private void bindData() {
-        if (currentPoint != null) {
-            Glide.with(getActivity()).load(currentPoint.point_img).error(R.drawable.default_pic).into(img);
-            tv_title.setText(currentPoint.point_title);
-            adapter = new LVForPointTaskV2Adapter(getActivity(), currentPoint.task_list);
-            lv.setAdapter(adapter);
-            if (currentPoint.status == PointTaskStatus.FINISHED) {
-                imgGetKey.setVisibility(View.GONE);
-            } else {
-                imgGetKey.setVisibility(View.VISIBLE);
-                for (int i = 0; i < currentPoint.task_list.size(); i++) {
-                    if (TextUtils.isEmpty(currentPoint.task_list.get(i).exp)) {//目前通过经验值是否为空来判断当前任务是否完成
-                        RunApplication.currentTaskIndex = i;
-                        currentTask = currentPoint.task_list.get(currentTaskIndex);
-                        RunApplication.currentTask = currentTask;
-                        if (Integer.parseInt(currentTask.type) == TaskType.FINISH) {//当前任务是结束任务，表明游戏结束
-                            isGameOver = true;
-                            //游戏结束，上传游戏记录
-                            imgGetKey.setVisibility(View.GONE);
-                            UploadGameRecord record = new UploadGameRecord();
-                            record.uid = Accounts.getId() + "";
-                            record.point_id = currentPoint.id + "";
-                            record.game_id = gameId + "";
-                            record.point_statu = PointTaskStatus.FINISHED + "";
-                            record.task_id = currentTask.id + "";
-                            presenter.uploadRecord(record);
-                            return;
-                        }
-                        break;
+        if (currentPoint == null) {
+            Toast.makeText(getActivity(), "currentPoint为空", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        Glide.with(getActivity()).load(currentPoint.point_img).error(R.drawable.default_pic).into(img);
+        tv_title.setText(currentPoint.point_title);
+        adapter = new LVForPointTaskV2Adapter(getActivity(), currentPoint.task_list);
+        lv.setAdapter(adapter);
+        if (currentPoint.status == PointTaskStatus.FINISHED) {
+            imgGetKey.setVisibility(View.GONE);
+        } else {
+            imgGetKey.setVisibility(View.VISIBLE);
+            for (int i = 0; i < currentPoint.task_list.size(); i++) {
+                if (TextUtils.isEmpty(currentPoint.task_list.get(i).exp)) {//目前通过经验值是否为空来判断当前任务是否完成
+                    RunApplication.currentTaskIndex = i;
+                    currentTask = currentPoint.task_list.get(currentTaskIndex);
+                    RunApplication.currentTask = currentTask;
+                    if (Integer.parseInt(currentTask.type) == TaskType.FINISH) {//当前任务是结束任务，表明游戏结束
+                        isGameOver = true;
+                        //游戏结束，上传游戏记录
+                        imgGetKey.setVisibility(View.GONE);
+                        UploadGameRecord record = new UploadGameRecord();
+                        record.uid = Accounts.getId() + "";
+                        record.point_id = currentPoint.id + "";
+                        record.game_id = gameId + "";
+                        record.point_statu = PointTaskStatus.FINISHED + "";
+                        record.task_id = currentTask.id + "";
+                        presenter.uploadRecord(record);
+                        return;
                     }
+                    break;
                 }
             }
             lv.setSelection(currentTaskIndex);
@@ -206,6 +212,7 @@ public class PointTaskFragment extends MyBaseFragment implements PointTaskContac
         //查询本地是否有图片,如果有就直接取出来用，没有就下载之后再用
         File[] files = DirUtils.getGameDirectory().listFiles();
         if (files == null) {
+            times = 0;
             downLoadPic();
         } else {
             boolean hasPic = false;
@@ -218,6 +225,7 @@ public class PointTaskFragment extends MyBaseFragment implements PointTaskContac
                 }
             }
             if (!hasPic) {
+                times = 0;
                 downLoadPic();
             } else {
                 skipToImageDistinguish();
@@ -234,29 +242,30 @@ public class PointTaskFragment extends MyBaseFragment implements PointTaskContac
             skipToImageDistinguish();
             return;
         }
-        XUtilsHelper.getInstance().downLoad(imgUrls[times], new XUtilsHelper.IDownloadCallback() {
-            @Override
-            public void successs(File file) {
-                imgArr[times] = file.getAbsolutePath();
-                times++;
-                downLoadPic();
-            }
+        XUtilsHelper.getInstance().downLoad(imgUrls[times], DirUtils.getGameDirectory().getAbsolutePath(), new
+                XUtilsHelper.IDownloadCallback() {
+                    @Override
+                    public void successs(File file) {
+                        imgArr[times] = file.getAbsolutePath();
+                        times++;
+                        downLoadPic();
+                    }
 
-            @Override
-            public void progress(long total, long current, boolean isDownloading) {
+                    @Override
+                    public void progress(long total, long current, boolean isDownloading) {
 
-            }
+                    }
 
-            @Override
-            public void finished() {
+                    @Override
+                    public void finished() {
 
-            }
+                    }
 
-            @Override
-            public void onError(String errMsg) {
-                LogUtils.i(errMsg);
-            }
-        });
+                    @Override
+                    public void onError(String errMsg) {
+                        LogUtils.i(errMsg);
+                    }
+                });
     }
 
     private void skipToImageDistinguish() {
@@ -267,6 +276,10 @@ public class PointTaskFragment extends MyBaseFragment implements PointTaskContac
     }
 
     private void isPointOver() {
+        if (currentPoint == null) {
+            Toast.makeText(getActivity(), "currentPoint为空", Toast.LENGTH_SHORT).show();
+            return;
+        }
         for (int i = 0; i < currentPoint.task_list.size(); i++) {
             if (TextUtils.isEmpty(currentPoint.task_list.get(i).exp)) {
                 if (i != currentPoint.task_list.size() - 1 && Integer.parseInt(currentPoint.task_list.get(i + 1)
@@ -324,22 +337,40 @@ public class PointTaskFragment extends MyBaseFragment implements PointTaskContac
         super.onDestroy();
         if (isGameOver) {
             //章节点结束，通知PointTaskV2Activity销毁界面
-            EventBus.getDefault().post(new NotifyPointTaskV2RefreshData());
-            //章节点结束，通知GamePlayingV2Activity刷新数据
-            EventBus.getDefault().post(new NotifyGamePlayingV2RefreshData());
+            setActivityResult();
         }
     }
 
     @Override
     public void successUploadRecord(UpLoadGameRecordResult result) {
+        String tip = "";
+        if (result != null) {
+            tip = "恭喜你找到答案了，经验 +" + result.get_exp + ", 积分 +" + result.get_extra_points + ", 红包 +" + result
+                    .get_extra_money + "元";
+        }
+        Toast.makeText(getActivity(), tip, Toast.LENGTH_SHORT).show();
         currentTask.ftime = result.task_finish_time;
         currentTask.exp = result.get_exp;
-        if (!isGameOver) {
-            //章节点结束，通知PointTaskV2Activity销毁界面
-            EventBus.getDefault().post(new NotifyPointTaskV2RefreshData());
-            //章节点结束，通知GamePlayingV2Activity刷新数据
-            EventBus.getDefault().post(new NotifyGamePlayingV2RefreshData());
+        if (result.game_statu == PlayStatus.GAME_OVER) {
+            //TODO 弹出通关视图
+            GameOverHelper gameOverHelper = new GameOverHelper(getActivity(), new GameOverHelper
+                    .OnPopupWindowDismissCallback() {
+                @Override
+                public void onDismiss() {
+                    setActivityResult();
+                }
+            });
+            gameOverHelper.showPopup();
+        } else {
+            setActivityResult();
         }
+    }
+
+    private void setActivityResult() {
+        //章节点结束，通知PointTaskV2Activity销毁界面
+        EventBus.getDefault().post(new NotifyPointTaskV2RefreshData());
+        //章节点结束，通知GamePlayingV2Activity刷新数据
+        EventBus.getDefault().post(new NotifyGamePlayingV2RefreshData());
     }
 
     @Override
@@ -348,6 +379,18 @@ public class PointTaskFragment extends MyBaseFragment implements PointTaskContac
             Toast.makeText(getActivity(), errorMsg, Toast.LENGTH_SHORT).show();
         } else {
             Toast.makeText(getActivity(), "游戏记录上传失败", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @OnClick({R.id.img_getKey, R.id.rl_getKey})
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.img_getKey:
+                skipToAnswerTask();
+                break;
+            case R.id.rl_getKey:
+                getActivity().finish();
+                break;
         }
     }
 }

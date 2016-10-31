@@ -32,7 +32,7 @@
     <!-- LoginActivity Text Area-->
     <string name="main_page_date_formatter" formatted="false">%d月%d日-%d月%d日</string>
     <string name="main_page_date_format_pattern" formatted="false">%d月%d日-%d月%d日</string>
-    <string name="main_page_forever">白天-黑夜</string>
+    <string name="main_page_forever">不限时间</string>
     <string name="team_type_team">团队赛</string>
     <string name="team_type_individule">个人赛</string>
 
@@ -254,8 +254,8 @@
     <string name="not_arrive_any_direction_run_point" formatted="false">请到达地图上任意点的位置开始乐跑，最近的距您还有%s公里</string>
     <string name="not_arrive_next_direction_run_point" formatted="false">距离下一个最近的乐跑点还有%s公里</string>
     <string name="game_detail_play_num" formatted="false">%s人在玩</string>
-    <string name="game_detail_area" formatted="false">游戏区域：%s</string>
-    <string name="game_detail_date_time" formatted="false">游戏时间：%s</string>
+    <string name="game_detail_area" formatted="false">地址：%s</string>
+    <string name="game_detail_date_time" formatted="false">时间：%s</string>
 
     <!-- AboutUsActivity Text Area-->
     <string name="about_us_activity">关于我们</string>

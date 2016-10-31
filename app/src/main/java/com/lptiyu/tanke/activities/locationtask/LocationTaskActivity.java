@@ -4,6 +4,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
@@ -17,8 +18,11 @@ import com.amap.api.maps.AMapUtils;
 import com.amap.api.maps.CameraUpdateFactory;
 import com.amap.api.maps.TextureMapView;
 import com.amap.api.maps.UiSettings;
+import com.amap.api.maps.model.BitmapDescriptorFactory;
 import com.amap.api.maps.model.CameraPosition;
 import com.amap.api.maps.model.LatLng;
+import com.amap.api.maps.model.Marker;
+import com.amap.api.maps.model.MarkerOptions;
 import com.lptiyu.tanke.R;
 import com.lptiyu.tanke.RunApplication;
 import com.lptiyu.tanke.entity.Point;
@@ -34,6 +38,7 @@ import com.lptiyu.tanke.global.AppData;
 import com.lptiyu.tanke.global.Conf;
 import com.lptiyu.tanke.mybase.MyBaseActivity;
 import com.lptiyu.tanke.utils.DistanceFormatUtils;
+import com.lptiyu.tanke.utils.GameOverHelper;
 import com.lptiyu.tanke.utils.LocationHelper;
 import com.lptiyu.tanke.utils.NetworkUtil;
 import com.lptiyu.tanke.utils.PopupWindowUtils;
@@ -83,6 +88,8 @@ public class LocationTaskActivity extends MyBaseActivity implements LocationTask
     private int index;
     private boolean isStop;
     private int ZOOM_VALUE = 16;
+    private Marker marker;
+    private boolean isGameOver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,7 +113,9 @@ public class LocationTaskActivity extends MyBaseActivity implements LocationTask
                 .TaskResultCallback() {
             @Override
             public void onSuccess() {
-                setActivityResult();
+                if (!isGameOver) {
+                    setActivityResult();
+                }
             }
         });
         taskResultHelper.startAnim();
@@ -169,9 +178,15 @@ public class LocationTaskActivity extends MyBaseActivity implements LocationTask
     }
 
     private void handleLocationResult(AMapLocation location) {
-        moveToLocation(new LatLng(location.getLatitude(), location.getLongitude()));
+        LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+        if (marker != null) {
+            marker.remove();
+        }
+        addMarker(latLng);
+        moveToLocation(latLng);
         if (Accounts.getPhoneNumber() != null && Accounts.getPhoneNumber().equals("18272164317")) {
             upLoadGameRecord();
+            locationHelper.stopLocation();
             return;
         }
         if (isStop) {
@@ -193,6 +208,17 @@ public class LocationTaskActivity extends MyBaseActivity implements LocationTask
         }
         //核对位置
         checkLocation();
+    }
+
+    //添加marker
+    private void addMarker(LatLng latLng) {
+        MarkerOptions currentMarkerOptions = new MarkerOptions();
+        currentMarkerOptions.position(latLng).draggable(true);
+        currentMarkerOptions.icon(BitmapDescriptorFactory.fromBitmap(BitmapFactory.decodeResource(getResources(), R
+                .drawable.locate_orange)));
+        // 将Marker设置为贴地显示，可以双指下拉看效果
+        currentMarkerOptions.setFlat(true);
+        marker = aMap.addMarker(currentMarkerOptions);
     }
 
     private void showPermissionFailTip() {
@@ -297,12 +323,19 @@ public class LocationTaskActivity extends MyBaseActivity implements LocationTask
     public void successUploadRecord(UpLoadGameRecordResult response) {
         resultRecord = response;
         resultRecord.index = this.index;
-        taskResultHelper.showSuccessResult();
+        taskResultHelper.showSuccessResult(response);
         taskResultHelper.stopAnim();
-        if (response.game_statu == PlayStatus.GAME_OVER) {
-            taskResultHelper.popup_tv_result.setText("游戏完成");
-        } else {
-            taskResultHelper.popup_tv_result.setText("找到新线索");
+        if (response.game_statu == PlayStatus.GAME_OVER) {//游戏通关，需要弹出通关视图，弹出通关视图
+            isGameOver = true;
+            taskResultHelper.hidePopup();
+            //TODO 弹出通关视图
+            GameOverHelper gameOverHelper = new GameOverHelper(this, new GameOverHelper.OnPopupWindowDismissCallback() {
+                @Override
+                public void onDismiss() {
+                    setActivityResult();
+                }
+            });
+            gameOverHelper.showPopup();
         }
         //震动提示
         VibratorHelper.startVibrator(this);

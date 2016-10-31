@@ -90,6 +90,7 @@ public class StickyNavLayout extends LinearLayout {
 
     /****
      * 设置顶部区域的高度
+     *
      * @param height height
      */
     public void setTopViewHeight(int height) {
@@ -97,10 +98,12 @@ public class StickyNavLayout extends LinearLayout {
         if (isStickNav)
             scrollTo(0, mTopViewHeight);
     }
+
     /****
      * 设置顶部区域的高度
+     *
      * @param height height
-     * @param  offset offset
+     * @param offset offset
      */
     public void setTopViewHeight(int height, int offset) {
         mTopViewHeight = height;
@@ -117,12 +120,13 @@ public class StickyNavLayout extends LinearLayout {
         if (!(view instanceof ViewPager)) {
             throw new RuntimeException(
                     "id_stickynavlayout_viewpager show used by ViewPager !");
-        }else if(mTop instanceof  ViewGroup){
-            ViewGroup viewGroup= (ViewGroup) mTop;
-           if( viewGroup.getChildCount()>=2){
-               throw new RuntimeException(
-                       "if the TopView(android:id=\"R.id.id_stickynavlayout_topview\") is a ViewGroup(ScrollView,LinearLayout,FrameLayout, ....) ,the children count should be one  !");
-           }
+        } else if (mTop instanceof ViewGroup) {
+            ViewGroup viewGroup = (ViewGroup) mTop;
+            if (viewGroup.getChildCount() >= 2) {
+                throw new RuntimeException(
+                        "if the TopView(android:id=\"R.id.id_stickynavlayout_topview\") is a ViewGroup(ScrollView," +
+                                "LinearLayout,FrameLayout, ....) ,the children count should be one  !");
+            }
         }
         mViewPager = (ViewPager) view;
     }
@@ -135,7 +139,7 @@ public class StickyNavLayout extends LinearLayout {
         //修复键盘弹出后键盘关闭布局高度不对问题
         int height = getMeasuredHeight() - mNav.getMeasuredHeight();
         mViewPagerMaxHeight = (height >= mViewPagerMaxHeight ? height : mViewPagerMaxHeight);
-        params.height = /*mViewPagerMaxHeight - stickOffset*/height-stickOffset;
+        params.height = /*mViewPagerMaxHeight - stickOffset*/height - stickOffset;
         mViewPager.setLayoutParams(params);
 
 
@@ -148,9 +152,8 @@ public class StickyNavLayout extends LinearLayout {
         mTop.setLayoutParams(topParams);
 
         //设置mTopViewHeight
-        mTopViewHeight=topParams.height-stickOffset;
+        mTopViewHeight = topParams.height - stickOffset;
         Log.d(TAG, "onMeasure--mTopViewHeight:" + mTopViewHeight);
-
 
 
     }
@@ -158,22 +161,22 @@ public class StickyNavLayout extends LinearLayout {
     /**
      * 更新top区域的视图,如果是处于悬浮状态,隐藏top区域的控件是不起作用的!!
      */
-    public  void updateTopViews(){
-        if (isTopHidden){
+    public void updateTopViews() {
+        if (isTopHidden) {
             return;
         }
         final ViewGroup.LayoutParams params = mTop.getLayoutParams();
         mTop.post(new Runnable() {
             @Override
             public void run() {
-                if (mTop instanceof  ViewGroup){
-                    ViewGroup viewGroup= (ViewGroup) mTop;
+                if (mTop instanceof ViewGroup) {
+                    ViewGroup viewGroup = (ViewGroup) mTop;
                     int height = viewGroup.getChildAt(0).getHeight();
                     mTopViewHeight = height - stickOffset;
                     params.height = height;
                     mTop.setLayoutParams(params);
                     params.height = ViewGroup.LayoutParams.WRAP_CONTENT;
-                }else{
+                } else {
                     mTopViewHeight = mTop.getMeasuredHeight() - stickOffset;
                 }
             }
@@ -190,14 +193,14 @@ public class StickyNavLayout extends LinearLayout {
         mTop.post(new Runnable() {
             @Override
             public void run() {
-                if (mTop instanceof  ViewGroup){
-                    ViewGroup viewGroup= (ViewGroup) mTop;
+                if (mTop instanceof ViewGroup) {
+                    ViewGroup viewGroup = (ViewGroup) mTop;
                     int height = viewGroup.getChildAt(0).getHeight();
                     mTopViewHeight = height - stickOffset;
                     params.height = height;
                     mTop.setLayoutParams(params);
                     mTop.requestLayout();
-                }else{
+                } else {
                     mTopViewHeight = mTop.getMeasuredHeight() - stickOffset;
                 }
                 Log.d(TAG, "mTopViewHeight:" + mTopViewHeight);
@@ -330,7 +333,8 @@ public class StickyNavLayout extends LinearLayout {
                             return true;
                         } else {
 
-                            if (lv.getAdapter() != null && lv.getAdapter().getCount() == 0) {//当ListView或ScrollView 没有数据为空时
+                            if (lv.getAdapter() != null && lv.getAdapter().getCount() == 0) {//当ListView或ScrollView
+                                // 没有数据为空时
                                 initVelocityTrackerIfNotExists();
                                 mVelocityTracker.addMovement(ev);
                                 mLastY = y;
@@ -348,7 +352,8 @@ public class StickyNavLayout extends LinearLayout {
                             return true;
                         } else {
                             //处理GridViewWithHeaderAndFooter此GridView
-                            if (gv.getAdapter() != null && gv.getAdapter().getCount() == gv.getHeaderViewCount() + gv.getFooterViewCount()) {//当没有数据为空时
+                            if (gv.getAdapter() != null && gv.getAdapter().getCount() == gv.getHeaderViewCount() + gv
+                                    .getFooterViewCount()) {//当没有数据为空时
                                 initVelocityTrackerIfNotExists();
                                 mVelocityTracker.addMovement(ev);
                                 mLastY = y;
@@ -357,7 +362,8 @@ public class StickyNavLayout extends LinearLayout {
                         }
                     } else if (mInnerScrollView instanceof RecyclerView) {
                         RecyclerView rv = (RecyclerView) mInnerScrollView;
-                        if (!isTopHidden || (!android.support.v4.view.ViewCompat.canScrollVertically(rv, -1) && isTopHidden && dy > 0)) {
+                        if (!isTopHidden || (!android.support.v4.view.ViewCompat.canScrollVertically(rv, -1) &&
+                                isTopHidden && dy > 0)) {
                             initVelocityTrackerIfNotExists();
                             mVelocityTracker.addMovement(ev);
                             mLastY = y;
@@ -395,9 +401,11 @@ public class StickyNavLayout extends LinearLayout {
                 mInnerScrollView = (ViewGroup) (v
                         .findViewById(R.id.id_stickynavlayout_innerscrollview));
             }
-        }else{
-            throw new RuntimeException(
-                    "mViewPager  should be  used  FragmentPagerAdapter or  FragmentStatePagerAdapter  !");
+        } else {
+            Log.i("StickyNavLayout", "mViewPager  should be  used  FragmentPagerAdapter or  FragmentStatePagerAdapter" +
+                    "  !");
+            //            throw new RuntimeException(
+            //                    "mViewPager  should be  used  FragmentPagerAdapter or  FragmentStatePagerAdapter  !");
         }
         //...
     }
@@ -478,14 +486,14 @@ public class StickyNavLayout extends LinearLayout {
 
         //set  listener 设置悬浮监听回调
         if (listener != null) {
-//            if(lastIsTopHidden!=isTopHidden){
-//                lastIsTopHidden=isTopHidden;
+            //            if(lastIsTopHidden!=isTopHidden){
+            //                lastIsTopHidden=isTopHidden;
             listener.isStick(isTopHidden);
-//            }
+            //            }
             listener.scrollPercent((float) getScrollY() / (float) mTopViewHeight);
         }
     }
-//    private  boolean lastIsTopHidden;//记录上次是否悬浮
+    //    private  boolean lastIsTopHidden;//记录上次是否悬浮
 
     @Override
     public void computeScroll() {

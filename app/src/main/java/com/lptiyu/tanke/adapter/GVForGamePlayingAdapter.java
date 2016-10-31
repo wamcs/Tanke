@@ -56,7 +56,7 @@ public class GVForGamePlayingAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup viewGroup) {
         ViewHolder vh = null;
-        if (vh == null) {
+        if (convertView == null) {
             convertView = inflater.inflate(R.layout.item_gv_gameplaying, viewGroup, false);
             vh = new ViewHolder(convertView);
             convertView.setTag(vh);
@@ -92,11 +92,6 @@ public class GVForGamePlayingAdapter extends BaseAdapter {
                 vh.imgTransparent.setVisibility(View.GONE);
                 break;
         }
-
-        //        if (position == 0 && !isShow) {
-        //            PopupWindowUtils.getInstance().showUsageTip(context, convertView, 100, 0);
-        //            isShow = true;
-        //        }
 
         return convertView;
     }

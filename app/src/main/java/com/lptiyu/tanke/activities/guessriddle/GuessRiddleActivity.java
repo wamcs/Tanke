@@ -22,6 +22,7 @@ import com.lptiyu.tanke.global.Accounts;
 import com.lptiyu.tanke.global.AppData;
 import com.lptiyu.tanke.global.Conf;
 import com.lptiyu.tanke.mybase.MyBaseActivity;
+import com.lptiyu.tanke.utils.GameOverHelper;
 import com.lptiyu.tanke.utils.PopupWindowUtils;
 import com.lptiyu.tanke.utils.TaskResultHelper;
 import com.lptiyu.tanke.utils.ToastUtil;
@@ -55,6 +56,7 @@ public class GuessRiddleActivity extends MyBaseActivity implements RiddleContact
 
     private TaskResultHelper taskResultHelper;
     private int index;
+    private boolean isGameOver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,7 +83,9 @@ public class GuessRiddleActivity extends MyBaseActivity implements RiddleContact
                 .TaskResultCallback() {
             @Override
             public void onSuccess() {
-                setActivityResult();
+                if (!isGameOver) {
+                    setActivityResult();
+                }
             }
         });
 
@@ -148,12 +152,19 @@ public class GuessRiddleActivity extends MyBaseActivity implements RiddleContact
     public void successUploadRecord(UpLoadGameRecordResult response) {
         resultRecord = response;
         resultRecord.index = this.index;
-        taskResultHelper.showSuccessResult();
+        taskResultHelper.showSuccessResult(response);
         taskResultHelper.stopAnim();
-        if (response.game_statu == PlayStatus.GAME_OVER) {
-            taskResultHelper.popup_tv_result.setText("游戏完成");
-        } else {
-            taskResultHelper.popup_tv_result.setText("找到新线索");
+        if (response.game_statu == PlayStatus.GAME_OVER) {//游戏通关，需要弹出通关视图，弹出通关视图
+            isGameOver = true;
+            taskResultHelper.hidePopup();
+            //TODO 弹出通关视图
+            GameOverHelper gameOverHelper = new GameOverHelper(this, new GameOverHelper.OnPopupWindowDismissCallback() {
+                @Override
+                public void onDismiss() {
+                    setActivityResult();
+                }
+            });
+            gameOverHelper.showPopup();
         }
         //震动提示
         VibratorHelper.startVibrator(this);
