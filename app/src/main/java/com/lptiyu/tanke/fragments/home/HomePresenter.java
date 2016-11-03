@@ -50,6 +50,32 @@ public class HomePresenter implements HomeContact.IHomePresenter {
     }
 
     @Override
+    public void reloadBannerAndHot() {
+        RequestParams params = RequestParamsHelper.getBaseRequestParam(XUtilsUrls.HOME_BANNER_RECOMMEND);
+        params.addBodyParameter("uid", Accounts.getId() + "");
+        params.addBodyParameter("city", Accounts.getCityCode());
+        params.addBodyParameter("page", page + "");
+        XUtilsHelper.getInstance().get(params, new XUtilsRequestCallBack<HomeBannerAndHotResponse>() {
+            @Override
+            protected void onSuccess(HomeBannerAndHotResponse response) {
+                if (response.status == Response.RESPONSE_OK) {
+                    view.successReloadBannerAndHot(response.data);
+                } else {
+                    view.failLoad();
+                }
+            }
+
+            @Override
+            protected void onFailed(String errorMsg) {
+                if (errorMsg != null)
+                    view.failLoad(errorMsg);
+                else
+                    view.netException();
+            }
+        }, HomeBannerAndHotResponse.class);
+    }
+
+    @Override
     public void loadSort() {
         RequestParams params = RequestParamsHelper.getBaseRequestParam(XUtilsUrls.HOME_SORT_TAB);
         XUtilsHelper.getInstance().get(params, new XUtilsRequestCallBack<HomeSortResponse>() {

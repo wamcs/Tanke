@@ -1,10 +1,8 @@
 package com.lptiyu.tanke.fragments.hometab;
 
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
@@ -17,9 +15,12 @@ import com.github.jdsjlzx.recyclerview.LRecyclerView;
 import com.github.jdsjlzx.recyclerview.LRecyclerViewAdapter;
 import com.lptiyu.tanke.R;
 import com.lptiyu.tanke.RunApplication;
-import com.lptiyu.tanke.activities.gamedetailv2.GameDetailV2Activity;
-import com.lptiyu.tanke.activities.gameplaying_v2.GamePlayingV2Activity;
+import com.lptiyu.tanke.activities.gamedetail.GameDetailActivity;
+import com.lptiyu.tanke.activities.gameplaying.GamePlayingActivity;
 import com.lptiyu.tanke.adapter.HomeTabAdapter;
+import com.lptiyu.tanke.entity.eventbus.EnterGame;
+import com.lptiyu.tanke.entity.eventbus.GamePointTaskStateChanged;
+import com.lptiyu.tanke.entity.eventbus.LeaveGame;
 import com.lptiyu.tanke.entity.response.HomeTabEntity;
 import com.lptiyu.tanke.enums.PlayStatus;
 import com.lptiyu.tanke.global.Conf;
@@ -29,7 +30,10 @@ import com.lptiyu.tanke.utils.NetworkUtil;
 import com.lptiyu.tanke.utils.PopupWindowUtils;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -41,6 +45,9 @@ public class HomeTabFragment extends MyBaseFragment implements HomeTabContact.IH
     private HomeTabPresenter presenter;
     private int sortIndex;
     private boolean isLoading;
+    private boolean hasMoreGame = true;
+    private LRecyclerViewAdapter lRecyclerViewAdapter;
+    private List<HomeTabEntity> totalist;
 
     public static HomeTabFragment newInstance(int sortIndex) {
         HomeTabFragment fragment = new HomeTabFragment();
@@ -53,12 +60,12 @@ public class HomeTabFragment extends MyBaseFragment implements HomeTabContact.IH
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        EventBus.getDefault().register(this);
         Bundle bundle = getArguments();
         if (bundle != null) {
             sortIndex = bundle.getInt(Conf.SORT_INDEX);
             presenter = new HomeTabPresenter(this);
-            firstLoadData(sortIndex);
+            firstLoadGameList();
         } else {
             Toast.makeText(getActivity(), "bundle数据传递异常", Toast.LENGTH_SHORT).show();
         }
@@ -71,31 +78,56 @@ public class HomeTabFragment extends MyBaseFragment implements HomeTabContact.IH
         return view;
     }
 
-    private void firstLoadData(final int cid) {
+    private void firstLoadGameList() {
         if (NetworkUtil.checkIsNetworkConnected()) {
-            presenter.firstLoadGameList(cid);
+            presenter.firstLoadGameList(sortIndex);
         } else {
-            PopupWindowUtils.getInstance().showNetExceptionPopupwindow(getContext(), new PopupWindowUtils
-                    .OnRetryCallback() {
+            getActivity().getWindow().getDecorView().post(new Runnable() {
                 @Override
-                public void onRetry() {
-                    firstLoadData(cid);
+                public void run() {
+                    PopupWindowUtils.getInstance().showNetExceptionPopupwindow(getContext(), new PopupWindowUtils
+                            .OnRetryCallback() {
+                        @Override
+                        public void onRetry() {
+                            firstLoadGameList();
+                        }
+                    });
                 }
             });
         }
     }
 
-    private void setRecyclerViewAdapter(final List<HomeTabEntity> list) {
+    private void reloadGameList() {
+        if (NetworkUtil.checkIsNetworkConnected()) {
+            presenter.reloadGameList(sortIndex);
+        } else {
+            getActivity().getWindow().getDecorView().post(new Runnable() {
+                @Override
+                public void run() {
+                    PopupWindowUtils.getInstance().showNetExceptionPopupwindow(getContext(), new PopupWindowUtils
+                            .OnRetryCallback() {
+                        @Override
+                        public void onRetry() {
+                            reloadGameList();
+                        }
+                    });
+                }
+            });
+        }
+    }
+
+    private void setRecyclerViewAdapter() {
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL,
                 false));
-        HomeTabAdapter adapter = new HomeTabAdapter(getActivity(), list, sortIndex);
-        LRecyclerViewAdapter lRecyclerViewAdapter = new LRecyclerViewAdapter(adapter);
+        HomeTabAdapter adapter = new HomeTabAdapter(getActivity(), totalist, sortIndex);
+        lRecyclerViewAdapter = new LRecyclerViewAdapter(adapter);
         recyclerView.setAdapter(lRecyclerViewAdapter);
         lRecyclerViewAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                HomeTabEntity homeTabEntity = list.get(position);
+                HomeTabEntity homeTabEntity = totalist.get(position);
                 RunApplication.gameId = homeTabEntity.id;
+                RunApplication.type = homeTabEntity.type;
                 RunApplication.entity = homeTabEntity;
                 Intent intent = new Intent();
                 switch (homeTabEntity.play_status) {
@@ -103,13 +135,13 @@ public class HomeTabFragment extends MyBaseFragment implements HomeTabContact.IH
                         intent.putExtra(Conf.GAME_TYPE, homeTabEntity.type);
                         intent.putExtra(Conf.FROM_WHERE, Conf.HOME_TAB);
                         intent.putExtra(Conf.HOME_TAB_ENTITY, homeTabEntity);
-                        intent.setClass(getActivity(), GameDetailV2Activity.class);
+                        intent.setClass(getActivity(), GameDetailActivity.class);
                         break;
                     case PlayStatus.GAME_OVER://游戏结束，暂不考虑
                     case PlayStatus.HAVE_ENTERED_BUT_NOT_START_GAME://进入过但没开始游戏，进入到游戏详情界面
                     case PlayStatus.HAVE_STARTED_GAME://进入并且已经开始游戏，进入到玩游戏界面
                         intent.putExtra(Conf.HOME_TAB_ENTITY, homeTabEntity);
-                        intent.setClass(getActivity(), GamePlayingV2Activity.class);
+                        intent.setClass(getActivity(), GamePlayingActivity.class);
                         break;
                 }
                 getActivity().startActivity(intent);
@@ -143,15 +175,9 @@ public class HomeTabFragment extends MyBaseFragment implements HomeTabContact.IH
                     return;
                 }
                 isLoading = true;
-                final ProgressDialog dialog = ProgressDialog.show(getActivity(), "", "加载中", true, false);
-                //模拟网络请求
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        isLoading = false;
-                        dialog.dismiss();
-                    }
-                }, 1000);
+                if (hasMoreGame) {
+                    presenter.loadMoreGame(sortIndex);
+                }
             }
 
             @Override
@@ -164,70 +190,72 @@ public class HomeTabFragment extends MyBaseFragment implements HomeTabContact.IH
 
             }
         });
-
-        //        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL,
-        //                false));
-        //        HomeTabAdapter adapter = new HomeTabAdapter(getActivity(), list, sortIndex);
-        //        recyclerView.setAdapter(adapter);
-        //        adapter.setOnRecyclerViewItemClickListener(new OnRecyclerViewItemClickListener() {
-        //            @Override
-        //            public void onClick(int position) {
-        //                HomeTabEntity homeTabEntity = list.get(position);
-        //                RunApplication.gameId = homeTabEntity.id;
-        //                RunApplication.entity = homeTabEntity;
-        //                Intent intent = new Intent();
-        //                switch (homeTabEntity.play_status) {
-        //                    case PlayStatus.NEVER_ENTER_GANME://从未玩过游戏，进入到游戏详情界面
-        //                        intent.putExtra(Conf.GAME_TYPE, homeTabEntity.type);
-        //                        intent.putExtra(Conf.FROM_WHERE, Conf.HOME_TAB);
-        //                        intent.putExtra(Conf.HOME_TAB_ENTITY, homeTabEntity);
-        //                        intent.setClass(getActivity(), GameDetailV2Activity.class);
-        //                        break;
-        //                    case PlayStatus.GAME_OVER://游戏结束，暂不考虑
-        //                    case PlayStatus.HAVE_ENTERED_BUT_NOT_START_GAME://进入过但没开始游戏，进入到游戏详情界面
-        //                    case PlayStatus.HAVE_STARTED_GAME://进入并且已经开始游戏，进入到玩游戏界面
-        //                        intent.putExtra(Conf.HOME_TAB_ENTITY, homeTabEntity);
-        //                        intent.setClass(getActivity(), GamePlayingV2Activity.class);
-        //                        break;
-        //                }
-        //                getActivity().startActivity(intent);
-        //            }
-        //
-        //            @Override
-        //            public void onLongClick(int position) {
-        //            }
-        //        });
-        //        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-        //            @Override
-        //            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-        //                super.onScrolled(recyclerView, dx, dy);
-        //            }
-        //
-        //            @Override
-        //            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-        //                super.onScrollStateChanged(recyclerView, newState);
-        //                if (recyclerView.computeVerticalScrollExtent() + recyclerView.computeVerticalScrollOffset() >=
-        //                        recyclerView.computeVerticalScrollRange() && newState == recyclerView
-        //                        .SCROLL_STATE_IDLE) {
-        //                    final ProgressDialog dialog = ProgressDialog.show(getActivity(), "", "加载中", true, false);
-        //                    //模拟网络请求
-        //                    new Handler().postDelayed(new Runnable() {
-        //                        @Override
-        //                        public void run() {
-        //                            dialog.dismiss();
-        //                        }
-        //                    }, 1000);
-        //                }
-        //            }
-        //        });
     }
-
 
     @Override
     public void successFirstLoadGameList(List<HomeTabEntity> list) {
         if (list != null && list.size() > 0) {
-            setRecyclerViewAdapter(list);
+            totalist = new ArrayList<>();
+            totalist.addAll(list);
+            setRecyclerViewAdapter();
         }
+    }
+
+    @Override
+    public void successReloadGame(List<HomeTabEntity> list) {
+        if (list != null && list.size() > 0) {
+            totalist.clear();
+            totalist.addAll(list);
+            lRecyclerViewAdapter.notifyDataSetChanged();
+        }
+    }
+
+
+    @Override
+    public void successLoadMoreGame(List<HomeTabEntity> list) {
+        if (list != null && list.size() > 0) {
+            hasMoreGame = true;
+            totalist.addAll(list);
+            lRecyclerViewAdapter.notifyDataSetChanged();
+        } else {
+            hasMoreGame = false;
+        }
+    }
+
+    @Override
+    public void failLoadMoreGame(String errMsg) {
+        if (errMsg != null) {
+            Toast.makeText(getActivity(), errMsg, Toast.LENGTH_SHORT).show();
+            hasMoreGame = false;
+        }
+    }
+
+    /*无论在哪个线程发送都在主线程接收
+   * 接受任务完成后的通知，刷新数据
+   * */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(GamePointTaskStateChanged result) {
+        //刷新数据
+        reloadGameList();
+    }
+
+
+    /*无论在哪个线程发送都在主线程接收
+   * 接受任务完成后的通知，刷新数据
+   * */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(EnterGame result) {
+        //刷新数据
+        reloadGameList();
+    }
+
+    /*无论在哪个线程发送都在主线程接收
+   * 接受任务完成后的通知，刷新数据
+   * */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(LeaveGame result) {
+        //刷新数据
+        reloadGameList();
     }
 
     @Override

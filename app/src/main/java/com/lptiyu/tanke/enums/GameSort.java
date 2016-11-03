@@ -5,9 +5,10 @@ package com.lptiyu.tanke.enums;
  */
 
 public interface GameSort {
-    //0-附近游戏，1-线上可玩，3-定向乐跑， 4-赛事活动
+    //0-附近游戏，1-线上可玩，3-定向乐跑，4-赛事活动，5-普通线下
     int NEARBY_GAME = 0;
     int ONLINE_PLAYABLE = 1;
+    int NORMAL_OFFLINE = 5;
     int DIRECTION_RUN = 3;
     int COMPETITION_ACTIVITY = 4;
 }

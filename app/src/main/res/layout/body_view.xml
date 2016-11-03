@@ -7,7 +7,7 @@
     <RelativeLayout
         android:id="@+id/rl_time_location"
         android:layout_width="match_parent"
-        android:layout_height="130dp"
+        android:layout_height="90dp"
         android:layout_marginBottom="7dp"
         android:background="@color/white10">
 
@@ -16,31 +16,35 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:gravity="center_vertical"
-            android:padding="10dp">
+            android:paddingLeft="20dp"
+            android:paddingRight="40dp">
 
             <TextView
                 android:id="@+id/tv_game_detail_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
-                android:gravity="center_vertical"
+                android:gravity="center"
                 android:maxLines="1"
+                android:paddingBottom="2dp"
+                android:paddingTop="2dp"
                 android:text="华科森林记"
                 android:textColor="@color/black333"
-                android:textSize="16sp"/>
+                android:textSize="14sp"/>
 
             <TextView
                 android:id="@+id/tv_game_detail_location"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/tv_game_detail_name"
-                android:layout_marginTop="5dp"
                 android:ellipsize="end"
-                android:gravity="center_vertical"
+                android:gravity="center"
                 android:maxLines="1"
+                android:paddingBottom="2dp"
+                android:paddingTop="2dp"
                 android:text="地址：华科校区"
                 android:textColor="@color/black333"
-                android:textSize="15sp"/>
+                android:textSize="14sp"/>
 
             <TextView
                 android:id="@+id/tv_game_detail_date"
@@ -48,10 +52,12 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/tv_game_detail_location"
                 android:ellipsize="end"
-                android:gravity="center_vertical"
+                android:gravity="center"
                 android:maxLines="1"
+                android:paddingBottom="2dp"
+                android:paddingTop="2dp"
                 android:text="时间：04.10--04.12"
-                android:textColor="@color/black666"
+                android:textColor="@color/black333"
                 android:textSize="14sp"/>
         </RelativeLayout>
 
@@ -89,7 +95,9 @@
             android:id="@+id/rl_play_num"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center_vertical">
+            android:layout_centerVertical="true"
+            android:gravity="center"
+            android:paddingRight="10dp">
 
             <TextView
                 android:id="@+id/tv_ranks_tip"
@@ -98,7 +106,7 @@
                 android:drawableRight="@drawable/hua"
                 android:text="大神排行榜"
                 android:textColor="@color/colorPrimary"
-                android:textSize="16sp"/>
+                android:textSize="14sp"/>
 
             <TextView
                 android:id="@+id/tv_play_num"
@@ -108,7 +116,8 @@
                 android:ellipsize="end"
                 android:maxLines="1"
                 android:text="634人在玩"
-                android:textColor="@color/colorPrimary"/>
+                android:textColor="@color/colorPrimary"
+                android:textSize="16sp"/>
         </RelativeLayout>
 
         <ImageView

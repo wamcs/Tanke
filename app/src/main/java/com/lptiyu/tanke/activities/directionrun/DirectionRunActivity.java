@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AlertDialog;
 import android.view.View;
-import android.widget.Button;
 import android.widget.Chronometer;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -62,12 +61,12 @@ public class DirectionRunActivity extends MyBaseActivity implements DirectionRun
     TextureMapView textureMapView;
     @BindView(R.id.tv_duration_value)
     TextView tvDurationValue;
-    @BindView(R.id.btn_start_or_stop_run)
-    Button btnStartOrStopRun;
+    @BindView(R.id.tv_start_or_stop_run)
+    TextView tvStartOrStopRun;
     @BindView(R.id.tv_distance_value)
     TextView tvDistanceValue;
-    @BindView(R.id.btn_signUp)
-    Button btnSignUp;
+    @BindView(R.id.tv_signUp)
+    TextView tvSignUp;
     @BindView(R.id.rl_distance)
     RelativeLayout rlDistance;
     @BindView(R.id.rl_bottom)
@@ -107,6 +106,7 @@ public class DirectionRunActivity extends MyBaseActivity implements DirectionRun
     private final int INTERVAL = 1000;
     private TraceOverlay traceOverlay;
     private TracerHelper tracerHelper;
+    private boolean isFirstEnter = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -281,12 +281,12 @@ public class DirectionRunActivity extends MyBaseActivity implements DirectionRun
                     DistanceFormatUtils.formatMeterToKiloMeter(min)));
             //            Toast.makeText(this, String.format(getString(R.string.not_arrive_any_direction_run_point),
             //                    DistanceFormatUtils.formatMeterToKiloMeter(min)), Toast.LENGTH_SHORT).show();
-            btnStartOrStopRun.setEnabled(false);
+            tvStartOrStopRun.setEnabled(false);
             isNearByStartPoint = false;
         } else {
             //可以开始乐跑了
             Toast.makeText(this, "您已到达最近的乐跑点，点击下方开始乐跑按钮开始这段旅程吧", Toast.LENGTH_SHORT).show();
-            btnStartOrStopRun.setEnabled(true);
+            tvStartOrStopRun.setEnabled(true);
             isNearByStartPoint = true;
         }
     }
@@ -304,11 +304,11 @@ public class DirectionRunActivity extends MyBaseActivity implements DirectionRun
                 if (min <= DISTANCE_DELTA) {
                     //可以开始乐跑了
                     Toast.makeText(this, "您已到达下一个乐跑点，点击下方打卡按钮签个到吧", Toast.LENGTH_SHORT).show();
-                    btnSignUp.setEnabled(true);
+                    tvSignUp.setEnabled(true);
                     isArrivedNextPoint = true;
                 } else {
                     isArrivedNextPoint = false;
-                    btnSignUp.setEnabled(false);
+                    tvSignUp.setEnabled(false);
                 }
                 return;
             }
@@ -353,7 +353,15 @@ public class DirectionRunActivity extends MyBaseActivity implements DirectionRun
         if (zoom > 9.99999 && zoom < 10.00001) {
             zoom = 16f;
         }
-        map.animateCamera(CameraUpdateFactory.newCameraPosition(new CameraPosition(latLng, zoom, 0, 0)), 1500, null);
+        int duration = 1;
+        if (isFirstEnter) {
+            duration = 1;
+            isFirstEnter = false;
+        } else {
+            duration = 1000;
+        }
+        map.animateCamera(CameraUpdateFactory.newCameraPosition(new CameraPosition(latLng, zoom, 0, 0)), duration,
+                null);
     }
 
     /**
@@ -406,16 +414,16 @@ public class DirectionRunActivity extends MyBaseActivity implements DirectionRun
         textureMapView.onSaveInstanceState(outState);
     }
 
-    @OnClick({R.id.btn_start_or_stop_run, R.id.btn_signUp, R.id.img_show_current_location, R.id.img_show_all_point})
+    @OnClick({R.id.tv_start_or_stop_run, R.id.tv_signUp, R.id.img_show_current_location, R.id.img_show_all_point})
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.btn_start_or_stop_run:
+            case R.id.tv_start_or_stop_run:
                 if (!isStarted) {
                     if (startedPoint == null) {
                         Toast.makeText(this, "未找到起跑点", Toast.LENGTH_SHORT).show();
                         return;
                     }
-                    btnStartOrStopRun.setClickable(false);
+                    tvStartOrStopRun.setClickable(false);
                     presenter.startRun(gameId, Long.parseLong(startedPoint.id));
                 } else {
                     if (startRun != null) {
@@ -423,7 +431,7 @@ public class DirectionRunActivity extends MyBaseActivity implements DirectionRun
                                 .setPositiveButton("残忍结束", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
-                                        btnStartOrStopRun.setClickable(false);
+                                        tvStartOrStopRun.setClickable(false);
                                         LatLng startLatLng = parseJingweiToLatLng(startedPoint.jingwei);
                                         if (startLatLng == null) {
                                             Toast.makeText(DirectionRunActivity.this, "起跑点数据错误", Toast.LENGTH_SHORT)
@@ -442,8 +450,8 @@ public class DirectionRunActivity extends MyBaseActivity implements DirectionRun
                     }
                 }
                 break;
-            case R.id.btn_signUp:
-                btnSignUp.setEnabled(false);
+            case R.id.tv_signUp:
+                tvSignUp.setEnabled(false);
                 isArrivedNextPoint = true;
                 if (currentPoint != null && startRun != null) {
                     LatLng currentLatLng = parseJingweiToLatLng(currentPoint.jingwei);
@@ -534,8 +542,8 @@ public class DirectionRunActivity extends MyBaseActivity implements DirectionRun
     @Override
     public void successStartRun(StartRun startRun) {
         this.startRun = startRun;
-        btnStartOrStopRun.setClickable(true);
-        btnStartOrStopRun.setText("结束乐跑");
+        tvStartOrStopRun.setClickable(true);
+        tvStartOrStopRun.setText("结束乐跑");
         isStarted = true;
         // 开始计时
         chronometer.start();
@@ -556,14 +564,14 @@ public class DirectionRunActivity extends MyBaseActivity implements DirectionRun
     @Override
     public void successRunSignUp(RunSignUp runSignUp) {
         Toast.makeText(this, "打卡成功", Toast.LENGTH_SHORT).show();
-        btnSignUp.setEnabled(false);
+        tvSignUp.setEnabled(false);
         isArrivedNextPoint = false;
     }
 
     @Override
     public void successStopRun(StopRun stopRun) {
         Toast.makeText(this, "结束乐跑成功", Toast.LENGTH_SHORT).show();
-        btnStartOrStopRun.setEnabled(false);
+        tvStartOrStopRun.setEnabled(false);
         chronometer.stop();
         isStarted = false;
         isFinished = true;

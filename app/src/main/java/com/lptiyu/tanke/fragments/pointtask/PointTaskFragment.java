@@ -23,16 +23,16 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.lptiyu.tanke.R;
 import com.lptiyu.tanke.RunApplication;
+import com.lptiyu.tanke.activities.gameover.GameOverActivity;
 import com.lptiyu.tanke.activities.guessriddle.GuessRiddleActivity;
 import com.lptiyu.tanke.activities.imagedistinguish.ImageDistinguishActivity;
 import com.lptiyu.tanke.activities.locationtask.LocationTaskActivity;
-import com.lptiyu.tanke.adapter.LVForPointTaskV2Adapter;
+import com.lptiyu.tanke.adapter.LVForPointTaskAdapter;
 import com.lptiyu.tanke.entity.GameRecord;
 import com.lptiyu.tanke.entity.Point;
 import com.lptiyu.tanke.entity.Task;
 import com.lptiyu.tanke.entity.UploadGameRecord;
-import com.lptiyu.tanke.entity.eventbus.NotifyGamePlayingV2RefreshData;
-import com.lptiyu.tanke.entity.eventbus.NotifyPointTaskV2RefreshData;
+import com.lptiyu.tanke.entity.eventbus.GamePointTaskStateChanged;
 import com.lptiyu.tanke.entity.response.UpLoadGameRecordResult;
 import com.lptiyu.tanke.enums.PlayStatus;
 import com.lptiyu.tanke.enums.PointTaskStatus;
@@ -43,7 +43,6 @@ import com.lptiyu.tanke.global.AppData;
 import com.lptiyu.tanke.global.Conf;
 import com.lptiyu.tanke.mybase.MyBaseFragment;
 import com.lptiyu.tanke.utils.DirUtils;
-import com.lptiyu.tanke.utils.GameOverHelper;
 import com.lptiyu.tanke.utils.LogUtils;
 import com.lptiyu.tanke.utils.StringUtils;
 import com.lptiyu.tanke.utils.ToastUtil;
@@ -75,7 +74,7 @@ public class PointTaskFragment extends MyBaseFragment implements PointTaskContac
     ListView lv;
     private RoundedImageView img;
     private TextView tv_title;
-    private LVForPointTaskV2Adapter adapter;
+    private LVForPointTaskAdapter adapter;
     private boolean isPointOver = false;
     private ProgressDialog distinguishImageDialog;
     private Point currentPoint;
@@ -131,7 +130,7 @@ public class PointTaskFragment extends MyBaseFragment implements PointTaskContac
         }
         Glide.with(getActivity()).load(currentPoint.point_img).error(R.drawable.default_pic).into(img);
         tv_title.setText(currentPoint.point_title);
-        adapter = new LVForPointTaskV2Adapter(getActivity(), currentPoint.task_list);
+        adapter = new LVForPointTaskAdapter(getActivity(), currentPoint.task_list);
         lv.setAdapter(adapter);
         if (currentPoint.status == PointTaskStatus.FINISHED) {
             imgGetKey.setVisibility(View.GONE);
@@ -152,7 +151,7 @@ public class PointTaskFragment extends MyBaseFragment implements PointTaskContac
                         record.game_id = gameId + "";
                         record.point_statu = PointTaskStatus.FINISHED + "";
                         record.task_id = currentTask.id + "";
-                        presenter.uploadRecord(record);
+                        presenter.uploadGameOverRecord(record);
                         return;
                     }
                     break;
@@ -342,7 +341,7 @@ public class PointTaskFragment extends MyBaseFragment implements PointTaskContac
     }
 
     @Override
-    public void successUploadRecord(UpLoadGameRecordResult result) {
+    public void successUploadGameOverRecord(UpLoadGameRecordResult result) {
         String tip = "";
         if (result != null) {
             tip = "恭喜你找到答案了，经验 +" + result.get_exp + ", 积分 +" + result.get_extra_points + ", 红包 +" + result
@@ -352,25 +351,14 @@ public class PointTaskFragment extends MyBaseFragment implements PointTaskContac
         currentTask.ftime = result.task_finish_time;
         currentTask.exp = result.get_exp;
         if (result.game_statu == PlayStatus.GAME_OVER) {
-            //TODO 弹出通关视图
-            GameOverHelper gameOverHelper = new GameOverHelper(getActivity(), new GameOverHelper
-                    .OnPopupWindowDismissCallback() {
-                @Override
-                public void onDismiss() {
-                    setActivityResult();
-                }
-            });
-            gameOverHelper.showPopup();
-        } else {
-            setActivityResult();
+            startActivity(new Intent(getActivity(), GameOverActivity.class));
         }
+        setActivityResult();
     }
 
     private void setActivityResult() {
-        //章节点结束，通知PointTaskV2Activity销毁界面
-        EventBus.getDefault().post(new NotifyPointTaskV2RefreshData());
-        //章节点结束，通知GamePlayingV2Activity刷新数据
-        EventBus.getDefault().post(new NotifyGamePlayingV2RefreshData());
+        //章节点结束，通知GamePlayingV2Activity,PointTaskV2Activity销毁界面
+        EventBus.getDefault().post(new GamePointTaskStateChanged());
     }
 
     @Override

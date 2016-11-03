@@ -57,14 +57,15 @@
         <activity
             android:name=".MainActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
+            android:launchMode="singleInstance"
             android:screenOrientation="portrait">
         </activity>
         <activity
-            android:name=".initialization.ui.LoginActivity"
+            android:name=".activities.initialization.ui.LoginActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait"/>
         <activity
-            android:name=".initialization.ui.SplashActivity"
+            android:name=".activities.initialization.ui.SplashActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait">
             <intent-filter>
@@ -74,15 +75,15 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".initialization.ui.GuideActivity"
+            android:name=".activities.initialization.ui.GuideActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait"/>
         <activity
-            android:name=".initialization.ui.SignUpActivity"
+            android:name=".activities.initialization.ui.SignUpActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait"/>
         <activity
-            android:name=".initialization.ui.UserProtocolActivity"
+            android:name=".activities.initialization.ui.UserProtocolActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait"/>
         <activity
@@ -169,10 +170,6 @@
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait"/>
         <activity
-            android:name=".userCenter.UserRewardActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"
-            android:screenOrientation="portrait"/>
-        <activity
             android:name=".activities.messagedetail.SystemWebActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait"/>
@@ -225,17 +222,17 @@
             android:screenOrientation="portrait">
         </activity>
         <activity
-            android:name=".activities.gamedetailv2.GameDetailV2Activity"
+            android:name=".activities.gamedetail.GameDetailActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait">
         </activity>
         <activity
-            android:name=".activities.gameplaying_v2.GamePlayingV2Activity"
+            android:name=".activities.gameplaying.GamePlayingActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait">
         </activity>
         <activity
-            android:name=".activities.pointtaskv2.PointTaskV2Activity"
+            android:name=".activities.pointtask.PointTaskActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait"
             android:theme="@style/PointTaskActivity">
@@ -246,6 +243,10 @@
             android:screenOrientation="portrait">
         </activity>
         <activity android:name=".activities.gamedetailarea.GameDetailAreaActivity">
+        </activity>
+        <activity android:name=".activities.messagelist.MessageListActivity">
+        </activity>
+        <activity android:name=".activities.gameover.GameOverActivity">
         </activity>
     </application>
 

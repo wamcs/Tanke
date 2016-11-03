@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/tv_message_title"
+        style="@style/TextAppearance.Toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/default_toolbar_height"
+        android:background="@drawable/toolbar_gradient"
+        android:gravity="center"
+        android:text="@string/messagesList"/>
+
+    <RelativeLayout
+        android:id="@+id/rl_message_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_message_title"
+        android:background="@color/white10"
+        android:paddingBottom="5dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:paddingTop="5dp">
+
+        <ImageView
+            android:id="@+id/img_message_picture"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_centerVertical="true"
+            android:background="@color/transparent"
+            android:src="@mipmap/ic_launcher"/>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@id/img_message_picture">
+
+
+            <TextView
+                android:id="@+id/tv_message_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="10dp"
+                android:text="2016-07-04"
+                android:textColor="@color/grey06"
+                android:textSize="14sp"/>
+
+            <ImageView
+                android:id="@+id/img_message_red_spot"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@id/tv_message_time"
+                android:layout_marginRight="40dp"
+                android:layout_toLeftOf="@id/tv_message_time"
+                android:contentDescription="@string/content_description"
+                android:src="@mipmap/img_red_spot"/>
+
+            <TextView
+                android:id="@+id/tv_message_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@id/tv_message_time"
+                android:layout_toLeftOf="@id/img_message_red_spot"
+                android:ellipsize="end"
+                android:gravity="left"
+                android:maxLines="1"
+                android:text="官方资讯官方资讯官方资讯官方资讯"
+                android:textSize="16sp"/>
+
+
+            <TextView
+                android:id="@+id/tv_message_content"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tv_message_name"
+                android:layout_marginTop="@dimen/y8"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:paddingBottom="@dimen/x8"
+                android:paddingLeft="@dimen/x8"
+                android:text="咨询内容"
+                android:textColor="@color/grey06"
+                android:textSize="14sp"/>
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+</RelativeLayout>

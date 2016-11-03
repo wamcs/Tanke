@@ -52,17 +52,20 @@
                 android:text="@string/duration"
                 android:textSize="16sp"/>
 
-            <Button
-                android:id="@+id/btn_start_or_stop_run"
+            <TextView
+                android:id="@+id/tv_start_or_stop_run"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/tv_duration_tip"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="20dp"
-                android:background="@drawable/selector_button"
+                android:background="@drawable/selector_textview"
                 android:enabled="false"
+                android:gravity="center"
+                android:padding="10dp"
                 android:text="@string/start_run"
-                android:textColor="@color/white10"/>
+                android:textColor="@color/white10"
+                android:textSize="18sp"/>
 
         </RelativeLayout>
 
@@ -92,17 +95,20 @@
                 android:text="@string/distance"
                 android:textSize="16sp"/>
 
-            <Button
-                android:id="@+id/btn_signUp"
+            <TextView
+                android:id="@+id/tv_signUp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/tv_distance_tip"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="20dp"
-                android:background="@drawable/selector_button"
+                android:background="@drawable/selector_textview"
                 android:enabled="false"
+                android:gravity="center"
+                android:padding="10dp"
                 android:text="@string/sign_up"
-                android:textColor="@color/white10"/>
+                android:textColor="@color/white10"
+                android:textSize="18sp"/>
         </RelativeLayout>
 
     </LinearLayout>

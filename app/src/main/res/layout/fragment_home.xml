@@ -2,7 +2,6 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:pst="http://schemas.android.com/apk/res-auto"
-    xmlns:ptr="http://schemas.android.com/apk/res-auto"
     xmlns:stick="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -23,8 +22,7 @@
             android:paddingRight="20dp"
             android:scaleType="centerInside"
             android:src="@drawable/menu_home"
-            android:visibility="visible"
-            />
+            android:visibility="visible"/>
 
         <TextView
             android:id="@+id/tv_title"
@@ -45,8 +43,7 @@
             android:paddingRight="20dp"
             android:scaleType="centerInside"
             android:src="@drawable/search_home"
-            android:visibility="visible"
-            />
+            android:visibility="visible"/>
 
     </RelativeLayout>
 

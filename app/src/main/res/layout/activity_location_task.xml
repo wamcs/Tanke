@@ -22,15 +22,21 @@
 
     <RelativeLayout
         android:id="@+id/rl_submit_record"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="150dp"
+        android:background="@drawable/shape_half_transparent_location_tip"
+        android:gravity="center"
+        android:padding="30dp"
         android:visibility="visible">
 
         <ImageView
             android:id="@+id/img_anim"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
+            android:layout_centerHorizontal="true"
             android:scaleType="centerInside"
             />
 
@@ -39,7 +45,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/img_anim"
-            android:layout_centerInParent="true"
+            android:layout_centerHorizontal="true"
             android:layout_marginTop="10dp"
             android:text="位置验证中..."
             android:textColor="@color/colorPrimary"

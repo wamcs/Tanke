@@ -1,7 +1,7 @@
 package com.lptiyu.tanke.mybase;
 
 import android.os.Bundle;
-import android.os.PersistableBundle;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
@@ -12,9 +12,8 @@ import com.lptiyu.tanke.RunApplication;
  */
 public class MyBaseActivity extends AppCompatActivity implements IBaseView {
     @Override
-    public void onCreate(Bundle savedInstanceState, PersistableBundle persistentState) {
-        super.onCreate(savedInstanceState, persistentState);
-
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         RunApplication.getInstance().addActivity(this);
     }
 

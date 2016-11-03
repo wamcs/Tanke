@@ -19,7 +19,7 @@ public class UserGameFinishedListActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_game_playing_list);
-        activityController = new GameFinishedListController(this,getWindow().getDecorView());
+        activityController = new GameFinishedListController(this, getWindow().getDecorView());
     }
 
     @Override

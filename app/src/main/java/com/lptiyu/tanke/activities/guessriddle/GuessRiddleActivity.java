@@ -1,7 +1,9 @@
 package com.lptiyu.tanke.activities.guessriddle;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -10,11 +12,11 @@ import android.widget.Toast;
 
 import com.lptiyu.tanke.R;
 import com.lptiyu.tanke.RunApplication;
+import com.lptiyu.tanke.activities.gameover.GameOverActivity;
 import com.lptiyu.tanke.entity.Point;
 import com.lptiyu.tanke.entity.Task;
 import com.lptiyu.tanke.entity.UploadGameRecord;
-import com.lptiyu.tanke.entity.eventbus.NotifyGamePlayingV2RefreshData;
-import com.lptiyu.tanke.entity.eventbus.NotifyPointTaskV2RefreshData;
+import com.lptiyu.tanke.entity.eventbus.GamePointTaskStateChanged;
 import com.lptiyu.tanke.entity.response.UpLoadGameRecordResult;
 import com.lptiyu.tanke.enums.PlayStatus;
 import com.lptiyu.tanke.enums.PointTaskStatus;
@@ -22,7 +24,6 @@ import com.lptiyu.tanke.global.Accounts;
 import com.lptiyu.tanke.global.AppData;
 import com.lptiyu.tanke.global.Conf;
 import com.lptiyu.tanke.mybase.MyBaseActivity;
-import com.lptiyu.tanke.utils.GameOverHelper;
 import com.lptiyu.tanke.utils.PopupWindowUtils;
 import com.lptiyu.tanke.utils.TaskResultHelper;
 import com.lptiyu.tanke.utils.ToastUtil;
@@ -62,6 +63,7 @@ public class GuessRiddleActivity extends MyBaseActivity implements RiddleContact
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_guess_riddle);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         ButterKnife.bind(this);
 
         initData();
@@ -101,8 +103,7 @@ public class GuessRiddleActivity extends MyBaseActivity implements RiddleContact
 
     private void setActivityResult() {
         //发通知销毁PointTaskV2Activity，GamePlayingV2Activity刷新数据
-        EventBus.getDefault().post(new NotifyPointTaskV2RefreshData());
-        EventBus.getDefault().post(new NotifyGamePlayingV2RefreshData());
+        EventBus.getDefault().post(new GamePointTaskStateChanged());
         finish();
     }
 
@@ -157,14 +158,8 @@ public class GuessRiddleActivity extends MyBaseActivity implements RiddleContact
         if (response.game_statu == PlayStatus.GAME_OVER) {//游戏通关，需要弹出通关视图，弹出通关视图
             isGameOver = true;
             taskResultHelper.hidePopup();
-            //TODO 弹出通关视图
-            GameOverHelper gameOverHelper = new GameOverHelper(this, new GameOverHelper.OnPopupWindowDismissCallback() {
-                @Override
-                public void onDismiss() {
-                    setActivityResult();
-                }
-            });
-            gameOverHelper.showPopup();
+            startActivity(new Intent(GuessRiddleActivity.this, GameOverActivity.class));
+            finish();
         }
         //震动提示
         VibratorHelper.startVibrator(this);

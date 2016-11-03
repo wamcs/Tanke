@@ -65,7 +65,8 @@ public class HomeTabAdapter extends BaseRecyclerViewAdapter<HomeTabEntity> {
         myViewHolder.tvPlayerCountDiretionRun.setText(gameEntity.player_num + "人在玩");
         myViewHolder.tvPlayerCountOnlinePlayable.setText(gameEntity.player_num + "人在玩");
         myViewHolder.tvPlayerCountNearGame.setText(gameEntity.player_num + "人在玩");
-        Glide.with(context).load(gameEntity.pic).error(R.drawable.default_pic).into(myViewHolder.imageView);
+        Glide.with(context).load(gameEntity.pic).error(R.drawable.default_pic).placeholder(R.drawable.default_pic)
+                .into(myViewHolder.imageView);
         myViewHolder.ratingBar.setRating(gameEntity.difficulty);
         if (gameEntity.tag == null || TextUtils.isEmpty(gameEntity.tag)) {
             myViewHolder.tvCompetitonTag.setVisibility(View.GONE);

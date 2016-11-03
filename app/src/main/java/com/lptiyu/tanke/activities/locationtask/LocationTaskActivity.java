@@ -7,7 +7,7 @@ import android.content.pm.PackageManager;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
-import android.util.Log;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
@@ -20,16 +20,17 @@ import com.amap.api.maps.TextureMapView;
 import com.amap.api.maps.UiSettings;
 import com.amap.api.maps.model.BitmapDescriptorFactory;
 import com.amap.api.maps.model.CameraPosition;
+import com.amap.api.maps.model.CircleOptions;
 import com.amap.api.maps.model.LatLng;
 import com.amap.api.maps.model.Marker;
 import com.amap.api.maps.model.MarkerOptions;
 import com.lptiyu.tanke.R;
 import com.lptiyu.tanke.RunApplication;
+import com.lptiyu.tanke.activities.gameover.GameOverActivity;
 import com.lptiyu.tanke.entity.Point;
 import com.lptiyu.tanke.entity.Task;
 import com.lptiyu.tanke.entity.UploadGameRecord;
-import com.lptiyu.tanke.entity.eventbus.NotifyGamePlayingV2RefreshData;
-import com.lptiyu.tanke.entity.eventbus.NotifyPointTaskV2RefreshData;
+import com.lptiyu.tanke.entity.eventbus.GamePointTaskStateChanged;
 import com.lptiyu.tanke.entity.response.UpLoadGameRecordResult;
 import com.lptiyu.tanke.enums.PlayStatus;
 import com.lptiyu.tanke.enums.PointTaskStatus;
@@ -38,7 +39,6 @@ import com.lptiyu.tanke.global.AppData;
 import com.lptiyu.tanke.global.Conf;
 import com.lptiyu.tanke.mybase.MyBaseActivity;
 import com.lptiyu.tanke.utils.DistanceFormatUtils;
-import com.lptiyu.tanke.utils.GameOverHelper;
 import com.lptiyu.tanke.utils.LocationHelper;
 import com.lptiyu.tanke.utils.NetworkUtil;
 import com.lptiyu.tanke.utils.PopupWindowUtils;
@@ -72,36 +72,37 @@ public class LocationTaskActivity extends MyBaseActivity implements LocationTask
     private Point point;
     private boolean isPointOver;
     private Task task;
-    private final int DISTANCE_OFFSET = 60;
+    private final int DISTANCE_OFFSET = 100;
+    private final int RADIUS = 200;
     private LocationTaskPresenter presenter;
     private String[] latLong;
     private boolean isToastShow = true;
-    private AMap aMap;
-
+    private AMap map;
     private UpLoadGameRecordResult resultRecord;
-
     private TaskResultHelper taskResultHelper;
-
     private final double ERROR_LOCATION_RETURN = 4.9E-324;
     private AlertDialog permissionDialog;
     private LocationHelper locationHelper;
     private int index;
     private boolean isStop;
-    private int ZOOM_VALUE = 16;
+    private int ZOOM_VALUE = 17;
     private Marker marker;
     private boolean isGameOver;
+    private LatLng pwdLatlng;
+    private boolean isFirstEnter = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_location_task);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         ButterKnife.bind(this);
         textureMapView.onCreate(savedInstanceState);
-        if (aMap == null) {
-            aMap = textureMapView.getMap();
+        if (map == null) {
+            map = textureMapView.getMap();
         }
-        UiSettings uiSettings = aMap.getUiSettings();
-        uiSettings.setAllGesturesEnabled(false);//不支持任何手势
+        UiSettings uiSettings = map.getUiSettings();
+        uiSettings.setAllGesturesEnabled(true);
         uiSettings.setZoomControlsEnabled(false);
         uiSettings.setCompassEnabled(false);
         uiSettings.setLogoLeftMargin(-200);
@@ -124,8 +125,7 @@ public class LocationTaskActivity extends MyBaseActivity implements LocationTask
 
     private void setActivityResult() {
         //发通知销毁PointTaskV2Activity，GamePlayingV2Activity刷新数据
-        EventBus.getDefault().post(new NotifyPointTaskV2RefreshData());
-        EventBus.getDefault().post(new NotifyGamePlayingV2RefreshData());
+        EventBus.getDefault().post(new GamePointTaskStateChanged());
         finish();
     }
 
@@ -140,6 +140,13 @@ public class LocationTaskActivity extends MyBaseActivity implements LocationTask
         index = getIntent().getIntExtra(Conf.INDEX, -1);
         index = getIntent().getIntExtra(Conf.INDEX, -1);
         latLong = task.pwd.split(",");
+        if (latLong == null || latLong.length <= 1) {//必定同时包含经度和纬度
+            ToastUtil.TextToast("目标位置不存在");
+            return;
+        }
+        pwdLatlng = new LatLng(Double.parseDouble(latLong[1]), Double.parseDouble(latLong[0]));
+        //绘制大致区域
+        drawTargetArea();
 
         presenter = new LocationTaskPresenter(this);
 
@@ -171,10 +178,26 @@ public class LocationTaskActivity extends MyBaseActivity implements LocationTask
         }
     }
 
+    private void drawTargetArea() {
+        map.addCircle(new CircleOptions().center(pwdLatlng).radius(RADIUS).fillColor(R.color.colorPrimary)
+                .strokeColor(R.color.colorPrimary).strokeWidth(1));
+    }
+
     //地图中心移动到指定位置
     private void moveToLocation(LatLng latLng) {
-        CameraPosition cameraPosition = new CameraPosition(latLng, ZOOM_VALUE, 0, 0);
-        aMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition), 1000, null);
+        float zoom = map.getCameraPosition().zoom;//第一次会默认返回北京天安门的数据,zoom=10.0
+        if (zoom > 9.99999 && zoom < 10.00001) {
+            zoom = 16f;
+        }
+        int duration = 1;
+        if (isFirstEnter) {
+            duration = 1;
+            isFirstEnter = false;
+        } else {
+            duration = 1000;
+        }
+        map.animateCamera(CameraUpdateFactory.newCameraPosition(new CameraPosition(latLng, zoom, 0, 0)), duration,
+                null);
     }
 
     private void handleLocationResult(AMapLocation location) {
@@ -184,11 +207,11 @@ public class LocationTaskActivity extends MyBaseActivity implements LocationTask
         }
         addMarker(latLng);
         moveToLocation(latLng);
-        if (Accounts.getPhoneNumber() != null && Accounts.getPhoneNumber().equals("18272164317")) {
-            upLoadGameRecord();
-            locationHelper.stopLocation();
-            return;
-        }
+        //        if (Accounts.getPhoneNumber() != null && Accounts.getPhoneNumber().equals("18272164317")) {
+        //            upLoadGameRecord();
+        //            locationHelper.stopLocation();
+        //            return;
+        //        }
         if (isStop) {
             return;
         }
@@ -196,7 +219,6 @@ public class LocationTaskActivity extends MyBaseActivity implements LocationTask
         latitude = location.getLatitude();
         //经度
         longitude = location.getLongitude();
-        Log.i("jason", "定位信息latitude：" + latitude + ", longtitude:" + longitude);
         if (latitude == ERROR_LOCATION_RETURN || longitude == ERROR_LOCATION_RETURN) {
             isStop = true;
             showPermissionFailTip();
@@ -218,7 +240,7 @@ public class LocationTaskActivity extends MyBaseActivity implements LocationTask
                 .drawable.locate_orange)));
         // 将Marker设置为贴地显示，可以双指下拉看效果
         currentMarkerOptions.setFlat(true);
-        marker = aMap.addMarker(currentMarkerOptions);
+        marker = map.addMarker(currentMarkerOptions);
     }
 
     private void showPermissionFailTip() {
@@ -264,12 +286,7 @@ public class LocationTaskActivity extends MyBaseActivity implements LocationTask
     }
 
     private void checkLocation() {
-        if (latLong == null || latLong.length <= 1) {//必定同时包含经度和纬度
-            ToastUtil.TextToast("目标位置不存在");
-            return;
-        }
-        double distance = AMapUtils.calculateLineDistance(new LatLng(latitude, longitude), new LatLng(Double
-                .parseDouble(latLong[1]), Double.parseDouble(latLong[0])));
+        double distance = AMapUtils.calculateLineDistance(new LatLng(latitude, longitude), pwdLatlng);
         if (distance <= DISTANCE_OFFSET) {
             //验证成功，上传游戏记录
             isStop = true;
@@ -278,7 +295,7 @@ public class LocationTaskActivity extends MyBaseActivity implements LocationTask
             loadNetWorkData();
         } else {
             if (isToastShow) {
-                ToastUtil.TextToast("您距离目标点" + DistanceFormatUtils.formatMeterToKiloMeter(distance) + "公里");
+                ToastUtil.TextToast("您距离地图上的目标区域" + DistanceFormatUtils.formatMeterToKiloMeter(distance) + "公里");
             }
         }
     }
@@ -328,14 +345,8 @@ public class LocationTaskActivity extends MyBaseActivity implements LocationTask
         if (response.game_statu == PlayStatus.GAME_OVER) {//游戏通关，需要弹出通关视图，弹出通关视图
             isGameOver = true;
             taskResultHelper.hidePopup();
-            //TODO 弹出通关视图
-            GameOverHelper gameOverHelper = new GameOverHelper(this, new GameOverHelper.OnPopupWindowDismissCallback() {
-                @Override
-                public void onDismiss() {
-                    setActivityResult();
-                }
-            });
-            gameOverHelper.showPopup();
+            startActivity(new Intent(LocationTaskActivity.this, GameOverActivity.class));
+            finish();
         }
         //震动提示
         VibratorHelper.startVibrator(this);

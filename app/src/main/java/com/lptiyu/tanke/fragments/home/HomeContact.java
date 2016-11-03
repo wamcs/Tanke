@@ -13,6 +13,8 @@ public class HomeContact {
     public interface IHomePresenter extends IBasePresenter {
         void firstLoadBannerAndHot();
 
+        void reloadBannerAndHot();
+
         void loadSort();
     }
 
@@ -20,5 +22,7 @@ public class HomeContact {
         void successFirstLoadBannerAndHot(HomeBannerAndHot homeBannerAndHot);
 
         void successLoadSort(HomeSortList homeSortList);
+
+        void successReloadBannerAndHot(HomeBannerAndHot homeBannerAndHot);
     }
 }

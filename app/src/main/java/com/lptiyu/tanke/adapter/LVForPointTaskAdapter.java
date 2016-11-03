@@ -2,9 +2,11 @@ package com.lptiyu.tanke.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.BaseAdapter;
@@ -16,7 +18,6 @@ import com.lptiyu.tanke.entity.Task;
 import com.lptiyu.tanke.enums.TaskType;
 import com.lptiyu.tanke.global.Conf;
 import com.lptiyu.tanke.utils.WebViewUtils;
-import com.lptiyu.tanke.widget.CustomTextView;
 
 import java.util.List;
 
@@ -30,24 +31,16 @@ public class LVForPointTaskAdapter extends BaseAdapter {
     private List<Task> list_tasks;
     private Context context;
     private LayoutInflater inflater;
-    //  private ArrayList<TaskRecord> list_task_record;
-    private int count = 0;
 
     public LVForPointTaskAdapter(Context context, List<Task> list_tasks) {
         this.list_tasks = list_tasks;
         this.context = context;
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
-        for (Task task : list_tasks) {
-            //            if (task.status == PointTaskStatus.FINISHED || task.status == PointTaskStatus.PLAYING) {
-            //                count++;
-            //            }
-        }
     }
 
     @Override
     public int getCount() {
-        return count;
+        return list_tasks == null ? 0 : list_tasks.size();
     }
 
     @Override
@@ -75,14 +68,6 @@ public class LVForPointTaskAdapter extends BaseAdapter {
         WebViewUtils.setWebView(context, vh.webView);
         vh.webView.loadData(task.content, "text/html;charset=UTF-8", null);
 
-
-        //修改适合的字体，避免因为系统的设置，导致字体过大或过小
-        //        int j = wSet.getDefaultFixedFontSize();
-        //        if(j < 15)
-        //            j=15;
-        //        wSet.setDefaultFontSize(j);
-        //        wSet.setMinimumFontSize(j);
-
         // 特别要注意这行代码,意思是在js中条用android中的第一个参数的实际名字。这里第一个参数是this。
         //也就是本类的实例。imgelistener是本类的实例在js中的名字。
         // 也就是说你要在js中调用MainActivity这个类中的方法的话就必须给MainActivity这个类在js中的名字，
@@ -90,88 +75,47 @@ public class LVForPointTaskAdapter extends BaseAdapter {
         vh.webView.addJavascriptInterface(this, "imagelistner");
         final ViewHolder finalVh = vh;
         vh.webView.setWebViewClient(new WebViewClient() {
-
-            /*
-            public  void onPageStarted(WebView view, String url, Bitmap favicon)
-            {
-                // 防止双击内容缩小
-                finalVh.webView.loadUrl("javascript:(function(){"
-                + "var cssString=\"p{line-height: 40px;color:#ff0000;}\""
-               + "var style=document.createElement(\"style\");"
-               + "style.setAttribute(\"type\", \"text/css\");"
-               + "if(style.styleSheet){"
-               + "  style.styleSheet.cssText = cssString;"
-               +" } else {"
-               +"     var cssText = document.createTextNode(cssString);"
-               +"    style.appendChild(cssText);"
-               +" }"
-                + "document.getElementsByTagName('head')[0].appendChild(style); "
-
-                + "var oMeta = document.createElement('meta'); "
-                        + "oMeta.name = \"viewport\"; "
-                        + "oMeta.content = \"initial-scale=1.0, user-scalable=no\"; "
-                        + "document.getElementsByTagName('head')[0].appendChild(oMeta); "
-                        + "})()");
-
-            }
-            */
-
             @Override
             public void onPageFinished(WebView view, String url) {
-                // 注入js函数监听  更改行间距和字体颜色
+                // 注入js函数监听  更改行间距和字体颜色以及图片宽高
                 finalVh.webView.loadUrl("javascript:(function(){"
                         + "var p = document.getElementsByTagName(\"p\"); "
-                        + "for(var j=0;j<p.length;j++)  " + "{"
+                        + "for(var j=0;j<p.length;j++) {"
                         + "p[j].style.lineHeight=\"1.8\";"
                         + "p[j].style.color=\"#666666\";}"
                         + "var objs = document.getElementsByTagName(\"img\"); "
-                        + "for(var i=0;i<objs.length;i++)  " + "{"
+                        + "for(var i=0;i<objs.length;i++) {"
+                        + "var url =  objs[i].src.replace(\"_thumbs/Images\",\"images\"); "
+                        + "var img = new Image();"
+                        + "img.src = url;"
                         + "objs[i].style.width=document.documentElement.clientWidth;"
-                        + "    objs[i].onclick=function()  " + "    {  "
-                        + "        var url =  this.src.replace(\"_thumbs/Images\",\"images\"); "
+                        + "var rate =parseFloat(img.height)/parseFloat(img.width);"
+                        + "objs[i].style.height=document.documentElement.clientWidth*rate;"
+                        + "    objs[i].onclick=function() {  "
                         + "        window.imagelistner.openImage(url);  "
-                        + "    }  " + "}" + "})()");
+                        + "    }  }})()"
+                );
             }
         });
 
+        //        vh.webView.setVisibility(View.GONE);
+        //        vh.tvContent.setVisibility(View.GONE);
+        //        URLImageGetter imageGetter = new URLImageGetter(context, vh.tvContent);
+        //        vh.tvContent.setText(Html.fromHtml(task.content, imageGetter, null));
+        //        vh.tvContent.setMovementMethod(ScrollingMovementMethod.getInstance());//滚动
+        //        vh.tvContent.setMovementMethod(LinkMovementMethod.getInstance());//设置超链接可以打开网页
 
-        //        switch (task.status) {
-        //            case PointTaskStatus.UNSTARTED://未开启
-        //                vh.rlFinishInfo.setVisibility(View.GONE);
-        //                break;
-        //            case PointTaskStatus.PLAYING://正在玩
-        //                vh.rlFinishInfo.setVisibility(View.GONE);
-        //                break;
-        //            case PointTaskStatus.FINISHED://已完成
-        //            {
-        //                vh.rlFinishInfo.setVisibility(View.VISIBLE);
-        //
-        //                vh.ctvExp.setText("+" + task.exp);
-        //                if (task.ftime != null && task.ftime != "")
-        //                    vh.ctvFfinishTime.setText(task.ftime.substring(0, task.ftime.lastIndexOf(":")));
-        //            }
-        //        }
+        if (TextUtils.equals(task.exp, "") || task.exp == null) {
+            vh.rlMissionSuccess.setVisibility(View.GONE);
+        } else {
+            vh.rlMissionSuccess.setVisibility(View.VISIBLE);
+        }
 
         if (Integer.parseInt(task.type) == TaskType.FINISH) {
-            vh.rlFinishInfo.setVisibility(View.GONE);
+            vh.rlMissionSuccess.setVisibility(View.GONE);
         }
 
         return convertView;
-    }
-
-    static class ViewHolder {
-        @BindView(R.id.webView)
-        WebView webView;
-        @BindView(R.id.ctv_exp)
-        CustomTextView ctvExp;
-        @BindView(R.id.ctv_finish_time)
-        CustomTextView ctvFfinishTime;
-        @BindView(R.id.rl_finishInfo)
-        RelativeLayout rlFinishInfo;
-
-        ViewHolder(View view) {
-            ButterKnife.bind(this, view);
-        }
     }
 
     public void refresh(List<Task> list_tasks) {
@@ -179,14 +123,24 @@ public class LVForPointTaskAdapter extends BaseAdapter {
         notifyDataSetChanged();
     }
 
-    @android.webkit.JavascriptInterface
+    @JavascriptInterface
     public void openImage(String img) {
-        //        Toast.makeText(context, img, Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(context, TaskImageScaleActivity.class);
         intent.putExtra(Conf.TASK_IMG, img);
         context.startActivity(intent);
-        //        new AlertDialog.Builder(context).setMessage("图片被点击了").setNegativeButton("确定", null).setCancelable
-        // (true).show();
+    }
+
+    static class ViewHolder {
+        @BindView(R.id.webView)
+        WebView webView;
+        //        @BindView(R.id.tv_content)
+        //        TextView tvContent;
+        @BindView(R.id.rl_mission_success)
+        RelativeLayout rlMissionSuccess;
+
+        ViewHolder(View view) {
+            ButterKnife.bind(this, view);
+        }
     }
 }
 

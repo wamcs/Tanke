@@ -13,9 +13,20 @@ import java.util.List;
 public class HomeTabContact {
     public interface IHomeTabPresenter extends IBasePresenter {
         void firstLoadGameList(int cid);
+
+        void loadMoreGame(int cid);
+
+        void reloadGameList(int cid);
     }
 
     public interface IHomeTabView extends IBaseView {
         void successFirstLoadGameList(List<HomeTabEntity> list);
+
+        void successLoadMoreGame(List<HomeTabEntity> list);
+
+        void successReloadGame(List<HomeTabEntity> list);
+
+        void failLoadMoreGame(String errMsg);
+
     }
 }

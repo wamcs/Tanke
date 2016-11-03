@@ -2,27 +2,25 @@ package com.lptiyu.tanke.activities.imagedistinguish;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.Surface;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.lptiyu.tanke.R;
 import com.lptiyu.tanke.RunApplication;
-import com.lptiyu.tanke.entity.GameRecord;
+import com.lptiyu.tanke.activities.gameover.GameOverActivity;
 import com.lptiyu.tanke.entity.Point;
 import com.lptiyu.tanke.entity.Task;
 import com.lptiyu.tanke.entity.UploadGameRecord;
-import com.lptiyu.tanke.entity.eventbus.NotifyGamePlayingV2RefreshData;
-import com.lptiyu.tanke.entity.eventbus.NotifyPointTaskV2RefreshData;
+import com.lptiyu.tanke.entity.eventbus.GamePointTaskStateChanged;
 import com.lptiyu.tanke.entity.response.UpLoadGameRecordResult;
 import com.lptiyu.tanke.enums.PlayStatus;
 import com.lptiyu.tanke.enums.PointTaskStatus;
@@ -30,9 +28,9 @@ import com.lptiyu.tanke.global.Accounts;
 import com.lptiyu.tanke.global.AppData;
 import com.lptiyu.tanke.global.Conf;
 import com.lptiyu.tanke.mybase.MyBaseActivity;
-import com.lptiyu.tanke.utils.GameOverHelper;
 import com.lptiyu.tanke.utils.NetworkUtil;
 import com.lptiyu.tanke.utils.PopupWindowUtils;
+import com.lptiyu.tanke.utils.ScanNothingHelper;
 import com.lptiyu.tanke.utils.TaskResultHelper;
 import com.lptiyu.tanke.utils.ToastUtil;
 import com.lptiyu.tanke.utils.VibratorHelper;
@@ -46,7 +44,6 @@ import cn.easyar.engine.EasyAR;
 
 import static com.lptiyu.tanke.RunApplication.currentPoint;
 import static com.lptiyu.tanke.RunApplication.currentTask;
-import static com.lptiyu.tanke.RunApplication.gameRecord;
 
 public class ImageDistinguishActivity extends MyBaseActivity implements ImagedistinguishContact.ImagedistinguishView {
     /*
@@ -74,12 +71,11 @@ public class ImageDistinguishActivity extends MyBaseActivity implements Imagedis
     ImageView imgAnim;
     @BindView(R.id.img_waiting)
     ImageView img_waiting;
-    @BindView(R.id.tv_scanning_tip)
-    TextView tvScanningTip;
+    @BindView(R.id.rl_tip)
+    RelativeLayout rlScanningTip;
     @BindView(R.id.rl_submit_record)
     RelativeLayout rlSubmitRecord;
 
-    private boolean isOK = false;
     private ImagedistinguishPresenter presenter;
     private long gameId;
     private Point point;
@@ -89,6 +85,9 @@ public class ImageDistinguishActivity extends MyBaseActivity implements Imagedis
     private TaskResultHelper taskResultHelper;
     private int index;
     private boolean isGameOver;
+    private int countDownInterval = 1000;
+    private int millisInFuture = 5000;
+    private ScanNothingHelper scanNothingHelper;
 
     public static native void nativeInitGL();
 
@@ -113,6 +112,7 @@ public class ImageDistinguishActivity extends MyBaseActivity implements Imagedis
         MyC2Java.showContext = this;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_image_distinguish);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         ButterKnife.bind(this);
 
         init();
@@ -174,7 +174,6 @@ public class ImageDistinguishActivity extends MyBaseActivity implements Imagedis
         MyC2Java.setOnSuccessDistinguishListener(new MyC2Java.ISuccessDistinguishListener() {
             @Override
             public void onSuccess() {
-                isOK = true;
                 taskResultHelper.startAnim();
                 if (timer != null) {
                     timer.cancel();
@@ -216,7 +215,7 @@ public class ImageDistinguishActivity extends MyBaseActivity implements Imagedis
     }
 
     private void initTimerTask() {
-        timer = new MyCountDownTimer(7000, 1000, new MyCountDownTimer.ICountDownTimerListener() {
+        timer = new MyCountDownTimer(millisInFuture, countDownInterval, new MyCountDownTimer.ICountDownTimerListener() {
             @Override
             public void onTick(long millisUntilFinished) {
 
@@ -224,13 +223,17 @@ public class ImageDistinguishActivity extends MyBaseActivity implements Imagedis
 
             @Override
             public void onFinish() {
-                ToastUtil.TextToast("什么都没有发现，继续努力哦！");
-                if (!isOK) {
-                    if (timer == null) {
-                        initTimerTask();
-                    }
-                    timer.start();
+                stopScan();
+                if (scanNothingHelper == null) {
+                    scanNothingHelper = new ScanNothingHelper(ImageDistinguishActivity.this, new ScanNothingHelper
+                            .DismissCallback() {
+                        @Override
+                        public void onDismisss() {
+                            isScanning = !isScanning;
+                        }
+                    });
                 }
+                scanNothingHelper.show();
             }
         });
     }
@@ -238,8 +241,7 @@ public class ImageDistinguishActivity extends MyBaseActivity implements Imagedis
 
     private void setActivityResult() {
         //发通知销毁PointTaskV2Activity，GamePlayingV2Activity刷新数据
-        EventBus.getDefault().post(new NotifyPointTaskV2RefreshData());
-        EventBus.getDefault().post(new NotifyGamePlayingV2RefreshData());
+        EventBus.getDefault().post(new GamePointTaskStateChanged());
         finish();
     }
 
@@ -250,11 +252,12 @@ public class ImageDistinguishActivity extends MyBaseActivity implements Imagedis
                 finish();
                 break;
             case R.id.img_startScan:
-                if (Accounts.getPhoneNumber() != null && Accounts.getPhoneNumber().equals("18272164317")) {
-                    stopScan();
-                    loadNetWorkData();
-                    return;
-                }
+                //                if (Accounts.getPhoneNumber() != null && Accounts.getPhoneNumber().equals
+                // ("18272164317")) {
+                //                    stopScan();
+                //                    loadNetWorkData();
+                //                    return;
+                //                }
                 if (!isScanning) {
                     startScan();
                 } else {
@@ -273,7 +276,7 @@ public class ImageDistinguishActivity extends MyBaseActivity implements Imagedis
             ImageDistinguishActivity.nativeStopAr();
         }
         imgStartScan.setImageResource(R.drawable.img_start_distinguish);
-        tvScanningTip.setVisibility(View.GONE);
+        rlScanningTip.setVisibility(View.GONE);
     }
 
     private void startScan() {
@@ -284,7 +287,7 @@ public class ImageDistinguishActivity extends MyBaseActivity implements Imagedis
 
         ImageDistinguishActivity.nativeStartAr();
         imgStartScan.setImageResource(R.drawable.img_distinguish);
-        tvScanningTip.setVisibility(View.VISIBLE);
+        rlScanningTip.setVisibility(View.VISIBLE);
     }
 
     private boolean isScanning = false;
@@ -322,14 +325,8 @@ public class ImageDistinguishActivity extends MyBaseActivity implements Imagedis
         if (response.game_statu == PlayStatus.GAME_OVER) {//游戏通关，需要弹出通关视图，弹出通关视图
             isGameOver = true;
             taskResultHelper.hidePopup();
-            //TODO 弹出通关视图
-            GameOverHelper gameOverHelper = new GameOverHelper(this, new GameOverHelper.OnPopupWindowDismissCallback() {
-                @Override
-                public void onDismiss() {
-                    setActivityResult();
-                }
-            });
-            gameOverHelper.showPopup();
+            startActivity(new Intent(ImageDistinguishActivity.this, GameOverActivity.class));
+            finish();
         }
         //震动提示
         VibratorHelper.startVibrator(this);

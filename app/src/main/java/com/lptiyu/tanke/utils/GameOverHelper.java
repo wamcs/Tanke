@@ -3,6 +3,7 @@ package com.lptiyu.tanke.utils;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Handler;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,11 +30,23 @@ public class GameOverHelper implements View.OnClickListener {
     private ProgressBar progressBar_exp;
     private TextView tv_redWallet;
     private OnPopupWindowDismissCallback callback;
+    private Handler handler = new Handler();
+    private int MAX_PROGRESS = 1000;
+    private TextView tv_add_exp;
+    private TextView tv_add_score;
 
     public GameOverHelper(Context context, OnPopupWindowDismissCallback callback) {
         this.context = context;
         this.callback = callback;
         initPopupwindow();
+    }
+
+    public void bindData(String gameName, String gameIntroduction, String score, String exp, String redWallet) {
+        tv_gameName.setText(gameName + "");
+        tv_gameIntroduction.setText(gameIntroduction + "");
+        tv_add_score.setText(score + "");
+        tv_add_exp.setText(exp + "");
+        tv_redWallet.setText(redWallet + "");
     }
 
     private void initPopupwindow() {
@@ -47,6 +60,8 @@ public class GameOverHelper implements View.OnClickListener {
         tv_gameIntroduction = (TextView) popupView.findViewById(R.id.tv_game_introduction);
         progressBar_score = (ProgressBar) popupView.findViewById(R.id.progressBar_score_value);
         progressBar_exp = (ProgressBar) popupView.findViewById(R.id.progressBar_exp_value);
+        tv_add_score = (TextView) popupView.findViewById(R.id.tv_add_score);
+        tv_add_exp = (TextView) popupView.findViewById(R.id.tv_add_exp);
         tv_redWallet = (TextView) popupView.findViewById(R.id.tv_red_wallet_value);
         ImageView img_wechatShare = (ImageView) popupView.findViewById(R.id.img_wechat_share);
         ImageView img_qq = (ImageView) popupView.findViewById(R.id.img_qq_share);
@@ -65,23 +80,59 @@ public class GameOverHelper implements View.OnClickListener {
         });
     }
 
-    public void showPopup() {
+    private int progress = 0;
 
+    public void showPopup() {
         if (popupView != null && popupWindow != null) {
             popupWindow.showAtLocation(popupView, Gravity.CENTER, 0, 0);
+        }
+        progressBar_exp.setMax(MAX_PROGRESS);
+        progressBar_score.setMax(MAX_PROGRESS);
+        progress = 0;
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while (progress <= MAX_PROGRESS) {
+                    try {
+                        Thread.sleep(1);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            progressBar_exp.setProgress(progress);
+                            progressBar_score.setProgress(progress);
+                            progress++;
+                        }
+                    });
+                }
+            }
+        }).start();
+    }
+
+    public void hidePopup() {
+        if (popupWindow != null && popupWindow.isShowing()) {
+            popupWindow.dismiss();
         }
     }
 
     @Override
     public void onClick(View v) {
+        String imgUrl = "http://www.lptiyu.com/images/phone.png";
+        String shareUrl = "http://www.lptiyu.com/images/phone.png";
         switch (v.getId()) {
             case R.id.img_close:
+                hidePopup();
                 break;
             case R.id.img_wechat_share:
+                ShareHelper.share(ShareHelper.SHARE_WECHAT_FRIENDS, "测试", "测试", imgUrl, shareUrl);
                 break;
             case R.id.img_qq_share:
+                ShareHelper.share(ShareHelper.SHARE_QQ, "测试", "测试", imgUrl, shareUrl);
                 break;
             case R.id.img_wechat_moment_share:
+                ShareHelper.share(ShareHelper.SHARE_WECHAT_CIRCLE, "测试", "测试", imgUrl, shareUrl);
                 break;
         }
     }

@@ -5,7 +5,7 @@
     android:id="@+id/ptScrollView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.lptiyu.tanke.activities.gamedetailv2.GameDetailV2Activity">
+    tools:context="com.lptiyu.tanke.activities.gamedetail.GameDetailActivity">
 
     <RelativeLayout
         android:id="@+id/rl_enterOrAbandonGame"
@@ -14,17 +14,17 @@
         android:layout_alignParentBottom="true"
         android:background="@color/white10">
 
-        <Button
+        <TextView
             android:id="@+id/tv_enter_game"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
-            android:background="@drawable/selector_button"
+            android:background="@drawable/selector_textview"
             android:gravity="center"
             android:padding="10dp"
             android:text="进入游戏"
             android:textColor="@color/white10"
-            android:textSize="16sp"/>
+            android:textSize="20sp"/>
     </RelativeLayout>
 
 

@@ -27,16 +27,13 @@ public class UpdateHelper {
     private TextDialog mNotifyUpdateDialog;
 
     private String apkUrl;
-    //    private DownloadHelper downloadHelper;
     private WeakReference<Context> weakReference;
-    private APKDownloader apkDownloader;
     private int versionCode;
     private String versionName;
 
     public UpdateHelper(Context context) {
         weakReference = new WeakReference<>(context);
         initDialog();
-        //        downloadHelper = new DownloadHelper(context);
     }
 
     public void checkForUpdate() {
@@ -81,7 +78,6 @@ public class UpdateHelper {
     private boolean isMust = false;
 
     private void showChooseUpdateDialog(String oldVersionName, String newVersionName) {
-        //        mNotifyUpdateDialog.show(String.format("当前版本号：%s\n新版本号：%s", oldVersionName, newVersionName));
         isMust = false;
         mNotifyUpdateDialog.show(String.format("检测到新版本：%s", newVersionName));
     }
@@ -99,8 +95,7 @@ public class UpdateHelper {
             mNotifyUpdateDialog.setmListener(new TextDialog.OnTextDialogButtonClickListener() {
                 @Override
                 public void onPositiveClicked() {
-                    //                    downloadHelper.startDownload(apkUrl);
-                    apkDownloader = new APKDownloader(weakReference.get(), apkUrl, versionCode);
+                    new APKDownloader(weakReference.get(), apkUrl, versionCode);
                     mNotifyUpdateDialog.dismiss();
                 }
 

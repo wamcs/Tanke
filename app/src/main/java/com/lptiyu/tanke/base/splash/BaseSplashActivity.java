@@ -12,10 +12,9 @@ import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.lptiyu.tanke.MainActivity;
 import com.lptiyu.tanke.R;
-import com.lptiyu.tanke.base.controller.ActivityController;
-import com.lptiyu.tanke.base.ui.BaseActivity;
-import com.lptiyu.tanke.initialization.ui.GuideActivity;
-import com.lptiyu.tanke.initialization.ui.LoginActivity;
+import com.lptiyu.tanke.activities.initialization.ui.GuideActivity;
+import com.lptiyu.tanke.activities.initialization.ui.LoginActivity;
+import com.lptiyu.tanke.mybase.MyBaseActivity;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -33,7 +32,7 @@ import rx.schedulers.Schedulers;
  *
  * @author ldx
  */
-public abstract class BaseSplashActivity extends BaseActivity {
+public abstract class BaseSplashActivity extends MyBaseActivity {
 
     private File imageFile;
 
@@ -49,16 +48,11 @@ public abstract class BaseSplashActivity extends BaseActivity {
         process();
     }
 
-    protected void configSplashView(ImageView splashView) {
-        splashView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-    }
-
     private void init() {
         imageFile = createStorageFile();
         if (imageFile == null) {
             throw new IllegalStateException("SplashActivity : splash file create failed.");
         }
-        //    configSplashView(splashView);
         splashView.setScaleType(ImageView.ScaleType.CENTER_CROP);
     }
 
@@ -70,18 +64,6 @@ public abstract class BaseSplashActivity extends BaseActivity {
             Glide.with(this).load(imageFile).error(R.drawable.bg_splash).into(splashView);
             smoothStartNext();
         }
-
-        //    fetchSplashUrl()
-        //        .subscribeOn(Schedulers.io())
-        //        .observeOn(AndroidSchedulers.mainThread())
-        //        .subscribe(playing SaveAction(getBaseContext(), imageFile), playing Action1<Throwable>() {
-        //          @Override
-        //          public void call(Throwable throwable) {
-        //            if (imageFile.delete()) {
-        //              Timber.e("Delete file failed.");
-        //            }
-        //          }
-        //        });
     }
 
     protected void smoothStartNext() {
@@ -91,18 +73,6 @@ public abstract class BaseSplashActivity extends BaseActivity {
         } else {
             intent.setClass(this, LoginActivity.class);
         }
-        //    splashView
-        //        .animate()
-        //        .scaleX(1.2f)
-        //        .scaleY(1.2f)
-        //        .setDuration(3000)
-        //        .setListener(new SimpleAnimatorListener() {
-        //          @Override
-        //          public void onAnimationEnd(Animator animation) {
-        //        startActivity(intent);
-        //        overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
-        //          }
-        //        });
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -126,17 +96,9 @@ public abstract class BaseSplashActivity extends BaseActivity {
         return imageFile = new File(getCacheDir(), "splash.jpg");
     }
 
-    protected abstract Observable<String> fetchSplashUrl();
-
     protected abstract boolean isFirstInApp();
 
     protected abstract boolean isAccountsValid();
-
-    @Override
-    public ActivityController getController() {
-        return null;
-    }
-
 
     protected static class SimpleSaveTarget extends SimpleTarget<Bitmap> {
 

@@ -60,7 +60,7 @@ public class HomeHotRecyclerViewAdapter extends BaseRecyclerViewAdapter<Recommen
             myViewHolder.tvTag.setVisibility(View.GONE);
         } else {
             myViewHolder.tvTag.setVisibility(View.VISIBLE);
-            myViewHolder.tvTag.setTag(recommend.address_short);
+            myViewHolder.tvTag.setText(recommend.address_short + "");
         }
     }
 

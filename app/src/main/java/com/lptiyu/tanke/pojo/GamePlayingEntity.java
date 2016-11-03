@@ -4,6 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.google.gson.annotations.SerializedName;
+import com.lptiyu.tanke.entity.BaseEntity;
 
 /**
  * EMAIL : danxionglei@foxmail.com
@@ -11,99 +12,33 @@ import com.google.gson.annotations.SerializedName;
  *
  * @author ldx
  */
-public class GamePlayingEntity implements Parcelable {
+public class GamePlayingEntity extends BaseEntity implements Parcelable {
     @SerializedName("game_id")
-    private long gameId;
+    public long gameId;
 
     @SerializedName("img")
-    private String img;
+    public String img;
 
     @SerializedName("name")
-    private String name;
+    public String name;
 
     // 0: 上次玩的
     // 1: 正在进行的
     //TODO 上次玩的和正在进行的，需不需要区分
     @SerializedName("type")
-    private int type;
+    public int type;
 
     @SerializedName("num")
-    private int num;
+    public int num;
 
     @SerializedName("set")
-    private float progress;
-
+    public float progress;
 
     @SerializedName("states")
-    private int states;
+    public int states;
 
     @SerializedName("is_del")
-    private int is_del;
-
-    public long getIsdel() {
-        return is_del;
-    }
-
-    public void setIsdel(int is_del) {
-        this.is_del = is_del;
-    }
-
-    public long getStates() {
-        return states;
-    }
-
-    public void setStates(int states) {
-        this.states = states;
-    }
-
-
-    public long getGameId() {
-        return gameId;
-    }
-
-    public void setGameId(long gameId) {
-        this.gameId = gameId;
-    }
-
-    public String getImg() {
-        return img;
-    }
-
-    public void setImg(String img) {
-        this.img = img;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public int getType() {
-        return type;
-    }
-
-    public void setType(int type) {
-        this.type = type;
-    }
-
-    public int getNum() {
-        return num;
-    }
-
-    public void setNum(int num) {
-        this.num = num;
-    }
-
-    public float getProgress() {
-        return progress;
-    }
-
-    public void setProgress(float progress) {
-        this.progress = progress;
-    }
+    public int is_del;
 
     @Override
     public int describeContents() {

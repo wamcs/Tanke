@@ -57,7 +57,8 @@ public class PointListAdapter extends BaseRecyclerViewAdapter<Point> {
         Point point = list.get(position);
         ViewHolder vh = (ViewHolder) holder;
         vh.tvPointName.setText(point.point_title + "");
-        Glide.with(context).load(point.point_img).error(R.drawable.default_pic).into(vh.img);
+        Glide.with(context).load(point.point_img).error(R.drawable.default_pic).placeholder(R.drawable.default_pic)
+                .into(vh.img);
 
         switch (point.status) {
             case PointTaskStatus.UNSTARTED://未开启
@@ -68,12 +69,14 @@ public class PointListAdapter extends BaseRecyclerViewAdapter<Point> {
                 break;
             case PointTaskStatus.PLAYING://正在玩
                 vh.tvPointName.setText(point.point_title);
-                if (point.isNew) {
-                    vh.imgLabel.setVisibility(View.VISIBLE);
-                    vh.imgLabel.setImageResource(R.drawable.playing);
-                } else {
-                    vh.imgLabel.setVisibility(View.GONE);
-                }
+                vh.imgLabel.setVisibility(View.VISIBLE);
+                vh.imgLabel.setImageResource(R.drawable.playing);
+                //                if (point.isNew) {
+                //                    vh.imgLabel.setVisibility(View.VISIBLE);
+                //                    vh.imgLabel.setImageResource(R.drawable.playing);
+                //                } else {
+                //                    vh.imgLabel.setVisibility(View.GONE);
+                //                }
                 vh.imgLock.setVisibility(View.GONE);
                 vh.imgTransparent.setVisibility(View.GONE);
                 break;

@@ -8,7 +8,7 @@ import org.xutils.http.RequestParams;
  * Created by Jason on 2016/10/14.
  */
 
-public class BasePresenter {
+public abstract class BasePresenter {
     public RequestParams params;
 
     public BasePresenter(String url) {

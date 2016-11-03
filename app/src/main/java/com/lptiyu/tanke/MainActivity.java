@@ -2,15 +2,21 @@ package com.lptiyu.tanke;
 
 import android.os.Bundle;
 import android.support.annotation.IntDef;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.widget.ImageView;
 
 import com.amap.api.location.AMapLocation;
-import com.lptiyu.tanke.base.controller.ActivityController;
-import com.lptiyu.tanke.base.ui.BaseActivity;
 import com.lptiyu.tanke.entity.response.SignUpResponse;
+import com.lptiyu.tanke.fragments.home.HomeFragment;
+import com.lptiyu.tanke.fragments.messagesystem.MessageFragment;
 import com.lptiyu.tanke.global.Accounts;
+import com.lptiyu.tanke.mybase.MyBaseActivity;
+import com.lptiyu.tanke.update.UpdateHelper;
+import com.lptiyu.tanke.userCenter.UserCenterFragment;
 import com.lptiyu.tanke.utils.LocationHelper;
 import com.lptiyu.tanke.utils.LogUtils;
+import com.lptiyu.tanke.utils.NetworkUtil;
 import com.lptiyu.tanke.utils.PopupWindowUtils;
 import com.lptiyu.tanke.utils.ToastUtil;
 import com.lptiyu.tanke.utils.xutils3.RequestParamsHelper;
@@ -24,38 +30,36 @@ import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
+import java.util.ArrayList;
 import java.util.Calendar;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
-public class MainActivity extends BaseActivity {
+public class MainActivity extends MyBaseActivity {
 
-    MainActivityController mController;
-
-    /**
-     * Init value is a non-zero value, and then will be set to value.
-     */
     public int mCurrentIndex = 2;
-
     @BindView(R.id.page_1)
     ImageView tab1;
-
     @BindView(R.id.page_2)
     ImageView tab2;
-
     @BindView(R.id.page_3)
     ImageView tab3;
+
+    private LocationHelper locationHelper;
+    ArrayList<Fragment> fragments = new ArrayList<>(3);
+    private UpdateHelper updateHelper;
+    Fragment mCurrentFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-        mController = new MainActivityController(this, getWindow().getDecorView());
 
         //定位当前城市和经纬度
-        LocationHelper locationHelper = new LocationHelper(this, new LocationHelper.OnLocationResultListener() {
+        locationHelper = new LocationHelper(this, new LocationHelper.OnLocationResultListener() {
             @Override
             public void onLocationChanged(AMapLocation aMapLocation) {
                 Accounts.setCity(aMapLocation.getCity());
@@ -68,14 +72,8 @@ public class MainActivity extends BaseActivity {
             }
         });
         locationHelper.setOnceLocation(true);
-        locationHelper.startLocation();
-        getWindow().getDecorView().post(new Runnable() {
-            @Override
-            public void run() {
-                init();
-                signUp();
-            }
-        });
+        initTab();
+        signUpAndStartLocation();
     }
 
     private void signUp() {
@@ -88,6 +86,26 @@ public class MainActivity extends BaseActivity {
             if (!Accounts.isSignUp()) {
                 signIn(Accounts.getId());
             }
+        }
+    }
+
+    private void signUpAndStartLocation() {
+        if (NetworkUtil.checkIsNetworkConnected()) {
+            locationHelper.startLocation();
+            signUp();
+        } else {
+            getWindow().getDecorView().post(new Runnable() {
+                @Override
+                public void run() {
+                    PopupWindowUtils.getInstance().showNetExceptionPopupwindow(MainActivity.this, new PopupWindowUtils
+                            .OnRetryCallback() {
+                        @Override
+                        public void onRetry() {
+                            signUpAndStartLocation();
+                        }
+                    });
+                }
+            });
         }
     }
 
@@ -109,15 +127,6 @@ public class MainActivity extends BaseActivity {
                 ToastUtil.TextToast(errorMsg);
             }
         }, SignUpResponse.class);
-    }
-
-    @Override
-    public ActivityController getController() {
-        return mController;
-    }
-
-    private void init() {
-        selectTab(0);
     }
 
     @IntDef({0, 1, 2})
@@ -143,6 +152,71 @@ public class MainActivity extends BaseActivity {
         } else {
             view.setImageResource(resUnselected);
         }
+    }
+
+    private long exitTime = 0;
+
+    @Override
+    public void onBackPressed() {
+        if ((System.currentTimeMillis() - exitTime) > 2000) {
+            ToastUtil.TextToast(getString(R.string.exit));
+            exitTime = System.currentTimeMillis();
+        } else {
+            RunApplication.getInstance().AppExit();
+        }
+    }
+
+    private void initTab() {
+        fragments.add(new HomeFragment());
+        fragments.add(new MessageFragment());
+        fragments.add(new UserCenterFragment());
+        changeTab(0);
+        updateHelper = new UpdateHelper(this);
+        updateHelper.checkForUpdate();
+        selectTab(0);
+    }
+
+    @OnClick(R.id.page_1)
+    public void page_1() {
+        changeTab(0);
+    }
+
+    @OnClick(R.id.page_2)
+    public void page_2() {
+        changeTab(1);
+    }
+
+    @OnClick(R.id.page_3)
+    public void page_3() {
+        changeTab(2);
+    }
+
+    private void changeTab(@MainActivity.page int index) {
+        if (index == mCurrentIndex) {
+            return;
+        }
+        selectTab(index);
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        //判断当前的Fragment是否为空，不为空则隐藏
+        if (null != mCurrentFragment) {
+            ft.hide(mCurrentFragment);
+        }
+        //先根据Tag从FragmentTransaction事物获取之前添加的Fragment
+        Fragment fragment = getSupportFragmentManager().findFragmentByTag(
+                fragments.get(index).getClass().getName());
+        if (null == fragment) {
+            //如fragment为空，则之前未添加此Fragment。便从集合中取出
+            fragment = fragments.get(index);
+        }
+        mCurrentFragment = fragment;
+        mCurrentIndex = index;
+        //判断此Fragment是否已经添加到FragmentTransaction事物中
+        if (!fragment.isAdded()) {
+            ft.add(R.id.fragment_container, fragment, fragment.getClass().getName());
+        } else {
+            ft.show(fragment);
+        }
+        ft.commit();
     }
 }
 

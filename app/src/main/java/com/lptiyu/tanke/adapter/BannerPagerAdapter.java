@@ -9,20 +9,20 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.lptiyu.tanke.R;
+import com.lptiyu.tanke.RunApplication;
 import com.lptiyu.tanke.activities.bannerdetail.BannerDetailActivity;
+import com.lptiyu.tanke.activities.gamedetail.GameDetailActivity;
 import com.lptiyu.tanke.activities.gameplaying.GamePlayingActivity;
 import com.lptiyu.tanke.entity.GetGameStatusResponse;
+import com.lptiyu.tanke.entity.response.Banner;
 import com.lptiyu.tanke.enums.BannerType;
 import com.lptiyu.tanke.enums.PlayStatus;
-import com.lptiyu.tanke.gamedetails.GameDetailsActivity;
 import com.lptiyu.tanke.global.Accounts;
 import com.lptiyu.tanke.global.Conf;
 import com.lptiyu.tanke.net.HttpService;
 import com.lptiyu.tanke.net.Response;
 import com.lptiyu.tanke.utils.NetworkUtil;
 import com.lptiyu.tanke.utils.PopupWindowUtils;
-import com.lptiyu.tanke.utils.XUtilsDownloader;
-import com.lptiyu.tanke.entity.response.Banner;
 
 import java.util.List;
 
@@ -65,6 +65,10 @@ public class BannerPagerAdapter extends BasePagerAdapter<Banner> {
                     String[] split = banner.content.split(":");
                     gameId = Integer.parseInt(split[0]);
                     title = split[1];
+                    RunApplication.gameId = gameId;
+                    RunApplication.type = banner.type;
+                    RunApplication.entity = banner;
+                    RunApplication.entity.title = title;
                     loadNetWorkData();
                 }
             }
@@ -103,25 +107,14 @@ public class BannerPagerAdapter extends BasePagerAdapter<Banner> {
                             switch (response.getData().play_statu) {
                                 case PlayStatus.NEVER_ENTER_GANME://从未玩过游戏，进入到游戏详情界面
                                     Intent intent = new Intent();
-                                    intent.setClass(context, GameDetailsActivity.class);
-                                    intent.putExtra(Conf.GAME_ID, gameId);
-                                    intent.putExtra(Conf.FROM_WHERE, Conf.ELASTIC_HEADER_VIEW_HOLDER);
+                                    intent.setClass(context, GameDetailActivity.class);
+                                    intent.putExtra(Conf.FROM_WHERE, Conf.BANNER);
                                     context.startActivity(intent);
                                     break;
                                 case PlayStatus.GAME_OVER://游戏结束，暂不考虑
-                                    //TODO 需要进入到游戏完成界面
                                 case PlayStatus.HAVE_ENTERED_BUT_NOT_START_GAME://进入过但没开始游戏，进入到玩游戏界面
                                 case PlayStatus.HAVE_STARTED_GAME://进入并且已经开始游戏，进入到玩游戏界面
-                                    //进入到玩游戏界面之前，先检测游戏包是否存在，存在则直接进入，否则要先下载游戏包
-                                    new XUtilsDownloader(context, tempGameZipUrl, gameId, new XUtilsDownloader
-                                            .FinishDownloadCallback() {
-                                        @Override
-                                        public void onFinishedDownload() {
-                                            startPlayingGame();
-                                        }
-                                    });
-                                    break;
-                                default:
+                                    context.startActivity(new Intent(context, GamePlayingActivity.class));
                                     break;
                             }
                         } else {
@@ -136,10 +129,8 @@ public class BannerPagerAdapter extends BasePagerAdapter<Banner> {
                 });
     }
 
-    private void startPlayingGame() {
-        Intent intent = new Intent(context, GamePlayingActivity.class);
-        intent.putExtra(Conf.GAME_ID, gameId);
-        intent.putExtra(Conf.BANNER_TITLE, title);
-        context.startActivity(intent);
+    @Override
+    public int getItemPosition(Object object) {
+        return POSITION_NONE;
     }
 }

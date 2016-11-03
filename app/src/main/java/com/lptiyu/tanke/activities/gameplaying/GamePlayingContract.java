@@ -8,18 +8,14 @@ import com.lptiyu.tanke.mybase.IBaseView;
  * Created by Jason on 2016/7/11.
  */
 public class GamePlayingContract {
-    interface IGamePlayingView extends IBaseView {
-
-        void successUpLoadRecord();
+    interface IGamePlaying2View extends IBaseView {
 
         void successDownLoadRecord(GameRecord gameRecord);
 
-        void failDownLoadRecord();
-
     }
 
-    interface IGamePlayingPresenter extends IBasePresenter {
+    interface IGamePlaying2Presenter extends IBasePresenter {
 
-        void downLoadGameRecord(long gameId);
+        void downLoadGameRecord(long gameId, long teamId);
     }
 }

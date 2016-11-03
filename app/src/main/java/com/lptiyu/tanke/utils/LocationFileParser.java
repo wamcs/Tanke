@@ -58,8 +58,6 @@ public class LocationFileParser {
                     cachedLocs.add(ls);
                     cachedProvince.add(ls.getmProvinceName());
                     cachedCitys.put(ls.getmProvinceName(), ls.getmCitys());
-                } else {
-                    //                    hotCitys = ls.getmCitys();
                 }
             }
             return true;
@@ -68,21 +66,4 @@ public class LocationFileParser {
         }
         return false;
     }
-
-    //  public static ArrayList<String> loadProvinceList() {
-    //    return cachedProvince;
-    //  }
-    //
-    //  public static ArrayList<CityStruct> loadCityList(String provinceName) {
-    //    ArrayList<CityStruct> citys = cachedCitys.get(provinceName);
-    //    if (null != citys) {
-    //      return citys;
-    //    }
-    //    return citys;
-    //  }
-    //
-    //  public static ArrayList<CityStruct> loadHotCityList() {
-    //    return hotCitys;
-    //  }
-
 }

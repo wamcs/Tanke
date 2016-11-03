@@ -23,7 +23,7 @@ public class PointTaskPresenter implements PointTaskContact.IPointTaskPresenter 
     }
 
     @Override
-    public void uploadRecord(UploadGameRecord record) {
+    public void uploadGameOverRecord(UploadGameRecord record) {
         RequestParams params = RequestParamsHelper.getBaseRequestParam(XUtilsUrls.UPLOAD_RECORD);
         params.addBodyParameter("uid", Accounts.getId() + "");
         params.addBodyParameter("game_id", record.game_id);
@@ -35,7 +35,7 @@ public class PointTaskPresenter implements PointTaskContact.IPointTaskPresenter 
             @Override
             protected void onSuccess(UploadGameRecordResponse response) {
                 if (response.status == BaseResponse.SUCCESS) {
-                    view.successUploadRecord(response.data);
+                    view.successUploadGameOverRecord(response.data);
                 } else {
                     if (response.info != null)
                         view.failUploadRecord(response.info);

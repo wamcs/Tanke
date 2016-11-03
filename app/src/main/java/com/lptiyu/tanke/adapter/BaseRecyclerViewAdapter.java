@@ -16,10 +16,10 @@ public abstract class BaseRecyclerViewAdapter<T> extends RecyclerView.Adapter {
 
     protected LayoutInflater inflater;
 
-    public BaseRecyclerViewAdapter(Context mContext, List<T> mDataList) {
-        this.context = mContext;
-        this.list = mDataList;
-        this.inflater = LayoutInflater.from(mContext);
+    public BaseRecyclerViewAdapter(Context context, List<T> list) {
+        this.context = context;
+        this.list = list;
+        this.inflater = LayoutInflater.from(context);
     }
 
     @Override

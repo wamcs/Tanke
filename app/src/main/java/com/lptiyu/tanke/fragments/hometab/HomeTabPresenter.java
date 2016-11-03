@@ -24,6 +24,7 @@ public class HomeTabPresenter implements HomeTabContact.IHomeTabPresenter {
 
     @Override
     public void firstLoadGameList(int cid) {
+        page = 1;
         RequestParams params = RequestParamsHelper.getBaseRequestParam(XUtilsUrls.HOME_GAME_LIST_NEW);
         params.addBodyParameter("uid", Accounts.getId() + "");
         params.addBodyParameter("city", Accounts.getCityCode());
@@ -37,7 +38,7 @@ public class HomeTabPresenter implements HomeTabContact.IHomeTabPresenter {
                 if (response.status == Response.RESPONSE_OK) {
                     view.successFirstLoadGameList(response.data);
                 } else {
-                    view.failLoad();
+                    view.failLoad(response.info);
                 }
             }
 
@@ -45,6 +46,67 @@ public class HomeTabPresenter implements HomeTabContact.IHomeTabPresenter {
             protected void onFailed(String errorMsg) {
                 if (errorMsg != null)
                     view.failLoad(errorMsg);
+                else
+                    view.netException();
+            }
+        }, HomeGameListResponse.class);
+    }
+
+    @Override
+    public void loadMoreGame(int cid) {
+        RequestParams params = RequestParamsHelper.getBaseRequestParam(XUtilsUrls.HOME_GAME_LIST_NEW);
+        params.addBodyParameter("uid", Accounts.getId() + "");
+        params.addBodyParameter("city", Accounts.getCityCode());
+        params.addBodyParameter("lat", Accounts.getLatitude() + "");
+        params.addBodyParameter("lng", Accounts.getLongitude() + "");
+        params.addBodyParameter("cid", cid + "");
+        params.addBodyParameter("page", ++page + "");
+        XUtilsHelper.getInstance().get(params, new XUtilsRequestCallBack<HomeGameListResponse>() {
+            @Override
+            protected void onSuccess(HomeGameListResponse response) {
+                if (response.status == Response.RESPONSE_OK) {
+                    view.successLoadMoreGame(response.data);
+                } else {
+                    view.failLoadMoreGame(response.info);
+                }
+            }
+
+            @Override
+            protected void onFailed(String errorMsg) {
+                if (errorMsg != null)
+                    view.failLoad(errorMsg);
+                else
+                    view.netException();
+            }
+        }, HomeGameListResponse.class);
+    }
+
+    @Override
+    public void reloadGameList(int cid) {
+        page = 1;
+        RequestParams params = RequestParamsHelper.getBaseRequestParam(XUtilsUrls.HOME_GAME_LIST_NEW);
+        params.addBodyParameter("uid", Accounts.getId() + "");
+        params.addBodyParameter("city", Accounts.getCityCode());
+        params.addBodyParameter("lat", Accounts.getLatitude() + "");
+        params.addBodyParameter("lng", Accounts.getLongitude() + "");
+        params.addBodyParameter("cid", cid + "");
+        params.addBodyParameter("page", page + "");
+        XUtilsHelper.getInstance().get(params, new XUtilsRequestCallBack<HomeGameListResponse>() {
+            @Override
+            protected void onSuccess(HomeGameListResponse response) {
+                if (response.status == Response.RESPONSE_OK) {
+                    view.successReloadGame(response.data);
+                } else {
+                    view.failLoad(response.info);
+                }
+            }
+
+            @Override
+            protected void onFailed(String errorMsg) {
+                if (errorMsg != null)
+                    view.failLoad(errorMsg);
+                else
+                    view.netException();
             }
         }, HomeGameListResponse.class);
     }

@@ -265,14 +265,15 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="@dimen/modify_user_info_item_content_margin"
-            android:src="@drawable/enter_map"/>
+            android:src="@drawable/enter_map"
+            android:visibility="gone"/>
 
         <com.lptiyu.tanke.widget.CustomTextView
             android:id="@id/modify_user_info_location_text"
             style="@style/ModifyUserInfoItemText"
+            android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="@dimen/modify_user_info_item_content_margin"
-            android:layout_toLeftOf="@id/img_arrow7"
             android:text="湖北 武汉"/>
 
     </RelativeLayout>

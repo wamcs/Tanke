@@ -11,12 +11,12 @@ import com.lptiyu.tanke.mybase.IBaseView;
 
 public class PointTaskContact {
     interface IPointTaskView extends IBaseView {
-        void successUploadRecord(UpLoadGameRecordResult result);
+        void successUploadGameOverRecord(UpLoadGameRecordResult result);
 
         void failUploadRecord(String errorMsg);
     }
 
     interface IPointTaskPresenter extends IBasePresenter {
-        void uploadRecord(UploadGameRecord record);
+        void uploadGameOverRecord(UploadGameRecord record);
     }
 }

@@ -6,9 +6,8 @@ import com.lptiyu.tanke.entity.response.GameDetail;
 import com.lptiyu.tanke.entity.GameRecord;
 import com.lptiyu.tanke.pojo.City;
 import com.lptiyu.tanke.entity.EnterGameResponse;
-import com.lptiyu.tanke.pojo.GameDisplayEntity;
 import com.lptiyu.tanke.entity.GetGameStatusResponse;
-import com.lptiyu.tanke.pojo.MessageEntity;
+import com.lptiyu.tanke.entity.response.MessageEntity;
 import com.lptiyu.tanke.entity.UploadGameRecordResponse;
 
 import java.lang.annotation.Retention;
@@ -29,16 +28,6 @@ import rx.Observable;
  * @author ldx
  */
 public interface GameService {
-
-    /**
-     * 2.12 首页接口
-     */
-    @GET("Home/Index")
-    Observable<Response<List<GameDisplayEntity>>> getGamePage(
-            @Query("uid") long uid,
-            @Query("token") String token,
-            @Query("city") String location, // 城市
-            @Query("page") long page);
 
     /**
      * 2.13 游戏详情

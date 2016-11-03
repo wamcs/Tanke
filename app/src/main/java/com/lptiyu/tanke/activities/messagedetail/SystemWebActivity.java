@@ -16,6 +16,7 @@ import com.lptiyu.tanke.widget.CustomTextView;
 import com.lptiyu.tanke.widget.GradientProgressBar;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class SystemWebActivity extends MyBaseActivity {
@@ -30,6 +31,7 @@ public class SystemWebActivity extends MyBaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_system_web);
+        ButterKnife.bind(this);
         init();
     }
 

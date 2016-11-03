@@ -5,30 +5,37 @@
                 android:background="@color/bg_popupwindow_game_over"
                 android:padding="30dp">
 
-    <TextView
-        android:id="@+id/tv_title_tip"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:text="恭喜通关"
-        android:textColor="@color/colorPrimary"
-        android:textSize="24sp"/>
+    <RelativeLayout
+        android:id="@+id/rl_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-    <ImageView
-        android:id="@+id/img_close"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_alignTop="@id/tv_title_tip"
-        android:layout_marginRight="20dp"
-        android:layout_toRightOf="@id/tv_title_tip"
-        android:src="@drawable/cha_orange"/>
+        <TextView
+            android:id="@+id/tv_title_tip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginTop="40dp"
+            android:text="恭喜通关"
+            android:textColor="@color/colorPrimary"
+            android:textSize="24sp"/>
+
+        <ImageView
+            android:id="@+id/img_close"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="20dp"
+            android:layout_toRightOf="@id/tv_title_tip"
+            android:src="@drawable/cha_orange"/>
+    </RelativeLayout>
 
     <TextView
         android:id="@+id/tv_game_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/tv_title_tip"
+        android:layout_below="@id/rl_title"
         android:layout_marginTop="20dp"
         android:text="芯片人"
         android:textColor="@color/colorPrimary"
@@ -45,12 +52,23 @@
         android:text="@string/juqing"
         android:textColor="@color/white10"/>
 
+
+    <TextView
+        android:id="@+id/tv_add_score"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_game_introduction"
+        android:layout_marginLeft="50dp"
+        android:layout_marginTop="20dp"
+        android:text="+120"
+        android:textColor="@color/colorPrimary"
+        android:textSize="20sp"/>
+
     <RelativeLayout
         android:id="@+id/rl_score"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/tv_game_introduction"
-        android:layout_marginTop="20dp">
+        android:layout_below="@id/tv_add_score">
 
         <TextView
             android:id="@+id/tv_score_tip"
@@ -63,19 +81,31 @@
 
         <ProgressBar
             android:id="@+id/progressBar_score_value"
-            style="?android:attr/progressBarStyleSmall"
+            style="@style/ProgressBar_score"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="15dp"
             android:layout_centerVertical="true"
+            android:layout_marginLeft="5dp"
+            android:layout_toRightOf="@id/tv_score_tip"
             android:indeterminate="false"/>
     </RelativeLayout>
+
+    <TextView
+        android:id="@+id/tv_add_exp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/rl_score"
+        android:layout_marginLeft="50dp"
+        android:layout_marginTop="20dp"
+        android:text="+100"
+        android:textColor="@color/colorPrimary"
+        android:textSize="20sp"/>
 
     <RelativeLayout
         android:id="@+id/rl_exp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/rl_score"
-        android:layout_marginTop="20dp">
+        android:layout_below="@id/tv_add_exp">
 
         <TextView
             android:id="@+id/tv_exp_tip"
@@ -88,11 +118,15 @@
 
         <ProgressBar
             android:id="@+id/progressBar_exp_value"
-            style="?android:attr/progressBarStyleSmall"
+            style="@style/ProgressBar_exp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="15dp"
             android:layout_centerVertical="true"
-            android:indeterminate="false"/>
+            android:layout_marginLeft="5dp"
+            android:layout_toRightOf="@id/tv_exp_tip"
+            android:indeterminate="false"
+            android:max="10"
+            android:progress="0"/>
     </RelativeLayout>
 
     <RelativeLayout

@@ -1,554 +1,196 @@
 package com.lptiyu.tanke.activities.pointtask;
 
-import android.app.ProgressDialog;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
-import android.location.LocationManager;
 import android.os.Bundle;
-import android.os.Handler;
-import android.provider.Settings;
-import android.support.v7.app.AlertDialog;
-import android.util.Log;
-import android.view.View;
-import android.widget.ImageView;
-import android.widget.ListView;
+import android.support.v4.view.ViewPager;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.lptiyu.tanke.R;
 import com.lptiyu.tanke.RunApplication;
-import com.lptiyu.tanke.entity.UploadGameRecord;
-import com.lptiyu.tanke.mybase.MyBaseActivity;
-import com.lptiyu.tanke.activities.guessriddle.GuessRiddleActivity;
-import com.lptiyu.tanke.activities.imagedistinguish.ImageDistinguishActivity;
-import com.lptiyu.tanke.activities.locationtask.LocationTaskActivity;
-import com.lptiyu.tanke.adapter.LVForPointTaskAdapter;
+import com.lptiyu.tanke.activities.gameover.GameOverActivity;
+import com.lptiyu.tanke.adapter.PointTaskFragmentPagerAdapter;
+import com.lptiyu.tanke.entity.GameRecord;
 import com.lptiyu.tanke.entity.Point;
-import com.lptiyu.tanke.entity.Task;
-import com.lptiyu.tanke.entity.ThemeLine;
+import com.lptiyu.tanke.entity.UploadGameRecord;
+import com.lptiyu.tanke.entity.eventbus.GamePointTaskStateChanged;
+import com.lptiyu.tanke.entity.response.UpLoadGameRecordResult;
+import com.lptiyu.tanke.enums.PlayStatus;
 import com.lptiyu.tanke.enums.PointTaskStatus;
-import com.lptiyu.tanke.enums.RequestCode;
-import com.lptiyu.tanke.enums.ResultCode;
-import com.lptiyu.tanke.enums.TaskType;
+import com.lptiyu.tanke.fragments.pointtask.EmptyFragment;
+import com.lptiyu.tanke.fragments.pointtask.PointTaskFragment;
 import com.lptiyu.tanke.global.Accounts;
-import com.lptiyu.tanke.global.AppData;
-import com.lptiyu.tanke.global.Conf;
-import com.lptiyu.tanke.entity.UploadGameRecordResponse;
-import com.lptiyu.tanke.utils.BitMapUtils;
-import com.lptiyu.tanke.utils.ToastUtil;
-import com.lptiyu.tanke.widget.CustomTextView;
-import com.lptiyu.tanke.widget.DragLayout;
+import com.lptiyu.tanke.mybase.MyBaseActivity;
+import com.lptiyu.tanke.mybase.MyBaseFragment;
+import com.lptiyu.tanke.widget.DepthPageTransformer;
+import com.lptiyu.tanke.widget.GalleryViewPager;
 import com.lptiyu.zxinglib.android.CaptureActivity;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 
-public class PointTaskActivity extends MyBaseActivity implements PointTaskContact.IPointTaskView {
+import static com.lptiyu.tanke.RunApplication.currentPoint;
+import static com.lptiyu.tanke.RunApplication.currentTask;
+import static com.lptiyu.tanke.RunApplication.gameId;
 
-    @BindView(R.id.ctv_taskName)
-    CustomTextView ctvTaskName;
-    @BindView(R.id.lv)
-    ListView lv;
-    @BindView(R.id.img_getKey)
-    ImageView imgGetKey;
-    @BindView(R.id.dragview)
-    ImageView dragview;
-    @BindView(R.id.drag_layout)
-    DragLayout dragLayout;
+public class PointTaskActivity extends MyBaseActivity implements PointTaskContact.IPointTaskV2View {
 
-    @BindView(R.id.img_waiting)
-    ImageView imgWaiting;
-
-    private int pointIndex;
-    private LVForPointTaskAdapter adapter;
+    @BindView(R.id.view_pager)
+    GalleryViewPager mViewPager;
+    private final double MAX_PARCEL = 0.9d;
+    private ArrayList<Point> point_list;
+    private ArrayList<MyBaseFragment> totallist;
+    private int max_index = -1;
+    private PointTaskFragmentPagerAdapter adapter;
     private PointTaskPresenter presenter;
-    private long gameId;
-    // private ArrayList<TaskRecord> list_task_record;
-    private ArrayList<Task> list_task;
-    private int selectPosition;
-    // private PointRecord point_record;
-    private String unZippedDir;
-    private Task currentTask;
-    private boolean isPointOver = false;
-    private ProgressDialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_point_task);
         ButterKnife.bind(this);
-
-        presenter = new PointTaskPresenter(this);
-
-        //        initStyle();
+        EventBus.getDefault().register(this);
 
         initData();
+        initView();
     }
-
-    //    private void initStyle() {
-    //        Window window = getWindow();
-    //        WindowManager.LayoutParams params = window.getAttributes();
-    //        params.height = (int) (DisplayUtils.height() * 0.8f);
-    //        params.width = (int) (DisplayUtils.width() * 0.9f);
-    //        window.setAttributes(params);
-    //        window.setGravity(Gravity.CENTER);
-    //    }
 
     private void initData() {
-        Bundle bundle = getIntent().getExtras();
-        if (bundle == null) {
-            Toast.makeText(this, "数据传递错误", Toast.LENGTH_SHORT).show();
-            return;
-        }
-        pointIndex = bundle.getInt(Conf.POINT);
-
-        gameId = bundle.getLong(Conf.GAME_ID, -1);
-        unZippedDir = bundle.getString(Conf.UNZIPPED_DIR);
-
-        ThemeLine themeLine = RunApplication.getInstance().getPlayingThemeLine();
-        if (themeLine == null || themeLine.point_list == null || themeLine.point_list.size() <= pointIndex)
-            return;
-
-        Point point = themeLine.point_list.get(pointIndex);
-        if (point == null) {
-            Toast.makeText(this, "该章节点数据异常", Toast.LENGTH_SHORT).show();
-            return;
-        }
-        if (point.task_list == null || point.task_list.size() <= 0) {
-            Toast.makeText(this, "该章节点无任务", Toast.LENGTH_SHORT).show();
-            return;
-        }
-        list_task = point.task_list;
-
-        if (point.status == PointTaskStatus.FINISHED) {
-            imgGetKey.setVisibility(View.GONE);
-        }
-        ctvTaskName.setText(point.point_title + "");
-
-
-        //根据任务记录决定当前任务的状态
-        checkTaskState();
-
-        setAdapter();
-
-        //如果用户是第一次进入此Activity，则显示导航提示
-        if (AppData.isFirstInPointTaskActivity()) {
-            Drawable drawable = BitMapUtils.decodeLargeResourceImage(this.getResources(), R.drawable.clue_list_guide);
-            if (drawable != null && dragLayout != null && dragview != null) {
-                dragview.setImageDrawable(drawable);
-
-                dragLayout.setChildView(dragview);
-                dragLayout.setOnDragOverListener(new DragLayout.OnDragOverListener() {
-                    @Override
-                    public void onDrag() {
-                        dragLayout.setVisibility(View.GONE);
-                    }
-                });
-
-                dragLayout.setVisibility(View.VISIBLE);
+        GameRecord gameRecord = RunApplication.gameRecord;
+        if (gameRecord != null && gameRecord.game_detail != null && gameRecord.game_detail.point_list != null) {
+            point_list = gameRecord.game_detail.point_list;
+            totallist = new ArrayList<>();
+            for (int i = 0; i < point_list.size(); i++) {
+                Point point = point_list.get(i);
+                if (point.status == PointTaskStatus.FINISHED || point.status == PointTaskStatus.PLAYING) {
+                    totallist.add(PointTaskFragment.create(i));
+                }
             }
-
-
-        } else {
-            if (dragLayout != null)
-                dragLayout.setVisibility(View.GONE);
-        }
-
-        //如果当前章节点只有一个任务并且是FINISH类型的任务，则表示该章节点结束（这种情况一般在最后一个章节点出现）
-        if (Integer.parseInt(list_task.get(0).type) == TaskType.FINISH && (point.status != PointTaskStatus.FINISHED)) {
-            imgGetKey.setVisibility(View.GONE);
-            selectPosition = 0;
-            isPointOver = true;
-            uploadPointOverRecord();
-        }
-    }
-
-    /**
-     * 章节点结束时上传记录
-     */
-    private void uploadPointOverRecord() {
-
-        ThemeLine themeLine = RunApplication.getInstance().getPlayingThemeLine();
-        if (themeLine == null || themeLine.point_list == null || themeLine.point_list.size() <= pointIndex)
-            return;
-        Point point = themeLine.point_list.get(pointIndex);
-
-        UploadGameRecord record = new UploadGameRecord();
-        record.uid = Accounts.getId() + "";
-        //        record.type = gameType + "";
-        record.point_id = point.id + "";
-        record.game_id = gameId + "";
-        record.point_statu = PointTaskStatus.FINISHED + "";
-        record.task_id = list_task.get(selectPosition).id + "";
-        presenter.uploadGameOverRecord(record);
-    }
-
-    @Override
-    public void successUploadGameOverRecord(UploadGameRecordResponse response) {
-        //根据任务记录决定当前任务的状态
-        refreshData(response);
-    }
-
-    private void setAdapter() {
-        adapter = new LVForPointTaskAdapter(this, list_task);
-        lv.setAdapter(adapter);
-        lv.setSelection(selectPosition);
-        currentTask = list_task.get(selectPosition);
-    }
-
-
-    /**
-     * 根据游戏记录设置任务的状态
-     */
-    private void checkTaskState() {
-        ThemeLine themeLine = RunApplication.getInstance().getPlayingThemeLine();
-        if (themeLine == null || themeLine.point_list == null || themeLine.point_list.size() <= pointIndex)
-            return;
-        Point point = themeLine.point_list.get(pointIndex);
-
-        //如果当前章节点只有一个任务并且是FINISH类型的任务，则表示该章节点结束（这种情况一般在最后一个章节点出现）
-        if (Integer.parseInt(list_task.get(0).type) == TaskType.FINISH) {
-            selectPosition = 0;
-            isPointOver = true;
-            imgGetKey.setVisibility(View.GONE);
-            return;
-        } else if (point.status == PointTaskStatus.FINISHED) {//章节点已结束，所有任务已完成
-            selectPosition = 0;
-            imgGetKey.setVisibility(View.GONE);
-        } else if (point.status == PointTaskStatus.UNSTARTED) {//章节点未开启，所有任务未开启
-            selectPosition = 0;
-        } else {//章节点已开启
-
-            for (int i = 0; i < list_task.size(); i++) {
-                Task task = list_task.get(i);
-                //                if (task.status == PointTaskStatus.PLAYING) {
-                //                    selectPosition = i;
-                //                    if (i == list_task.size() - 1) {
-                //                        isPointOver = true;
-                //                    } else if ((i < list_task.size() - 1) && (Integer.parseInt(list_task.get(i + 1)
-                // .type) == TaskType
-                //                            .FINISH)) {
-                //                        //如果下一个任务是结束任务的话，表示完成此任务章节点就要结束了
-                //                        isPointOver = true;
-                //
-                //                    } else {
-                //                        isPointOver = false;
-                //                    }
-                //                }
-
+            if (totallist.size() == point_list.size()) {//全部完成
+                max_index = totallist.size() - 1;
+            } else {
+                totallist.add(EmptyFragment.create());
+                max_index = totallist.size() - 2;
             }
         }
+        presenter = new PointTaskPresenter(this);
+    }
+
+    private void initView() {
+        adapter = new PointTaskFragmentPagerAdapter(getSupportFragmentManager(), totallist);
+        mViewPager.setAdapter(adapter);
+        mViewPager.setPageMargin(30);// 设置页面间距
+        mViewPager.setOffscreenPageLimit(2);//缓存页数
+        mViewPager.setCurrentItem(RunApplication.currentPointIndex);// 设置起始位置
+        mViewPager.setPageTransformer(true, new DepthPageTransformer());//设置切换动画
+        mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            /**
+             * @param position 当前item的index
+             * @param positionOffset 偏移百分比
+             * @param positionOffsetPixels 偏移像素
+             */
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                if (position == max_index && positionOffset >= MAX_PARCEL) {
+                    mViewPager.setScanScroll(false);
+                    mViewPager.setCurrentItem(position);
+                    mViewPager.setScanScroll(true);
+                } else {
+                    mViewPager.setScanScroll(true);
+                }
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                RunApplication.currentPointIndex = position;
+                currentPoint = RunApplication.gameRecord.game_detail.point_list.get(position);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+            }
+        });
+    }
+
+    /*无论在哪个线程发送都在主线程接收
+    * 接受任务完成后的通知，销毁当前界面
+    * */
+    @Subscribe
+    public void onEventMainThread(GamePointTaskStateChanged result) {
+        finish();
     }
 
     /**
-     * 任务完成后回调
+     * 处理扫码返回结果
      *
      * @param requestCode
      * @param resultCode
      * @param intent
      */
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent intent) {
+    protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
         super.onActivityResult(requestCode, resultCode, intent);
         if (resultCode == RESULT_OK) {//扫码识别返回
-            if (Accounts.getPhoneNumber() != null && Accounts.getPhoneNumber().endsWith("4317") || Accounts
-                    .getPhoneNumber().endsWith("1965")) {
-                finishedCurrentTask();
+            if (Accounts.getPhoneNumber().equals("18272164317")) {
+                upLoadQRCodeRecord();
                 return;
             }
+            // RESULT_OK是Activity里面的一个静态常量
             Bundle b = intent.getExtras();
             //扫描到的结果
             String str = b.getString(CaptureActivity.QR_CODE_DATA);
             if (str == null || str.length() == 0) {
-                ToastUtil.TextToast(getString(R.string.scan_error));
+                Toast.makeText(this, getString(R.string.scan_error), Toast.LENGTH_SHORT).show();
                 return;
             }
-            //与答案匹配
-            if (str.equals(currentTask.pwd)) {
-                //                refreshData(resultResponse);
-                finishedCurrentTask();
+            if (currentTask != null && str.equals(currentTask.pwd)) {
+                //上传游戏记录
+                upLoadQRCodeRecord();
             } else {
-                Toast.makeText(this, "二维码不正确", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "什么也没有发现", Toast.LENGTH_SHORT).show();
             }
         }
-        if (resultCode == ResultCode.IMAGE_DISTINGUISH) {//图像识别返回
-            UploadGameRecordResponse resultResponse = intent.getParcelableExtra(Conf.UPLOAD_RECORD_RESPONSE);
-            refreshData(resultResponse);
-        }
-        if (resultCode == ResultCode.GUESS_RIDDLE) {//猜谜返回
-            UploadGameRecordResponse resultResponse = intent.getParcelableExtra(Conf.UPLOAD_RECORD_RESPONSE);
-            refreshData(resultResponse);
-        }
-        if (resultCode == ResultCode.LOCATION_TASK) {//定位返回
-            UploadGameRecordResponse resultResponse = intent.getParcelableExtra(Conf.UPLOAD_RECORD_RESPONSE);
-            refreshData(resultResponse);
-        }
-
     }
 
-    /**
-     * 任务完成后要执行的
-     */
-    private void finishedCurrentTask() {
-        //        uploadGameRecordDialog = ProgressDialog.show(this, null, "正在上传游戏记录...", true, true);
-        //上传游戏记录
-        upLoadGameRecord();
-    }
-
-    /**
-     * 先将游戏记录上传到服务器，获取服务器返回的joint_time和start_time,再将游戏记录存储到本地数据库（游戏记录依然以本地数据库的为准）
-     */
-    private void upLoadGameRecord() {
-
-        ThemeLine themeLine = RunApplication.getInstance().getPlayingThemeLine();
-        if (themeLine == null || themeLine.point_list == null || themeLine.point_list.size() <= pointIndex)
-            return;
-        Point point = themeLine.point_list.get(pointIndex);
-
-
+    //扫码成功后上传游戏记录
+    private void upLoadQRCodeRecord() {
         UploadGameRecord record = new UploadGameRecord();
         record.uid = Accounts.getId() + "";
-        //        record.type = gameType + "";
-        record.point_id = point.id + "";
+        record.point_id = currentPoint.id + "";
         record.game_id = gameId + "";
-
-        if (isPointOver) {
+        if (RunApplication.isPointOver) {
             record.point_statu = PointTaskStatus.FINISHED + "";
         } else {
             record.point_statu = PointTaskStatus.PLAYING + "";
         }
         record.task_id = currentTask.id + "";
-        presenter.uploadRecord(record);
-    }
-
-    @Override
-    public void successUploadRecord(UploadGameRecordResponse response) {
-        Log.i("jason", "成功回调");
-        //目前主要是扫码返回
-        refreshData(response);
-    }
-
-
-    @Override
-    public void failUploadRecord() {
-        Toast.makeText(this, "提交失败", Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void netException() {
-        Toast.makeText(this, "网络错误", Toast.LENGTH_SHORT).show();
-    }
-
-    private void refreshData(UploadGameRecordResponse response) {
-
-        ThemeLine themeLine = RunApplication.getInstance().getPlayingThemeLine();
-        if (themeLine == null || themeLine.point_list == null || themeLine.point_list.size() <= pointIndex)
-            return;
-        Point point = themeLine.point_list.get(pointIndex);
-
-        if (isPointOver) {
-            point.status = PointTaskStatus.FINISHED;
-
-            if (pointIndex < themeLine.point_list.size() - 1) {
-                //下一个任务设置为new
-                themeLine.point_list.get(pointIndex + 1).isNew = true;
-                themeLine.point_list.get(pointIndex + 1).status = PointTaskStatus.PLAYING;
-                //                gameRecord.point_list.get(pointIndex + 1).task_list.get(0).status = PointTaskStatus
-                // .PLAYING;
-            }
-        }
-
-        if (selectPosition == list_task.size() - 1) {
-            imgGetKey.setVisibility(View.GONE);
-
-        } else {
-            if (Integer.parseInt(list_task.get(selectPosition + 1).type) == TaskType.FINISH) {
-                //                list_task.get(selectPosition).status = PointTaskStatus.FINISHED;
-                //                list_task.get(selectPosition + 1).status = PointTaskStatus.FINISHED;
-                imgGetKey.setVisibility(View.GONE);
-            } else {
-                //                list_task.get(selectPosition).status = PointTaskStatus.FINISHED;
-                //                list_task.get(selectPosition + 1).status = PointTaskStatus.PLAYING;
-            }
-            selectPosition += 1;
-        }
-        checkTaskState();
-        setAdapter();
-
-        //如果攻击点结束 而且当前任务的最后一个任务不是结束任务的话
-        if (isPointOver && Integer.parseInt(list_task.get(list_task.size() - 1).type) != TaskType.FINISH) {
-            //直接关闭新的攻击点
-            finish();
-            ToastUtil.TextToast("发现新线索，经验值+" + currentTask.exp);
-        }
-    }
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        if (isPointOver) {
-            setResult(ResultCode.POINT_OVER);
-        }
-        finish();
-    }
-
-    @OnClick({R.id.img_close, R.id.rl_title, R.id.ctv_taskName, R.id.rl_getKey, R.id.img_getKey})
-    public void ononClick(View view) {
-        ThemeLine themeLine = RunApplication.getInstance().getPlayingThemeLine();
-        if (themeLine == null || themeLine.point_list == null || themeLine.point_list.size() <= pointIndex)
-            return;
-        Point point = themeLine.point_list.get(pointIndex);
-
-        switch (view.getId()) {
-            case R.id.img_close:
-            case R.id.rl_title:
-            case R.id.ctv_taskName:
-            case R.id.rl_getKey:
-                finish();
-                break;
-            case R.id.img_getKey:
-                //跳转
-                final Intent intent = new Intent();
-                intent.putExtra(Conf.GAME_ID, gameId);
-                //                intent.putExtra(Conf.GAME_TYPE, gameType);
-                intent.putExtra(Conf.POINT, point);
-                intent.putExtra(Conf.CURRENT_TASK, currentTask);
-                intent.putExtra(Conf.IS_POINT_OVER, isPointOver);
-                Log.i("jason", "isPointOver=" + isPointOver);
-                //根据当前任务的类型决定如何操作
-                switch (Integer.parseInt(currentTask.type)) {
-                    case TaskType.DISTINGUISH:
-                        dialog = ProgressDialog.show(this, null, "正在启动摄像头...");
-                        imgWaiting.setVisibility(View.VISIBLE);
-                        mHandler.postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                runOnUiThread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        Log.i("jason", "图像识别任务");
-                                        intent.setClass(PointTaskActivity.this, ImageDistinguishActivity.class);
-                                        Log.i("jason", "要识别的图片路径：" + unZippedDir + "/" + currentTask.pwd);
-                                        intent.putExtra(Conf.IMG_DISTINGUISH_ARRAY, currentTask.pwd);
-                                        intent.putExtra(Conf.PARENT_DIR, unZippedDir);
-                                        startActivityForResult(intent, RequestCode.IMAGE_DISTINGUISH);
-                                    }
-                                });
-                            }
-                        }, 10);
-                        break;
-                    case TaskType.FINISH:
-                        Log.i("jason", "finish任务");
-                        break;
-                    case TaskType.LOCATE:
-                        Log.i("jason", "定位任务");
-                        initGPS();
-                        break;
-                    case TaskType.RIDDLE:
-                        Log.i("jason", "猜谜任务");
-                        intent.setClass(PointTaskActivity.this, GuessRiddleActivity.class);
-                        startActivityForResult(intent, RequestCode.GUESS_RIDDLE);
-                        break;
-                    case TaskType.SCAN_CODE:
-                        Log.i("jason", "扫码任务");
-                        intent.putExtra("uid", Accounts.getId());
-                        intent.putExtra("task_id", currentTask.id);
-                        intent.putExtra("point_id", point.id);
-                        intent.putExtra("isFirstInLocation", AppData.isFirstInCaptureActivity());
-                        intent.setClass(PointTaskActivity.this, CaptureActivity.class);
-                        startActivityForResult(intent, RequestCode.CAMERA_PERMISSION_REQUEST_CODE);
-                        break;
-                    case TaskType.UPLOAD_PHOTO:
-                        Log.i("jason", "图像上传任务");
-                        ToastUtil.TextToast("该类型任务尚未开通");
-                        break;
-                }
-                break;
-        }
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        if (dialog != null) {
-            dialog.dismiss();
-            dialog = null;
-        }
-
-        if (imgWaiting != null) {
-            imgWaiting.setVisibility(View.GONE);
-        }
+        presenter.uploadQRRecord(record);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
-
-        if (dragview != null && dragview.getDrawable() != null) {
-
-            Bitmap oldBitmap = ((BitmapDrawable) dragview.getDrawable()).getBitmap();
-
-            dragview.setImageDrawable(null);
-
-
-            if (oldBitmap != null) {
-
-                oldBitmap.recycle();
-
-                oldBitmap = null;
-
-            }
-
-        }
-
+        EventBus.getDefault().unregister(this);
     }
 
-    private Handler mHandler = new Handler();
-
-    private void initGPS() {
-        LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
-        // 判断GPS模块是否开启，如果没有则开启
-        if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-            AlertDialog.Builder dialog = new AlertDialog.Builder(this);
-            dialog.setMessage("为了定位更加精确，请打开GPS");
-            dialog.setPositiveButton("确定",
-                    new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface arg0, int arg1) {
-                            // 转到手机设置界面，用户设置GPS
-                            Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                            startActivityForResult(intent, 0); // 设置完成后返回到原来的界面
-                        }
-                    });
-            dialog.setNegativeButton("取消", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface arg0, int arg1) {
-                    arg0.dismiss();
-                }
-            });
-            dialog.show();
-        } else {
-
-            ThemeLine themeLine = RunApplication.getInstance().getPlayingThemeLine();
-            if (themeLine == null || themeLine.point_list == null || themeLine.point_list.size() <= pointIndex)
-                return;
-            Point point = themeLine.point_list.get(pointIndex);
-
-            //            PermissionDispatcher.startLocateWithCheck(((BaseActivity) getActivity()));
-            Intent intent = new Intent();
-            intent.putExtra(Conf.GAME_ID, gameId);
-            intent.putExtra(Conf.POINT, point);
-            intent.putExtra(Conf.CURRENT_TASK, currentTask);
-            intent.putExtra(Conf.IS_POINT_OVER, isPointOver);
-            intent.setClass(PointTaskActivity.this, LocationTaskActivity.class);
-            startActivityForResult(intent, RequestCode.LOCATION_TASK);
+    @Override
+    public void successUploadQRRecord(UpLoadGameRecordResult result) {
+        String tip = "";
+        if (result != null) {
+            tip = "恭喜你找到答案了，经验 +" + result.get_exp + ", 积分 +" + result.get_extra_points + ", 红包 +" + result
+                    .get_extra_money + "元";
         }
+        Toast.makeText(this, tip, Toast.LENGTH_SHORT).show();
+        if (result.game_statu == PlayStatus.GAME_OVER) {//游戏通关，需要弹出通关视图，弹出通关视图
+            startActivity(new Intent(PointTaskActivity.this, GameOverActivity.class));
+        }
+        finish();
+        EventBus.getDefault().post(new GamePointTaskStateChanged());
     }
 }

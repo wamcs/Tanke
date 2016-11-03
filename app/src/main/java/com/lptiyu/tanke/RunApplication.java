@@ -8,7 +8,6 @@ import com.lptiyu.tanke.entity.BaseEntity;
 import com.lptiyu.tanke.entity.GameRecord;
 import com.lptiyu.tanke.entity.Point;
 import com.lptiyu.tanke.entity.Task;
-import com.lptiyu.tanke.entity.ThemeLine;
 import com.lptiyu.tanke.global.AppData;
 import com.lptiyu.tanke.global.Conf;
 import com.lptiyu.tanke.utils.DirUtils;
@@ -38,7 +37,9 @@ public class RunApplication extends MultiDexApplication {
     public static Task currentTask;
     public static Point currentPoint;
     public static long gameId;
+    public static int type;
     public static boolean isPointOver;
+    public static boolean isGameOver;
     public static BaseEntity entity;//点击的某个游戏实体
 
     @Override
@@ -78,13 +79,6 @@ public class RunApplication extends MultiDexApplication {
     // Returns the application instance
     public static RunApplication getInstance() {
         return singleton;
-    }
-
-    public ThemeLine getPlayingThemeLine() {
-        return null;
-    }
-
-    public void setgetPlayingThemeLine(ThemeLine playLine) {
     }
 
     /**

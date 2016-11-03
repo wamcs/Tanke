@@ -23,7 +23,7 @@ import com.lptiyu.tanke.enums.RequestCode;
 import com.lptiyu.tanke.enums.ResultCode;
 import com.lptiyu.tanke.global.Accounts;
 import com.lptiyu.tanke.global.Conf;
-import com.lptiyu.tanke.initialization.ui.SignUpActivity;
+import com.lptiyu.tanke.activities.initialization.ui.SignUpActivity;
 import com.lptiyu.tanke.net.HttpService;
 import com.lptiyu.tanke.net.Response;
 import com.lptiyu.tanke.pojo.UserDetails;

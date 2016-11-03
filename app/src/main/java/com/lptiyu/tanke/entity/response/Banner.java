@@ -3,10 +3,12 @@ package com.lptiyu.tanke.entity.response;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.lptiyu.tanke.entity.BaseEntity;
+
 /**
  * Created by Jason on 2016/8/11.
  */
-public class Banner implements Parcelable {
+public class Banner extends BaseEntity implements Parcelable {
     public String image;
     public int type;
     public String content;

@@ -17,11 +17,14 @@ import com.gxz.PagerSlidingTabStrip;
 import com.gxz.library.StickyNavLayout;
 import com.lptiyu.tanke.R;
 import com.lptiyu.tanke.RunApplication;
-import com.lptiyu.tanke.activities.gamedetailv2.GameDetailV2Activity;
-import com.lptiyu.tanke.activities.gameplaying_v2.GamePlayingV2Activity;
+import com.lptiyu.tanke.activities.gamedetail.GameDetailActivity;
+import com.lptiyu.tanke.activities.gameplaying.GamePlayingActivity;
 import com.lptiyu.tanke.adapter.BannerPagerAdapter;
 import com.lptiyu.tanke.adapter.HomeHotRecyclerViewAdapter;
 import com.lptiyu.tanke.adapter.HomeTabFragmentPagerAdapter;
+import com.lptiyu.tanke.entity.eventbus.EnterGame;
+import com.lptiyu.tanke.entity.eventbus.GamePointTaskStateChanged;
+import com.lptiyu.tanke.entity.eventbus.LeaveGame;
 import com.lptiyu.tanke.entity.response.Banner;
 import com.lptiyu.tanke.entity.response.HomeBannerAndHot;
 import com.lptiyu.tanke.entity.response.HomeSort;
@@ -32,16 +35,20 @@ import com.lptiyu.tanke.fragments.hometab.HomeTabFragment;
 import com.lptiyu.tanke.global.Conf;
 import com.lptiyu.tanke.interfaces.OnRecyclerViewItemClickListener;
 import com.lptiyu.tanke.mybase.MyBaseFragment;
+import com.lptiyu.tanke.utils.GameOverHelper;
 import com.lptiyu.tanke.utils.NetworkUtil;
 import com.lptiyu.tanke.utils.PopupWindowUtils;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * Created by Jason on 2016/9/23.
@@ -66,11 +73,15 @@ public class HomeFragment extends MyBaseFragment implements HomeContact.IHomeVie
     private List<MyBaseFragment> fragments;
     private ArrayList<String> titles;
     private HomeTabFragmentPagerAdapter adapter;
+    private List<Banner> bannerList;
+    private ArrayList<Recommend> recommendList;
+    private BannerPagerAdapter bannerAdapter;
+    private HomeHotRecyclerViewAdapter hotAdapter;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        EventBus.getDefault().register(this);
         presenter = new HomePresenter(this);
         firstLoadData();
     }
@@ -80,11 +91,16 @@ public class HomeFragment extends MyBaseFragment implements HomeContact.IHomeVie
             presenter.firstLoadBannerAndHot();
             presenter.loadSort();
         } else {
-            PopupWindowUtils.getInstance().showNetExceptionPopupwindow(getActivity(), new PopupWindowUtils
-                    .OnRetryCallback() {
+            getActivity().getWindow().getDecorView().post(new Runnable() {
                 @Override
-                public void onRetry() {
-                    firstLoadData();
+                public void run() {
+                    PopupWindowUtils.getInstance().showNetExceptionPopupwindow(getActivity(), new PopupWindowUtils
+                            .OnRetryCallback() {
+                        @Override
+                        public void onRetry() {
+                            firstLoadData();
+                        }
+                    });
                 }
             });
         }
@@ -162,14 +178,16 @@ public class HomeFragment extends MyBaseFragment implements HomeContact.IHomeVie
     public void successFirstLoadBannerAndHot(HomeBannerAndHot homeBannerAndHot) {
         if (homeBannerAndHot != null) {
             if (homeBannerAndHot.banner_list != null) {
-                setVPAdapter(homeBannerAndHot.banner_list);
-            } else {
-                Toast.makeText(getActivity(), "暂无banner数据", Toast.LENGTH_SHORT).show();
+                if (bannerList == null)
+                    bannerList = new ArrayList<>();
+                bannerList.addAll(homeBannerAndHot.banner_list);
+                setVPAdapter();
             }
             if (homeBannerAndHot.recommend_list != null) {
-                setHotAdapter(homeBannerAndHot.recommend_list);
-            } else {
-                Toast.makeText(getActivity(), "暂无热门推荐数据", Toast.LENGTH_SHORT).show();
+                if (recommendList == null)
+                    recommendList = new ArrayList<>();
+                recommendList.addAll(homeBannerAndHot.recommend_list);
+                setHotAdapter();
             }
         } else {
             Toast.makeText(getActivity(), "暂无banner和热门推荐数据", Toast.LENGTH_SHORT).show();
@@ -188,10 +206,26 @@ public class HomeFragment extends MyBaseFragment implements HomeContact.IHomeVie
         }
     }
 
+    @Override
+    public void successReloadBannerAndHot(HomeBannerAndHot homeBannerAndHot) {
+        if (homeBannerAndHot != null) {
+            if (homeBannerAndHot.banner_list != null) {
+                bannerList.clear();
+                bannerList.addAll(homeBannerAndHot.banner_list);
+                bannerAdapter.notifyDataSetChanged();
+            }
+            if (homeBannerAndHot.recommend_list != null) {
+                recommendList.clear();
+                recommendList.addAll(homeBannerAndHot.recommend_list);
+                hotAdapter.notifyDataSetChanged();
+            }
+        }
+    }
+
     private void refreshData() {
         if (NetworkUtil.checkIsNetworkConnected()) {
             if (presenter != null) {
-                presenter.firstLoadBannerAndHot();
+                presenter.reloadBannerAndHot();
             }
         } else {
             PopupWindowUtils.getInstance().showNetExceptionPopupwindow(getContext(), new PopupWindowUtils
@@ -204,27 +238,28 @@ public class HomeFragment extends MyBaseFragment implements HomeContact.IHomeVie
         }
     }
 
-    private void setHotAdapter(final List<Recommend> list) {
+    private void setHotAdapter() {
         recyclerViewHot.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
-        HomeHotRecyclerViewAdapter adapter = new HomeHotRecyclerViewAdapter(getActivity(), list);
-        recyclerViewHot.setAdapter(adapter);
-        adapter.setOnRecyclerViewItemClickListener(new OnRecyclerViewItemClickListener() {
+        hotAdapter = new HomeHotRecyclerViewAdapter(getActivity(), recommendList);
+        recyclerViewHot.setAdapter(hotAdapter);
+        hotAdapter.setOnRecyclerViewItemClickListener(new OnRecyclerViewItemClickListener() {
             @Override
             public void onClick(int position) {
-                Recommend recommend = list.get(position);
+                Recommend recommend = recommendList.get(position);
                 RunApplication.gameId = Long.parseLong(recommend.id);
                 RunApplication.entity = recommend;
+                RunApplication.type=recommend.type;
                 Intent intent = new Intent();
                 switch (recommend.play_status) {
                     case PlayStatus.NO_STATUS:
                     case PlayStatus.NEVER_ENTER_GANME://从未玩过游戏，进入到游戏详情界面
-                        intent.setClass(getActivity(), GameDetailV2Activity.class);
+                        intent.setClass(getActivity(), GameDetailActivity.class);
                         intent.putExtra(Conf.FROM_WHERE, Conf.HOME_HOT);
                         break;
                     case PlayStatus.GAME_OVER://游戏结束，暂不考虑
                     case PlayStatus.HAVE_ENTERED_BUT_NOT_START_GAME://进入过但没开始游戏，进入到游戏详情界面
                     case PlayStatus.HAVE_STARTED_GAME://进入并且已经开始游戏，进入到玩游戏界面
-                        intent.setClass(getActivity(), GamePlayingV2Activity.class);
+                        intent.setClass(getActivity(), GamePlayingActivity.class);
                         break;
                 }
                 startActivity(intent);
@@ -237,9 +272,9 @@ public class HomeFragment extends MyBaseFragment implements HomeContact.IHomeVie
         });
     }
 
-    private void setVPAdapter(List<Banner> list) {
-        BannerPagerAdapter pagerAdapter = new BannerPagerAdapter(getContext(), list);
-        viewPagerBanner.setAdapter(pagerAdapter);
+    private void setVPAdapter() {
+        bannerAdapter = new BannerPagerAdapter(getContext(), bannerList);
+        viewPagerBanner.setAdapter(bannerAdapter);
         viewPagerBanner.setCurrentItem(0);
     }
 
@@ -247,5 +282,50 @@ public class HomeFragment extends MyBaseFragment implements HomeContact.IHomeVie
     public void onDestroy() {
         super.onDestroy();
         EventBus.getDefault().unregister(this);
+    }
+
+    @OnClick({R.id.img_home_menu, R.id.scanner})
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.img_home_menu:
+                GameOverHelper gameOverHelper = new GameOverHelper(getActivity(), new GameOverHelper
+                        .OnPopupWindowDismissCallback() {
+                    @Override
+                    public void onDismiss() {
+
+                    }
+                });
+                gameOverHelper.showPopup();
+                break;
+            case R.id.scanner:
+                break;
+        }
+    }
+
+    /*无论在哪个线程发送都在主线程接收
+   * 接受任务完成后的通知，刷新数据
+   * */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(GamePointTaskStateChanged result) {
+        //刷新数据
+        refreshData();
+    }
+
+    /*无论在哪个线程发送都在主线程接收
+   * 接受任务完成后的通知，刷新数据
+   * */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(EnterGame result) {
+        //刷新数据
+        refreshData();
+    }
+
+    /*无论在哪个线程发送都在主线程接收
+   * 接受任务完成后的通知，刷新数据
+   * */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(LeaveGame result) {
+        //刷新数据
+        refreshData();
     }
 }

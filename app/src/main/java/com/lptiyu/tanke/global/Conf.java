@@ -103,6 +103,8 @@ public final class Conf {
     public static final String PUSH_ACTION = "com.tanke.PUSH_ACTION";
     public static final String MESSAGE_TYPE = "message_type";
 
+    public static final String MESSAGE_LIST = "message_list";
+
     /**
      * UserCenter
      */
@@ -140,6 +142,7 @@ public final class Conf {
     public static final String UPLOAD_RECORD_RESPONSE = "upload_record_response";
     public static final String CONTENT = "content";
     public static final String BANNER_TITLE = "banner_title";
+    public static final String BANNER = "banner";
     public static final String PARENT_DIR = "parent_dir";
     public static final String TASK_IMG = "task_img";
 
