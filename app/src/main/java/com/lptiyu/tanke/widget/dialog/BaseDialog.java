@@ -27,10 +27,9 @@ public abstract class BaseDialog extends Dialog {
         super(context);
         mContext = context;
         mBuilder = NiftyDialogBuilder.getInstance(context);
-        mBuilder.withTitleColor(getColor(R.color.default_font_color))                                  //def
+        mBuilder.withTitleColor(getColor(R.color.white10))                                  //def
                 .withDividerColor(getColor(R.color.transparent))                              //def
-                .withDialogColor(getColor(R.color.default_font_color))                               //def  |
-                // withDialogColor(int resid)
+                .withDialogColor(getColor(R.color.white10))                               //def  |
                 .withDuration(300)
                 .isCancelableOnTouchOutside(true)
                 .withEffect(Effectstype.SlideBottom);

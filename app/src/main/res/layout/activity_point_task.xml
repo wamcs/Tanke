@@ -2,16 +2,14 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:clipChildren="false"
-                android:paddingTop="@dimen/activity_vertical_margin">
+                android:clipChildren="false">
 
     <com.lptiyu.tanke.widget.GalleryViewPager
         android:id="@+id/view_pager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_centerInParent="true"
-        android:layout_marginBottom="20dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="100dp"
         android:clipChildren="false"/>
 
 </RelativeLayout>

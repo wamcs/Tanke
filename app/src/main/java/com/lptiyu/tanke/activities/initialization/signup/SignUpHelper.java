@@ -9,7 +9,6 @@ import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -29,7 +28,7 @@ public class SignUpHelper {
     protected AppCompatActivity context;
 
 
-    @BindView(R.id.sign_up_title)
+    @BindView(R.id.default_tool_bar_textview)
     protected TextView signUpTitle;
     @BindView(R.id.sign_up_phone_edit_text)
     protected EditText signUpPhoneEditText;
@@ -40,7 +39,7 @@ public class SignUpHelper {
     @BindView(R.id.sign_up_password_edit_text)
     protected EditText signUpPasswordEditText;
     @BindView(R.id.sign_up_next_button)
-    protected Button signUpNextButton;
+    protected TextView signUpNextButton;
 
     protected final long COUNT_DOWN_TIME = 60000L;
     private SpannableString spannableString;
@@ -55,9 +54,8 @@ public class SignUpHelper {
         String phone = signUpPhoneEditText.getText().toString().trim();
         if (phone.length() != 11) {
             spannableString = new SpannableString(context.getResources().getString(R.string.error_user_phone));
-            spannableString.setSpan(new ForegroundColorSpan(Color.RED),
-                    0, spannableString.length(),
-                    Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
+            spannableString.setSpan(new ForegroundColorSpan(Color.RED), 0, spannableString.length(), Spannable
+                    .SPAN_INCLUSIVE_EXCLUSIVE);
             signUpPhoneEditText.setText(spannableString);
             return false;
         }
@@ -65,11 +63,9 @@ public class SignUpHelper {
         return true;
     }
 
-
     public boolean next() {
         Editable phone = signUpPhoneEditText.getText();
         if ((phone + "").length() != 11) {
-            //        if (!RegularExpressionHelper.isPhoneNumber(phone + "")) {
 
             spannableString = new SpannableString(context.getResources().getString(R.string.error_user_phone));
             spannableString.setSpan(new ForegroundColorSpan(Color.RED),

@@ -120,18 +120,6 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
     private AmbientLightManager ambientLightManager;
     private boolean isFirstInLocationActivity;
 
-    ViewfinderView getViewfinderView() {
-        return viewfinderView;
-    }
-
-    public Handler getHandler() {
-        return handler;
-    }
-
-    CameraManager getCameraManager() {
-        return cameraManager;
-    }
-
     @Override
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
@@ -157,7 +145,7 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
                 }
             });
         }
-        setResultWithEmptyData();
+        //        setResultWithEmptyData();
         /*********************************/
     }
 
@@ -178,7 +166,7 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
             @Override
             public void onClick(View v) {
                 popupWindow.dismiss();
-                setResultWithEmptyData();
+                //                setResultWithEmptyData();
             }
         });
     }
@@ -190,6 +178,18 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
                 setResult(RESULT_OK, new Intent());
             }
         });
+    }
+
+    public Handler getHandler() {
+        return handler;
+    }
+
+    CameraManager getCameraManager() {
+        return cameraManager;
+    }
+
+    ViewfinderView getViewfinderView() {
+        return viewfinderView;
     }
 
     /**

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <include
+        layout="@layout/layout_default_toolbar"/>
+
+    <WebView
+        android:id="@+id/web_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/rl_title"/>
+
+    <com.lptiyu.tanke.widget.GradientProgressBar
+        android:id="@+id/web_view_progress_bar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y8"
+        android:layout_below="@id/rl_title"
+        app:src="@drawable/user_center_exp_progress_bar_solid"/>
+
+    <RelativeLayout
+        android:id="@+id/rl_emptyView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/rl_title"
+        android:background="@color/windowBackground">
+
+        <ImageView
+            android:id="@+id/img"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="70dp"
+            android:src="@drawable/shang"/>
+
+        <TextView
+            android:id="@+id/tv_Tip1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/img"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+
+            android:text="正在拼死拼活建设中..."
+            android:textSize="18sp"/>
+
+        <TextView
+            android:id="@+id/tv_Tip2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_Tip1"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            android:text="多玩任务获取积分"
+            android:textSize="14sp"/>
+    </RelativeLayout>
+
+</RelativeLayout>

@@ -16,6 +16,9 @@ import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.lptiyu.tanke.R;
+import com.lptiyu.tanke.activities.initialization.ui.SignUpActivity;
+import com.lptiyu.tanke.activities.redwallet.RedWalletActivity;
+import com.lptiyu.tanke.activities.scorestore.ScoreStoreActivity;
 import com.lptiyu.tanke.base.controller.FragmentController;
 import com.lptiyu.tanke.base.ui.BaseFragment;
 import com.lptiyu.tanke.enums.Platform;
@@ -23,7 +26,6 @@ import com.lptiyu.tanke.enums.RequestCode;
 import com.lptiyu.tanke.enums.ResultCode;
 import com.lptiyu.tanke.global.Accounts;
 import com.lptiyu.tanke.global.Conf;
-import com.lptiyu.tanke.activities.initialization.ui.SignUpActivity;
 import com.lptiyu.tanke.net.HttpService;
 import com.lptiyu.tanke.net.Response;
 import com.lptiyu.tanke.pojo.UserDetails;
@@ -35,6 +37,7 @@ import com.lptiyu.tanke.utils.ExpUtils;
 import com.lptiyu.tanke.utils.NetworkUtil;
 import com.lptiyu.tanke.utils.ToastUtil;
 import com.lptiyu.tanke.widget.CircularImageView;
+import com.lptiyu.tanke.widget.CustomTextView;
 import com.lptiyu.tanke.widget.GradientProgressBar;
 
 import butterknife.BindView;
@@ -91,6 +94,10 @@ public class UserCenterFragment extends BaseFragment {
 
     @BindView(R.id.user_judge_game)
     RelativeLayout mUserJudgeGame;
+    @BindView(R.id.default_tool_bar_imageview)
+    ImageView defaultToolBarImageview;
+    @BindView(R.id.default_tool_bar_textview)
+    CustomTextView defaultToolBarTextview;
 
     private Subscription subscription;
     private UserDetails mUserDetails;
@@ -101,6 +108,8 @@ public class UserCenterFragment extends BaseFragment {
             savedInstanceState) {
         View view = fromResLayout(inflater, container, R.layout.fragment_user_center);
         ButterKnife.bind(this, view);
+        defaultToolBarImageview.setVisibility(View.GONE);
+        defaultToolBarTextview.setText("用户中心");
         return view;
     }
 
@@ -272,6 +281,16 @@ public class UserCenterFragment extends BaseFragment {
     @OnClick(R.id.user_judge_game)
     public void user_judge_game() {
         startActivity(new Intent(getContext(), UserManagerGameActivity.class));
+    }
+
+    @OnClick(R.id.rl_red_wallet)
+    public void redWallet() {
+        startActivity(new Intent(getContext(), RedWalletActivity.class));
+    }
+
+    @OnClick(R.id.rl_score_store)
+    public void scoreStore() {
+        startActivity(new Intent(getContext(), ScoreStoreActivity.class));
     }
 
     @Override

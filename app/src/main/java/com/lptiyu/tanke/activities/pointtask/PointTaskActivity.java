@@ -22,6 +22,7 @@ import com.lptiyu.tanke.fragments.pointtask.PointTaskFragment;
 import com.lptiyu.tanke.global.Accounts;
 import com.lptiyu.tanke.mybase.MyBaseActivity;
 import com.lptiyu.tanke.mybase.MyBaseFragment;
+import com.lptiyu.tanke.utils.TaskResultHelper;
 import com.lptiyu.tanke.widget.DepthPageTransformer;
 import com.lptiyu.tanke.widget.GalleryViewPager;
 import com.lptiyu.zxinglib.android.CaptureActivity;
@@ -39,7 +40,6 @@ import static com.lptiyu.tanke.RunApplication.currentTask;
 import static com.lptiyu.tanke.RunApplication.gameId;
 
 public class PointTaskActivity extends MyBaseActivity implements PointTaskContact.IPointTaskV2View {
-
     @BindView(R.id.view_pager)
     GalleryViewPager mViewPager;
     private final double MAX_PARCEL = 0.9d;
@@ -48,6 +48,8 @@ public class PointTaskActivity extends MyBaseActivity implements PointTaskContac
     private int max_index = -1;
     private PointTaskFragmentPagerAdapter adapter;
     private PointTaskPresenter presenter;
+    private TaskResultHelper taskResultHelper;
+    private boolean isGameOver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,6 +82,16 @@ public class PointTaskActivity extends MyBaseActivity implements PointTaskContac
             }
         }
         presenter = new PointTaskPresenter(this);
+
+        taskResultHelper = new TaskResultHelper(this, new TaskResultHelper.TaskResultCallback() {
+            @Override
+            public void onSuccess() {
+                isGameOver = RunApplication.isGameOver;
+                if (!isGameOver) {
+                    setActivityResult();
+                }
+            }
+        });
     }
 
     private void initView() {
@@ -137,10 +149,10 @@ public class PointTaskActivity extends MyBaseActivity implements PointTaskContac
     protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
         super.onActivityResult(requestCode, resultCode, intent);
         if (resultCode == RESULT_OK) {//扫码识别返回
-            if (Accounts.getPhoneNumber().equals("18272164317")) {
-                upLoadQRCodeRecord();
-                return;
-            }
+            //            if (Accounts.getPhoneNumber().equals("18272164317")) {
+            //                upLoadQRCodeRecord();
+            //                return;
+            //            }
             // RESULT_OK是Activity里面的一个静态常量
             Bundle b = intent.getExtras();
             //扫描到的结果
@@ -153,7 +165,7 @@ public class PointTaskActivity extends MyBaseActivity implements PointTaskContac
                 //上传游戏记录
                 upLoadQRCodeRecord();
             } else {
-                Toast.makeText(this, "什么也没有发现", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "没有发现新线索", Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -181,16 +193,17 @@ public class PointTaskActivity extends MyBaseActivity implements PointTaskContac
 
     @Override
     public void successUploadQRRecord(UpLoadGameRecordResult result) {
-        String tip = "";
-        if (result != null) {
-            tip = "恭喜你找到答案了，经验 +" + result.get_exp + ", 积分 +" + result.get_extra_points + ", 红包 +" + result
-                    .get_extra_money + "元";
-        }
-        Toast.makeText(this, tip, Toast.LENGTH_SHORT).show();
+        taskResultHelper.showSuccessResult(result);
+        taskResultHelper.stopSubmitting();
         if (result.game_statu == PlayStatus.GAME_OVER) {//游戏通关，需要弹出通关视图，弹出通关视图
+            isGameOver = true;
             startActivity(new Intent(PointTaskActivity.this, GameOverActivity.class));
+            setActivityResult();
         }
-        finish();
+    }
+
+    private void setActivityResult() {
         EventBus.getDefault().post(new GamePointTaskStateChanged());
+        finish();
     }
 }

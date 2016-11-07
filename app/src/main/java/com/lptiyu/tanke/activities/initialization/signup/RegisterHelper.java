@@ -36,7 +36,6 @@ public class RegisterHelper extends SignUpHelper {
 
     protected void init() {
         signUpTitle.setText(R.string.register_title);
-        //        signUpNextButton.setText(R.string.next);
     }
 
     @Override

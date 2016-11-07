@@ -4,83 +4,53 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/black01"
+    android:background="@color/windowBackground"
     tools:context=".userCenter.ui.SettingActivity">
-
 
     <include layout="@layout/layout_default_toolbar"/>
 
-
-    <LinearLayout
-        android:id="@+id/setting_activity_set_block"
+    <RelativeLayout
+        android:id="@+id/rl_vibrate"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/rl_title"
+        android:layout_marginBottom="@dimen/setting_activity_item_margin_top"
         android:layout_marginTop="@dimen/setting_activity_item_margin_top"
-        android:background="@color/default_font_color"
-        android:orientation="vertical">
+        android:background="@color/white10">
 
-        <!--<RelativeLayout-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="@dimen/activity_setting_item_height">-->
-
-        <!--<com.lptiyu.tanke.widget.CustomTextView-->
-        <!--style="@style/SettingActivityItemTextBase"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent"-->
-        <!--android:layout_centerVertical="true"-->
-        <!--android:text="@string/setting_activity_push_msg"/>-->
-
-        <!--<com.lptiyu.tanke.widget.SwitchButton-->
-        <!--android:id="@+id/setting_activity_msg_push"-->
-        <!--style="@style/SwitchButtonStyleMD"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_alignParentRight="true"-->
-        <!--android:layout_centerVertical="true"/>-->
-
-        <!--</RelativeLayout>-->
-
-        <RelativeLayout
+        <com.lptiyu.tanke.widget.CustomTextView
+            style="@style/SettingActivityItemTextBase"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            >
+            android:layout_centerVertical="true"
+            android:gravity="center_vertical"
+            android:paddingBottom="15dp"
+            android:paddingTop="15dp"
+            android:text="@string/setting_activity_vibrate_mobile"/>
 
-            <com.lptiyu.tanke.widget.CustomTextView
-                style="@style/SettingActivityItemTextBase"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:gravity="center_vertical"
-                android:paddingBottom="15dp"
-                android:paddingTop="15dp"
-                android:text="@string/setting_activity_vibrate_mobile"/>
+        <com.lptiyu.tanke.widget.SwitchButton
+            android:id="@+id/setting_activity_mobile_vibrate"
+            style="@style/SwitchButtonStyleMD"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"/>
 
-            <com.lptiyu.tanke.widget.SwitchButton
-                android:id="@+id/setting_activity_mobile_vibrate"
-                style="@style/SwitchButtonStyleMD"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"/>
-
-        </RelativeLayout>
-
-    </LinearLayout>
+    </RelativeLayout>
 
     <LinearLayout
         android:id="@+id/setting_activity_information_block"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/setting_activity_set_block"
-        android:layout_marginTop="@dimen/setting_activity_item_margin_top"
-        android:background="@color/default_font_color"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@id/rl_vibrate"
+        android:background="@color/white10"
         android:orientation="vertical">
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            >
+            android:layout_height="wrap_content">
 
             <com.lptiyu.tanke.widget.CustomTextView
                 android:id="@+id/setting_activity_feedback"
@@ -112,8 +82,7 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            >
+            android:layout_height="wrap_content">
 
             <com.lptiyu.tanke.widget.CustomTextView
                 android:id="@+id/setting_activity_wechat_public"
@@ -149,8 +118,7 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            >
+            android:layout_height="wrap_content">
 
             <com.lptiyu.tanke.widget.CustomTextView
                 android:id="@+id/clear_cache"
@@ -186,8 +154,7 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            >
+            android:layout_height="wrap_content">
 
             <com.lptiyu.tanke.widget.CustomTextView
                 android:id="@+id/setting_activity_about_us"

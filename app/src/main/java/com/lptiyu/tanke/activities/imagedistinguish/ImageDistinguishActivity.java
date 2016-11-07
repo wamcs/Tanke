@@ -3,7 +3,10 @@ package com.lptiyu.tanke.activities.imagedistinguish;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
+import android.hardware.Camera;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.Surface;
@@ -88,6 +91,8 @@ public class ImageDistinguishActivity extends MyBaseActivity implements Imagedis
     private int countDownInterval = 1000;
     private int millisInFuture = 5000;
     private ScanNothingHelper scanNothingHelper;
+    private android.support.v7.app.AlertDialog permissionDialog;
+    private String[] imgArr;
 
     public static native void nativeInitGL();
 
@@ -100,8 +105,6 @@ public class ImageDistinguishActivity extends MyBaseActivity implements Imagedis
     public static native void nativeStartAr();
 
     public static native void nativeStopAr();
-
-    //    private native boolean nativeInit();
 
     private native void nativeDestory();
 
@@ -122,19 +125,9 @@ public class ImageDistinguishActivity extends MyBaseActivity implements Imagedis
         presenter = new ImagedistinguishPresenter(this);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON, WindowManager.LayoutParams
                 .FLAG_KEEP_SCREEN_ON);
-        String[] imgArr = getIntent().getStringArrayExtra(Conf.IMG_DISTINGUISH_ARRAY);//有可能有多张图片，是用逗号隔开的
-        if (imgArr == null || imgArr.length <= 0) {
-            Toast.makeText(this, "未发现目标图片", Toast.LENGTH_SHORT).show();
-            return;
-        }
-        boolean isImgPathExist = false;
-        for (String imgPath : imgArr) {
-            if (imgPath != null) {
-                isImgPathExist = true;
-            }
-        }
-        if (!isImgPathExist) {
-            Toast.makeText(this, "未发现目标图片", Toast.LENGTH_SHORT).show();
+        //有可能有多张图片，是用逗号隔开的
+        imgArr = getIntent().getStringArrayExtra(Conf.IMG_DISTINGUISH_ARRAY);
+        if (isImgArrNull()) {
             return;
         }
 
@@ -147,19 +140,9 @@ public class ImageDistinguishActivity extends MyBaseActivity implements Imagedis
         isPointOver = RunApplication.isPointOver;
         index = getIntent().getIntExtra(Conf.INDEX, -1);
 
-        EasyAR.initialize(this, key);
-        nativeInit(imgArr, new String[]{""});
-        GLView glView = new GLView(this);
-        glView.setRenderer(new Renderer());
-        glView.setZOrderMediaOverlay(true);
+        initEasyAR();
 
-        ((ViewGroup) findViewById(R.id.preview)).addView(glView, new ViewGroup.LayoutParams(ViewGroup
-                .LayoutParams
-                .MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-        nativeRotationChange(getWindowManager().getDefaultDisplay().getRotation() == Surface.ROTATION_0);
-
-        taskResultHelper = new TaskResultHelper(this, rlSubmitRecord, imgAnim, new TaskResultHelper
-                .TaskResultCallback() {
+        taskResultHelper = new TaskResultHelper(this, new TaskResultHelper.TaskResultCallback() {
             @Override
             public void onSuccess() {
                 if (!isGameOver) {
@@ -174,7 +157,7 @@ public class ImageDistinguishActivity extends MyBaseActivity implements Imagedis
         MyC2Java.setOnSuccessDistinguishListener(new MyC2Java.ISuccessDistinguishListener() {
             @Override
             public void onSuccess() {
-                taskResultHelper.startAnim();
+                taskResultHelper.startSubmitting();
                 if (timer != null) {
                     timer.cancel();
                     timer = null;
@@ -194,6 +177,102 @@ public class ImageDistinguishActivity extends MyBaseActivity implements Imagedis
 
 
         img_waiting.setVisibility(View.GONE);
+    }
+
+    private boolean isImgArrNull() {
+        if (imgArr == null || imgArr.length <= 0) {
+            Toast.makeText(this, "未发现目标图片", Toast.LENGTH_SHORT).show();
+            return true;
+        }
+        boolean isImgPathExist = false;
+        for (String imgPath : imgArr) {
+            if (imgPath != null && !imgPath.equals("")) {
+                isImgPathExist = true;
+            }
+        }
+        if (!isImgPathExist) {
+            Toast.makeText(this, "未发现目标图片", Toast.LENGTH_SHORT).show();
+            return true;
+        }
+        return false;
+    }
+
+    private void initEasyAR() {
+        if (isCameraCanUse()) {
+            EasyAR.initialize(this, key);
+            nativeInit(imgArr, new String[]{""});
+            GLView glView = new GLView(this);
+            glView.setRenderer(new Renderer());
+            glView.setZOrderMediaOverlay(true);
+
+            ((ViewGroup) findViewById(R.id.preview)).addView(glView, new ViewGroup.LayoutParams(ViewGroup
+                    .LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+            nativeRotationChange(getWindowManager().getDefaultDisplay().getRotation() == Surface.ROTATION_0);
+        } else {
+            showPermissionFailTip();
+            return;
+        }
+
+    }
+
+    /**
+     * 返回true 表示可以使用  返回false表示不可以使用
+     */
+    public boolean isCameraCanUse() {
+        boolean isCanUse = true;
+        Camera mCamera = null;
+        try {
+            mCamera = Camera.open();
+            Camera.Parameters mParameters = mCamera.getParameters(); //针对魅族手机
+            mCamera.setParameters(mParameters);
+        } catch (Exception e) {
+            isCanUse = false;
+        }
+
+        if (mCamera != null) {
+            try {
+                mCamera.release();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return isCanUse;
+    }
+
+    private void showPermissionFailTip() {
+        if (permissionDialog == null) {
+            permissionDialog = new android.support.v7.app.AlertDialog.Builder(this).setMessage
+                    ("此功能需要您授予摄像头权限，请前往“设置”->“应用管理”，选择“步道探秘”进行授权设置")
+                    .setPositiveButton("前往设置", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            PackageManager pm = getPackageManager();
+                            PackageInfo info = null;
+                            try {
+                                info = pm.getPackageInfo(getPackageName(), 0);
+                            } catch (PackageManager.NameNotFoundException e) {
+                                e.printStackTrace();
+                            }
+                            Intent intent = new Intent();
+                            intent.setAction("android.intent.action.MAIN");
+                            intent.setClassName("com.android.settings", "com.android.settings" +
+                                    ".ManageApplications");
+                            intent.putExtra("extra_package_uid", info.applicationInfo.uid);
+                            try {
+                                startActivity(intent);
+                            } catch (Exception e) {
+                                Toast.makeText(ImageDistinguishActivity.this, "前往失败，请手动前往设置->应用管理授权", Toast
+                                        .LENGTH_SHORT).show();
+                            }
+                            finish();
+                        }
+                    }).setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            ImageDistinguishActivity.this.finish();
+                        }
+                    }).setCancelable(false).show();
+        }
     }
 
     private void loadNetWorkData() {
@@ -320,11 +399,11 @@ public class ImageDistinguishActivity extends MyBaseActivity implements Imagedis
         resultRecord = response;
         resultRecord.index = this.index;
         taskResultHelper.showSuccessResult(response);
-        taskResultHelper.stopAnim();
-        ImageDistinguishActivity.nativeStopAr();
+        taskResultHelper.stopSubmitting();
+        stopScan();
         if (response.game_statu == PlayStatus.GAME_OVER) {//游戏通关，需要弹出通关视图，弹出通关视图
             isGameOver = true;
-            taskResultHelper.hidePopup();
+            taskResultHelper.dismiss();
             startActivity(new Intent(ImageDistinguishActivity.this, GameOverActivity.class));
             finish();
         }
@@ -339,7 +418,7 @@ public class ImageDistinguishActivity extends MyBaseActivity implements Imagedis
     public void failUploadRecord(String errorMsg) {
         ToastUtil.TextToast(errorMsg);
         taskResultHelper.showFailResult();
-        taskResultHelper.stopAnim();
+        taskResultHelper.stopSubmitting();
         ImageDistinguishActivity.nativeStopAr();
     }
 
@@ -349,7 +428,7 @@ public class ImageDistinguishActivity extends MyBaseActivity implements Imagedis
     @Override
     public void netException() {
         taskResultHelper.showNetException();
-        taskResultHelper.stopAnim();
+        taskResultHelper.stopSubmitting();
         ImageDistinguishActivity.nativeStopAr();
     }
 

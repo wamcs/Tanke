@@ -3,21 +3,21 @@
                 android:id="@+id/item_root"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:background="@drawable/shape_rounded_white_bg">
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="5dp"
+                android:background="@color/white10"
+                android:padding="10dp">
 
-    <com.makeramen.roundedimageview.RoundedImageView
+    <ImageView
         android:id="@+id/image_view"
         android:layout_width="@dimen/game_image_width"
         android:layout_height="@dimen/game_image_height"
-        android:layout_margin="10dp"
+        android:layout_marginLeft="10dp"
         android:contentDescription="@string/content_description"
-        android:scaleType="centerCrop"
-        android:src="@drawable/default_pic"
-        />
+        android:scaleType="centerCrop"/>
 
     <TextView
-        android:id="@+id/tv_competition_tag"
+        android:id="@+id/tv_tag"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@id/image_view"
@@ -25,16 +25,19 @@
         android:layout_marginLeft="2dp"
         android:layout_marginTop="2dp"
         android:background="@drawable/shape_rounded_bg_competition_tag"
-        android:padding="2dp"
+        android:padding="1dp"
         android:text="赛事活动"
         android:textColor="@color/white10"
-        android:textSize="10sp"/>
+        android:textSize="@dimen/home_display_tag_textsize"
+        android:textStyle="bold"
+        android:visibility="gone"/>
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@id/image_view"
         android:layout_alignTop="@id/image_view"
+        android:layout_marginLeft="10dp"
         android:layout_toRightOf="@id/image_view"
         android:gravity="center_vertical">
 
@@ -52,7 +55,7 @@
             android:paddingTop="2dp"
             android:text="651km"
             android:textColor="@color/colorPrimary"
-            android:textSize="15sp"/>
+            android:textSize="@dimen/home_display_address_textsize"/>
 
         <TextView
             android:id="@+id/title"
@@ -61,7 +64,7 @@
             android:layout_alignBaseline="@id/tv_distance"
             android:layout_alignParentLeft="true"
             android:layout_toLeftOf="@id/tv_distance"
-            android:ellipsize="middle"
+            android:ellipsize="end"
             android:maxEms="10"
             android:maxLines="1"
             android:maxWidth="@dimen/x315"
@@ -69,7 +72,7 @@
             android:paddingTop="2dp"
             android:text="华科森林记"
             android:textColor="@color/black333"
-            android:textSize="15sp"
+            android:textSize="@dimen/home_display_game_name_textsize"
             />
 
         <TextView
@@ -85,8 +88,7 @@
             android:paddingTop="2dp"
             android:text="175人正在玩"
             android:textColor="@color/colorPrimary"
-            android:textSize="13sp"/>
-
+            android:textSize="@dimen/home_display_address_textsize"/>
 
         <TextView
             android:id="@+id/location"
@@ -100,8 +102,8 @@
             android:paddingBottom="2dp"
             android:paddingTop="2dp"
             android:text="华中科技大学东校区"
-            android:textColor="@color/black06"
-            android:textSize="14sp"/>
+            android:textColor="@color/grey06"
+            android:textSize="@dimen/home_display_address_textsize"/>
 
         <RelativeLayout
             android:id="@+id/rl_difficult"
@@ -117,7 +119,8 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:text="难度:"
-                android:textSize="13sp"/>
+                android:textColor="@color/grey06"
+                android:textSize="@dimen/home_display_address_textsize"/>
 
             <RatingBar
                 android:id="@+id/ratingBar"
@@ -132,34 +135,8 @@
                 android:rating="4"
                 android:stepSize="1.0"/>
 
-            <TextView
-                android:id="@+id/tv_player_count_direction_run"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="15dp"
-                android:layout_toRightOf="@id/ratingBar"
-                android:ellipsize="end"
-                android:maxLines="1"
-                android:text="175人正在玩"
-                android:textColor="@color/colorPrimary"
-                android:textSize="13sp"/>
         </RelativeLayout>
 
-        <TextView
-            android:id="@+id/tv_player_count_near_game"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/location"
-            android:layout_centerVertical="true"
-            android:ellipsize="end"
-            android:gravity="left"
-            android:maxLines="1"
-            android:paddingBottom="2dp"
-            android:paddingTop="2dp"
-            android:text="175人正在玩"
-            android:textColor="@color/colorPrimary"
-            android:textSize="13sp"/>
     </RelativeLayout>
 
 </RelativeLayout>

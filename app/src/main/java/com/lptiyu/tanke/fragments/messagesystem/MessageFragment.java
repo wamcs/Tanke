@@ -3,7 +3,6 @@ package com.lptiyu.tanke.fragments.messagesystem;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +11,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
 import com.lptiyu.tanke.R;
 import com.lptiyu.tanke.activities.messagelist.MessageListActivity;
 import com.lptiyu.tanke.entity.response.MessageEntity;
@@ -21,6 +19,7 @@ import com.lptiyu.tanke.mybase.MyBaseFragment;
 import com.lptiyu.tanke.utils.DateFormatterUtils;
 import com.lptiyu.tanke.utils.NetworkUtil;
 import com.lptiyu.tanke.utils.PopupWindowUtils;
+import com.lptiyu.tanke.widget.CustomTextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,6 +41,10 @@ public class MessageFragment extends MyBaseFragment implements MessageContact.IM
     TextView tvMessageContent;
     @BindView(R.id.rl_message_layout)
     RelativeLayout rlMessageLayout;
+    @BindView(R.id.default_tool_bar_imageview)
+    ImageView defaultToolBarImageview;
+    @BindView(R.id.default_tool_bar_textview)
+    CustomTextView defaultToolBarTextview;
     private MessagePresenter presenter;
     private int page = 1;
     private ArrayList<MessageEntity> messageList;
@@ -78,6 +81,8 @@ public class MessageFragment extends MyBaseFragment implements MessageContact.IM
             savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_message, container, false);
         ButterKnife.bind(this, view);
+        defaultToolBarImageview.setVisibility(View.GONE);
+        defaultToolBarTextview.setText("消息中心");
         return view;
     }
 
@@ -97,11 +102,8 @@ public class MessageFragment extends MyBaseFragment implements MessageContact.IM
 
     private void bindData(MessageEntity messageEntity) {
         if (messageEntity != null) {
-            tvMessageContent.setText(Html.fromHtml(messageEntity.content) + "");
-            tvMessageName.setText(messageEntity.title + "");
+            tvMessageContent.setText(messageEntity.title + "");
             tvMessageTime.setText(DateFormatterUtils.parseTimeStamp(messageEntity.create_time));
-            Glide.with(getActivity()).load(messageEntity.pic).placeholder(R.drawable.ic_launcher).error(R.drawable
-                    .ic_launcher).into(imgMessagePicture);
         }
     }
 

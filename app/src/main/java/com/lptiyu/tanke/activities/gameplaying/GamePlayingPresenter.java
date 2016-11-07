@@ -54,4 +54,35 @@ public class GamePlayingPresenter implements GamePlayingContract.IGamePlaying2Pr
         }, GameRecordResponse.class);
     }
 
+    @Override
+    public void reloadGameRecord(long gameId, long teamId) {
+        RequestParams params = RequestParamsHelper.getBaseRequestParam(XUtilsUrls.GET_RECORD);
+        params.addBodyParameter("uid", Accounts.getId() + "");
+        params.addBodyParameter("game_id", gameId + "");
+        params.addBodyParameter("team_id", teamId + "");//个人游戏传0，团队游戏传1
+        XUtilsHelper.getInstance().get(params, new XUtilsRequestCallBack<GameRecordResponse>() {
+            @Override
+            protected void onSuccess(GameRecordResponse response) {
+                if (response.status == BaseResponse.SUCCESS) {
+                    view.successReloadRecord(response.data);
+                } else {
+                    if (response.info != null) {
+                        view.failLoad(response.info);
+                    } else {
+                        view.failLoad();
+                    }
+                }
+            }
+
+            @Override
+            protected void onFailed(String errorMsg) {
+                if (errorMsg != null) {
+                    view.failLoad(errorMsg);
+                } else {
+                    view.netException();
+                }
+            }
+        }, GameRecordResponse.class);
+    }
+
 }

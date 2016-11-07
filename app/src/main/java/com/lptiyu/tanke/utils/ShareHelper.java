@@ -108,6 +108,34 @@ public class ShareHelper {
         wechat.share(shareParams);
     }
 
+    public static void shareImage(int platform, String imagePath) {
+        switch (platform) {
+            case SHARE_QQ:
+                shareLocalImageToQQ(QQ.NAME, imagePath);
+                break;
+            case SHARE_WEIBO:
+                shareLocalImageToQQ(SinaWeibo.NAME, imagePath);
+                break;
+            case SHARE_WECHAT_FRIENDS:
+                shareLocalImageToQQ(Wechat.NAME, imagePath);
+                break;
+            case SHARE_WECHAT_CIRCLE:
+                shareLocalImageToQQ(WechatMoments.NAME, imagePath);
+                break;
+            default:
+                break;
+        }
+    }
+
+    private static void shareLocalImageToQQ(String platform, String imagepath) {
+        Platform.ShareParams shareParams = new Platform.ShareParams();
+        shareParams.setImagePath(imagepath);
+        Platform qq = ShareSDK.getPlatform(platform);
+        qq.setPlatformActionListener(new listener());
+        qq.share(shareParams);
+
+    }
+
     private static class listener implements PlatformActionListener {
 
         @Override

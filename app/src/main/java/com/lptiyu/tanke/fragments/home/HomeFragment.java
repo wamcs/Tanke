@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.SimpleOnPageChangeListener;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -32,10 +33,10 @@ import com.lptiyu.tanke.entity.response.HomeSortList;
 import com.lptiyu.tanke.entity.response.Recommend;
 import com.lptiyu.tanke.enums.PlayStatus;
 import com.lptiyu.tanke.fragments.hometab.HomeTabFragment;
+import com.lptiyu.tanke.global.Accounts;
 import com.lptiyu.tanke.global.Conf;
 import com.lptiyu.tanke.interfaces.OnRecyclerViewItemClickListener;
 import com.lptiyu.tanke.mybase.MyBaseFragment;
-import com.lptiyu.tanke.utils.GameOverHelper;
 import com.lptiyu.tanke.utils.NetworkUtil;
 import com.lptiyu.tanke.utils.PopupWindowUtils;
 
@@ -119,29 +120,7 @@ public class HomeFragment extends MyBaseFragment implements HomeContact.IHomeVie
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        //        mPtrFrame.setLastUpdateTimeRelateObject(this);
-        //        mPtrFrame.setPtrHandler(new PtrHandler() {
-        //            @Override
-        //            public void onRefreshBegin(PtrFrameLayout frame) {
-        //                refreshData();
-        //                mPtrFrame.refreshComplete();
-        //            }
-        //
-        //            @Override
-        //            public boolean checkCanDoRefresh(PtrFrameLayout frame, View content, View header) {
-        //                //设置下拉刷新的条件
-        //                return stickyNavLayout.getScrollY() == 0;
-        //            }
-        //        });
-        //
-        //        // the following are default settings
-        //        mPtrFrame.setResistance(1.7f);
-        //        mPtrFrame.setRatioOfHeaderHeightToRefresh(1.2f);
-        //        mPtrFrame.setDurationToClose(200);
-        //        mPtrFrame.setDurationToCloseHeader(1000);
-        //        mPtrFrame.setPullToRefresh(false);
-        //        mPtrFrame.setKeepHeaderWhenRefresh(true);
-
+        tvTitle.setText(Accounts.getNickName());
     }
 
     //根据返回结果设置tab
@@ -157,6 +136,7 @@ public class HomeFragment extends MyBaseFragment implements HomeContact.IHomeVie
         viewPager.setAdapter(adapter);
         viewPager.setOffscreenPageLimit(titles.size() - 1);
         pagerSlidingTabStrip.setViewPager(viewPager);
+        pagerSlidingTabStrip.setTextSize(13);
         pagerSlidingTabStrip.setOnPageChangeListener(new SimpleOnPageChangeListener() {
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
                 super.onPageScrolled(position, positionOffset, positionOffsetPixels);
@@ -239,7 +219,15 @@ public class HomeFragment extends MyBaseFragment implements HomeContact.IHomeVie
     }
 
     private void setHotAdapter() {
-        recyclerViewHot.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
+        if (recommendList == null) {
+            return;
+        }
+        if (recommendList.size() <= 3) {
+            recyclerViewHot.setLayoutManager(new GridLayoutManager(getActivity(), recommendList.size()));
+        } else {
+            recyclerViewHot.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL,
+                    false));
+        }
         hotAdapter = new HomeHotRecyclerViewAdapter(getActivity(), recommendList);
         recyclerViewHot.setAdapter(hotAdapter);
         hotAdapter.setOnRecyclerViewItemClickListener(new OnRecyclerViewItemClickListener() {
@@ -248,7 +236,7 @@ public class HomeFragment extends MyBaseFragment implements HomeContact.IHomeVie
                 Recommend recommend = recommendList.get(position);
                 RunApplication.gameId = Long.parseLong(recommend.id);
                 RunApplication.entity = recommend;
-                RunApplication.type=recommend.type;
+                RunApplication.type = recommend.type;
                 Intent intent = new Intent();
                 switch (recommend.play_status) {
                     case PlayStatus.NO_STATUS:
@@ -288,14 +276,6 @@ public class HomeFragment extends MyBaseFragment implements HomeContact.IHomeVie
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.img_home_menu:
-                GameOverHelper gameOverHelper = new GameOverHelper(getActivity(), new GameOverHelper
-                        .OnPopupWindowDismissCallback() {
-                    @Override
-                    public void onDismiss() {
-
-                    }
-                });
-                gameOverHelper.showPopup();
                 break;
             case R.id.scanner:
                 break;

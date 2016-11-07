@@ -10,7 +10,6 @@
         android:layout_width="@dimen/x230"
         android:layout_height="@dimen/x230"
         android:layout_centerHorizontal="true"
-        android:src="@drawable/default_pic"
         app:cuiv_border="false"
         app:cuiv_shadow="false"
         />
@@ -45,14 +44,14 @@
         android:text="章节名称"
         android:textSize="13sp"/>
 
-    <ImageView
-        android:id="@+id/img_label"
+    <TextView
+        android:id="@+id/tv_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@id/img"
         android:layout_alignRight="@+id/img"
         android:layout_marginRight="10dp"
-        android:scaleType="centerInside"
-        android:src="@drawable/done"/>
+        android:textColor="@color/white10"
+        android:textSize="@dimen/home_display_tag_textsize"/>
 
 </RelativeLayout>

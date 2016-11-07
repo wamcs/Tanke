@@ -48,8 +48,8 @@ public class MessageListAdapter extends BaseRecyclerViewAdapter<MessageEntity> {
         viewHolder.messageItemTime.setText(DateFormatterUtils.parseTimeStamp(messageEntity.create_time));
         viewHolder.messageItemTimeText.setText(DateFormatterUtils.parseTimeStamp(messageEntity.create_time));
         viewHolder.messageItemTitle.setText(messageEntity.title);
-        Glide.with(context).load(messageEntity.pic).placeholder(R.drawable.default_pic).error(R.drawable.default_pic)
-                .into(viewHolder.messageItemImageView);
+        Glide.with(context).load(messageEntity.pic).error(R.drawable.default_pic).crossFade().into(viewHolder
+                .messageItemImageView);
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {

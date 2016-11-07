@@ -8,6 +8,7 @@ import android.widget.TextView;
 import com.lptiyu.tanke.R;
 import com.lptiyu.tanke.mybase.MyBaseActivity;
 import com.lptiyu.tanke.utils.ToastUtil;
+import com.lptiyu.tanke.widget.CustomTextView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -21,6 +22,8 @@ public class FeedBackActivity extends MyBaseActivity implements FeedbackContact.
     EditText etInputFeedback;
     @BindView(R.id.tv_commit_feedback)
     TextView tvCommitFeedback;
+    @BindView(R.id.default_tool_bar_textview)
+    CustomTextView defaultToolBarTextview;
     private FeedbackPresenter presenter;
 
     @Override
@@ -29,13 +32,14 @@ public class FeedBackActivity extends MyBaseActivity implements FeedbackContact.
         setContentView(R.layout.activity_feed_back);
         ButterKnife.bind(this);
 
+        defaultToolBarTextview.setText("意见反馈");
         presenter = new FeedbackPresenter(this);
     }
 
-    @OnClick({R.id.back_btn, R.id.tv_commit_feedback})
+    @OnClick({R.id.default_tool_bar_imageview, R.id.tv_commit_feedback})
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.back_btn:
+            case R.id.default_tool_bar_imageview:
                 finish();
                 break;
             case R.id.tv_commit_feedback:

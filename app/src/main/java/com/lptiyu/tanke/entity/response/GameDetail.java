@@ -52,6 +52,7 @@ public class GameDetail extends BaseEntity implements Parcelable {
         dest.writeString(this.start_time);
         dest.writeString(this.end_time);
         dest.writeInt(this.type);
+        dest.writeInt(this.play_status);
         dest.writeString(this.num);
         dest.writeString(this.content);
         dest.writeString(this.rule);
@@ -79,6 +80,7 @@ public class GameDetail extends BaseEntity implements Parcelable {
         this.start_time = in.readString();
         this.end_time = in.readString();
         this.type = in.readInt();
+        this.play_status = in.readInt();
         this.num = in.readString();
         this.content = in.readString();
         this.rule = in.readString();

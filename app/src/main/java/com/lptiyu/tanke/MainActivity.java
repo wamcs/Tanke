@@ -6,7 +6,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.widget.ImageView;
 
-import com.amap.api.location.AMapLocation;
 import com.lptiyu.tanke.entity.response.SignUpResponse;
 import com.lptiyu.tanke.fragments.home.HomeFragment;
 import com.lptiyu.tanke.fragments.messagesystem.MessageFragment;
@@ -15,7 +14,6 @@ import com.lptiyu.tanke.mybase.MyBaseActivity;
 import com.lptiyu.tanke.update.UpdateHelper;
 import com.lptiyu.tanke.userCenter.UserCenterFragment;
 import com.lptiyu.tanke.utils.LocationHelper;
-import com.lptiyu.tanke.utils.LogUtils;
 import com.lptiyu.tanke.utils.NetworkUtil;
 import com.lptiyu.tanke.utils.PopupWindowUtils;
 import com.lptiyu.tanke.utils.ToastUtil;
@@ -47,10 +45,10 @@ public class MainActivity extends MyBaseActivity {
     @BindView(R.id.page_3)
     ImageView tab3;
 
-    private LocationHelper locationHelper;
     ArrayList<Fragment> fragments = new ArrayList<>(3);
     private UpdateHelper updateHelper;
     Fragment mCurrentFragment;
+    private LocationHelper locationHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,20 +56,6 @@ public class MainActivity extends MyBaseActivity {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
-        //定位当前城市和经纬度
-        locationHelper = new LocationHelper(this, new LocationHelper.OnLocationResultListener() {
-            @Override
-            public void onLocationChanged(AMapLocation aMapLocation) {
-                Accounts.setCity(aMapLocation.getCity());
-                Accounts.setCityCode(aMapLocation.getCityCode());
-                Accounts.setLatitude((float) aMapLocation.getLatitude());
-                Accounts.setLongitude((float) aMapLocation.getLongitude());
-                LogUtils.i("定位信息：" + aMapLocation.getCity() + aMapLocation.getCityCode() + ", 经纬度：" + aMapLocation
-                        .getLatitude() + ", " + aMapLocation.getLongitude());
-
-            }
-        });
-        locationHelper.setOnceLocation(true);
         initTab();
         signUpAndStartLocation();
     }
@@ -91,7 +75,6 @@ public class MainActivity extends MyBaseActivity {
 
     private void signUpAndStartLocation() {
         if (NetworkUtil.checkIsNetworkConnected()) {
-            locationHelper.startLocation();
             signUp();
         } else {
             getWindow().getDecorView().post(new Runnable() {
@@ -167,6 +150,9 @@ public class MainActivity extends MyBaseActivity {
     }
 
     private void initTab() {
+        if (fragments != null) {
+            fragments.clear();
+        }
         fragments.add(new HomeFragment());
         fragments.add(new MessageFragment());
         fragments.add(new UserCenterFragment());

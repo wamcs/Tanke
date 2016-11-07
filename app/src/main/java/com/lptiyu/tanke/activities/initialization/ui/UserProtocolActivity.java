@@ -9,6 +9,7 @@ import com.lptiyu.tanke.mybase.MyBaseActivity;
 import com.lptiyu.tanke.net.HttpService;
 import com.lptiyu.tanke.net.Response;
 import com.lptiyu.tanke.utils.ToastUtil;
+import com.lptiyu.tanke.widget.CustomTextView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -25,6 +26,8 @@ import rx.schedulers.Schedulers;
 public class UserProtocolActivity extends MyBaseActivity {
     @BindView(R.id.protocol_web_view)
     WebView mWebView;
+    @BindView(R.id.default_tool_bar_textview)
+    CustomTextView defaultToolBarTextview;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +35,7 @@ public class UserProtocolActivity extends MyBaseActivity {
         setContentView(R.layout.activity_protocol);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         ButterKnife.bind(this);
+        defaultToolBarTextview.setText("用户协议");
         init();
     }
 
@@ -55,11 +59,6 @@ public class UserProtocolActivity extends MyBaseActivity {
                 });
     }
 
-    @OnClick(R.id.protocol_last_button)
-    void back() {
-        finish();
-    }
-
     @Override
     public void onResume() {
         super.onResume();
@@ -76,5 +75,10 @@ public class UserProtocolActivity extends MyBaseActivity {
     public void onDestroy() {
         super.onDestroy();
         mWebView.destroy();
+    }
+
+    @OnClick(R.id.default_tool_bar_imageview)
+    public void onClick() {
+        finish();
     }
 }

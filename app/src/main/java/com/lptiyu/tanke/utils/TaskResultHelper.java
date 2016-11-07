@@ -28,14 +28,12 @@ public class TaskResultHelper {
     public View popupView;
     public boolean isOK;
     private TaskResultCallback callback;
-    private ImageView imgAnim;
-    public RelativeLayout rl_submitting;
-
     private final String FAIL = "什么都没有发现";
+
     private final String NET_EXCEPTION = "网络错误";
-    private final String SUCESS = "恭喜你，找到答案了！";
+    private final String SUCESS = "恭喜你，找到线索了！";
     private final String CLOSE = "关闭";
-    private final String CONTINUE_GAME = "继续游戏";
+    private final String CONTINUE_GAME = "查看新线索";
     private AnimationDrawable anim;
     public TextView popup_tv_exp;
     public TextView popup_tv_score;
@@ -43,11 +41,12 @@ public class TaskResultHelper {
     public RelativeLayout popup_rl_red_wallet;
     private RelativeLayout popup_rl_exp;
     private RelativeLayout popup_rl_score;
+    private RelativeLayout popup_rl_submitting;
+    private ImageView popup_img_anim;
+    private RelativeLayout popup_rl_result;
+    private TextView popup_tv_waiting;
 
-    public TaskResultHelper(Context context, RelativeLayout rl_submitting, ImageView imageView, TaskResultCallback
-            callback) {
-        this.imgAnim = imageView;
-        this.rl_submitting = rl_submitting;
+    public TaskResultHelper(Context context, TaskResultCallback callback) {
         this.callback = callback;
         this.context = context;
         initPopupwindow();
@@ -59,23 +58,29 @@ public class TaskResultHelper {
      */
     public void showSuccessResult(UpLoadGameRecordResult result) {
         isOK = true;
-        stopAnim();
-        if (popup_img_result != null)
+        stopSubmitting();
+        if (popup_img_result != null) {
             popup_img_result.setImageResource(R.drawable.task_result_right);
-        if (popup_tv_btn != null)
+        }
+        if (popup_tv_btn != null) {
             popup_tv_btn.setText(CONTINUE_GAME);
-        if (popup_tv_result != null)
+        }
+        if (popup_tv_result != null) {
             popup_tv_result.setText(SUCESS);
+        }
         if (popup_tv_exp != null && result != null) {
             popup_tv_exp.setText("+" + result.get_exp);
+            popup_rl_exp.setVisibility(View.VISIBLE);
         }
         if (popup_tv_score != null && result != null) {
             popup_tv_score.setText("+" + result.get_extra_points);
+            popup_rl_score.setVisibility(View.VISIBLE);
         }
         if (popup_tv_red_wallet != null && result != null) {
             popup_tv_red_wallet.setText("获得" + result.get_extra_money + "元红包");
+            popup_rl_red_wallet.setVisibility(View.VISIBLE);
         }
-        showPopup();
+        show();
     }
 
     /**
@@ -83,7 +88,7 @@ public class TaskResultHelper {
      */
     public void showFailResult() {
         isOK = false;
-        stopAnim();
+        stopSubmitting();
         if (popup_img_result != null)
             popup_img_result.setImageResource(R.drawable.task_result_wrong);
         if (popup_tv_btn != null)
@@ -99,7 +104,7 @@ public class TaskResultHelper {
         if (popup_rl_red_wallet != null) {
             popup_rl_red_wallet.setVisibility(View.GONE);
         }
-        showPopup();
+        show();
     }
 
     /**
@@ -107,7 +112,7 @@ public class TaskResultHelper {
      */
     public void showNetException() {
         isOK = false;
-        stopAnim();
+        stopSubmitting();
         if (popup_tv_btn != null)
             popup_tv_btn.setText(CLOSE);
         if (popup_img_result != null)
@@ -123,16 +128,16 @@ public class TaskResultHelper {
         if (popup_rl_red_wallet != null) {
             popup_rl_red_wallet.setVisibility(View.GONE);
         }
-        showPopup();
+        show();
     }
 
-    public void showPopup() {
+    private void show() {
         if (popupView != null && popupWindow != null) {
             popupWindow.showAtLocation(popupView, Gravity.CENTER, 0, 0);
         }
     }
 
-    public void hidePopup() {
+    public void dismiss() {
         if (popupWindow != null && popupWindow.isShowing()) {
             popupWindow.dismiss();
         }
@@ -155,6 +160,10 @@ public class TaskResultHelper {
         popup_rl_red_wallet = (RelativeLayout) popupView.findViewById(R.id.rl_red_wallet);
         popup_rl_exp = (RelativeLayout) popupView.findViewById(R.id.rl_exp);
         popup_rl_score = (RelativeLayout) popupView.findViewById(R.id.rl_score);
+        popup_rl_submitting = (RelativeLayout) popupView.findViewById(R.id.rl_submit_record);
+        popup_rl_result = (RelativeLayout) popupView.findViewById(R.id.rl_result);
+        popup_tv_waiting = (TextView) popupView.findViewById(R.id.tv_please_wait);
+        popup_img_anim = (ImageView) popupView.findViewById(R.id.img_anim);
         popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
             @Override
             public void onDismiss() {
@@ -164,7 +173,7 @@ public class TaskResultHelper {
                         callback.onSuccess();
                     }
                 } else {
-                    hidePopup();
+                    dismiss();
                 }
             }
         });
@@ -179,37 +188,42 @@ public class TaskResultHelper {
         });
     }
 
+    public void setTip(String tip) {
+        popup_tv_waiting.setText(tip);
+    }
+
     /**
      * 初始化动画
      */
     private void initAnim() {
-        if (imgAnim != null) {
-            imgAnim.setBackgroundResource(R.drawable.anim_upload_record);
-            anim = (AnimationDrawable) imgAnim.getBackground();
+        if (popup_img_anim != null) {
+            popup_img_anim.setBackgroundResource(R.drawable.anim_upload_record);
+            anim = (AnimationDrawable) popup_img_anim.getBackground();
         }
     }
 
-    /**
-     * 开启动画
-     */
-    public void startAnim() {
+    public void startSubmitting() {
         if (anim != null) {
             anim.start();
         }
-        if (rl_submitting != null) {
-            rl_submitting.setVisibility(View.VISIBLE);
+        if (popup_rl_submitting != null) {
+            popup_rl_submitting.setVisibility(View.VISIBLE);
         }
+        if (popup_rl_result != null) {
+            popup_rl_result.setVisibility(View.GONE);
+        }
+        show();
     }
 
-    /**
-     * 停止动画
-     */
-    public void stopAnim() {
+    public void stopSubmitting() {
         if (anim != null) {
             anim.stop();
         }
-        if (rl_submitting != null) {
-            rl_submitting.setVisibility(View.GONE);
+        if (popup_rl_submitting != null) {
+            popup_rl_submitting.setVisibility(View.GONE);
+        }
+        if (popup_rl_result != null) {
+            popup_rl_result.setVisibility(View.VISIBLE);
         }
     }
 

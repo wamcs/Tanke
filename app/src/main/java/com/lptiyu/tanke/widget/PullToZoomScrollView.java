@@ -10,7 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 
 /**
@@ -19,7 +18,7 @@ import android.widget.ScrollView;
 public class PullToZoomScrollView extends ScrollView {
     private boolean isonce;//加载该View的布局时是否是第一次加载，是第一次就让其实现OnMeasure里的代码
 
-    private ViewGroup mParentView;//布局的父布局，ScrollView内部只能有一个根ViewGroup，就是此View
+    private LinearLayout mParentView;//布局的父布局，ScrollView内部只能有一个根ViewGroup，就是此View
     private ViewGroup mTopView;//这个是带背景的上半部分的View，下半部分的View用不到的
 
     private int mScreenHeight;//整个手机屏幕的高度，这是为了初始化该View时设置mTopView用的
@@ -44,8 +43,8 @@ public class PullToZoomScrollView extends ScrollView {
         DisplayMetrics metrics = new DisplayMetrics();
         wm.getDefaultDisplay().getMetrics(metrics);
         mScreenHeight = metrics.heightPixels;
-        mTopViewHeight = mScreenHeight / 2 - (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 120, context
-                .getResources().getDisplayMetrics());
+        mTopViewHeight = mScreenHeight / 2 - (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 130,
+                context.getResources().getDisplayMetrics());
 
     }
 
@@ -59,16 +58,9 @@ public class PullToZoomScrollView extends ScrollView {
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         if (!isonce) {
-            if (this.getChildAt(0) instanceof LinearLayout) {
-                mParentView = (LinearLayout) this.getChildAt(0);
-            }
-            if (this.getChildAt(0) instanceof RelativeLayout) {
-                mParentView = (RelativeLayout) this.getChildAt(0);
-            }
+            mParentView = (LinearLayout) this.getChildAt(0);
             mTopView = (ViewGroup) mParentView.getChildAt(0);
-            if (mTopView != null) {
-                mTopView.getLayoutParams().height = mTopViewHeight;
-            }
+            mTopView.getLayoutParams().height = mTopViewHeight;
             isonce = true;
         }
     }

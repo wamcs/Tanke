@@ -42,11 +42,19 @@ AR::~AR()
 bool AR::initCamera()
 {
     bool status = true;
-    status &= camera_.open();
-    camera_.setSize(Vec2I(1280, 720));
-    status &= tracker_.attachCamera(camera_);
-    status &= augmenter_.attachCamera(camera_);
-    camera_.start();
+    try {
+        status &= camera_.open();
+        camera_.setSize(Vec2I(1280, 720));
+        status &= tracker_.attachCamera(camera_);
+        status &= augmenter_.attachCamera(camera_);
+        camera_.start();
+
+    }catch(...) {
+        status = false;
+    }
+
+
+
     return status;
 }
 

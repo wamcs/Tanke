@@ -12,6 +12,7 @@ import com.lptiyu.tanke.mybase.MyBaseActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class UserManagerGameActivity extends MyBaseActivity {
 
@@ -67,5 +68,10 @@ public class UserManagerGameActivity extends MyBaseActivity {
 
     private void refreshBottom() {
 
+    }
+
+    @OnClick(R.id.default_tool_bar_imageview)
+    public void onClick() {
+        finish();
     }
 }

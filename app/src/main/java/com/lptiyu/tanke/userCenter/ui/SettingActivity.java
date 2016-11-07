@@ -7,9 +7,9 @@ import android.os.Bundle;
 
 import com.lptiyu.tanke.R;
 import com.lptiyu.tanke.activities.feedback.FeedBackActivity;
+import com.lptiyu.tanke.activities.initialization.ui.LoginActivity;
 import com.lptiyu.tanke.global.Accounts;
 import com.lptiyu.tanke.global.AppData;
-import com.lptiyu.tanke.activities.initialization.ui.LoginActivity;
 import com.lptiyu.tanke.mybase.MyBaseActivity;
 import com.lptiyu.tanke.utils.DataCleanManager;
 import com.lptiyu.tanke.utils.ShaPreferManager;
@@ -65,10 +65,17 @@ public class SettingActivity extends MyBaseActivity {
 
     @OnClick(R.id.setting_activity_logout)
     void onLogoutClicked() {
-        Accounts.logOut();
-        Intent intent = new Intent(SettingActivity.this, LoginActivity.class);
-        startActivity(intent);
-        finish();
+        new AlertDialog.Builder(this).setMessage("确定退出吗？").setPositiveButton("确认", new
+                DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Accounts.logOut();
+                        Intent intent = new Intent(SettingActivity.this, LoginActivity.class);
+                        startActivity(intent);
+                        dialog.dismiss();
+                        finish();
+                    }
+                }).setNegativeButton("取消", null).show();
     }
 
     @OnClick(R.id.clear_cache)
@@ -76,14 +83,13 @@ public class SettingActivity extends MyBaseActivity {
         try {
             String cacheSize = DataCleanManager.getTotalCacheSize(this);
             new AlertDialog.Builder(this).setMessage("缓存共计" + cacheSize + "，确认清除吗？").setCancelable(true)
-                    .setPositiveButton
-                            ("确认", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    DataCleanManager.clearAllCache(getContext());
-                                    ToastUtil.TextToast("清理完毕");
-                                }
-                            }).setNegativeButton("取消", null).show();
+                    .setPositiveButton("确认", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            DataCleanManager.clearAllCache(getContext());
+                            ToastUtil.TextToast("清理完毕");
+                        }
+                    }).setNegativeButton("取消", null).show();
         } catch (Exception e) {
             e.printStackTrace();
         }

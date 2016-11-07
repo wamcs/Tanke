@@ -57,7 +57,6 @@
         <activity
             android:name=".MainActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
-            android:launchMode="singleInstance"
             android:screenOrientation="portrait">
         </activity>
         <activity
@@ -162,10 +161,6 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".gamedetails.GameDetailsActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"
-            android:screenOrientation="portrait"/>
-        <activity
             android:name=".userCenter.UserManagerGameActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait"/>
@@ -227,26 +222,28 @@
             android:screenOrientation="portrait">
         </activity>
         <activity
-            android:name=".activities.gameplaying.GamePlayingActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"
-            android:screenOrientation="portrait">
-        </activity>
-        <activity
-            android:name=".activities.pointtask.PointTaskActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"
-            android:screenOrientation="portrait"
-            android:theme="@style/PointTaskActivity">
-        </activity>
-        <activity
             android:name=".activities.directionrun.DirectionRunActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".activities.gamedetailarea.GameDetailAreaActivity">
+        <activity
+            android:name=".activities.gamedetailarea.GameDetailAreaActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".activities.messagelist.MessageListActivity">
+        <activity
+            android:name=".activities.messagelist.MessageListActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".activities.gameover.GameOverActivity">
+        <activity
+            android:name=".activities.gameover.GameOverActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="portrait">
+        </activity>
+        <activity android:name=".activities.scorestore.ScoreStoreActivity">
+        </activity>
+        <activity android:name=".activities.redwallet.RedWalletActivity">
         </activity>
     </application>
 

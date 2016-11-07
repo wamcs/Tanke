@@ -2,8 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:id="@id/game_finished_list_item"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-    >
+                android:layout_height="wrap_content">
 
     <com.makeramen.roundedimageview.RoundedImageView
         android:id="@+id/image_view"
@@ -16,9 +15,8 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignBottom="@id/image_view"
-        android:layout_alignTop="@id/image_view"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
         android:layout_marginLeft="10dp"
         android:layout_toRightOf="@id/image_view"
         android:paddingRight="@dimen/x26">
@@ -44,41 +42,23 @@
             android:textColor="@color/colorPrimaryDark"
             android:textSize="12sp"/>
 
-
-        <RelativeLayout
-            android:id="@+id/item_game_finished_time_root"
-            android:layout_width="match_parent"
+        <com.lptiyu.tanke.widget.CustomTextView
+            android:id="@+id/item_finished_complete_time"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/item_finished_title"
-            android:orientation="horizontal"
-            >
-            <!--<ImageView-->
-            <!--android:id="@+id/item_game_finished_time_image"-->
-            <!--android:layout_width="@dimen/item_game_finished_time_image"-->
-            <!--android:layout_height="@dimen/item_game_finished_time_image"-->
-            <!--android:layout_gravity="center_vertical"-->
-            <!--android:scaleType="fitCenter"-->
-            <!--android:src="@mipmap/game_detail_time"/>-->
-
-            <com.lptiyu.tanke.widget.CustomTextView
-                android:id="@+id/item_finished_complete_time"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="2016.06.21 18:36"
-                android:textColor="@color/grey06"
-                android:textSize="12sp"
-                />
-
-        </RelativeLayout>
+            android:layout_below="@id/item_finished_type"
+            android:padding="@dimen/item_finished_title_padding"
+            android:text="2016.06.21 18:36"
+            android:textColor="@color/grey06"
+            android:textSize="12sp"/>
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignLeft="@id/item_game_finished_time_root"
-            android:layout_below="@id/item_game_finished_time_root"
+            android:layout_alignLeft="@id/item_finished_complete_time"
+            android:layout_below="@id/item_finished_complete_time"
             android:orientation="horizontal"
             android:padding="@dimen/item_finished_title_padding">
-
 
             <com.lptiyu.tanke.widget.CustomTextView
                 android:id="@+id/item_finished_consuming_time"

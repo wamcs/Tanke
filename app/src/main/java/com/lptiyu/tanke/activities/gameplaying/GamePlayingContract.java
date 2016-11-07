@@ -12,10 +12,14 @@ public class GamePlayingContract {
 
         void successDownLoadRecord(GameRecord gameRecord);
 
+        void successReloadRecord(GameRecord gameRecord);
+
     }
 
     interface IGamePlaying2Presenter extends IBasePresenter {
 
         void downLoadGameRecord(long gameId, long teamId);
+
+        void reloadGameRecord(long gameId, long teamId);
     }
 }

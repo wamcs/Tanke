@@ -55,8 +55,8 @@ public class HomeHotRecyclerViewAdapter extends BaseRecyclerViewAdapter<Recommen
         MyViewHolder myViewHolder = (MyViewHolder) holder;
         Recommend recommend = list.get(position);
         myViewHolder.tvGameName.setText(recommend.title + "");
-        Glide.with(context).load(recommend.pic).error(R.drawable.default_pic).into(myViewHolder.cImg);
-        if (recommend.address_short == null || TextUtils.isEmpty(recommend.address_short)) {
+        Glide.with(context).load(recommend.pic).error(R.drawable.default_pic).crossFade().into(myViewHolder.cImg);
+        if (TextUtils.isEmpty(recommend.address_short)) {
             myViewHolder.tvTag.setVisibility(View.GONE);
         } else {
             myViewHolder.tvTag.setVisibility(View.VISIBLE);

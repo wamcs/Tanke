@@ -39,6 +39,7 @@
         android:layout_above="@id/img_startScan"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="20dp"
+        android:background="@drawable/shape_half_transparent_imagedistinguish_tip"
         android:visibility="gone">
 
         <TextView
@@ -93,7 +94,6 @@
         android:layout_height="match_parent"
         android:clickable="false"
         android:scaleType="fitXY"
-        android:src="@drawable/bg_riddle"
         android:visibility="gone"/>
 
 </RelativeLayout>

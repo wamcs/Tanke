@@ -88,7 +88,7 @@ public class LVForPointTaskAdapter extends BaseAdapter {
                         + "var url =  objs[i].src.replace(\"_thumbs/Images\",\"images\"); "
                         + "var img = new Image();"
                         + "img.src = url;"
-                        + "objs[i].style.width=document.documentElement.clientWidth;"
+                        + "objs[i].style.width=document.documentElement.clientWidth-16;"
                         + "var rate =parseFloat(img.height)/parseFloat(img.width);"
                         + "objs[i].style.height=document.documentElement.clientWidth*rate;"
                         + "    objs[i].onclick=function() {  "

@@ -4,8 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.lptiyu.tanke.R;
-import com.lptiyu.tanke.global.AppData;
 import com.lptiyu.tanke.activities.initialization.ui.UserProtocolActivity;
+import com.lptiyu.tanke.global.AppData;
 import com.lptiyu.tanke.mybase.MyBaseActivity;
 import com.lptiyu.tanke.widget.CustomTextView;
 
@@ -42,4 +42,9 @@ public class AboutUsActivity extends MyBaseActivity {
         Intent intent = new Intent(AboutUsActivity.this, UserProtocolActivity.class);
         startActivity(intent);
     }
+
+//    @OnClick(R.id.activity_about_us_logo)
+//    public void sure() {
+//        ShareHelper.shareImage(ShareHelper.SHARE_QQ, screenShot(this));
+//    }
 }

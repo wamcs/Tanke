@@ -31,6 +31,7 @@ import com.lptiyu.tanke.adapter.PointListAdapter;
 import com.lptiyu.tanke.entity.GameRecord;
 import com.lptiyu.tanke.entity.Point;
 import com.lptiyu.tanke.entity.eventbus.GamePointTaskStateChanged;
+import com.lptiyu.tanke.entity.eventbus.PlayAgain;
 import com.lptiyu.tanke.entity.response.Jingwei;
 import com.lptiyu.tanke.enums.GameSort;
 import com.lptiyu.tanke.enums.PlayStatus;
@@ -69,14 +70,12 @@ public class GamePlayingActivity extends MyBaseActivity implements GamePlayingCo
     TextView tvTitle;
     @BindView(R.id.tv_my_progress)
     TextView tvMyProgress;
+
     private AMap aMap;
-
     private ArrayList<Point> totallist;
-
     private double currentLatitude;
     private double currentLongitude;
     private LocationHelper locationHelper;
-
     private GamePlayingPresenter presenter;
     private long gameId;
     private String title = "";
@@ -105,8 +104,10 @@ public class GamePlayingActivity extends MyBaseActivity implements GamePlayingCo
         uiSettings.setLogoBottomMargin(-200);
         //如果是线上游戏，则隐藏地图
         if (RunApplication.entity != null && RunApplication.entity.cid == GameSort.ONLINE_PLAYABLE) {
-            textureMapView.setVisibility(View.GONE);
+            //            textureMapView.setVisibility(View.GONE);
         }
+        //暂时将地图隐藏
+        textureMapView.setVisibility(View.GONE);
         //获取游戏数据和游戏记录
         initData();
         loadGameRecord();
@@ -191,7 +192,72 @@ public class GamePlayingActivity extends MyBaseActivity implements GamePlayingCo
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(GamePointTaskStateChanged result) {
         //刷新数据
-        loadGameRecord();
+        refreshData();
+    }
+
+    /*无论在哪个线程发送都在主线程接收
+    * 接受任务完成后的通知，刷新数据
+    * */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(PlayAgain playAgain) {
+        //刷新数据
+        finish();
+    }
+
+    @Override
+    public void successReloadRecord(GameRecord gameRecord) {
+        tvTitle.setText(title);
+        if (gameRecord != null && gameRecord.game_detail != null && gameRecord.game_detail.point_list != null) {
+            RunApplication.gameRecord = gameRecord;
+            this.gameRecord = gameRecord;
+            totallist = gameRecord.game_detail.point_list;
+            checkPointStatus();
+            setAdapter();
+            //模拟点击动作
+            simulateFingerClick();
+        } else {
+            Toast.makeText(this, "游戏记录为空", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void simulateFingerClick() {
+        if (RunApplication.isGameOver) {
+
+        } else {
+            int position = 0;
+            if (RunApplication.isPointOver = true) {
+                position = ++RunApplication.currentPointIndex;
+            } else {
+                position = RunApplication.currentPointIndex;
+            }
+            RunApplication.currentPoint = totallist.get(position);
+            if (totallist.get(position).status == PointTaskStatus.UNSTARTED) {
+                Toast.makeText(GamePlayingActivity.this, "未解锁", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            Intent intent = new Intent(GamePlayingActivity.this, PointTaskActivity.class);
+            GamePlayingActivity.this.startActivity(intent);
+        }
+    }
+
+    private void refreshData() {
+        tvTitle.setText("加载中...");
+        if (NetworkUtil.checkIsNetworkConnected()) {
+            presenter.reloadGameRecord(gameId, teamId);//个人游戏传0，团队游戏传1
+        } else {
+            getWindow().getDecorView().post(new Runnable() {
+                @Override
+                public void run() {
+                    PopupWindowUtils.getInstance().showNetExceptionPopupwindow(getContext(), new PopupWindowUtils
+                            .OnRetryCallback() {
+                        @Override
+                        public void onRetry() {
+                            loadGameRecord();
+                        }
+                    });
+                }
+            });
+        }
     }
 
     @Override

@@ -43,16 +43,16 @@ public class HomeTabFragment extends MyBaseFragment implements HomeTabContact.IH
     @BindView(R.id.id_stickynavlayout_innerscrollview)
     LRecyclerView recyclerView;//用原生的RecyclerView会导致底部最后一个item显示不全问题，所以这里选择用LRecyclerView
     private HomeTabPresenter presenter;
-    private int sortIndex;
+    private int cid;
     private boolean isLoading;
     private boolean hasMoreGame = true;
     private LRecyclerViewAdapter lRecyclerViewAdapter;
     private List<HomeTabEntity> totalist;
 
-    public static HomeTabFragment newInstance(int sortIndex) {
+    public static HomeTabFragment newInstance(int cid) {
         HomeTabFragment fragment = new HomeTabFragment();
         Bundle bundle = new Bundle();
-        bundle.putInt(Conf.SORT_INDEX, sortIndex);
+        bundle.putInt(Conf.CID, cid);
         fragment.setArguments(bundle);
         return fragment;
     }
@@ -63,7 +63,7 @@ public class HomeTabFragment extends MyBaseFragment implements HomeTabContact.IH
         EventBus.getDefault().register(this);
         Bundle bundle = getArguments();
         if (bundle != null) {
-            sortIndex = bundle.getInt(Conf.SORT_INDEX);
+            cid = bundle.getInt(Conf.CID);
             presenter = new HomeTabPresenter(this);
             firstLoadGameList();
         } else {
@@ -80,7 +80,7 @@ public class HomeTabFragment extends MyBaseFragment implements HomeTabContact.IH
 
     private void firstLoadGameList() {
         if (NetworkUtil.checkIsNetworkConnected()) {
-            presenter.firstLoadGameList(sortIndex);
+            presenter.firstLoadGameList(cid);
         } else {
             getActivity().getWindow().getDecorView().post(new Runnable() {
                 @Override
@@ -99,7 +99,7 @@ public class HomeTabFragment extends MyBaseFragment implements HomeTabContact.IH
 
     private void reloadGameList() {
         if (NetworkUtil.checkIsNetworkConnected()) {
-            presenter.reloadGameList(sortIndex);
+            presenter.reloadGameList(cid);
         } else {
             getActivity().getWindow().getDecorView().post(new Runnable() {
                 @Override
@@ -119,7 +119,7 @@ public class HomeTabFragment extends MyBaseFragment implements HomeTabContact.IH
     private void setRecyclerViewAdapter() {
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL,
                 false));
-        HomeTabAdapter adapter = new HomeTabAdapter(getActivity(), totalist, sortIndex);
+        HomeTabAdapter adapter = new HomeTabAdapter(getActivity(), totalist, cid);
         lRecyclerViewAdapter = new LRecyclerViewAdapter(adapter);
         recyclerView.setAdapter(lRecyclerViewAdapter);
         lRecyclerViewAdapter.setOnItemClickListener(new OnItemClickListener() {
@@ -176,7 +176,7 @@ public class HomeTabFragment extends MyBaseFragment implements HomeTabContact.IH
                 }
                 isLoading = true;
                 if (hasMoreGame) {
-                    presenter.loadMoreGame(sortIndex);
+                    presenter.loadMoreGame(cid);
                 }
             }
 

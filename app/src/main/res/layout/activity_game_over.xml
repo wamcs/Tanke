@@ -37,7 +37,6 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/rl_title"
         android:layout_marginTop="20dp"
-        android:text="芯片人"
         android:textColor="@color/colorPrimary"
         android:textSize="18sp"/>
 
@@ -49,7 +48,6 @@
         android:layout_marginTop="5dp"
         android:ellipsize="end"
         android:maxLines="3"
-        android:text="@string/juqing"
         android:textColor="@color/white10"/>
 
 
@@ -60,7 +58,6 @@
         android:layout_below="@id/tv_game_introduction"
         android:layout_marginLeft="50dp"
         android:layout_marginTop="20dp"
-        android:text="+120"
         android:textColor="@color/colorPrimary"
         android:textSize="20sp"/>
 
@@ -97,7 +94,6 @@
         android:layout_below="@id/rl_score"
         android:layout_marginLeft="50dp"
         android:layout_marginTop="20dp"
-        android:text="+100"
         android:textColor="@color/colorPrimary"
         android:textSize="20sp"/>
 

@@ -125,7 +125,7 @@ public class Accounts {
     }
 
     public static String getCityCode() {
-        return ShaPrefer.getString("city_code", "027");//027是高德地图的武汉编码
+        return ShaPrefer.getString("city_code", "027");//027是高德地图的武汉编码(我去，这里居然不返回默认值)
     }
 
     public static void setCity(String city) {

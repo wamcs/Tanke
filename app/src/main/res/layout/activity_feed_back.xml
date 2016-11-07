@@ -6,43 +6,14 @@
     android:layout_height="match_parent"
     tools:context="com.lptiyu.tanke.activities.feedback.FeedBackActivity">
 
-    <RelativeLayout
-        android:id="@+id/relative_title"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/default_toolbar_height"
-        android:background="@drawable/toolbar_gradient">
-
-        <ImageView
-            android:id="@+id/back_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:background="@null"
-            android:onClick="click"
-            android:paddingBottom="@dimen/default_toolbar_imageview_padding"
-            android:paddingLeft="@dimen/default_toolbar_imageview_padding_left"
-            android:paddingRight="@dimen/default_toolbar_imageview_padding"
-            android:paddingTop="@dimen/default_toolbar_imageview_padding"
-            android:scaleType="centerInside"
-            android:src="@mipmap/img_last_white"
-            />
-
-        <com.lptiyu.tanke.widget.CustomTextView
-            android:id="@+id/ctv_feed_back"
-            style="@style/TextAppearance.Toolbar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:text="意见反馈"
-            />
-
-    </RelativeLayout>
+    <include layout="@layout/layout_default_toolbar"
+        android:id="@+id/rl_title"/>
 
     <EditText
         android:id="@+id/et_input_contact"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/relative_title"
+        android:layout_below="@id/rl_title"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:layout_marginTop="20dp"
@@ -80,7 +51,7 @@
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:layout_marginTop="20dp"
-        android:background="@color/colorPrimary"
+        android:background="@drawable/selector_textview"
         android:gravity="center"
         android:padding="10dp"
         android:text="提交"

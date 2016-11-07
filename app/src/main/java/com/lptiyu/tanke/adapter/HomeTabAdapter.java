@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -13,7 +14,6 @@ import com.bumptech.glide.Glide;
 import com.lptiyu.tanke.R;
 import com.lptiyu.tanke.entity.response.HomeTabEntity;
 import com.lptiyu.tanke.enums.SortIndex;
-import com.makeramen.roundedimageview.RoundedImageView;
 
 import java.util.List;
 
@@ -62,40 +62,34 @@ public class HomeTabAdapter extends BaseRecyclerViewAdapter<HomeTabEntity> {
 
         MyViewHolder myViewHolder = (MyViewHolder) holder;
         myViewHolder.title.setText(gameEntity.title + "");
-        myViewHolder.tvPlayerCountDiretionRun.setText(gameEntity.player_num + "人在玩");
         myViewHolder.tvPlayerCountOnlinePlayable.setText(gameEntity.player_num + "人在玩");
-        myViewHolder.tvPlayerCountNearGame.setText(gameEntity.player_num + "人在玩");
-        Glide.with(context).load(gameEntity.pic).error(R.drawable.default_pic).placeholder(R.drawable.default_pic)
-                .into(myViewHolder.imageView);
+        Glide.with(context).load(gameEntity.pic).error(R.drawable.default_pic).crossFade().into(myViewHolder.imageView);
         myViewHolder.ratingBar.setRating(gameEntity.difficulty);
-        if (gameEntity.tag == null || TextUtils.isEmpty(gameEntity.tag)) {
-            myViewHolder.tvCompetitonTag.setVisibility(View.GONE);
-        } else {
-            myViewHolder.tvCompetitonTag.setVisibility(View.VISIBLE);
-            myViewHolder.tvCompetitonTag.setText(gameEntity.tag);
+        String distance = "500m";
+        if (gameEntity.distince >= 1) {
+            distance = gameEntity.distince + "km";
         }
-        myViewHolder.tvDistance.setText(gameEntity.distince + "km");
+        myViewHolder.tvDistance.setText(distance);
         myViewHolder.location.setText(gameEntity.area);
 
         switch (sortIndex) {
             case SortIndex.NEAR_GAME:
-                myViewHolder.tvPlayerCountDiretionRun.setVisibility(View.GONE);
                 myViewHolder.tvPlayerCountOnlinePlayable.setVisibility(View.GONE);
-                myViewHolder.rlDifficult.setVisibility(View.GONE);
+                if (TextUtils.isEmpty(gameEntity.tag)) {
+                    myViewHolder.tvCompetitonTag.setVisibility(View.GONE);
+                } else {
+                    myViewHolder.tvCompetitonTag.setVisibility(View.VISIBLE);
+                    myViewHolder.tvCompetitonTag.setText(gameEntity.tag);
+                }
                 break;
             case SortIndex.ONLINE_PLAYABLE:
                 myViewHolder.tvDistance.setVisibility(View.GONE);
                 myViewHolder.location.setText("");
-                myViewHolder.tvPlayerCountNearGame.setVisibility(View.GONE);
-                myViewHolder.tvPlayerCountDiretionRun.setVisibility(View.GONE);
-                myViewHolder.tvDistance.setVisibility(View.GONE);
                 break;
             case SortIndex.DIRECTION_RUN:
-                myViewHolder.tvPlayerCountNearGame.setVisibility(View.GONE);
                 myViewHolder.tvPlayerCountOnlinePlayable.setVisibility(View.GONE);
                 break;
             case SortIndex.COMPETITION_ACTIVITY:
-                myViewHolder.tvPlayerCountNearGame.setVisibility(View.GONE);
                 myViewHolder.tvPlayerCountOnlinePlayable.setVisibility(View.GONE);
                 break;
         }
@@ -104,7 +98,7 @@ public class HomeTabAdapter extends BaseRecyclerViewAdapter<HomeTabEntity> {
 
     class MyViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.image_view)
-        RoundedImageView imageView;
+        ImageView imageView;
         @BindView(R.id.title)
         TextView title;
         @BindView(R.id.tv_distance)
@@ -113,13 +107,9 @@ public class HomeTabAdapter extends BaseRecyclerViewAdapter<HomeTabEntity> {
         TextView location;
         @BindView(R.id.ratingBar)
         RatingBar ratingBar;
-        @BindView(R.id.tv_player_count_direction_run)
-        TextView tvPlayerCountDiretionRun;
-        @BindView(R.id.tv_player_count_near_game)
-        TextView tvPlayerCountNearGame;
         @BindView(R.id.tv_player_count_online_playable)
         TextView tvPlayerCountOnlinePlayable;
-        @BindView(R.id.tv_competition_tag)
+        @BindView(R.id.tv_tag)
         TextView tvCompetitonTag;
         @BindView(R.id.rl_difficult)
         RelativeLayout rlDifficult;

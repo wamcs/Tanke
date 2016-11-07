@@ -21,6 +21,7 @@ import butterknife.OnClick;
 
 import static com.lptiyu.tanke.R.id.tv_add_exp;
 import static com.lptiyu.tanke.R.id.tv_add_score;
+import static com.lptiyu.tanke.utils.ScreenShotUtils.screenShot;
 
 public class GameOverActivity extends MyBaseActivity implements GameOverContact.IGameOverView {
 
@@ -92,20 +93,18 @@ public class GameOverActivity extends MyBaseActivity implements GameOverContact.
 
     @OnClick({R.id.img_close, R.id.img_wechat_share, R.id.img_qq_share, R.id.img_wechat_moment_share})
     public void onClick(View view) {
-        String imgUrl = "http://www.lptiyu.com/images/phone.png";
-        String shareUrl = "http://www.lptiyu.com/images/phone.png";
         switch (view.getId()) {
             case R.id.img_close:
                 finish();
                 break;
             case R.id.img_wechat_share:
-                ShareHelper.share(ShareHelper.SHARE_WECHAT_FRIENDS, "测试", "测试", imgUrl, shareUrl);
+                ShareHelper.shareImage(ShareHelper.SHARE_WECHAT_FRIENDS, screenShot(this));
                 break;
             case R.id.img_qq_share:
-                ShareHelper.share(ShareHelper.SHARE_QQ, "测试", "测试", imgUrl, shareUrl);
+                ShareHelper.shareImage(ShareHelper.SHARE_QQ, screenShot(this));
                 break;
             case R.id.img_wechat_moment_share:
-                ShareHelper.share(ShareHelper.SHARE_WECHAT_CIRCLE, "测试", "测试", imgUrl, shareUrl);
+                ShareHelper.shareImage(ShareHelper.SHARE_WECHAT_CIRCLE, screenShot(this));
                 break;
         }
     }

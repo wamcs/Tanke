@@ -57,33 +57,28 @@ public class PointListAdapter extends BaseRecyclerViewAdapter<Point> {
         Point point = list.get(position);
         ViewHolder vh = (ViewHolder) holder;
         vh.tvPointName.setText(point.point_title + "");
-        Glide.with(context).load(point.point_img).error(R.drawable.default_pic).placeholder(R.drawable.default_pic)
-                .into(vh.img);
+        Glide.with(context).load(point.point_img).error(R.drawable.default_pic).crossFade().into(vh.img);
 
         switch (point.status) {
             case PointTaskStatus.UNSTARTED://未开启
                 vh.tvPointName.setText("未解锁");
-                vh.imgLabel.setVisibility(View.GONE);
+                vh.tvLabel.setVisibility(View.GONE);
                 vh.imgLock.setVisibility(View.VISIBLE);
                 vh.imgTransparent.setVisibility(View.VISIBLE);
                 break;
             case PointTaskStatus.PLAYING://正在玩
                 vh.tvPointName.setText(point.point_title);
-                vh.imgLabel.setVisibility(View.VISIBLE);
-                vh.imgLabel.setImageResource(R.drawable.playing);
-                //                if (point.isNew) {
-                //                    vh.imgLabel.setVisibility(View.VISIBLE);
-                //                    vh.imgLabel.setImageResource(R.drawable.playing);
-                //                } else {
-                //                    vh.imgLabel.setVisibility(View.GONE);
-                //                }
+                vh.tvLabel.setVisibility(View.VISIBLE);
+                vh.tvLabel.setText("进行中");
+                vh.tvLabel.setBackgroundResource(R.drawable.shape_point_state_playing);
                 vh.imgLock.setVisibility(View.GONE);
                 vh.imgTransparent.setVisibility(View.GONE);
                 break;
             case PointTaskStatus.FINISHED://已完成
                 vh.tvPointName.setText(point.point_title);
-                vh.imgLabel.setVisibility(View.VISIBLE);
-                vh.imgLabel.setImageResource(R.drawable.done);
+                vh.tvLabel.setVisibility(View.VISIBLE);
+                vh.tvLabel.setText("已完成");
+                vh.tvLabel.setBackgroundResource(R.drawable.shape_point_state_finished);
                 vh.imgLock.setVisibility(View.GONE);
                 vh.imgTransparent.setVisibility(View.GONE);
                 break;
@@ -99,8 +94,8 @@ public class PointListAdapter extends BaseRecyclerViewAdapter<Point> {
         ImageView imgLock;
         @BindView(R.id.ctv_pointName)
         TextView tvPointName;
-        @BindView(R.id.img_label)
-        ImageView imgLabel;
+        @BindView(R.id.tv_label)
+        TextView tvLabel;
 
         ViewHolder(View view) {
             super(view);

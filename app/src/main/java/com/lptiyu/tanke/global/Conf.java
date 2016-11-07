@@ -151,8 +151,7 @@ public final class Conf {
     public static final String VERSION_NAME = "versionName";
     public static final String VERSION_CODE = "versionCode";
 
-    public static final String SORT_INDEX = "sort_index";
-
+    public static final String CID = "cid";
     public static final String HOME_HOT = "home_hot";
     public static final String HOME_TAB = "home_tab";
     public static final String RECOMMEND = "home_hot_entity";

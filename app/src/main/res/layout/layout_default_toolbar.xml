@@ -16,7 +16,7 @@
         android:paddingLeft="@dimen/default_toolbar_imageview_padding_left"
         android:paddingRight="@dimen/default_toolbar_imageview_padding"
         android:paddingTop="@dimen/default_toolbar_imageview_padding"
-        android:src="@mipmap/img_last_white"/>
+        android:src="@drawable/selector_back"/>
 
     <com.lptiyu.tanke.widget.CustomTextView
         android:id="@id/default_tool_bar_textview"

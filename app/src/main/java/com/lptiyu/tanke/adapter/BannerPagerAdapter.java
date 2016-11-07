@@ -50,7 +50,7 @@ public class BannerPagerAdapter extends BasePagerAdapter<Banner> {
         imageView.setLayoutParams(params);
         imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
         final Banner banner = list.get(position);
-        Glide.with(context).load(banner.image).error(R.drawable.default_pic).into(imageView);
+        Glide.with(context).load(banner.image).error(R.drawable.default_pic).crossFade().into(imageView);
         container.addView(imageView);
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override

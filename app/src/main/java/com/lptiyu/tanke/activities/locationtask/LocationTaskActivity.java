@@ -5,8 +5,10 @@ import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
+import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -72,8 +74,7 @@ public class LocationTaskActivity extends MyBaseActivity implements LocationTask
     private Point point;
     private boolean isPointOver;
     private Task task;
-    private final int DISTANCE_OFFSET = 100;
-    private final int RADIUS = 200;
+    private int DISTANCE_OFFSET = 100;
     private LocationTaskPresenter presenter;
     private String[] latLong;
     private boolean isToastShow = true;
@@ -90,6 +91,7 @@ public class LocationTaskActivity extends MyBaseActivity implements LocationTask
     private boolean isGameOver;
     private LatLng pwdLatlng;
     private boolean isFirstEnter = true;
+    private AnimationDrawable anim;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -110,8 +112,7 @@ public class LocationTaskActivity extends MyBaseActivity implements LocationTask
         uiSettings.setZoomPosition(ZOOM_VALUE);
         uiSettings.setMyLocationButtonEnabled(false);
 
-        taskResultHelper = new TaskResultHelper(this, rlSubmitRecord, imgAnim, new TaskResultHelper
-                .TaskResultCallback() {
+        taskResultHelper = new TaskResultHelper(this, new TaskResultHelper.TaskResultCallback() {
             @Override
             public void onSuccess() {
                 if (!isGameOver) {
@@ -119,8 +120,29 @@ public class LocationTaskActivity extends MyBaseActivity implements LocationTask
                 }
             }
         });
-        taskResultHelper.startAnim();
+        //        taskResultHelper.setTip("位置验证中...");
+        //        taskResultHelper.startSubmitting();
+        startAnim();
         initData();
+
+    }
+
+    /**
+     * 开启化动画
+     */
+    private void startAnim() {
+        imgAnim.setBackgroundResource(R.drawable.anim_upload_record);
+        anim = (AnimationDrawable) imgAnim.getBackground();
+        if (anim != null) {
+            anim.start();
+        }
+    }
+
+    private void stopAnim() {
+        if (anim != null) {
+            anim.stop();
+        }
+        rlSubmitRecord.setVisibility(View.GONE);
     }
 
     private void setActivityResult() {
@@ -147,6 +169,10 @@ public class LocationTaskActivity extends MyBaseActivity implements LocationTask
         pwdLatlng = new LatLng(Double.parseDouble(latLong[1]), Double.parseDouble(latLong[0]));
         //绘制大致区域
         drawTargetArea();
+
+        if (Accounts.getPhoneNumber() != null && Accounts.getPhoneNumber().equals("18272164317")) {
+            DISTANCE_OFFSET = 5000;
+        }
 
         presenter = new LocationTaskPresenter(this);
 
@@ -179,7 +205,7 @@ public class LocationTaskActivity extends MyBaseActivity implements LocationTask
     }
 
     private void drawTargetArea() {
-        map.addCircle(new CircleOptions().center(pwdLatlng).radius(RADIUS).fillColor(R.color.colorPrimary)
+        map.addCircle(new CircleOptions().center(pwdLatlng).radius(DISTANCE_OFFSET).fillColor(R.color.colorPrimary)
                 .strokeColor(R.color.colorPrimary).strokeWidth(1));
     }
 
@@ -207,11 +233,6 @@ public class LocationTaskActivity extends MyBaseActivity implements LocationTask
         }
         addMarker(latLng);
         moveToLocation(latLng);
-        //        if (Accounts.getPhoneNumber() != null && Accounts.getPhoneNumber().equals("18272164317")) {
-        //            upLoadGameRecord();
-        //            locationHelper.stopLocation();
-        //            return;
-        //        }
         if (isStop) {
             return;
         }
@@ -281,8 +302,15 @@ public class LocationTaskActivity extends MyBaseActivity implements LocationTask
                     }).setCancelable(false).show();
         }
         if (taskResultHelper != null) {
-            taskResultHelper.stopAnim();
+            taskResultHelper.stopSubmitting();
         }
+    }
+
+    private void startSubmitting() {
+        if (taskResultHelper != null) {
+            taskResultHelper.startSubmitting();
+        }
+        stopAnim();
     }
 
     private void checkLocation() {
@@ -295,13 +323,14 @@ public class LocationTaskActivity extends MyBaseActivity implements LocationTask
             loadNetWorkData();
         } else {
             if (isToastShow) {
-                ToastUtil.TextToast("您距离地图上的目标区域" + DistanceFormatUtils.formatMeterToKiloMeter(distance) + "公里");
+                ToastUtil.TextToast("您距离目标区域" + DistanceFormatUtils.formatMeterToKiloMeter(distance) + "公里");
             }
         }
     }
 
     private void loadNetWorkData() {
         if (NetworkUtil.checkIsNetworkConnected()) {
+            startSubmitting();
             upLoadGameRecord();
         } else {
             showNetUnConnectDialog();
@@ -341,10 +370,10 @@ public class LocationTaskActivity extends MyBaseActivity implements LocationTask
         resultRecord = response;
         resultRecord.index = this.index;
         taskResultHelper.showSuccessResult(response);
-        taskResultHelper.stopAnim();
+        taskResultHelper.stopSubmitting();
         if (response.game_statu == PlayStatus.GAME_OVER) {//游戏通关，需要弹出通关视图，弹出通关视图
             isGameOver = true;
-            taskResultHelper.hidePopup();
+            taskResultHelper.dismiss();
             startActivity(new Intent(LocationTaskActivity.this, GameOverActivity.class));
             finish();
         }
@@ -357,14 +386,14 @@ public class LocationTaskActivity extends MyBaseActivity implements LocationTask
         isStop = false;
         ToastUtil.TextToast(errorMsg);
         taskResultHelper.showFailResult();
-        taskResultHelper.stopAnim();
+        taskResultHelper.stopSubmitting();
     }
 
     @Override
     public void netException() {
         isStop = false;
         taskResultHelper.showNetException();
-        taskResultHelper.stopAnim();
+        taskResultHelper.stopSubmitting();
     }
 
     @Override

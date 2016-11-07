@@ -147,6 +147,7 @@
     <string name="complete_time_without_year_formatter" formatted="false">%02d.%02d %02d:%02d</string>
 
     <string name="get_exp_formatter" formatted="false">获得%d经验值</string>
+    <string name="answer_text_count" formatted="false">请输入%d个字答案</string>
     <string name="scan_nothing" formatted="false">没有扫描到线索，%d后自动返回</string>
     <string name="scan_task">扫码任务</string>
     <string name="locate_task">定位任务</string>

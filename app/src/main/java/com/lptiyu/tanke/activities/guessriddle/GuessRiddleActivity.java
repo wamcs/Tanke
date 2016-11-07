@@ -3,10 +3,7 @@ package com.lptiyu.tanke.activities.guessriddle;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,13 +18,13 @@ import com.lptiyu.tanke.entity.response.UpLoadGameRecordResult;
 import com.lptiyu.tanke.enums.PlayStatus;
 import com.lptiyu.tanke.enums.PointTaskStatus;
 import com.lptiyu.tanke.global.Accounts;
-import com.lptiyu.tanke.global.AppData;
-import com.lptiyu.tanke.global.Conf;
 import com.lptiyu.tanke.mybase.MyBaseActivity;
+import com.lptiyu.tanke.utils.NetworkUtil;
 import com.lptiyu.tanke.utils.PopupWindowUtils;
 import com.lptiyu.tanke.utils.TaskResultHelper;
 import com.lptiyu.tanke.utils.ToastUtil;
 import com.lptiyu.tanke.utils.VibratorHelper;
+import com.lptiyu.tanke.widget.CustomTextView;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -44,32 +41,29 @@ public class GuessRiddleActivity extends MyBaseActivity implements RiddleContact
     EditText etWriteAnswer;
     @BindView(R.id.tv_submitAnswer)
     TextView tvSubmitAnswer;
-    private Task task;
-    @BindView(R.id.img_anim)
-    ImageView imgAnim;
-    @BindView(R.id.rl_submit_record)
-    RelativeLayout rlSubmitRecord;
+    @BindView(R.id.default_tool_bar_textview)
+    CustomTextView ctvTitle;
 
     private RiddlePresenter presenter;
     private long gameId;
     private Point point;
     private boolean isPointOver;
-
     private TaskResultHelper taskResultHelper;
-    private int index;
+    private Task task;
+    //    private int index;
     private boolean isGameOver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_guess_riddle);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         ButterKnife.bind(this);
 
         initData();
     }
 
     private void initData() {
+        ctvTitle.setText("提交答案");
         if (currentPoint == null || currentTask == null) {
             return;
         }
@@ -77,11 +71,12 @@ public class GuessRiddleActivity extends MyBaseActivity implements RiddleContact
         gameId = RunApplication.gameId;
         point = currentPoint;
         isPointOver = RunApplication.isPointOver;
-        index = getIntent().getIntExtra(Conf.INDEX, -1);
+        //        index = getIntent().getIntExtra(Conf.INDEX, -1);
+        etWriteAnswer.setHint(String.format(getString(R.string.answer_text_count), task.pwd.length()));
 
         presenter = new RiddlePresenter(this);
 
-        taskResultHelper = new TaskResultHelper(this, rlSubmitRecord, imgAnim, new TaskResultHelper
+        taskResultHelper = new TaskResultHelper(this, new TaskResultHelper
                 .TaskResultCallback() {
             @Override
             public void onSuccess() {
@@ -90,15 +85,6 @@ public class GuessRiddleActivity extends MyBaseActivity implements RiddleContact
                 }
             }
         });
-
-        if (AppData.isFirstInGuessRiddleActivity()) {
-            getWindow().getDecorView().post(new Runnable() {
-                public void run() {
-                    PopupWindowUtils.getInstance().showTaskGuide(GuessRiddleActivity.this,
-                            "这是猜谜任务，提交你的答案，正确即可通关");
-                }
-            });
-        }
     }
 
     private void setActivityResult() {
@@ -107,30 +93,41 @@ public class GuessRiddleActivity extends MyBaseActivity implements RiddleContact
         finish();
     }
 
-    @OnClick({R.id.img_close, R.id.tv_submitAnswer})
+    @OnClick({R.id.tv_submitAnswer, R.id.default_tool_bar_imageview})
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.img_close:
+            case R.id.default_tool_bar_imageview:
                 finish();
                 break;
             case R.id.tv_submitAnswer:
-                if (Accounts.getPhoneNumber() != null && Accounts.getPhoneNumber().equals("18272164317")) {
-                    taskResultHelper.startAnim();
-                    upLoadGameRecord();
-                    return;
-                }
                 String answer = etWriteAnswer.getText() + "";
                 if (answer.equals("")) {
                     Toast.makeText(this, "请先输入答案", Toast.LENGTH_SHORT).show();
+                    tvSubmitAnswer.setEnabled(true);
                     return;
                 }
                 if (answer.equals(task.pwd)) {
-                    taskResultHelper.startAnim();
-                    upLoadGameRecord();
+                    tvSubmitAnswer.setEnabled(false);
+                    taskResultHelper.startSubmitting();
+                    upload();
                 } else {
                     taskResultHelper.showFailResult();
                 }
                 break;
+        }
+    }
+
+    public void upload() {
+        if (NetworkUtil.checkIsNetworkConnected()) {
+            upLoadGameRecord();
+        } else {
+            PopupWindowUtils.getInstance().showNetExceptionPopupwindow(this, new PopupWindowUtils.OnRetryCallback() {
+                @Override
+                public void onRetry() {
+                    tvSubmitAnswer.setEnabled(true);
+                    upload();
+                }
+            });
         }
     }
 
@@ -147,35 +144,48 @@ public class GuessRiddleActivity extends MyBaseActivity implements RiddleContact
         presenter.uploadRecord(record);
     }
 
-    private UpLoadGameRecordResult resultRecord;
-
     @Override
     public void successUploadRecord(UpLoadGameRecordResult response) {
-        resultRecord = response;
-        resultRecord.index = this.index;
         taskResultHelper.showSuccessResult(response);
-        taskResultHelper.stopAnim();
+        taskResultHelper.stopSubmitting();
         if (response.game_statu == PlayStatus.GAME_OVER) {//游戏通关，需要弹出通关视图，弹出通关视图
             isGameOver = true;
-            taskResultHelper.hidePopup();
+            taskResultHelper.dismiss();
             startActivity(new Intent(GuessRiddleActivity.this, GameOverActivity.class));
             finish();
         }
         //震动提示
         VibratorHelper.startVibrator(this);
+    }
 
+    @Override
+    public void failLoad() {
+        super.failLoad();
+        taskResultHelper.showNetException();
+        taskResultHelper.stopSubmitting();
+        tvSubmitAnswer.setEnabled(true);
+    }
+
+    @Override
+    public void failLoad(String errMsg) {
+        super.failLoad(errMsg);
+        taskResultHelper.showNetException();
+        taskResultHelper.stopSubmitting();
+        tvSubmitAnswer.setEnabled(true);
     }
 
     @Override
     public void failUploadRecord(String errorMsg) {
         ToastUtil.TextToast(errorMsg);
         taskResultHelper.showFailResult();
-        taskResultHelper.stopAnim();
+        taskResultHelper.stopSubmitting();
+        tvSubmitAnswer.setEnabled(true);
     }
 
     @Override
     public void netException() {
         taskResultHelper.showNetException();
-        taskResultHelper.stopAnim();
+        taskResultHelper.stopSubmitting();
+        tvSubmitAnswer.setEnabled(true);
     }
 }

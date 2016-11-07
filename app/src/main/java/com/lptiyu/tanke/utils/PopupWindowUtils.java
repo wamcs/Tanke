@@ -171,7 +171,7 @@ public class PopupWindowUtils {
             public void onClick(View v) {
                 popupWindow.dismiss();
                 if (listener != null) {
-                    listener.onClick(v);
+                    listener.sure();
                 }
             }
         });
@@ -182,7 +182,9 @@ public class PopupWindowUtils {
     }
 
     public interface OnClickPopupListener {
-        void onClick(View view);
+        void sure();
+
+        //        void cancle();
     }
 
     public interface OnRetryCallback {

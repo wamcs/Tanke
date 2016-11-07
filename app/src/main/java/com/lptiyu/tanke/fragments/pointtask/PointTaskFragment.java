@@ -45,6 +45,7 @@ import com.lptiyu.tanke.mybase.MyBaseFragment;
 import com.lptiyu.tanke.utils.DirUtils;
 import com.lptiyu.tanke.utils.LogUtils;
 import com.lptiyu.tanke.utils.StringUtils;
+import com.lptiyu.tanke.utils.TaskResultHelper;
 import com.lptiyu.tanke.utils.ToastUtil;
 import com.lptiyu.tanke.utils.xutils3.XUtilsHelper;
 import com.lptiyu.zxinglib.android.CaptureActivity;
@@ -341,23 +342,24 @@ public class PointTaskFragment extends MyBaseFragment implements PointTaskContac
     }
 
     @Override
-    public void successUploadGameOverRecord(UpLoadGameRecordResult result) {
-        String tip = "";
-        if (result != null) {
-            tip = "恭喜你找到答案了，经验 +" + result.get_exp + ", 积分 +" + result.get_extra_points + ", 红包 +" + result
-                    .get_extra_money + "元";
-        }
-        Toast.makeText(getActivity(), tip, Toast.LENGTH_SHORT).show();
+    public void successUploadGameOverRecord(final UpLoadGameRecordResult result) {
         currentTask.ftime = result.task_finish_time;
         currentTask.exp = result.get_exp;
-        if (result.game_statu == PlayStatus.GAME_OVER) {
-            startActivity(new Intent(getActivity(), GameOverActivity.class));
-        }
-        setActivityResult();
+        TaskResultHelper taskResultHelper = new TaskResultHelper(getActivity(), new TaskResultHelper
+                .TaskResultCallback() {
+            @Override
+            public void onSuccess() {
+                if (result.game_statu == PlayStatus.GAME_OVER) {
+                    startActivity(new Intent(getActivity(), GameOverActivity.class));
+                }
+                setActivityResult();
+            }
+        });
+        taskResultHelper.showSuccessResult(result);
     }
 
     private void setActivityResult() {
-        //章节点结束，通知GamePlayingV2Activity,PointTaskV2Activity销毁界面
+        //章节点结束，通知PointTaskV2Activity销毁界面
         EventBus.getDefault().post(new GamePointTaskStateChanged());
     }
 

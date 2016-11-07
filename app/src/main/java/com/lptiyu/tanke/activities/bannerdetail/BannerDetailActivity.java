@@ -9,12 +9,14 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import com.lptiyu.tanke.R;
-import com.lptiyu.tanke.mybase.MyBaseActivity;
 import com.lptiyu.tanke.global.Conf;
+import com.lptiyu.tanke.mybase.MyBaseActivity;
+import com.lptiyu.tanke.widget.CustomTextView;
 import com.lptiyu.tanke.widget.GradientProgressBar;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class BannerDetailActivity extends MyBaseActivity {
 
@@ -22,6 +24,8 @@ public class BannerDetailActivity extends MyBaseActivity {
     WebView mWebView;
     @BindView(R.id.progress_bar)
     GradientProgressBar progressBar;
+    @BindView(R.id.default_tool_bar_textview)
+    CustomTextView defaultToolBarTextview;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +37,7 @@ public class BannerDetailActivity extends MyBaseActivity {
 
     private void init() {
         String content = getIntent().getStringExtra(Conf.CONTENT);
-
+        defaultToolBarTextview.setText("详情");
         mWebView.getSettings().setJavaScriptEnabled(true);
         mWebView.setWebViewClient(new WebViewClient() {
 
@@ -64,6 +68,11 @@ public class BannerDetailActivity extends MyBaseActivity {
         });
         mWebView.loadUrl(Html.fromHtml(content).toString());
         //        mWebView.loadData(content, "text/html", "utf-8");
+    }
+
+    @OnClick(R.id.default_tool_bar_imageview)
+    public void onClick() {
+        finish();
     }
 
     @Override

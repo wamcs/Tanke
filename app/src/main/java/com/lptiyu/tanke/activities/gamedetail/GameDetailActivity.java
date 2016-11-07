@@ -33,6 +33,7 @@ import com.lptiyu.tanke.activities.gameplaying.GamePlayingActivity;
 import com.lptiyu.tanke.entity.BaseEntity;
 import com.lptiyu.tanke.entity.eventbus.EnterGame;
 import com.lptiyu.tanke.entity.eventbus.LeaveGame;
+import com.lptiyu.tanke.entity.eventbus.PlayAgain;
 import com.lptiyu.tanke.entity.response.GameDetail;
 import com.lptiyu.tanke.entity.response.Ranks;
 import com.lptiyu.tanke.enums.GameSort;
@@ -45,6 +46,7 @@ import com.lptiyu.tanke.utils.NetworkUtil;
 import com.lptiyu.tanke.utils.PopupWindowUtils;
 import com.lptiyu.tanke.utils.TimeUtils;
 import com.lptiyu.tanke.widget.CircularImageView;
+import com.lptiyu.tanke.widget.PullToZoomScrollView;
 import com.lptiyu.tanke.widget.dialog.ShareDialog;
 
 import org.greenrobot.eventbus.EventBus;
@@ -75,8 +77,9 @@ public class GameDetailActivity extends MyBaseActivity implements GameDetailCont
     LinearLayout llRanksIcon;
     @BindView(R.id.tv_game_detail_introduction)
     TextView tvGameDetailIntroduction;
+    @BindView(R.id.pullToZoom)
+    PullToZoomScrollView pullToZoom;
     private GameDetailPresenter presenter;
-
     private long gameId;
     private int type;
     private String fromWhere;
@@ -157,6 +160,7 @@ public class GameDetailActivity extends MyBaseActivity implements GameDetailCont
 
     private void abandonGame() {
         if (NetworkUtil.checkIsNetworkConnected()) {
+            tvEnterGame.setEnabled(false);
             abandonGameDialog = ProgressDialog.show(this, "", "加载中...", true);
             presenter.leaveGame(gameId);
 
@@ -172,13 +176,18 @@ public class GameDetailActivity extends MyBaseActivity implements GameDetailCont
 
     @Override
     public void successEnterGame() {
-        Intent intent = new Intent(GameDetailActivity.this, GamePlayingActivity.class);
-        startActivity(intent);
         //更改该游戏的状态
         if (RunApplication.entity != null) {
             RunApplication.entity.play_status = PlayStatus.HAVE_ENTERED_BUT_NOT_START_GAME;
         }
         EventBus.getDefault().post(new EnterGame());
+        if (status == ENTER_GAME) {
+        } else if (status == PLAY_AGAIN) {
+            //            RunApplication.getInstance().finishActivity(GamePlayingActivity.class);
+            EventBus.getDefault().post(new PlayAgain());
+        }
+        Intent intent = new Intent(GameDetailActivity.this, GamePlayingActivity.class);
+        startActivity(intent);
         finish();
     }
 
@@ -223,15 +232,16 @@ public class GameDetailActivity extends MyBaseActivity implements GameDetailCont
             moveToLocation(latLng);
             addMarker(latLng);
 
-            if (gameDetail.rank_list != null && gameDetail.rank_list.size() >= 1) {
-                for (Ranks ranks : gameDetail.rank_list) {
-                    CircularImageView cImg = new CircularImageView(this);
-                    int widthHeight = DisplayUtils.dp2px(50);
-                    LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(widthHeight, widthHeight);
-                    cImg.setLayoutParams(params);
-                    Glide.with(this).load(ranks.user_avatar).error(R.mipmap.default_avatar).placeholder(R.mipmap
-                            .default_avatar).into(cImg);
-                    llRanksIcon.addView(cImg);
+            if (gameDetail.rank_list != null && gameDetail.rank_list.size() > 0) {
+                int size = Math.min(gameDetail.rank_list.size(), 5);
+                for (int i = 0; i < size; i++) {
+                    Ranks ranks = gameDetail.rank_list.get(i);
+                    CircularImageView circularImageView = new CircularImageView(this);
+                    int widthHeight = DisplayUtils.dp2px(40);
+                    circularImageView.setLayoutParams(new LinearLayout.LayoutParams(widthHeight, widthHeight));
+                    Glide.with(this).load(ranks.user_avatar).error(R.mipmap.default_avatar).crossFade().into
+                            (circularImageView);
+                    llRanksIcon.addView(circularImageView);
                 }
             }
         }
@@ -260,6 +270,7 @@ public class GameDetailActivity extends MyBaseActivity implements GameDetailCont
 
     @Override
     public void failLeaveGame(String errMsg) {
+        tvEnterGame.setEnabled(true);
         if (errMsg != null) {
             Toast.makeText(this, errMsg, Toast.LENGTH_SHORT).show();
         }
@@ -337,27 +348,20 @@ public class GameDetailActivity extends MyBaseActivity implements GameDetailCont
         }
         switch (status) {
             case ENTER_GAME:
+            case PLAY_AGAIN:
                 //直接调用进入游戏的接口
                 if (entity.cid == GameSort.DIRECTION_RUN) {//如果是定向乐跑，则直接跳转到定向乐跑界面
                     initGPS();
                 } else {
+                    tvEnterGame.setEnabled(false);
                     presenter.enterGame(gameId, type);
                 }
                 break;
-            case PLAY_AGAIN:
-                //                //直接调用进入游戏的接口
-                //                if (entity.cid == GameSort.DIRECTION_RUN) {//如果是定向乐跑，则直接跳转到定向乐跑界面
-                //                    initGPS();
-                //                } else {
-                //                    presenter.enterGame(gameId, type);
-                //                }
-                //                break;
             case LEAVE_GAME:
                 //放弃游戏
-                PopupWindowUtils.getInstance().showLeaveGamePopup(this, new PopupWindowUtils
-                        .OnClickPopupListener() {
+                PopupWindowUtils.getInstance().showLeaveGamePopup(this, new PopupWindowUtils.OnClickPopupListener() {
                     @Override
-                    public void onClick(View view) {
+                    public void sure() {
                         abandonGame();
                     }
                 });
@@ -391,5 +395,23 @@ public class GameDetailActivity extends MyBaseActivity implements GameDetailCont
         super.onSaveInstanceState(outState);
         //在activity执行onSaveInstanceState时执行mapView.onSaveInstanceState (outState)，实现地图生命周期管理
         mapView.onSaveInstanceState(outState);
+    }
+
+    @Override
+    public void failLoad() {
+        super.failLoad();
+        tvEnterGame.setEnabled(true);
+    }
+
+    @Override
+    public void failLoad(String errMsg) {
+        super.failLoad(errMsg);
+        tvEnterGame.setEnabled(true);
+    }
+
+    @Override
+    public void netException() {
+        super.netException();
+        tvEnterGame.setEnabled(true);
     }
 }
