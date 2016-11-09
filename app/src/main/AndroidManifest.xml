@@ -108,7 +108,8 @@
             android:theme="@android:style/Theme.Translucent.NoTitleBar"
             android:windowSoftInputMode="stateHidden|adjustResize">
             <intent-filter>
-                <data android:scheme="tencent1105156320"/>
+                <!--AndroidManifest.xml文件与ShareSDK.xml文件当中的APP ID要一致，且是在腾讯开放平台申请的，这个时候才可以捕捉得到回调事件-->
+                <data android:scheme="tencent1105660458"/>
 
                 <action android:name="android.intent.action.VIEW"/>
 
@@ -241,9 +242,20 @@
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".activities.scorestore.ScoreStoreActivity">
+        <activity
+            android:name=".activities.scorestore.ScoreStoreActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".activities.redwallet.RedWalletActivity">
+        <activity
+            android:name=".activities.redwallet.RedWalletActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="portrait">
+        </activity>
+        <activity
+            android:name=".activities.lookredwalletrecord.LookRedWalletRecordActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="portrait">
         </activity>
     </application>
 

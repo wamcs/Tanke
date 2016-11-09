@@ -27,4 +27,10 @@ public interface XUtilsUrls {
     String GAME_DETAIL = SERVER_URL + "home/details";
     String MESSAGE = SERVER_URL + "System/News";
     String GAME_OVER_REWARD = SERVER_URL + "Game/getTotalPrize";
+    String GET_SCORE_AFTER_SHARE = SERVER_URL + "Game/getSharePoints";
+
+    String REQUEST_RED_WALLET = "http://test.lptiyu.com/lepao/index" +
+            ".php/Cash/Cash/uid/1/token/ECCBFF1967E920782C54DC8DFCE35BE4";
+    String LOOK_RED_WALLET_RECORD = "http://test.lptiyu.com/lepao/index" +
+            ".php/Cash/Record/uid/1/token/ECCBFF1967E920782C54DC8DFCE35BE4";
 }

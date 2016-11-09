@@ -15,29 +15,15 @@ import com.lptiyu.tanke.entity.BaseEntity;
 public class GamePlayingEntity extends BaseEntity implements Parcelable {
     @SerializedName("game_id")
     public long gameId;
-
-    @SerializedName("img")
     public String img;
-
-    @SerializedName("name")
     public String name;
-
-    // 0: 上次玩的
-    // 1: 正在进行的
-    //TODO 上次玩的和正在进行的，需不需要区分
-    @SerializedName("type")
     public int type;
-
-    @SerializedName("num")
     public int num;
-
+    public String tag;
+    public int team_id;
     @SerializedName("set")
     public float progress;
-
-    @SerializedName("states")
     public int states;
-
-    @SerializedName("is_del")
     public int is_del;
 
     @Override
@@ -51,6 +37,8 @@ public class GamePlayingEntity extends BaseEntity implements Parcelable {
         dest.writeString(this.img);
         dest.writeString(this.name);
         dest.writeInt(this.type);
+        dest.writeString(this.tag);
+        dest.writeInt(this.team_id);
         dest.writeInt(this.num);
         dest.writeFloat(this.progress);
         dest.writeInt(this.states);
@@ -65,6 +53,8 @@ public class GamePlayingEntity extends BaseEntity implements Parcelable {
         this.img = in.readString();
         this.name = in.readString();
         this.type = in.readInt();
+        this.tag = in.readString();
+        this.team_id = in.readInt();
         this.num = in.readInt();
         this.progress = in.readFloat();
         this.states = in.readInt();

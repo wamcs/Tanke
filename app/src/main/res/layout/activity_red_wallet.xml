@@ -1,12 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_red_wallet"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.lptiyu.tanke.activities.redwallet.RedWalletActivity">
 
-    <include
-        layout="@layout/layout_default_toolbar"/>
+    <RelativeLayout
+        android:id="@id/rl_title"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/default_toolbar_height"
+        android:background="@drawable/toolbar_gradient">
+
+        <ImageView
+            android:id="@id/default_tool_bar_imageview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:contentDescription="@null"
+            android:paddingBottom="@dimen/default_toolbar_imageview_padding"
+            android:paddingLeft="@dimen/default_toolbar_imageview_padding_left"
+            android:paddingRight="@dimen/default_toolbar_imageview_padding"
+            android:paddingTop="@dimen/default_toolbar_imageview_padding"
+            android:src="@drawable/selector_back"/>
+
+        <com.lptiyu.tanke.widget.CustomTextView
+            android:id="@id/default_tool_bar_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:padding="@dimen/default_toolbar_textview_padding"
+            android:textColor="@color/default_font_color"
+            android:textSize="@dimen/default_toolbar_textview_text_size"/>
+
+        <ImageView
+            android:id="@+id/default_tool_bar_imageview_look_record"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:contentDescription="@null"
+            android:paddingBottom="@dimen/default_toolbar_imageview_padding"
+            android:paddingLeft="@dimen/default_toolbar_imageview_padding_left"
+            android:paddingRight="@dimen/default_toolbar_imageview_padding"
+            android:paddingTop="@dimen/default_toolbar_imageview_padding"
+            android:src="@drawable/tixian"/>
+
+    </RelativeLayout>
+
+    <WebView
+        android:id="@+id/web_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/rl_title"/>
+
+    <com.lptiyu.tanke.widget.GradientProgressBar
+        android:id="@+id/web_view_progress_bar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y8"
+        android:layout_below="@id/rl_title"
+        app:src="@drawable/user_center_exp_progress_bar_solid"/>
 </RelativeLayout>

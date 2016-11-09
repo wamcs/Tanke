@@ -6,10 +6,14 @@
     android:layout_height="match_parent"
     tools:context="com.lptiyu.tanke.activities.locationtask.LocationTaskActivity">
 
+    <include
+        layout="@layout/layout_default_toolbar"/>
+
     <com.amap.api.maps.TextureMapView
         android:id="@+id/textureMapView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        android:layout_below="@id/rl_title"/>
 
     <ImageView
         android:id="@+id/img_close"

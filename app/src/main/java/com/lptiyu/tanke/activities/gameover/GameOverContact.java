@@ -1,6 +1,7 @@
 package com.lptiyu.tanke.activities.gameover;
 
 import com.lptiyu.tanke.entity.response.GameOverReward;
+import com.lptiyu.tanke.entity.response.GetScoreAfterShare;
 import com.lptiyu.tanke.mybase.IBasePresenter;
 import com.lptiyu.tanke.mybase.IBaseView;
 
@@ -11,9 +12,13 @@ import com.lptiyu.tanke.mybase.IBaseView;
 public class GameOverContact {
     interface IGameOverView extends IBaseView {
         void successLoadGameOverReward(GameOverReward gameOverReward);
+
+        void successGetScore(GetScoreAfterShare getScoreAfterShare);
     }
 
     interface IGameOverPresenter extends IBasePresenter {
         void loadGameOverReward(long gameId);
+
+        void getScoreAfterShare();
     }
 }

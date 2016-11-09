@@ -7,35 +7,6 @@
     android:layout_height="match_parent"
     tools:context="com.lptiyu.tanke.activities.gameplaying.GamePlayingActivity">
 
-    <com.amap.api.maps.TextureMapView
-        android:id="@+id/textureMapView"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:layout_below="@id/rl_title"
-        android:visibility="gone"/>
-
-    <TextView
-        android:id="@+id/tv_my_progress"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/textureMapView"
-        android:background="@color/white10"
-        android:enabled="false"
-        android:gravity="left|center_vertical"
-        android:paddingBottom="20dp"
-        android:paddingLeft="20dp"
-        android:paddingTop="20dp"
-        android:text="@string/game_progress"
-        android:textColor="@color/black333"
-        android:textSize="17sp"/>
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recyclerView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/tv_my_progress"
-        android:background="@color/white10"/>
-
     <RelativeLayout
         android:id="@+id/rl_title"
         android:layout_width="match_parent"
@@ -82,5 +53,77 @@
             android:visibility="visible"/>
 
     </RelativeLayout>
+
+    <com.amap.api.maps.TextureMapView
+        android:id="@+id/textureMapView"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_below="@id/rl_title"
+        android:visibility="gone"/>
+
+    <RelativeLayout
+        android:id="@+id/rl_progress"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textureMapView"
+        android:background="@color/white10">
+
+        <TextView
+            android:id="@+id/tv_progress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/white10"
+            android:enabled="false"
+            android:paddingBottom="20dp"
+            android:paddingLeft="20dp"
+            android:paddingTop="20dp"
+            android:text="@string/game_progress"
+            android:textColor="@color/black333"
+            android:textSize="17sp"/>
+
+        <TextView
+            android:id="@+id/tv_game_over_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@id/tv_progress"
+            android:layout_toRightOf="@id/tv_progress"
+            android:background="@color/white10"
+            android:enabled="false"
+            android:paddingBottom="20dp"
+            android:paddingTop="20dp"
+            android:textColor="@color/colorPrimary"
+            android:textSize="17sp"
+            android:visibility="gone"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rl_look_game_over_reward"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:visibility="gone"
+        android:background="@color/white10">
+
+        <TextView
+            android:id="@+id/tv_look_game_over_reward"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:background="@drawable/selector_textview"
+            android:padding="10dp"
+            android:text="查看通关奖励"
+            android:textColor="@color/white10"
+            android:textSize="16sp"
+            android:visibility="visible"/>
+    </RelativeLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/rl_look_game_over_reward"
+        android:layout_below="@id/rl_progress"
+        android:background="@color/white10"/>
+
 
 </RelativeLayout>

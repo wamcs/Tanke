@@ -3,6 +3,8 @@ package com.lptiyu.tanke.utils.xutils3;
 import android.content.Context;
 import android.support.annotation.NonNull;
 
+import com.lptiyu.tanke.global.Accounts;
+
 import org.xutils.http.RequestParams;
 
 public class RequestParamsHelper {
@@ -36,6 +38,7 @@ public class RequestParamsHelper {
         RequestParams params = new RequestParams(url);
         params.addHeader("Connection", "keep-alive");
         params.setConnectTimeout(7000);
+        params.addBodyParameter("token", Accounts.getToken());
         return params;
     }
 }

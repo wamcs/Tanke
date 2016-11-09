@@ -148,6 +148,6 @@ public class GameFinishedListController extends BaseListActivityController<GameF
 
     @Override
     public void onResume() {
-        refreshTop();
+        //        refreshTop();
     }
 }

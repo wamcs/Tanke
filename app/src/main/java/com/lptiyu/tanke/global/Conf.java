@@ -135,7 +135,7 @@ public final class Conf {
     public static final String FROM_WHERE = "from_where";
     public static final String NORMAL_VIEW_HOLDER = "normal_view_holder";
     public static final String ELASTIC_HEADER_VIEW_HOLDER = "elastic_header_view_holder";
-    public static final String GAME_PLAYing_V2_ACTIVITY = "game_playing_v2_activity";
+    public static final String GAME_PLAYing_ACTIVITY = "game_playing_v2_activity";
 
     public static final String CURRENT_TASK = "current_task";
     public static final String IS_POINT_OVER = "is_point_over";

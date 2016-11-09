@@ -23,6 +23,7 @@ import com.lptiyu.tanke.entity.eventbus.GamePointTaskStateChanged;
 import com.lptiyu.tanke.entity.eventbus.LeaveGame;
 import com.lptiyu.tanke.entity.response.HomeTabEntity;
 import com.lptiyu.tanke.enums.PlayStatus;
+import com.lptiyu.tanke.enums.Where;
 import com.lptiyu.tanke.global.Conf;
 import com.lptiyu.tanke.mybase.MyBaseFragment;
 import com.lptiyu.tanke.utils.LogUtils;
@@ -129,6 +130,7 @@ public class HomeTabFragment extends MyBaseFragment implements HomeTabContact.IH
                 RunApplication.gameId = homeTabEntity.id;
                 RunApplication.type = homeTabEntity.type;
                 RunApplication.entity = homeTabEntity;
+                RunApplication.where = Where.HOME_TAB;
                 Intent intent = new Intent();
                 switch (homeTabEntity.play_status) {
                     case PlayStatus.NEVER_ENTER_GANME://从未玩过游戏，进入到游戏详情界面

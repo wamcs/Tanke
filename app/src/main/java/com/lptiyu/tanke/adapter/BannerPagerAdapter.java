@@ -17,6 +17,7 @@ import com.lptiyu.tanke.entity.GetGameStatusResponse;
 import com.lptiyu.tanke.entity.response.Banner;
 import com.lptiyu.tanke.enums.BannerType;
 import com.lptiyu.tanke.enums.PlayStatus;
+import com.lptiyu.tanke.enums.Where;
 import com.lptiyu.tanke.global.Accounts;
 import com.lptiyu.tanke.global.Conf;
 import com.lptiyu.tanke.net.HttpService;
@@ -35,7 +36,6 @@ import rx.schedulers.Schedulers;
  */
 public class BannerPagerAdapter extends BasePagerAdapter<Banner> {
     private long gameId;
-    private String tempGameZipUrl;
     private String title;
 
     public BannerPagerAdapter(Context context, List<Banner> list) {
@@ -61,7 +61,6 @@ public class BannerPagerAdapter extends BasePagerAdapter<Banner> {
                     context.startActivity(intent);
                 }
                 if (banner.type == BannerType.ENTER_GAME) {
-                    //判断游戏包存不存在
                     String[] split = banner.content.split(":");
                     gameId = Integer.parseInt(split[0]);
                     title = split[1];
@@ -69,6 +68,7 @@ public class BannerPagerAdapter extends BasePagerAdapter<Banner> {
                     RunApplication.type = banner.type;
                     RunApplication.entity = banner;
                     RunApplication.entity.title = title;
+                    RunApplication.where = Where.BANNER;
                     loadNetWorkData();
                 }
             }
@@ -102,7 +102,6 @@ public class BannerPagerAdapter extends BasePagerAdapter<Banner> {
                     @Override
                     public void call(Response<GetGameStatusResponse> response) {
                         if (response.getStatus() == Response.RESPONSE_OK) {
-                            tempGameZipUrl = response.getData().game_zip;
                             //判断游戏状态
                             switch (response.getData().play_statu) {
                                 case PlayStatus.NEVER_ENTER_GANME://从未玩过游戏，进入到游戏详情界面

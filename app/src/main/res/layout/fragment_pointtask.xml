@@ -21,6 +21,18 @@
             android:scaleType="centerInside"
             android:src="@drawable/key"/>
 
+        <TextView
+            android:id="@+id/tv_look_game_over_reward"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:background="@drawable/selector_textview"
+            android:padding="10dp"
+            android:text="查看通关奖励"
+            android:textColor="@color/white10"
+            android:textSize="16sp"
+            android:visibility="gone"/>
+
     </RelativeLayout>
 
     <RelativeLayout
@@ -33,6 +45,9 @@
             android:id="@+id/lv"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
             android:divider="@null"
             android:dividerHeight="0dp"
             android:listSelector="@null"

@@ -34,10 +34,6 @@ import butterknife.OnClick;
  */
 public class ShareDialog extends AppCompatActivity {
 
-    //    private int[] imagePath = {R.mipmap.img_share_qq,
-    //        R.mipmap.img_share_wechat,
-    ////      R.mipmap.img_share_sina,
-    //        R.mipmap.img_share_wechat_moment};
     private int[] imagePath = {R.drawable.share_qq, R.drawable.share_wechat, R.drawable.share_wechat_moment};
     private String[] titleArr = {"QQ", "微信", "朋友圈"};
 

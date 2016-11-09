@@ -24,11 +24,14 @@ public class GamePlayingPresenter implements GamePlayingContract.IGamePlaying2Pr
      * 从服务器请求游戏记录
      */
     @Override
-    public void downLoadGameRecord(long gameId, long teamId) {
+    public void downLoadGameRecord(long gameId, long teamId, long recordId) {
         RequestParams params = RequestParamsHelper.getBaseRequestParam(XUtilsUrls.GET_RECORD);
         params.addBodyParameter("uid", Accounts.getId() + "");
         params.addBodyParameter("game_id", gameId + "");
         params.addBodyParameter("team_id", teamId + "");//个人游戏传0，团队游戏传1
+        if (recordId >= 0) {
+            params.addBodyParameter("record_id", recordId + "");//从已完成进来时需要传这个参数
+        }
         XUtilsHelper.getInstance().get(params, new XUtilsRequestCallBack<GameRecordResponse>() {
             @Override
             protected void onSuccess(GameRecordResponse response) {
@@ -55,11 +58,14 @@ public class GamePlayingPresenter implements GamePlayingContract.IGamePlaying2Pr
     }
 
     @Override
-    public void reloadGameRecord(long gameId, long teamId) {
+    public void reloadGameRecord(long gameId, long teamId, long recordId) {
         RequestParams params = RequestParamsHelper.getBaseRequestParam(XUtilsUrls.GET_RECORD);
         params.addBodyParameter("uid", Accounts.getId() + "");
         params.addBodyParameter("game_id", gameId + "");
         params.addBodyParameter("team_id", teamId + "");//个人游戏传0，团队游戏传1
+        if (recordId >= 0) {
+            params.addBodyParameter("record_id", recordId + "");//从已完成进来时需要传这个参数
+        }
         XUtilsHelper.getInstance().get(params, new XUtilsRequestCallBack<GameRecordResponse>() {
             @Override
             protected void onSuccess(GameRecordResponse response) {

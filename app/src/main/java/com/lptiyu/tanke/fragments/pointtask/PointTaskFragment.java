@@ -45,7 +45,6 @@ import com.lptiyu.tanke.mybase.MyBaseFragment;
 import com.lptiyu.tanke.utils.DirUtils;
 import com.lptiyu.tanke.utils.LogUtils;
 import com.lptiyu.tanke.utils.StringUtils;
-import com.lptiyu.tanke.utils.TaskResultHelper;
 import com.lptiyu.tanke.utils.ToastUtil;
 import com.lptiyu.tanke.utils.xutils3.XUtilsHelper;
 import com.lptiyu.zxinglib.android.CaptureActivity;
@@ -73,6 +72,8 @@ public class PointTaskFragment extends MyBaseFragment implements PointTaskContac
     RelativeLayout rlGetKey;
     @BindView(R.id.lv)
     ListView lv;
+    @BindView(R.id.tv_look_game_over_reward)
+    TextView tvLookGameOverReward;
     private RoundedImageView img;
     private TextView tv_title;
     private LVForPointTaskAdapter adapter;
@@ -135,6 +136,9 @@ public class PointTaskFragment extends MyBaseFragment implements PointTaskContac
         lv.setAdapter(adapter);
         if (currentPoint.status == PointTaskStatus.FINISHED) {
             imgGetKey.setVisibility(View.GONE);
+            if (index == Integer.parseInt(RunApplication.gameRecord.game_point_num) - 1) {
+                tvLookGameOverReward.setVisibility(View.VISIBLE);
+            }
         } else {
             imgGetKey.setVisibility(View.VISIBLE);
             for (int i = 0; i < currentPoint.task_list.size(); i++) {
@@ -159,6 +163,29 @@ public class PointTaskFragment extends MyBaseFragment implements PointTaskContac
                 }
             }
             lv.setSelection(currentTaskIndex);
+            setImgGetKeyType();
+        }
+    }
+
+    private void setImgGetKeyType() {
+        switch (Integer.parseInt(currentTask.type)) {
+            case TaskType.DISTINGUISH:
+                imgGetKey.setImageResource(R.drawable.paizhao);
+                break;
+            case TaskType.FINISH:
+                imgGetKey.setVisibility(View.GONE);
+                break;
+            case TaskType.LOCATE:
+                imgGetKey.setImageResource(R.drawable.dingwei);
+                break;
+            case TaskType.RIDDLE:
+                imgGetKey.setImageResource(R.drawable.dati);
+                break;
+            case TaskType.SCAN_CODE:
+                imgGetKey.setImageResource(R.drawable.saoma);
+                break;
+            case TaskType.UPLOAD_PHOTO:
+                break;
         }
     }
 
@@ -345,17 +372,10 @@ public class PointTaskFragment extends MyBaseFragment implements PointTaskContac
     public void successUploadGameOverRecord(final UpLoadGameRecordResult result) {
         currentTask.ftime = result.task_finish_time;
         currentTask.exp = result.get_exp;
-        TaskResultHelper taskResultHelper = new TaskResultHelper(getActivity(), new TaskResultHelper
-                .TaskResultCallback() {
-            @Override
-            public void onSuccess() {
-                if (result.game_statu == PlayStatus.GAME_OVER) {
-                    startActivity(new Intent(getActivity(), GameOverActivity.class));
-                }
-                setActivityResult();
-            }
-        });
-        taskResultHelper.showSuccessResult(result);
+        if (result.game_statu == PlayStatus.GAME_OVER) {
+            imgGetKey.setVisibility(View.GONE);
+            tvLookGameOverReward.setVisibility(View.VISIBLE);
+        }
     }
 
     private void setActivityResult() {
@@ -372,7 +392,7 @@ public class PointTaskFragment extends MyBaseFragment implements PointTaskContac
         }
     }
 
-    @OnClick({R.id.img_getKey, R.id.rl_getKey})
+    @OnClick({R.id.img_getKey, R.id.rl_getKey, R.id.tv_look_game_over_reward})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.img_getKey:
@@ -380,6 +400,9 @@ public class PointTaskFragment extends MyBaseFragment implements PointTaskContac
                 break;
             case R.id.rl_getKey:
                 getActivity().finish();
+                break;
+            case R.id.tv_look_game_over_reward:
+                startActivity(new Intent(getActivity(), GameOverActivity.class));
                 break;
         }
     }

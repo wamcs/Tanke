@@ -57,50 +57,49 @@ public class UserCenterFragment extends BaseFragment {
 
     @BindView(R.id.user_avatar)
     CircularImageView mUserAvatar;
-
     @BindView(R.id.user_nickname)
     TextView mUserNickname;
-
     @BindView(R.id.user_sex)
     ImageView mUserSex;
-
     @BindView(R.id.user_location)
     TextView mUserLocation;
-
     @BindView(R.id.user_uid)
     TextView mUserUid;
-
     @BindView(R.id.user_progress)
     GradientProgressBar mUserProgress;
-
     @BindView(R.id.user_progress_left)
     TextView mUserProgressLeft;
-
     @BindView(R.id.user_progress_right)
     TextView mUserProgressRight;
-
     @BindView(R.id.user_progress_need_exp)
     TextView mUserProgressNeedExp;
-
     @BindView(R.id.user_game_playing_num)
     TextView mUserGamePlayingNum;
-
     @BindView(R.id.user_game_finished_num)
     TextView mUserGameFinishedNum;
     @BindView(R.id.tv_platform_tel_info)
     TextView tvPlatformTelInfo;
     @BindView(R.id.rl_popup)
     RelativeLayout rlPopup;
-
     @BindView(R.id.user_judge_game)
     RelativeLayout mUserJudgeGame;
     @BindView(R.id.default_tool_bar_imageview)
     ImageView defaultToolBarImageview;
     @BindView(R.id.default_tool_bar_textview)
     CustomTextView defaultToolBarTextview;
+    @BindView(R.id.tv_score_total)
+    TextView tvScore;
+    @BindView(R.id.tv_red_wallet_total)
+    TextView tvRedWallet;
 
     private Subscription subscription;
     private UserDetails mUserDetails;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        init();
+    }
 
     @Nullable
     @Override
@@ -157,7 +156,8 @@ public class UserCenterFragment extends BaseFragment {
         mUserUid.setText(String.valueOf(Accounts.getId()));
         mUserGamePlayingNum.setText(String.valueOf(details.getPlayingGameNum()));
         mUserGameFinishedNum.setText(String.valueOf(details.getFinishedGameNum()));
-
+        tvScore.setText(details.getPoints());
+        tvRedWallet.setText(Integer.parseInt(details.getMoney()) / 100.0f + "元");
         if (details.getTaskCount() > 0) {
             mUserJudgeGame.setVisibility(RelativeLayout.VISIBLE);
         }
@@ -296,10 +296,10 @@ public class UserCenterFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-        if (subscription != null && !subscription.isUnsubscribed()) {
-            subscription.unsubscribe();
-        }
-        init();
+        //        if (subscription != null && !subscription.isUnsubscribed()) {
+        //            subscription.unsubscribe();
+        //        }
+        //        init();
     }
 
     @Override

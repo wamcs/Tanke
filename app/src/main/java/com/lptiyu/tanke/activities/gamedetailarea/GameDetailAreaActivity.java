@@ -10,6 +10,7 @@ import com.amap.api.maps.TextureMapView;
 import com.amap.api.maps.UiSettings;
 import com.amap.api.maps.model.CameraPosition;
 import com.amap.api.maps.model.LatLng;
+import com.amap.api.maps.model.LatLngBounds;
 import com.amap.api.maps.model.PolygonOptions;
 import com.lptiyu.tanke.R;
 import com.lptiyu.tanke.entity.response.GameDetail;
@@ -17,17 +18,21 @@ import com.lptiyu.tanke.entity.response.Jingwei;
 import com.lptiyu.tanke.global.Conf;
 import com.lptiyu.tanke.mybase.MyBaseActivity;
 import com.lptiyu.tanke.utils.AMapViewUtils;
+import com.lptiyu.tanke.widget.CustomTextView;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class GameDetailAreaActivity extends MyBaseActivity {
 
     @BindView(R.id.textureMapView)
     TextureMapView mapView;
+    @BindView(R.id.default_tool_bar_textview)
+    CustomTextView defaultToolBarTextview;
     private AMap map;
 
     @Override
@@ -46,16 +51,23 @@ public class GameDetailAreaActivity extends MyBaseActivity {
             uiSettings.setLogoBottomMargin(-200);
             uiSettings.setLogoLeftMargin(-200);
         }
+        defaultToolBarTextview.setText("游戏区域");
 
         GameDetail gameDetail = getIntent().getParcelableExtra(Conf.GAME_DETAIL);
         if (gameDetail != null && gameDetail.game_zone != null && gameDetail.game_zone.size() >= 3) {//至少三个点才能绘制平面
             ArrayList<LatLng> latLngs = new ArrayList<>();
+            LatLngBounds.Builder builder = LatLngBounds.builder();
             for (Jingwei jingwei : gameDetail.game_zone) {
-                latLngs.add(AMapViewUtils.parseJingweiToLatLng(jingwei.jingwei));
+                LatLng latLng = AMapViewUtils.parseJingweiToLatLng(jingwei.jingwei);
+                latLngs.add(latLng);
+                builder.include(latLng);
             }
+            LatLngBounds bounds = builder.build();
+            map.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 50));
             drawPolygon(latLngs);
-            moveToLocation(new LatLng(Double.parseDouble(gameDetail.latitude), Double.parseDouble(gameDetail
-                    .longtitude)));
+            //            moveToLocation(new LatLng(Double.parseDouble(gameDetail.latitude), Double.parseDouble
+            // (gameDetail
+            //                    .longtitude)));
         }
     }
 
@@ -65,7 +77,7 @@ public class GameDetailAreaActivity extends MyBaseActivity {
             return;
         }
         PolygonOptions polygonOptions = new PolygonOptions().addAll(latLngs);
-        polygonOptions.fillColor(ContextCompat.getColor(this, R.color.colorPrimary)).strokeWidth(1f).strokeColor
+        polygonOptions.fillColor(ContextCompat.getColor(this, R.color.transparent_a)).strokeWidth(1f).strokeColor
                 (Color.BLACK);
         map.addPolygon(polygonOptions);
     }
@@ -106,5 +118,10 @@ public class GameDetailAreaActivity extends MyBaseActivity {
         super.onSaveInstanceState(outState);
         //在activity执行onSaveInstanceState时执行mapView.onSaveInstanceState (outState)，实现地图生命周期管理
         mapView.onSaveInstanceState(outState);
+    }
+
+    @OnClick(R.id.default_tool_bar_imageview)
+    public void onClick() {
+        finish();
     }
 }

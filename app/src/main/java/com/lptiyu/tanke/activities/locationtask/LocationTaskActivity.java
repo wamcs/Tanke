@@ -5,11 +5,12 @@ import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.app.AlertDialog;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
@@ -47,6 +48,7 @@ import com.lptiyu.tanke.utils.PopupWindowUtils;
 import com.lptiyu.tanke.utils.TaskResultHelper;
 import com.lptiyu.tanke.utils.ToastUtil;
 import com.lptiyu.tanke.utils.VibratorHelper;
+import com.lptiyu.tanke.widget.CustomTextView;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -59,7 +61,8 @@ import static com.lptiyu.tanke.RunApplication.currentTask;
 
 public class LocationTaskActivity extends MyBaseActivity implements LocationTaskContact
         .ILocationTaskView {
-
+    @BindView(R.id.default_tool_bar_textview)
+    CustomTextView defaultToolBarTextview;
     @BindView(R.id.img_close)
     ImageView imgClose;
     @BindView(R.id.img_anim)
@@ -97,7 +100,8 @@ public class LocationTaskActivity extends MyBaseActivity implements LocationTask
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_location_task);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        //        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams
+        // .FLAG_FULLSCREEN);
         ButterKnife.bind(this);
         textureMapView.onCreate(savedInstanceState);
         if (map == null) {
@@ -120,8 +124,6 @@ public class LocationTaskActivity extends MyBaseActivity implements LocationTask
                 }
             }
         });
-        //        taskResultHelper.setTip("位置验证中...");
-        //        taskResultHelper.startSubmitting();
         startAnim();
         initData();
 
@@ -152,6 +154,7 @@ public class LocationTaskActivity extends MyBaseActivity implements LocationTask
     }
 
     private void initData() {
+        defaultToolBarTextview.setText("定位任务");
         if (currentPoint == null || currentTask == null) {
             return;
         }
@@ -169,6 +172,7 @@ public class LocationTaskActivity extends MyBaseActivity implements LocationTask
         pwdLatlng = new LatLng(Double.parseDouble(latLong[1]), Double.parseDouble(latLong[0]));
         //绘制大致区域
         drawTargetArea();
+        moveToLocation(pwdLatlng);
 
         if (Accounts.getPhoneNumber() != null && Accounts.getPhoneNumber().equals("18272164317")) {
             DISTANCE_OFFSET = 5000;
@@ -205,8 +209,8 @@ public class LocationTaskActivity extends MyBaseActivity implements LocationTask
     }
 
     private void drawTargetArea() {
-        map.addCircle(new CircleOptions().center(pwdLatlng).radius(DISTANCE_OFFSET).fillColor(R.color.colorPrimary)
-                .strokeColor(R.color.colorPrimary).strokeWidth(1));
+        map.addCircle(new CircleOptions().center(pwdLatlng).radius(DISTANCE_OFFSET).fillColor(R.color.transparent_a)
+                .strokeColor(Color.BLACK).strokeWidth(1f));
     }
 
     //地图中心移动到指定位置
@@ -228,11 +232,8 @@ public class LocationTaskActivity extends MyBaseActivity implements LocationTask
 
     private void handleLocationResult(AMapLocation location) {
         LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
-        if (marker != null) {
-            marker.remove();
-        }
         addMarker(latLng);
-        moveToLocation(latLng);
+        //        moveToLocation(latLng);
         if (isStop) {
             return;
         }
@@ -255,6 +256,9 @@ public class LocationTaskActivity extends MyBaseActivity implements LocationTask
 
     //添加marker
     private void addMarker(LatLng latLng) {
+        if (marker != null) {
+            marker.remove();
+        }
         MarkerOptions currentMarkerOptions = new MarkerOptions();
         currentMarkerOptions.position(latLng).draggable(true);
         currentMarkerOptions.icon(BitmapDescriptorFactory.fromBitmap(BitmapFactory.decodeResource(getResources(), R
@@ -331,7 +335,13 @@ public class LocationTaskActivity extends MyBaseActivity implements LocationTask
     private void loadNetWorkData() {
         if (NetworkUtil.checkIsNetworkConnected()) {
             startSubmitting();
-            upLoadGameRecord();
+            //延迟一秒请求
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    upLoadGameRecord();
+                }
+            }, 1000);
         } else {
             showNetUnConnectDialog();
         }
@@ -433,5 +443,10 @@ public class LocationTaskActivity extends MyBaseActivity implements LocationTask
                 permissionDialog.dismiss();
             permissionDialog = null;
         }
+    }
+
+    @OnClick(R.id.default_tool_bar_imageview)
+    public void onClick() {
+        finish();
     }
 }

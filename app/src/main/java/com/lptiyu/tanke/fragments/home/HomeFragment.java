@@ -32,6 +32,7 @@ import com.lptiyu.tanke.entity.response.HomeSort;
 import com.lptiyu.tanke.entity.response.HomeSortList;
 import com.lptiyu.tanke.entity.response.Recommend;
 import com.lptiyu.tanke.enums.PlayStatus;
+import com.lptiyu.tanke.enums.Where;
 import com.lptiyu.tanke.fragments.hometab.HomeTabFragment;
 import com.lptiyu.tanke.global.Accounts;
 import com.lptiyu.tanke.global.Conf;
@@ -237,6 +238,7 @@ public class HomeFragment extends MyBaseFragment implements HomeContact.IHomeVie
                 RunApplication.gameId = Long.parseLong(recommend.id);
                 RunApplication.entity = recommend;
                 RunApplication.type = recommend.type;
+                RunApplication.where = Where.HOME_HOT;
                 Intent intent = new Intent();
                 switch (recommend.play_status) {
                     case PlayStatus.NO_STATUS:

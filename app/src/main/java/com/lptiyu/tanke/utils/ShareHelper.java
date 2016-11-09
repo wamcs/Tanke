@@ -50,7 +50,7 @@ public class ShareHelper {
         shareParams.setText(text);
         shareParams.setImageUrl(imagePath);
         Platform weibo = ShareSDK.getPlatform(SinaWeibo.NAME);
-        weibo.setPlatformActionListener(new listener());
+        weibo.setPlatformActionListener(new Listener());
         weibo.share(shareParams);
     }
 
@@ -70,7 +70,7 @@ public class ShareHelper {
             shareParams.setTitleUrl(shareUrl);
         }
         Platform qq = ShareSDK.getPlatform(QQ.NAME);
-        qq.setPlatformActionListener(new listener());
+        qq.setPlatformActionListener(new Listener());
         qq.share(shareParams);
 
     }
@@ -88,7 +88,7 @@ public class ShareHelper {
         shareParams.setText(text);
         shareParams.setImageUrl(imagePath);
         Platform wechat = ShareSDK.getPlatform(Wechat.NAME);
-        wechat.setPlatformActionListener(new listener());
+        wechat.setPlatformActionListener(new Listener());
         wechat.share(shareParams);
     }
 
@@ -104,53 +104,66 @@ public class ShareHelper {
         shareParams.setText(text);
         shareParams.setImageUrl(imagePath);
         Platform wechat = ShareSDK.getPlatform(WechatMoments.NAME);
-        wechat.setPlatformActionListener(new listener());
+        wechat.setPlatformActionListener(new Listener());
         wechat.share(shareParams);
     }
 
-    public static void shareImage(int platform, String imagePath) {
+    public static void shareImage(int platform, String imagePath, PlatformActionListener listener) {
         switch (platform) {
             case SHARE_QQ:
-                shareLocalImageToQQ(QQ.NAME, imagePath);
+                shareLocalImage(QQ.NAME, imagePath, listener);
                 break;
             case SHARE_WEIBO:
-                shareLocalImageToQQ(SinaWeibo.NAME, imagePath);
+                shareLocalImage(SinaWeibo.NAME, imagePath, listener);
                 break;
             case SHARE_WECHAT_FRIENDS:
-                shareLocalImageToQQ(Wechat.NAME, imagePath);
+                shareLocalImage(Wechat.NAME, imagePath, listener);
                 break;
             case SHARE_WECHAT_CIRCLE:
-                shareLocalImageToQQ(WechatMoments.NAME, imagePath);
+                shareLocalImage(WechatMoments.NAME, imagePath, listener);
                 break;
             default:
                 break;
         }
     }
 
-    private static void shareLocalImageToQQ(String platform, String imagepath) {
+    private static void shareLocalImage(String platform, String imagepath, PlatformActionListener listener) {
         Platform.ShareParams shareParams = new Platform.ShareParams();
         shareParams.setImagePath(imagepath);
-        Platform qq = ShareSDK.getPlatform(platform);
-        qq.setPlatformActionListener(new listener());
-        qq.share(shareParams);
-
+        Platform plat = ShareSDK.getPlatform(platform);
+        plat.setPlatformActionListener(listener);
+        plat.share(shareParams);
     }
 
-    private static class listener implements PlatformActionListener {
+    private static class Listener implements PlatformActionListener {
 
         @Override
         public void onComplete(Platform platform, int i, HashMap<String, Object> hashMap) {
-
+            //            if (callback != null) {
+            //                callback.onComplete(platform, i, hashMap);
+            //            }
         }
 
         @Override
         public void onError(Platform platform, int i, Throwable throwable) {
-
+            //            if (callback != null) {
+            //                callback.onError(platform, i, throwable);
+            //            }
         }
 
         @Override
         public void onCancel(Platform platform, int i) {
-
+            //            if (callback != null) {
+            //                callback.onCancel(platform, i);
+            //            }
         }
     }
+
+    //    public interface OnShareCallback {
+    //        void onComplete(Platform platform, int i, HashMap<String, Object> hashMap);
+    //
+    //        void onError(Platform platform, int i, Throwable throwable);
+    //
+    //        void onCancel(Platform platform, int i);
+    //    }
 }

@@ -62,7 +62,7 @@ public class GameFinishedHolder extends BaseViewHolder<GameFinishedEntity> {
         type.setText("");
         String ftime = entity.endTime;
         completeTime.setText(ftime.substring(0, ftime.lastIndexOf(":")) + "完成");
-        consumingTime.setText("用时" + TimeUtils.parseSecondToHourAndMinutes(Long.parseLong(entity.getTotalTime())));
+        consumingTime.setText("用时" + TimeUtils.parseSecondToHourAndMinutes(Long.parseLong(entity.totalTime)));
         exp.setText(String.format(getContext().getString(R.string.user_game_finished_get_exp_formatter), entity
                 .expPoints));
 
@@ -73,6 +73,7 @@ public class GameFinishedHolder extends BaseViewHolder<GameFinishedEntity> {
                 RunApplication.type = entity.type;
                 RunApplication.entity = entity;
                 RunApplication.entity.title = entity.name;
+                RunApplication.where = entity.record_id;
                 getContext().startActivity(new Intent(getContext(), GamePlayingActivity.class));
             }
         });

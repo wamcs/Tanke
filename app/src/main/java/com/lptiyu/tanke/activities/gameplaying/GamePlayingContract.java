@@ -18,8 +18,8 @@ public class GamePlayingContract {
 
     interface IGamePlaying2Presenter extends IBasePresenter {
 
-        void downLoadGameRecord(long gameId, long teamId);
+        void downLoadGameRecord(long gameId, long teamId, long recordId);
 
-        void reloadGameRecord(long gameId, long teamId);
+        void reloadGameRecord(long gameId, long teamId, long recordId);
     }
 }

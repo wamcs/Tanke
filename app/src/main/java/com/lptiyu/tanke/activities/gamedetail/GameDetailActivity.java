@@ -13,6 +13,7 @@ import android.text.Html;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -39,6 +40,7 @@ import com.lptiyu.tanke.entity.response.Ranks;
 import com.lptiyu.tanke.enums.GameSort;
 import com.lptiyu.tanke.enums.PlayStatus;
 import com.lptiyu.tanke.enums.ResultCode;
+import com.lptiyu.tanke.enums.Where;
 import com.lptiyu.tanke.global.Conf;
 import com.lptiyu.tanke.mybase.MyBaseActivity;
 import com.lptiyu.tanke.utils.DisplayUtils;
@@ -61,6 +63,8 @@ public class GameDetailActivity extends MyBaseActivity implements GameDetailCont
 
     @BindView(R.id.tv_enter_game)
     TextView tvEnterGame;
+    @BindView(R.id.rl_enterOrAbandonGame)
+    RelativeLayout rlEnterOrAbandonGame;
     @BindView(R.id.image_cover)
     ImageView imageCover;
     @BindView(R.id.tv_game_detail_name)
@@ -126,7 +130,7 @@ public class GameDetailActivity extends MyBaseActivity implements GameDetailCont
                 tvEnterGame.setText("进入游戏");
                 status = ENTER_GAME;
                 break;
-            case Conf.GAME_PLAYing_V2_ACTIVITY:
+            case Conf.GAME_PLAYing_ACTIVITY:
                 if (RunApplication.isGameOver) {
                     tvEnterGame.setText("再玩一次");
                     status = PLAY_AGAIN;
@@ -136,11 +140,15 @@ public class GameDetailActivity extends MyBaseActivity implements GameDetailCont
                 }
                 break;
         }
+        if (RunApplication.where >= 0) {//如果where值大于等于0，说明是从已完成里面进来的，此时，放弃按钮要隐藏
+            rlEnterOrAbandonGame.setVisibility(View.GONE);
+        }
         loadGameDetailData();
     }
 
     private void loadGameDetailData() {
         if (NetworkUtil.checkIsNetworkConnected()) {
+            tvEnterGame.setEnabled(false);
             presenter.getGameDetail(RunApplication.gameId);
         } else {
             getWindow().getDecorView().post(new Runnable() {
@@ -176,14 +184,15 @@ public class GameDetailActivity extends MyBaseActivity implements GameDetailCont
 
     @Override
     public void successEnterGame() {
+        tvEnterGame.setEnabled(true);
         //更改该游戏的状态
+        RunApplication.where = Where.GAME_DETAIL;
         if (RunApplication.entity != null) {
             RunApplication.entity.play_status = PlayStatus.HAVE_ENTERED_BUT_NOT_START_GAME;
         }
         EventBus.getDefault().post(new EnterGame());
         if (status == ENTER_GAME) {
         } else if (status == PLAY_AGAIN) {
-            //            RunApplication.getInstance().finishActivity(GamePlayingActivity.class);
             EventBus.getDefault().post(new PlayAgain());
         }
         Intent intent = new Intent(GameDetailActivity.this, GamePlayingActivity.class);
@@ -207,6 +216,7 @@ public class GameDetailActivity extends MyBaseActivity implements GameDetailCont
 
     @Override
     public void successGetGameDetail(GameDetail gameDetail) {
+        tvEnterGame.setEnabled(true);
         if (gameDetail != null) {
             this.gameDetail = gameDetail;
             bindData();
@@ -346,9 +356,13 @@ public class GameDetailActivity extends MyBaseActivity implements GameDetailCont
         if (entity == null) {
             return;
         }
-        switch (status) {
-            case ENTER_GAME:
-            case PLAY_AGAIN:
+        if (gameDetail == null) {
+            return;
+        }
+        switch (gameDetail.play_status) {
+            case PlayStatus.NO_STATUS:
+            case PlayStatus.NEVER_ENTER_GANME:
+            case PlayStatus.GAME_OVER:
                 //直接调用进入游戏的接口
                 if (entity.cid == GameSort.DIRECTION_RUN) {//如果是定向乐跑，则直接跳转到定向乐跑界面
                     initGPS();
@@ -357,7 +371,8 @@ public class GameDetailActivity extends MyBaseActivity implements GameDetailCont
                     presenter.enterGame(gameId, type);
                 }
                 break;
-            case LEAVE_GAME:
+            case PlayStatus.HAVE_ENTERED_BUT_NOT_START_GAME:
+            case PlayStatus.HAVE_STARTED_GAME:
                 //放弃游戏
                 PopupWindowUtils.getInstance().showLeaveGamePopup(this, new PopupWindowUtils.OnClickPopupListener() {
                     @Override

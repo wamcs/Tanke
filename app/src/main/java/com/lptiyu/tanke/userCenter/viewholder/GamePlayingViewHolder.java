@@ -11,6 +11,7 @@ import com.lptiyu.tanke.R;
 import com.lptiyu.tanke.RunApplication;
 import com.lptiyu.tanke.activities.gameplaying.GamePlayingActivity;
 import com.lptiyu.tanke.base.recyclerview.BaseViewHolder;
+import com.lptiyu.tanke.enums.Where;
 import com.lptiyu.tanke.pojo.GamePlayingEntity;
 import com.lptiyu.tanke.widget.GradientProgressBar;
 import com.makeramen.roundedimageview.RoundedImageView;
@@ -59,6 +60,7 @@ public class GamePlayingViewHolder extends BaseViewHolder<GamePlayingEntity> {
                 RunApplication.type = entity.type;
                 RunApplication.entity = entity;
                 RunApplication.entity.title = entity.name;
+                RunApplication.where = Where.GAME_PLAYING;
                 getContext().startActivity(new Intent(getContext(), GamePlayingActivity.class));
             }
         });

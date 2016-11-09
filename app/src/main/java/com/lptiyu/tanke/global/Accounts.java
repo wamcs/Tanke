@@ -112,6 +112,14 @@ public class Accounts {
         return ShaPrefer.getBoolean("is_sign_up", false);
     }
 
+    public static void setShareScoreGot(boolean isShareScoreGot) {
+        ShaPrefer.put("is_share_score_got", isShareScoreGot);
+    }
+
+    public static boolean isShareScoreGot() {
+        return ShaPrefer.getBoolean("is_share_score_got", false);
+    }
+
     public static void setDayIndex(int index) {
         ShaPrefer.put("day_index", index);
     }

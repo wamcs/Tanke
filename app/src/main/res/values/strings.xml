@@ -41,6 +41,7 @@
     <string name="enter_game_play">进入游戏</string>
     <string name="enter_game_share">查看战绩</string>
     <string name="team_game_formatter" formatted="false">%d人团队赛</string>
+    <string name="game_over_time" formatted="false">(已通关，耗时%s)</string>
 
     <!--UserCenter start-->
     <string name="userCenter">用户中心</string>

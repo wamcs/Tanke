@@ -15,40 +15,22 @@ import com.lptiyu.tanke.entity.BaseEntity;
 public class GameFinishedEntity extends BaseEntity implements Parcelable {
     @SerializedName("game_id")
     public long gameId;
-
-    @SerializedName("img")
     public String img;
-
-    @SerializedName("name")
     public String name;
-
     @SerializedName("start_time")
     public String startTime;
-
-    public String getTotalTime() {
-        return totalTime;
-    }
-
-    public void setTotalTime(String totalTime) {
-        this.totalTime = totalTime;
-    }
-
     @SerializedName("time")
     public String totalTime;
-
     @SerializedName("end_time")
     public String endTime;
-
     public int type;
-
     @SerializedName("values")
     public int expPoints;
-
-    @SerializedName("states")
     public int states;
-
-    @SerializedName("is_del")
     public int is_del;
+    public String tag;
+    public int team_id;
+    public int record_id;
 
     @Override
     public int describeContents() {
@@ -64,7 +46,10 @@ public class GameFinishedEntity extends BaseEntity implements Parcelable {
         dest.writeString(this.endTime);
         dest.writeString(this.totalTime);
         dest.writeInt(this.type);
+        dest.writeInt(this.record_id);
         dest.writeInt(this.expPoints);
+        dest.writeString(this.tag);
+        dest.writeInt(this.team_id);
         dest.writeInt(this.states);
         dest.writeInt(this.is_del);
     }
@@ -79,10 +64,13 @@ public class GameFinishedEntity extends BaseEntity implements Parcelable {
         this.startTime = in.readString();
         this.endTime = in.readString();
         this.totalTime = in.readString();
+        this.record_id = in.readInt();
         this.type = in.readInt();
         this.expPoints = in.readInt();
         this.states = in.readInt();
         this.is_del = in.readInt();
+        this.tag = in.readString();
+        this.team_id = in.readInt();
 
     }
 

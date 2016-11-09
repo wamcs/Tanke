@@ -41,6 +41,7 @@ public class RunApplication extends MultiDexApplication {
     public static boolean isPointOver;
     public static boolean isGameOver;
     public static BaseEntity entity;//点击的某个游戏实体
+    public static int where;//从哪个入口进来的
 
     @Override
     public void onCreate() {

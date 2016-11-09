@@ -1,9 +1,13 @@
 package com.lptiyu.tanke.activities.gameover;
 
+import android.app.ProgressDialog;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -12,18 +16,30 @@ import android.widget.Toast;
 import com.lptiyu.tanke.R;
 import com.lptiyu.tanke.RunApplication;
 import com.lptiyu.tanke.entity.response.GameOverReward;
+import com.lptiyu.tanke.entity.response.GetScoreAfterShare;
+import com.lptiyu.tanke.global.Accounts;
 import com.lptiyu.tanke.mybase.MyBaseActivity;
+import com.lptiyu.tanke.utils.DisplayUtils;
+import com.lptiyu.tanke.utils.ImageWaterMarkerUtils;
+import com.lptiyu.tanke.utils.LogUtils;
 import com.lptiyu.tanke.utils.ShareHelper;
+
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.util.Calendar;
+import java.util.HashMap;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import cn.sharesdk.framework.Platform;
+import cn.sharesdk.framework.PlatformActionListener;
 
 import static com.lptiyu.tanke.R.id.tv_add_exp;
 import static com.lptiyu.tanke.R.id.tv_add_score;
 import static com.lptiyu.tanke.utils.ScreenShotUtils.screenShot;
 
-public class GameOverActivity extends MyBaseActivity implements GameOverContact.IGameOverView {
+public class GameOverActivity extends MyBaseActivity implements GameOverContact.IGameOverView, PlatformActionListener {
 
     @BindView(R.id.tv_game_name)
     TextView tvGameName;
@@ -41,10 +57,19 @@ public class GameOverActivity extends MyBaseActivity implements GameOverContact.
     TextView tvRedWalletValue;
     @BindView(R.id.rl_red_wallet)
     RelativeLayout rlRedWallet;
+    @BindView(R.id.img_close)
+    ImageView imgClose;
+    @BindView(R.id.tv_share_score_tip)
+    TextView tvShareScoreTip;
 
     private Handler handler = new Handler();
     private int progress = 0;
     private int MAX_PROGRESS = 1000;
+    private GameOverPresenter presenter;
+    private Bitmap source;
+    private Bitmap waterMarker;
+    private Bitmap waterMarkerBitmap;
+    private String imagePath;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,7 +86,7 @@ public class GameOverActivity extends MyBaseActivity implements GameOverContact.
             }
         });
 
-        GameOverPresenter presenter = new GameOverPresenter(this);
+        presenter = new GameOverPresenter(this);
         presenter.loadGameOverReward(RunApplication.gameId);
     }
 
@@ -91,6 +116,9 @@ public class GameOverActivity extends MyBaseActivity implements GameOverContact.
         }).start();
     }
 
+    private int platform = 0;
+    private ProgressDialog shareDialog;
+
     @OnClick({R.id.img_close, R.id.img_wechat_share, R.id.img_qq_share, R.id.img_wechat_moment_share})
     public void onClick(View view) {
         switch (view.getId()) {
@@ -98,15 +126,90 @@ public class GameOverActivity extends MyBaseActivity implements GameOverContact.
                 finish();
                 break;
             case R.id.img_wechat_share:
-                ShareHelper.shareImage(ShareHelper.SHARE_WECHAT_FRIENDS, screenShot(this));
+                platform = ShareHelper.SHARE_WECHAT_FRIENDS;
+                share();
                 break;
             case R.id.img_qq_share:
-                ShareHelper.shareImage(ShareHelper.SHARE_QQ, screenShot(this));
+                platform = ShareHelper.SHARE_QQ;
+                share();
                 break;
             case R.id.img_wechat_moment_share:
-                ShareHelper.shareImage(ShareHelper.SHARE_WECHAT_CIRCLE, screenShot(this));
+                platform = ShareHelper.SHARE_WECHAT_CIRCLE;
+                share();
                 break;
         }
+    }
+
+    private void share() {
+        tvShareScoreTip.setVisibility(View.GONE);
+        imgClose.setVisibility(View.GONE);
+        shareDialog = ProgressDialog.show(this, "", "加载中...", true, false);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                imagePath = getWaterMarkerBitmap();//此步骤比较耗时，最好放到子线程中操作
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        ShareHelper.shareImage(platform, imagePath, GameOverActivity.this);
+                        tvShareScoreTip.setVisibility(View.VISIBLE);
+                        imgClose.setVisibility(View.VISIBLE);
+                    }
+                });
+            }
+        }).start();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (shareDialog != null && shareDialog.isShowing()) {
+            shareDialog.dismiss();
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        releaseBitmap();
+    }
+
+    private void releaseBitmap() {
+        if (source != null && !source.isRecycled()) {
+            source.recycle();
+            source = null;
+        }
+        if (waterMarker != null && !waterMarker.isRecycled()) {
+            waterMarker.recycle();
+            waterMarker = null;
+        }
+        if (waterMarkerBitmap != null && !waterMarkerBitmap.isRecycled()) {
+            waterMarkerBitmap.recycle();
+            waterMarkerBitmap = null;
+        }
+        System.gc();
+    }
+
+    private String getWaterMarkerBitmap() {
+        String imagePath = screenShot(this);
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inJustDecodeBounds = false;
+        options.inSampleSize = 2;//像素变为原来的1/2
+        source = BitmapFactory.decodeFile(imagePath, options);
+        waterMarker = BitmapFactory.decodeResource(getResources(), R.drawable.water_marker, options);
+        waterMarkerBitmap = ImageWaterMarkerUtils.createWaterMaskLeftBottom(this, source, waterMarker,
+                DisplayUtils.dp2px(10), 0);
+        if (waterMarkerBitmap != null && waterMarker != null) {
+            try {
+                FileOutputStream out = new FileOutputStream(imagePath);
+                waterMarkerBitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
+                LogUtils.i("水印添加成功：" + imagePath);
+                return imagePath;
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
+        return null;
     }
 
     @Override
@@ -129,5 +232,45 @@ public class GameOverActivity extends MyBaseActivity implements GameOverContact.
         } else {
             tvRedWalletValue.setText(gameOverReward.extra_money + "元现金红包");
         }
+    }
+
+    @Override
+    public void successGetScore(GetScoreAfterShare getScoreAfterShare) {
+        Accounts.setShareScoreGot(true);
+        Accounts.setDayIndex(Calendar.getInstance().get(Calendar.DAY_OF_YEAR));
+        if (getScoreAfterShare != null) {
+            Toast.makeText(this, getScoreAfterShare.tip, Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void getShareScore() {
+        //每天只能获取一次分享积分
+        int dayIndex = Calendar.getInstance().get(Calendar.DAY_OF_YEAR);
+        //如果当前的天数跟存储的天数不相等，则表示用户上一次获取分享积分是在昨天
+        if (dayIndex != Accounts.getDayIndex()) {
+            presenter.getScoreAfterShare();
+        } else {
+            if (!Accounts.isShareScoreGot()) {
+                presenter.getScoreAfterShare();
+            }
+        }
+    }
+
+    @Override
+    public void onComplete(Platform platform, int i, HashMap<String, Object> hashMap) {
+        //分享成功回调
+        getShareScore();//分享到QQ或者空间时有个一个bug，分享完毕后，选择返回步道探秘是捕捉不到回调事件的，但是选择留在QQ或空间，再点击返回是可以捕捉得到回调事件的
+    }
+
+    @Override
+    public void onError(Platform platform, int i, Throwable throwable) {
+        //分享失败回调
+        LogUtils.i("GameOverActivity--->onError()");
+    }
+
+    @Override
+    public void onCancel(Platform platform, int i) {
+        //分享取消回调
+        LogUtils.i("GameOverActivity--->onCancel()");
     }
 }

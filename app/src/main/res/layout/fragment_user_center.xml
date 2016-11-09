@@ -216,15 +216,6 @@
             android:paddingLeft="@dimen/x52"
             android:text="我正在玩的"/>
 
-        <com.lptiyu.tanke.widget.CustomTextView
-            android:id="@+id/user_game_playing_num"
-            style="@style/TextAppearance.UserCenter.small"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_toRightOf="@id/name"
-            android:paddingLeft="@dimen/x47"
-            android:text="4"/>
 
         <View
             android:layout_width="wrap_content"
@@ -235,12 +226,27 @@
             android:background="@color/user_center_split_line"/>
 
         <ImageView
+            android:id="@+id/img_playing_arrow"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="@dimen/setting_activity_arrow_margin_right"
             android:src="@mipmap/arrow_left_black"/>
+
+        <com.lptiyu.tanke.widget.CustomTextView
+            android:id="@+id/user_game_playing_num"
+            style="@style/TextAppearance.UserCenter.small"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="20dp"
+            android:layout_toLeftOf="@id/img_playing_arrow"
+            android:layout_toRightOf="@id/name"
+            android:gravity="right"
+            android:paddingLeft="@dimen/x47"
+            android:text="4"
+            android:visibility="gone"/>
 
     </RelativeLayout>
 
@@ -272,15 +278,6 @@
             android:paddingLeft="@dimen/x52"
             android:text="我已完成的"/>
 
-        <com.lptiyu.tanke.widget.CustomTextView
-            android:id="@+id/user_game_finished_num"
-            style="@style/TextAppearance.UserCenter.small"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_toRightOf="@id/name"
-            android:paddingLeft="@dimen/x47"
-            android:text="2"/>
 
         <View
             android:layout_width="wrap_content"
@@ -291,12 +288,27 @@
             android:background="@color/user_center_split_line"/>
 
         <ImageView
+            android:id="@+id/img_finish_arrow"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="@dimen/setting_activity_arrow_margin_right"
             android:src="@mipmap/arrow_left_black"/>
+
+        <com.lptiyu.tanke.widget.CustomTextView
+            android:id="@+id/user_game_finished_num"
+            style="@style/TextAppearance.UserCenter.small"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="20dp"
+            android:layout_toLeftOf="@id/img_finish_arrow"
+            android:layout_toRightOf="@id/name"
+            android:gravity="right"
+            android:paddingLeft="@dimen/x47"
+            android:text="2"
+            android:visibility="gone"/>
 
     </RelativeLayout>
 
@@ -372,17 +384,8 @@
             android:layout_toRightOf="@id/image"
             android:gravity="center"
             android:paddingLeft="@dimen/x52"
-            android:text="红包提现"/>
+            android:text="红包余额"/>
 
-        <TextView
-            android:id="@+id/tv_red_wallet_total"
-            style="@style/TextAppearance.UserCenter.small"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_toRightOf="@id/name"
-            android:paddingLeft="@dimen/x47"
-            android:text="2"/>
 
         <View
             android:layout_width="wrap_content"
@@ -393,12 +396,25 @@
             android:background="@color/user_center_split_line"/>
 
         <ImageView
+            android:id="@+id/img_red_wallet_arrow"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="@dimen/setting_activity_arrow_margin_right"
             android:src="@mipmap/arrow_left_black"/>
+
+        <TextView
+            android:id="@+id/tv_red_wallet_total"
+            style="@style/TextAppearance.UserCenter.small"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="20dp"
+            android:layout_toLeftOf="@id/img_red_wallet_arrow"
+            android:layout_toRightOf="@id/name"
+            android:gravity="right"
+            android:paddingLeft="@dimen/x47"/>
 
     </RelativeLayout>
 
@@ -430,15 +446,6 @@
             android:paddingLeft="@dimen/x52"
             android:text="积分商城"/>
 
-        <TextView
-            android:id="@+id/tv_score_total"
-            style="@style/TextAppearance.UserCenter.small"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_toRightOf="@id/name"
-            android:paddingLeft="@dimen/x47"
-            android:text="2"/>
 
         <View
             android:layout_width="wrap_content"
@@ -449,12 +456,25 @@
             android:background="@color/user_center_split_line"/>
 
         <ImageView
+            android:id="@+id/img_score_store_arrow"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="@dimen/setting_activity_arrow_margin_right"
             android:src="@mipmap/arrow_left_black"/>
+
+        <TextView
+            android:id="@+id/tv_score_total"
+            style="@style/TextAppearance.UserCenter.small"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="20dp"
+            android:layout_toLeftOf="@id/img_score_store_arrow"
+            android:layout_toRightOf="@id/name"
+            android:gravity="right"
+            android:paddingLeft="@dimen/x47"/>
 
     </RelativeLayout>
 

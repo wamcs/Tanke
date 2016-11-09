@@ -37,9 +37,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
-                android:gravity="left"
+                android:gravity="center"
                 android:maxLines="1"
-                android:text="步道官方消息"
+                android:text="步道官方"
                 android:textSize="16sp"/>
 
             <ImageView
@@ -53,12 +53,14 @@
 
             <TextView
                 android:id="@+id/tv_message_time"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_marginRight="10dp"
                 android:layout_toRightOf="@id/img_message_red_spot"
+                android:ellipsize="end"
                 android:gravity="right"
+                android:maxLines="1"
                 android:text="2016-07-04"
                 android:textColor="@color/grey06"
                 android:textSize="14sp"/>
@@ -69,12 +71,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/tv_message_name"
-                android:layout_marginTop="@dimen/y8"
+                android:layout_marginTop="5dp"
                 android:ellipsize="end"
                 android:maxLines="1"
-                android:paddingBottom="@dimen/x8"
-                android:paddingLeft="@dimen/x8"
-                android:text="咨询内容"
+                android:maxWidth="200dp"
                 android:textColor="@color/grey06"
                 android:textSize="14sp"/>
 

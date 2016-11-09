@@ -17,7 +17,6 @@ public class ScreenShotUtils {
     public static String screenShot(Activity activity) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss", Locale.CHINA);
         String fname = DirUtils.getScreenShotDirectory().getAbsolutePath() + sdf.format(new Date()) + ".png";
-        //        View view = v.getRootView();
         View view = activity.getWindow().getDecorView();
         view.setDrawingCacheEnabled(true);
         view.buildDrawingCache();
@@ -51,6 +50,7 @@ public class ScreenShotUtils {
                 FileOutputStream out = new FileOutputStream(fname);
                 bitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
                 LogUtils.i("分享截图完毕：" + fname);
+                bitmap.recycle();
                 return fname;
             } catch (Exception e) {
                 e.printStackTrace();

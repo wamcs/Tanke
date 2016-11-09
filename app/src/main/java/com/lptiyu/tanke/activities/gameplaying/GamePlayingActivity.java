@@ -3,12 +3,12 @@ package com.lptiyu.tanke.activities.gameplaying;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.graphics.Paint;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -68,8 +68,10 @@ public class GamePlayingActivity extends MyBaseActivity implements GamePlayingCo
     RecyclerView recyclerView;
     @BindView(R.id.tv_title)
     TextView tvTitle;
-    @BindView(R.id.tv_my_progress)
-    TextView tvMyProgress;
+    @BindView(R.id.tv_game_over_time)
+    TextView tvGameOverTime;
+    @BindView(R.id.rl_look_game_over_reward)
+    RelativeLayout rlLookGameOverReward;
 
     private AMap aMap;
     private ArrayList<Point> totallist;
@@ -82,6 +84,7 @@ public class GamePlayingActivity extends MyBaseActivity implements GamePlayingCo
     private PointListAdapter adapter;
     private int gameType = 0;
     private int teamId = 0;//个人为0，团队为1
+    private int recordId = -1;//从已完成进来时有这个值
     private GameRecord gameRecord;
 
     @Override
@@ -116,6 +119,7 @@ public class GamePlayingActivity extends MyBaseActivity implements GamePlayingCo
     private void initData() {
         gameId = RunApplication.gameId;
         gameType = RunApplication.type;
+        recordId = RunApplication.where;
         if (RunApplication.entity != null) {
             title = RunApplication.entity.title;
         }
@@ -133,7 +137,7 @@ public class GamePlayingActivity extends MyBaseActivity implements GamePlayingCo
     private void loadGameRecord() {
         tvTitle.setText("加载中...");
         if (NetworkUtil.checkIsNetworkConnected()) {
-            presenter.downLoadGameRecord(gameId, teamId);//个人游戏传0，团队游戏传1
+            presenter.downLoadGameRecord(gameId, teamId, recordId);//个人游戏传0，团队游戏传1
         } else {
             getWindow().getDecorView().post(new Runnable() {
                 @Override
@@ -243,7 +247,7 @@ public class GamePlayingActivity extends MyBaseActivity implements GamePlayingCo
     private void refreshData() {
         tvTitle.setText("加载中...");
         if (NetworkUtil.checkIsNetworkConnected()) {
-            presenter.reloadGameRecord(gameId, teamId);//个人游戏传0，团队游戏传1
+            presenter.reloadGameRecord(gameId, teamId, recordId);//个人游戏传0，团队游戏传1
         } else {
             getWindow().getDecorView().post(new Runnable() {
                 @Override
@@ -320,7 +324,7 @@ public class GamePlayingActivity extends MyBaseActivity implements GamePlayingCo
         addMarker(new LatLng(currentLatitude, currentLongitude));
     }
 
-    @OnClick({R.id.img_game_detail, R.id.back_btn, R.id.tv_my_progress})
+    @OnClick({R.id.img_game_detail, R.id.back_btn, R.id.tv_look_game_over_reward})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.back_btn:
@@ -328,10 +332,10 @@ public class GamePlayingActivity extends MyBaseActivity implements GamePlayingCo
                 break;
             case R.id.img_game_detail:
                 Intent intent = new Intent(GamePlayingActivity.this, GameDetailActivity.class);
-                intent.putExtra(Conf.FROM_WHERE, Conf.GAME_PLAYing_V2_ACTIVITY);
+                intent.putExtra(Conf.FROM_WHERE, Conf.GAME_PLAYing_ACTIVITY);
                 startActivityForResult(intent, RequestCode.LEAVE_GAME);
                 break;
-            case R.id.tv_my_progress:
+            case R.id.tv_look_game_over_reward:
                 startActivity(new Intent(GamePlayingActivity.this, GameOverActivity.class));
                 break;
         }
@@ -364,11 +368,9 @@ public class GamePlayingActivity extends MyBaseActivity implements GamePlayingCo
     private void checkPointStatus() {
         if (gameRecord != null && Integer.parseInt(gameRecord.play_statu) == PlayStatus.GAME_OVER) {
             String time = TimeFormatUtils.caculateUsingTime(gameRecord.last_task_ftime, gameRecord.start_time);
-            tvMyProgress.setTextColor(ContextCompat.getColor(this, R.color.colorPrimary));
-            tvMyProgress.setText("已通关，耗时" + time);
-            tvMyProgress.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG); // 下划线
-            tvMyProgress.setEnabled(true);
-            tvMyProgress.setClickable(true);
+            //            rlLookGameOverReward.setVisibility(View.VISIBLE);
+            tvGameOverTime.setVisibility(View.VISIBLE);
+            tvGameOverTime.setText(String.format(getString(R.string.game_over_time), time));
             RunApplication.isGameOver = true;
         } else {
             RunApplication.isGameOver = false;
