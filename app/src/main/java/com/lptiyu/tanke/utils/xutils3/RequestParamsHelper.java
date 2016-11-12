@@ -2,6 +2,7 @@ package com.lptiyu.tanke.utils.xutils3;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.text.TextUtils;
 
 import com.lptiyu.tanke.global.Accounts;
 
@@ -38,7 +39,10 @@ public class RequestParamsHelper {
         RequestParams params = new RequestParams(url);
         params.addHeader("Connection", "keep-alive");
         params.setConnectTimeout(7000);
-        params.addBodyParameter("token", Accounts.getToken());
+        String token = Accounts.getToken();
+        if (!TextUtils.isEmpty(token)) {
+            params.addBodyParameter("token", token);
+        }
         return params;
     }
 }

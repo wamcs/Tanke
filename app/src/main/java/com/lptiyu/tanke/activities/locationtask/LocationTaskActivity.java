@@ -63,8 +63,6 @@ public class LocationTaskActivity extends MyBaseActivity implements LocationTask
         .ILocationTaskView {
     @BindView(R.id.default_tool_bar_textview)
     CustomTextView defaultToolBarTextview;
-    @BindView(R.id.img_close)
-    ImageView imgClose;
     @BindView(R.id.img_anim)
     ImageView imgAnim;
     @BindView(R.id.rl_submit_record)
@@ -324,7 +322,7 @@ public class LocationTaskActivity extends MyBaseActivity implements LocationTask
             isStop = true;
             if (locationHelper != null)
                 locationHelper.stopLocation();
-            loadNetWorkData();
+            upload();
         } else {
             if (isToastShow) {
                 ToastUtil.TextToast("您距离目标区域" + DistanceFormatUtils.formatMeterToKiloMeter(distance) + "公里");
@@ -332,7 +330,7 @@ public class LocationTaskActivity extends MyBaseActivity implements LocationTask
         }
     }
 
-    private void loadNetWorkData() {
+    private void upload() {
         if (NetworkUtil.checkIsNetworkConnected()) {
             startSubmitting();
             //延迟一秒请求
@@ -343,18 +341,13 @@ public class LocationTaskActivity extends MyBaseActivity implements LocationTask
                 }
             }, 1000);
         } else {
-            showNetUnConnectDialog();
+            PopupWindowUtils.getInstance().showNetExceptionPopupwindow(this, new PopupWindowUtils.OnRetryCallback() {
+                @Override
+                public void onRetry() {
+                    upload();
+                }
+            });
         }
-    }
-
-    // 网络异常对话框
-    private void showNetUnConnectDialog() {
-        PopupWindowUtils.getInstance().showNetExceptionPopupwindow(this, new PopupWindowUtils.OnRetryCallback() {
-            @Override
-            public void onRetry() {
-                loadNetWorkData();
-            }
-        });
     }
 
     private void upLoadGameRecord() {
@@ -368,11 +361,6 @@ public class LocationTaskActivity extends MyBaseActivity implements LocationTask
             record.point_statu = PointTaskStatus.PLAYING + "";
         record.task_id = task.id + "";
         presenter.uploadRecord(record);
-    }
-
-    @OnClick(R.id.img_close)
-    public void close() {
-        finish();
     }
 
     @Override

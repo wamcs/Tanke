@@ -61,6 +61,7 @@ public class GamePlayingViewHolder extends BaseViewHolder<GamePlayingEntity> {
                 RunApplication.entity = entity;
                 RunApplication.entity.title = entity.name;
                 RunApplication.where = Where.GAME_PLAYING;
+                RunApplication.recordId = -1;
                 getContext().startActivity(new Intent(getContext(), GamePlayingActivity.class));
             }
         });

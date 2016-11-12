@@ -10,7 +10,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.lptiyu.tanke.R;
 import com.lptiyu.tanke.entity.response.MessageEntity;
-import com.lptiyu.tanke.utils.DateFormatterUtils;
+import com.lptiyu.tanke.utils.TimeUtils;
 
 import java.util.List;
 
@@ -45,8 +45,10 @@ public class MessageListAdapter extends BaseRecyclerViewAdapter<MessageEntity> {
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         MessageEntity messageEntity = list.get(position);
         ViewHolder viewHolder = (ViewHolder) holder;
-        viewHolder.messageItemTime.setText(DateFormatterUtils.parseTimeStamp(messageEntity.create_time));
-        viewHolder.messageItemTimeText.setText(DateFormatterUtils.parseTimeStamp(messageEntity.create_time));
+        viewHolder.messageItemTime.setText(TimeUtils.stampToDateStr(messageEntity.create_time * 1000, TimeUtils
+                .PATTERN2));
+        viewHolder.messageItemTimeText.setText(TimeUtils.stampToDateStr(messageEntity.create_time * 1000, TimeUtils
+                .PATTERN2));
         viewHolder.messageItemTitle.setText(messageEntity.title);
         Glide.with(context).load(messageEntity.pic).error(R.drawable.default_pic).crossFade().into(viewHolder
                 .messageItemImageView);

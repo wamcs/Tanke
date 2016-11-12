@@ -15,15 +15,6 @@
         android:layout_height="match_parent"
         android:layout_below="@id/rl_title"/>
 
-    <ImageView
-        android:id="@+id/img_close"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="20dp"
-        android:scaleType="centerCrop"
-        android:src="@drawable/close"/>
-
     <RelativeLayout
         android:id="@+id/rl_submit_record"
         android:layout_width="wrap_content"

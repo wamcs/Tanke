@@ -22,6 +22,8 @@ import com.lptiyu.tanke.fragments.pointtask.PointTaskFragment;
 import com.lptiyu.tanke.global.Accounts;
 import com.lptiyu.tanke.mybase.MyBaseActivity;
 import com.lptiyu.tanke.mybase.MyBaseFragment;
+import com.lptiyu.tanke.utils.NetworkUtil;
+import com.lptiyu.tanke.utils.PopupWindowUtils;
 import com.lptiyu.tanke.utils.TaskResultHelper;
 import com.lptiyu.tanke.widget.DepthPageTransformer;
 import com.lptiyu.tanke.widget.GalleryViewPager;
@@ -163,10 +165,24 @@ public class PointTaskActivity extends MyBaseActivity implements PointTaskContac
             }
             if (currentTask != null && str.equals(currentTask.pwd)) {
                 //上传游戏记录
-                upLoadQRCodeRecord();
+                upload();
             } else {
                 Toast.makeText(this, "没有发现新线索", Toast.LENGTH_SHORT).show();
             }
+        }
+    }
+
+    private void upload() {
+        if (NetworkUtil.checkIsNetworkConnected()) {
+            taskResultHelper.startSubmitting();
+            upLoadQRCodeRecord();
+        } else {
+            PopupWindowUtils.getInstance().showNetExceptionPopupwindow(this, new PopupWindowUtils.OnRetryCallback() {
+                @Override
+                public void onRetry() {
+                    upload();
+                }
+            });
         }
     }
 

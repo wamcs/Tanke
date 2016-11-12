@@ -39,6 +39,7 @@ public class LocationHelper implements AMapLocationListener {
 
     public void onDestroy() {
         if (mLocationClient != null) {
+            mLocationClient.stopLocation();
             mLocationClient.unRegisterLocationListener(this);
             mLocationClient.onDestroy();
             mLocationClient = null;

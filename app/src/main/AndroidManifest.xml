@@ -108,7 +108,8 @@
             android:theme="@android:style/Theme.Translucent.NoTitleBar"
             android:windowSoftInputMode="stateHidden|adjustResize">
             <intent-filter>
-                <!--AndroidManifest.xml文件与ShareSDK.xml文件当中的APP ID要一致，且是在腾讯开放平台申请的，这个时候才可以捕捉得到回调事件-->
+
+                <!-- AndroidManifest.xml文件与ShareSDK.xml文件当中的APP ID要一致，且是在腾讯开放平台申请的，这个时候才可以捕捉得到回调事件 -->
                 <data android:scheme="tencent1105660458"/>
 
                 <action android:name="android.intent.action.VIEW"/>
@@ -256,6 +257,10 @@
             android:name=".activities.lookredwalletrecord.LookRedWalletRecordActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait">
+        </activity>
+        <activity android:name=".activities.userdirectionrunlist.UserDirectionRunListActivity">
+        </activity>
+        <activity android:name=".activities.drrecorddetail.DRRecordDetailActivity">
         </activity>
     </application>
 

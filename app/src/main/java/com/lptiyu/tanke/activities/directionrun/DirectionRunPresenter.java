@@ -1,17 +1,23 @@
 package com.lptiyu.tanke.activities.directionrun;
 
+import com.google.gson.Gson;
 import com.lptiyu.tanke.entity.response.BaseResponse;
 import com.lptiyu.tanke.entity.response.RunLineResponse;
 import com.lptiyu.tanke.entity.response.RunSignUpResponse;
 import com.lptiyu.tanke.entity.response.StartRunResponse;
 import com.lptiyu.tanke.entity.response.StopRunResponse;
+import com.lptiyu.tanke.entity.response.UploadDRFileResponse;
 import com.lptiyu.tanke.global.Accounts;
 import com.lptiyu.tanke.utils.xutils3.RequestParamsHelper;
 import com.lptiyu.tanke.utils.xutils3.XUtilsHelper;
 import com.lptiyu.tanke.utils.xutils3.XUtilsRequestCallBack;
 import com.lptiyu.tanke.utils.xutils3.XUtilsUrls;
 
+import org.xutils.common.Callback;
 import org.xutils.http.RequestParams;
+import org.xutils.x;
+
+import java.io.File;
 
 /**
  * Created by Jason on 2016/10/14.
@@ -148,5 +154,36 @@ public class DirectionRunPresenter implements DirectionRunContact.IDirectionRunP
                 }
             }
         }, StopRunResponse.class);
+    }
+
+    @Override
+    public void uploadDRFile(long recordId, String timestamp, File file) {
+        RequestParams params = RequestParamsHelper.getBaseRequestParam(XUtilsUrls.UPLOAD_DR_FILE);
+        params.setMultipart(true);
+        params.addBodyParameter("record_id", recordId + "");
+        params.addBodyParameter("timestamp", timestamp);
+        params.addBodyParameter("file", file);
+        x.http().post(params, new Callback.CommonCallback<String>() {
+            @Override
+            public void onSuccess(String result) {
+                UploadDRFileResponse response = new Gson().fromJson(result, UploadDRFileResponse.class);
+                view.successUploadFile(response.data);
+            }
+
+            @Override
+            public void onError(Throwable ex, boolean isOnCallback) {
+                view.failLoad(ex.getMessage());
+            }
+
+            @Override
+            public void onCancelled(CancelledException cex) {
+
+            }
+
+            @Override
+            public void onFinished() {
+
+            }
+        });
     }
 }

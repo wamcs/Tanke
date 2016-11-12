@@ -21,6 +21,7 @@ import com.lptiyu.tanke.activities.redwallet.RedWalletActivity;
 import com.lptiyu.tanke.activities.scorestore.ScoreStoreActivity;
 import com.lptiyu.tanke.base.controller.FragmentController;
 import com.lptiyu.tanke.base.ui.BaseFragment;
+import com.lptiyu.tanke.entity.eventbus.ReloadUserInfo;
 import com.lptiyu.tanke.enums.Platform;
 import com.lptiyu.tanke.enums.RequestCode;
 import com.lptiyu.tanke.enums.ResultCode;
@@ -33,12 +34,15 @@ import com.lptiyu.tanke.userCenter.ui.ModifyUserInfoActivity;
 import com.lptiyu.tanke.userCenter.ui.SettingActivity;
 import com.lptiyu.tanke.userCenter.ui.UserGameFinishedListActivity;
 import com.lptiyu.tanke.userCenter.ui.UserGamePlayingListActivity;
+import com.lptiyu.tanke.activities.userdirectionrunlist.UserDirectionRunListActivity;
 import com.lptiyu.tanke.utils.ExpUtils;
 import com.lptiyu.tanke.utils.NetworkUtil;
 import com.lptiyu.tanke.utils.ToastUtil;
 import com.lptiyu.tanke.widget.CircularImageView;
 import com.lptiyu.tanke.widget.CustomTextView;
 import com.lptiyu.tanke.widget.GradientProgressBar;
+
+import org.greenrobot.eventbus.EventBus;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -98,7 +102,7 @@ public class UserCenterFragment extends BaseFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        init();
+        //        init();
     }
 
     @Nullable
@@ -123,6 +127,7 @@ public class UserCenterFragment extends BaseFragment {
                         if (userDetailsResponse.getStatus() == Response.RESPONSE_OK) {
                             mUserDetails = userDetailsResponse.getData();
                             bind(mUserDetails);
+                            EventBus.getDefault().post(new ReloadUserInfo());
                         } else {
                             throw new RuntimeException(userDetailsResponse.getInfo());
                         }
@@ -144,25 +149,25 @@ public class UserCenterFragment extends BaseFragment {
             return;
         }
 
-        String serverAvatar = details.getAvatar();
+        String serverAvatar = details.img;
         loadUserAvatar(serverAvatar);
-        Accounts.setNickName(details.getNickname());
-        Accounts.setPhoneNumber(details.getPhone() + "");
+        Accounts.setNickName(details.name);
+        Accounts.setPhoneNumber(details.phone);
 
         showBindTelTip();
 
-        mUserNickname.setText(details.getNickname());
-        mUserLocation.setText(details.getAddress());
+        mUserNickname.setText(details.name);
+        mUserLocation.setText(details.address);
         mUserUid.setText(String.valueOf(Accounts.getId()));
-        mUserGamePlayingNum.setText(String.valueOf(details.getPlayingGameNum()));
-        mUserGameFinishedNum.setText(String.valueOf(details.getFinishedGameNum()));
-        tvScore.setText(details.getPoints());
-        tvRedWallet.setText(Integer.parseInt(details.getMoney()) / 100.0f + "元");
-        if (details.getTaskCount() > 0) {
+        mUserGamePlayingNum.setText(String.valueOf(details.num));
+        mUserGameFinishedNum.setText(String.valueOf(details.finish_num));
+        tvScore.setText(details.points);
+        tvRedWallet.setText(Integer.parseInt(details.money) / 100.0f + "元");
+        if (details.task_count > 0) {
             mUserJudgeGame.setVisibility(RelativeLayout.VISIBLE);
         }
 
-        String gender = details.getSex();
+        String gender = details.sex;
         if (gender == null || gender.length() == 0) {
             mUserSex.setImageResource(R.mipmap.img_gender_male);
         } else {
@@ -217,9 +222,9 @@ public class UserCenterFragment extends BaseFragment {
     }
 
     private void parseLevelAndExp() {
-        int currentLevel = mUserDetails.getLevel();
-        int currentExp = mUserDetails.getExp();
-        int nextExp = mUserDetails.getNextExp();
+        int currentLevel = mUserDetails.level;
+        int currentExp = mUserDetails.experience;
+        int nextExp = mUserDetails.experiencelast;
 
         int currentLevelNeedExp = ExpUtils.calculateExpByLevel(currentLevel);
 
@@ -257,9 +262,7 @@ public class UserCenterFragment extends BaseFragment {
     @OnClick(R.id.user_message_layout)
     void modifyUserInfo() {
         Intent intent = new Intent(getActivity(), ModifyUserInfoActivity.class);
-        Bundle bundle = new Bundle();
-        bundle.putParcelable(Conf.USER_DETAIL, mUserDetails);
-        intent.putExtra(Conf.DATA_TO_INFO_MODIFY, bundle);
+        intent.putExtra(Conf.USER_DETAIL, mUserDetails);
         startActivity(intent);
     }
 
@@ -283,6 +286,11 @@ public class UserCenterFragment extends BaseFragment {
         startActivity(new Intent(getContext(), UserManagerGameActivity.class));
     }
 
+    @OnClick(R.id.user_direction_run)
+    public void user_direction_run() {
+        startActivity(new Intent(getContext(), UserDirectionRunListActivity.class));
+    }
+
     @OnClick(R.id.rl_red_wallet)
     public void redWallet() {
         startActivity(new Intent(getContext(), RedWalletActivity.class));
@@ -296,10 +304,10 @@ public class UserCenterFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-        //        if (subscription != null && !subscription.isUnsubscribed()) {
-        //            subscription.unsubscribe();
-        //        }
-        //        init();
+        if (subscription != null && !subscription.isUnsubscribed()) {
+            subscription.unsubscribe();
+        }
+        init();
     }
 
     @Override

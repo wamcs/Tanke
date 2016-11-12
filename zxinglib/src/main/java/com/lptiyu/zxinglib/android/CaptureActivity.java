@@ -20,9 +20,11 @@ import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
+import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
@@ -30,6 +32,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.drawable.ColorDrawable;
+import android.hardware.Camera;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -51,6 +54,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.PopupWindow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.lptiyu.zxinglib.R;
 import com.lptiyu.zxinglib.android.camera.CameraManager;
@@ -128,6 +132,10 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         setContentView(R.layout.capture);
 
+        normalExcute();
+    }
+
+    private void normalExcute() {
         hasSurface = false;
         isPermissionCheckedAndResume = false;
         inactivityTimer = new InactivityTimer(this);
@@ -145,8 +153,30 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
                 }
             });
         }
-        //        setResultWithEmptyData();
-        /*********************************/
+    }
+
+    /**
+     * 返回true 表示可以使用  返回false表示不可以使用
+     */
+    public boolean isCameraCanUse() {
+        boolean isCanUse = true;
+        Camera mCamera = null;
+        try {
+            mCamera = Camera.open();
+            Camera.Parameters mParameters = mCamera.getParameters(); //针对魅族手机
+            mCamera.setParameters(mParameters);
+        } catch (Exception e) {
+            isCanUse = false;
+        }
+
+        if (mCamera != null) {
+            try {
+                mCamera.release();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return isCanUse;
     }
 
     public void showTaskGuide(Context context, String content) {
@@ -158,6 +188,11 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
         popupWindow.setOutsideTouchable(false);
         popupWindow.setTouchable(true);
         popupWindow.showAtLocation(popupView, Gravity.CENTER, 0, 0);
+        popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+            }
+        });
 
         TextView tv_content_tip = (TextView) popupView.findViewById(R.id.tv_content_tip);
         TextView tv_ok = (TextView) popupView.findViewById(R.id.tv_ok);
@@ -166,7 +201,6 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
             @Override
             public void onClick(View v) {
                 popupWindow.dismiss();
-                //                setResultWithEmptyData();
             }
         });
     }
@@ -612,12 +646,43 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
     }
 
     private void displayFrameworkBugMessageAndExit() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(getString(R.string.app_name));
-        builder.setMessage(getString(R.string.msg_camera_framework_bug));
-        builder.setPositiveButton(R.string.button_ok, new FinishListener(this));
-        builder.setOnCancelListener(new FinishListener(this));
-        builder.show();
+        //        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        //        builder.setTitle(getString(R.string.app_name));
+        //        builder.setMessage(getString(R.string.msg_camera_framework_bug));
+        //        builder.setPositiveButton(R.string.button_ok, new FinishListener(this));
+        //        builder.setOnCancelListener(new FinishListener(this));
+        //        builder.show();
+        new AlertDialog.Builder(this).setMessage
+                ("此功能需要您授予摄像头权限，请前往“设置”->“应用管理”，选择“步道探秘”进行授权设置")
+                .setPositiveButton("前往设置", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        PackageManager pm = getPackageManager();
+                        PackageInfo info = null;
+                        try {
+                            info = pm.getPackageInfo(getPackageName(), 0);
+                        } catch (PackageManager.NameNotFoundException e) {
+                            e.printStackTrace();
+                        }
+                        Intent intent = new Intent();
+                        intent.setAction("android.intent.action.MAIN");
+                        intent.setClassName("com.android.settings", "com.android.settings" +
+                                ".ManageApplications");
+                        intent.putExtra("extra_package_uid", info.applicationInfo.uid);
+                        try {
+                            startActivity(intent);
+                        } catch (Exception e) {
+                            Toast.makeText(CaptureActivity.this, "前往失败，请手动前往设置->应用管理授权", Toast
+                                    .LENGTH_SHORT).show();
+                        }
+                        finish();
+                    }
+                }).setNegativeButton("取消", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                CaptureActivity.this.finish();
+            }
+        }).setCancelable(false).show();
     }
 
     public void restartPreviewAfterDelay(long delayMS) {

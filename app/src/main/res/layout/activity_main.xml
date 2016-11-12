@@ -51,7 +51,7 @@
     <View
         android:id="@+id/view_seperator"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/y10"
+        android:layout_height="1dp"
         android:layout_above="@id/bottom_button_layout"
         android:background="@drawable/shadow_reverse"/>
 

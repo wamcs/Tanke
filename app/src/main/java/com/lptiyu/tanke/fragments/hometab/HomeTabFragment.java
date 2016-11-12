@@ -131,6 +131,7 @@ public class HomeTabFragment extends MyBaseFragment implements HomeTabContact.IH
                 RunApplication.type = homeTabEntity.type;
                 RunApplication.entity = homeTabEntity;
                 RunApplication.where = Where.HOME_TAB;
+                RunApplication.recordId = -1;
                 Intent intent = new Intent();
                 switch (homeTabEntity.play_status) {
                     case PlayStatus.NEVER_ENTER_GANME://从未玩过游戏，进入到游戏详情界面

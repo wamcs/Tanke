@@ -6,17 +6,26 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.amap.api.location.AMapLocation;
 import com.bumptech.glide.Glide;
 import com.lptiyu.tanke.MainActivity;
 import com.lptiyu.tanke.R;
+import com.lptiyu.tanke.entity.response.BaseResponse;
+import com.lptiyu.tanke.entity.response.RequestIPByDomainResponse;
 import com.lptiyu.tanke.global.Accounts;
 import com.lptiyu.tanke.global.AppData;
 import com.lptiyu.tanke.mybase.MyBaseActivity;
 import com.lptiyu.tanke.utils.LocationHelper;
 import com.lptiyu.tanke.utils.LogUtils;
 import com.lptiyu.tanke.utils.MobileDisplayHelper;
+import com.lptiyu.tanke.utils.xutils3.RequestParamsHelper;
+import com.lptiyu.tanke.utils.xutils3.XUtilsHelper;
+import com.lptiyu.tanke.utils.xutils3.XUtilsRequestCallBack;
+import com.lptiyu.tanke.utils.xutils3.XUtilsUrls;
+
+import org.xutils.http.RequestParams;
 
 import java.io.File;
 
@@ -41,6 +50,35 @@ public class SplashActivity extends MyBaseActivity {
         getMobileInfo();
     }
 
+    private void requestIpByDomain() {
+        RequestParams params = null;
+        if (XUtilsUrls.SERVICE_TYPE == 1) {
+            params = RequestParamsHelper.getBaseRequestParam(XUtilsUrls.TEST_GET_IP_BY_DOMAIN);
+        } else {
+            params = RequestParamsHelper.getBaseRequestParam(XUtilsUrls.FORMAL_GET_IP_BY_DOMAIN);
+        }
+        params.addBodyParameter("type", XUtilsUrls.SERVICE_TYPE + "");
+        XUtilsHelper.getInstance().get(params, new XUtilsRequestCallBack<RequestIPByDomainResponse>() {
+            @Override
+            protected void onSuccess(RequestIPByDomainResponse response) {
+                if (response.status == BaseResponse.SUCCESS) {
+                    Accounts.setIP(response.data.ip);
+                    XUtilsUrls.setServiceIP(response.data.ip);
+                } else {
+                    Toast.makeText(SplashActivity.this, response.info, Toast.LENGTH_SHORT).show();
+                    //没有请求到就用上次存在本地的ip
+                    XUtilsUrls.setServiceIP(Accounts.getIP());
+                }
+            }
+
+            @Override
+            protected void onFailed(String errorMsg) {
+                //没有请求到就用上次存在本地的ip
+                XUtilsUrls.setServiceIP(Accounts.getIP());
+            }
+        }, RequestIPByDomainResponse.class);
+    }
+
     private void getMobileInfo() {
         Point point = MobileDisplayHelper.getMobileWidthHeight(this);
         LogUtils.i("当前手机的宽：" + point.x);
@@ -56,7 +94,7 @@ public class SplashActivity extends MyBaseActivity {
         locationHelper = new LocationHelper(this, new LocationHelper.OnLocationResultListener() {
             @Override
             public void onLocationChanged(AMapLocation aMapLocation) {
-                //断网情况下会返回空字符串
+                //断网且GPS关闭的情况下会返回空字符串
                 if (TextUtils.isEmpty(aMapLocation.getCityCode())) {
                     Accounts.setCityCode("027");
                 } else {
@@ -72,7 +110,8 @@ public class SplashActivity extends MyBaseActivity {
                 smoothStartNext();
                 LogUtils.i(aMapLocation.getCityCode() + "," + aMapLocation.getCity() + ", (" + aMapLocation.getLatitude
                         () + "," + aMapLocation.getLongitude() + ")");
-
+                //根据域名请求ip
+                requestIpByDomain();
             }
         });
         locationHelper.setOnceLocation(true);

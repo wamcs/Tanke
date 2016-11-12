@@ -24,6 +24,7 @@ public class DirUtils {
     private static final String RECORD = "/record";
     private static final String APK = "/apk";
     private static final String SCREEN_SHOT = "/screen_shot";
+    private static final String DIRECTION_RUN = "/direction_run";
     private static final String GAME = "/game";
     private static final String VIDEO = "/video";
     private static final String AUDIO = "/audio";
@@ -148,7 +149,14 @@ public class DirUtils {
         return getDirectory(SDCARD_ROOT_DIR, APK);
     }
 
+    //获取屏幕截图的文件夹
     public static File getScreenShotDirectory() {
         return getDirectory(SDCARD_ROOT_DIR, SCREEN_SHOT);
+
+    }
+
+    //获取定向乐跑轨迹记录文件夹
+    public static File getDirectionRunDirectory() {
+        return getDirectory(SDCARD_ROOT_DIR, DIRECTION_RUN);
     }
 }

@@ -2,8 +2,8 @@ package com.lptiyu.tanke.utils;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
-import android.widget.Toast;
 
+import com.lptiyu.tanke.entity.greendao.DRLocalData;
 import com.lptiyu.tanke.entity.greendao.LocationResult;
 
 import org.greenrobot.greendao.query.QueryBuilder;
@@ -17,14 +17,14 @@ import greendao.DaoMaster;
  */
 public class DBManager {
     public static final long ERROR_CODE = -1;
-    private final static String dbName = "location_db";
+    private static final String DBNAME = "location_db";
     private static DBManager mInstance;
-    private DaoMaster.DevOpenHelper openHelper;
+    private static DaoMaster.DevOpenHelper openHelper;
     private Context context;
 
     private DBManager(Context context) {
         this.context = context;
-        openHelper = new greendao.DaoMaster.DevOpenHelper(context, dbName, null);
+        openHelper = new greendao.DaoMaster.DevOpenHelper(context, DBNAME, null);
     }
 
     /**
@@ -49,7 +49,7 @@ public class DBManager {
      */
     private SQLiteDatabase getReadableDatabase() {
         if (openHelper == null) {
-            openHelper = new greendao.DaoMaster.DevOpenHelper(context, dbName, null);
+            openHelper = new greendao.DaoMaster.DevOpenHelper(context, DBNAME, null);
         }
         SQLiteDatabase db = openHelper.getReadableDatabase();
         return db;
@@ -60,7 +60,7 @@ public class DBManager {
      */
     private SQLiteDatabase getWritableDatabase() {
         if (openHelper == null) {
-            openHelper = new greendao.DaoMaster.DevOpenHelper(context, dbName, null);
+            openHelper = new greendao.DaoMaster.DevOpenHelper(context, DBNAME, null);
         }
         SQLiteDatabase db = openHelper.getWritableDatabase();
         return db;
@@ -76,10 +76,12 @@ public class DBManager {
         greendao.DaoSession daoSession = daoMaster.newSession();
         greendao.LocationResultDao locationDao = daoSession.getLocationResultDao();
         try {
-            return locationDao.insert(locationResult);
+            long id = locationDao.insert(locationResult);
+            LogUtils.i("insertLocation成功！");
+            return id;
         } catch (Exception e) {
             e.printStackTrace();
-            Toast.makeText(context, "插入失败", Toast.LENGTH_SHORT).show();
+            LogUtils.i("insertLocation失败");
         }
         return ERROR_CODE;
     }
@@ -101,7 +103,7 @@ public class DBManager {
             return true;
         } catch (Exception e) {
             e.printStackTrace();
-            Toast.makeText(context, "插入失败", Toast.LENGTH_SHORT).show();
+            LogUtils.i("insertLocationResult失败");
         }
         return false;
     }
@@ -126,5 +128,47 @@ public class DBManager {
         greendao.DaoSession daoSession = daoMaster.newSession();
         greendao.LocationResultDao locationDao = daoSession.getLocationResultDao();
         locationDao.deleteAll();
+    }
+
+    /**
+     * 插入单条数据
+     *
+     * @param drLocalData
+     */
+    public long insertDRLocalData(DRLocalData drLocalData) {
+        greendao.DaoMaster daoMaster = new greendao.DaoMaster(getWritableDatabase());
+        greendao.DaoSession daoSession = daoMaster.newSession();
+        greendao.DRLocalDataDao drLocalDataDao = daoSession.getDRLocalDataDao();
+        try {
+            long id = drLocalDataDao.insert(drLocalData);
+            LogUtils.i("insertDRLocalData成功！");
+            return id;
+        } catch (Exception e) {
+            e.printStackTrace();
+            LogUtils.i("insertDRLocalData失败");
+        }
+        return ERROR_CODE;
+    }
+
+    /**
+     * 查询列表
+     */
+    public List<DRLocalData> queryDRLocalData() {
+        greendao.DaoMaster daoMaster = new greendao.DaoMaster(getReadableDatabase());
+        greendao.DaoSession daoSession = daoMaster.newSession();
+        greendao.DRLocalDataDao dRLocalDao = daoSession.getDRLocalDataDao();
+        QueryBuilder<DRLocalData> qb = dRLocalDao.queryBuilder();
+        List<DRLocalData> list = qb.list();
+        return list;
+    }
+
+    /**
+     * 清空表
+     */
+    public void deleteDRLocalAll() {
+        greendao.DaoMaster daoMaster = new greendao.DaoMaster(getWritableDatabase());
+        greendao.DaoSession daoSession = daoMaster.newSession();
+        greendao.DRLocalDataDao dRLocalDao = daoSession.getDRLocalDataDao();
+        dRLocalDao.deleteAll();
     }
 }

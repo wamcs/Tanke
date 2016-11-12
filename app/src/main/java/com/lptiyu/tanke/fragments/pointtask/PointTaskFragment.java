@@ -48,7 +48,6 @@ import com.lptiyu.tanke.utils.StringUtils;
 import com.lptiyu.tanke.utils.ToastUtil;
 import com.lptiyu.tanke.utils.xutils3.XUtilsHelper;
 import com.lptiyu.zxinglib.android.CaptureActivity;
-import com.makeramen.roundedimageview.RoundedImageView;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -74,7 +73,7 @@ public class PointTaskFragment extends MyBaseFragment implements PointTaskContac
     ListView lv;
     @BindView(R.id.tv_look_game_over_reward)
     TextView tvLookGameOverReward;
-    private RoundedImageView img;
+    private ImageView img;
     private TextView tv_title;
     private LVForPointTaskAdapter adapter;
     private boolean isPointOver = false;
@@ -113,7 +112,7 @@ public class PointTaskFragment extends MyBaseFragment implements PointTaskContac
         ButterKnife.bind(this, view);
         View header = inflater.inflate(R.layout.header_listview_pointtask, null);
         tv_title = (TextView) header.findViewById(R.id.tv_title);
-        img = (RoundedImageView) header.findViewById(R.id.img);
+        img = (ImageView) header.findViewById(R.id.img);
         lv.addHeaderView(header);
         return view;
     }

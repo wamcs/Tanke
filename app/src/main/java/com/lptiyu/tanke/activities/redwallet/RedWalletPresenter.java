@@ -23,7 +23,6 @@ public class RedWalletPresenter implements RedWalletContact.IRedWalletPresenter 
     public void loadRedWalletRecord() {
         RequestParams params = RequestParamsHelper.getBaseRequestParam(XUtilsUrls.LOOK_RED_WALLET_RECORD);
         params.addBodyParameter("uid", Accounts.getId() + "");
-        params.addBodyParameter("token", Accounts.getToken() + "");
         XUtilsHelper.getInstance().get(params, new XUtilsRequestCallBack<String>() {
             @Override
             protected void onSuccess(String s) {
@@ -41,7 +40,6 @@ public class RedWalletPresenter implements RedWalletContact.IRedWalletPresenter 
     public void requestRedWallet() {
         RequestParams params = RequestParamsHelper.getBaseRequestParam(XUtilsUrls.REQUEST_RED_WALLET);
         params.addBodyParameter("uid", Accounts.getId() + "");
-        params.addBodyParameter("token", Accounts.getToken() + "");
         XUtilsHelper.getInstance().get(params, new XUtilsRequestCallBack<String>() {
             @Override
             protected void onSuccess(String s) {

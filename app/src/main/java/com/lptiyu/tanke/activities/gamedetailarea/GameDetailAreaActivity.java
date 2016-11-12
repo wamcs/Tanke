@@ -56,19 +56,25 @@ public class GameDetailAreaActivity extends MyBaseActivity {
         GameDetail gameDetail = getIntent().getParcelableExtra(Conf.GAME_DETAIL);
         if (gameDetail != null && gameDetail.game_zone != null && gameDetail.game_zone.size() >= 3) {//至少三个点才能绘制平面
             ArrayList<LatLng> latLngs = new ArrayList<>();
-            LatLngBounds.Builder builder = LatLngBounds.builder();
             for (Jingwei jingwei : gameDetail.game_zone) {
                 LatLng latLng = AMapViewUtils.parseJingweiToLatLng(jingwei.jingwei);
                 latLngs.add(latLng);
-                builder.include(latLng);
             }
-            LatLngBounds bounds = builder.build();
-            map.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 50));
+            suitableZoomLevel(latLngs);
             drawPolygon(latLngs);
-            //            moveToLocation(new LatLng(Double.parseDouble(gameDetail.latitude), Double.parseDouble
-            // (gameDetail
-            //                    .longtitude)));
         }
+    }
+
+    private void suitableZoomLevel(List<LatLng> latLngs) {
+        if (latLngs == null || latLngs.size() <= 0) {
+            return;
+        }
+        LatLngBounds.Builder builder = LatLngBounds.builder();
+        for (LatLng latLng : latLngs) {
+            builder.include(latLng);
+        }
+        LatLngBounds bounds = builder.build();
+        map.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 50));
     }
 
     //绘制一个游戏区域

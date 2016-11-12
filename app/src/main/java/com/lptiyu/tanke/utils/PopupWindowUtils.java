@@ -18,7 +18,6 @@ import com.lptiyu.tanke.R;
 
 public class PopupWindowUtils {
     private static PopupWindowUtils popupWindowUtils;
-    private static LayoutInflater inflater;
 
     private PopupWindowUtils() {
     }
@@ -35,8 +34,8 @@ public class PopupWindowUtils {
     }
 
     public void showNetExceptionPopupwindow(Context context, final OnRetryCallback listener) {
-        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View popupView = inflater.inflate(R.layout.popup_net_exception, null);
+        LayoutInflater inflater = getInflater(context);
+        View popupView = getPopupView(R.layout.popup_net_exception, inflater);
         final PopupWindow popupWindow = new PopupWindow(popupView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup
                 .LayoutParams.WRAP_CONTENT, true);
         popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
@@ -55,9 +54,31 @@ public class PopupWindowUtils {
         popupWindow.showAtLocation(popupView, Gravity.CENTER, 0, -100);
     }
 
+    public void showDRSignUpPopupWindow(Context context, String exp, String score, int redWallet) {
+        LayoutInflater inflater = getInflater(context);
+        View popupView = getPopupView(R.layout.popup_sign_up_direction_run, inflater);
+        final PopupWindow popupWindow = new PopupWindow(popupView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup
+                .LayoutParams.WRAP_CONTENT, true);
+        popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+        TextView tvExp = (TextView) popupView.findViewById(R.id.tv_exp_value);
+        TextView tvScore = (TextView) popupView.findViewById(R.id.tv_score_value);
+        TextView tvRedWallet = (TextView) popupView.findViewById(R.id.tv_red_wallet);
+        tvExp.setText("+" + exp);
+        tvScore.setText("+" + score);
+        if (redWallet <= 0) {
+            tvRedWallet.setVisibility(View.GONE);
+        } else {
+            tvRedWallet.setVisibility(View.VISIBLE);
+            tvRedWallet.setText("获得现金红包" + redWallet / 100.0f + "元");
+        }
+        popupWindow.showAtLocation(popupView, Gravity.CENTER, 0, 0);
+        popupWindow.setAnimationStyle(R.style.Popup_Animation_fade_in);
+    }
+
     public void showFailLoadPopupwindow(Context context) {
-        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View popupView = inflater.inflate(R.layout.popup_fail_load, null);
+        LayoutInflater inflater = getInflater(context);
+        View popupView = getPopupView(R.layout.popup_fail_load, inflater);
         PopupWindow popupWindow = new PopupWindow(popupView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup
                 .LayoutParams.WRAP_CONTENT, true);
         popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
@@ -65,8 +86,8 @@ public class PopupWindowUtils {
     }
 
     public void showUsageTip(Context context, View parent, int xOffset, int yOffset) {
-        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View popupView = inflater.inflate(R.layout.popup_usage, null);
+        LayoutInflater inflater = getInflater(context);
+        View popupView = getPopupView(R.layout.popup_usage, inflater);
         PopupWindow popupWindow = new PopupWindow(popupView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup
                 .LayoutParams.WRAP_CONTENT, true);
         popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
@@ -76,8 +97,8 @@ public class PopupWindowUtils {
     }
 
     public void showTaskGuide(Context context, String content, final DismissCallback callback) {
-        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View popupView = inflater.inflate(R.layout.popup_task_guide, null);
+        LayoutInflater inflater = getInflater(context);
+        View popupView = getPopupView(R.layout.popup_task_guide, inflater);
         final PopupWindow popupWindow = new PopupWindow(popupView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup
                 .LayoutParams.WRAP_CONTENT, true);
         popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
@@ -105,8 +126,8 @@ public class PopupWindowUtils {
     }
 
     public void showTaskGuide(Context context, String content) {
-        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View popupView = inflater.inflate(R.layout.popup_task_guide, null);
+        LayoutInflater inflater = getInflater(context);
+        View popupView = getPopupView(R.layout.popup_task_guide, inflater);
         final PopupWindow popupWindow = new PopupWindow(popupView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup
                 .LayoutParams.WRAP_CONTENT, true);
         popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
@@ -132,8 +153,8 @@ public class PopupWindowUtils {
      * @param content
      */
     public void showSucessSignUp(Context context, String content) {
-        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View popupView = inflater.inflate(R.layout.popup_home_signup, null);
+        LayoutInflater inflater = getInflater(context);
+        View popupView = getPopupView(R.layout.popup_home_signup, inflater);
         final PopupWindow popupWindow = new PopupWindow(popupView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup
                 .LayoutParams.WRAP_CONTENT, true);
         popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
@@ -151,14 +172,66 @@ public class PopupWindowUtils {
         });
     }
 
-    public static void showLeaveGamePopup(Context context, final OnClickPopupListener listener) {
-        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View popupView = inflater.inflate(R.layout.popup_abandon_game, null);
+    public void showLeaveGamePopup(Context context, final OnClickPopupListener listener) {
+        LayoutInflater inflater = getInflater(context);
+        View popupView = getPopupView(R.layout.popup_abandon_game, inflater);
         final PopupWindow popupWindow = new PopupWindow(popupView, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup
                 .LayoutParams.WRAP_CONTENT, true);
         popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        popupWindow.setAnimationStyle(R.style.Popup_Animation);
+        popupWindow.setAnimationStyle(R.style.Popup_Animation_fly_from_bottom_enter);
         popupWindow.showAtLocation(popupView, Gravity.BOTTOM, 0, 0);
+        TextView tvTip = (TextView) popupView.findViewById(R.id.tv_tip);
+        tvTip.setText("放弃游戏将会失去游戏进度，已获得的经验值不会丢失");
+
+        popupView.findViewById(R.id.tv_cancle).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                popupWindow.dismiss();
+            }
+        });
+        popupView.findViewById(R.id.tv_ensure).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                popupWindow.dismiss();
+                if (listener != null) {
+                    listener.sure();
+                }
+            }
+        });
+    }
+
+    private LayoutInflater getInflater(Context context) {
+        return (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+    }
+
+    public PopupWindow getPopupWindow(Context context, int layoutRes, int width, int height, int gravity) {
+        LayoutInflater inflater = getInflater(context);
+        View popupView = getPopupView(layoutRes, inflater);
+        PopupWindow popupWindow = new PopupWindow(popupView, width, height, true);
+        popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        popupWindow.showAtLocation(popupView, gravity, 0, 0);
+        return popupWindow;
+    }
+
+    public PopupWindow getPopupWindow(View popupView, int width, int height, int gravity) {
+        PopupWindow popupWindow = new PopupWindow(popupView, width, height, true);
+        popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        popupWindow.showAtLocation(popupView, gravity, 0, 0);
+        return popupWindow;
+    }
+
+
+    private View getPopupView(int layoutRes, LayoutInflater inflater) {
+        return inflater.inflate(layoutRes, null);
+    }
+
+    public void showPlayAgainPopup(Context context, final OnClickPopupListener listener) {
+        LayoutInflater inflater = getInflater(context);
+        View popupView = getPopupView(R.layout.popup_abandon_game, inflater);
+        final PopupWindow popupWindow = getPopupWindow(popupView, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup
+                .LayoutParams.WRAP_CONTENT, Gravity.BOTTOM);
+        TextView tvTip = (TextView) popupView.findViewById(R.id.tv_tip);
+        tvTip.setText("重新玩不会删除已完成的游戏记录，是否继续?");
 
         popupView.findViewById(R.id.tv_cancle).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -183,8 +256,6 @@ public class PopupWindowUtils {
 
     public interface OnClickPopupListener {
         void sure();
-
-        //        void cancle();
     }
 
     public interface OnRetryCallback {

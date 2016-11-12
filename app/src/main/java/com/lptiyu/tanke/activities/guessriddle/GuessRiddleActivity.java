@@ -52,6 +52,9 @@ public class GuessRiddleActivity extends MyBaseActivity implements RiddleContact
     private Task task;
     //    private int index;
     private boolean isGameOver;
+    private Thread thread;
+    private final long duration = 2000;
+    private Toast toast;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,12 +88,38 @@ public class GuessRiddleActivity extends MyBaseActivity implements RiddleContact
                 }
             }
         });
+        initToast();
     }
 
     private void setActivityResult() {
         //发通知销毁PointTaskV2Activity，GamePlayingV2Activity刷新数据
         EventBus.getDefault().post(new GamePointTaskStateChanged());
         finish();
+    }
+
+    private void initTimeTask() {
+        thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Thread.sleep(duration);
+                    thread = null;
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            initToast();
+                        }
+                    });
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        thread.start();
+    }
+
+    private void initToast() {
+        toast = Toast.makeText(this, "请先输入答案", Toast.LENGTH_SHORT);
     }
 
     @OnClick({R.id.tv_submitAnswer, R.id.default_tool_bar_imageview})
@@ -102,13 +131,19 @@ public class GuessRiddleActivity extends MyBaseActivity implements RiddleContact
             case R.id.tv_submitAnswer:
                 String answer = etWriteAnswer.getText() + "";
                 if (answer.equals("")) {
-                    Toast.makeText(this, "请先输入答案", Toast.LENGTH_SHORT).show();
+                    //控制Toast的显示
+                    if (toast != null) {
+                        toast.show();
+                        toast = null;
+                        if (thread == null) {
+                            initTimeTask();
+                        }
+                    }
                     tvSubmitAnswer.setEnabled(true);
                     return;
                 }
                 if (answer.equals(task.pwd)) {
                     tvSubmitAnswer.setEnabled(false);
-                    taskResultHelper.startSubmitting();
                     upload();
                 } else {
                     taskResultHelper.showFailResult();
@@ -119,6 +154,7 @@ public class GuessRiddleActivity extends MyBaseActivity implements RiddleContact
 
     public void upload() {
         if (NetworkUtil.checkIsNetworkConnected()) {
+            taskResultHelper.startSubmitting();
             upLoadGameRecord();
         } else {
             PopupWindowUtils.getInstance().showNetExceptionPopupwindow(this, new PopupWindowUtils.OnRetryCallback() {

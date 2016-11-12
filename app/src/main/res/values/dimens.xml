@@ -280,5 +280,6 @@
     <dimen name="home_display_tag_textsize">8sp</dimen>
     <dimen name="tag_min_width">30dp</dimen>
 
+    <dimen name="direction_run_detail_large">16sp</dimen>
 
 </resources>

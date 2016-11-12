@@ -22,7 +22,7 @@ public class StartRun implements Parcelable {
                 ", points=" + points +
                 ", extra_points=" + extra_points +
                 ", extra_money=" + extra_money +
-                ", record_id='" + record_id + '\'' +
+                ", id='" + record_id + '\'' +
                 '}';
     }
 

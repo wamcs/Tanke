@@ -69,6 +69,7 @@ public class BannerPagerAdapter extends BasePagerAdapter<Banner> {
                     RunApplication.entity = banner;
                     RunApplication.entity.title = title;
                     RunApplication.where = Where.BANNER;
+                    RunApplication.recordId = -1;
                     loadNetWorkData();
                 }
             }

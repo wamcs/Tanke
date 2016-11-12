@@ -1,19 +1,27 @@
 package com.lptiyu.tanke;
 
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.location.LocationManager;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.annotation.IntDef;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AlertDialog;
 import android.widget.ImageView;
 
+import com.lptiyu.tanke.activities.directionrun.DirectionRunActivity;
 import com.lptiyu.tanke.entity.response.SignUpResponse;
 import com.lptiyu.tanke.fragments.home.HomeFragment;
 import com.lptiyu.tanke.fragments.messagesystem.MessageFragment;
 import com.lptiyu.tanke.global.Accounts;
+import com.lptiyu.tanke.global.Conf;
 import com.lptiyu.tanke.mybase.MyBaseActivity;
 import com.lptiyu.tanke.update.UpdateHelper;
 import com.lptiyu.tanke.userCenter.UserCenterFragment;
-import com.lptiyu.tanke.utils.LocationHelper;
+import com.lptiyu.tanke.utils.DBManager;
 import com.lptiyu.tanke.utils.NetworkUtil;
 import com.lptiyu.tanke.utils.PopupWindowUtils;
 import com.lptiyu.tanke.utils.ToastUtil;
@@ -48,7 +56,6 @@ public class MainActivity extends MyBaseActivity {
     ArrayList<Fragment> fragments = new ArrayList<>(3);
     private UpdateHelper updateHelper;
     Fragment mCurrentFragment;
-    private LocationHelper locationHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +65,28 @@ public class MainActivity extends MyBaseActivity {
 
         initTab();
         signUpAndStartLocation();
+        recoveryDRData();
+    }
+
+    private void recoveryDRData() {
+        if (Accounts.isHaveDRData()) {
+            new AlertDialog.Builder(this).setMessage("检测到你有未完成的跑步记录，是否恢复？").setNegativeButton("放弃", new
+                    DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                            Accounts.setHaveDRData(false);
+                            DBManager.getInstance(MainActivity.this).deleteDRLocalAll();
+                            DBManager.getInstance(MainActivity.this).deleteLocationAll();
+                        }
+                    }).setPositiveButton("恢复", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                    initGPS();
+                }
+            }).setCancelable(false).show();
+        }
     }
 
     private void signUp() {
@@ -134,6 +163,35 @@ public class MainActivity extends MyBaseActivity {
             view.setImageResource(resSelected);
         } else {
             view.setImageResource(resUnselected);
+        }
+    }
+
+    private void initGPS() {
+        LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+        // 判断GPS模块是否开启，如果没有则开启
+        if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+            AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+            dialog.setMessage("为了定位更加精确，请打开GPS");
+            dialog.setPositiveButton("确定",
+                    new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface arg0, int arg1) {
+                            // 转到手机设置界面，用户设置GPS
+                            Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                            startActivityForResult(intent, 0); // 设置完成后返回到原来的界面
+                        }
+                    });
+            dialog.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface arg0, int arg1) {
+                    arg0.dismiss();
+                }
+            });
+            dialog.show();
+        } else {
+            Intent intent = new Intent(MainActivity.this, DirectionRunActivity.class);
+            intent.putExtra(Conf.RECOVERY, true);
+            startActivity(intent);
         }
     }
 

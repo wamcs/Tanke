@@ -60,38 +60,38 @@ public class ThirdLoginHelper implements PlatformActionListener {
     }
 
     private void getQzoneUserInformation(HashMap<String, Object> hashMap) {
-        Muser.setNickname(hashMap.get("nickname").toString());
-        Muser.setSex(hashMap.get("gender").toString());
-        Muser.setAvatar(hashMap.get("figureurl_qq_1").toString());
+        Muser.name = hashMap.get("nickname").toString();
+        Muser.sex = hashMap.get("gender").toString();
+        Muser.img = hashMap.get("figureurl_qq_1").toString();
     }
 
     private void getWeiboUserInformation(HashMap<String, Object> hashMap) {
-        Muser.setNickname(hashMap.get("name").toString());
+        Muser.name = hashMap.get("name").toString();
         switch (hashMap.get("gender").toString()) {
             case "m":
-                Muser.setSex("男");
+                Muser.sex = "男";
                 break;
             case "f":
-                Muser.setSex("女");
+                Muser.sex = "女";
                 break;
         }
-        Muser.setAvatar(hashMap.get("avatar_hd").toString());
+        Muser.img = hashMap.get("avatar_hd").toString();
 
     }
 
     private void getWechatUserInformation(HashMap<String, Object> hashMap) {
         Accounts.setOpenId(String.valueOf(hashMap.get("openid")));
-        Muser.setNickname(hashMap.get("nickname").toString());
+        Muser.name = hashMap.get("nickname").toString();
         switch (String.valueOf(hashMap.get("sex"))) {
             case "1":
-                Muser.setSex("男");
+                Muser.sex = "男";
                 break;
             case "2":
-                Muser.setSex("女");
+                Muser.sex = "女";
                 break;
 
         }
-        Muser.setAvatar(hashMap.get("headimgurl").toString());
+        Muser.img = hashMap.get("headimgurl").toString();
     }
 
     public void login(String id, final int platformType, int ostype, String avatar_url, String nick_name) {

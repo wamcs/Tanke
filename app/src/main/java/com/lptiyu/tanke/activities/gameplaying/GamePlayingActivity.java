@@ -45,7 +45,7 @@ import com.lptiyu.tanke.utils.AMapViewUtils;
 import com.lptiyu.tanke.utils.LocationHelper;
 import com.lptiyu.tanke.utils.NetworkUtil;
 import com.lptiyu.tanke.utils.PopupWindowUtils;
-import com.lptiyu.tanke.utils.TimeFormatUtils;
+import com.lptiyu.tanke.utils.TimeUtils;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -58,6 +58,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+import static com.lptiyu.tanke.RunApplication.entity;
+import static com.lptiyu.tanke.RunApplication.recordId;
 import static com.lptiyu.tanke.global.AppData.getContext;
 
 public class GamePlayingActivity extends MyBaseActivity implements GamePlayingContract.IGamePlaying2View {
@@ -84,7 +86,6 @@ public class GamePlayingActivity extends MyBaseActivity implements GamePlayingCo
     private PointListAdapter adapter;
     private int gameType = 0;
     private int teamId = 0;//个人为0，团队为1
-    private int recordId = -1;//从已完成进来时有这个值
     private GameRecord gameRecord;
 
     @Override
@@ -106,7 +107,7 @@ public class GamePlayingActivity extends MyBaseActivity implements GamePlayingCo
         uiSettings.setLogoLeftMargin(-200);
         uiSettings.setLogoBottomMargin(-200);
         //如果是线上游戏，则隐藏地图
-        if (RunApplication.entity != null && RunApplication.entity.cid == GameSort.ONLINE_PLAYABLE) {
+        if (entity != null && entity.cid == GameSort.ONLINE_PLAYABLE) {
             //            textureMapView.setVisibility(View.GONE);
         }
         //暂时将地图隐藏
@@ -119,9 +120,8 @@ public class GamePlayingActivity extends MyBaseActivity implements GamePlayingCo
     private void initData() {
         gameId = RunApplication.gameId;
         gameType = RunApplication.type;
-        recordId = RunApplication.where;
-        if (RunApplication.entity != null) {
-            title = RunApplication.entity.title;
+        if (entity != null) {
+            title = entity.title;
         }
         locationHelper = new LocationHelper(this, new LocationHelper.OnLocationResultListener() {
             @Override
@@ -137,7 +137,7 @@ public class GamePlayingActivity extends MyBaseActivity implements GamePlayingCo
     private void loadGameRecord() {
         tvTitle.setText("加载中...");
         if (NetworkUtil.checkIsNetworkConnected()) {
-            presenter.downLoadGameRecord(gameId, teamId, recordId);//个人游戏传0，团队游戏传1
+            presenter.downLoadGameRecord(gameId, teamId, recordId);//teamId个人游戏传0，团队游戏传1
         } else {
             getWindow().getDecorView().post(new Runnable() {
                 @Override
@@ -367,10 +367,10 @@ public class GamePlayingActivity extends MyBaseActivity implements GamePlayingCo
 
     private void checkPointStatus() {
         if (gameRecord != null && Integer.parseInt(gameRecord.play_statu) == PlayStatus.GAME_OVER) {
-            String time = TimeFormatUtils.caculateUsingTime(gameRecord.last_task_ftime, gameRecord.start_time);
             //            rlLookGameOverReward.setVisibility(View.VISIBLE);
             tvGameOverTime.setVisibility(View.VISIBLE);
-            tvGameOverTime.setText(String.format(getString(R.string.game_over_time), time));
+            tvGameOverTime.setText(String.format(getString(R.string.game_over_time), TimeUtils.caculateUsingTime
+                    (gameRecord.last_task_ftime, gameRecord.start_time)));
             RunApplication.isGameOver = true;
         } else {
             RunApplication.isGameOver = false;

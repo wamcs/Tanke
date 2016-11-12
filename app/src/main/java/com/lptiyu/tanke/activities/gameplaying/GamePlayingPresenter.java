@@ -30,7 +30,7 @@ public class GamePlayingPresenter implements GamePlayingContract.IGamePlaying2Pr
         params.addBodyParameter("game_id", gameId + "");
         params.addBodyParameter("team_id", teamId + "");//个人游戏传0，团队游戏传1
         if (recordId >= 0) {
-            params.addBodyParameter("record_id", recordId + "");//从已完成进来时需要传这个参数
+            params.addBodyParameter("record_id", recordId + "");//从已完成进来时需要传这个参数,否则不能传
         }
         XUtilsHelper.getInstance().get(params, new XUtilsRequestCallBack<GameRecordResponse>() {
             @Override
@@ -64,7 +64,7 @@ public class GamePlayingPresenter implements GamePlayingContract.IGamePlaying2Pr
         params.addBodyParameter("game_id", gameId + "");
         params.addBodyParameter("team_id", teamId + "");//个人游戏传0，团队游戏传1
         if (recordId >= 0) {
-            params.addBodyParameter("record_id", recordId + "");//从已完成进来时需要传这个参数
+            params.addBodyParameter("id", recordId + "");//从已完成进来时需要传这个参数
         }
         XUtilsHelper.getInstance().get(params, new XUtilsRequestCallBack<GameRecordResponse>() {
             @Override

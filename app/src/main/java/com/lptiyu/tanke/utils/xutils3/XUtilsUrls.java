@@ -3,34 +3,70 @@ package com.lptiyu.tanke.utils.xutils3;
 /**
  * Created by Jason on 2016/8/11.
  */
-public interface XUtilsUrls {
-    // 正式URL
-    //    String SERVER_URL = "http://api.lptiyu.com/lepao/api.php/";
-    // 测试URL
-    String SERVER_URL = "http://test.lptiyu.com/lepao/api.php/";
+public class XUtilsUrls {
+    // 从SharedPreference中未获取到ip时返回的默认值
+    public static String DEFAULT_IP = "http://121.43.96.124/";
 
-    String GET_BANNER = SERVER_URL + "System/get_banner";
-    String BIND_PHONE = SERVER_URL + "login/bind_phone";
-    String FEED_BACK = SERVER_URL + "system/feedback";
-    String HOME_SIGN_IN = SERVER_URL + "My/getSignupPoints";
-    String HOME_BANNER_RECOMMEND = SERVER_URL + "Home/getBannerAndRecommend";
-    String HOME_SORT_TAB = SERVER_URL + "Game/getGameCategory";
-    String HOME_GAME_LIST_NEW = SERVER_URL + "Game/getGameList";
-    String ENTER_GAME = SERVER_URL + "system/join_game";
-    String LEAVE_GAME = SERVER_URL + "system/leave_game";
-    String GET_RECORD = SERVER_URL + "system/GetRankslog";
-    String UPLOAD_RECORD = SERVER_URL + "system/Rankslog";
-    String STOP_RUN = SERVER_URL + "Run/stopRun";
-    String START_RUN = SERVER_URL + "Run/startRun";
-    String RUN_LINE = SERVER_URL + "Run/getRunLine";
-    String LOG_RUN = SERVER_URL + "Run/logRun";
-    String GAME_DETAIL = SERVER_URL + "home/details";
-    String MESSAGE = SERVER_URL + "System/News";
-    String GAME_OVER_REWARD = SERVER_URL + "Game/getTotalPrize";
-    String GET_SCORE_AFTER_SHARE = SERVER_URL + "Game/getSharePoints";
+    //服务器类型，1-测试服务器，2-正式服务器
+    public static int SERVICE_TYPE = 1;//正式打包时需要改为2
+    public static String FORMAL_GET_IP_BY_DOMAIN = "http://api.lptiyu.com/lepao2/api.php/System/getIp";
+    public static String TEST_GET_IP_BY_DOMAIN = "http://test.lptiyu.com/lepao/api.php/System/getIp";
+    public static String SERVICE_IP;
+    public static String PART = "/lepao/api.php/";
 
-    String REQUEST_RED_WALLET = "http://test.lptiyu.com/lepao/index" +
+    public static void setServiceIP(String ip) {
+        SERVICE_IP = ip + PART;
+        init();
+    }
+
+    private static void init() {
+        BIND_PHONE = SERVICE_IP + "login/bind_phone";
+        FEED_BACK = SERVICE_IP + "system/feedback";
+        HOME_SIGN_IN = SERVICE_IP + "My/getSignupPoints";
+        HOME_BANNER_RECOMMEND = SERVICE_IP + "Home/getBannerAndRecommend";
+        HOME_SORT_TAB = SERVICE_IP + "Game/getGameCategory";
+        HOME_GAME_LIST_NEW = SERVICE_IP + "Game/getGameList";
+        ENTER_GAME = SERVICE_IP + "system/join_game";
+        LEAVE_GAME = SERVICE_IP + "system/leave_game";
+        GET_RECORD = SERVICE_IP + "system/GetRankslog";
+        UPLOAD_RECORD = SERVICE_IP + "system/Rankslog";
+        STOP_RUN = SERVICE_IP + "Run/stopRun";
+        START_RUN = SERVICE_IP + "Run/startRun";
+        RUN_LINE = SERVICE_IP + "Run/getRunLine";
+        LOG_RUN = SERVICE_IP + "Run/logRun";
+        GAME_DETAIL = SERVICE_IP + "home/details";
+        MESSAGE = SERVICE_IP + "System/News";
+        GAME_OVER_REWARD = SERVICE_IP + "Game/getTotalPrize";
+        GET_SCORE_AFTER_SHARE = SERVICE_IP + "Game/getSharePoints";
+        UPLOAD_DR_FILE = SERVICE_IP + "Run/uploadRunRecord";
+        DR_RECORD_LIST = SERVICE_IP + "Run/recordList";
+        DR_RECORD_DETAIL = SERVICE_IP + "Run/recordDetail";
+    }
+
+    public static String BIND_PHONE;
+    public static String FEED_BACK;
+    public static String HOME_SIGN_IN;
+    public static String HOME_BANNER_RECOMMEND;
+    public static String HOME_SORT_TAB;
+    public static String HOME_GAME_LIST_NEW;
+    public static String ENTER_GAME;
+    public static String LEAVE_GAME;
+    public static String GET_RECORD;
+    public static String UPLOAD_RECORD;
+    public static String STOP_RUN;
+    public static String START_RUN;
+    public static String RUN_LINE;
+    public static String LOG_RUN;
+    public static String GAME_DETAIL;
+    public static String MESSAGE;
+    public static String GAME_OVER_REWARD;
+    public static String GET_SCORE_AFTER_SHARE;
+    public static String UPLOAD_DR_FILE;
+    public static String DR_RECORD_LIST;
+    public static String DR_RECORD_DETAIL;
+
+    public static String REQUEST_RED_WALLET = "http://test.lptiyu.com/lepao/index" +
             ".php/Cash/Cash/uid/1/token/ECCBFF1967E920782C54DC8DFCE35BE4";
-    String LOOK_RED_WALLET_RECORD = "http://test.lptiyu.com/lepao/index" +
+    public static String LOOK_RED_WALLET_RECORD = "http://test.lptiyu.com/lepao/index" +
             ".php/Cash/Record/uid/1/token/ECCBFF1967E920782C54DC8DFCE35BE4";
 }

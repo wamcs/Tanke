@@ -16,9 +16,9 @@ import com.lptiyu.tanke.activities.messagelist.MessageListActivity;
 import com.lptiyu.tanke.entity.response.MessageEntity;
 import com.lptiyu.tanke.global.Conf;
 import com.lptiyu.tanke.mybase.MyBaseFragment;
-import com.lptiyu.tanke.utils.DateFormatterUtils;
 import com.lptiyu.tanke.utils.NetworkUtil;
 import com.lptiyu.tanke.utils.PopupWindowUtils;
+import com.lptiyu.tanke.utils.TimeUtils;
 import com.lptiyu.tanke.widget.CustomTextView;
 
 import java.util.ArrayList;
@@ -103,7 +103,7 @@ public class MessageFragment extends MyBaseFragment implements MessageContact.IM
     private void bindData(MessageEntity messageEntity) {
         if (messageEntity != null) {
             tvMessageContent.setText(messageEntity.title + "");
-            tvMessageTime.setText(DateFormatterUtils.parseTimeStamp(messageEntity.create_time));
+            tvMessageTime.setText(TimeUtils.stampToDateStr(messageEntity.create_time * 1000, TimeUtils.PATTERN2));
         }
     }
 

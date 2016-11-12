@@ -145,7 +145,7 @@ public class XUtilsHelper {
                             callBack.onSuccess(t);
                         } catch (JsonSyntaxException e) {
                             e.printStackTrace();
-                            Log.i("result", "gson解析异常:" + e.getMessage());
+                            LogUtils.i("gson解析异常:" + e.getMessage());
                             callBack.onFailed("gson解析异常：" + e.getMessage());
                         }
                     } else {
@@ -177,7 +177,6 @@ public class XUtilsHelper {
         x.http().post(requestParams, new Callback.CommonCallback<String>() {
             @Override
             public void onSuccess(String result) {
-                Log.i("result", "onSuccess" + result);
                 if (callBack != null) {
                     if (!TextUtils.isEmpty(result)) {
                         try {
@@ -185,7 +184,7 @@ public class XUtilsHelper {
                             callBack.onSuccess(t);
                         } catch (JsonSyntaxException e) {
                             e.printStackTrace();
-                            Log.i("result", "gson解析错误：" + e.getMessage());
+                            LogUtils.i("XUtilsHelper-->post()-->onSuccess(), gson解析错误：" + e.getMessage());
                         }
                     } else {
                         callBack.onSuccess(null);
@@ -195,7 +194,7 @@ public class XUtilsHelper {
 
             @Override
             public void onError(Throwable ex, boolean isOnCallback) {
-                Log.i("result", "onError:" + ex.getMessage());
+                LogUtils.i("XUtilsHelper-->post()-->onError():" + ex.getMessage());
                 failure(callBack, ex);
             }
 
@@ -251,7 +250,7 @@ public class XUtilsHelper {
     //对参数进行封装格式，为了方便以后的维护，在这里可以统一处理头部信息以及一些上传下载的配置
     private RequestParams getRequestParams(Object req, String url) {
         RequestParams requestParams = RequestParamsHelper.getBaseRequestParam(url);
-        requestParams.setConnectTimeout(15000);
+        requestParams.setMultipart(true);//设置使用表单上传
         if (req instanceof String) {
             requestParams.setBodyContent(String.valueOf(req));
         } else {
@@ -274,8 +273,6 @@ public class XUtilsHelper {
             } else {
 
             }
-        } else {
-
         }
         if (callBack != null) {
             callBack.onFailed(s);

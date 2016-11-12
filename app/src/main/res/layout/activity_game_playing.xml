@@ -79,7 +79,7 @@
             android:paddingTop="20dp"
             android:text="@string/game_progress"
             android:textColor="@color/black333"
-            android:textSize="17sp"/>
+            android:textSize="16sp"/>
 
         <TextView
             android:id="@+id/tv_game_over_time"
@@ -88,11 +88,13 @@
             android:layout_alignBaseline="@id/tv_progress"
             android:layout_toRightOf="@id/tv_progress"
             android:background="@color/white10"
+            android:ellipsize="end"
             android:enabled="false"
+            android:maxLines="1"
             android:paddingBottom="20dp"
             android:paddingTop="20dp"
             android:textColor="@color/colorPrimary"
-            android:textSize="17sp"
+            android:textSize="14sp"
             android:visibility="gone"/>
     </RelativeLayout>
 
@@ -101,8 +103,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:visibility="gone"
-        android:background="@color/white10">
+        android:background="@color/white10"
+        android:visibility="gone">
 
         <TextView
             android:id="@+id/tv_look_game_over_reward"

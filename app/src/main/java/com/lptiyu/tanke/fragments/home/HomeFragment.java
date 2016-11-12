@@ -26,6 +26,7 @@ import com.lptiyu.tanke.adapter.HomeTabFragmentPagerAdapter;
 import com.lptiyu.tanke.entity.eventbus.EnterGame;
 import com.lptiyu.tanke.entity.eventbus.GamePointTaskStateChanged;
 import com.lptiyu.tanke.entity.eventbus.LeaveGame;
+import com.lptiyu.tanke.entity.eventbus.ReloadUserInfo;
 import com.lptiyu.tanke.entity.response.Banner;
 import com.lptiyu.tanke.entity.response.HomeBannerAndHot;
 import com.lptiyu.tanke.entity.response.HomeSort;
@@ -239,6 +240,7 @@ public class HomeFragment extends MyBaseFragment implements HomeContact.IHomeVie
                 RunApplication.entity = recommend;
                 RunApplication.type = recommend.type;
                 RunApplication.where = Where.HOME_HOT;
+                RunApplication.recordId = -1;
                 Intent intent = new Intent();
                 switch (recommend.play_status) {
                     case PlayStatus.NO_STATUS:
@@ -309,5 +311,11 @@ public class HomeFragment extends MyBaseFragment implements HomeContact.IHomeVie
     public void onEventMainThread(LeaveGame result) {
         //刷新数据
         refreshData();
+    }
+
+    //用户信息修改后会通知此界面刷新数据
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(ReloadUserInfo changed) {
+        tvTitle.setText(Accounts.getNickName());
     }
 }

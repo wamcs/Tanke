@@ -2,6 +2,7 @@ package com.lptiyu.tanke.global;
 
 
 import com.lptiyu.tanke.utils.ShaPrefer;
+import com.lptiyu.tanke.utils.xutils3.XUtilsUrls;
 
 /**
  * EMAIL : danxionglei@foxmail.com
@@ -15,21 +16,13 @@ public class Accounts {
         ShaPrefer.put("user_phone", number);
     }
 
-    //    public static void setStartPointId(long startPointId) {
-    //        ShaPrefer.put("start_Point_id", startPointId);
-    //    }
-    //
-    //    public static long getStartPointId() {
-    //        return ShaPrefer.getLong("start_Point_id", -1);
-    //    }
-    //
-    //    public static void setGameId(long gameId) {
-    //        ShaPrefer.put("game_id", gameId);
-    //    }
-    //
-    //    public static long getGameId() {
-    //        return ShaPrefer.getLong("game_id", -1);
-    //    }
+    public static void setHaveDRData(boolean isHaveDRData) {
+        ShaPrefer.put("have_dr_data", isHaveDRData);
+    }
+
+    public static boolean isHaveDRData() {
+        return ShaPrefer.getBoolean("have_dr_data", false);
+    }
 
     public static void setCrashLog(boolean isLogExist) {
         ShaPrefer.put("is_crash_log_exist", isLogExist);
@@ -45,6 +38,14 @@ public class Accounts {
 
     public static void setId(long s) {
         ShaPrefer.put("user_id", s);
+    }
+
+    public static String getIP() {
+        return ShaPrefer.getString("ip", XUtilsUrls.DEFAULT_IP);
+    }
+
+    public static void setIP(String s) {
+        ShaPrefer.put("ip", s);
     }
 
     public static String getInstallationId() {

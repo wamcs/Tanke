@@ -70,14 +70,8 @@ public class ImageDistinguishActivity extends MyBaseActivity implements Imagedis
 
     @BindView(R.id.img_startScan)
     ImageView imgStartScan;
-    @BindView(R.id.img_anim)
-    ImageView imgAnim;
-    @BindView(R.id.img_waiting)
-    ImageView img_waiting;
     @BindView(R.id.rl_tip)
     RelativeLayout rlScanningTip;
-    @BindView(R.id.rl_submit_record)
-    RelativeLayout rlSubmitRecord;
 
     private ImagedistinguishPresenter presenter;
     private long gameId;
@@ -151,21 +145,6 @@ public class ImageDistinguishActivity extends MyBaseActivity implements Imagedis
             }
         });
 
-        /**
-         * 识别成功回调
-         */
-        MyC2Java.setOnSuccessDistinguishListener(new MyC2Java.ISuccessDistinguishListener() {
-            @Override
-            public void onSuccess() {
-                taskResultHelper.startSubmitting();
-                if (timer != null) {
-                    timer.cancel();
-                    timer = null;
-                }
-                loadNetWorkData();
-            }
-        });
-
         if (AppData.isFirstInImageDistinguishActivity()) {
             getWindow().getDecorView().post(new Runnable() {
                 public void run() {
@@ -175,8 +154,20 @@ public class ImageDistinguishActivity extends MyBaseActivity implements Imagedis
             });
         }
 
+        /**
+         * 识别成功回调
+         */
+        MyC2Java.setOnSuccessDistinguishListener(new MyC2Java.ISuccessDistinguishListener() {
+            @Override
+            public void onSuccess() {
+                if (timer != null) {
+                    timer.cancel();
+                    timer = null;
+                }
+                upload();
+            }
+        });
 
-        img_waiting.setVisibility(View.GONE);
     }
 
     private boolean isImgArrNull() {
@@ -275,22 +266,18 @@ public class ImageDistinguishActivity extends MyBaseActivity implements Imagedis
         }
     }
 
-    private void loadNetWorkData() {
+    private void upload() {
         if (NetworkUtil.checkIsNetworkConnected()) {
+            //            taskResultHelper.startSubmitting();
             upLoadGameRecord();
         } else {
-            showNetUnConnectDialog();
+            PopupWindowUtils.getInstance().showNetExceptionPopupwindow(this, new PopupWindowUtils.OnRetryCallback() {
+                @Override
+                public void onRetry() {
+                    upload();
+                }
+            });
         }
-    }
-
-    // 网络异常对话框
-    private void showNetUnConnectDialog() {
-        PopupWindowUtils.getInstance().showNetExceptionPopupwindow(this, new PopupWindowUtils.OnRetryCallback() {
-            @Override
-            public void onRetry() {
-                loadNetWorkData();
-            }
-        });
     }
 
     private void initTimerTask() {
@@ -334,7 +321,7 @@ public class ImageDistinguishActivity extends MyBaseActivity implements Imagedis
                 //                if (Accounts.getPhoneNumber() != null && Accounts.getPhoneNumber().equals
                 // ("18272164317")) {
                 //                    stopScan();
-                //                    loadNetWorkData();
+                //                    upload();
                 //                    return;
                 //                }
                 if (!isScanning) {

@@ -11,12 +11,12 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.lptiyu.tanke.R;
+import com.lptiyu.tanke.activities.initialization.ui.SignUpActivity;
 import com.lptiyu.tanke.enums.Platform;
 import com.lptiyu.tanke.enums.RequestCode;
 import com.lptiyu.tanke.enums.ResultCode;
 import com.lptiyu.tanke.global.Accounts;
 import com.lptiyu.tanke.global.Conf;
-import com.lptiyu.tanke.activities.initialization.ui.SignUpActivity;
 import com.lptiyu.tanke.mybase.MyBaseActivity;
 import com.lptiyu.tanke.net.HttpService;
 import com.lptiyu.tanke.net.Response;
@@ -95,21 +95,17 @@ public class ModifyUserInfoActivity extends MyBaseActivity {
 
     private void init() {
         mTitle.setText("资料修改");
-        Bundle bundle = getIntent().getBundleExtra(Conf.DATA_TO_INFO_MODIFY);
-        if (bundle == null) {
-            return;
-        }
-        details = bundle.getParcelable(Conf.USER_DETAIL);
+        details = getIntent().getParcelableExtra(Conf.USER_DETAIL);
         if (details == null) {
             return;
         }
-        Glide.with(this).load(details.getAvatar()).error(R.mipmap.default_avatar).into(mAvatarImage);
-        mBirthdayText.setText(details.getBirthday());
-        mNicknameText.setText(details.getNickname());
-        mGenderText.setText(details.getSex());
-        mHeightText.setText(String.format(getString(R.string.modify_info_height_formatter), details.getHeight()));
-        mWeightText.setText(String.format(getString(R.string.modify_info_weight_formatter), details.getWeight()));
-        mLocationText.setText(details.getAddress());
+        Glide.with(this).load(details.img).error(R.mipmap.default_avatar).into(mAvatarImage);
+        mBirthdayText.setText(details.birthday);
+        mNicknameText.setText(details.name);
+        mGenderText.setText(details.sex);
+        mHeightText.setText(String.format(getString(R.string.modify_info_height_formatter), details.high));
+        mWeightText.setText(String.format(getString(R.string.modify_info_weight_formatter), details.weight));
+        mLocationText.setText(details.address);
         mPhoneText.setText(Accounts.getPhoneNumber());
         mLoadingDialog = new LoadingDialog(this);
         userId = Accounts.getId();
@@ -162,21 +158,22 @@ public class ModifyUserInfoActivity extends MyBaseActivity {
                         } else {
                             switch (typeFinal) {
                                 case UserService.USER_DETAIL_HEIGHT:
-                                    details.setHeight(contentFinal);
+                                    details.high = contentFinal;
                                     mHeightText.setText(String.format(getString(R.string
-                                            .modify_info_height_formatter), details.getHeight()));
+                                            .modify_info_height_formatter), details.high));
                                     break;
                                 case UserService.USER_DETAIL_WEIGHT:
-                                    details.setWeight(contentFinal);
+                                    details.weight = contentFinal;
                                     mWeightText.setText(String.format(getString(R.string
-                                            .modify_info_weight_formatter), details.getWeight()));
+                                            .modify_info_weight_formatter), details.weight));
                                     break;
                                 case UserService.USER_DETAIL_NICKNAME:
-                                    details.setNickname(contentFinal);
-                                    mNicknameText.setText(details.getNickname());
+                                    details.name = contentFinal;
+                                    mNicknameText.setText(details.name);
                                     break;
                             }
                             ToastUtil.TextToast(getString(R.string.modify_info_success));
+//                            EventBus.getDefault().post(new UserInfoChanged());
                         }
                     }
                 }, new Action1<Throwable>() {
@@ -206,7 +203,7 @@ public class ModifyUserInfoActivity extends MyBaseActivity {
             });
         }
         mTextInputDialog.isCancelable(false);
-        mTextInputDialog.show(details.getNickname());
+        mTextInputDialog.show(details.name);
     }
 
     @OnClick(R.id.modify_user_info_birthday_button)
@@ -233,6 +230,7 @@ public class ModifyUserInfoActivity extends MyBaseActivity {
                                         return;
                                     }
                                     mBirthdayText.setText(mData);
+//                                    EventBus.getDefault().post(new UserInfoChanged());
                                 }
                             }, new Action1<Throwable>() {
                                 @Override
@@ -272,6 +270,7 @@ public class ModifyUserInfoActivity extends MyBaseActivity {
                                         return;
                                     }
                                     mGenderText.setText(sex);
+//                                    EventBus.getDefault().post(new UserInfoChanged());
                                 }
                             }, new Action1<Throwable>() {
                                 @Override
@@ -355,6 +354,7 @@ public class ModifyUserInfoActivity extends MyBaseActivity {
                                     ToastUtil.TextToast(getString(R.string.upload_avatar_success));
                                     Glide.with(ModifyUserInfoActivity.this).load(Uri.parse(stringResponse.getData()))
                                             .into(mAvatarImage);
+//                                    EventBus.getDefault().post(new UserInfoChanged());
                                 }
                             }, new Action1<Throwable>() {
                                 @Override
@@ -378,8 +378,8 @@ public class ModifyUserInfoActivity extends MyBaseActivity {
         }
         switch (resultCode) {
             case Conf.REQUEST_CODE_NICKNAME:
-                details.setNickname(data.getStringExtra(Conf.USER_INFO));
-                mNicknameText.setText(details.getNickname());
+                details.name = data.getStringExtra(Conf.USER_INFO);
+                mNicknameText.setText(details.name);
                 break;
             case Conf.RESULT_CODE_START_USER_LOCATE:
                 mLoadingDialog.setDialogText("地区修改中");
@@ -390,7 +390,7 @@ public class ModifyUserInfoActivity extends MyBaseActivity {
                 }
                 String location = cityStruct.getmName();
                 if (location != null && location.length() != 0) {
-                    details.setAddress(location);
+                    details.address = location;
                     HttpService.getUserService()
                             .resetUserDetails(userId, token, UserService.USER_DETAIL_LOCATION, location)
                             .observeOn(AndroidSchedulers.mainThread())
@@ -404,7 +404,8 @@ public class ModifyUserInfoActivity extends MyBaseActivity {
                                         ToastUtil.TextToast(voidResponse.getInfo());
                                         return;
                                     }
-                                    mLocationText.setText(details.getAddress());
+                                    mLocationText.setText(details.address);
+//                                    EventBus.getDefault().post(new UserInfoChanged());
                                 }
                             }, new Action1<Throwable>() {
                                 @Override

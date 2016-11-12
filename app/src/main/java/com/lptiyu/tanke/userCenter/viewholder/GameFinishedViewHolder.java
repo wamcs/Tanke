@@ -10,6 +10,7 @@ import com.lptiyu.tanke.R;
 import com.lptiyu.tanke.RunApplication;
 import com.lptiyu.tanke.activities.gameplaying.GamePlayingActivity;
 import com.lptiyu.tanke.base.recyclerview.BaseViewHolder;
+import com.lptiyu.tanke.enums.Where;
 import com.lptiyu.tanke.pojo.GameFinishedEntity;
 import com.lptiyu.tanke.utils.TimeUtils;
 import com.lptiyu.tanke.widget.CustomTextView;
@@ -24,7 +25,7 @@ import butterknife.ButterKnife;
  *
  * @author ldx
  */
-public class GameFinishedHolder extends BaseViewHolder<GameFinishedEntity> {
+public class GameFinishedViewHolder extends BaseViewHolder<GameFinishedEntity> {
 
     @BindView(R.id.image_view)
     RoundedImageView mItemPicture;
@@ -47,7 +48,7 @@ public class GameFinishedHolder extends BaseViewHolder<GameFinishedEntity> {
     @BindView(R.id.game_finished_list_item)
     RelativeLayout mItem;
 
-    public GameFinishedHolder(ViewGroup parent) {
+    public GameFinishedViewHolder(ViewGroup parent) {
         super(fromResLayout(parent, R.layout.item_game_finished));
         ButterKnife.bind(this, itemView);
     }
@@ -62,7 +63,7 @@ public class GameFinishedHolder extends BaseViewHolder<GameFinishedEntity> {
         type.setText("");
         String ftime = entity.endTime;
         completeTime.setText(ftime.substring(0, ftime.lastIndexOf(":")) + "完成");
-        consumingTime.setText("用时" + TimeUtils.parseSecondToHourAndMinutes(Long.parseLong(entity.totalTime)));
+        consumingTime.setText("用时" + TimeUtils.parseSecond2Duration(Long.parseLong(entity.totalTime)));
         exp.setText(String.format(getContext().getString(R.string.user_game_finished_get_exp_formatter), entity
                 .expPoints));
 
@@ -73,7 +74,8 @@ public class GameFinishedHolder extends BaseViewHolder<GameFinishedEntity> {
                 RunApplication.type = entity.type;
                 RunApplication.entity = entity;
                 RunApplication.entity.title = entity.name;
-                RunApplication.where = entity.record_id;
+                RunApplication.where = Where.GAME_FINISH;
+                RunApplication.recordId = entity.record_id;
                 getContext().startActivity(new Intent(getContext(), GamePlayingActivity.class));
             }
         });

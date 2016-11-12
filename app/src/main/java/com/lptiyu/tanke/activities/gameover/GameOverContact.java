@@ -17,7 +17,7 @@ public class GameOverContact {
     }
 
     interface IGameOverPresenter extends IBasePresenter {
-        void loadGameOverReward(long gameId);
+        void loadGameOverReward(long gameId, long recordId);
 
         void getScoreAfterShare();
     }

@@ -12,6 +12,7 @@ import com.lptiyu.tanke.utils.TimeUtils;
 public final class Conf {
 
     public static final String IMG_DISTINGUISH_ARRAY = "img_distinguish_url";
+    public static final String DRRecordEntity = "dr_record_entity";
 
     public static final String IS_FIRST_IN_APP = "is_first_in_app";
     public static final String IS_FIRST_IN_IMAGE_DISTINGUISH_ACTIVITY = "is_first_in_image_distinguish";
@@ -124,6 +125,7 @@ public final class Conf {
     public static final String SHARE_URL = "share_url";
 
     public static final long TEMP_GAME_ID = -1;
+    public static final String RECOVERY = "recovery";
 
     public static final String POINT = "point";
     public static final String CLICK_INDEX = "click_index";

@@ -11,7 +11,7 @@ import java.util.Date;
  */
 public class DateUtils {
     public static String getCurrentTime() {
-        return new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
+        return new SimpleDateFormat("yyyy_MM_dd_HH-mm-ss").format(new Date());
     }
 
     /**

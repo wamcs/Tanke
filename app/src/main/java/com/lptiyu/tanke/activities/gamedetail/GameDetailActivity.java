@@ -187,6 +187,7 @@ public class GameDetailActivity extends MyBaseActivity implements GameDetailCont
         tvEnterGame.setEnabled(true);
         //更改该游戏的状态
         RunApplication.where = Where.GAME_DETAIL;
+        RunApplication.recordId = -1;
         if (RunApplication.entity != null) {
             RunApplication.entity.play_status = PlayStatus.HAVE_ENTERED_BUT_NOT_START_GAME;
         }
@@ -367,8 +368,19 @@ public class GameDetailActivity extends MyBaseActivity implements GameDetailCont
                 if (entity.cid == GameSort.DIRECTION_RUN) {//如果是定向乐跑，则直接跳转到定向乐跑界面
                     initGPS();
                 } else {
-                    tvEnterGame.setEnabled(false);
-                    presenter.enterGame(gameId, type);
+                    if (status == PLAY_AGAIN) {
+                        PopupWindowUtils.getInstance().showPlayAgainPopup(this, new PopupWindowUtils
+                                .OnClickPopupListener() {
+                            @Override
+                            public void sure() {
+                                tvEnterGame.setEnabled(false);
+                                presenter.enterGame(gameId, type);
+                            }
+                        });
+                    } else {
+                        tvEnterGame.setEnabled(false);
+                        presenter.enterGame(gameId, type);
+                    }
                 }
                 break;
             case PlayStatus.HAVE_ENTERED_BUT_NOT_START_GAME:

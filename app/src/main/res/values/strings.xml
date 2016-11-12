@@ -28,6 +28,7 @@
     <string name="change_city_dialog_message">是否需要切换到当前城市(%s)?</string>
     <string name="main_page_location_key">main_page_location</string>
     <string name="loading_more">加载更多&#8230;&#8230;&#8230;</string>
+    <string name="speed">0\"</string>
 
     <!-- LoginActivity Text Area-->
     <string name="main_page_date_formatter" formatted="false">%d月%d日-%d月%d日</string>

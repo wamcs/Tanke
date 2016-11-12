@@ -8,110 +8,97 @@
     tools:context="com.lptiyu.tanke.activities.directionrun.DirectionRunActivity">
 
 
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/rl_bottom"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:background="@color/white10"
-        android:orientation="horizontal"
         android:padding="20dp">
 
-        <RelativeLayout
-            android:id="@+id/rl_duration"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
+        <LinearLayout
+            android:id="@+id/ll_duration_distance"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <RelativeLayout
+                android:id="@+id/rl_duration"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:padding="5dp">
+
+                <Chronometer
+                    android:id="@+id/chronometer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:textColor="@color/black333"
+                    android:textSize="22sp"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:id="@+id/tv_duration_tip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/chronometer"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/duration"
+                    android:textColor="@color/black333"
+                    android:textSize="16sp"/>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/rl_distance"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:padding="5dp">
+
+                <TextView
+                    android:id="@+id/tv_distance_value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:text="0.0"
+                    android:textColor="@color/black333"
+                    android:textSize="22sp"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:id="@+id/tv_distance_tip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/tv_distance_value"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/distance"
+                    android:textColor="@color/black333"
+                    android:textSize="16sp"/>
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_startrun_or_stoprun_or_signup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/ll_duration_distance"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/selector_textview"
+            android:enabled="true"
             android:gravity="center"
-            android:padding="5dp">
+            android:padding="10dp"
+            android:text="@string/start_run"
+            android:textColor="@color/white10"
+            android:textSize="18sp"/>
 
-            <TextView
-                android:id="@+id/tv_duration_value"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:text="00:00:00"
-                android:textSize="22sp"
-                android:textStyle="bold"
-                android:visibility="gone"/>
-
-            <Chronometer
-                android:id="@+id/chronometer"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:textSize="22sp"/>
-
-            <TextView
-                android:id="@+id/tv_duration_tip"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/chronometer"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="10dp"
-                android:text="@string/duration"
-                android:textSize="16sp"/>
-
-            <TextView
-                android:id="@+id/tv_start_or_stop_run"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/tv_duration_tip"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="20dp"
-                android:background="@drawable/selector_textview"
-                android:enabled="false"
-                android:gravity="center"
-                android:padding="10dp"
-                android:text="@string/start_run"
-                android:textColor="@color/white10"
-                android:textSize="18sp"/>
-
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:id="@+id/rl_distance"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:padding="5dp">
-
-            <TextView
-                android:id="@+id/tv_distance_value"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:text="0.0"
-                android:textSize="22sp"
-                android:textStyle="bold"/>
-
-            <TextView
-                android:id="@+id/tv_distance_tip"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/tv_distance_value"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="10dp"
-                android:text="@string/distance"
-                android:textSize="16sp"/>
-
-            <TextView
-                android:id="@+id/tv_signUp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/tv_distance_tip"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="20dp"
-                android:background="@drawable/selector_textview"
-                android:enabled="false"
-                android:gravity="center"
-                android:padding="10dp"
-                android:text="@string/sign_up"
-                android:textColor="@color/white10"
-                android:textSize="18sp"/>
-        </RelativeLayout>
-
-    </LinearLayout>
+    </RelativeLayout>
 
     <com.amap.api.maps.TextureMapView
         android:id="@+id/textureMapView"
@@ -119,15 +106,29 @@
         android:layout_height="match_parent"
         android:layout_above="@id/rl_bottom"/>
 
+
+    <TextView
+        android:id="@+id/tv_tip"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/rl_bottom"
+        android:layout_centerHorizontal="true"
+        android:background="@color/colorPrimary"
+        android:gravity="center"
+        android:padding="5dp"
+        android:textColor="@color/black333"
+        android:textSize="14sp"
+        android:visibility="gone"/>
+
     <ImageView
         android:id="@+id/img_show_current_location"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@id/textureMapView"
         android:layout_alignLeft="@id/textureMapView"
-        android:layout_marginBottom="10dp"
+        android:layout_marginBottom="70dp"
         android:layout_marginLeft="10dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="20dp"
         android:src="@drawable/wode"/>
 
     <ImageView
@@ -137,15 +138,6 @@
         android:layout_above="@id/img_show_current_location"
         android:layout_alignLeft="@id/img_show_current_location"
         android:src="@drawable/renwu"/>
-
-    <TextView
-        android:id="@+id/tv_tip"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@id/rl_bottom"
-        android:layout_centerHorizontal="true"
-        android:text="提示"
-        android:textSize="12sp"/>
 
 
 </RelativeLayout>

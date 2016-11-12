@@ -42,6 +42,8 @@ public class RunApplication extends MultiDexApplication {
     public static boolean isGameOver;
     public static BaseEntity entity;//点击的某个游戏实体
     public static int where;//从哪个入口进来的
+    public static int recordId = -1;//查看通关奖励时，如果是从已完成进去的，则要传recordId，否则recordId=-1
+    public static String SERVICE_IP;
 
     @Override
     public void onCreate() {

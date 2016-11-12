@@ -313,10 +313,58 @@
     </RelativeLayout>
 
     <RelativeLayout
-        android:id="@+id/user_judge_game"
+        android:id="@+id/user_direction_run"
         android:layout_width="match_parent"
         android:layout_height="@dimen/fragment_user_center_item_height"
         android:layout_below="@id/user_game_finished"
+        android:background="@drawable/fragment_user_center_item_bg"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@id/image"
+            android:layout_width="@dimen/user_center_linear_layout_left_image_width"
+            android:layout_height="@dimen/user_center_linear_layout_left_image_width"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/x47"
+            android:scaleType="centerInside"
+            android:src="@drawable/icon_finished"/>
+
+        <com.lptiyu.tanke.widget.CustomTextView
+            android:id="@id/name"
+            style="@style/TextAppearance.UserCenter.middle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@id/image"
+            android:gravity="center"
+            android:paddingLeft="@dimen/x52"
+            android:text="乐跑记录"/>
+
+
+        <View
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/user_center_linear_layout_bottom_line_height"
+            android:layout_alignParentBottom="true"
+            android:layout_marginLeft="@dimen/x47"
+            android:layout_marginRight="@dimen/x47"
+            android:background="@color/user_center_split_line"/>
+
+        <ImageView
+            android:id="@+id/img_direction_run_arrow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/setting_activity_arrow_margin_right"
+            android:src="@mipmap/arrow_left_black"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/user_judge_game"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/fragment_user_center_item_height"
+        android:layout_below="@id/user_direction_run"
         android:background="@drawable/fragment_user_center_item_bg"
         android:orientation="horizontal"
         android:visibility="gone">
@@ -473,8 +521,7 @@
             android:layout_marginRight="20dp"
             android:layout_toLeftOf="@id/img_score_store_arrow"
             android:layout_toRightOf="@id/name"
-            android:gravity="right"
-            android:paddingLeft="@dimen/x47"/>
+            android:gravity="right"/>
 
     </RelativeLayout>
 

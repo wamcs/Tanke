@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/transparent_d"
+                android:padding="40dp">
+
+    <TextView
+        android:id="@+id/tv_sign_up_tip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:gravity="center"
+        android:text="打卡成功！"
+        android:textColor="@color/colorPrimary"
+        android:textSize="20sp"/>
+
+    <RelativeLayout
+        android:id="@+id/rl_exp_score"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_sign_up_tip"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp">
+
+
+        <TextView
+            android:id="@+id/tv_exp_tip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:gravity="center"
+            android:text="经验"
+            android:textColor="@color/white10"
+            android:textSize="14sp"/>
+
+        <TextView
+            android:id="@+id/tv_exp_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@id/tv_exp_tip"
+            android:layout_toRightOf="@id/tv_exp_tip"
+            android:clickable="true"
+            android:gravity="center"
+            android:text="+16"
+            android:textColor="@color/colorPrimary"
+            android:textSize="16sp"/>
+
+        <TextView
+            android:id="@+id/tv_score_tip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@id/tv_exp_value"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@id/tv_exp_value"
+            android:clickable="true"
+            android:gravity="center"
+            android:text="积分"
+            android:textColor="@color/white10"
+            android:textSize="14sp"/>
+
+        <TextView
+            android:id="@+id/tv_score_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@id/tv_score_tip"
+            android:layout_toRightOf="@id/tv_score_tip"
+            android:clickable="true"
+            android:gravity="center"
+            android:text="+16"
+            android:textColor="@color/colorPrimary"
+            android:textSize="16sp"/>
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/tv_red_wallet"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/rl_exp_score"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:clickable="true"
+        android:drawablePadding="5dp"
+        android:drawableTop="@drawable/hong"
+        android:gravity="center"
+        android:text="获得现金红包0.56元"
+        android:textColor="@color/colorPrimary"
+        android:textSize="16sp"/>
+</RelativeLayout>

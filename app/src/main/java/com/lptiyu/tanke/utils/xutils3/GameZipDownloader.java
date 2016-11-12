@@ -20,7 +20,7 @@ import java.io.File;
 /**
  * Created by Jason on 2016/8/20.
  */
-public class XUtilsDownloader {
+public class GameZipDownloader {
 
     private ProgressDialog progressDialog;
     private String tempGameZipUrl;
@@ -30,7 +30,7 @@ public class XUtilsDownloader {
     private Context context;
     private Handler handler;
 
-    public XUtilsDownloader(Context context, String tempGameZipUrl, final long gameId, FinishDownloadCallback
+    public GameZipDownloader(Context context, String tempGameZipUrl, final long gameId, FinishDownloadCallback
             callback) {
         this.context = context;
         this.tempGameZipUrl = tempGameZipUrl;

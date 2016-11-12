@@ -8,6 +8,7 @@ import android.os.Handler;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -17,6 +18,7 @@ import com.lptiyu.tanke.R;
 import com.lptiyu.tanke.RunApplication;
 import com.lptiyu.tanke.entity.response.GameOverReward;
 import com.lptiyu.tanke.entity.response.GetScoreAfterShare;
+import com.lptiyu.tanke.enums.Where;
 import com.lptiyu.tanke.global.Accounts;
 import com.lptiyu.tanke.mybase.MyBaseActivity;
 import com.lptiyu.tanke.utils.DisplayUtils;
@@ -55,12 +57,16 @@ public class GameOverActivity extends MyBaseActivity implements GameOverContact.
     ProgressBar progressBarExpValue;
     @BindView(R.id.tv_red_wallet_value)
     TextView tvRedWalletValue;
+    @BindView(R.id.tv_share_score_tip)
+    TextView tvShareScoreTip;
     @BindView(R.id.rl_red_wallet)
     RelativeLayout rlRedWallet;
     @BindView(R.id.img_close)
     ImageView imgClose;
-    @BindView(R.id.tv_share_score_tip)
-    TextView tvShareScoreTip;
+    @BindView(R.id.rl_share_tip)
+    RelativeLayout rlShareScoreTip;
+    @BindView(R.id.ll_share_platform_list)
+    LinearLayout llPlatformList;
 
     private Handler handler = new Handler();
     private int progress = 0;
@@ -70,6 +76,7 @@ public class GameOverActivity extends MyBaseActivity implements GameOverContact.
     private Bitmap waterMarker;
     private Bitmap waterMarkerBitmap;
     private String imagePath;
+    private long recordId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,8 +93,38 @@ public class GameOverActivity extends MyBaseActivity implements GameOverContact.
             }
         });
 
+        initData();
+
         presenter = new GameOverPresenter(this);
-        presenter.loadGameOverReward(RunApplication.gameId);
+        presenter.loadGameOverReward(RunApplication.gameId, recordId);
+    }
+
+    private void initData() {
+        if (RunApplication.where == Where.GAME_FINISH) {
+            recordId = RunApplication.recordId;
+        } else {
+            recordId = -1;
+        }
+        if (isFirstShareOnCurrentDay()) {
+            tvShareScoreTip.setVisibility(View.VISIBLE);
+        } else {
+            tvShareScoreTip.setVisibility(View.GONE);
+        }
+    }
+
+    private boolean isFirstShareOnCurrentDay() {
+        //每天只能获取一次分享积分
+        int dayIndex = Calendar.getInstance().get(Calendar.DAY_OF_YEAR);
+        //如果当前的天数跟存储的天数不相等，则表示用户上一次获取分享积分是在昨天
+        if (dayIndex != Accounts.getDayIndex()) {
+            return true;
+        } else {
+            if (!Accounts.isShareScoreGot()) {
+                return true;
+            } else {
+                return false;
+            }
+        }
     }
 
     private void startAnime() {
@@ -141,7 +178,8 @@ public class GameOverActivity extends MyBaseActivity implements GameOverContact.
     }
 
     private void share() {
-        tvShareScoreTip.setVisibility(View.GONE);
+        rlShareScoreTip.setVisibility(View.GONE);
+        llPlatformList.setVisibility(View.GONE);
         imgClose.setVisibility(View.GONE);
         shareDialog = ProgressDialog.show(this, "", "加载中...", true, false);
         new Thread(new Runnable() {
@@ -152,7 +190,8 @@ public class GameOverActivity extends MyBaseActivity implements GameOverContact.
                     @Override
                     public void run() {
                         ShareHelper.shareImage(platform, imagePath, GameOverActivity.this);
-                        tvShareScoreTip.setVisibility(View.VISIBLE);
+                        rlShareScoreTip.setVisibility(View.VISIBLE);
+                        llPlatformList.setVisibility(View.VISIBLE);
                         imgClose.setVisibility(View.VISIBLE);
                     }
                 });
@@ -230,12 +269,14 @@ public class GameOverActivity extends MyBaseActivity implements GameOverContact.
                 .equals("0")) {
             rlRedWallet.setVisibility(View.GONE);
         } else {
+            rlRedWallet.setVisibility(View.VISIBLE);
             tvRedWalletValue.setText(gameOverReward.extra_money + "元现金红包");
         }
     }
 
     @Override
     public void successGetScore(GetScoreAfterShare getScoreAfterShare) {
+        tvShareScoreTip.setVisibility(View.GONE);
         Accounts.setShareScoreGot(true);
         Accounts.setDayIndex(Calendar.getInstance().get(Calendar.DAY_OF_YEAR));
         if (getScoreAfterShare != null) {
@@ -244,15 +285,8 @@ public class GameOverActivity extends MyBaseActivity implements GameOverContact.
     }
 
     private void getShareScore() {
-        //每天只能获取一次分享积分
-        int dayIndex = Calendar.getInstance().get(Calendar.DAY_OF_YEAR);
-        //如果当前的天数跟存储的天数不相等，则表示用户上一次获取分享积分是在昨天
-        if (dayIndex != Accounts.getDayIndex()) {
+        if (isFirstShareOnCurrentDay()) {
             presenter.getScoreAfterShare();
-        } else {
-            if (!Accounts.isShareScoreGot()) {
-                presenter.getScoreAfterShare();
-            }
         }
     }
 

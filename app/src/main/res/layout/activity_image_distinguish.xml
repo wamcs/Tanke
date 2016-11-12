@@ -61,39 +61,4 @@
             android:layout_marginTop="5dp"/>
     </RelativeLayout>
 
-    <RelativeLayout
-        android:id="@+id/rl_submit_record"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@drawable/bg_submit_record"
-        android:visibility="gone">
-
-        <ImageView
-            android:id="@+id/img_anim"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:scaleType="centerInside"
-            />
-
-        <TextView
-            android:id="@+id/tv_submitting"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/img_anim"
-            android:layout_centerInParent="true"
-            android:layout_marginTop="10dp"
-            android:text="提交中..."
-            android:textColor="@color/colorPrimary"
-            />
-    </RelativeLayout>
-
-    <ImageView
-        android:id="@+id/img_waiting"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:clickable="false"
-        android:scaleType="fitXY"
-        android:visibility="gone"/>
-
 </RelativeLayout>

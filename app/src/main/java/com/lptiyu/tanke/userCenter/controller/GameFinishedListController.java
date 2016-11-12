@@ -17,7 +17,7 @@ import com.lptiyu.tanke.global.Accounts;
 import com.lptiyu.tanke.net.HttpService;
 import com.lptiyu.tanke.net.Response;
 import com.lptiyu.tanke.pojo.GameFinishedEntity;
-import com.lptiyu.tanke.userCenter.viewholder.GameFinishedHolder;
+import com.lptiyu.tanke.userCenter.viewholder.GameFinishedViewHolder;
 import com.lptiyu.tanke.utils.ThreadUtils;
 import com.lptiyu.tanke.utils.ToastUtil;
 import com.lptiyu.tanke.widget.CustomTextView;
@@ -53,7 +53,7 @@ public class GameFinishedListController extends BaseListActivityController<GameF
     BaseAdapter<GameFinishedEntity> adapter = new BaseAdapter<GameFinishedEntity>() {
         @Override
         public BaseViewHolder<GameFinishedEntity> onCreateViewHolder(ViewGroup parent, int viewType) {
-            return new GameFinishedHolder(parent);
+            return new GameFinishedViewHolder(parent);
         }
     };
 

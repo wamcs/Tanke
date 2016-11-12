@@ -4,7 +4,6 @@ package com.lptiyu.tanke.utils;
 import android.content.Context;
 
 import com.lptiyu.tanke.R;
-import com.lptiyu.tanke.global.AppData;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -13,7 +12,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
-import timber.log.Timber;
 
 /**
  * author:wamcs
@@ -27,12 +25,86 @@ public class TimeUtils {
     public final static long ONE_HOUR_TIME = ONE_MINUTE_TIME * 60;
     public final static long ONE_DAY_TIME = ONE_HOUR_TIME * 24;
 
-    public static final SimpleDateFormat totalFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.CHINA);
-    public static final DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd", Locale.CHINA);
-    public static final DateFormat timeFormatter = new SimpleDateFormat("HH:mm:ss", Locale.CHINA);
-    public static final DateFormat timeFormatter2 = new SimpleDateFormat("HH:mm", Locale.CHINA);
-    public static final DateFormat timeFormatter3 = new SimpleDateFormat("mm:ss", Locale.CHINA);
+    public static final String PATTERN1 = "yyyy-MM-dd HH:mm:ss";
+    public static final String PATTERN2 = "yyyy-MM-dd";
+    public static final String PATTERN3 = "HH:mm:ss";
+    public static final String PATTERN4 = "HH:mm";
+    public static final String PATTERN5 = "mm:ss";
 
+    public static DateFormat getDateFormatter(String pattern) {
+        return new SimpleDateFormat(pattern, Locale.CHINA);
+    }
+
+    /*
+     * 将时间转换为时间戳
+     */
+    public static String dateStrToStamp(String dateStr, String pattern) {
+        String res = null;
+        try {
+            Date date = getDateFormatter(pattern).parse(dateStr);
+            long ts = date.getTime();
+            res = String.valueOf(ts);
+            return res;
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return res;
+    }
+
+    /*
+     * 将时间戳转换为时间
+     */
+    public static String stampToDateStr(String stamp, String pattern) {
+        String res;
+        long lt = new Long(stamp);
+        Date date = new Date(lt);
+        res = getDateFormatter(pattern).format(date);
+        return res;
+    }
+
+    /*
+     * 将时间戳转换为时间
+     */
+    public static String stampToDateStr(long stamp, String pattern) {
+        String res;
+        Date date = new Date(stamp);
+        res = getDateFormatter(pattern).format(date);
+        return res;
+    }
+
+    /**
+     * 定向乐跑中，将后台返回的秒数转化为时长
+     * <p>
+     * 将秒转化成时分秒--00:00:00
+     */
+    public static String formatSecond(long second) {
+        String hh = second / 3600 > 9 ? second / 3600 + "" : "0" + second / 3600;
+        String mm = (second % 3600) / 60 > 9 ? (second % 3600) / 60 + "" : "0" + (second % 3600) / 60;
+        String ss = (second % 3600) % 60 > 9 ? (second % 3600) % 60 + "" : "0" + (second % 3600) % 60;
+        return hh + ":" + mm + ":" + ss;
+    }
+
+    public static String caculateUsingTime(String endDateStr, String startDateStr) {
+        Date startDate = null;
+        Date endDate = null;
+        try {
+            endDate = getDateFormatter(PATTERN1).parse(endDateStr);
+            startDate = getDateFormatter(PATTERN1).parse(startDateStr);
+            if (startDate != null && endDate != null) {
+                return parseSecond2Duration((endDate.getTime() - startDate.getTime()) / 1000);
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
+     * 解析注册时验证码的倒计时
+     *
+     * @param time
+     * @return
+     */
     public static String getFriendlyTime(long time) {
         if (ONE_MINUTE_TIME > time) {
             return String.format("00 : %2d".toLowerCase(), time / 1000);
@@ -48,33 +120,12 @@ public class TimeUtils {
         return "大于一天";
     }
 
-    public static String getDateTimeWithoutYear(long time) {
-        Date date = new Date(time);
-        return String.format(
-                AppData.getContext().getString(R.string.complete_time_without_year_formatter),
-                date.getMonth() + 1,
-                date.getDate(),
-                date.getHours(),
-                date.getMinutes()
-        );
-    }
-
-    public static String getDateTime(long time) {
-        Date date = new Date(time);
-        return String.format(
-                AppData.getContext().getString(R.string.complete_time_formatter),
-                date.getYear() + 1900,
-                date.getMonth() + 1,
-                date.getDate(),
-                date.getHours(),
-                date.getMinutes()
-        );
-    }
-
     /**
+     * 将年月日字符串变成Date对象
+     *
      * @param date format was yyyy-MM-dd
      */
-    public static Date parseDate(String date, DateFormat format) {
+    private static Date parseDate(String date, DateFormat format) {
         if (date == null)
             return null;
         try {
@@ -84,53 +135,8 @@ public class TimeUtils {
         }
     }
 
-    public static String parseCompleteTime(long time) {
-        Long timestamp = Long.parseLong(String.valueOf(time)) * 1000;
-        Date date = new Date(timestamp);
-        return dateFormatter.format(date);
-    }
-
-    public static String parseFrontPartTime(long time) {
-        Long timestamp = Long.parseLong(String.valueOf(time)) * 1000;
-        Date data = new Date(timestamp);
-        return timeFormatter2.format(data);
-    }
-
-    public static String parseLastPartTime(long time) {
-        Long timestamp = Long.parseLong(String.valueOf(time)) * 1000;
-        Date data = new Date(timestamp);
-        return timeFormatter3.format(data);
-    }
-
-    public static String getConsumingTime(long time) {
-
-        Timber.e("time : %d", time);
-
-        long hour = time / ONE_HOUR_TIME;
-        long minute = (time - hour * ONE_HOUR_TIME) / ONE_MINUTE_TIME;
-        String formatter = AppData.getContext().getString(R.string.complete_game_consuming_time_formatter);
-        return String.format(formatter, hour, minute);
-    }
-
-
     /**
-     * @param time was HH:mm:ss
-     */
-    public static Date parseTime(String time) {
-        if (time == null || time.length() != 0) {
-            //      return playing Date();
-            return null;
-        }
-        try {
-            return timeFormatter.parse(time);
-        } catch (ParseException e) {
-            //      e.printStackTrace();
-            return null;
-        }
-    }
-
-    /**
-     * Parse time for HomeFragment and GameDetailsActivity
+     * 解析游戏详情里面的时间
      *
      * @param context
      * @param startDate
@@ -146,18 +152,18 @@ public class TimeUtils {
         String timeResult = "";
         Calendar calendar = Calendar.getInstance();
 
-        Date date = parseDate(startDate, dateFormatter);
+        Date date = parseDate(startDate, getDateFormatter(PATTERN2));
         if (date != null) {
             calendar.setTime(date);
             int _startMonth = calendar.get(Calendar.MONTH) + 1;
             int _startDate = calendar.get(Calendar.DATE);
-            date = parseDate(endDate, dateFormatter);
+            date = parseDate(endDate, getDateFormatter(PATTERN2));
             calendar.setTime(date);
             int _endMonth = calendar.get(Calendar.MONTH) + 1;
             int _endDate = calendar.get(Calendar.DATE);
             result[0] = String.format(Locale.CHINA, context.getString(R.string.main_page_date_format_pattern),
                     _startMonth, _startDate, _endMonth, _endDate);
-            timeResult = String.format(Locale.CHINA, context.getString(R.string.main_page_date_format_pattern),
+            String.format(Locale.CHINA, context.getString(R.string.main_page_date_format_pattern),
                     _startMonth, _startDate, _endMonth, _endDate);
         }
 
@@ -169,16 +175,6 @@ public class TimeUtils {
             timeResult = startTime + "-" + endTime;
         }
         return timeResult;
-
-        //        return result;
-    }
-
-    public static String formatHourMinute(String content) {
-        Date parsed = parseTime(content);
-        if (parsed == null) {
-            return null;
-        }
-        return timeFormatter2.format(parsed);
     }
 
 
@@ -198,64 +194,13 @@ public class TimeUtils {
         return Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
     }
 
-    public static int getCurrentMinute() {
-        return Calendar.getInstance().get(Calendar.MINUTE);
-    }
-
-    public static long getCurrentDate() {
-        int year = getCurrentYear();
-        int month = getCurrentMonth();
-        int day = getCurrentDay();
-        DateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss", Locale.CHINA);
-        String date = year + "/" + month + "/" + day + " 00:00:00";
-        Date date1 = null;
-        try {
-            date1 = sdf.parse(date);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return date1.getTime();
-    }
-
-
-    public static String parsePartTime(long time) {
-        Long timestamp = Long.parseLong(String.valueOf(time)) * 1000;
-        Date data = new Date(timestamp);
-        return timeFormatter2.format(data);
-    }
-
-
     /**
-     * the follow three function are used for getting time (hours:minutes:seconds)
+     * 将秒数转化为x小时x分x秒
+     *
+     * @param seconds
+     * @return
      */
-    public static String getSeconds(long time) {
-        int s = (int) (time / 1000) % 60;
-        if (s < 10)
-            return "0" + s;
-        else
-            return s + "";
-    }
-
-    public static String getMinutes(long time) {
-
-        //总分钟数
-
-        int m = ((int) (time / 1000) / 60) % 60;
-        if (m < 10)
-            return "0" + m;
-        else
-            return m + "";
-    }
-
-    public static String getHours(long time) {
-        int h = (int) (time / 1000) / 3600;
-        if (h < 0)
-            return "0" + h;
-        else
-            return h + "";
-    }
-
-    public static String parseSecondToHourAndMinutes(long seconds) {
+    public static String parseSecond2Duration(long seconds) {
         if (seconds < 60) {
             return seconds + "秒";
         }
@@ -266,13 +211,20 @@ public class TimeUtils {
         }
     }
 
-    public static String parseFinishTimeForTaskFinished(long time) {
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.CHINA);
-        Long timestamp = Long.parseLong(String.valueOf(time)) * 1000;
-        Date data = new Date(timestamp);
-        return formatter.format(data);
-
+    /**
+     * 格式化平均配速
+     *
+     * @param peisu
+     * @return
+     */
+    public static String parsePeisu(long peisu) {
+        if (peisu < 60) {
+            return peisu + "\"";
+        }
+        if (peisu >= 60 && peisu < 3600) {
+            return peisu / 60 + "\"" + peisu % 60 + "\"";
+        } else {
+            return peisu / 3600 + "\"" + (peisu % 3600) / 60 + "\"" + peisu % 60 + "\"";
+        }
     }
-
-
 }

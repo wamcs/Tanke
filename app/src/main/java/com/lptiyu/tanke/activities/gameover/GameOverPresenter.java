@@ -23,10 +23,11 @@ public class GameOverPresenter implements GameOverContact.IGameOverPresenter {
     }
 
     @Override
-    public void loadGameOverReward(long gameId) {
+    public void loadGameOverReward(long gameId, long recordId) {
         RequestParams params = RequestParamsHelper.getBaseRequestParam(XUtilsUrls.GAME_OVER_REWARD);
         params.addBodyParameter("uid", Accounts.getId() + "");
         params.addBodyParameter("game_id", gameId + "");
+        params.addBodyParameter("record_id", recordId + "");
         XUtilsHelper.getInstance().get(params, new XUtilsRequestCallBack<GameOverRewardResponse>() {
             @Override
             protected void onSuccess(GameOverRewardResponse response) {
