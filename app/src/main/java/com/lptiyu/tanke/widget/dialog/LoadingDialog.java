@@ -1,6 +1,7 @@
 package com.lptiyu.tanke.widget.dialog;
 
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.widget.TextView;
 
@@ -17,34 +18,30 @@ import butterknife.ButterKnife;
  */
 public class LoadingDialog extends BaseDialog {
 
-  @BindView(R.id.layout_dialog_loading_text)
-  TextView mText;
+    @BindView(R.id.layout_dialog_loading_text)
+    TextView mText;
 
-  public LoadingDialog(Context context) {
-    super(context);
-    withTitle(null)
-        .isCancelableOnTouchOutside(false)
-        .withDialogColor(getContext().getResources().getColor(R.color.default_font_color))
-        .setCustomView(R.layout.layout_dialog_loading, context);
-  }
-
-  @Override
-  public BaseDialog setCustomView(int resId, Context context) {
-    View v = Inflater.inflate(resId, null, false);
-    return setCustomView(v, context);
-  }
-
-  @Override
-  public BaseDialog setCustomView(View view, Context context) {
-    ButterKnife.bind(this, view);
-    return super.setCustomView(view, context);
-  }
-
-  public void setDialogText(String text) {
-    if (null != mText) {
-      mText.setText(text);
+    public LoadingDialog(Context context) {
+        super(context);
+        withTitle(null).isCancelableOnTouchOutside(false).withDialogColor(ContextCompat.getColor(getContext(), R
+                .color.white10)).setCustomView(R.layout.layout_dialog_loading, context).setTitle("");
     }
-  }
 
+    @Override
+    public BaseDialog setCustomView(int resId, Context context) {
+        View v = Inflater.inflate(resId, null, false);
+        return setCustomView(v, context);
+    }
 
+    @Override
+    public BaseDialog setCustomView(View view, Context context) {
+        ButterKnife.bind(this, view);
+        return super.setCustomView(view, context);
+    }
+
+    public void setDialogText(String text) {
+        if (null != mText) {
+            mText.setText(text);
+        }
+    }
 }

@@ -10,7 +10,6 @@ import com.lptiyu.tanke.global.AppData;
 import com.lptiyu.tanke.net.HttpService;
 import com.lptiyu.tanke.net.Response;
 import com.lptiyu.tanke.net.UserService;
-import com.lptiyu.tanke.pojo.UserDetails;
 import com.lptiyu.tanke.pojo.UserEntity;
 
 import java.lang.ref.WeakReference;
@@ -42,11 +41,11 @@ public class ThirdLoginHelper implements PlatformActionListener {
 
     private WeakReference<Activity> activityWeakReference;
 
-    private static UserDetails Muser = new UserDetails();
-
-    public static UserDetails getUserDetail() {
-        return Muser;
-    }
+    //    private static UserDetails Muser = new UserDetails();
+    //
+    //    public static UserDetails getUserDetail() {
+    //        return Muser;
+    //    }
 
     public ThirdLoginHelper(Activity activity) {
         activityWeakReference = new WeakReference<>(activity);
@@ -59,43 +58,42 @@ public class ThirdLoginHelper implements PlatformActionListener {
         platform.showUser(null);
     }
 
-    private void getQzoneUserInformation(HashMap<String, Object> hashMap) {
-        Muser.name = hashMap.get("nickname").toString();
-        Muser.sex = hashMap.get("gender").toString();
-        Muser.img = hashMap.get("figureurl_qq_1").toString();
-    }
-
-    private void getWeiboUserInformation(HashMap<String, Object> hashMap) {
-        Muser.name = hashMap.get("name").toString();
-        switch (hashMap.get("gender").toString()) {
-            case "m":
-                Muser.sex = "男";
-                break;
-            case "f":
-                Muser.sex = "女";
-                break;
-        }
-        Muser.img = hashMap.get("avatar_hd").toString();
-
-    }
-
-    private void getWechatUserInformation(HashMap<String, Object> hashMap) {
-        Accounts.setOpenId(String.valueOf(hashMap.get("openid")));
-        Muser.name = hashMap.get("nickname").toString();
-        switch (String.valueOf(hashMap.get("sex"))) {
-            case "1":
-                Muser.sex = "男";
-                break;
-            case "2":
-                Muser.sex = "女";
-                break;
-
-        }
-        Muser.img = hashMap.get("headimgurl").toString();
-    }
+    //    private void getQzoneUserInformation(HashMap<String, Object> hashMap) {
+    //        Muser.name = hashMap.get("nickname").toString();
+    //        Muser.sex = hashMap.get("gender").toString();
+    //        Muser.img = hashMap.get("figureurl_qq_1").toString();
+    //    }
+    //
+    //    private void getWeiboUserInformation(HashMap<String, Object> hashMap) {
+    //        Muser.name = hashMap.get("name").toString();
+    //        switch (hashMap.get("gender").toString()) {
+    //            case "m":
+    //                Muser.sex = "男";
+    //                break;
+    //            case "f":
+    //                Muser.sex = "女";
+    //                break;
+    //        }
+    //        Muser.img = hashMap.get("avatar_hd").toString();
+    //
+    //    }
+    //
+    //    private void getWechatUserInformation(HashMap<String, Object> hashMap) {
+    //        //        Accounts.setOpenId(String.valueOf(hashMap.get("openid")));
+    //        Muser.name = hashMap.get("nickname").toString();
+    //        switch (String.valueOf(hashMap.get("sex"))) {
+    //            case "1":
+    //                Muser.sex = "男";
+    //                break;
+    //            case "2":
+    //                Muser.sex = "女";
+    //                break;
+    //
+    //        }
+    //        Muser.img = hashMap.get("headimgurl").toString();
+    //    }
 
     public void login(String id, final int platformType, int ostype, String avatar_url, String nick_name) {
-        //        final int plantType = platformType;
         HttpService.getUserService().loginThirdParty(id, platformType, ostype, avatar_url, nick_name)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -110,24 +108,14 @@ public class ThirdLoginHelper implements PlatformActionListener {
                         UserEntity entity = userEntityResponse.getData();
 
                         Activity activity = activityWeakReference.get();
-                        Intent intentToSignUP = new Intent();
-
-                        //                        if (entity.getIsNewUserThirdParty() == 1) {
-                        //                            intentToSignUP.setClass(activity, SignUpActivity.class);
-                        //                            intentToSignUP.putExtra(Conf.SIGN_UP_CODE, Conf.REGISTER_CODE);
-                        //                            intentToSignUP.putExtra(Conf.SIGN_UP_TYPE, plantType);
-                        //                        } else {
-                        //                            Accounts.setId(entity.getUid());
-                        //                            Accounts.setToken(entity.getToken());
-                        //                            intentToSignUP.setClass(activity, MainActivity.class);
-                        //                        }
+                        Intent intent = new Intent();
                         Accounts.setId(entity.getUid());
                         Accounts.setToken(entity.getToken());
                         Accounts.setPlatform(platformType);
                         Accounts.setNickName(entity.getNickname());
                         Accounts.setAvatar(entity.getAvatar());
-                        intentToSignUP.setClass(activity, MainActivity.class);
-                        activity.startActivity(intentToSignUP);
+                        intent.setClass(activity, MainActivity.class);
+                        activity.startActivity(intent);
                     }
                 }, new Action1<Throwable>() {
                     @Override
@@ -141,25 +129,24 @@ public class ThirdLoginHelper implements PlatformActionListener {
 
     @Override
     public void onComplete(Platform platform, int i, HashMap<String, Object> hashMap) {
-
         PlatformDb db = platform.getDb();
         String id = db.getUserId();//openID
         String nick_name = db.getUserName();//nick_name
         String avatar_url = db.getUserIcon();//avatar_url
-        //platform.getDb().getToken();
+        Accounts.setOpenId(id);
         if (platform.getName().equals(QZONE)) {
-            getQzoneUserInformation(hashMap);
+            //            getQzoneUserInformation(hashMap);
             login(id, UserService.USER_TYPE_QQ, ANDROID, avatar_url, nick_name);
             //            return;
         }
 
         if (platform.getName().equals(WEIBO)) {
-            getWeiboUserInformation(hashMap);
+            //            getWeiboUserInformation(hashMap);
             login(id, UserService.USER_TYPE_WEIBO, ANDROID, avatar_url, nick_name);
             //            return;
         }
         if (platform.getName().equals(WECHAT)) {
-            getWechatUserInformation(hashMap);
+            //            getWechatUserInformation(hashMap);
             login(id, UserService.USER_TYPE_WEIXIN, ANDROID, avatar_url, nick_name);
         }
 

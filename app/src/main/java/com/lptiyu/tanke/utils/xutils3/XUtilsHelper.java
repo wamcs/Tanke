@@ -6,8 +6,8 @@ import android.util.Log;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.lptiyu.tanke.utils.DirUtils;
+import com.lptiyu.tanke.utils.FileUtils;
 import com.lptiyu.tanke.utils.LogUtils;
-import com.lptiyu.tanke.utils.StringUtils;
 
 import org.xutils.common.Callback;
 import org.xutils.ex.HttpException;
@@ -58,7 +58,7 @@ public class XUtilsHelper {
             params = new RequestParams("http://" + fileUrl);
         //设置断点续传
         params.setAutoResume(true);
-        String fileName = StringUtils.getFileNameFromURL(fileUrl);
+        String fileName = FileUtils.getFileNameFromURL(fileUrl);
         if (fileSavePath == null)
             params.setSaveFilePath(DirUtils.getAPKDirectory() + "/" + fileName);
         else

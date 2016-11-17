@@ -102,11 +102,11 @@ public class ThreadUtils {
     exec.execute(runnable);
   }
 
-  public static void mainThread(Runnable runnable) {
-    mainThreadHandler.post(runnable);
-  }
-
   public static void mainThreadDelayed(Runnable runnable, long delayMillis) {
     mainThreadHandler.postDelayed(runnable, delayMillis);
+  }
+
+  public static void mainThread(Runnable runnable) {
+    mainThreadHandler.post(runnable);
   }
 }

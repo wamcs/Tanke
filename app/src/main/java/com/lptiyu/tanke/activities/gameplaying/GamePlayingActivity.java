@@ -229,7 +229,7 @@ public class GamePlayingActivity extends MyBaseActivity implements GamePlayingCo
 
         } else {
             int position = 0;
-            if (RunApplication.isPointOver = true) {
+            if (RunApplication.isPointOver) {
                 position = ++RunApplication.currentPointIndex;
             } else {
                 position = RunApplication.currentPointIndex;

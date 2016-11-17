@@ -1,6 +1,7 @@
 package com.lptiyu.tanke.userCenter.ui;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -12,6 +13,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.lptiyu.tanke.R;
 import com.lptiyu.tanke.activities.initialization.ui.SignUpActivity;
+import com.lptiyu.tanke.activities.modifylocation.LocateUserActivity;
 import com.lptiyu.tanke.enums.Platform;
 import com.lptiyu.tanke.enums.RequestCode;
 import com.lptiyu.tanke.enums.ResultCode;
@@ -29,7 +31,6 @@ import com.lptiyu.tanke.widget.CustomTextView;
 import com.lptiyu.tanke.widget.dialog.DatePickerDialog;
 import com.lptiyu.tanke.widget.dialog.GenderChooseDialog;
 import com.lptiyu.tanke.widget.dialog.ImageChooseDialog;
-import com.lptiyu.tanke.widget.dialog.LoadingDialog;
 import com.lptiyu.tanke.widget.dialog.NumberPickerDialog;
 import com.lptiyu.tanke.widget.dialog.TextInputDialog;
 
@@ -76,7 +77,7 @@ public class ModifyUserInfoActivity extends MyBaseActivity {
 
     private ImageChooseDialog mImageChooseDialog;
     private GenderChooseDialog mGenderChooseDialog;
-    private LoadingDialog mLoadingDialog;
+    private ProgressDialog mLoadingDialog;
     private TextInputDialog mTextInputDialog;
     private DatePickerDialog mDatePickerDialog;
     private NumberPickerDialog mNumberPickerDialog;
@@ -107,7 +108,9 @@ public class ModifyUserInfoActivity extends MyBaseActivity {
         mWeightText.setText(String.format(getString(R.string.modify_info_weight_formatter), details.weight));
         mLocationText.setText(details.address);
         mPhoneText.setText(Accounts.getPhoneNumber());
-        mLoadingDialog = new LoadingDialog(this);
+        mLoadingDialog = new ProgressDialog(this);
+        mLoadingDialog.setIndeterminate(true);
+        mLoadingDialog.setCancelable(false);
         userId = Accounts.getId();
         token = Accounts.getToken();
 
@@ -173,7 +176,7 @@ public class ModifyUserInfoActivity extends MyBaseActivity {
                                     break;
                             }
                             ToastUtil.TextToast(getString(R.string.modify_info_success));
-//                            EventBus.getDefault().post(new UserInfoChanged());
+                            //                            EventBus.getDefault().post(new UserInfoChanged());
                         }
                     }
                 }, new Action1<Throwable>() {
@@ -214,7 +217,7 @@ public class ModifyUserInfoActivity extends MyBaseActivity {
                 @Override
                 public void onDateChoosed(String date) {
                     final String mData = date;
-                    mLoadingDialog.setDialogText("生日修改中");
+                    mLoadingDialog.setMessage("生日修改中");
                     mLoadingDialog.show();
                     HttpService.getUserService()
                             .resetUserDetails(userId, token, UserService.USER_DETAIL_BIRTHDAY, date)
@@ -230,7 +233,8 @@ public class ModifyUserInfoActivity extends MyBaseActivity {
                                         return;
                                     }
                                     mBirthdayText.setText(mData);
-//                                    EventBus.getDefault().post(new UserInfoChanged());
+                                    //                                    EventBus.getDefault().post(new
+                                    // UserInfoChanged());
                                 }
                             }, new Action1<Throwable>() {
                                 @Override
@@ -254,7 +258,7 @@ public class ModifyUserInfoActivity extends MyBaseActivity {
                 @Override
                 public void onGenderChoosed(String gender) {
                     final String sex = gender;
-                    mLoadingDialog.setDialogText("性别修改中");
+                    mLoadingDialog.setMessage("性别修改中");
                     mLoadingDialog.show();
                     HttpService.getUserService()
                             .resetUserDetails(userId, token, UserService.USER_DETAIL_SEX, gender)
@@ -270,7 +274,8 @@ public class ModifyUserInfoActivity extends MyBaseActivity {
                                         return;
                                     }
                                     mGenderText.setText(sex);
-//                                    EventBus.getDefault().post(new UserInfoChanged());
+                                    //                                    EventBus.getDefault().post(new
+                                    // UserInfoChanged());
                                 }
                             }, new Action1<Throwable>() {
                                 @Override
@@ -318,6 +323,8 @@ public class ModifyUserInfoActivity extends MyBaseActivity {
 
     @OnClick(R.id.modify_user_info_location_button)
     void modifyLocation() {
+        Intent intent = new Intent(ModifyUserInfoActivity.this, LocateUserActivity.class);
+        startActivityForResult(intent, Conf.REQUEST_CODE_START_USER_LOCATE);
     }
 
     @OnClick(R.id.modify_user_info_phone_button)
@@ -336,7 +343,7 @@ public class ModifyUserInfoActivity extends MyBaseActivity {
             mImageChooseDialog.setOnImageChoosedListener(new ImageChooseDialog.OnImageChoosedListener() {
                 @Override
                 public void onImageChoosed(final File file) {
-                    mLoadingDialog.setDialogText("图片上传中");
+                    mLoadingDialog.setMessage("图片上传中");
                     mLoadingDialog.show();
                     RequestBody body = RequestBody.create(MediaType.parse("multipart/form-data"), file);
                     HttpService.getUserService().uploadUserAvatar(userId, token, body)
@@ -354,7 +361,8 @@ public class ModifyUserInfoActivity extends MyBaseActivity {
                                     ToastUtil.TextToast(getString(R.string.upload_avatar_success));
                                     Glide.with(ModifyUserInfoActivity.this).load(Uri.parse(stringResponse.getData()))
                                             .into(mAvatarImage);
-//                                    EventBus.getDefault().post(new UserInfoChanged());
+                                    //                                    EventBus.getDefault().post(new
+                                    // UserInfoChanged());
                                 }
                             }, new Action1<Throwable>() {
                                 @Override
@@ -382,7 +390,7 @@ public class ModifyUserInfoActivity extends MyBaseActivity {
                 mNicknameText.setText(details.name);
                 break;
             case Conf.RESULT_CODE_START_USER_LOCATE:
-                mLoadingDialog.setDialogText("地区修改中");
+                mLoadingDialog.setMessage("地区修改中");
                 mLoadingDialog.show();
                 CityStruct cityStruct = data.getParcelableExtra(Conf.CITY_STRUCT);
                 if (cityStruct == null) {
@@ -405,7 +413,6 @@ public class ModifyUserInfoActivity extends MyBaseActivity {
                                         return;
                                     }
                                     mLocationText.setText(details.address);
-//                                    EventBus.getDefault().post(new UserInfoChanged());
                                 }
                             }, new Action1<Throwable>() {
                                 @Override

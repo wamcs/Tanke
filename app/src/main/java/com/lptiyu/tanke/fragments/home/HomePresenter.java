@@ -35,16 +35,13 @@ public class HomePresenter implements HomeContact.IHomePresenter {
                 if (response.status == Response.RESPONSE_OK) {
                     view.successFirstLoadBannerAndHot(response.data);
                 } else {
-                    view.failLoad();
+                    view.failLoad("");
                 }
             }
 
             @Override
             protected void onFailed(String errorMsg) {
-                if (errorMsg != null)
-                    view.failLoad(errorMsg);
-                else
-                    view.netException();
+                view.failLoad(errorMsg);
             }
         }, HomeBannerAndHotResponse.class);
     }
@@ -61,16 +58,13 @@ public class HomePresenter implements HomeContact.IHomePresenter {
                 if (response.status == Response.RESPONSE_OK) {
                     view.successReloadBannerAndHot(response.data);
                 } else {
-                    view.failLoad();
+                    view.failLoad("");
                 }
             }
 
             @Override
             protected void onFailed(String errorMsg) {
-                if (errorMsg != null)
-                    view.failLoad(errorMsg);
-                else
-                    view.netException();
+                view.failLoad(errorMsg);
             }
         }, HomeBannerAndHotResponse.class);
     }
@@ -84,16 +78,13 @@ public class HomePresenter implements HomeContact.IHomePresenter {
                 if (response.status == Response.RESPONSE_OK) {
                     view.successLoadSort(response.data);
                 } else {
-                    view.failLoad();
+                    view.failLoad("");
                 }
             }
 
             @Override
             protected void onFailed(String errorMsg) {
-                if (errorMsg != null)
-                    view.failLoad(errorMsg);
-                else
-                    view.netException();
+                view.failLoad(errorMsg);
             }
         }, HomeSortResponse.class);
     }

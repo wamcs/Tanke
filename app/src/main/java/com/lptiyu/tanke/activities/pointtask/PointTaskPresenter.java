@@ -39,17 +39,13 @@ public class PointTaskPresenter implements PointTaskContact.IPointTaskV2Presente
                     if (response.info != null)
                         view.failLoad(response.info);
                     else
-                        view.failLoad();
+                        view.failLoad("");
                 }
             }
 
             @Override
             protected void onFailed(String errorMsg) {
-                if (errorMsg != null) {
-                    view.failLoad(errorMsg);
-                } else {
-                    view.netException();
-                }
+                view.failLoad(errorMsg);
             }
         }, UploadGameRecordResponse.class);
 

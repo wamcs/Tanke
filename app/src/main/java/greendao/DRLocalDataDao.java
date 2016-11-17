@@ -35,6 +35,7 @@ public class DRLocalDataDao extends AbstractDao<DRLocalData, Long> {
         public final static Property LastPointLatitude = new Property(8, String.class, "lastPointLatitude", false, "LAST_POINT_LATITUDE");
         public final static Property LastPointLongitude = new Property(9, String.class, "lastPointLongitude", false, "LAST_POINT_LONGITUDE");
         public final static Property FileName = new Property(10, String.class, "fileName", false, "FILE_NAME");
+        public final static Property TimeStamp = new Property(11, String.class, "timeStamp", false, "TIME_STAMP");
     }
 
 
@@ -60,7 +61,8 @@ public class DRLocalDataDao extends AbstractDao<DRLocalData, Long> {
                 "\"PREVIOUS_POINT_LONGITUDE\" TEXT," + // 7: previousPointLongitude
                 "\"LAST_POINT_LATITUDE\" TEXT," + // 8: lastPointLatitude
                 "\"LAST_POINT_LONGITUDE\" TEXT," + // 9: lastPointLongitude
-                "\"FILE_NAME\" TEXT);"); // 10: fileName
+                "\"FILE_NAME\" TEXT," + // 10: fileName
+                "\"TIME_STAMP\" TEXT);"); // 11: timeStamp
     }
 
     /** Drops the underlying database table. */
@@ -127,6 +129,11 @@ public class DRLocalDataDao extends AbstractDao<DRLocalData, Long> {
         if (fileName != null) {
             stmt.bindString(11, fileName);
         }
+ 
+        String timeStamp = entity.getTimeStamp();
+        if (timeStamp != null) {
+            stmt.bindString(12, timeStamp);
+        }
     }
 
     @Override
@@ -187,6 +194,11 @@ public class DRLocalDataDao extends AbstractDao<DRLocalData, Long> {
         if (fileName != null) {
             stmt.bindString(11, fileName);
         }
+ 
+        String timeStamp = entity.getTimeStamp();
+        if (timeStamp != null) {
+            stmt.bindString(12, timeStamp);
+        }
     }
 
     @Override
@@ -207,7 +219,8 @@ public class DRLocalDataDao extends AbstractDao<DRLocalData, Long> {
             cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7), // previousPointLongitude
             cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8), // lastPointLatitude
             cursor.isNull(offset + 9) ? null : cursor.getString(offset + 9), // lastPointLongitude
-            cursor.isNull(offset + 10) ? null : cursor.getString(offset + 10) // fileName
+            cursor.isNull(offset + 10) ? null : cursor.getString(offset + 10), // fileName
+            cursor.isNull(offset + 11) ? null : cursor.getString(offset + 11) // timeStamp
         );
         return entity;
     }
@@ -225,6 +238,7 @@ public class DRLocalDataDao extends AbstractDao<DRLocalData, Long> {
         entity.setLastPointLatitude(cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8));
         entity.setLastPointLongitude(cursor.isNull(offset + 9) ? null : cursor.getString(offset + 9));
         entity.setFileName(cursor.isNull(offset + 10) ? null : cursor.getString(offset + 10));
+        entity.setTimeStamp(cursor.isNull(offset + 11) ? null : cursor.getString(offset + 11));
      }
     
     @Override

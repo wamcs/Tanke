@@ -94,6 +94,8 @@ public class RegisterHelper extends SignUpHelper {
                             int status = userEntityResponse.getStatus();
                             if (status != 1) {
                                 ToastUtil.TextToast(userEntityResponse.getInfo());
+                                signUpNextButton.setEnabled(true);
+                                signUpNextButton.setText("完成");
                                 return;
                             }
                             UserEntity entity = userEntityResponse.getData();
@@ -142,6 +144,8 @@ public class RegisterHelper extends SignUpHelper {
                         @Override
                         public void call(Throwable throwable) {
                             Toast.makeText(context, throwable.getMessage(), Toast.LENGTH_SHORT).show();
+                            signUpNextButton.setEnabled(true);
+                            signUpNextButton.setText("完成");
                         }
                     });
         }

@@ -24,7 +24,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * @author ldx
  */
 public final class HttpService {
-    public static final String BASE_URL = XUtilsUrls.SERVICE_IP;
+    public static String BASE_URL;
 
     private static final int DEFAULT_TIMEOUT = 10;
 
@@ -37,7 +37,8 @@ public final class HttpService {
     /**
      * OKHttpClient网络客户端配置
      */
-    static {
+    public static void init() {
+        HttpService.BASE_URL = XUtilsUrls.SERVICE_IP;
         OkHttpClient.Builder httpClientBuilder = new OkHttpClient.Builder();
 
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor(new HttpLoggingInterceptor.Logger() {

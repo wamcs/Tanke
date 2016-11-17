@@ -9,9 +9,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import com.lptiyu.tanke.R;
-import com.lptiyu.tanke.global.Accounts;
 import com.lptiyu.tanke.mybase.MyBaseActivity;
-import com.lptiyu.tanke.utils.LogUtils;
 import com.lptiyu.tanke.utils.xutils3.XUtilsUrls;
 import com.lptiyu.tanke.widget.CustomTextView;
 import com.lptiyu.tanke.widget.GradientProgressBar;
@@ -67,9 +65,7 @@ public class LookRedWalletRecordActivity extends MyBaseActivity {
                 progressBar.setProgress(progress / 100.0f);
             }
         });
-        String url = XUtilsUrls.LOOK_RED_WALLET_RECORD + "?uid=" + Accounts.getId() + "&token=" + Accounts.getToken();
-        LogUtils.i("查看提现记录url:" + url);
-        mWebView.loadUrl(Html.fromHtml(url).toString());
+        mWebView.loadUrl(Html.fromHtml(XUtilsUrls.LOOK_RED_WALLET_RECORD).toString());
     }
 
     @Override

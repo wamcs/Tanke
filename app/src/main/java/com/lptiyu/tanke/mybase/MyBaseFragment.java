@@ -1,26 +1,21 @@
 package com.lptiyu.tanke.mybase;
 
 import android.support.v4.app.Fragment;
-
-import com.lptiyu.tanke.utils.ToastUtil;
+import android.text.TextUtils;
+import android.widget.Toast;
 
 /**
  * Created by Jason on 2016/9/23.
  */
 
 public class MyBaseFragment extends Fragment implements IBaseView {
-    @Override
-    public void failLoad() {
-        //        ToastUtil.TextToast("暂无数据");
-    }
 
     @Override
     public void failLoad(String errMsg) {
-        ToastUtil.TextToast(errMsg);
-    }
-
-    @Override
-    public void netException() {
-        ToastUtil.TextToast("网络异常");
+        if (!TextUtils.isEmpty(errMsg)) {
+            Toast.makeText(getActivity(), errMsg, Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(getActivity(), "请求失败", Toast.LENGTH_SHORT).show();
+        }
     }
 }

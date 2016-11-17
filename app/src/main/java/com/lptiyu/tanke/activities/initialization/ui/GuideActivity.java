@@ -15,8 +15,11 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.lptiyu.tanke.R;
 import com.lptiyu.tanke.mybase.MyBaseActivity;
+
+import java.io.File;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -39,6 +42,7 @@ public class GuideActivity extends MyBaseActivity {
     @BindView(R.id.rg_guide_dot)
     RadioGroup rgGuideDot;
     private int[] imgsArr;
+    private String[] imgsNames;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +62,7 @@ public class GuideActivity extends MyBaseActivity {
 
     private void initData() {
         imgsArr = new int[]{R.drawable.guide_page_1, R.drawable.guide_page_2, R.drawable.guide_page_3};
+        imgsNames = new String[]{"guide_page_1.png", "guide_page_2.png", "guide_page_3.png"};
     }
 
     private void initView() {
@@ -101,9 +106,11 @@ public class GuideActivity extends MyBaseActivity {
     class MyGuidePagerAdatper extends PagerAdapter {
 
         private final LayoutInflater inflater;
+        private Context context;
 
         public MyGuidePagerAdatper(Context context) {
             inflater = LayoutInflater.from(context);
+            this.context = context;
         }
 
         @Override
@@ -122,7 +129,8 @@ public class GuideActivity extends MyBaseActivity {
             ImageView img = (ImageView) view.findViewById(R.id.img);
             TextView tv_skip = (TextView) view.findViewById(R.id.tv_skip);
             TextView tv_enter_now = (TextView) view.findViewById(R.id.tv_enter_now);
-            img.setImageResource(imgsArr[position]);
+            File imageFile = new File(getCacheDir(), imgsNames[position]);
+            Glide.with(context).load(imageFile).error(imgsArr[position]).into(img);
 
             if (position == 2) {
                 tv_enter_now.setVisibility(View.VISIBLE);

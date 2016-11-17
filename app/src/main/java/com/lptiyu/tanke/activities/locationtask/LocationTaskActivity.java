@@ -358,7 +358,7 @@ public class LocationTaskActivity extends MyBaseActivity implements LocationTask
         if (isPointOver)
             record.point_statu = PointTaskStatus.FINISHED + "";
         else
-            record.point_statu = PointTaskStatus.PLAYING + "";
+            record.point_statu = PointTaskStatus.UNFINISHED + "";
         record.task_id = task.id + "";
         presenter.uploadRecord(record);
     }

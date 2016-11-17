@@ -69,12 +69,14 @@ public class SplashActivity extends MyBaseActivity {
                     //没有请求到就用上次存在本地的ip
                     XUtilsUrls.setServiceIP(Accounts.getIP());
                 }
+                smoothStartNext();
             }
 
             @Override
             protected void onFailed(String errorMsg) {
                 //没有请求到就用上次存在本地的ip
                 XUtilsUrls.setServiceIP(Accounts.getIP());
+                smoothStartNext();
             }
         }, RequestIPByDomainResponse.class);
     }
@@ -107,7 +109,6 @@ public class SplashActivity extends MyBaseActivity {
                 }
                 Accounts.setLatitude((float) aMapLocation.getLatitude());
                 Accounts.setLongitude((float) aMapLocation.getLongitude());
-                smoothStartNext();
                 LogUtils.i(aMapLocation.getCityCode() + "," + aMapLocation.getCity() + ", (" + aMapLocation.getLatitude
                         () + "," + aMapLocation.getLongitude() + ")");
                 //根据域名请求ip
@@ -119,12 +120,15 @@ public class SplashActivity extends MyBaseActivity {
     }
 
     private void init() {
-        imageFile = new File(getCacheDir(), "splash.jpg");
-        if (imageFile == null) {
-            throw new IllegalStateException("SplashActivity : splash file create failed.");
-        }
         splashView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-        Glide.with(this).load(imageFile).error(R.drawable.bg_splash).into(splashView);
+        imageFile = new File(getCacheDir(), "splash.jpg");
+        Glide.with(this).load(imageFile).error(R.drawable.splash).into(splashView);
+        //        ScaleAnimation animation = new ScaleAnimation(1.0f, 1.05f, 1.0f, 1.05f, Animation.RELATIVE_TO_SELF, 0,
+        //                Animation.RELATIVE_TO_SELF, 0);
+        //        animation.setDuration(3000);
+        //        animation.setFillAfter(true);
+        //        splashView.startAnimation(animation);
+        splashView.animate().scaleX(1.2f).scaleY(1.2f).setDuration(3000);
     }
 
     protected void smoothStartNext() {

@@ -5,7 +5,8 @@ import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.widget.Toast;
+import android.view.View;
+import android.widget.ImageView;
 
 import com.lptiyu.tanke.R;
 import com.lptiyu.tanke.activities.drrecorddetail.DRRecordDetailActivity;
@@ -14,7 +15,10 @@ import com.lptiyu.tanke.entity.response.DRRecordEntity;
 import com.lptiyu.tanke.global.Conf;
 import com.lptiyu.tanke.interfaces.OnRecyclerViewItemClickListener;
 import com.lptiyu.tanke.mybase.MyBaseActivity;
+import com.lptiyu.tanke.utils.NetworkUtil;
+import com.lptiyu.tanke.utils.PopupWindowUtils;
 import com.lptiyu.tanke.widget.CustomTextView;
+import com.lptiyu.tanke.widget.RecyclerViewItemDecoration;
 
 import java.util.List;
 
@@ -30,6 +34,8 @@ public class UserDirectionRunListActivity extends MyBaseActivity implements User
     RecyclerView recyclerViewMessageList;
     @BindView(R.id.swipe_message_list)
     SwipeRefreshLayout swipeMessageList;
+    @BindView(R.id.no_data_imageview)
+    ImageView noDataImageview;
     private UserDirectionRunPresenter presenter;
     private DRRecordListAdapter adapter;
     private List<DRRecordEntity> totallist;
@@ -43,7 +49,28 @@ public class UserDirectionRunListActivity extends MyBaseActivity implements User
         defaultToolBarTextview.setText("乐跑记录");
 
         presenter = new UserDirectionRunPresenter(this);
-        presenter.loadDRList();
+        initSwipe();
+        swipeMessageList.setRefreshing(true);
+        loadDRListData();
+    }
+
+    private void loadDRListData() {
+        if (NetworkUtil.checkIsNetworkConnected()) {
+            presenter.loadDRList();
+        } else {
+            getWindow().getDecorView().post(new Runnable() {
+                @Override
+                public void run() {
+                    PopupWindowUtils.getInstance().showNetExceptionPopupwindow(UserDirectionRunListActivity.this, new
+                            PopupWindowUtils.OnRetryCallback() {
+                                @Override
+                                public void onRetry() {
+                                    loadDRListData();
+                                }
+                            });
+                }
+            });
+        }
     }
 
     @OnClick(R.id.default_tool_bar_imageview)
@@ -53,18 +80,26 @@ public class UserDirectionRunListActivity extends MyBaseActivity implements User
 
     @Override
     public void successLoadDRList(List<DRRecordEntity> list) {
+        swipeMessageList.setRefreshing(false);
         if (list != null && list.size() > 0) {
             totallist = list;
             setAdapter();
         } else {
-            Toast.makeText(this, "暂无乐跑记录", Toast.LENGTH_SHORT).show();
+            noDataImageview.setVisibility(View.VISIBLE);
         }
+    }
+
+    @Override
+    public void failLoad(String errMsg) {
+        swipeMessageList.setRefreshing(false);
+        noDataImageview.setVisibility(View.VISIBLE);
     }
 
     private void setAdapter() {
         recyclerViewMessageList.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         adapter = new DRRecordListAdapter(this, totallist);
         recyclerViewMessageList.setAdapter(adapter);
+        recyclerViewMessageList.addItemDecoration(new RecyclerViewItemDecoration(this));
         adapter.setOnRecyclerViewItemClickListener(new OnRecyclerViewItemClickListener() {
             @Override
             public void onClick(int position) {
@@ -79,10 +114,13 @@ public class UserDirectionRunListActivity extends MyBaseActivity implements User
 
             }
         });
+    }
+
+    private void initSwipe() {
         swipeMessageList.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                swipeMessageList.setRefreshing(false);
+                loadDRListData();
             }
         });
     }

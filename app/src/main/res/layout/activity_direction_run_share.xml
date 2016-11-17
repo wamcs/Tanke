@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/activity_direction_run"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:id="@+id/rl_bottom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/white10"
+        android:orientation="vertical"
+        android:padding="10dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp">
+
+            <RelativeLayout
+                android:id="@+id/rl_duration"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:padding="5dp">
+
+                <TextView
+                    android:id="@+id/tv_duration_tip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/chronometer"
+                    android:layout_centerHorizontal="true"
+                    android:text="@string/duration"
+                    android:textColor="@color/black04"
+                    android:textSize="@dimen/direction_run_detail_tip"/>
+
+                <Chronometer
+                    android:id="@+id/chronometer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_centerHorizontal="true"
+                    android:textColor="@color/black333"
+                    android:textSize="@dimen/direction_run_detail_value"/>
+
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/rl_distance"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:padding="5dp">
+
+                <TextView
+                    android:id="@+id/tv_distance_value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_centerHorizontal="true"
+                    android:text="0.0"
+                    android:textColor="@color/black333"
+                    android:textSize="@dimen/direction_run_distance_value"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:id="@+id/tv_distance_tip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/tv_distance_value"
+                    android:layout_centerHorizontal="true"
+                    android:text="公里"
+                    android:textColor="@color/black04"
+                    android:textSize="@dimen/direction_run_detail_tip"/>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/rl_speed"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:padding="5dp">
+
+                <TextView
+                    android:id="@+id/tv_speed_value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:text="@string/speed"
+                    android:textColor="@color/black333"
+                    android:textSize="@dimen/direction_run_detail_value"/>
+
+                <TextView
+                    android:id="@+id/tv_speed_tip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/tv_speed_value"
+                    android:layout_centerHorizontal="true"
+                    android:text="平均配速"
+                    android:textColor="@color/black04"
+                    android:textSize="@dimen/direction_run_detail_tip"/>
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp">
+
+            <RelativeLayout
+                android:id="@+id/rl_exp"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:padding="5dp">
+
+                <TextView
+                    android:id="@+id/tv_exp_value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:text="+0"
+                    android:textColor="@color/black333"
+                    android:textSize="@dimen/direction_run_detail_value"/>
+
+                <TextView
+                    android:id="@+id/tv_exp_tip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/tv_exp_value"
+                    android:layout_centerHorizontal="true"
+                    android:text="经验"
+                    android:textColor="@color/black04"
+                    android:textSize="@dimen/direction_run_detail_tip"/>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/rl_score"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:padding="5dp">
+
+                <TextView
+                    android:id="@+id/tv_score_value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/tv_score_tip"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignStart="@+id/tv_score_tip"
+                    android:text="+0"
+                    android:textColor="@color/black333"
+                    android:textSize="@dimen/direction_run_detail_value"/>
+
+                <TextView
+                    android:id="@+id/tv_score_tip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/tv_score_value"
+                    android:layout_centerHorizontal="true"
+                    android:text="积分"
+                    android:textColor="@color/black04"
+                    android:textSize="@dimen/direction_run_detail_tip"/>
+
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/rl_red_wallet"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:padding="5dp">
+
+                <TextView
+                    android:id="@+id/tv_red_wallet_value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:text="+0"
+                    android:textColor="@color/black333"
+                    android:textSize="@dimen/direction_run_detail_value"/>
+
+                <TextView
+                    android:id="@+id/tv_red_wallet_tip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/tv_red_wallet_value"
+                    android:layout_centerHorizontal="true"
+                    android:text="红包"
+                    android:textColor="@color/black04"
+                    android:textSize="@dimen/direction_run_detail_tip"/>
+
+            </RelativeLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+    <com.amap.api.maps.TextureMapView
+        android:id="@+id/textureMapView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/rl_bottom"/>
+
+
+    <ImageView
+        android:id="@+id/img_show_all_point"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/textureMapView"
+        android:layout_alignLeft="@id/textureMapView"
+        android:layout_marginBottom="70dp"
+        android:layout_marginLeft="10dp"
+        android:src="@drawable/renwu"/>
+
+
+</RelativeLayout>

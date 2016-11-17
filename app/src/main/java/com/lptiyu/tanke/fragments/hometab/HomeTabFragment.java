@@ -22,7 +22,9 @@ import com.lptiyu.tanke.entity.eventbus.EnterGame;
 import com.lptiyu.tanke.entity.eventbus.GamePointTaskStateChanged;
 import com.lptiyu.tanke.entity.eventbus.LeaveGame;
 import com.lptiyu.tanke.entity.response.HomeTabEntity;
+import com.lptiyu.tanke.enums.GameState;
 import com.lptiyu.tanke.enums.PlayStatus;
+import com.lptiyu.tanke.enums.SortIndex;
 import com.lptiyu.tanke.enums.Where;
 import com.lptiyu.tanke.global.Conf;
 import com.lptiyu.tanke.mybase.MyBaseFragment;
@@ -39,6 +41,8 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import static com.lptiyu.tanke.RunApplication.entity;
 
 public class HomeTabFragment extends MyBaseFragment implements HomeTabContact.IHomeTabView {
     @BindView(R.id.id_stickynavlayout_innerscrollview)
@@ -126,10 +130,23 @@ public class HomeTabFragment extends MyBaseFragment implements HomeTabContact.IH
         lRecyclerViewAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
+                //TODO 团队赛事待完成
+                if (cid == SortIndex.COMPETITION_ACTIVITY) {
+                    Toast.makeText(getActivity(), "即将开放，敬请期待", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 HomeTabEntity homeTabEntity = totalist.get(position);
+                if (homeTabEntity.state == GameState.FINISHED) {
+                    Toast.makeText(getContext(), "该游戏已下线", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if (homeTabEntity.state == GameState.MAINTAINING) {
+                    Toast.makeText(getContext(), "该游戏正在维护中", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 RunApplication.gameId = homeTabEntity.id;
                 RunApplication.type = homeTabEntity.type;
-                RunApplication.entity = homeTabEntity;
+                entity = homeTabEntity;
                 RunApplication.where = Where.HOME_TAB;
                 RunApplication.recordId = -1;
                 Intent intent = new Intent();
@@ -227,10 +244,7 @@ public class HomeTabFragment extends MyBaseFragment implements HomeTabContact.IH
 
     @Override
     public void failLoadMoreGame(String errMsg) {
-        if (errMsg != null) {
-            Toast.makeText(getActivity(), errMsg, Toast.LENGTH_SHORT).show();
-            hasMoreGame = false;
-        }
+        hasMoreGame = false;
     }
 
     /*无论在哪个线程发送都在主线程接收

@@ -74,7 +74,6 @@
                 android:layout_marginTop="5dp"
                 android:ellipsize="end"
                 android:maxLines="1"
-                android:maxWidth="200dp"
                 android:textColor="@color/grey06"
                 android:textSize="14sp"/>
 

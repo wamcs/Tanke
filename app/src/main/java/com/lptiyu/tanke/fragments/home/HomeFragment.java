@@ -32,7 +32,9 @@ import com.lptiyu.tanke.entity.response.HomeBannerAndHot;
 import com.lptiyu.tanke.entity.response.HomeSort;
 import com.lptiyu.tanke.entity.response.HomeSortList;
 import com.lptiyu.tanke.entity.response.Recommend;
+import com.lptiyu.tanke.enums.GameState;
 import com.lptiyu.tanke.enums.PlayStatus;
+import com.lptiyu.tanke.enums.SortIndex;
 import com.lptiyu.tanke.enums.Where;
 import com.lptiyu.tanke.fragments.hometab.HomeTabFragment;
 import com.lptiyu.tanke.global.Accounts;
@@ -236,6 +238,19 @@ public class HomeFragment extends MyBaseFragment implements HomeContact.IHomeVie
             @Override
             public void onClick(int position) {
                 Recommend recommend = recommendList.get(position);
+                //TODO 团队赛事待完成
+                if (recommend.cid == SortIndex.COMPETITION_ACTIVITY) {
+                    Toast.makeText(getActivity(), "即将开放，敬请期待", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if (recommend.state == GameState.FINISHED) {
+                    Toast.makeText(getContext(), "该游戏已下线", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if (recommend.state == GameState.MAINTAINING) {
+                    Toast.makeText(getContext(), "该游戏正在维护中", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 RunApplication.gameId = Long.parseLong(recommend.id);
                 RunApplication.entity = recommend;
                 RunApplication.type = recommend.type;

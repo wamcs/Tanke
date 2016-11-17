@@ -40,11 +40,7 @@ public class GameOverPresenter implements GameOverContact.IGameOverPresenter {
 
             @Override
             protected void onFailed(String errorMsg) {
-                if (errorMsg != null) {
-                    view.failLoad(errorMsg);
-                } else {
-                    view.netException();
-                }
+                view.failLoad(errorMsg);
             }
         }, GameOverRewardResponse.class);
     }
@@ -65,11 +61,7 @@ public class GameOverPresenter implements GameOverContact.IGameOverPresenter {
 
             @Override
             protected void onFailed(String errorMsg) {
-                if (errorMsg != null) {
-                    view.failLoad(errorMsg);
-                } else {
-                    view.netException();
-                }
+                view.failLoad(errorMsg);
             }
         }, GetScoreAfterShareResponse.class);
     }

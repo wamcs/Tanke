@@ -43,8 +43,8 @@ import com.lptiyu.tanke.global.AppData;
 import com.lptiyu.tanke.global.Conf;
 import com.lptiyu.tanke.mybase.MyBaseFragment;
 import com.lptiyu.tanke.utils.DirUtils;
+import com.lptiyu.tanke.utils.FileUtils;
 import com.lptiyu.tanke.utils.LogUtils;
-import com.lptiyu.tanke.utils.StringUtils;
 import com.lptiyu.tanke.utils.ToastUtil;
 import com.lptiyu.tanke.utils.xutils3.XUtilsHelper;
 import com.lptiyu.zxinglib.android.CaptureActivity;
@@ -244,7 +244,7 @@ public class PointTaskFragment extends MyBaseFragment implements PointTaskContac
             boolean hasPic = false;
             for (int i = 0; i < imgUrls.length; i++) {
                 for (File file : files) {
-                    if (file.getName().equals(StringUtils.getFileNameFromURL(imgUrls[i]))) {
+                    if (file.getName().equals(FileUtils.getFileNameFromURL(imgUrls[i]))) {
                         imgArr[i] = file.getAbsolutePath();
                         hasPic = true;
                     }
@@ -308,8 +308,8 @@ public class PointTaskFragment extends MyBaseFragment implements PointTaskContac
         }
         for (int i = 0; i < currentPoint.task_list.size(); i++) {
             if (TextUtils.isEmpty(currentPoint.task_list.get(i).exp)) {
-                if (i != currentPoint.task_list.size() - 1 && Integer.parseInt(currentPoint.task_list.get(i + 1)
-                        .type) != TaskType.FINISH) {
+                if (currentTaskIndex != currentPoint.task_list.size() - 1 && Integer.parseInt(currentPoint.task_list
+                        .get(currentTaskIndex + 1).type) != TaskType.FINISH) {
                     isPointOver = false;
                 } else {
                     isPointOver = true;

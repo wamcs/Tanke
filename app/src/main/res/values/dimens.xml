@@ -273,6 +273,10 @@
     <dimen name="item_user_manager_game_width">@dimen/x320</dimen>
     <dimen name="item_user_manager_game_height">@dimen/y220</dimen>
 
+    <!--locate_orange Activity Dimens-->
+    <dimen name="item_locate_activity_list_item_padding_top_bottom">@dimen/y45</dimen>
+    <dimen name="item_locate_activity_list_item_padding_left">@dimen/x66</dimen>
+
     <dimen name="seperator_height">9dp</dimen>
 
     <dimen name="home_display_game_name_textsize">13sp</dimen>
@@ -280,6 +284,8 @@
     <dimen name="home_display_tag_textsize">8sp</dimen>
     <dimen name="tag_min_width">30dp</dimen>
 
-    <dimen name="direction_run_detail_large">16sp</dimen>
+    <dimen name="direction_run_detail_value">16sp</dimen>
+    <dimen name="direction_run_distance_value">20sp</dimen>
+    <dimen name="direction_run_detail_tip">14sp</dimen>
 
 </resources>

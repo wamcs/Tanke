@@ -10,7 +10,7 @@ import com.google.gson.annotations.SerializedName;
  * date: 15-12-2
  * email: daque@hustunique.com
  */
-public class CityStruct {
+public class CityStruct implements Parcelable {
 
   @SerializedName("level")
   private String mLevel;
@@ -107,4 +107,45 @@ public class CityStruct {
   public CityStruct() {
   }
 
+  @Override
+  public int describeContents() {
+    return 0;
+  }
+
+  @Override
+  public void writeToParcel(Parcel dest, int flags) {
+    dest.writeString(this.mLevel);
+    dest.writeString(this.mInitial);
+    dest.writeString(this.mName);
+    dest.writeString(this.mProvince);
+    dest.writeString(this.mAdcode);
+    dest.writeString(this.mCx);
+    dest.writeString(this.mCy);
+    dest.writeString(this.mCode);
+    dest.writeString(this.mPinyin);
+  }
+
+  protected CityStruct(Parcel in) {
+    this.mLevel = in.readString();
+    this.mInitial = in.readString();
+    this.mName = in.readString();
+    this.mProvince = in.readString();
+    this.mAdcode = in.readString();
+    this.mCx = in.readString();
+    this.mCy = in.readString();
+    this.mCode = in.readString();
+    this.mPinyin = in.readString();
+  }
+
+  public static final Parcelable.Creator<CityStruct> CREATOR = new Parcelable.Creator<CityStruct>() {
+    @Override
+    public CityStruct createFromParcel(Parcel source) {
+      return new CityStruct(source);
+    }
+
+    @Override
+    public CityStruct[] newArray(int size) {
+      return new CityStruct[size];
+    }
+  };
 }

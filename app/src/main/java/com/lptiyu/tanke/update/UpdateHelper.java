@@ -9,8 +9,6 @@ import com.lptiyu.tanke.net.Response;
 import com.lptiyu.tanke.utils.xutils3.APKDownloader;
 import com.lptiyu.tanke.widget.dialog.TextDialog;
 
-import java.lang.ref.WeakReference;
-
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.functions.Func1;
@@ -27,12 +25,14 @@ public class UpdateHelper {
     private TextDialog mNotifyUpdateDialog;
 
     private String apkUrl;
-    private WeakReference<Context> weakReference;
+    //    private WeakReference<Context> weakReference;
     private int versionCode;
     private String versionName;
+    private Context context;
 
     public UpdateHelper(Context context) {
-        weakReference = new WeakReference<>(context);
+        this.context = context;
+        //        weakReference = new WeakReference<>(context);
         initDialog();
     }
 
@@ -89,13 +89,13 @@ public class UpdateHelper {
 
     private void initDialog() {
         if (mNotifyUpdateDialog == null) {
-            mNotifyUpdateDialog = new TextDialog(weakReference.get());
+            mNotifyUpdateDialog = new TextDialog(context);
             mNotifyUpdateDialog.withTitle("版本更新").isCancelable(false).withMessage(null)
                     .setCancelable(false);
             mNotifyUpdateDialog.setmListener(new TextDialog.OnTextDialogButtonClickListener() {
                 @Override
                 public void onPositiveClicked() {
-                    new APKDownloader(weakReference.get(), apkUrl, versionCode);
+                    new APKDownloader(context, apkUrl, versionCode);
                     mNotifyUpdateDialog.dismiss();
                 }
 

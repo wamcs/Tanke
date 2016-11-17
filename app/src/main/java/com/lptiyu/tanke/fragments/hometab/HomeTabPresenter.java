@@ -44,10 +44,7 @@ public class HomeTabPresenter implements HomeTabContact.IHomeTabPresenter {
 
             @Override
             protected void onFailed(String errorMsg) {
-                if (errorMsg != null)
-                    view.failLoad(errorMsg);
-                else
-                    view.netException();
+                view.failLoad(errorMsg);
             }
         }, HomeGameListResponse.class);
     }
@@ -73,10 +70,7 @@ public class HomeTabPresenter implements HomeTabContact.IHomeTabPresenter {
 
             @Override
             protected void onFailed(String errorMsg) {
-                if (errorMsg != null)
-                    view.failLoad(errorMsg);
-                else
-                    view.netException();
+                view.failLoadMoreGame(errorMsg);
             }
         }, HomeGameListResponse.class);
     }
@@ -96,17 +90,11 @@ public class HomeTabPresenter implements HomeTabContact.IHomeTabPresenter {
             protected void onSuccess(HomeGameListResponse response) {
                 if (response.status == Response.RESPONSE_OK) {
                     view.successReloadGame(response.data);
-                } else {
-                    view.failLoad(response.info);
                 }
             }
 
             @Override
             protected void onFailed(String errorMsg) {
-                if (errorMsg != null)
-                    view.failLoad(errorMsg);
-                else
-                    view.netException();
             }
         }, HomeGameListResponse.class);
     }

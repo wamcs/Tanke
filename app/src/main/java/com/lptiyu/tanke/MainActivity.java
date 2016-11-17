@@ -215,9 +215,9 @@ public class MainActivity extends MyBaseActivity {
         fragments.add(new MessageFragment());
         fragments.add(new UserCenterFragment());
         changeTab(0);
+        selectTab(0);
         updateHelper = new UpdateHelper(this);
         updateHelper.checkForUpdate();
-        selectTab(0);
     }
 
     @OnClick(R.id.page_1)

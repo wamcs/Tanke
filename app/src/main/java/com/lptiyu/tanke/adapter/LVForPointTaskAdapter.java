@@ -15,7 +15,7 @@ import android.widget.RelativeLayout;
 import com.lptiyu.tanke.R;
 import com.lptiyu.tanke.activities.taskimagescale.TaskImageScaleActivity;
 import com.lptiyu.tanke.entity.Task;
-import com.lptiyu.tanke.enums.TaskType;
+import com.lptiyu.tanke.enums.PointTaskStatus;
 import com.lptiyu.tanke.global.Conf;
 import com.lptiyu.tanke.utils.WebViewUtils;
 
@@ -31,16 +31,39 @@ public class LVForPointTaskAdapter extends BaseAdapter {
     private List<Task> list_tasks;
     private Context context;
     private LayoutInflater inflater;
+    private int count;
 
     public LVForPointTaskAdapter(Context context, List<Task> list_tasks) {
         this.list_tasks = list_tasks;
         this.context = context;
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        checkTaskStatus();
+    }
+
+    private void checkTaskStatus() {
+        int max_index = -1;//最后一个已完成的task的角标
+        for (int i = 0; i < list_tasks.size(); i++) {
+            Task task = list_tasks.get(i);
+            if (!TextUtils.isEmpty(task.exp)) {
+                task.status = PointTaskStatus.FINISHED;
+                max_index = i;
+            } else {
+                task.status = PointTaskStatus.UNSTARTED;
+            }
+        }
+        if (max_index != list_tasks.size() - 1) {
+            //没有全部完成
+            list_tasks.get(max_index + 1).status = PointTaskStatus.PLAYING;
+            count = max_index + 2;
+        } else {
+            //全部完成
+            count = max_index + 1;
+        }
     }
 
     @Override
     public int getCount() {
-        return list_tasks == null ? 0 : list_tasks.size();
+        return count;
     }
 
     @Override
@@ -105,22 +128,22 @@ public class LVForPointTaskAdapter extends BaseAdapter {
         //        vh.tvContent.setMovementMethod(ScrollingMovementMethod.getInstance());//滚动
         //        vh.tvContent.setMovementMethod(LinkMovementMethod.getInstance());//设置超链接可以打开网页
 
-        if (TextUtils.equals(task.exp, "") || task.exp == null) {
-            vh.rlMissionSuccess.setVisibility(View.GONE);
-        } else {
-            vh.rlMissionSuccess.setVisibility(View.VISIBLE);
-        }
-
-        if (Integer.parseInt(task.type) == TaskType.FINISH) {
-            vh.rlMissionSuccess.setVisibility(View.GONE);
+        switch (task.status) {
+            case PointTaskStatus.FINISHED:
+                vh.rlMissionSuccess.setVisibility(View.VISIBLE);
+                vh.webView.setVisibility(View.VISIBLE);
+                break;
+            case PointTaskStatus.PLAYING:
+                vh.rlMissionSuccess.setVisibility(View.GONE);
+                vh.webView.setVisibility(View.VISIBLE);
+                break;
+            case PointTaskStatus.UNSTARTED:
+                vh.rlMissionSuccess.setVisibility(View.GONE);
+                vh.webView.setVisibility(View.GONE);
+                break;
         }
 
         return convertView;
-    }
-
-    public void refresh(List<Task> list_tasks) {
-        this.list_tasks = list_tasks;
-        notifyDataSetChanged();
     }
 
     @JavascriptInterface

@@ -175,7 +175,7 @@ public class GuessRiddleActivity extends MyBaseActivity implements RiddleContact
         if (isPointOver)
             record.point_statu = PointTaskStatus.FINISHED + "";
         else
-            record.point_statu = PointTaskStatus.PLAYING + "";
+            record.point_statu = PointTaskStatus.UNFINISHED + "";
         record.task_id = task.id + "";
         presenter.uploadRecord(record);
     }
@@ -192,14 +192,6 @@ public class GuessRiddleActivity extends MyBaseActivity implements RiddleContact
         }
         //震动提示
         VibratorHelper.startVibrator(this);
-    }
-
-    @Override
-    public void failLoad() {
-        super.failLoad();
-        taskResultHelper.showNetException();
-        taskResultHelper.stopSubmitting();
-        tvSubmitAnswer.setEnabled(true);
     }
 
     @Override

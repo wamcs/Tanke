@@ -228,7 +228,6 @@
 
     <string name="date_picker_date_formatter" formatted="false">%4d-%02d-%02d</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_user_judge_game">UserJudgeGameActivity</string>
 
@@ -270,7 +269,7 @@
     <string name="duration">时长</string>
     <string name="start_run">开始乐跑</string>
     <string name="stop_run">结束乐跑</string>
-    <string name="distance">距离（公里）</string>
+    <string name="distance">距离(公里)</string>
     <string name="juqing">从荒芜到一片森林，从东到西。一段神秘旅途，在绝望中看到光线，在这里开启你的探险之路从荒芜到一片森林，从东到西。一段神秘旅途，在绝望中看到光线，在这里开启你的探险之路从荒芜到一片森林，从东到西。一段神秘旅途，在绝望中看到光线，在这里开启你的探险之路从荒芜到一片森林，从东到西。一段神秘旅途，在绝望中看到光线，在这里开启你的探险之路从荒芜到一片森林，从东到西。一段神秘旅途，在绝望中看到光线，在这里开启你的探险之路从荒芜到一片森林，从东到西。一段神秘旅途，在绝望中看到光线，在这里开启你的探险之路从荒芜到一片森林，从东到西。一段神秘旅途，在绝望中看到光线，在这里开启你的探险之路从荒芜到一片森林，从东到西。一段神秘旅途，在绝望中看到光线，在这里开启你的探险之路从荒芜到一片森林，从东到西。一段神秘旅途，在绝望中看到光线，在这里开启你的探险之路从荒芜到一片森林，从东到西。一段神秘旅途，在绝望中看到光线，在这里开启你的探险之路</string>
 
 

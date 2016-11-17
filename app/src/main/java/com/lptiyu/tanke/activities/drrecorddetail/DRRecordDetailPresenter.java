@@ -2,7 +2,6 @@ package com.lptiyu.tanke.activities.drrecorddetail;
 
 import com.lptiyu.tanke.entity.response.BaseResponse;
 import com.lptiyu.tanke.entity.response.DRRecordDetailResponse;
-import com.lptiyu.tanke.entity.response.RunLineResponse;
 import com.lptiyu.tanke.global.Accounts;
 import com.lptiyu.tanke.utils.DirUtils;
 import com.lptiyu.tanke.utils.xutils3.RequestParamsHelper;
@@ -39,18 +38,14 @@ public class DRRecordDetailPresenter implements DRRecordDetailContact.IDRRecordD
                     if (response.info != null) {
                         view.failLoad(response.info);
                     } else {
-                        view.failLoad();
+                        view.failLoad("");
                     }
                 }
             }
 
             @Override
             protected void onFailed(String errorMsg) {
-                if (errorMsg != null) {
-                    view.failLoad(errorMsg);
-                } else {
-                    view.netException();
-                }
+                view.failLoad(errorMsg);
             }
         }, DRRecordDetailResponse.class);
     }
@@ -79,35 +74,5 @@ public class DRRecordDetailPresenter implements DRRecordDetailContact.IDRRecordD
                         view.failLoad(errMsg);
                     }
                 });
-    }
-
-    @Override
-    public void getRunLine(long gameId) {
-        RequestParams params = RequestParamsHelper.getBaseRequestParam(XUtilsUrls.RUN_LINE);
-        params.addBodyParameter("uid", Accounts.getId() + "");
-        params.addBodyParameter("game_id", gameId + "");
-        XUtilsHelper.getInstance().get(params, new XUtilsRequestCallBack<RunLineResponse>() {
-            @Override
-            protected void onSuccess(RunLineResponse response) {
-                if (response.status == BaseResponse.SUCCESS) {
-                    view.successGetRunLine(response.data);
-                } else {
-                    if (response.info != null) {
-                        view.failLoad(response.info);
-                    } else {
-                        view.failLoad();
-                    }
-                }
-            }
-
-            @Override
-            protected void onFailed(String errorMsg) {
-                if (errorMsg != null) {
-                    view.failLoad(errorMsg);
-                } else {
-                    view.netException();
-                }
-            }
-        }, RunLineResponse.class);
     }
 }

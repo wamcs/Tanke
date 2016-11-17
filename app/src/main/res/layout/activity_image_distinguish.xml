@@ -39,14 +39,15 @@
         android:layout_above="@id/img_startScan"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="20dp"
-        android:background="@drawable/shape_half_transparent_imagedistinguish_tip"
         android:visibility="gone">
 
         <TextView
             android:id="@+id/tv_scanning_tip"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:background="@drawable/shape_half_transparent_imagedistinguish_tip"
             android:gravity="center"
+            android:padding="20dp"
             android:text="扫描场景中，调整角度可能有新发现哦！"
             android:textColor="@color/colorPrimary"
             android:textSize="16sp"

@@ -98,6 +98,10 @@ public class BindTelHelper extends SignUpHelper {
                     Accounts.setPhoneNumber(phone);
                     context.setResult(ResultCode.BIND_TEL);
                     context.finish();
+                } else {
+                    Toast.makeText(context, baseResponse.info, Toast.LENGTH_SHORT).show();
+                    signUpNextButton.setEnabled(true);
+                    signUpNextButton.setText("完成");
                 }
             }
 
@@ -108,8 +112,6 @@ public class BindTelHelper extends SignUpHelper {
                 signUpNextButton.setText("完成");
             }
         }, BaseResponse.class);
-
-
         return true;
     }
 }

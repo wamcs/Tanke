@@ -20,6 +20,9 @@ import java.util.HashMap;
  * email: 2319821734@qq.com
  */
 public class LocationFileParser {
+
+    public static final int FILE_TYPE_FROM_ASSETS = 1;
+    public static final int FILE_TYPE_FROM_DIR = 2;
     /**
      * cache history province
      * cache province name list
@@ -31,7 +34,7 @@ public class LocationFileParser {
      * key : province name
      * value : list of the city in the key province
      */
-    //  private static ArrayList<CityStruct> hotCitys;
+    private static ArrayList<CityStruct> hotCitys;
 
     private static HashMap<String, ArrayList<CityStruct>> cachedCitys = new HashMap<>();
 
@@ -58,6 +61,8 @@ public class LocationFileParser {
                     cachedLocs.add(ls);
                     cachedProvince.add(ls.getmProvinceName());
                     cachedCitys.put(ls.getmProvinceName(), ls.getmCitys());
+                } else {
+                    hotCitys = ls.getmCitys();
                 }
             }
             return true;
@@ -66,4 +71,21 @@ public class LocationFileParser {
         }
         return false;
     }
+
+    public static ArrayList<String> loadProvinceList() {
+        return cachedProvince;
+    }
+
+    public static ArrayList<CityStruct> loadCityList(String provinceName) {
+        ArrayList<CityStruct> citys = cachedCitys.get(provinceName);
+        if (null != citys) {
+            return citys;
+        }
+        return citys;
+    }
+
+    public static ArrayList<CityStruct> loadHotCityList() {
+        return hotCitys;
+    }
+
 }

@@ -16,10 +16,22 @@
         android:background="@color/white10"
         android:padding="20dp">
 
+        <TextView
+            android:id="@+id/tv_tip"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="10dp"
+            android:gravity="center"
+            android:textColor="@color/black333"
+            android:textSize="14sp"
+            android:visibility="visible"/>
+
         <LinearLayout
             android:id="@+id/ll_duration_distance"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_below="@id/tv_tip"
             android:orientation="horizontal">
 
             <RelativeLayout
@@ -47,8 +59,8 @@
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="10dp"
                     android:text="@string/duration"
-                    android:textColor="@color/black333"
-                    android:textSize="16sp"/>
+                    android:textColor="@color/black04"
+                    android:textSize="14sp"/>
 
             </RelativeLayout>
 
@@ -64,7 +76,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
-                    android:text="0.0"
+                    android:text="0.00"
                     android:textColor="@color/black333"
                     android:textSize="22sp"
                     android:textStyle="bold"/>
@@ -77,8 +89,8 @@
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="10dp"
                     android:text="@string/distance"
-                    android:textColor="@color/black333"
-                    android:textSize="16sp"/>
+                    android:textColor="@color/black04"
+                    android:textSize="14sp"/>
 
             </RelativeLayout>
 
@@ -106,27 +118,13 @@
         android:layout_height="match_parent"
         android:layout_above="@id/rl_bottom"/>
 
-
-    <TextView
-        android:id="@+id/tv_tip"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@id/rl_bottom"
-        android:layout_centerHorizontal="true"
-        android:background="@color/colorPrimary"
-        android:gravity="center"
-        android:padding="5dp"
-        android:textColor="@color/black333"
-        android:textSize="14sp"
-        android:visibility="gone"/>
-
     <ImageView
         android:id="@+id/img_show_current_location"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@id/textureMapView"
         android:layout_alignLeft="@id/textureMapView"
-        android:layout_marginBottom="70dp"
+        android:layout_marginBottom="50dp"
         android:layout_marginLeft="10dp"
         android:layout_marginTop="20dp"
         android:src="@drawable/wode"/>
@@ -138,6 +136,5 @@
         android:layout_above="@id/img_show_current_location"
         android:layout_alignLeft="@id/img_show_current_location"
         android:src="@drawable/renwu"/>
-
 
 </RelativeLayout>

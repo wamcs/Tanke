@@ -34,18 +34,14 @@ public class UserDirectionRunPresenter implements UserDirectionRunContact.IUserD
                     if (response.info != null) {
                         view.failLoad(response.info);
                     } else {
-                        view.failLoad();
+                        view.failLoad("");
                     }
                 }
             }
 
             @Override
             protected void onFailed(String errorMsg) {
-                if (errorMsg != null) {
-                    view.failLoad(errorMsg);
-                } else {
-                    view.netException();
-                }
+                view.failLoad(errorMsg);
             }
         }, DRRecordListResponse.class);
     }

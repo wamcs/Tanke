@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.lptiyu.tanke.R;
 import com.lptiyu.tanke.entity.response.HomeTabEntity;
+import com.lptiyu.tanke.enums.GameState;
 import com.lptiyu.tanke.enums.SortIndex;
 
 import java.util.List;
@@ -72,28 +73,44 @@ public class HomeTabAdapter extends BaseRecyclerViewAdapter<HomeTabEntity> {
         myViewHolder.tvDistance.setText(distance);
         myViewHolder.location.setText(gameEntity.area);
 
-        switch (sortIndex) {
-            case SortIndex.NEAR_GAME:
-                myViewHolder.tvPlayerCountOnlinePlayable.setVisibility(View.GONE);
-                if (TextUtils.isEmpty(gameEntity.tag)) {
-                    myViewHolder.tvCompetitonTag.setVisibility(View.GONE);
-                } else {
-                    myViewHolder.tvCompetitonTag.setVisibility(View.VISIBLE);
-                    myViewHolder.tvCompetitonTag.setText(gameEntity.tag);
-                }
-                break;
-            case SortIndex.ONLINE_PLAYABLE:
-                myViewHolder.tvDistance.setVisibility(View.GONE);
-                myViewHolder.location.setText("");
-                break;
-            case SortIndex.DIRECTION_RUN:
-                myViewHolder.tvPlayerCountOnlinePlayable.setVisibility(View.GONE);
-                break;
-            case SortIndex.COMPETITION_ACTIVITY:
-                myViewHolder.tvPlayerCountOnlinePlayable.setVisibility(View.GONE);
-                break;
+        if (sortIndex == SortIndex.NEAR_GAME) {
+            myViewHolder.tvPlayerCountOnlinePlayable.setVisibility(View.GONE);
         }
-
+        if (sortIndex == SortIndex.ONLINE_PLAYABLE) {
+            myViewHolder.location.setText("");
+            myViewHolder.tvDistance.setVisibility(View.GONE);
+        }
+        if (sortIndex == SortIndex.DIRECTION_RUN) {
+            myViewHolder.tvPlayerCountOnlinePlayable.setVisibility(View.GONE);
+        }
+        if (sortIndex == SortIndex.COMPETITION_ACTIVITY) {
+            myViewHolder.tvPlayerCountOnlinePlayable.setVisibility(View.GONE);
+        }
+        //如果有内测标签则只显示内测标签，否则显示定向乐跑的标签
+        switch (gameEntity.state) {
+            case GameState.ALPHA_TEST:
+                myViewHolder.tvCompetitonTag.setVisibility(View.VISIBLE);
+                myViewHolder.tvCompetitonTag.setText(GameState.ALPHA_TEST_STR);
+                break;
+            case GameState.FINISHED:
+                myViewHolder.tvCompetitonTag.setVisibility(View.VISIBLE);
+                myViewHolder.tvCompetitonTag.setText(GameState.FINISHED_STR);
+                break;
+            case GameState.MAINTAINING:
+                myViewHolder.tvCompetitonTag.setVisibility(View.VISIBLE);
+                myViewHolder.tvCompetitonTag.setText(GameState.MAINTAINING_STR);
+                break;
+            case GameState.NORMAL:
+            default:
+                if (sortIndex == SortIndex.NEAR_GAME) {
+                    if (TextUtils.isEmpty(gameEntity.tag)) {
+                        myViewHolder.tvCompetitonTag.setVisibility(View.GONE);
+                    } else {
+                        myViewHolder.tvCompetitonTag.setVisibility(View.VISIBLE);
+                        myViewHolder.tvCompetitonTag.setText(gameEntity.tag);
+                    }
+                }
+        }
     }
 
     class MyViewHolder extends RecyclerView.ViewHolder {

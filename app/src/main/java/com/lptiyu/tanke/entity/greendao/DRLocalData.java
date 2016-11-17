@@ -21,11 +21,13 @@ public class DRLocalData {
     public String lastPointLatitude;
     public String lastPointLongitude;
     public String fileName;
-    @Generated(hash = 499242189)
+    public String timeStamp;
+    @Generated(hash = 539550575)
     public DRLocalData(Long id, String record_id, String game_id, String startTime,
             String totalDistance, String previousPointId,
             String previousPointLatitude, String previousPointLongitude,
-            String lastPointLatitude, String lastPointLongitude, String fileName) {
+            String lastPointLatitude, String lastPointLongitude, String fileName,
+            String timeStamp) {
         this.id = id;
         this.record_id = record_id;
         this.game_id = game_id;
@@ -37,6 +39,7 @@ public class DRLocalData {
         this.lastPointLatitude = lastPointLatitude;
         this.lastPointLongitude = lastPointLongitude;
         this.fileName = fileName;
+        this.timeStamp = timeStamp;
     }
     @Generated(hash = 218941470)
     public DRLocalData() {
@@ -106,5 +109,11 @@ public class DRLocalData {
     }
     public void setFileName(String fileName) {
         this.fileName = fileName;
+    }
+    public String getTimeStamp() {
+        return this.timeStamp;
+    }
+    public void setTimeStamp(String timeStamp) {
+        this.timeStamp = timeStamp;
     }
 }

@@ -40,6 +40,7 @@ import com.lptiyu.tanke.entity.response.Ranks;
 import com.lptiyu.tanke.enums.GameSort;
 import com.lptiyu.tanke.enums.PlayStatus;
 import com.lptiyu.tanke.enums.ResultCode;
+import com.lptiyu.tanke.enums.SortIndex;
 import com.lptiyu.tanke.enums.Where;
 import com.lptiyu.tanke.global.Conf;
 import com.lptiyu.tanke.mybase.MyBaseActivity;
@@ -318,7 +319,8 @@ public class GameDetailActivity extends MyBaseActivity implements GameDetailCont
         }
     }
 
-    @OnClick({R.id.img_back, R.id.img_share, R.id.tv_enter_game, R.id.rl_play_num, R.id.view_click_into_detail_area})
+    @OnClick({R.id.img_back, R.id.img_share, R.id.tv_enter_game, R.id.rl_play_num, R.id.view_click_into_detail_area,
+            R.id.rl_ranks})
     public void onClick(View view) {
         Intent intent = null;
         switch (view.getId()) {
@@ -337,9 +339,6 @@ public class GameDetailActivity extends MyBaseActivity implements GameDetailCont
             case R.id.tv_enter_game:
                 enterGame();
                 break;
-            case R.id.rl_play_num:
-                //进入大神排行榜页面
-                break;
             case R.id.view_click_into_detail_area:
                 if (gameDetail == null || gameDetail.game_zone == null || gameDetail.game_zone.size() < 3) {
                     Toast.makeText(this, "游戏区域为空", Toast.LENGTH_SHORT).show();
@@ -348,6 +347,9 @@ public class GameDetailActivity extends MyBaseActivity implements GameDetailCont
                 intent = new Intent(GameDetailActivity.this, GameDetailAreaActivity.class);
                 intent.putExtra(Conf.GAME_DETAIL, gameDetail);
                 startActivity(intent);
+                break;
+            case R.id.rl_ranks:
+                Toast.makeText(this, "即将开放，敬请期待", Toast.LENGTH_SHORT).show();
                 break;
         }
     }
@@ -358,6 +360,11 @@ public class GameDetailActivity extends MyBaseActivity implements GameDetailCont
             return;
         }
         if (gameDetail == null) {
+            return;
+        }
+        //TODO 团队赛事
+        if (entity.cid == SortIndex.COMPETITION_ACTIVITY) {
+            Toast.makeText(this, "团队赛事即将开放，敬请期待", Toast.LENGTH_SHORT).show();
             return;
         }
         switch (gameDetail.play_status) {
@@ -424,21 +431,10 @@ public class GameDetailActivity extends MyBaseActivity implements GameDetailCont
         mapView.onSaveInstanceState(outState);
     }
 
-    @Override
-    public void failLoad() {
-        super.failLoad();
-        tvEnterGame.setEnabled(true);
-    }
 
     @Override
     public void failLoad(String errMsg) {
         super.failLoad(errMsg);
-        tvEnterGame.setEnabled(true);
-    }
-
-    @Override
-    public void netException() {
-        super.netException();
         tvEnterGame.setEnabled(true);
     }
 }

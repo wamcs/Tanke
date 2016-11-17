@@ -64,7 +64,6 @@ public class PointListAdapter extends BaseRecyclerViewAdapter<Point> {
                 vh.tvPointName.setText("未解锁");
                 vh.tvLabel.setVisibility(View.GONE);
                 vh.imgLock.setVisibility(View.VISIBLE);
-                vh.imgTransparent.setVisibility(View.VISIBLE);
                 break;
             case PointTaskStatus.PLAYING://正在玩
                 vh.tvPointName.setText(point.point_title);
@@ -72,7 +71,6 @@ public class PointListAdapter extends BaseRecyclerViewAdapter<Point> {
                 vh.tvLabel.setText("进行中");
                 vh.tvLabel.setBackgroundResource(R.drawable.shape_point_state_playing);
                 vh.imgLock.setVisibility(View.GONE);
-                vh.imgTransparent.setVisibility(View.GONE);
                 break;
             case PointTaskStatus.FINISHED://已完成
                 vh.tvPointName.setText(point.point_title);
@@ -80,7 +78,6 @@ public class PointListAdapter extends BaseRecyclerViewAdapter<Point> {
                 vh.tvLabel.setText("已完成");
                 vh.tvLabel.setBackgroundResource(R.drawable.shape_point_state_finished);
                 vh.imgLock.setVisibility(View.GONE);
-                vh.imgTransparent.setVisibility(View.GONE);
                 break;
         }
     }
@@ -88,8 +85,6 @@ public class PointListAdapter extends BaseRecyclerViewAdapter<Point> {
     class ViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.img)
         CircularImageView img;
-        @BindView(R.id.img_transparent)
-        ImageView imgTransparent;
         @BindView(R.id.img_lock)
         ImageView imgLock;
         @BindView(R.id.ctv_pointName)

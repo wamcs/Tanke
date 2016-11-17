@@ -36,17 +36,14 @@ public class GameDetailPresenter implements GameDetailContact.IGameDetailPresent
                     if (response.info != null) {
                         view.failLoad(response.info);
                     } else {
-                        view.failLoad();
+                        view.failLoad("");
                     }
                 }
             }
 
             @Override
             protected void onFailed(String errorMsg) {
-                if (errorMsg != null)
-                    view.failLoad(errorMsg);
-                else
-                    view.netException();
+                view.failLoad(errorMsg);
             }
         }, GameDetailResponse.class);
     }
@@ -66,17 +63,14 @@ public class GameDetailPresenter implements GameDetailContact.IGameDetailPresent
                     if (response.info != null) {
                         view.failLoad(response.info);
                     } else {
-                        view.failLoad();
+                        view.failLoad("");
                     }
                 }
             }
 
             @Override
             protected void onFailed(String errorMsg) {
-                if (errorMsg != null)
-                    view.failLoad(errorMsg);
-                else
-                    view.netException();
+                view.failLoad(errorMsg);
             }
         }, EnterGameResponse.class);
     }
@@ -96,16 +90,13 @@ public class GameDetailPresenter implements GameDetailContact.IGameDetailPresent
                         view.failLeaveGame(response.info);
                     }
                 } else {
-                    view.failLoad();
+                    view.failLoad("");
                 }
             }
 
             @Override
             protected void onFailed(String errorMsg) {
-                if (errorMsg != null)
-                    view.failLoad(errorMsg);
-                else
-                    view.netException();
+                view.failLoad(errorMsg);
             }
         }, BaseResponse.class);
     }

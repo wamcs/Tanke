@@ -86,6 +86,8 @@ public class ResetPasswordHelper extends SignUpHelper {
                     public void call(Response<Void> voidResponse) {
                         int status = voidResponse.getStatus();
                         if (status != 1) {
+                            signUpNextButton.setEnabled(true);
+                            signUpNextButton.setText("完成");
                             ToastUtil.TextToast(voidResponse.getInfo());
                             return;
                         }

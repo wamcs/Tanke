@@ -11,9 +11,7 @@ import android.webkit.WebViewClient;
 
 import com.lptiyu.tanke.R;
 import com.lptiyu.tanke.activities.lookredwalletrecord.LookRedWalletRecordActivity;
-import com.lptiyu.tanke.global.Accounts;
 import com.lptiyu.tanke.mybase.MyBaseActivity;
-import com.lptiyu.tanke.utils.LogUtils;
 import com.lptiyu.tanke.utils.xutils3.XUtilsUrls;
 import com.lptiyu.tanke.widget.CustomTextView;
 import com.lptiyu.tanke.widget.GradientProgressBar;
@@ -70,9 +68,7 @@ public class RedWalletActivity extends MyBaseActivity {
                 progressBar.setProgress(progress / 100.0f);
             }
         });
-        String url = XUtilsUrls.REQUEST_RED_WALLET + "?uid=" + Accounts.getId() + "&token=" + Accounts.getToken();
-        LogUtils.i("红包提现url:" + url);
-        mWebView.loadUrl(Html.fromHtml(url).toString());
+        mWebView.loadUrl(Html.fromHtml(XUtilsUrls.REQUEST_RED_WALLET).toString());
     }
 
     @Override

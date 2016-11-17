@@ -16,6 +16,8 @@ public class Task implements Comparable<Task>, Parcelable {
     public String ftime = "";
     public String exp;
 
+    public int status;
+
     @Override
     public int compareTo(Task another) {
         if (another != null) {
@@ -41,9 +43,9 @@ public class Task implements Comparable<Task>, Parcelable {
         dest.writeString(this.type);
         dest.writeString(this.pwd);
         dest.writeString(this.task_index);
-        //        dest.writeString(this.next_task);
         dest.writeString(this.ftime);
         dest.writeString(this.exp);
+        dest.writeInt(status);
     }
 
     public Task() {
@@ -56,9 +58,9 @@ public class Task implements Comparable<Task>, Parcelable {
         this.type = in.readString();
         this.pwd = in.readString();
         this.task_index = in.readString();
-        //        this.next_task = in.readString();
         this.ftime = in.readString();
         this.exp = in.readString();
+        this.status = in.readInt();
     }
 
     public static final Parcelable.Creator<Task> CREATOR = new Parcelable.Creator<Task>() {
@@ -82,7 +84,6 @@ public class Task implements Comparable<Task>, Parcelable {
                 ", type='" + type + '\'' +
                 ", pwd='" + pwd + '\'' +
                 ", task_index='" + task_index + '\'' +
-                //                ", next_task='" + next_task + '\'' +
                 ", ftime='" + ftime + '\'' +
                 ", exp='" + exp + '\'' +
                 '}';

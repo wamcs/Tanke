@@ -9,6 +9,9 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
         android:background="@drawable/bg_login"
         android:orientation="vertical">
 
@@ -19,7 +22,7 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="80dp"
             android:scaleType="centerInside"
-            android:src="@drawable/login_title_icon"
+            android:src="@drawable/budao"
             />
 
         <EditText
@@ -29,7 +32,7 @@
             android:layout_below="@id/login_activity_title"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="60dp"
             android:background="@color/transparent"
             android:drawableLeft="@drawable/input_username"
             android:drawablePadding="10dp"

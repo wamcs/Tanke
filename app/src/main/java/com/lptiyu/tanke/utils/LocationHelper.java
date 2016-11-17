@@ -53,8 +53,14 @@ public class LocationHelper implements AMapLocationListener {
         //初始化定位
         mLocationClient = new AMapLocationClient(context.getApplicationContext());
         mOption = new AMapLocationClientOption();
-        //设置高精度模式（总共有三种模式）
+        //设置设备模式（总共有三种模式）
         mOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Hight_Accuracy);
+        //        //优先返回GPS定位信息，高精度定位模式下才会有用，默认关闭
+        //        mOption.setGpsFirst(true);
+        //        //单位是毫秒，默认30000毫秒，建议超时时间不要低于8000毫秒。模式为仅设备模式(Device_Sensors)时无效
+        //        mOption.setHttpTimeOut(20000);
+        //退出时是否杀死service，默认false
+        //        mOption.setKillProcess(false);
         //设置是否定位一次
         mOption.setOnceLocation(true);
         //获取三秒内精度最高的一次定位结果，如果设置为true，则setOnceLocation()也将设置为true
@@ -63,8 +69,8 @@ public class LocationHelper implements AMapLocationListener {
         mOption.setInterval(3000);
         //是否返回地址信息
         mOption.setNeedAddress(true);
-        //是否强制刷新wifi
-        mOption.setWifiActiveScan(true);
+        //设置是否强制刷新WIFI，默认为强制刷新。每次定位主动刷新WIFI模块会提升WIFI定位精度，但相应的会多付出一些电量消耗。
+        mOption.setWifiActiveScan(false);
         //是否允许模拟软件Mock位置结果
         mOption.setMockEnable(false);
         //设置网络请求方式

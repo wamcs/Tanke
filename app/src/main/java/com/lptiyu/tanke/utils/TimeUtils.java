@@ -222,9 +222,9 @@ public class TimeUtils {
             return peisu + "\"";
         }
         if (peisu >= 60 && peisu < 3600) {
-            return peisu / 60 + "\"" + peisu % 60 + "\"";
+            return peisu / 60 + "\'" + peisu % 60 + "\"";
         } else {
-            return peisu / 3600 + "\"" + (peisu % 3600) / 60 + "\"" + peisu % 60 + "\"";
+            return peisu / 3600 + "\'" + (peisu % 3600) / 60 + "\'" + peisu % 60 + "\"";
         }
     }
 }

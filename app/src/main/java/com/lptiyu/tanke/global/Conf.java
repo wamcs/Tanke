@@ -11,6 +11,11 @@ import com.lptiyu.tanke.utils.TimeUtils;
 
 public final class Conf {
 
+
+    public static final String STOP_RUN = "stop_run";
+    public static final String TOTAL_TIME = "stop_run";
+    public static final String TOTAL_DISTANCE = "stop_run";
+
     public static final String IMG_DISTINGUISH_ARRAY = "img_distinguish_url";
     public static final String DRRecordEntity = "dr_record_entity";
 
@@ -40,6 +45,7 @@ public final class Conf {
     public static final String CITY_CODE = "city_code";
     public static final String LATITUDE = "latitude";
     public static final String LONGITUDE = "longtitude";
+    public static final int REQUEST_CODE_START_USER_LOCATE = 3;
     public static final int RESULT_CODE_START_USER_LOCATE = 4;
 
     /**

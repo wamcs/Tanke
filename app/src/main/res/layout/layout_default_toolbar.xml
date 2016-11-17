@@ -24,7 +24,7 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:padding="@dimen/default_toolbar_textview_padding"
-        android:textColor="@color/default_font_color"
+        android:textColor="@color/black333"
         android:textSize="@dimen/default_toolbar_textview_text_size"/>
 
 </RelativeLayout>

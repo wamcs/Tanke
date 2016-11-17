@@ -41,18 +41,14 @@ public class GamePlayingPresenter implements GamePlayingContract.IGamePlaying2Pr
                     if (response.info != null) {
                         view.failLoad(response.info);
                     } else {
-                        view.failLoad();
+                        view.failLoad("");
                     }
                 }
             }
 
             @Override
             protected void onFailed(String errorMsg) {
-                if (errorMsg != null) {
-                    view.failLoad(errorMsg);
-                } else {
-                    view.netException();
-                }
+                view.failLoad(errorMsg);
             }
         }, GameRecordResponse.class);
     }
@@ -75,18 +71,14 @@ public class GamePlayingPresenter implements GamePlayingContract.IGamePlaying2Pr
                     if (response.info != null) {
                         view.failLoad(response.info);
                     } else {
-                        view.failLoad();
+                        view.failLoad("");
                     }
                 }
             }
 
             @Override
             protected void onFailed(String errorMsg) {
-                if (errorMsg != null) {
-                    view.failLoad(errorMsg);
-                } else {
-                    view.netException();
-                }
+                view.failLoad(errorMsg);
             }
         }, GameRecordResponse.class);
     }

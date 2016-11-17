@@ -5,9 +5,5 @@ package com.lptiyu.tanke.mybase;
  */
 
 public interface IBaseView {
-    void failLoad();
-
     void failLoad(String errMsg);
-
-    void netException();
 }

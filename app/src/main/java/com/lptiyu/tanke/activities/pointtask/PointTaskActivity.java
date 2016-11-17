@@ -195,7 +195,7 @@ public class PointTaskActivity extends MyBaseActivity implements PointTaskContac
         if (RunApplication.isPointOver) {
             record.point_statu = PointTaskStatus.FINISHED + "";
         } else {
-            record.point_statu = PointTaskStatus.PLAYING + "";
+            record.point_statu = PointTaskStatus.UNFINISHED + "";
         }
         record.task_id = currentTask.id + "";
         presenter.uploadQRRecord(record);

@@ -3,6 +3,7 @@ package com.lptiyu.tanke.mybase;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.widget.Toast;
 
 import com.lptiyu.tanke.RunApplication;
@@ -18,17 +19,11 @@ public class MyBaseActivity extends AppCompatActivity implements IBaseView {
     }
 
     @Override
-    public void failLoad() {
-        Toast.makeText(this, "加载失败", Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
     public void failLoad(String errMsg) {
-        Toast.makeText(this, errMsg, Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void netException() {
-        Toast.makeText(this, "请求异常", Toast.LENGTH_SHORT).show();
+        if (TextUtils.isEmpty(errMsg)) {
+            Toast.makeText(this, "请求失败", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(this, errMsg, Toast.LENGTH_SHORT).show();
+        }
     }
 }
