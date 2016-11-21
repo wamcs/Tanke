@@ -148,23 +148,8 @@ public class GameDetailActivity extends MyBaseActivity implements GameDetailCont
     }
 
     private void loadGameDetailData() {
-        if (NetworkUtil.checkIsNetworkConnected()) {
-            tvEnterGame.setEnabled(false);
-            presenter.getGameDetail(RunApplication.gameId);
-        } else {
-            getWindow().getDecorView().post(new Runnable() {
-                @Override
-                public void run() {
-                    PopupWindowUtils.getInstance().showNetExceptionPopupwindow(getContext(), new PopupWindowUtils
-                            .OnRetryCallback() {
-                        @Override
-                        public void onRetry() {
-                            loadGameDetailData();
-                        }
-                    });
-                }
-            });
-        }
+        tvEnterGame.setEnabled(false);
+        presenter.getGameDetail(RunApplication.gameId);
     }
 
     private void abandonGame() {

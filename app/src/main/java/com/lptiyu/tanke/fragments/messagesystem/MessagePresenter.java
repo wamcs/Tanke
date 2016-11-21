@@ -1,5 +1,7 @@
 package com.lptiyu.tanke.fragments.messagesystem;
 
+import android.text.TextUtils;
+
 import com.lptiyu.tanke.entity.response.BaseResponse;
 import com.lptiyu.tanke.entity.response.MessageResponse;
 import com.lptiyu.tanke.global.Accounts;
@@ -28,11 +30,15 @@ public class MessagePresenter implements MessageContact.IMessagePresenter {
         params.addBodyParameter("page", page + "");
         XUtilsHelper.getInstance().get(params, new XUtilsRequestCallBack<MessageResponse>() {
             @Override
-            protected void onSuccess(MessageResponse messageResponse) {
-                if (messageResponse.status == BaseResponse.SUCCESS) {
-                    view.successLoadMessage(messageResponse.data);
+            protected void onSuccess(MessageResponse response) {
+                if (response.status == BaseResponse.SUCCESS) {
+                    view.successLoadMessage(response.data);
                 } else {
-                    view.failLoad(messageResponse.info);
+                    if (!TextUtils.isEmpty(response.info)) {
+                        view.failLoad(response.info);
+                    } else {
+                        view.failLoad("");
+                    }
                 }
             }
 

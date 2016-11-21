@@ -134,24 +134,15 @@ public class GamePlayingActivity extends MyBaseActivity implements GamePlayingCo
 
     }
 
+    @Override
+    public void failLoad(String errMsg) {
+        super.failLoad(errMsg);
+        tvTitle.setText("加载失败");
+    }
+
     private void loadGameRecord() {
         tvTitle.setText("加载中...");
-        if (NetworkUtil.checkIsNetworkConnected()) {
-            presenter.downLoadGameRecord(gameId, teamId, recordId);//teamId个人游戏传0，团队游戏传1
-        } else {
-            getWindow().getDecorView().post(new Runnable() {
-                @Override
-                public void run() {
-                    PopupWindowUtils.getInstance().showNetExceptionPopupwindow(getContext(), new PopupWindowUtils
-                            .OnRetryCallback() {
-                        @Override
-                        public void onRetry() {
-                            loadGameRecord();
-                        }
-                    });
-                }
-            });
-        }
+        presenter.downLoadGameRecord(gameId, teamId, recordId);//teamId个人游戏传0，团队游戏传1
     }
 
     private void setAdapter() {
@@ -249,7 +240,7 @@ public class GamePlayingActivity extends MyBaseActivity implements GamePlayingCo
         if (NetworkUtil.checkIsNetworkConnected()) {
             presenter.reloadGameRecord(gameId, teamId, recordId);//个人游戏传0，团队游戏传1
         } else {
-            getWindow().getDecorView().post(new Runnable() {
+            getWindow().getDecorView().postDelayed(new Runnable() {
                 @Override
                 public void run() {
                     PopupWindowUtils.getInstance().showNetExceptionPopupwindow(getContext(), new PopupWindowUtils
@@ -260,7 +251,7 @@ public class GamePlayingActivity extends MyBaseActivity implements GamePlayingCo
                         }
                     });
                 }
-            });
+            }, Conf.POST_DELAY);
         }
     }
 

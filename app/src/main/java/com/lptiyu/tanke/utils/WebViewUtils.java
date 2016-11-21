@@ -37,10 +37,9 @@ public class WebViewUtils {
         webSettings.setDefaultTextEncodingName("utf-8");
 
 
-
         int j = webSettings.getDefaultFixedFontSize();
-        if (j<15)
-            j=15;
+        if (j < 15)
+            j = 15;
         //设置字体大小
         webSettings.setDefaultFontSize(j);
         //webSettings.setDefaultFontSize(DisplayUtils.sp2px(context, 20f));

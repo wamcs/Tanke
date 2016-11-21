@@ -1,5 +1,7 @@
 package com.lptiyu.tanke.utils;
 
+import android.graphics.Bitmap;
+
 import java.util.HashMap;
 
 import cn.sharesdk.framework.Platform;
@@ -108,28 +110,31 @@ public class ShareHelper {
         wechat.share(shareParams);
     }
 
-    public static void shareImage(int platform, String imagePath, PlatformActionListener listener) {
+    public static void shareImage(int platform, Bitmap bitmap, PlatformActionListener listener) {
         switch (platform) {
             case SHARE_QQ:
-                shareLocalImage(QQ.NAME, imagePath, listener);
+                shareLocalImage(QQ.NAME, bitmap, listener);
                 break;
             case SHARE_WEIBO:
-                shareLocalImage(SinaWeibo.NAME, imagePath, listener);
+                shareLocalImage(SinaWeibo.NAME, bitmap, listener);
                 break;
             case SHARE_WECHAT_FRIENDS:
-                shareLocalImage(Wechat.NAME, imagePath, listener);
+                shareLocalImage(Wechat.NAME, bitmap, listener);
                 break;
             case SHARE_WECHAT_CIRCLE:
-                shareLocalImage(WechatMoments.NAME, imagePath, listener);
+                shareLocalImage(WechatMoments.NAME, bitmap, listener);
                 break;
             default:
                 break;
         }
     }
 
-    private static void shareLocalImage(String platform, String imagepath, PlatformActionListener listener) {
+    private static void shareLocalImage(String platform, Bitmap bitmap, PlatformActionListener listener) {
         Platform.ShareParams shareParams = new Platform.ShareParams();
-        shareParams.setImagePath(imagepath);
+        shareParams.setTitle("步道探秘");
+        shareParams.setText("图片分享");
+        shareParams.setImageData(bitmap);
+        shareParams.setShareType(Platform.SHARE_IMAGE);
         Platform plat = ShareSDK.getPlatform(platform);
         plat.setPlatformActionListener(listener);
         plat.share(shareParams);

@@ -6,6 +6,7 @@ import android.content.Context;
 import com.lptiyu.tanke.R;
 
 import java.text.DateFormat;
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -30,6 +31,8 @@ public class TimeUtils {
     public static final String PATTERN3 = "HH:mm:ss";
     public static final String PATTERN4 = "HH:mm";
     public static final String PATTERN5 = "mm:ss";
+
+    public static DecimalFormat df = new java.text.DecimalFormat("00");
 
     public static DateFormat getDateFormatter(String pattern) {
         return new SimpleDateFormat(pattern, Locale.CHINA);
@@ -194,6 +197,10 @@ public class TimeUtils {
         return Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
     }
 
+    public static String getCurrentTime() {
+        return getDateFormatter(PATTERN1).format(new Date());
+    }
+
     /**
      * 将秒数转化为x小时x分x秒
      *
@@ -218,13 +225,15 @@ public class TimeUtils {
      * @return
      */
     public static String parsePeisu(long peisu) {
+
         if (peisu < 60) {
             return peisu + "\"";
         }
         if (peisu >= 60 && peisu < 3600) {
-            return peisu / 60 + "\'" + peisu % 60 + "\"";
+            return df.format(peisu / 60) + "\'" + df.format(peisu % 60) + "\"";
         } else {
-            return peisu / 3600 + "\'" + (peisu % 3600) / 60 + "\'" + peisu % 60 + "\"";
+            return df.format(peisu / 3600) + "\'" + df.format((peisu % 3600) / 60) + "\'" + df.format(peisu % 60) +
+                    "\"";
         }
     }
 }

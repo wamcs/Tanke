@@ -76,26 +76,6 @@ public class PopupWindowUtils {
         popupWindow.setAnimationStyle(R.style.Popup_Animation_fade_in);
     }
 
-    public void showFailLoadPopupwindow(Context context) {
-        LayoutInflater inflater = getInflater(context);
-        View popupView = getPopupView(R.layout.popup_fail_load, inflater);
-        PopupWindow popupWindow = new PopupWindow(popupView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup
-                .LayoutParams.WRAP_CONTENT, true);
-        popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        popupWindow.showAtLocation(popupView, Gravity.CENTER, 0, -100);
-    }
-
-    public void showUsageTip(Context context, View parent, int xOffset, int yOffset) {
-        LayoutInflater inflater = getInflater(context);
-        View popupView = getPopupView(R.layout.popup_usage, inflater);
-        PopupWindow popupWindow = new PopupWindow(popupView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup
-                .LayoutParams.WRAP_CONTENT, true);
-        popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        popupWindow.showAsDropDown(parent, xOffset, yOffset);
-        popupWindow.setTouchable(true);
-        popupWindow.setOutsideTouchable(true);
-    }
-
     public void showTaskGuide(Context context, String content, final DismissCallback callback) {
         LayoutInflater inflater = getInflater(context);
         View popupView = getPopupView(R.layout.popup_task_guide, inflater);
@@ -113,27 +93,6 @@ public class PopupWindowUtils {
                 }
             }
         });
-
-        TextView tv_content_tip = (TextView) popupView.findViewById(R.id.tv_content_tip);
-        TextView tv_ok = (TextView) popupView.findViewById(R.id.tv_ok);
-        tv_content_tip.setText(content);
-        tv_ok.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                popupWindow.dismiss();
-            }
-        });
-    }
-
-    public void showTaskGuide(Context context, String content) {
-        LayoutInflater inflater = getInflater(context);
-        View popupView = getPopupView(R.layout.popup_task_guide, inflater);
-        final PopupWindow popupWindow = new PopupWindow(popupView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup
-                .LayoutParams.WRAP_CONTENT, true);
-        popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        popupWindow.setOutsideTouchable(false);
-        popupWindow.setTouchable(true);
-        popupWindow.showAtLocation(popupView, Gravity.CENTER, 0, 0);
 
         TextView tv_content_tip = (TextView) popupView.findViewById(R.id.tv_content_tip);
         TextView tv_ok = (TextView) popupView.findViewById(R.id.tv_ok);

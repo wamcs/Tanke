@@ -28,9 +28,6 @@ import com.lptiyu.tanke.enums.SortIndex;
 import com.lptiyu.tanke.enums.Where;
 import com.lptiyu.tanke.global.Conf;
 import com.lptiyu.tanke.mybase.MyBaseFragment;
-import com.lptiyu.tanke.utils.LogUtils;
-import com.lptiyu.tanke.utils.NetworkUtil;
-import com.lptiyu.tanke.utils.PopupWindowUtils;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -84,41 +81,11 @@ public class HomeTabFragment extends MyBaseFragment implements HomeTabContact.IH
     }
 
     private void firstLoadGameList() {
-        if (NetworkUtil.checkIsNetworkConnected()) {
-            presenter.firstLoadGameList(cid);
-        } else {
-            getActivity().getWindow().getDecorView().post(new Runnable() {
-                @Override
-                public void run() {
-                    PopupWindowUtils.getInstance().showNetExceptionPopupwindow(getContext(), new PopupWindowUtils
-                            .OnRetryCallback() {
-                        @Override
-                        public void onRetry() {
-                            firstLoadGameList();
-                        }
-                    });
-                }
-            });
-        }
+        presenter.firstLoadGameList(cid);
     }
 
     private void reloadGameList() {
-        if (NetworkUtil.checkIsNetworkConnected()) {
-            presenter.reloadGameList(cid);
-        } else {
-            getActivity().getWindow().getDecorView().post(new Runnable() {
-                @Override
-                public void run() {
-                    PopupWindowUtils.getInstance().showNetExceptionPopupwindow(getContext(), new PopupWindowUtils
-                            .OnRetryCallback() {
-                        @Override
-                        public void onRetry() {
-                            reloadGameList();
-                        }
-                    });
-                }
-            });
-        }
+        presenter.reloadGameList(cid);
     }
 
     private void setRecyclerViewAdapter() {
@@ -190,7 +157,6 @@ public class HomeTabFragment extends MyBaseFragment implements HomeTabContact.IH
 
             @Override
             public void onBottom() {
-                LogUtils.i("到底啦");
                 if (isLoading) {
                     return;
                 }

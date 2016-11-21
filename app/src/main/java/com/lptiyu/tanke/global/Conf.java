@@ -11,7 +11,7 @@ import com.lptiyu.tanke.utils.TimeUtils;
 
 public final class Conf {
 
-
+    public static final int POST_DELAY = 500;
     public static final String STOP_RUN = "stop_run";
     public static final String TOTAL_TIME = "stop_run";
     public static final String TOTAL_DISTANCE = "stop_run";

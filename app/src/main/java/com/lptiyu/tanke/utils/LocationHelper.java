@@ -55,12 +55,14 @@ public class LocationHelper implements AMapLocationListener {
         mOption = new AMapLocationClientOption();
         //设置设备模式（总共有三种模式）
         mOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Hight_Accuracy);
-        //        //优先返回GPS定位信息，高精度定位模式下才会有用，默认关闭
+        //允许缓存
+        mOption.setLocationCacheEnable(true);
+        //优先返回GPS定位信息，高精度定位模式下才会有用，默认关闭，设置此属性之后第一次返回定位信息会很慢，大概五六秒钟左右
         //        mOption.setGpsFirst(true);
-        //        //单位是毫秒，默认30000毫秒，建议超时时间不要低于8000毫秒。模式为仅设备模式(Device_Sensors)时无效
-        //        mOption.setHttpTimeOut(20000);
+        //单位是毫秒，默认30000毫秒，建议超时时间不要低于8000毫秒。模式为仅设备模式(Device_Sensors)时无效
+        mOption.setHttpTimeOut(20000);
         //退出时是否杀死service，默认false
-        //        mOption.setKillProcess(false);
+        mOption.setKillProcess(false);
         //设置是否定位一次
         mOption.setOnceLocation(true);
         //获取三秒内精度最高的一次定位结果，如果设置为true，则setOnceLocation()也将设置为true

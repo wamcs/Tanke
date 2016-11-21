@@ -3,7 +3,8 @@
     <string name="app_mail">hello@lptiyu.com</string>
     <string name="wechat_public">步道探秘</string>
     <string name="scanner">扫一扫</string>
-    <string name="no_network">当前没有网络</string>
+    <string name="no_network">网络已断开</string>
+    <string name="fail_load">请求失败</string>
     <string name="no_camera_permission">请您打开相机权限</string>
     <string name="no_location_permission">请您打开定位权限</string>
     <string name="camera_permission_rationale">我们需要使用您的相机来进行扫描二维码的功能，请点击确认前往授权，谢谢^_^</string>

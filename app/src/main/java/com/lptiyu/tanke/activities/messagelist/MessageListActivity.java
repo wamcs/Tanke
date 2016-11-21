@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
+import android.widget.ImageView;
 
 import com.lptiyu.tanke.R;
 import com.lptiyu.tanke.activities.messagedetail.SystemWebActivity;
@@ -31,6 +33,8 @@ public class MessageListActivity extends MyBaseActivity {
     RecyclerView recyclerViewMessageList;
     @BindView(R.id.swipe_message_list)
     SwipeRefreshLayout swipeMessageList;
+    @BindView(R.id.no_data_imageview)
+    ImageView emptyView;
     private MessageListAdapter adapter;
 
     @Override
@@ -65,10 +69,13 @@ public class MessageListActivity extends MyBaseActivity {
 
                 }
             });
+        } else {
+            emptyView.setVisibility(View.VISIBLE);
         }
         swipeMessageList.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
+                //TODO 数据假刷新
                 swipeMessageList.setRefreshing(false);
             }
         });

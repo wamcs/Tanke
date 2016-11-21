@@ -4,13 +4,16 @@
                 android:layout_height="match_parent">
 
     <include
+        android:id="@+id/include"
         layout="@layout/layout_default_toolbar"/>
 
     <RelativeLayout
         android:id="@+id/rl_message_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/rl_title"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/include"
         android:background="@color/white10"
         android:paddingBottom="5dp"
         android:paddingLeft="10dp"
@@ -55,7 +58,6 @@
                 android:id="@+id/tv_message_time"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
                 android:layout_marginRight="10dp"
                 android:layout_toRightOf="@id/img_message_red_spot"
                 android:ellipsize="end"
@@ -70,6 +72,8 @@
                 android:id="@+id/tv_message_content"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignLeft="@id/tv_message_name"
+                android:layout_alignRight="@id/tv_message_time"
                 android:layout_below="@id/tv_message_name"
                 android:layout_marginTop="5dp"
                 android:ellipsize="end"

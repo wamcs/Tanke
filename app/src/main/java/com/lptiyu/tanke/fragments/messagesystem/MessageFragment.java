@@ -16,8 +16,6 @@ import com.lptiyu.tanke.activities.messagelist.MessageListActivity;
 import com.lptiyu.tanke.entity.response.MessageEntity;
 import com.lptiyu.tanke.global.Conf;
 import com.lptiyu.tanke.mybase.MyBaseFragment;
-import com.lptiyu.tanke.utils.NetworkUtil;
-import com.lptiyu.tanke.utils.PopupWindowUtils;
 import com.lptiyu.tanke.utils.TimeUtils;
 import com.lptiyu.tanke.widget.CustomTextView;
 
@@ -57,22 +55,7 @@ public class MessageFragment extends MyBaseFragment implements MessageContact.IM
     }
 
     private void loadMessage() {
-        if (NetworkUtil.checkIsNetworkConnected()) {
-            presenter.loadMessage(page);
-        } else {
-            getActivity().getWindow().getDecorView().post(new Runnable() {
-                @Override
-                public void run() {
-                    PopupWindowUtils.getInstance().showNetExceptionPopupwindow(getActivity(), new PopupWindowUtils
-                            .OnRetryCallback() {
-                        @Override
-                        public void onRetry() {
-                            loadMessage();
-                        }
-                    });
-                }
-            });
-        }
+        presenter.loadMessage(page);
     }
 
     @Nullable

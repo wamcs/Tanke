@@ -20,14 +20,13 @@ import com.lptiyu.tanke.entity.response.GameOverReward;
 import com.lptiyu.tanke.entity.response.GetScoreAfterShare;
 import com.lptiyu.tanke.enums.Where;
 import com.lptiyu.tanke.global.Accounts;
+import com.lptiyu.tanke.global.Conf;
 import com.lptiyu.tanke.mybase.MyBaseActivity;
 import com.lptiyu.tanke.utils.DisplayUtils;
 import com.lptiyu.tanke.utils.ImageWaterMarkerUtils;
 import com.lptiyu.tanke.utils.LogUtils;
 import com.lptiyu.tanke.utils.ShareHelper;
 
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.util.Calendar;
 import java.util.HashMap;
 
@@ -75,7 +74,6 @@ public class GameOverActivity extends MyBaseActivity implements GameOverContact.
     private Bitmap source;
     private Bitmap waterMarker;
     private Bitmap waterMarkerBitmap;
-    private String imagePath;
     private long recordId;
 
     @Override
@@ -86,12 +84,12 @@ public class GameOverActivity extends MyBaseActivity implements GameOverContact.
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         ButterKnife.bind(this);
 
-        getWindow().getDecorView().post(new Runnable() {
+        getWindow().getDecorView().postDelayed(new Runnable() {
             @Override
             public void run() {
                 startAnime();
             }
-        });
+        }, Conf.POST_DELAY);
 
         initData();
 
@@ -185,11 +183,11 @@ public class GameOverActivity extends MyBaseActivity implements GameOverContact.
         new Thread(new Runnable() {
             @Override
             public void run() {
-                imagePath = getWaterMarkerBitmap();//此步骤比较耗时，最好放到子线程中操作
+                final Bitmap waterMarkerBitmap = getWaterMarkerBitmap();//此步骤比较耗时，最好放到子线程中操作
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        ShareHelper.shareImage(platform, imagePath, GameOverActivity.this);
+                        ShareHelper.shareImage(platform, waterMarkerBitmap, GameOverActivity.this);
                         rlShareScoreTip.setVisibility(View.VISIBLE);
                         llPlatformList.setVisibility(View.VISIBLE);
                         imgClose.setVisibility(View.VISIBLE);
@@ -229,7 +227,7 @@ public class GameOverActivity extends MyBaseActivity implements GameOverContact.
         System.gc();
     }
 
-    private String getWaterMarkerBitmap() {
+    private Bitmap getWaterMarkerBitmap() {
         String imagePath = screenShot(this);
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inJustDecodeBounds = false;
@@ -238,17 +236,18 @@ public class GameOverActivity extends MyBaseActivity implements GameOverContact.
         waterMarker = BitmapFactory.decodeResource(getResources(), R.drawable.water_marker, options);
         waterMarkerBitmap = ImageWaterMarkerUtils.createWaterMaskLeftBottom(this, source, waterMarker,
                 DisplayUtils.dp2px(10), 0);
-        if (waterMarkerBitmap != null && waterMarker != null) {
-            try {
-                FileOutputStream out = new FileOutputStream(imagePath);
-                waterMarkerBitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
-                LogUtils.i("水印添加成功：" + imagePath);
-                return imagePath;
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            }
-        }
-        return null;
+        return waterMarkerBitmap;
+        //        if (waterMarkerBitmap != null) {
+        //            try {
+        //                FileOutputStream out = new FileOutputStream(imagePath);
+        //                waterMarkerBitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
+        //                LogUtils.i("水印添加成功：" + imagePath);
+        //                return imagePath;
+        //            } catch (FileNotFoundException e) {
+        //                e.printStackTrace();
+        //            }
+        //        }
+        //        return null;
     }
 
     @Override

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.ColorDrawable;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -73,7 +74,15 @@ public class TaskResultHelper {
             popup_rl_exp.setVisibility(View.VISIBLE);
         }
         if (popup_tv_score != null && result != null) {
-            popup_tv_score.setText("+" + result.get_extra_points);
+            long points = 0;
+            long extraPoints = 0;
+            if (!TextUtils.isEmpty(result.get_points)) {
+                points = Long.parseLong(result.get_points);
+            }
+            if (!TextUtils.isEmpty(result.get_extra_points)) {
+                extraPoints = Long.parseLong(result.get_extra_points);
+            }
+            popup_tv_score.setText("+" + (points + extraPoints));
             popup_rl_score.setVisibility(View.VISIBLE);
         }
         if (popup_tv_red_wallet != null && result != null) {

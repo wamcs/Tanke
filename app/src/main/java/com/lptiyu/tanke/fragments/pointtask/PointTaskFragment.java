@@ -289,7 +289,10 @@ public class PointTaskFragment extends MyBaseFragment implements PointTaskContac
 
                     @Override
                     public void onError(String errMsg) {
-                        LogUtils.i(errMsg);
+                        if (distinguishImageDialog != null) {
+                            distinguishImageDialog.dismiss();
+                        }
+                        Toast.makeText(getActivity(), errMsg + "", Toast.LENGTH_SHORT).show();
                     }
                 });
     }

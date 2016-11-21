@@ -146,12 +146,12 @@ public class ImageDistinguishActivity extends MyBaseActivity implements Imagedis
         });
 
         if (AppData.isFirstInImageDistinguishActivity()) {
-            getWindow().getDecorView().post(new Runnable() {
+            getWindow().getDecorView().postDelayed(new Runnable() {
                 public void run() {
                     PopupWindowUtils.getInstance().showTaskGuide(ImageDistinguishActivity.this,
-                            "这是个识图任务，将摄像头对准目标对象，点击蓝色按钮开始识别，识别成功即可通关");
+                            "这是个识图任务，将摄像头对准目标对象，点击蓝色按钮开始识别，识别成功即可通关", null);
                 }
-            });
+            }, Conf.POST_DELAY);
         }
 
         /**

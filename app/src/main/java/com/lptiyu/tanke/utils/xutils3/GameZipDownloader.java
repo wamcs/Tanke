@@ -12,7 +12,6 @@ import com.lptiyu.tanke.utils.DirUtils;
 import com.lptiyu.tanke.utils.FileUtils;
 import com.lptiyu.tanke.utils.GameZipUtils;
 import com.lptiyu.tanke.utils.NetworkUtil;
-import com.lptiyu.tanke.utils.PopupWindowUtils;
 import com.lptiyu.tanke.utils.ProgressDialogHelper;
 
 import java.io.File;
@@ -91,43 +90,43 @@ public class GameZipDownloader {
         progressDialog.show();
         XUtilsHelper.getInstance().downLoad(tempGameZipUrl, DirUtils.getGameDirectory().getAbsolutePath(), new
                 XUtilsHelper.IDownloadCallback() {
-            @Override
-            public void successs(File file) {
-                String zippedFilePath = file.getAbsolutePath();
-                GameZipUtils gameZipUtils = new GameZipUtils();
-                //解压文件
-                gameZipUtils.parseZipFile(zippedFilePath);
-                String parsedFilePath = gameZipUtils.isParsedFileExist(gameId);
-                if (parsedFilePath != null) {
-                    file.delete();
-                    if (callback != null) {
-                        callback.onFinishedDownload();
+                    @Override
+                    public void successs(File file) {
+                        String zippedFilePath = file.getAbsolutePath();
+                        GameZipUtils gameZipUtils = new GameZipUtils();
+                        //解压文件
+                        gameZipUtils.parseZipFile(zippedFilePath);
+                        String parsedFilePath = gameZipUtils.isParsedFileExist(gameId);
+                        if (parsedFilePath != null) {
+                            file.delete();
+                            if (callback != null) {
+                                callback.onFinishedDownload();
+                            }
+                        } else {
+                            Toast.makeText(context, "游戏包解压失败", Toast.LENGTH_SHORT).show();
+                        }
                     }
-                } else {
-                    Toast.makeText(context, "游戏包解压失败", Toast.LENGTH_SHORT).show();
-                }
-            }
 
-            @Override
-            public void progress(long total, long current, boolean isDownloading) {
-                //游戏进度
-                if (progressDialog != null) {
-                    progressDialog.setMessage("加载中" + current * 100 / total + "%");
-                }
-            }
+                    @Override
+                    public void progress(long total, long current, boolean isDownloading) {
+                        //游戏进度
+                        if (progressDialog != null) {
+                            progressDialog.setMessage("加载中" + current * 100 / total + "%");
+                        }
+                    }
 
-            @Override
-            public void finished() {
-                if (progressDialog != null) {
-                    progressDialog.dismiss();
-                }
-            }
+                    @Override
+                    public void finished() {
+                        if (progressDialog != null) {
+                            progressDialog.dismiss();
+                        }
+                    }
 
-            @Override
-            public void onError(String errMsg) {
-                PopupWindowUtils.getInstance().showFailLoadPopupwindow(context);
-            }
-        });
+                    @Override
+                    public void onError(String errMsg) {
+                        Toast.makeText(context, errMsg + "", Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
 
     private void showIsContinueDownloadDialog(double size) {

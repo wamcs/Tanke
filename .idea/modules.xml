@@ -3,7 +3,6 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/LRecyclerview_library/LRecyclerview_library.iml" filepath="$PROJECT_DIR$/LRecyclerview_library/LRecyclerview_library.iml" />
-      <module fileurl="file://$PROJECT_DIR$/PullToZoomView/PullToZoomView.iml" filepath="$PROJECT_DIR$/PullToZoomView/PullToZoomView.iml" />
       <module fileurl="file://$PROJECT_DIR$/StickLayout_library/StickLayout_library.iml" filepath="$PROJECT_DIR$/StickLayout_library/StickLayout_library.iml" />
       <module fileurl="file://$PROJECT_DIR$/Tanke.iml" filepath="$PROJECT_DIR$/Tanke.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />

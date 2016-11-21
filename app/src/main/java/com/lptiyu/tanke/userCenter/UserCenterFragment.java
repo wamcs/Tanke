@@ -98,6 +98,7 @@ public class UserCenterFragment extends BaseFragment {
 
     private Subscription subscription;
     private UserDetails mUserDetails;
+    private boolean isToastShowed;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -136,10 +137,13 @@ public class UserCenterFragment extends BaseFragment {
                     @Override
                     public void call(Throwable throwable) {
                         if (!NetworkUtil.checkIsNetworkConnected()) {
-                            ToastUtil.TextToast(R.string.no_network);
-                            return;
+                            if (!isToastShowed) {
+                                ToastUtil.TextToast(R.string.no_network);
+                                isToastShowed = true;
+                            }
+                        } else {
+                            ToastUtil.TextToast("获取用户信息失败");
                         }
-                        ToastUtil.TextToast("获取用户信息失败");
                     }
                 });
     }

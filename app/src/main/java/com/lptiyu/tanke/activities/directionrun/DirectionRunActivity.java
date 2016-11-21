@@ -54,6 +54,7 @@ import com.lptiyu.tanke.utils.DirUtils;
 import com.lptiyu.tanke.utils.DisplayUtils;
 import com.lptiyu.tanke.utils.DistanceFormatUtils;
 import com.lptiyu.tanke.utils.FileUtils;
+import com.lptiyu.tanke.utils.IOHelper;
 import com.lptiyu.tanke.utils.LocationHelper;
 import com.lptiyu.tanke.utils.LogUtils;
 import com.lptiyu.tanke.utils.MarkerOptionHelper;
@@ -153,6 +154,12 @@ public class DirectionRunActivity extends MyBaseActivity implements DirectionRun
     private final String FAIL_LOCATION = "定位失败";
     private boolean isStartFollow;//地图中心是否跟随当前位置移动
     private boolean isDoingNetWork;
+    private StringBuilder latlngBuilder = new StringBuilder();
+    private double times = 0;
+    private List<LatLng> accurateLatLngs = new ArrayList<>();
+    private double ACCURATE_DISTANCE = 20;//计算最准确的点的范围标准
+    private LatLng accurateLatLng;//开始乐跑后十秒钟内最准确的点
+    private int valid = 20;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -301,65 +308,90 @@ public class DirectionRunActivity extends MyBaseActivity implements DirectionRun
         locationHelper = new LocationHelper(this, new LocationHelper.OnLocationResultListener() {
             @Override
             public void onLocationChanged(AMapLocation aMapLocation) {
-                double latitude = aMapLocation.getLatitude();
-                double longitude = aMapLocation.getLongitude();
-                int locationCode = aMapLocation.getErrorCode();
-                LogUtils.i("accuracy", "定位数据精度：" + aMapLocation.getAccuracy() + ", ErrorCode:" + locationCode + ", " +
-                        "ErrorInfo:" + aMapLocation.getErrorInfo() + ", 定位类型：" + aMapLocation
-                        .getLocationType() + ",经纬度：" + latitude + "," + longitude + ",GPS信号强度：" + aMapLocation
-                        .getGpsAccuracyStatus() + ",卫星数量：" + aMapLocation.getSatellites());
-                //错误码对照表请见http://lbs.amap.com/api/android-location-sdk/guide/utilities/errorcode/#v2
-                if (locationCode != AMapLocation.LOCATION_SUCCESS) {
-                    if (!isLocationFailToastShow) {
-                        handlerFailLocationResult(locationCode);
-                        isLocationFailToastShow = true;
-                    }
-                    return;
-                }
-                if (aMapLocation.getAccuracy() > ACCURACY) {
-                    return;
-                }
-                if (isDoingNetWork) {
-                    return;
-                }
-                isLocationFailToastShow = false;
-                LatLng latLng = new LatLng(latitude, longitude);
-                previousLatLng = currentLatLng;
-                currentLatLng = latLng;
-                if (isStarted) {
-                    //将定位点存储到数据库中
-                    DBHelper.insertDataToDB(DirectionRunActivity.this, aMapLocation);
-                    //开始绘制轨迹
-                    drawLine(previousLatLng, currentLatLng);
-                    //记录里程数
-                    caculateDistance();
-                    if (isStartFollow) {
-                        //将地图中心移到当前位置
-                        moveToLocation(latLng);
-                    }
-                }
-                if (isFirstEnter) {
-                    //将地图中心移到当前位置
-                    moveToLocation(latLng);
-                    isFirstEnter = false;
-                }
-                //用图标标注当前位置
-                if (currentMarker != null) {
-                    currentMarker.remove();
-                }
-                addCurrentPositionMarker(latLng);
-                //不管准不准确，都要先判断是否到达起跑点或者到达下一个打卡点
-                //判断用户是否在起跑点附近
-                if (!isStarted) {
-                    checkUserIsNearByStartPoint(latLng);
-                } else {
-                    //如果游戏已经开始，则验证是否到达下一个乐跑点
-                    checkUserIsArrivedNextPoint(latLng);
-                }
+                handleLocationResult(aMapLocation);
             }
         });
         locationHelper.setOnceLocation(false);
         locationHelper.setInterval(INTERVAL);
+    }
+
+    //处理定位返回信息
+    private void handleLocationResult(AMapLocation aMapLocation) {
+        double latitude = aMapLocation.getLatitude();
+        double longitude = aMapLocation.getLongitude();
+        int locationCode = aMapLocation.getErrorCode();
+        LogUtils.i("accuracy", "定位数据精度：" + aMapLocation.getAccuracy() + ", ErrorCode:" + locationCode + ", " +
+                "ErrorInfo:" + aMapLocation.getErrorInfo() + ", 定位类型：" + aMapLocation
+                .getLocationType() + ",经纬度：" + latitude + "," + longitude + ",GPS信号强度：" + aMapLocation
+                .getGpsAccuracyStatus() + ",卫星数量：" + aMapLocation.getSatellites());
+        latlngBuilder.append(latitude).append(",").append(longitude).append("\r\n");
+        //错误码对照表请见http://lbs.amap.com/api/android-location-sdk/guide/utilities/errorcode/#v2
+        if (locationCode != AMapLocation.LOCATION_SUCCESS) {
+            if (!isLocationFailToastShow) {
+                handlerFailLocationResult(locationCode);
+                isLocationFailToastShow = true;
+            }
+            return;
+        }
+        if (aMapLocation.getAccuracy() > ACCURACY) {
+            return;
+        }
+        if (isDoingNetWork) {
+            return;
+        }
+        isLocationFailToastShow = false;
+        LatLng latLng = new LatLng(latitude, longitude);
+        previousLatLng = currentLatLng;
+        currentLatLng = latLng;
+        if (isStarted) {
+            //将定位点存储到数据库中
+            DBHelper.insertDataToDB(DirectionRunActivity.this, aMapLocation);
+            //开始绘制轨迹
+            drawLine(previousLatLng, currentLatLng);
+            //记录里程数
+            caculateDistance();
+            if (isStartFollow) {
+                //将地图中心移到当前位置
+                moveToLocation(currentLatLng);
+            }
+            //验证是否到达下一个乐跑点
+            checkUserIsArrivedNextPoint(latLng);
+        } else {
+            //判断是否到达起跑点
+            checkUserIsNearByStartPoint(latLng);
+        }
+        //如果是第一次进入Activity，则将地图中心移到当前位置
+        if (isFirstEnter) {
+            moveToLocation(latLng);
+            isFirstEnter = false;
+        }
+        //用图标标注当前位置
+        if (currentMarker != null) {
+            currentMarker.remove();
+        }
+        addCurrentPositionMarker(latLng);
+    }
+
+    private LatLng getAccurateLatLng() {
+        int max = 0;
+        int maxIndex = 0;
+        if (accurateLatLngs == null) {
+            return null;
+        }
+        for (int i = 0; i < accurateLatLngs.size(); i++) {
+            LatLng latLng = accurateLatLngs.get(i);
+            int count = 0;
+            for (int j = 0; j < accurateLatLngs.size(); j++) {
+                if (AMapUtils.calculateLineDistance(latLng, accurateLatLngs.get(j)) < ACCURATE_DISTANCE) {
+                    count++;
+                }
+            }
+            if (count > max) {
+                max = count;
+                maxIndex = i;
+            }
+        }
+        return accurateLatLngs.get(maxIndex);
     }
 
     private void handlerFailLocationResult(int locationCode) {
@@ -671,6 +703,11 @@ public class DirectionRunActivity extends MyBaseActivity implements DirectionRun
         }
         System.gc();
         GpsStatusReceiver.unregister(this);
+
+        if (latlngBuilder != null) {
+            IOHelper.writeTextFile(latlngBuilder.toString(), DirUtils.getDirectionRunDirectory().getAbsolutePath() +
+                    File.separator + TimeUtils.getCurrentTime() + "_latlngs.txt");
+        }
     }
 
     @Override

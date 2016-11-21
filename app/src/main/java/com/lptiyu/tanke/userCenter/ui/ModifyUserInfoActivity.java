@@ -1,7 +1,6 @@
 package com.lptiyu.tanke.userCenter.ui;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -77,7 +76,7 @@ public class ModifyUserInfoActivity extends MyBaseActivity {
 
     private ImageChooseDialog mImageChooseDialog;
     private GenderChooseDialog mGenderChooseDialog;
-    private ProgressDialog mLoadingDialog;
+    //    private ProgressDialog mLoadingDialog;
     private TextInputDialog mTextInputDialog;
     private DatePickerDialog mDatePickerDialog;
     private NumberPickerDialog mNumberPickerDialog;
@@ -97,20 +96,19 @@ public class ModifyUserInfoActivity extends MyBaseActivity {
     private void init() {
         mTitle.setText("资料修改");
         details = getIntent().getParcelableExtra(Conf.USER_DETAIL);
-        if (details == null) {
-            return;
+        //        mLoadingDialog = new ProgressDialog(this);
+        //        mLoadingDialog.setIndeterminate(true);
+        //        mLoadingDialog.setCancelable(false);
+        if (details != null) {
+            Glide.with(this).load(details.img).error(R.mipmap.default_avatar).into(mAvatarImage);
+            mBirthdayText.setText(details.birthday);
+            mNicknameText.setText(details.name);
+            mGenderText.setText(details.sex);
+            mHeightText.setText(String.format(getString(R.string.modify_info_height_formatter), details.high));
+            mWeightText.setText(String.format(getString(R.string.modify_info_weight_formatter), details.weight));
+            mLocationText.setText(details.address);
         }
-        Glide.with(this).load(details.img).error(R.mipmap.default_avatar).into(mAvatarImage);
-        mBirthdayText.setText(details.birthday);
-        mNicknameText.setText(details.name);
-        mGenderText.setText(details.sex);
-        mHeightText.setText(String.format(getString(R.string.modify_info_height_formatter), details.high));
-        mWeightText.setText(String.format(getString(R.string.modify_info_weight_formatter), details.weight));
-        mLocationText.setText(details.address);
         mPhoneText.setText(Accounts.getPhoneNumber());
-        mLoadingDialog = new ProgressDialog(this);
-        mLoadingDialog.setIndeterminate(true);
-        mLoadingDialog.setCancelable(false);
         userId = Accounts.getId();
         token = Accounts.getToken();
 
@@ -206,7 +204,11 @@ public class ModifyUserInfoActivity extends MyBaseActivity {
             });
         }
         mTextInputDialog.isCancelable(false);
-        mTextInputDialog.show(details.name);
+        if (details != null) {
+            mTextInputDialog.show(details.name);
+        } else {
+            mTextInputDialog.show();
+        }
     }
 
     @OnClick(R.id.modify_user_info_birthday_button)
@@ -217,8 +219,8 @@ public class ModifyUserInfoActivity extends MyBaseActivity {
                 @Override
                 public void onDateChoosed(String date) {
                     final String mData = date;
-                    mLoadingDialog.setMessage("生日修改中");
-                    mLoadingDialog.show();
+                    //                    mLoadingDialog.setMessage("生日修改中");
+                    //                    mLoadingDialog.show();
                     HttpService.getUserService()
                             .resetUserDetails(userId, token, UserService.USER_DETAIL_BIRTHDAY, date)
                             .observeOn(AndroidSchedulers.mainThread())
@@ -226,7 +228,7 @@ public class ModifyUserInfoActivity extends MyBaseActivity {
                             .subscribe(new Action1<Response<Void>>() {
                                 @Override
                                 public void call(Response<Void> voidResponse) {
-                                    mLoadingDialog.cancel();
+                                    //                                    mLoadingDialog.cancel();
                                     int status = voidResponse.getStatus();
                                     if (status != 1) {
                                         ToastUtil.TextToast(voidResponse.getInfo());
@@ -258,8 +260,8 @@ public class ModifyUserInfoActivity extends MyBaseActivity {
                 @Override
                 public void onGenderChoosed(String gender) {
                     final String sex = gender;
-                    mLoadingDialog.setMessage("性别修改中");
-                    mLoadingDialog.show();
+                    //                    mLoadingDialog.setMessage("性别修改中");
+                    //                    mLoadingDialog.show();
                     HttpService.getUserService()
                             .resetUserDetails(userId, token, UserService.USER_DETAIL_SEX, gender)
                             .observeOn(AndroidSchedulers.mainThread())
@@ -267,7 +269,7 @@ public class ModifyUserInfoActivity extends MyBaseActivity {
                             .subscribe(new Action1<Response<Void>>() {
                                 @Override
                                 public void call(Response<Void> voidResponse) {
-                                    mLoadingDialog.dismiss();
+                                    //                                    mLoadingDialog.dismiss();
                                     int status = voidResponse.getStatus();
                                     if (status != 1) {
                                         ToastUtil.TextToast(voidResponse.getInfo());
@@ -343,8 +345,8 @@ public class ModifyUserInfoActivity extends MyBaseActivity {
             mImageChooseDialog.setOnImageChoosedListener(new ImageChooseDialog.OnImageChoosedListener() {
                 @Override
                 public void onImageChoosed(final File file) {
-                    mLoadingDialog.setMessage("图片上传中");
-                    mLoadingDialog.show();
+                    //                    mLoadingDialog.setMessage("图片上传中");
+                    //                    mLoadingDialog.show();
                     RequestBody body = RequestBody.create(MediaType.parse("multipart/form-data"), file);
                     HttpService.getUserService().uploadUserAvatar(userId, token, body)
                             .observeOn(AndroidSchedulers.mainThread())
@@ -352,7 +354,7 @@ public class ModifyUserInfoActivity extends MyBaseActivity {
                             .subscribe(new Action1<Response<String>>() {
                                 @Override
                                 public void call(Response<String> stringResponse) {
-                                    mLoadingDialog.cancel();
+                                    //                                    mLoadingDialog.cancel();
                                     int status = stringResponse.getStatus();
                                     if (status != 1) {
                                         ToastUtil.TextToast(stringResponse.getInfo());
@@ -390,15 +392,17 @@ public class ModifyUserInfoActivity extends MyBaseActivity {
                 mNicknameText.setText(details.name);
                 break;
             case Conf.RESULT_CODE_START_USER_LOCATE:
-                mLoadingDialog.setMessage("地区修改中");
-                mLoadingDialog.show();
+                //                mLoadingDialog.setMessage("地区修改中");
+                //                mLoadingDialog.show();
                 CityStruct cityStruct = data.getParcelableExtra(Conf.CITY_STRUCT);
                 if (cityStruct == null) {
                     return;
                 }
                 String location = cityStruct.getmName();
                 if (location != null && location.length() != 0) {
-                    details.address = location;
+                    if (details != null) {
+                        details.address = location;
+                    }
                     HttpService.getUserService()
                             .resetUserDetails(userId, token, UserService.USER_DETAIL_LOCATION, location)
                             .observeOn(AndroidSchedulers.mainThread())
@@ -406,7 +410,7 @@ public class ModifyUserInfoActivity extends MyBaseActivity {
                             .subscribe(new Action1<Response<Void>>() {
                                 @Override
                                 public void call(Response<Void> voidResponse) {
-                                    mLoadingDialog.dismiss();
+                                    //                                    mLoadingDialog.dismiss();
                                     int status = voidResponse.getStatus();
                                     if (status != 1) {
                                         ToastUtil.TextToast(voidResponse.getInfo());

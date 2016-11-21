@@ -188,7 +188,7 @@ public class LocationTaskActivity extends MyBaseActivity implements LocationTask
         locationHelper.setOnceLocation(false);
 
         if (AppData.isFirstInLocationActivity()) {
-            getWindow().getDecorView().post(new Runnable() {
+            getWindow().getDecorView().postDelayed(new Runnable() {
                 public void run() {
                     PopupWindowUtils.getInstance().showTaskGuide(LocationTaskActivity.this,
                             "这是定位任务，点击验证您当前的位置，验证通过即可通关", new PopupWindowUtils.DismissCallback() {
@@ -200,7 +200,7 @@ public class LocationTaskActivity extends MyBaseActivity implements LocationTask
                                 }
                             });
                 }
-            });
+            },Conf.POST_DELAY);
         } else {
             locationHelper.startLocation();
         }

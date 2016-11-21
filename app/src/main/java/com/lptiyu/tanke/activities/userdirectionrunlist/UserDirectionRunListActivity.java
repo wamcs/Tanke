@@ -15,8 +15,6 @@ import com.lptiyu.tanke.entity.response.DRRecordEntity;
 import com.lptiyu.tanke.global.Conf;
 import com.lptiyu.tanke.interfaces.OnRecyclerViewItemClickListener;
 import com.lptiyu.tanke.mybase.MyBaseActivity;
-import com.lptiyu.tanke.utils.NetworkUtil;
-import com.lptiyu.tanke.utils.PopupWindowUtils;
 import com.lptiyu.tanke.widget.CustomTextView;
 import com.lptiyu.tanke.widget.RecyclerViewItemDecoration;
 
@@ -55,22 +53,7 @@ public class UserDirectionRunListActivity extends MyBaseActivity implements User
     }
 
     private void loadDRListData() {
-        if (NetworkUtil.checkIsNetworkConnected()) {
-            presenter.loadDRList();
-        } else {
-            getWindow().getDecorView().post(new Runnable() {
-                @Override
-                public void run() {
-                    PopupWindowUtils.getInstance().showNetExceptionPopupwindow(UserDirectionRunListActivity.this, new
-                            PopupWindowUtils.OnRetryCallback() {
-                                @Override
-                                public void onRetry() {
-                                    loadDRListData();
-                                }
-                            });
-                }
-            });
-        }
+        presenter.loadDRList();
     }
 
     @OnClick(R.id.default_tool_bar_imageview)

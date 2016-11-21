@@ -96,7 +96,7 @@ public class HomeFragment extends MyBaseFragment implements HomeContact.IHomeVie
             presenter.firstLoadBannerAndHot();
             presenter.loadSort();
         } else {
-            getActivity().getWindow().getDecorView().post(new Runnable() {
+            getActivity().getWindow().getDecorView().postDelayed(new Runnable() {
                 @Override
                 public void run() {
                     PopupWindowUtils.getInstance().showNetExceptionPopupwindow(getActivity(), new PopupWindowUtils
@@ -107,7 +107,7 @@ public class HomeFragment extends MyBaseFragment implements HomeContact.IHomeVie
                         }
                     });
                 }
-            });
+            },Conf.POST_DELAY);
         }
     }
 
