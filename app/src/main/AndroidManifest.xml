@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          xmlns:tools="http://schemas.android.com/tools"
           package="com.lptiyu.tanke"
           android:versionCode="13"
           android:versionName="1.2.1">
@@ -41,13 +42,14 @@
     <!-- Permission above added for barcode scanner -->
     <application
         android:name=".RunApplication"
-        android:allowBackup="true"
+        android:allowBackup="false"
         android:hardwareAccelerated="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:largeHeap="true"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        tools:replace="android:allowBackup">
         <meta-data
             android:name="com.amap.api.v2.apikey"
             android:value="0c494eec21c7e1f92d6e545ae22364d5"/>

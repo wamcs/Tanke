@@ -80,7 +80,7 @@ android {
         abi {
             enable true
             reset()
-            include "armeabi", "armeabi-v7a"
+            include "armeabi"
             universalApk false
         }
     }
@@ -111,10 +111,13 @@ dependencies {
     compile files('libs/ShareSDK-Wechat-Moments-2.6.5.jar')
     compile files('libs/okhttp-2.6.0-leancloud.jar')
     compile files('libs/okio-1.6.0-leancloud.jar')
+    compile files('libs/AMap3DMap_4.1.2_AMapLocation_3.1.0_20161104.jar')
     apt 'com.jakewharton:butterknife-compiler:8.0.1'
     compile project(path: ':zxinglib')
     compile project(':number_picker')
     compile project(path: ':nifty')
+    compile project(':LRecyclerview_library')
+    compile project(':StickLayout_library')
     compile 'com.makeramen:roundedimageview:2.2.1'
     compile 'com.squareup.okhttp3:okhttp:3.2.0'
     compile 'com.squareup.retrofit2:converter-gson:2.0.2'
@@ -136,13 +139,8 @@ dependencies {
     compile 'org.xutils:xutils:3.3.36'
     compile 'in.srain.cube:ultra-ptr:1.0.11'
     compile 'com.gxz.pagerslidingtabstrip:library:1.1'
-    compile project(':LRecyclerview_library')
-    compile project(':StickLayout_library')
-    compile files('libs/AMap3DMap_4.0.1_AMapLocation_3.0.0_20160923.jar')
     compile 'org.greenrobot:greendao:3.2.0'
     compile 'org.greenrobot:eventbus:3.0.0'
-    compile 'com.android.support:cardview-v7:24.2.1'
-    compile files('libs/AMap3DMap_4.1.2_AMapLocation_3.1.0_20161104.jar')
 }
 
 greendao {

@@ -975,6 +975,7 @@ public class DirectionRunActivity extends MyBaseActivity implements DirectionRun
                     startRun.extra_money);
             startTime = currentTimeMillis();
         }
+        saveDataToLocal();
         //启动保存数据定时器
         saveDataTimer.start();
     }

@@ -325,8 +325,6 @@ public class FileUtils {
         if (apkFilePath == null || context == null || !apkFilePath.endsWith(".apk")) {
             return null;
         }
-        //        String archiveFilePath = this.getExternalFilesDir(null).getAbsolutePath() + "/budao.apk";//安装包路径
-        //        String archiveFilePath = apkFilePath;
         PackageManager pm = context.getPackageManager();
         PackageInfo info = pm.getPackageArchiveInfo(apkFilePath, PackageManager.GET_ACTIVITIES);
         if (info != null) {
@@ -336,14 +334,14 @@ public class FileUtils {
             String packageName = appInfo.packageName;  //得到安装包名称
             String versionName = info.versionName;
             int versionCode = info.versionCode;
-            //            Drawable icon = pm.getApplicationIcon(appInfo);//得到图标信息
             hashMap.put(Conf.APP_NAME, appName);
             hashMap.put(Conf.PACKAGE_NAME, packageName);
             hashMap.put(Conf.VERSION_NAME, versionName);
             hashMap.put(Conf.VERSION_CODE, versionCode + "");
             return hashMap;
+        } else {
+            return null;
         }
-        return null;
     }
 
     public static File isLocalAPKFileExist(int targetVersionCode) {

@@ -45,6 +45,7 @@ import com.lptiyu.tanke.mybase.MyBaseFragment;
 import com.lptiyu.tanke.utils.DirUtils;
 import com.lptiyu.tanke.utils.FileUtils;
 import com.lptiyu.tanke.utils.LogUtils;
+import com.lptiyu.tanke.utils.NetworkUtil;
 import com.lptiyu.tanke.utils.ToastUtil;
 import com.lptiyu.tanke.utils.xutils3.XUtilsHelper;
 import com.lptiyu.zxinglib.android.CaptureActivity;
@@ -292,7 +293,12 @@ public class PointTaskFragment extends MyBaseFragment implements PointTaskContac
                         if (distinguishImageDialog != null) {
                             distinguishImageDialog.dismiss();
                         }
-                        Toast.makeText(getActivity(), errMsg + "", Toast.LENGTH_SHORT).show();
+                        if (!NetworkUtil.checkIsNetworkConnected()) {
+                            Toast.makeText(getActivity(), getActivity().getString(R.string.no_network), Toast
+                                    .LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(getActivity(), "启动摄像头失败，请重试", Toast.LENGTH_SHORT).show();
+                        }
                     }
                 });
     }

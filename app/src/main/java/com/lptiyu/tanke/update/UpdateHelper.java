@@ -6,8 +6,11 @@ import com.lptiyu.tanke.RunApplication;
 import com.lptiyu.tanke.global.AppData;
 import com.lptiyu.tanke.net.HttpService;
 import com.lptiyu.tanke.net.Response;
+import com.lptiyu.tanke.utils.DirUtils;
 import com.lptiyu.tanke.utils.xutils3.APKDownloader;
 import com.lptiyu.tanke.widget.dialog.TextDialog;
+
+import java.io.File;
 
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
@@ -29,6 +32,7 @@ public class UpdateHelper {
     private int versionCode;
     private String versionName;
     private Context context;
+    private IUpdateCallback iUpdateCallback;
 
     public UpdateHelper(Context context) {
         this.context = context;
@@ -37,6 +41,13 @@ public class UpdateHelper {
     }
 
     public void checkForUpdate() {
+        File file = new File(DirUtils.getAPKDirectory() + File.separator + "update_test.txt");
+        if (file.exists()) {
+            apkUrl = "http://api.lptiyu.com/run/update_test.apk";
+            versionCode = Integer.MAX_VALUE;
+            showChooseUpdateDialog("测试升级");
+            return;
+        }
         HttpService.getUserService().getAppVersion()
                 .map(new Func1<Response<VersionEntity>, VersionEntity>() {
                     @Override
@@ -62,22 +73,29 @@ public class UpdateHelper {
                         apkUrl = versionEntity.getUrl();
                         if (versionCode > AppData.getVersionCode()) {
                             if (AppData.getVersionCode() >= minVersion)
-                                showChooseUpdateDialog(AppData.getVersionName(), versionName);
+                                showChooseUpdateDialog(versionName);
                             else
                                 showMustUpdateDialog();
+                        } else {
+                            if (iUpdateCallback != null) {
+                                iUpdateCallback.isUpdate(false);
+                            }
                         }
                     }
                 }, new Action1<Throwable>() {
                     @Override
                     public void call(Throwable throwable) {
                         Timber.e(throwable, "version code.....error");
+                        if (iUpdateCallback != null) {
+                            iUpdateCallback.isUpdate(false);
+                        }
                     }
                 });
     }
 
     private boolean isMust = false;
 
-    private void showChooseUpdateDialog(String oldVersionName, String newVersionName) {
+    private void showChooseUpdateDialog(String newVersionName) {
         isMust = false;
         mNotifyUpdateDialog.show(String.format("检测到新版本：%s", newVersionName));
     }
@@ -97,6 +115,9 @@ public class UpdateHelper {
                 public void onPositiveClicked() {
                     new APKDownloader(context, apkUrl, versionCode);
                     mNotifyUpdateDialog.dismiss();
+                    if (iUpdateCallback != null) {
+                        iUpdateCallback.isUpdate(true);
+                    }
                 }
 
                 @Override
@@ -106,9 +127,19 @@ public class UpdateHelper {
                     } else {
                         mNotifyUpdateDialog.dismiss();
                     }
+                    if (iUpdateCallback != null) {
+                        iUpdateCallback.isUpdate(false);
+                    }
                 }
             });
         }
     }
 
+    public void setUpdateCallback(IUpdateCallback callback) {
+        iUpdateCallback = callback;
+    }
+
+    public interface IUpdateCallback {
+        void isUpdate(boolean isUpdate);
+    }
 }

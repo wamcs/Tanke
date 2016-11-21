@@ -43,7 +43,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class MainActivity extends MyBaseActivity {
+public class MainActivity extends MyBaseActivity implements UpdateHelper.IUpdateCallback {
 
     public int mCurrentIndex = 2;
     @BindView(R.id.page_1)
@@ -53,8 +53,8 @@ public class MainActivity extends MyBaseActivity {
     @BindView(R.id.page_3)
     ImageView tab3;
 
-    ArrayList<Fragment> fragments = new ArrayList<>(3);
     private UpdateHelper updateHelper;
+    ArrayList<Fragment> fragments = new ArrayList<>(3);
     Fragment mCurrentFragment;
 
     @Override
@@ -65,7 +65,16 @@ public class MainActivity extends MyBaseActivity {
 
         initTab();
         signUpAndStartLocation();
-        recoveryDRData();
+        updateHelper = new UpdateHelper(this);
+        updateHelper.checkForUpdate();
+        updateHelper.setUpdateCallback(this);
+    }
+
+    @Override
+    public void isUpdate(boolean isUpdate) {
+        if (!isUpdate) {
+            recoveryDRData();
+        }
     }
 
     private void recoveryDRData() {
@@ -216,8 +225,6 @@ public class MainActivity extends MyBaseActivity {
         fragments.add(new UserCenterFragment());
         changeTab(0);
         selectTab(0);
-        updateHelper = new UpdateHelper(this);
-        updateHelper.checkForUpdate();
     }
 
     @OnClick(R.id.page_1)
