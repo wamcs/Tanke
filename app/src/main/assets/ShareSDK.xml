@@ -55,7 +55,7 @@
     <ShareSDK
         AppKey="1276c2d783264"/> <!-- 修改成你在sharesdk后台注册的应用的appkey"-->
 
-    <!-- ShareByAppClient标识是否使用微博客户端分享，默认是false -->
+    <!-- ShareByAppClient标识是否使用客户端分享，默认是false -->
     <SinaWeibo
         AppKey="350546601"
         AppSecret="694727aaf9d9fa8fcaa94f740afcf0dd"
@@ -117,7 +117,6 @@
         Id="3"
         ShareByAppClient="true"
         SortId="3"/>
-    <!-- ShareByAppClient标识是否使用微博客户端分享，默认是false -->
     <QQ
         AppId="1105660458"
         AppKey="wwfjMdJYdFAXPsqF"

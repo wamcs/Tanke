@@ -145,21 +145,18 @@ public class DirectionRunActivity extends MyBaseActivity implements DirectionRun
     private boolean isLocationFailToastShow;
     private final String PLEASE_GO_OUTDOR = "您当前可能处于室内，请到室外空旷区域";
     private final String UNCONNECT_NET = "网络连接断开，请检查网络";
-    private final String NO_PERMISSION = "定位失败，请检查是否获得GPS定位权限";
+    private final String NO_PERMISSION = "定位失败，请检查是否开启GPS定位权限";
     private final String INVALID_KEY = "定位失败，请检查key是否正确";
     private final String NO_SIM_CARD = "定位失败，请检查是否安装SIM卡";
     private final String FAIL_INIT_LOCATION_CLIENT = "初始化定位失败，请退出重新初始化";
-    private final String EXCEPTION_PARAMETER = "定位参数错误，数据可能被篡改，请确保当前网络安全";
+    private final String EXCEPTION_PARAMETER = "定位失败，数据可能被篡改，请确保当前网络安全";
     private final String SINGLE_WIFI_AND_NO_CELL = "定位失败，由于仅扫描到单个wifi，且没有基站信息";
     private final String FAIL_LOCATION = "定位失败";
     private boolean isStartFollow;//地图中心是否跟随当前位置移动
-    private boolean isDoingNetWork;
+    private boolean isDoingNetWork;//如果正在网络请求，就不对定位信息做判断处理
     private StringBuilder latlngBuilder = new StringBuilder();
-    private double times = 0;
     private List<LatLng> accurateLatLngs = new ArrayList<>();
     private double ACCURATE_DISTANCE = 20;//计算最准确的点的范围标准
-    private LatLng accurateLatLng;//开始乐跑后十秒钟内最准确的点
-    private int valid = 20;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
